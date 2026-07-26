@@ -49,7 +49,7 @@
     "runtime/HsBindgen/Runtime/Support/TH/Types.hs": "rhv3:2d5d6477e4821e8d",
     "runtime/HsBindgen/Runtime/Union.hs": "rhv3:038d0df55bb42643",
     "sdl3-bindgen-sys.cabal": "rhv3:28e608b9a8255da9",
-    "src/SDL3/Sys.hs": "rhv3:eee8e5e8cedd95c1",
+    "src/SDL3/Sys.hs": "rhv3:ea0b1202de55e82c",
     "src/SDL3/Sys/Assert.hs": "rhv3:ecd241fb77a4cb9c",
     "src/SDL3/Sys/Asyncio.hs": "rhv3:279bd04f3ad65335",
     "src/SDL3/Sys/Atomic.hs": "rhv3:1a843fb8639cd8d3",

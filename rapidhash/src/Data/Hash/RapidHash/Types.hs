@@ -196,7 +196,7 @@ showRapidHashText = TB.runBuilder . rapidHashTextBuilder
 -- Efficiently render a 'RapidHash' as 'ByteString'. If your text blob is utf-8, it may be worth
 -- composing using 'TB.Builder' and extracting with 'TB.runBuilderBS' yourself.
 --
--- utf-8 encoded, using 'TB.runBuilderBS'
+-- The resulting 'ByteString' is utf-8 encoded, using 'TB.runBuilderBS'
 --
 -- See 'rapidHashTextBuilder'
 showRapidHashBS :: RapidHash -> ByteString

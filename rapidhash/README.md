@@ -167,7 +167,7 @@ cabal bench rapidhash-bench --benchmark-options='--csv bench.csv --stdev 2'
   hashers are presently C calls, both to xxhash3[^1]. It is presented for
   speed comparison against a known-optimized hasher.
 - rapidhash measures meaningfully faster than `hashable`, except at very
-  small inputs, where it seems it pay more in constant factors.
+  small inputs, where it seems to pay more in constant factors.
 - `murmur-hash` is pure Haskell (MurmurHash2).
 - `xxhash-ffi` is measured through its `XXH3` newtype `Hashable` instance.
 - [Upstream reports](https://github.com/Nicoshev/rapidhash/tree/master#outstanding-performance)
