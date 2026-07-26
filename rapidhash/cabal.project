@@ -1,0 +1,8 @@
+-- Standalone project for building/testing rapidhash in isolation.
+packages: .
+index-state: 2026-07-01T00:00:00Z
+tests: True
+documentation: True
+haddock-html: True
+haddock-hyperlink-source: True
+write-ghc-environment-files: always

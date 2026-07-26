@@ -1,0 +1,116 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Vulkan
+ctypes:
+  - omit:
+      headers: SDL3/SDL_vulkan.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_vulkan.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_vulkan.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_vulkan.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_vulkan.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_vulkan.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_vulkan.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_vulkan.h
+    cname: VkInstance
+    hsname: VkInstance
+  - headers: SDL3/SDL_vulkan.h
+    cname: struct VkInstance_T
+    hsname: VkInstance_T
+  - headers: SDL3/SDL_vulkan.h
+    cname: VkPhysicalDevice
+    hsname: VkPhysicalDevice
+  - headers: SDL3/SDL_vulkan.h
+    cname: struct VkPhysicalDevice_T
+    hsname: VkPhysicalDevice_T
+  - headers: SDL3/SDL_vulkan.h
+    cname: VkSurfaceKHR
+    hsname: VkSurfaceKHR
+  - headers: SDL3/SDL_vulkan.h
+    cname: struct VkSurfaceKHR_T
+    hsname: VkSurfaceKHR_T
+  - headers: SDL3/SDL_vulkan.h
+    cname: struct VkAllocationCallbacks
+    hsname: VkAllocationCallbacks
+hstypes:
+  - hsname: VkAllocationCallbacks
+    representation: emptydata
+  - hsname: VkInstance
+    representation:
+      newtype:
+        constructor: VkInstance
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: VkInstance_T
+    representation: emptydata
+  - hsname: VkPhysicalDevice
+    representation:
+      newtype:
+        constructor: VkPhysicalDevice
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: VkPhysicalDevice_T
+    representation: emptydata
+  - hsname: VkSurfaceKHR
+    representation:
+      newtype:
+        constructor: VkSurfaceKHR
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: VkSurfaceKHR_T
+    representation: emptydata

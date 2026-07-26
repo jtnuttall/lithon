@@ -1,0 +1,81 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Hints
+ctypes:
+  - omit:
+      headers: SDL3/SDL_hints.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_hints.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_hints.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_hints.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_hints.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_hints.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_hints.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_hints.h
+    cname: enum SDL_HintPriority
+    hsname: SDL_HintPriority
+    enum: open
+  - headers: SDL3/SDL_hints.h
+    cname: SDL_HintPriority
+    hsname: SDL_HintPriority
+  - headers: SDL3/SDL_hints.h
+    cname: SDL_HintCallback
+    hsname: SDL_HintCallback
+hstypes:
+  - hsname: SDL_HintCallback
+    representation:
+      newtype:
+        constructor: SDL_HintCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_HintPriority
+    representation:
+      newtype:
+        constructor: SDL_HintPriority
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

@@ -1,0 +1,101 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.39.6.
+--
+-- see: https://github.com/sol/hpack
+
+name:           typed-product-builder
+version:        0.1.0.0
+synopsis:       Typed builder for products using generic-lens and generics-sop
+description:    A type-level product/record-builder experiment over generic-lens and
+                generics-sop. Not built for high-performance paths — the representation
+                would need to be array-backed (a-la ARec) first — but fine for CLI
+                tooling and run-once setup code. Internal to lithon and unpublished.
+category:       Data
+homepage:       https://github.com/jtnuttall/lithon#readme
+bug-reports:    https://github.com/jtnuttall/lithon/issues
+author:         Jeremy Nuttall
+maintainer:     jeremy@jeremy-nuttall.com
+copyright:      (c) 2026 Jeremy Nuttall
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-doc-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/jtnuttall/lithon
+
+library
+  exposed-modules:
+      Data.Generics.SOP.Builder.Typed
+      Data.Generics.SOP.Typed
+  other-modules:
+      Paths_typed_product_builder
+  autogen-modules:
+      Paths_typed_product_builder
+  hs-source-dirs:
+      src
+  default-extensions:
+      BlockArguments
+      DeriveAnyClass
+      DuplicateRecordFields
+      NoFieldSelectors
+      OverloadedLabels
+      OverloadedRecordDot
+      RecordWildCards
+  ghc-options: -Wmissing-deriving-strategies -Wmissing-export-lists -Wredundant-constraints -Wall -Werror
+  build-depends:
+      base <4.22.0.0
+    , constraints-extras ==0.4.*
+    , deepseq ==1.5.*
+    , first-class-families ==0.8.*
+    , generic-lens ==2.3.*
+    , generics-sop ==0.5.*
+    , lens ==5.3.*
+    , profunctors ==5.6.*
+    , tagged ==0.8.*
+    , vector ==0.13.*
+    , witch ==1.4.*
+  default-language: GHC2024
+
+test-suite typed-product-builder-test
+  type: exitcode-stdio-1.0
+  main-is: Driver.hs
+  other-modules:
+      Paths_typed_product_builder
+  autogen-modules:
+      Paths_typed_product_builder
+  hs-source-dirs:
+      test
+  default-extensions:
+      BlockArguments
+      DeriveAnyClass
+      DuplicateRecordFields
+      NoFieldSelectors
+      OverloadedLabels
+      OverloadedRecordDot
+      RecordWildCards
+  ghc-options: -Wmissing-deriving-strategies -Wmissing-export-lists -Wredundant-constraints -Wall -Werror
+  build-tool-depends:
+      tasty-discover:tasty-discover ==5.2.*
+  build-depends:
+      base <4.22.0.0
+    , constraints-extras ==0.4.*
+    , deepseq ==1.5.*
+    , first-class-families ==0.8.*
+    , generic-lens ==2.3.*
+    , generics-sop ==0.5.*
+    , hedgehog ==1.7.*
+    , lens ==5.3.*
+    , profunctors ==5.6.*
+    , tagged ==0.8.*
+    , tasty ==1.5.*
+    , tasty-hedgehog ==1.4.*
+    , tasty-hunit ==0.10.*
+    , typed-product-builder
+    , vector ==0.13.*
+    , witch ==1.4.*
+  default-language: GHC2024

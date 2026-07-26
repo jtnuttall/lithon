@@ -1,0 +1,1075 @@
+{
+  "coreVersions": [
+    "1.0",
+    "1.1",
+    "1.2",
+    "1.3",
+    "1.4"
+  ],
+  "curatedSummary": {
+    "dispatchLevels": [
+      [
+        "global",
+        4
+      ],
+      [
+        "instance",
+        58
+      ],
+      [
+        "device",
+        322
+      ]
+    ],
+    "enumFlows": [
+      [
+        "in",
+        109
+      ],
+      [
+        "out",
+        25
+      ],
+      [
+        "both",
+        41
+      ],
+      [
+        "unreferenced",
+        3
+      ]
+    ],
+    "headerVersion": 356,
+    "tableCounts": [
+      [
+        "constants",
+        213
+      ],
+      [
+        "enum-blocks",
+        178
+      ],
+      [
+        "enum-values",
+        1769
+      ],
+      [
+        "bitmasks",
+        118
+      ],
+      [
+        "handles",
+        40
+      ],
+      [
+        "structs",
+        576
+      ],
+      [
+        "funcpointers",
+        7
+      ],
+      [
+        "basetypes",
+        7
+      ],
+      [
+        "defines",
+        16
+      ],
+      [
+        "externals",
+        27
+      ],
+      [
+        "commands",
+        384
+      ],
+      [
+        "features",
+        5
+      ],
+      [
+        "extensions",
+        95
+      ],
+      [
+        "formats",
+        240
+      ],
+      [
+        "spirv-extensions",
+        35
+      ],
+      [
+        "spirv-capabilities",
+        108
+      ]
+    ],
+    "tableDigests": [
+      [
+        "constants",
+        "rhv3:8bd9e9e3203fbbfe"
+      ],
+      [
+        "enums",
+        "rhv3:5e510d65420acf95"
+      ],
+      [
+        "bitmasks",
+        "rhv3:adc6722b7b5c2101"
+      ],
+      [
+        "handles",
+        "rhv3:8c1c1188d70a45ae"
+      ],
+      [
+        "structs",
+        "rhv3:74987d0652c2e33a"
+      ],
+      [
+        "funcpointers",
+        "rhv3:ffeed4c367b100c8"
+      ],
+      [
+        "basetypes",
+        "rhv3:aa3e6522db782a66"
+      ],
+      [
+        "defines",
+        "rhv3:0c96618746c9e0cb"
+      ],
+      [
+        "externals",
+        "rhv3:7b8eb1add3700056"
+      ],
+      [
+        "commands",
+        "rhv3:16a893a6e274169f"
+      ],
+      [
+        "features",
+        "rhv3:8eb530699a34922a"
+      ],
+      [
+        "extensions",
+        "rhv3:a3c699917e237781"
+      ]
+    ]
+  },
+  "droppedResultCodes": [
+    "vkCreateComputePipelines: VK_ERROR_INVALID_SHADER_NV",
+    "vkCreateGraphicsPipelines: VK_ERROR_INVALID_SHADER_NV",
+    "vkCreateImage: VK_ERROR_COMPRESSION_EXHAUSTED_EXT",
+    "vkCreateShaderModule: VK_ERROR_INVALID_SHADER_NV",
+    "vkCreateSwapchainKHR: VK_ERROR_COMPRESSION_EXHAUSTED_EXT",
+    "vkEndCommandBuffer: VK_ERROR_INVALID_VIDEO_STD_PARAMETERS_KHR",
+    "vkGetPhysicalDeviceImageFormatProperties2: VK_ERROR_IMAGE_USAGE_NOT_SUPPORTED_KHR",
+    "vkGetPhysicalDeviceImageFormatProperties2: VK_ERROR_VIDEO_PROFILE_OPERATION_NOT_SUPPORTED_KHR",
+    "vkGetPhysicalDeviceImageFormatProperties2: VK_ERROR_VIDEO_PROFILE_FORMAT_NOT_SUPPORTED_KHR",
+    "vkGetPhysicalDeviceImageFormatProperties2: VK_ERROR_VIDEO_PICTURE_LAYOUT_NOT_SUPPORTED_KHR",
+    "vkGetPhysicalDeviceImageFormatProperties2: VK_ERROR_VIDEO_PROFILE_CODEC_NOT_SUPPORTED_KHR",
+    "vkQueuePresentKHR: VK_ERROR_PRESENT_TIMING_QUEUE_FULL_EXT"
+  ],
+  "droppedSpirv": [
+    "capability: AtomicFloat16AddEXT",
+    "capability: AtomicFloat32AddEXT",
+    "capability: AtomicFloat64AddEXT",
+    "capability: AtomicFloat16MinMaxEXT",
+    "capability: AtomicFloat32MinMaxEXT",
+    "capability: AtomicFloat64MinMaxEXT",
+    "capability: AtomicFloat16VectorNV",
+    "capability: StencilExportEXT",
+    "capability: SubgroupBallotKHR",
+    "capability: SubgroupVoteKHR",
+    "capability: ImageReadWriteLodAMD",
+    "capability: ImageGatherBiasLodAMD",
+    "capability: FragmentMaskAMD",
+    "capability: SampleMaskOverrideCoverageNV",
+    "capability: GeometryShaderPassthroughNV",
+    "capability: ShaderViewportIndexLayerEXT",
+    "capability: ShaderViewportMaskNV",
+    "capability: PerViewAttributesNV",
+    "capability: SampleMaskPostDepthCoverage",
+    "capability: ImageFootprintNV",
+    "capability: MeshShadingNV",
+    "capability: RayTracingNV",
+    "capability: RayTracingMotionBlurNV",
+    "capability: TransformFeedback",
+    "capability: GeometryStreams",
+    "capability: FragmentDensityEXT",
+    "capability: CooperativeMatrixNV",
+    "capability: IntegerFunctions2INTEL",
+    "capability: ShaderSMBuiltinsNV",
+    "capability: FragmentShaderSampleInterlockEXT",
+    "capability: FragmentShaderPixelInterlockEXT",
+    "capability: FragmentShaderShadingRateInterlockEXT",
+    "capability: TextureSampleWeightedQCOM",
+    "capability: TextureBoxFilterQCOM",
+    "capability: TextureBlockMatchQCOM",
+    "capability: TextureBlockMatch2QCOM",
+    "capability: ImageGatherLinearQCOM",
+    "capability: ImageGatherExtendedModesQCOM",
+    "capability: RayTracingOpacityMicromapKHR",
+    "capability: RayTracingOpacityMicromapExecutionModeKHR",
+    "capability: CoreBuiltinsARM",
+    "capability: ShaderInvocationReorderNV",
+    "capability: ClusterCullingShadingHUAWEI",
+    "capability: TileImageColorReadAccessEXT",
+    "capability: TileImageDepthReadAccessEXT",
+    "capability: TileImageStencilReadAccessEXT",
+    "capability: CooperativeMatrixKHR",
+    "capability: CooperativeMatrixConversionQCOM",
+    "capability: ShaderEnqueueAMDX",
+    "capability: BFloat16TypeKHR",
+    "capability: BFloat16DotProductKHR",
+    "capability: BFloat16CooperativeMatrixKHR",
+    "capability: RawAccessChainsNV",
+    "capability: ReplicatedCompositesEXT",
+    "capability: TensorAddressingNV",
+    "capability: CooperativeMatrixReductionsNV",
+    "capability: CooperativeMatrixConversionsNV",
+    "capability: CooperativeMatrixPerElementOperationsNV",
+    "capability: CooperativeMatrixTensorAddressingNV",
+    "capability: CooperativeMatrixBlockLoadsNV",
+    "capability: CooperativeMatrixDecodeVectorNV",
+    "capability: RayTracingSpheresGeometryNV",
+    "capability: RayTracingLinearSweptSpheresGeometryNV",
+    "capability: RayTracingClusterAccelerationStructureNV",
+    "capability: CooperativeVectorNV",
+    "capability: CooperativeVectorTrainingNV",
+    "capability: PushConstantBanksNV",
+    "capability: ShaderInvocationReorderEXT",
+    "capability: TileShadingQCOM",
+    "capability: SplitBarrierEXT",
+    "capability: MultipleWaitQueuesQCOM",
+    "capability: TensorsARM",
+    "capability: StorageTensorArrayDynamicIndexingARM",
+    "capability: StorageTensorArrayNonUniformIndexingARM",
+    "capability: Float8EXT",
+    "capability: Float8CooperativeMatrixEXT",
+    "capability: GraphARM",
+    "capability: UntypedPointersKHR",
+    "capability: FMAKHR",
+    "capability: Shader64BitIndexingEXT",
+    "capability: LongVectorEXT",
+    "capability: DescriptorHeapEXT",
+    "capability: DotProductFloat16AccFloat32VALVE",
+    "capability: DotProductFloat16AccFloat16VALVE",
+    "capability: DotProductBFloat16AccVALVE",
+    "capability: DotProductFloat8AccFloat32VALVE",
+    "capability: ConstantDataKHR",
+    "capability: AbortKHR",
+    "capability: Float4EXT",
+    "capability: Float6EXT",
+    "capability: Float8UnsignedE8M0EXT",
+    "capability: MXInt8EXT",
+    "capability: BitcastExtractEXT",
+    "extension: SPV_AMD_shader_explicit_vertex_parameter",
+    "extension: SPV_AMD_gcn_shader",
+    "extension: SPV_AMD_gpu_shader_half_float",
+    "extension: SPV_AMD_gpu_shader_int16",
+    "extension: SPV_AMD_shader_ballot",
+    "extension: SPV_AMD_shader_fragment_mask",
+    "extension: SPV_AMD_shader_image_load_store_lod",
+    "extension: SPV_AMD_shader_trinary_minmax",
+    "extension: SPV_AMD_texture_gather_bias_lod",
+    "extension: SPV_AMD_shader_early_and_late_fragment_tests",
+    "extension: SPV_KHR_post_depth_coverage",
+    "extension: SPV_EXT_shader_stencil_export",
+    "extension: SPV_KHR_shader_ballot",
+    "extension: SPV_KHR_subgroup_vote",
+    "extension: SPV_NV_sample_mask_override_coverage",
+    "extension: SPV_NV_geometry_shader_passthrough",
+    "extension: SPV_NV_mesh_shader",
+    "extension: SPV_NV_viewport_array2",
+    "extension: SPV_NV_shader_subgroup_partitioned",
+    "extension: SPV_EXT_shader_subgroup_partitioned",
+    "extension: SPV_NV_shader_invocation_reorder",
+    "extension: SPV_NVX_multiview_per_view_attributes",
+    "extension: SPV_NV_compute_shader_derivatives",
+    "extension: SPV_NV_fragment_shader_barycentric",
+    "extension: SPV_NV_shader_image_footprint",
+    "extension: SPV_NV_shading_rate",
+    "extension: SPV_NV_ray_tracing",
+    "extension: SPV_GOOGLE_hlsl_functionality1",
+    "extension: SPV_GOOGLE_user_type",
+    "extension: SPV_GOOGLE_decorate_string",
+    "extension: SPV_EXT_fragment_invocation_density",
+    "extension: SPV_EXT_physical_storage_buffer",
+    "extension: SPV_NV_cooperative_matrix",
+    "extension: SPV_NV_shader_sm_builtins",
+    "extension: SPV_EXT_fragment_shader_interlock",
+    "extension: SPV_EXT_shader_atomic_float_add",
+    "extension: SPV_EXT_shader_atomic_float_min_max",
+    "extension: SPV_EXT_shader_atomic_float16_add",
+    "extension: SPV_NV_shader_atomic_fp16_vector",
+    "extension: SPV_INTEL_shader_integer_functions2",
+    "extension: SPV_QCOM_image_processing",
+    "extension: SPV_QCOM_image_processing2",
+    "extension: SPV_QCOM_image_processing3",
+    "extension: SPV_QCOM_cooperative_matrix_conversion",
+    "extension: SPV_QCOM_multiple_wait_queues",
+    "extension: SPV_EXT_shader_tile_image",
+    "extension: SPV_KHR_opacity_micromap",
+    "extension: SPV_EXT_split_barrier",
+    "extension: SPV_KHR_cooperative_matrix",
+    "extension: SPV_ARM_core_builtins",
+    "extension: SPV_HUAWEI_cluster_culling_shader",
+    "extension: SPV_HUAWEI_subpass_shading",
+    "extension: SPV_NV_ray_tracing_motion_blur",
+    "extension: SPV_KHR_fma",
+    "extension: SPV_KHR_bfloat16",
+    "extension: SPV_NV_raw_access_chains",
+    "extension: SPV_EXT_replicated_composites",
+    "extension: SPV_KHR_relaxed_extended_instruction",
+    "extension: SPV_NV_cooperative_matrix2",
+    "extension: SPV_NV_cooperative_matrix_decode_vector",
+    "extension: SPV_NV_tensor_addressing",
+    "extension: SPV_NV_linear_swept_spheres",
+    "extension: SPV_NV_cluster_acceleration_structure",
+    "extension: SPV_NV_cooperative_vector",
+    "extension: SPV_NV_push_constant_bank",
+    "extension: SPV_EXT_shader_invocation_reorder",
+    "extension: SPV_QCOM_tile_shading",
+    "extension: SPV_ARM_tensors",
+    "extension: SPV_EXT_float8",
+    "extension: SPV_ARM_graph",
+    "extension: SPV_KHR_untyped_pointers",
+    "extension: SPV_EXT_shader_64bit_indexing",
+    "extension: SPV_EXT_long_vector",
+    "extension: SPV_EXT_descriptor_heap",
+    "extension: SPV_VALVE_mixed_float_dot_product",
+    "extension: SPV_KHR_abort",
+    "extension: SPV_KHR_constant_data",
+    "extension: SPV_EXT_ocp_microscaling_types"
+  ],
+  "headerVersion": 356,
+  "headerVersionDrift": null,
+  "legacyExcluded": [
+    "type VkAttachmentDescription",
+    "type VkAttachmentDescription2",
+    "type VkAttachmentDescriptionStencilLayout",
+    "type VkAttachmentReference",
+    "type VkAttachmentReference2",
+    "type VkBufferMemoryBarrier",
+    "type VkFramebufferAttachmentImageInfo",
+    "type VkFramebufferAttachmentsCreateInfo",
+    "type VkFramebufferCreateInfo",
+    "type VkImageMemoryBarrier",
+    "type VkInputAttachmentAspectReference",
+    "type VkMemoryBarrier",
+    "type VkRenderPassAttachmentBeginInfo",
+    "type VkRenderPassBeginInfo",
+    "type VkRenderPassCreateInfo",
+    "type VkRenderPassCreateInfo2",
+    "type VkRenderPassInputAttachmentAspectCreateInfo",
+    "type VkRenderPassMultiviewCreateInfo",
+    "type VkSubmitInfo",
+    "type VkSubpassBeginInfo",
+    "type VkSubpassDependency",
+    "type VkSubpassDependency2",
+    "type VkSubpassDescription",
+    "type VkSubpassDescription2",
+    "type VkSubpassDescriptionDepthStencilResolve",
+    "type VkSubpassEndInfo",
+    "type VkFramebuffer",
+    "type VkRenderPass",
+    "type VkAccessFlags",
+    "type VkAttachmentDescriptionFlags",
+    "type VkBufferUsageFlags",
+    "type VkFormatFeatureFlags",
+    "type VkFramebufferCreateFlags",
+    "type VkImageCreateFlags",
+    "type VkImageUsageFlags",
+    "type VkPipelineCreateFlags",
+    "type VkPipelineStageFlags",
+    "type VkRenderPassCreateFlags",
+    "type VkSubpassDescriptionFlags",
+    "type VK_API_VERSION",
+    "type VK_MAKE_VERSION",
+    "type VK_VERSION_MAJOR",
+    "type VK_VERSION_MINOR",
+    "type VK_VERSION_PATCH",
+    "command vkCmdBeginRenderPass",
+    "command vkCmdBeginRenderPass2",
+    "command vkCmdEndRenderPass",
+    "command vkCmdEndRenderPass2",
+    "command vkCmdNextSubpass",
+    "command vkCmdNextSubpass2",
+    "command vkCmdPipelineBarrier",
+    "command vkCmdResetEvent",
+    "command vkCmdSetEvent",
+    "command vkCmdWaitEvents",
+    "command vkCmdWriteTimestamp",
+    "command vkCreateFramebuffer",
+    "command vkCreateRenderPass",
+    "command vkCreateRenderPass2",
+    "command vkDestroyFramebuffer",
+    "command vkDestroyRenderPass",
+    "command vkEnumerateDeviceLayerProperties",
+    "command vkGetPhysicalDeviceFeatures",
+    "command vkGetPhysicalDeviceFormatProperties",
+    "command vkGetPhysicalDeviceImageFormatProperties",
+    "command vkGetPhysicalDeviceMemoryProperties",
+    "command vkGetPhysicalDeviceProperties",
+    "command vkGetPhysicalDeviceQueueFamilyProperties",
+    "command vkGetPhysicalDeviceSparseImageFormatProperties",
+    "command vkGetRenderAreaGranularity",
+    "command vkQueueSubmit"
+  ],
+  "profileName": "lithon-core",
+  "selectedExtensions": [
+    {
+      "name": "VK_EXT_acquire_xlib_display",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_color_write_enable",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_conservative_rasterization",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_debug_utils",
+      "reasons": [
+        "profile (names, labels, validation callbacks)"
+      ]
+    },
+    {
+      "name": "VK_EXT_descriptor_buffer",
+      "reasons": [
+        "profile (modern descriptor model)"
+      ]
+    },
+    {
+      "name": "VK_EXT_device_address_binding_report",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_device_fault",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_direct_mode_display",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_dynamic_rendering_unused_attachments",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_extended_dynamic_state3",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_external_memory_dma_buf",
+      "reasons": [
+        "profile (Linux zero-copy interop)"
+      ]
+    },
+    {
+      "name": "VK_EXT_external_memory_host",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_full_screen_exclusive",
+      "reasons": [
+        "profile (win32 fullscreen)"
+      ]
+    },
+    {
+      "name": "VK_EXT_graphics_pipeline_library",
+      "reasons": [
+        "profile (hitch-free pipeline compilation)"
+      ]
+    },
+    {
+      "name": "VK_EXT_hdr_metadata",
+      "reasons": [
+        "profile (HDR output)"
+      ]
+    },
+    {
+      "name": "VK_EXT_headless_surface",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_host_image_copy",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_EXT_image_drm_format_modifier",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_layer_settings",
+      "reasons": [
+        "profile (modern validation config)"
+      ]
+    },
+    {
+      "name": "VK_EXT_memory_budget",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_memory_priority",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_mesh_shader",
+      "reasons": [
+        "profile (primary geometry path)"
+      ]
+    },
+    {
+      "name": "VK_EXT_metal_surface",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_multi_draw",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_opacity_micromap",
+      "reasons": [
+        "profile (RT alpha-tested geometry)"
+      ]
+    },
+    {
+      "name": "VK_EXT_pageable_device_local_memory",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_pipeline_protected_access",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_EXT_pipeline_robustness",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_EXT_robustness2",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_sample_locations",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_shader_image_atomic_int64",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_shader_object",
+      "reasons": [
+        "profile (pipeline-less iteration path)"
+      ]
+    },
+    {
+      "name": "VK_EXT_surface_maintenance1",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_swapchain_colorspace",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_swapchain_maintenance1",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_EXT_vertex_input_dynamic_state",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_acceleration_structure",
+      "reasons": [
+        "profile (ray tracing)"
+      ]
+    },
+    {
+      "name": "VK_KHR_calibrated_timestamps",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_compute_shader_derivatives",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_deferred_host_operations",
+      "reasons": [
+        "profile (RT prerequisite)"
+      ]
+    },
+    {
+      "name": "VK_KHR_display",
+      "reasons": [
+        "profile (kiosk/CI direct-to-display)"
+      ]
+    },
+    {
+      "name": "VK_KHR_dynamic_rendering_local_read",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_KHR_external_fence",
+      "reasons": [
+        "required by VK_KHR_external_fence_win32"
+      ]
+    },
+    {
+      "name": "VK_KHR_external_fence_capabilities",
+      "reasons": [
+        "required by VK_KHR_external_fence"
+      ]
+    },
+    {
+      "name": "VK_KHR_external_fence_fd",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_external_fence_win32",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_external_memory_fd",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_external_memory_win32",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_external_semaphore",
+      "reasons": [
+        "required by VK_KHR_external_semaphore_win32"
+      ]
+    },
+    {
+      "name": "VK_KHR_external_semaphore_capabilities",
+      "reasons": [
+        "required by VK_KHR_external_semaphore"
+      ]
+    },
+    {
+      "name": "VK_KHR_external_semaphore_fd",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_external_semaphore_win32",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_fragment_shader_barycentric",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_fragment_shading_rate",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_get_display_properties2",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_get_surface_capabilities2",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_global_priority",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_KHR_index_type_uint8",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_KHR_line_rasterization",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_KHR_load_store_op_none",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_KHR_maintenance5",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_KHR_maintenance6",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_KHR_maintenance7",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_maintenance8",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_map_memory2",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_KHR_performance_query",
+      "reasons": [
+        "profile (profiling)"
+      ]
+    },
+    {
+      "name": "VK_KHR_pipeline_binary",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_pipeline_executable_properties",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_pipeline_library",
+      "reasons": [
+        "profile",
+        "required by VK_EXT_graphics_pipeline_library"
+      ]
+    },
+    {
+      "name": "VK_KHR_portability_enumeration",
+      "reasons": [
+        "profile (MoltenVK discovery)"
+      ]
+    },
+    {
+      "name": "VK_KHR_portability_subset",
+      "reasons": [
+        "profile (MoltenVK device compat)"
+      ]
+    },
+    {
+      "name": "VK_KHR_present_id",
+      "reasons": [
+        "profile (frame pacing)"
+      ]
+    },
+    {
+      "name": "VK_KHR_present_wait",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_push_descriptor",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_KHR_ray_query",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_ray_tracing_maintenance1",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_ray_tracing_pipeline",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_ray_tracing_position_fetch",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_shader_clock",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_shader_expect_assume",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_KHR_shader_float_controls",
+      "reasons": [
+        "required by VK_KHR_shader_float_controls2"
+      ]
+    },
+    {
+      "name": "VK_KHR_shader_float_controls2",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_KHR_shader_maximal_reconvergence",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_shader_quad_control",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_shader_subgroup_rotate",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_KHR_shader_subgroup_uniform_control_flow",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_surface",
+      "reasons": [
+        "profile (WSI root)"
+      ]
+    },
+    {
+      "name": "VK_KHR_swapchain",
+      "reasons": [
+        "profile (presentation)"
+      ]
+    },
+    {
+      "name": "VK_KHR_unified_image_layouts",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_vertex_attribute_divisor",
+      "reasons": [
+        "promoted to optional core 1.4"
+      ]
+    },
+    {
+      "name": "VK_KHR_wayland_surface",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_win32_surface",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_workgroup_memory_explicit_layout",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_xcb_surface",
+      "reasons": [
+        "profile"
+      ]
+    },
+    {
+      "name": "VK_KHR_xlib_surface",
+      "reasons": [
+        "profile"
+      ]
+    }
+  ],
+  "unsatisfied": [
+    "type VkAttachmentFeedbackLoopInfoEXT (needs VK_EXT_attachment_feedback_loop_layout+(VK_VERSION_1_3,VK_KHR_dynamic_rendering))",
+    "type VkPhysicalDeviceDescriptorBufferDensityMapPropertiesEXT (needs VK_EXT_fragment_density_map)",
+    "type VkPhysicalDeviceFragmentShaderBarycentricPropertiesKHR (needs VK_EXT_provoking_vertex)",
+    "command vkCmdSetColorBlendAdvancedEXT (needs VK_EXT_blend_operation_advanced)",
+    "command vkCmdSetCoverageModulationModeNV (needs VK_NV_framebuffer_mixed_samples)",
+    "command vkCmdSetCoverageModulationTableEnableNV (needs VK_NV_framebuffer_mixed_samples)",
+    "command vkCmdSetCoverageModulationTableNV (needs VK_NV_framebuffer_mixed_samples)",
+    "command vkCmdSetCoverageReductionModeNV (needs VK_NV_coverage_reduction_mode)",
+    "command vkCmdSetCoverageToColorEnableNV (needs VK_NV_fragment_coverage_to_color)",
+    "command vkCmdSetCoverageToColorLocationNV (needs VK_NV_fragment_coverage_to_color)",
+    "command vkCmdSetDepthClampRangeEXT (needs VK_EXT_depth_clamp_control)",
+    "command vkCmdSetDepthClipEnableEXT (needs VK_EXT_depth_clip_enable)",
+    "command vkCmdSetDepthClipNegativeOneToOneEXT (needs VK_EXT_depth_clip_control)",
+    "command vkCmdSetProvokingVertexModeEXT (needs VK_EXT_provoking_vertex)",
+    "command vkCmdSetRasterizationStreamEXT (needs VK_EXT_transform_feedback)",
+    "command vkCmdSetRepresentativeFragmentTestEnableNV (needs VK_NV_representative_fragment_test)",
+    "command vkCmdSetShadingRateImageEnableNV (needs VK_NV_shading_rate_image)",
+    "command vkCmdSetViewportSwizzleNV (needs VK_NV_viewport_swizzle)",
+    "command vkCmdSetViewportWScalingEnableNV (needs VK_NV_clip_space_w_scaling)",
+    "enum value VK_BUFFER_USAGE_2_CONDITIONAL_RENDERING_BIT_EXT (needs VK_EXT_conditional_rendering)",
+    "enum value VK_BUFFER_USAGE_2_TRANSFORM_FEEDBACK_BUFFER_BIT_EXT (needs VK_EXT_transform_feedback)",
+    "enum value VK_BUFFER_USAGE_2_TRANSFORM_FEEDBACK_COUNTER_BUFFER_BIT_EXT (needs VK_EXT_transform_feedback)",
+    "enum value VK_BUFFER_USAGE_2_VIDEO_DECODE_SRC_BIT_KHR (needs VK_KHR_video_decode_queue)",
+    "enum value VK_BUFFER_USAGE_2_VIDEO_DECODE_DST_BIT_KHR (needs VK_KHR_video_decode_queue)",
+    "enum value VK_BUFFER_USAGE_2_VIDEO_ENCODE_DST_BIT_KHR (needs VK_KHR_video_encode_queue)",
+    "enum value VK_BUFFER_USAGE_2_VIDEO_ENCODE_SRC_BIT_KHR (needs VK_KHR_video_encode_queue)",
+    "enum value VK_DEBUG_REPORT_OBJECT_TYPE_ACCELERATION_STRUCTURE_KHR_EXT (needs VK_EXT_debug_report)",
+    "enum value VK_DYNAMIC_STATE_RASTERIZATION_STREAM_EXT (needs VK_EXT_transform_feedback)",
+    "enum value VK_DYNAMIC_STATE_DEPTH_CLIP_ENABLE_EXT (needs VK_EXT_depth_clip_enable)",
+    "enum value VK_DYNAMIC_STATE_COLOR_BLEND_ADVANCED_EXT (needs VK_EXT_blend_operation_advanced)",
+    "enum value VK_DYNAMIC_STATE_PROVOKING_VERTEX_MODE_EXT (needs VK_EXT_provoking_vertex)",
+    "enum value VK_DYNAMIC_STATE_DEPTH_CLIP_NEGATIVE_ONE_TO_ONE_EXT (needs VK_EXT_depth_clip_control)",
+    "enum value VK_DYNAMIC_STATE_VIEWPORT_W_SCALING_ENABLE_NV (needs VK_NV_clip_space_w_scaling)",
+    "enum value VK_DYNAMIC_STATE_VIEWPORT_SWIZZLE_NV (needs VK_NV_viewport_swizzle)",
+    "enum value VK_DYNAMIC_STATE_COVERAGE_TO_COLOR_ENABLE_NV (needs VK_NV_fragment_coverage_to_color)",
+    "enum value VK_DYNAMIC_STATE_COVERAGE_TO_COLOR_LOCATION_NV (needs VK_NV_fragment_coverage_to_color)",
+    "enum value VK_DYNAMIC_STATE_COVERAGE_MODULATION_MODE_NV (needs VK_NV_framebuffer_mixed_samples)",
+    "enum value VK_DYNAMIC_STATE_COVERAGE_MODULATION_TABLE_ENABLE_NV (needs VK_NV_framebuffer_mixed_samples)",
+    "enum value VK_DYNAMIC_STATE_COVERAGE_MODULATION_TABLE_NV (needs VK_NV_framebuffer_mixed_samples)",
+    "enum value VK_DYNAMIC_STATE_SHADING_RATE_IMAGE_ENABLE_NV (needs VK_NV_shading_rate_image)",
+    "enum value VK_DYNAMIC_STATE_REPRESENTATIVE_FRAGMENT_TEST_ENABLE_NV (needs VK_NV_representative_fragment_test)",
+    "enum value VK_DYNAMIC_STATE_COVERAGE_REDUCTION_MODE_NV (needs VK_NV_coverage_reduction_mode)",
+    "enum value VK_INDIRECT_COMMANDS_TOKEN_TYPE_DRAW_MESH_TASKS_EXT (needs VK_EXT_device_generated_commands)",
+    "enum value VK_INDIRECT_COMMANDS_TOKEN_TYPE_DRAW_MESH_TASKS_COUNT_EXT (needs VK_EXT_device_generated_commands)",
+    "enum value VK_INDIRECT_COMMANDS_TOKEN_TYPE_TRACE_RAYS2_EXT (needs VK_EXT_device_generated_commands)",
+    "enum value VK_INDIRECT_COMMANDS_TOKEN_TYPE_DRAW_MESH_TASKS_NV (needs VK_NV_device_generated_commands)",
+    "enum value VK_PIPELINE_CREATE_2_DEFER_COMPILE_BIT_NV (needs VK_NV_ray_tracing)",
+    "enum value VK_PIPELINE_CREATE_2_INDIRECT_BINDABLE_BIT_NV (needs VK_NV_device_generated_commands)",
+    "enum value VK_PIPELINE_CREATE_2_RAY_TRACING_ALLOW_MOTION_BIT_NV (needs VK_NV_ray_tracing_motion_blur)",
+    "enum value VK_PIPELINE_CREATE_2_RENDERING_FRAGMENT_DENSITY_MAP_ATTACHMENT_BIT_EXT (needs VK_KHR_dynamic_rendering,VK_VERSION_1_3+VK_EXT_fragment_density_map)",
+    "enum value VK_PIPELINE_CREATE_2_COLOR_ATTACHMENT_FEEDBACK_LOOP_BIT_EXT (needs VK_EXT_attachment_feedback_loop_layout)",
+    "enum value VK_PIPELINE_CREATE_2_DEPTH_STENCIL_ATTACHMENT_FEEDBACK_LOOP_BIT_EXT (needs VK_EXT_attachment_feedback_loop_layout)",
+    "enum value VK_PIPELINE_CREATE_2_RAY_TRACING_DISPLACEMENT_MICROMAP_BIT_NV (needs VK_NV_displacement_micromap)",
+    "enum value VK_PIPELINE_CREATE_2_DISALLOW_OPACITY_MICROMAP_BIT_ARM (needs VK_ARM_pipeline_opacity_micromap)",
+    "enum value VK_PIPELINE_CREATE_2_INSTRUMENT_SHADERS_BIT_ARM (needs VK_ARM_shader_instrumentation)",
+    "enum value VK_SHADER_CREATE_FRAGMENT_DENSITY_MAP_ATTACHMENT_BIT_EXT (needs VK_EXT_fragment_density_map)",
+    "enum value VK_SHADER_CREATE_INSTRUMENT_SHADER_BIT_ARM (needs VK_ARM_shader_instrumentation)",
+    "enum value VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_SHADER_BARYCENTRIC_PROPERTIES_KHR (needs VK_EXT_provoking_vertex)",
+    "enum value VK_STRUCTURE_TYPE_ATTACHMENT_FEEDBACK_LOOP_INFO_EXT (needs VK_EXT_attachment_feedback_loop_layout+(VK_VERSION_1_3,VK_KHR_dynamic_rendering))"
+  ],
+  "warnings": [
+    "VK_EXT_descriptor_buffer is deprecated by VK_EXT_descriptor_heap but selected anyway",
+    "legacy item retained via references: VkAttachmentReference2",
+    "legacy item retained via references: VkBufferUsageFlags",
+    "legacy item retained via references: VkFramebuffer",
+    "legacy item retained via references: VkRenderPass",
+    "legacy item retained via references: VkPipelineCreateFlags",
+    "legacy item retained via references: VkSubmitInfo",
+    "legacy item retained via references: VkPipelineStageFlags",
+    "legacy item retained via references: VkRenderPassBeginInfo",
+    "legacy item retained via references: VkFormatFeatureFlags",
+    "legacy item retained via references: VkSubpassDescription2",
+    "legacy item retained via references: VkSubpassDescriptionFlags",
+    "legacy item retained via references: VkImageUsageFlags",
+    "legacy item retained via references: VkImageCreateFlags",
+    "legacy item retained via references: VkSubpassDependency2",
+    "legacy item retained via references: VkAccessFlags",
+    "legacy item retained via references: VkImageMemoryBarrier"
+  ]
+}

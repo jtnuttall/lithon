@@ -1,0 +1,121 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Time
+ctypes:
+  - omit:
+      headers: SDL3/SDL_time.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_time.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_time.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_time.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_time.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_time.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_time.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_time.h
+    cname: struct SDL_DateTime
+    hsname: SDL_DateTime
+  - headers: SDL3/SDL_time.h
+    cname: SDL_DateTime
+    hsname: SDL_DateTime
+  - headers: SDL3/SDL_time.h
+    cname: enum SDL_DateFormat
+    hsname: SDL_DateFormat
+    enum: open
+  - headers: SDL3/SDL_time.h
+    cname: SDL_DateFormat
+    hsname: SDL_DateFormat
+  - headers: SDL3/SDL_time.h
+    cname: enum SDL_TimeFormat
+    hsname: SDL_TimeFormat
+    enum: open
+  - headers: SDL3/SDL_time.h
+    cname: SDL_TimeFormat
+    hsname: SDL_TimeFormat
+hstypes:
+  - hsname: SDL_DateFormat
+    representation:
+      newtype:
+        constructor: SDL_DateFormat
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_DateTime
+    representation:
+      record:
+        constructor: SDL_DateTime
+        fields:
+          - year
+          - month
+          - day
+          - hour
+          - minute
+          - second
+          - nanosecond
+          - day_of_week
+          - utc_offset
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TimeFormat
+    representation:
+      newtype:
+        constructor: SDL_TimeFormat
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

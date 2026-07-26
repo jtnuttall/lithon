@@ -1,0 +1,137 @@
+{
+  "author": "KHR",
+  "comment": null,
+  "depends": {
+    "contents": [
+      "AndF",
+      {
+        "contents": [
+          "OrF",
+          {
+            "contents": [
+              "AndF",
+              {
+                "contents": [
+                  "AndF",
+                  {
+                    "contents": {
+                      "contents": {
+                        "major": 1,
+                        "minor": 1
+                      },
+                      "tag": "AvailVersion"
+                    },
+                    "tag": "AtomF"
+                  },
+                  {
+                    "contents": {
+                      "contents": "VK_EXT_descriptor_indexing",
+                      "tag": "AvailExtension"
+                    },
+                    "tag": "AtomF"
+                  }
+                ],
+                "tag": "BinOpF"
+              },
+              {
+                "contents": {
+                  "contents": "VK_KHR_buffer_device_address",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              }
+            ],
+            "tag": "BinOpF"
+          },
+          {
+            "contents": {
+              "contents": {
+                "major": 1,
+                "minor": 2
+              },
+              "tag": "AvailVersion"
+            },
+            "tag": "AtomF"
+          }
+        ],
+        "tag": "BinOpF"
+      },
+      {
+        "contents": {
+          "contents": "VK_KHR_deferred_host_operations",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      }
+    ],
+    "tag": "BinOpF"
+  },
+  "deviceFeatures": [
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "accelerationStructure",
+          "struct": "VkPhysicalDeviceAccelerationStructureFeaturesKHR"
+        }
+      ],
+      "pos": "24124:17",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "bufferDeviceAddress",
+          "struct": "VkPhysicalDeviceBufferDeviceAddressFeatures"
+        }
+      ],
+      "pos": "24125:17",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "descriptorBindingAccelerationStructureUpdateAfterBind",
+          "struct": "VkPhysicalDeviceAccelerationStructureFeaturesKHR"
+        }
+      ],
+      "pos": "24126:17",
+      "removedBy": null
+    },
+    {
+      "condition": {
+        "contents": {
+          "contents": {
+            "major": 1,
+            "minor": 2
+          },
+          "tag": "AvailVersion"
+        },
+        "tag": "AtomF"
+      },
+      "paths": [
+        {
+          "member": "descriptorIndexing",
+          "struct": "VkPhysicalDeviceVulkan12Features"
+        }
+      ],
+      "pos": "24135:17",
+      "removedBy": null
+    }
+  ],
+  "extensionType": "ExtDevice",
+  "name": "VK_KHR_acceleration_structure",
+  "nameString": "VK_KHR_acceleration_structure",
+  "number": 151,
+  "platformGuard": null,
+  "pos": "24039:9",
+  "provisional": false,
+  "ratified": true,
+  "specVersion": 13,
+  "specialUse": [],
+  "status": {
+    "tag": "StatusCurrent"
+  }
+}

@@ -1,0 +1,389 @@
+{-# LANGUAGE PatternSynonyms #-}
+
+{-| Toy overview prose.
+
+    == FFI conventions
+
+    Unsuffixed aliases are __unsafe__ foreign imports; aliases suffixed @Safe@ are safe. Functions whose callbacks fire during the call export only the Safe alias (the genuine unsafe import stays reachable under @SDL3.Sys.Bindgen.Toy.Unsafe@); functions curated unsafe-only export only the unsuffixed one. Each alias\'s documentation records its flavor and rationale.
+
+    Full conventions: "SDL3.Sys".
+
+-}
+
+module SDL3.Sys.Toy
+    ( module SDL3.Sys.Bindgen.Toy
+      -- * Typed constants
+    , pattern SDL3.Sys.Toy.SDL_TOY_A
+    , pattern SDL3.Sys.Toy.SDL_TOY_B
+    , pattern SDL3.Sys.Toy.SDL_TOY_AB
+    , pattern SDL3.Sys.Toy.SDL_TOY_LIMIT
+      -- * Function aliases
+    , SDL3.Sys.Toy.createToyThing
+    , SDL3.Sys.Toy.toyIsOk
+    , SDL3.Sys.Toy.toyIsOkSafe
+    , SDL3.Sys.Toy.toyCount
+    , SDL3.Sys.Toy.toyCountSafe
+    , SDL3.Sys.Toy.getToyId
+    , SDL3.Sys.Toy.getToyIdSafe
+    , SDL3.Sys.Toy.toyEnumerateSafe
+    , SDL3.Sys.Toy.setToyCallback
+    , SDL3.Sys.Toy.setToyCallbackSafe
+    , SDL3.Sys.Toy.getToyCallback
+    , SDL3.Sys.Toy.getToyCallbackSafe
+    )
+  where
+
+import qualified Data.Coerce as Coerce
+import qualified HsBindgen.Runtime.CBool as CBool
+import qualified HsBindgen.Runtime.LibC
+import qualified HsBindgen.Runtime.Support as BG
+import qualified SDL3.Sys.Bindgen.Toy.Safe as Safe
+import qualified SDL3.Sys.Bindgen.Toy.Unsafe as Unsafe
+import SDL3.Sys.Bindgen.Toy
+
+{-| Create a toy thing.
+
+    The thing writes into read\/write locks in the \/unlocked\/ state. Pass @'sDL_TOY_A'@ to enable the A capability.
+
+    @
+    SDL_ToyThing *t = SDL_CreateToyThing(4);
+    printf(\"%d\\n\", t->size);
+    @
+
+    [Returns]: a new thing.
+
+    [Thread safety]: It is safe to call this function from any thread.
+
+    @since 3.2.0
+
+    [See also]: 'toyEnumerateSafe', 'toyIsOk'
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Unsafe__ foreign import of @SDL_CreateToyThing@.
+                  The safe import is not exported
+                  : toy pin of the opt-out class.
+
+    [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+               Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+
+    [C declaration]: @SDL_CreateToyThing@, defined at @SDL_toy.h 60:15@
+-}
+createToyThing ::
+     BG.Int32
+     {- ^
+
+          [@size@]: how big.
+
+     -}
+  -> IO (BG.Ptr SDL_ToyThing)
+createToyThing =
+  \x00 -> Unsafe.sDL_CreateToyThing (Coerce.coerce x00)
+
+{-| Check a toy against a pair of thresholds.
+
+    [Returns]: true if the toy is ok.
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Unsafe__ foreign import of @SDL_ToyIsOk@.
+                  The safe flavor is 'toyIsOkSafe'
+                  .
+
+    [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+               Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+
+    [C declaration]: @SDL_ToyIsOk@, defined at @SDL_toy.h 69:6@
+-}
+toyIsOk ::
+     Float
+     {- ^
+
+          [@x@]: low water mark.
+
+     -}
+  -> Double
+     {- ^
+
+          [@y@]: high water mark.
+
+     -}
+  -> IO Bool
+toyIsOk =
+  \x00 ->
+    \x11 ->
+      fmap CBool.toBool (Unsafe.sDL_ToyIsOk (Coerce.coerce x00) (Coerce.coerce x11))
+
+{-| Check a toy against a pair of thresholds.
+
+    [Returns]: true if the toy is ok.
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Safe__ foreign import of @SDL_ToyIsOk@.
+                  The unsafe flavor is 'toyIsOk'
+                  .
+
+    [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+               Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+
+    [C declaration]: @SDL_ToyIsOk@, defined at @SDL_toy.h 69:6@
+-}
+toyIsOkSafe ::
+     Float
+     {- ^
+
+          [@x@]: low water mark.
+
+     -}
+  -> Double
+     {- ^
+
+          [@y@]: high water mark.
+
+     -}
+  -> IO Bool
+toyIsOkSafe =
+  \x00 ->
+    \x11 ->
+      fmap CBool.toBool (Safe.sDL_ToyIsOk (Coerce.coerce x00) (Coerce.coerce x11))
+
+{-| Count the toys.
+
+    [Returns]: how many matched.
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Unsafe__ foreign import of @SDL_ToyCount@.
+                  The safe flavor is 'toyCountSafe'
+                  .
+
+    [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+               Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+
+    [C declaration]: @SDL_ToyCount@, defined at @SDL_toy.h 89:5@
+-}
+toyCount ::
+     BG.Word32
+     {- ^
+
+          [@n@]: how many to consider.
+
+     -}
+  -> BG.Word64
+     {- ^
+
+          [@len@]: buffer length.
+
+     -}
+  -> IO BG.Int32
+toyCount =
+  \x00 ->
+    \x11 ->
+      fmap Coerce.coerce (Unsafe.sDL_ToyCount (Coerce.coerce x00) (Coerce.coerce x11))
+
+{-| Count the toys.
+
+    [Returns]: how many matched.
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Safe__ foreign import of @SDL_ToyCount@.
+                  The unsafe flavor is 'toyCount'
+                  .
+
+    [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+               Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+
+    [C declaration]: @SDL_ToyCount@, defined at @SDL_toy.h 89:5@
+-}
+toyCountSafe ::
+     BG.Word32
+     {- ^
+
+          [@n@]: how many to consider.
+
+     -}
+  -> BG.Word64
+     {- ^
+
+          [@len@]: buffer length.
+
+     -}
+  -> IO BG.Int32
+toyCountSafe =
+  \x00 ->
+    \x11 ->
+      fmap Coerce.coerce (Safe.sDL_ToyCount (Coerce.coerce x00) (Coerce.coerce x11))
+
+{-| Identify a toy.
+
+    [Returns]: the toy\'s id.
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Unsafe__ foreign import of @SDL_GetToyId@.
+                  The safe flavor is 'getToyIdSafe'
+                  .
+
+    [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+               Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+
+    [C declaration]: @SDL_GetToyId@, defined at @SDL_toy.h 97:11@
+-}
+getToyId ::
+     BG.Int16
+     {- ^
+
+          [@slot@]: which slot.
+
+     -}
+  -> IO SDL_ToyId
+getToyId =
+  \x00 -> Unsafe.sDL_GetToyId (Coerce.coerce x00)
+
+{-| Identify a toy.
+
+    [Returns]: the toy\'s id.
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Safe__ foreign import of @SDL_GetToyId@.
+                  The unsafe flavor is 'getToyId'
+                  .
+
+    [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+               Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+
+    [C declaration]: @SDL_GetToyId@, defined at @SDL_toy.h 97:11@
+-}
+getToyIdSafe ::
+     BG.Int16
+     {- ^
+
+          [@slot@]: which slot.
+
+     -}
+  -> IO SDL_ToyId
+getToyIdSafe =
+  \x00 -> Safe.sDL_GetToyId (Coerce.coerce x00)
+
+{-| Enumerate the toys, invoking the callback for each one.
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Safe__ foreign import of @SDL_ToyEnumerate@.
+                  The unsafe import is not exported
+                  : invokes the callback synchronously.
+                  If your callback is a non-Haskell function pointer that never
+re-enters the Haskell runtime, the unsafe import remains available as @SDL3.Sys.Bindgen.Toy.Unsafe.sDL_ToyEnumerate@.
+
+    [C declaration]: @SDL_ToyEnumerate@, defined at @SDL_toy.h 105:6@
+-}
+toyEnumerateSafe ::
+     SDL_ToyCallback
+     {- ^
+
+          [@callback@]: the per-toy callback.
+
+     -}
+  -> BG.Ptr BG.Void
+     {- ^
+
+          [@userdata@]: app pointer.
+
+     -}
+  -> IO ()
+toyEnumerateSafe = Safe.sDL_ToyEnumerate
+
+{-| Register a callback for later toys.
+
+    [See also]: 'getToyCallback'
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Unsafe__ foreign import of @SDL_SetToyCallback@.
+                  The safe flavor is 'setToyCallbackSafe'
+                  : registration only.
+
+    [C declaration]: @SDL_SetToyCallback@, defined at @SDL_toy.h 112:6@
+-}
+setToyCallback ::
+     SDL_ToyCallback
+     -- ^ [C declaration]: @callback@
+  -> BG.Ptr BG.Void
+     -- ^ [C declaration]: @userdata@
+  -> IO ()
+setToyCallback = Unsafe.sDL_SetToyCallback
+
+{-| Register a callback for later toys.
+
+    [See also]: 'getToyCallback'
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Safe__ foreign import of @SDL_SetToyCallback@.
+                  The unsafe flavor is 'setToyCallback'
+                  : registration only.
+
+    [C declaration]: @SDL_SetToyCallback@, defined at @SDL_toy.h 112:6@
+-}
+setToyCallbackSafe ::
+     SDL_ToyCallback
+     -- ^ [C declaration]: @callback@
+  -> BG.Ptr BG.Void
+     -- ^ [C declaration]: @userdata@
+  -> IO ()
+setToyCallbackSafe = Safe.sDL_SetToyCallback
+
+{-| Fetch the registered callback through an out-param.
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Unsafe__ foreign import of @SDL_GetToyCallback@.
+                  The safe flavor is 'getToyCallbackSafe'
+                  .
+
+    [C declaration]: @SDL_GetToyCallback@, defined at @SDL_toy.h 117:6@
+-}
+getToyCallback ::
+     BG.Ptr SDL_ToyCallback
+     -- ^ [C declaration]: @callback@
+  -> IO ()
+getToyCallback = Unsafe.sDL_GetToyCallback
+
+{-| Fetch the registered callback through an out-param.
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Safe__ foreign import of @SDL_GetToyCallback@.
+                  The unsafe flavor is 'getToyCallback'
+                  .
+
+    [C declaration]: @SDL_GetToyCallback@, defined at @SDL_toy.h 117:6@
+-}
+getToyCallbackSafe ::
+     BG.Ptr SDL_ToyCallback
+     -- ^ [C declaration]: @callback@
+  -> IO ()
+getToyCallbackSafe = Safe.sDL_GetToyCallback
+
+{-| Typed constant for macro @SDL_TOY_A@. Combine with @.|.@ from "Data.Bits".
+-}
+pattern SDL_TOY_A :: SDL_ToyFlags
+pattern SDL_TOY_A = SDL_ToyFlags 0x00000001
+
+{-| Typed constant for macro @SDL_TOY_B@. Combine with @.|.@ from "Data.Bits".
+-}
+pattern SDL_TOY_B :: SDL_ToyFlags
+pattern SDL_TOY_B = SDL_ToyFlags 0x00000002
+
+{-| Typed constant for macro @SDL_TOY_AB@. Combine with @.|.@ from "Data.Bits".
+-}
+pattern SDL_TOY_AB :: SDL_ToyFlags
+pattern SDL_TOY_AB = SDL_ToyFlags 0x00000003
+
+{-| Typed constant for macro @SDL_TOY_LIMIT@.
+-}
+pattern SDL_TOY_LIMIT :: SDL_ToyMode
+pattern SDL_TOY_LIMIT = SDL_ToyMode 7

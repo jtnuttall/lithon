@@ -1,0 +1,230 @@
+{
+  "aliases": [
+    {
+      "availability": {
+        "contents": {
+          "contents": "VK_NV_ray_tracing",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "deprecated": null,
+      "name": "VkAccelerationStructureInstanceNV",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "24489:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_NV_ray_tracing",
+            "number": 166,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "pos": "6701:9"
+    }
+  ],
+  "allowDuplicate": false,
+  "availability": {
+    "contents": {
+      "contents": "VK_KHR_acceleration_structure",
+      "tag": "AvailExtension"
+    },
+    "tag": "AtomF"
+  },
+  "comment": null,
+  "deprecation": null,
+  "extendedBy": [],
+  "extends": [],
+  "kind": "SKStruct",
+  "members": [
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": null,
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "transform",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "6694:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefStruct",
+        "name": "VkTransformMatrixKHR",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": 24,
+      "comment": null,
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "instanceCustomIndex",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "6695:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefExternal",
+        "name": "uint32_t",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": 8,
+      "comment": null,
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "mask",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "6696:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefExternal",
+        "name": "uint32_t",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": 24,
+      "comment": null,
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "instanceShaderBindingTableRecordOffset",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "6697:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefExternal",
+        "name": "uint32_t",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": 8,
+      "comment": null,
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": [
+        true
+      ],
+      "len": null,
+      "limitType": null,
+      "name": "flags",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "6698:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefBitmask",
+        "name": "VkGeometryInstanceFlagsKHR",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": null,
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "accelerationStructureReference",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "6699:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefExternal",
+        "name": "uint64_t",
+        "spelledAs": null
+      },
+      "values": []
+    }
+  ],
+  "name": "VkAccelerationStructureInstanceKHR",
+  "origins": [
+    {
+      "blockComment": null,
+      "blockIndex": 0,
+      "condition": null,
+      "pos": "24040:13",
+      "profile": null,
+      "source": {
+        "extension": "VK_KHR_acceleration_structure",
+        "number": 151,
+        "tag": "FromExtension"
+      },
+      "tier": null
+    }
+  ],
+  "platformGuards": [],
+  "pos": "6692:9",
+  "returnedOnly": false,
+  "sType": null
+}

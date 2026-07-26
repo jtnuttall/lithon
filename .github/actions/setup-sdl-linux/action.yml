@@ -1,0 +1,38 @@
+name: "Setup SDL (Linux)"
+description: "Installs dependencies, caches, and builds SDL3 from source"
+inputs:
+  sdl-version:
+    description: "The SDL version to build"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Install build dependencies
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+          libx11-dev libxext-dev libxrandr-dev libxcursor-dev \
+          libxfixes-dev libxi-dev libxss-dev libxtst-dev \
+          libxkbcommon-dev libwayland-dev libdecor-0-dev \
+          libegl1-mesa-dev libgl1-mesa-dev libgles2-mesa-dev \
+          libdrm-dev libgbm-dev libdbus-1-dev libudev-dev \
+          libvulkan-dev
+
+    - name: Cache SDL
+      id: sdl-cache
+      uses: actions/cache@v4
+      with:
+        path: ~/sdl3
+        key: sdl3-${{ inputs.sdl-version }}-${{ runner.os }}
+
+    - name: Build SDL from source
+      if: steps.sdl-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        git clone --depth 1 --branch "release-${{ inputs.sdl-version }}" \
+          https://github.com/libsdl-org/SDL sdl-src
+        cmake -S sdl-src -B sdl-build \
+          -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$HOME/sdl3"
+        cmake --build sdl-build -j"$(nproc)"
+        cmake --install sdl-build

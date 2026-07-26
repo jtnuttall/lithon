@@ -1,0 +1,1231 @@
+{
+  "api": [
+    "vulkansc"
+  ],
+  "apiType": "VisPublic",
+  "changes": [
+    {
+      "contents": {
+        "api": "all",
+        "comment": null,
+        "depends": null,
+        "items": [
+          {
+            "comment": null,
+            "name": "VKSC_API_VARIANT",
+            "pos": "21486:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VKSC_API_VERSION_1_0",
+            "pos": "21487:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceVulkanSC10Features",
+            "pos": "21488:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceVulkanSC10Properties",
+            "pos": "21489:13",
+            "tag": "ReqType"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 299,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_SC_1_0_FEATURES",
+              "pos": "21490:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 299,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_SC_1_0_PROPERTIES",
+              "pos": "21491:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          }
+        ],
+        "pos": "21485:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "static memory functionality",
+        "depends": null,
+        "items": [
+          {
+            "comment": null,
+            "name": "VkDeviceObjectReservationCreateInfo",
+            "pos": "21494:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkCommandPoolMemoryReservationCreateInfo",
+            "pos": "21495:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkCommandPoolMemoryConsumption",
+            "pos": "21496:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPipelinePoolSize",
+            "pos": "21497:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkGetCommandPoolMemoryConsumption",
+            "pos": "21498:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 299,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_DEVICE_OBJECT_RESERVATION_CREATE_INFO",
+              "pos": "21499:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 2,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 299,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_COMMAND_POOL_MEMORY_RESERVATION_CREATE_INFO",
+              "pos": "21500:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 3,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 299,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_COMMAND_POOL_MEMORY_CONSUMPTION",
+              "pos": "21501:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 4,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 299,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PIPELINE_POOL_SIZE",
+              "pos": "21502:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 5,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          }
+        ],
+        "pos": "21493:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "fault handling functionality",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 299,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_FAULT_DATA",
+              "pos": "21505:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 7,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 299,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_FAULT_CALLBACK_INFO",
+              "pos": "21506:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 8,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkFaultData",
+            "pos": "21507:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkFaultCallbackInfo",
+            "pos": "21508:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkFaultLevel",
+            "pos": "21509:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkFaultType",
+            "pos": "21510:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkFaultQueryBehavior",
+            "pos": "21511:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "PFN_vkFaultCallbackFunction",
+            "pos": "21512:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkGetFaultData",
+            "pos": "21513:13",
+            "tag": "ReqCommand"
+          }
+        ],
+        "pos": "21504:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "pipeline offline create info",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 299,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PIPELINE_OFFLINE_CREATE_INFO",
+              "pos": "21516:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 10,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkPipelineOfflineCreateInfo",
+            "pos": "21517:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPipelineMatchControl",
+            "pos": "21518:13",
+            "tag": "ReqType"
+          }
+        ],
+        "pos": "21515:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "pipeline cache functionality",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 299,
+              "extends": "VkResult",
+              "name": "VK_ERROR_INVALID_PIPELINE_CACHE_DATA",
+              "pos": "21521:13",
+              "protect": null,
+              "spec": {
+                "negative": true,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 299,
+              "extends": "VkResult",
+              "name": "VK_ERROR_NO_PIPELINE_MATCH",
+              "pos": "21522:13",
+              "protect": null,
+              "spec": {
+                "negative": true,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkPipelineCacheCreateFlagBits",
+              "name": "VK_PIPELINE_CACHE_CREATE_READ_ONLY_BIT",
+              "pos": "21523:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  1,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkPipelineCacheCreateFlagBits",
+              "name": "VK_PIPELINE_CACHE_CREATE_USE_APPLICATION_STORAGE_BIT",
+              "pos": "21524:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  2,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          }
+        ],
+        "pos": "21520:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "seu safe memory functionality",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkMemoryHeapFlagBits",
+              "name": "VK_MEMORY_HEAP_SEU_SAFE_BIT",
+              "pos": "21527:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  2,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          }
+        ],
+        "pos": "21526:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "pipeline cache header - These types are part of the API, though not all directly used in API commands or data structures",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 299,
+              "extends": "VkPipelineCacheHeaderVersion",
+              "name": "VK_PIPELINE_CACHE_HEADER_VERSION_SAFETY_CRITICAL_ONE",
+              "pos": "21530:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkPipelineCacheValidationVersion",
+            "pos": "21531:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPipelineCacheStageValidationIndexEntry",
+            "pos": "21532:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPipelineCacheSafetyCriticalIndexEntry",
+            "pos": "21533:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPipelineCacheHeaderVersionSafetyCriticalOne",
+            "pos": "21534:13",
+            "tag": "ReqType"
+          }
+        ],
+        "pos": "21529:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": null,
+        "depends": {
+          "parsed": {
+            "contents": {
+              "contents": "VK_VERSION_1_2",
+              "tag": "DependsName"
+            },
+            "tag": "AtomF"
+          },
+          "raw": "VK_VERSION_1_2"
+        },
+        "items": [
+          {
+            "comment": null,
+            "names": [
+              "vulkanMemoryModel"
+            ],
+            "pos": "21537:13",
+            "struct": "VkPhysicalDeviceVulkanMemoryModelFeatures",
+            "tag": "ReqFeature"
+          },
+          {
+            "comment": null,
+            "names": [
+              "vulkanMemoryModel"
+            ],
+            "pos": "21538:13",
+            "struct": "VkPhysicalDeviceVulkan12Features",
+            "tag": "ReqFeature"
+          }
+        ],
+        "pos": "21536:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "SC 1.0 removes some features from Vulkan 1.0/1.1/1.2",
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO",
+              "pos": "21541:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": "leave this present for compatibility:\n                enum name=\"VK_OBJECT_TYPE_SHADER_MODULE\"\n            ",
+            "tag": "ReqComment"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_PIPELINE_CREATE_ALLOW_DERIVATIVES_BIT",
+              "pos": "21545:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_PIPELINE_CREATE_DERIVATIVE_BIT",
+              "pos": "21546:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT",
+              "pos": "21547:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": "Remove Vulkan and deprecated macros",
+            "tag": "ReqComment"
+          },
+          {
+            "comment": null,
+            "name": "VK_API_VERSION",
+            "pos": "21549:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VK_MAKE_VERSION",
+            "pos": "21550:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VK_VERSION_MAJOR",
+            "pos": "21551:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VK_VERSION_MINOR",
+            "pos": "21552:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VK_VERSION_PATCH",
+            "pos": "21553:13",
+            "tag": "ReqType"
+          },
+          {
+            "contents": "leave this present for compatibility:\n                type name=\"VkShaderModule\"\n            ",
+            "tag": "ReqComment"
+          },
+          {
+            "comment": null,
+            "name": "VkShaderModuleCreateFlags",
+            "pos": "21557:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkShaderModuleCreateFlagBits",
+            "pos": "21558:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkShaderModuleCreateInfo",
+            "pos": "21559:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkCommandPoolTrimFlags",
+            "pos": "21560:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkCreateShaderModule",
+            "pos": "21561:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkDestroyShaderModule",
+            "pos": "21562:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkMergePipelineCaches",
+            "pos": "21563:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkGetPipelineCacheData",
+            "pos": "21564:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkTrimCommandPool",
+            "pos": "21565:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkDestroyCommandPool",
+            "pos": "21566:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkDestroyDescriptorPool",
+            "pos": "21567:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkDestroyQueryPool",
+            "pos": "21568:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkDestroySwapchainKHR",
+            "pos": "21569:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkFreeMemory",
+            "pos": "21570:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "contents": "Descriptor update templates are unsupported",
+            "tag": "ReqComment"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_STRUCTURE_TYPE_DESCRIPTOR_UPDATE_TEMPLATE_CREATE_INFO",
+              "pos": "21572:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_OBJECT_TYPE_DESCRIPTOR_UPDATE_TEMPLATE",
+              "pos": "21573:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "vkCreateDescriptorUpdateTemplate",
+            "pos": "21574:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkDestroyDescriptorUpdateTemplate",
+            "pos": "21575:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkUpdateDescriptorSetWithTemplate",
+            "pos": "21576:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "VkDescriptorUpdateTemplate",
+            "pos": "21577:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkDescriptorUpdateTemplateCreateFlags",
+            "pos": "21578:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkDescriptorUpdateTemplateType",
+            "pos": "21579:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkDescriptorUpdateTemplateEntry",
+            "pos": "21580:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkDescriptorUpdateTemplateCreateInfo",
+            "pos": "21581:13",
+            "tag": "ReqType"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_DESCRIPTOR_SET",
+              "pos": "21582:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_STRUCTURE_TYPE_PUSH_DESCRIPTOR_SET_WITH_TEMPLATE_INFO",
+              "pos": "21583:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkPushDescriptorSetWithTemplateInfo",
+            "pos": "21584:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkCmdPushDescriptorSetWithTemplate",
+            "pos": "21585:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkCmdPushDescriptorSetWithTemplate2",
+            "pos": "21586:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "contents": "Sparse resources are unsupported",
+            "tag": "ReqComment"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_QUEUE_SPARSE_BINDING_BIT",
+              "pos": "21588:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": "needed for VkPhysicalDeviceProperties\n                name=\"VkPhysicalDeviceSparseProperties\"\n            ",
+            "tag": "ReqComment"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseImageFormatProperties",
+            "pos": "21592:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseImageFormatFlagBits",
+            "pos": "21593:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseImageFormatFlags",
+            "pos": "21594:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkGetPhysicalDeviceSparseImageFormatProperties",
+            "pos": "21595:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkGetPhysicalDeviceSparseImageFormatProperties2",
+            "pos": "21596:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceSparseImageFormatInfo2",
+            "pos": "21597:13",
+            "tag": "ReqType"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SPARSE_IMAGE_FORMAT_INFO_2",
+              "pos": "21598:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseImageFormatProperties2",
+            "pos": "21599:13",
+            "tag": "ReqType"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_STRUCTURE_TYPE_SPARSE_IMAGE_FORMAT_PROPERTIES_2",
+              "pos": "21600:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseImageMemoryRequirements",
+            "pos": "21601:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkGetImageSparseMemoryRequirements",
+            "pos": "21602:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkGetImageSparseMemoryRequirements2",
+            "pos": "21603:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "VkImageSparseMemoryRequirementsInfo2",
+            "pos": "21604:13",
+            "tag": "ReqType"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_STRUCTURE_TYPE_IMAGE_SPARSE_MEMORY_REQUIREMENTS_INFO_2",
+              "pos": "21605:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseImageMemoryRequirements2",
+            "pos": "21606:13",
+            "tag": "ReqType"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_STRUCTURE_TYPE_SPARSE_IMAGE_MEMORY_REQUIREMENTS_2",
+              "pos": "21607:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseMemoryBind",
+            "pos": "21608:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseMemoryBindFlagBits",
+            "pos": "21609:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseMemoryBindFlags",
+            "pos": "21610:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseBufferMemoryBindInfo",
+            "pos": "21611:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseImageOpaqueMemoryBindInfo",
+            "pos": "21612:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseImageMemoryBindInfo",
+            "pos": "21613:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseImageMemoryBind",
+            "pos": "21614:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkQueueBindSparse",
+            "pos": "21615:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "VkBindSparseInfo",
+            "pos": "21616:13",
+            "tag": "ReqType"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_STRUCTURE_TYPE_BIND_SPARSE_INFO",
+              "pos": "21617:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkDeviceGroupBindSparseInfo",
+            "pos": "21618:13",
+            "tag": "ReqType"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_STRUCTURE_TYPE_DEVICE_GROUP_BIND_SPARSE_INFO",
+              "pos": "21619:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "vkDestroySemaphoreSciSyncPoolNV",
+            "pos": "21620:13",
+            "tag": "ReqCommand"
+          }
+        ],
+        "pos": "21540:9",
+        "reasonLink": null
+      },
+      "tag": "ChRemove"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": null,
+        "items": [
+          {
+            "comment": null,
+            "names": [
+              "multiview"
+            ],
+            "pos": "21623:13",
+            "struct": "VkPhysicalDeviceMultiviewFeatures",
+            "tag": "ReqFeature"
+          },
+          {
+            "comment": null,
+            "names": [
+              "multiview"
+            ],
+            "pos": "21624:13",
+            "struct": "VkPhysicalDeviceVulkan11Features",
+            "tag": "ReqFeature"
+          },
+          {
+            "comment": null,
+            "names": [
+              "timelineSemaphore"
+            ],
+            "pos": "21625:13",
+            "struct": "VkPhysicalDeviceTimelineSemaphoreFeatures",
+            "tag": "ReqFeature"
+          },
+          {
+            "comment": null,
+            "names": [
+              "timelineSemaphore"
+            ],
+            "pos": "21626:13",
+            "struct": "VkPhysicalDeviceVulkan12Features",
+            "tag": "ReqFeature"
+          }
+        ],
+        "pos": "21622:9",
+        "reasonLink": "SCID-8"
+      },
+      "tag": "ChRemove"
+    }
+  ],
+  "comment": "Vulkan SC core API interface definitions",
+  "depends": {
+    "parsed": {
+      "contents": {
+        "contents": "VK_VERSION_1_2",
+        "tag": "DependsName"
+      },
+      "tag": "AtomF"
+    },
+    "raw": "VK_VERSION_1_2"
+  },
+  "name": "VKSC_VERSION_1_0",
+  "number": {
+    "parsed": [
+      1,
+      0
+    ],
+    "raw": "1.0"
+  },
+  "pos": "21484:5",
+  "protect": null,
+  "sortOrder": null
+}

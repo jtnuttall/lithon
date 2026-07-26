@@ -1,0 +1,63 @@
+{-# LANGUAGE DuplicateRecordFields #-}
+
+-- |
+-- Curated low-level SDL3 surface: Re-exports every per-header module.
+--
+-- This is a low-level module intended to provide the building blocks for
+-- higher-level libraries.
+--
+-- Contributing is encouraged. Please submit either an issue or PR to the
+-- upstream repository if you run into problems with these generated bindings.
+--
+-- These bindings are still experimental and in flux, and will not stabilize
+-- at least until hs-bindgen is itself released stably. 
+--
+-- Pin to a minor version (e.g. `>=0.0.0.1 && <0.0.1`) until this library hits `0.1.0.0`.
+--
+-- __Conventions__
+--
+-- * Every function's foreign-import flavor is classified deterministically
+--   by the checked-in registry. Most functions export both @safe@ and @unsafe@
+--   FFI bindings.
+--
+-- * Function aliases follow the camel-segments rule: strip @SDL_@ and
+--   join the underscore segments (@SDL_CreateWindow@ -> @createWindow@,
+--   @SDL_GL_SwapWindow@ -> @glSwapWindow@, @SDL_GUIDToString@ ->
+--   @guidToString@).
+--
+-- * An /unsuffixed/ alias is always the __unsafe__ foreign import; a
+--   @Safe@-suffixed alias is always the __safe__ one. 
+--
+-- * Functions that unavoidably invoke a callback during the call export 
+--   only the @Safe@ alias — re-entering Haskell from an unsafe call is undefined
+--   behavior, so the footgun is simply not handed out. NB: A non-Haskell 
+--   callback function (e.g., written in C or Rust) cannot re-enter the runtime; 
+--   for that case the unsafe imports stay available under the 
+--   @SDL3.Sys.Bindgen.*.Unsafe@ modules.
+--
+-- * Functions curated @unsafe-only@ — quick, nonblocking, callback-free —
+--   export only the unsuffixed alias: paying the safe-call overhead for
+--   them buys nothing. Each alias's documentation records its rationale.
+--
+-- * Types, enum patterns, macro constants, and property keys re-export
+--   verbatim from the @SDL3.Sys.Bindgen.*@ base modules.
+--
+-- * This layer additionally provides typed pattern synonyms for
+--   the macro constant groups in SDL headers.
+--
+-- * Some aliases (@free@, @abs@, @init@, …) collide with the "Prelude";
+--   import this module qualified or curate your import list.
+--
+-- == Families
+--
+-- * "SDL3.Sys.Runtime" — Bridge vocabulary: C99 bool and C enum conversions, curated from the runtime.
+-- * "SDL3.Sys.Toy" — Toy overview prose.
+--
+module SDL3.Sys
+    ( module SDL3.Sys.Runtime
+    , module SDL3.Sys.Toy
+    )
+  where
+
+import SDL3.Sys.Runtime
+import SDL3.Sys.Toy

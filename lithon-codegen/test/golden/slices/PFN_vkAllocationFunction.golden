@@ -1,0 +1,284 @@
+{
+  "body": {
+    "contents": {
+      "params": [
+        {
+          "altLen": null,
+          "api": "all",
+          "body": {
+            "chunks": [
+              {
+                "contents": [
+                  "void",
+                  "1139:20"
+                ],
+                "tag": "ChunkType"
+              },
+              {
+                "contents": [
+                  "*                       ",
+                  "1139:37"
+                ],
+                "tag": "ChunkText"
+              },
+              {
+                "contents": [
+                  "pUserData",
+                  null,
+                  "1139:61"
+                ],
+                "tag": "ChunkName"
+              }
+            ],
+            "raw": "void*                       pUserData"
+          },
+          "decl": {
+            "arrayDims": [],
+            "baseConst": false,
+            "bitfield": null,
+            "name": "pUserData",
+            "nameAlias": null,
+            "pointers": [
+              {
+                "isConst": false
+              }
+            ],
+            "pos": "1139:61",
+            "structKw": false,
+            "typeName": {
+              "name": "void",
+              "pos": "1139:20"
+            }
+          },
+          "externSync": null,
+          "isOptional": null,
+          "len": null,
+          "noAutoValidity": false,
+          "objectType": null,
+          "pos": "1139:13",
+          "selector": null,
+          "stride": null,
+          "validStructs": []
+        },
+        {
+          "altLen": null,
+          "api": "all",
+          "body": {
+            "chunks": [
+              {
+                "contents": [
+                  "size_t",
+                  "1140:20"
+                ],
+                "tag": "ChunkType"
+              },
+              {
+                "contents": [
+                  "                      ",
+                  "1140:39"
+                ],
+                "tag": "ChunkText"
+              },
+              {
+                "contents": [
+                  "size",
+                  null,
+                  "1140:61"
+                ],
+                "tag": "ChunkName"
+              }
+            ],
+            "raw": "size_t                      size"
+          },
+          "decl": {
+            "arrayDims": [],
+            "baseConst": false,
+            "bitfield": null,
+            "name": "size",
+            "nameAlias": null,
+            "pointers": [],
+            "pos": "1140:61",
+            "structKw": false,
+            "typeName": {
+              "name": "size_t",
+              "pos": "1140:20"
+            }
+          },
+          "externSync": null,
+          "isOptional": null,
+          "len": null,
+          "noAutoValidity": false,
+          "objectType": null,
+          "pos": "1140:13",
+          "selector": null,
+          "stride": null,
+          "validStructs": []
+        },
+        {
+          "altLen": null,
+          "api": "all",
+          "body": {
+            "chunks": [
+              {
+                "contents": [
+                  "size_t",
+                  "1141:20"
+                ],
+                "tag": "ChunkType"
+              },
+              {
+                "contents": [
+                  "                      ",
+                  "1141:39"
+                ],
+                "tag": "ChunkText"
+              },
+              {
+                "contents": [
+                  "alignment",
+                  null,
+                  "1141:61"
+                ],
+                "tag": "ChunkName"
+              }
+            ],
+            "raw": "size_t                      alignment"
+          },
+          "decl": {
+            "arrayDims": [],
+            "baseConst": false,
+            "bitfield": null,
+            "name": "alignment",
+            "nameAlias": null,
+            "pointers": [],
+            "pos": "1141:61",
+            "structKw": false,
+            "typeName": {
+              "name": "size_t",
+              "pos": "1141:20"
+            }
+          },
+          "externSync": null,
+          "isOptional": null,
+          "len": null,
+          "noAutoValidity": false,
+          "objectType": null,
+          "pos": "1141:13",
+          "selector": null,
+          "stride": null,
+          "validStructs": []
+        },
+        {
+          "altLen": null,
+          "api": "all",
+          "body": {
+            "chunks": [
+              {
+                "contents": [
+                  "VkSystemAllocationScope",
+                  "1142:20"
+                ],
+                "tag": "ChunkType"
+              },
+              {
+                "contents": [
+                  "     ",
+                  "1142:56"
+                ],
+                "tag": "ChunkText"
+              },
+              {
+                "contents": [
+                  "allocationScope",
+                  null,
+                  "1142:61"
+                ],
+                "tag": "ChunkName"
+              }
+            ],
+            "raw": "VkSystemAllocationScope     allocationScope"
+          },
+          "decl": {
+            "arrayDims": [],
+            "baseConst": false,
+            "bitfield": null,
+            "name": "allocationScope",
+            "nameAlias": null,
+            "pointers": [],
+            "pos": "1142:61",
+            "structKw": false,
+            "typeName": {
+              "name": "VkSystemAllocationScope",
+              "pos": "1142:20"
+            }
+          },
+          "externSync": null,
+          "isOptional": null,
+          "len": null,
+          "noAutoValidity": false,
+          "objectType": null,
+          "pos": "1142:13",
+          "selector": null,
+          "stride": null,
+          "validStructs": []
+        }
+      ],
+      "proto": {
+        "body": {
+          "chunks": [
+            {
+              "contents": [
+                "void",
+                "1138:20"
+              ],
+              "tag": "ChunkType"
+            },
+            {
+              "contents": [
+                "* ",
+                "1138:37"
+              ],
+              "tag": "ChunkText"
+            },
+            {
+              "contents": [
+                "PFN_vkAllocationFunction",
+                null,
+                "1138:39"
+              ],
+              "tag": "ChunkName"
+            }
+          ],
+          "raw": "void* PFN_vkAllocationFunction"
+        },
+        "decl": {
+          "arrayDims": [],
+          "baseConst": false,
+          "bitfield": null,
+          "name": "PFN_vkAllocationFunction",
+          "nameAlias": null,
+          "pointers": [
+            {
+              "isConst": false
+            }
+          ],
+          "pos": "1138:39",
+          "structKw": false,
+          "typeName": {
+            "name": "void",
+            "pos": "1138:20"
+          }
+        },
+        "pos": "1138:13"
+      }
+    },
+    "tag": "TFuncpointer"
+  },
+  "common": {
+    "api": "all",
+    "comment": null,
+    "deprecated": null,
+    "pos": "1137:9",
+    "requires": null
+  }
+}

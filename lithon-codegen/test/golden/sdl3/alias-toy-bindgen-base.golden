@@ -1,0 +1,409 @@
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE DerivingVia #-}
+{-# LANGUAGE ExplicitForAll #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE MagicHash #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE UnboxedTuples #-}
+{-# LANGUAGE UndecidableInstances #-}
+
+{-| Toy overview prose.
+-}
+
+module SDL3.Sys.Bindgen.Toy
+    ( SDL3.Sys.Bindgen.Toy.SDL_ToyThing(..)
+    , SDL3.Sys.Bindgen.Toy.SDL_ToyFlags(..)
+    , SDL3.Sys.Bindgen.Toy.sDL_TOY_A
+    , SDL3.Sys.Bindgen.Toy.sDL_TOY_B
+    , SDL3.Sys.Bindgen.Toy.sDL_TOY_AB
+    , SDL3.Sys.Bindgen.Toy.SDL_ToyMode(..)
+    , SDL3.Sys.Bindgen.Toy.sDL_TOY_LIMIT
+    , SDL3.Sys.Bindgen.Toy.SDL_ToyCallback_Aux(..)
+    , SDL3.Sys.Bindgen.Toy.SDL_ToyCallback(..)
+    , SDL3.Sys.Bindgen.Toy.Uint32(..)
+    , SDL3.Sys.Bindgen.Toy.SDL_ToyId(..)
+    )
+  where
+
+import qualified C.Expr.HostPlatform
+import qualified HsBindgen.Runtime.HasCField as HasCField
+import qualified HsBindgen.Runtime.LibC
+import qualified HsBindgen.Runtime.Marshal as Marshal
+import qualified HsBindgen.Runtime.Support as BG
+import qualified HsBindgen.Runtime.Support.CompatHasField as BG.CompatHasField
+
+-- | [C declaration]: @struct SDL_ToyThing@, defined at @SDL_toy.h 14:16@
+data SDL_ToyThing = SDL_ToyThing
+  { sDL_ToyThing_size :: BG.CInt
+    -- ^ [C declaration]: @size@, defined at @SDL_toy.h 15:7@
+  }
+  deriving stock (Eq, BG.Generic, Show)
+
+instance Marshal.StaticSize SDL_ToyThing where
+
+  staticSizeOf = \_ -> (4 :: Int)
+
+  staticAlignment = \_ -> (4 :: Int)
+
+instance Marshal.ReadRaw SDL_ToyThing where
+
+  readRaw =
+    \ptr0 ->
+          pure SDL_ToyThing
+      <*> HasCField.readRaw (BG.Proxy @"sDL_ToyThing_size") ptr0
+
+instance Marshal.WriteRaw SDL_ToyThing where
+
+  writeRaw =
+    \ptr0 ->
+      \s1 ->
+        case s1 of
+          SDL_ToyThing sDL_ToyThing_size2 ->
+            HasCField.writeRaw (BG.Proxy @"sDL_ToyThing_size") ptr0 sDL_ToyThing_size2
+
+deriving via Marshal.EquivStorable SDL_ToyThing instance BG.Storable SDL_ToyThing
+
+instance ( ty ~ BG.CInt
+         ) => BG.CompatHasField.HasField "sDL_ToyThing_size" SDL_ToyThing ty where
+
+  hasField =
+    \x0 ->
+      ( \y1 -> SDL_ToyThing {sDL_ToyThing_size = y1}
+      , BG.getField @"sDL_ToyThing_size" x0
+      )
+
+instance ( ty ~ BG.CInt
+         ) => BG.HasField "sDL_ToyThing_size" (BG.Ptr SDL_ToyThing) (BG.Ptr ty) where
+
+  getField =
+    HasCField.fromPtr (BG.Proxy @"sDL_ToyThing_size")
+
+instance HasCField.HasCField SDL_ToyThing "sDL_ToyThing_size" where
+
+  type CFieldType SDL_ToyThing "sDL_ToyThing_size" =
+    BG.CInt
+
+  offset# = \_ -> \_ -> 0
+
+{-| Toy capability flags.
+
+    [C declaration]: @SDL_ToyFlags@, defined at @SDL_toy.h 21:22@
+-}
+newtype SDL_ToyFlags = SDL_ToyFlags
+  { unwrapSDL_ToyFlags :: BG.CUInt
+  }
+  deriving stock (Eq, BG.Generic, Ord, Read, Show)
+  deriving newtype
+    ( BG.Bitfield
+    , BG.Bits
+    , Bounded
+    , Enum
+    , BG.FiniteBits
+    , BG.HasFFIType
+    , Integral
+    , BG.Ix
+    , Num
+    , BG.Prim
+    , Marshal.ReadRaw
+    , Real
+    , Marshal.StaticSize
+    , BG.Storable
+    , Marshal.WriteRaw
+    )
+
+instance ( ty ~ BG.CUInt
+         ) => BG.CompatHasField.HasField "unwrapSDL_ToyFlags" SDL_ToyFlags ty where
+
+  hasField =
+    \x0 ->
+      ( \y1 -> SDL_ToyFlags {unwrapSDL_ToyFlags = y1}
+      , BG.getField @"unwrapSDL_ToyFlags" x0
+      )
+
+instance ( ty ~ BG.CUInt
+         ) => BG.HasField "unwrapSDL_ToyFlags" (BG.Ptr SDL_ToyFlags) (BG.Ptr ty) where
+
+  getField =
+    HasCField.fromPtr (BG.Proxy @"unwrapSDL_ToyFlags")
+
+instance HasCField.HasCField SDL_ToyFlags "unwrapSDL_ToyFlags" where
+
+  type CFieldType SDL_ToyFlags "unwrapSDL_ToyFlags" =
+    BG.CUInt
+
+  offset# = \_ -> \_ -> 0
+
+{-| the A capability
+
+    [C declaration]: @macro SDL_TOY_A@, defined at @SDL_toy.h 23:9@
+-}
+sDL_TOY_A :: BG.CUInt
+sDL_TOY_A = (1 :: BG.CUInt)
+
+-- | [C declaration]: @macro SDL_TOY_B@, defined at @SDL_toy.h 24:9@
+sDL_TOY_B :: BG.CUInt
+sDL_TOY_B =
+  (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (1 :: BG.CInt)
+
+-- | [C declaration]: @macro SDL_TOY_AB@, defined at @SDL_toy.h 25:9@
+sDL_TOY_AB :: BG.CUInt
+sDL_TOY_AB =
+  (C.Expr.HostPlatform..|.) sDL_TOY_A sDL_TOY_B
+
+{-| Toy mode selector (not a bitmask).
+
+    [C declaration]: @SDL_ToyMode@, defined at @SDL_toy.h 30:23@
+-}
+newtype SDL_ToyMode = SDL_ToyMode
+  { unwrapSDL_ToyMode :: BG.CUChar
+  }
+  deriving stock (Eq, BG.Generic, Ord, Read, Show)
+  deriving newtype
+    ( BG.Bitfield
+    , BG.Bits
+    , Bounded
+    , Enum
+    , BG.FiniteBits
+    , BG.HasFFIType
+    , Integral
+    , BG.Ix
+    , Num
+    , BG.Prim
+    , Marshal.ReadRaw
+    , Real
+    , Marshal.StaticSize
+    , BG.Storable
+    , Marshal.WriteRaw
+    )
+
+instance ( ty ~ BG.CUChar
+         ) => BG.CompatHasField.HasField "unwrapSDL_ToyMode" SDL_ToyMode ty where
+
+  hasField =
+    \x0 ->
+      ( \y1 -> SDL_ToyMode {unwrapSDL_ToyMode = y1}
+      , BG.getField @"unwrapSDL_ToyMode" x0
+      )
+
+instance ( ty ~ BG.CUChar
+         ) => BG.HasField "unwrapSDL_ToyMode" (BG.Ptr SDL_ToyMode) (BG.Ptr ty) where
+
+  getField =
+    HasCField.fromPtr (BG.Proxy @"unwrapSDL_ToyMode")
+
+instance HasCField.HasCField SDL_ToyMode "unwrapSDL_ToyMode" where
+
+  type CFieldType SDL_ToyMode "unwrapSDL_ToyMode" =
+    BG.CUChar
+
+  offset# = \_ -> \_ -> 0
+
+-- | [C declaration]: @macro SDL_TOY_LIMIT@, defined at @SDL_toy.h 32:9@
+sDL_TOY_LIMIT :: BG.CInt
+sDL_TOY_LIMIT = (7 :: BG.CInt)
+
+{-| Auxiliary type used by 'SDL_ToyCallback'
+
+    [C declaration]: @SDL_ToyCallback@, defined at @SDL_toy.h 37:16@
+-}
+newtype SDL_ToyCallback_Aux = SDL_ToyCallback_Aux
+  { unwrapSDL_ToyCallback_Aux :: BG.Ptr BG.Void -> BG.CInt -> IO ()
+  }
+  deriving stock (BG.Generic)
+  deriving newtype (BG.HasFFIType)
+
+-- __unique:__ @toSDL_ToyCallback_Aux@
+foreign import ccall safe "wrapper" hs_bindgen_450bb4cbb1a00030_base ::
+     (BG.Ptr BG.Void -> BG.Int32 -> IO ())
+  -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Int32 -> IO ()))
+
+-- __unique:__ @toSDL_ToyCallback_Aux@
+hs_bindgen_450bb4cbb1a00030 ::
+     SDL_ToyCallback_Aux
+  -> IO (BG.FunPtr SDL_ToyCallback_Aux)
+hs_bindgen_450bb4cbb1a00030 =
+  \fun0 ->
+    fmap BG.castFunPtrFromFFIType (hs_bindgen_450bb4cbb1a00030_base (BG.toFFIType fun0))
+
+-- __unique:__ @fromSDL_ToyCallback_Aux@
+foreign import ccall safe "dynamic" hs_bindgen_a143e824dd9d1e0f_base ::
+     BG.FunPtr (BG.Ptr BG.Void -> BG.Int32 -> IO ())
+  -> BG.Ptr BG.Void -> BG.Int32 -> IO ()
+
+-- __unique:__ @fromSDL_ToyCallback_Aux@
+hs_bindgen_a143e824dd9d1e0f ::
+     BG.FunPtr SDL_ToyCallback_Aux
+  -> SDL_ToyCallback_Aux
+hs_bindgen_a143e824dd9d1e0f =
+  \funPtr0 ->
+    BG.fromFFIType (hs_bindgen_a143e824dd9d1e0f_base (BG.castFunPtrToFFIType funPtr0))
+
+instance BG.ToFunPtr SDL_ToyCallback_Aux where
+
+  toFunPtr = hs_bindgen_450bb4cbb1a00030
+
+instance BG.FromFunPtr SDL_ToyCallback_Aux where
+
+  fromFunPtr = hs_bindgen_a143e824dd9d1e0f
+
+instance ( ty ~ (BG.Ptr BG.Void -> BG.CInt -> IO ())
+         ) => BG.CompatHasField.HasField "unwrapSDL_ToyCallback_Aux" SDL_ToyCallback_Aux ty where
+
+  hasField =
+    \x0 ->
+      ( \y1 ->
+          SDL_ToyCallback_Aux {unwrapSDL_ToyCallback_Aux = y1}
+      , BG.getField @"unwrapSDL_ToyCallback_Aux" x0
+      )
+
+instance ( ty ~ (BG.Ptr BG.Void -> BG.CInt -> IO ())
+         ) => BG.HasField "unwrapSDL_ToyCallback_Aux" (BG.Ptr SDL_ToyCallback_Aux) (BG.Ptr ty) where
+
+  getField =
+    HasCField.fromPtr (BG.Proxy @"unwrapSDL_ToyCallback_Aux")
+
+instance HasCField.HasCField SDL_ToyCallback_Aux "unwrapSDL_ToyCallback_Aux" where
+
+  type CFieldType SDL_ToyCallback_Aux "unwrapSDL_ToyCallback_Aux" =
+    BG.Ptr BG.Void -> BG.CInt -> IO ()
+
+  offset# = \_ -> \_ -> 0
+
+{-| A callback invoked per toy.
+
+    [C declaration]: @SDL_ToyCallback@, defined at @SDL_toy.h 37:16@
+-}
+newtype SDL_ToyCallback = SDL_ToyCallback
+  { unwrapSDL_ToyCallback :: BG.FunPtr SDL_ToyCallback_Aux
+  }
+  deriving stock (Eq, BG.Generic, Ord, Show)
+  deriving newtype
+    ( BG.HasFFIType
+    , Marshal.ReadRaw
+    , Marshal.StaticSize
+    , BG.Storable
+    , Marshal.WriteRaw
+    )
+
+instance ( ty ~ BG.FunPtr SDL_ToyCallback_Aux
+         ) => BG.CompatHasField.HasField "unwrapSDL_ToyCallback" SDL_ToyCallback ty where
+
+  hasField =
+    \x0 ->
+      ( \y1 -> SDL_ToyCallback {unwrapSDL_ToyCallback = y1}
+      , BG.getField @"unwrapSDL_ToyCallback" x0
+      )
+
+instance ( ty ~ BG.FunPtr SDL_ToyCallback_Aux
+         ) => BG.HasField "unwrapSDL_ToyCallback" (BG.Ptr SDL_ToyCallback) (BG.Ptr ty) where
+
+  getField =
+    HasCField.fromPtr (BG.Proxy @"unwrapSDL_ToyCallback")
+
+instance HasCField.HasCField SDL_ToyCallback "unwrapSDL_ToyCallback" where
+
+  type CFieldType SDL_ToyCallback "unwrapSDL_ToyCallback" =
+    BG.FunPtr SDL_ToyCallback_Aux
+
+  offset# = \_ -> \_ -> 0
+
+{-| A stdinc-shaped width typedef (mirrors SDL_stdinc\'s 'Uint32'): the same-family TCon arm of the scalar bridge.
+
+    [C declaration]: @Uint32@, defined at @SDL_toy.h 75:18@
+-}
+newtype Uint32 = Uint32
+  { unwrapUint32 :: HsBindgen.Runtime.LibC.Word32
+  }
+  deriving stock (Eq, BG.Generic, Ord, Read, Show)
+  deriving newtype
+    ( BG.Bitfield
+    , BG.Bits
+    , Bounded
+    , Enum
+    , BG.FiniteBits
+    , BG.HasFFIType
+    , Integral
+    , BG.Ix
+    , Num
+    , BG.Prim
+    , Marshal.ReadRaw
+    , Real
+    , Marshal.StaticSize
+    , BG.Storable
+    , Marshal.WriteRaw
+    )
+
+instance ( ty ~ HsBindgen.Runtime.LibC.Word32
+         ) => BG.CompatHasField.HasField "unwrapUint32" Uint32 ty where
+
+  hasField =
+    \x0 ->
+      (\y1 ->
+         Uint32 {unwrapUint32 = y1}, BG.getField @"unwrapUint32" x0)
+
+instance ( ty ~ HsBindgen.Runtime.LibC.Word32
+         ) => BG.HasField "unwrapUint32" (BG.Ptr Uint32) (BG.Ptr ty) where
+
+  getField =
+    HasCField.fromPtr (BG.Proxy @"unwrapUint32")
+
+instance HasCField.HasCField Uint32 "unwrapUint32" where
+
+  type CFieldType Uint32 "unwrapUint32" =
+    HsBindgen.Runtime.LibC.Word32
+
+  offset# = \_ -> \_ -> 0
+
+{-| A semantic id over the width typedef: must NOT scalar-bridge.
+
+    [C declaration]: @SDL_ToyId@, defined at @SDL_toy.h 80:16@
+-}
+newtype SDL_ToyId = SDL_ToyId
+  { unwrapSDL_ToyId :: Uint32
+  }
+  deriving stock (Eq, BG.Generic, Ord, Read, Show)
+  deriving newtype
+    ( BG.Bitfield
+    , BG.Bits
+    , Bounded
+    , Enum
+    , BG.FiniteBits
+    , BG.HasFFIType
+    , Integral
+    , BG.Ix
+    , Num
+    , BG.Prim
+    , Marshal.ReadRaw
+    , Real
+    , Marshal.StaticSize
+    , BG.Storable
+    , Marshal.WriteRaw
+    )
+
+instance ( ty ~ Uint32
+         ) => BG.CompatHasField.HasField "unwrapSDL_ToyId" SDL_ToyId ty where
+
+  hasField =
+    \x0 ->
+      (\y1 ->
+         SDL_ToyId {unwrapSDL_ToyId = y1}, BG.getField @"unwrapSDL_ToyId" x0)
+
+instance ( ty ~ Uint32
+         ) => BG.HasField "unwrapSDL_ToyId" (BG.Ptr SDL_ToyId) (BG.Ptr ty) where
+
+  getField =
+    HasCField.fromPtr (BG.Proxy @"unwrapSDL_ToyId")
+
+instance HasCField.HasCField SDL_ToyId "unwrapSDL_ToyId" where
+
+  type CFieldType SDL_ToyId "unwrapSDL_ToyId" = Uint32
+
+  offset# = \_ -> \_ -> 0

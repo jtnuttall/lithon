@@ -1,0 +1,211 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.39.6.
+--
+-- see: https://github.com/sol/hpack
+
+name:           lithon-examples
+version:        0.1.0.0
+synopsis:       Lithon demos — the hello-triangle gates
+description:    End-to-end demos driving the generated @lithon@ binding. The primary
+                executable renders a triangle offscreen on any Vulkan 1.3 device
+                (lavapipe included), writes a PNG, and probe-asserts pixels — the
+                phase-3 design gate. @triangle-sdl@ presents the same triangle in an
+                SDL2 window through @VK_KHR_swapchain@. @sdl3-raw@ draws a triangle
+                raw through @sdl3-bindgen-sys@ — that package's usability gate — and
+                @shmup@ is the apecs Shmup example, playable, running on and rendering
+                through the same bindings. Not published.
+homepage:       https://github.com/jtnuttall/lithon#readme
+bug-reports:    https://github.com/jtnuttall/lithon/issues
+author:         Jeremy Nuttall
+maintainer:     jeremy@jeremy-nuttall.com
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+
+source-repository head
+  type: git
+  location: https://github.com/jtnuttall/lithon
+
+flag sdl
+  description: Build the windowed SDL2 triangle (needs SDL2 in the environment; the devshell carries it — disable with -f -sdl elsewhere)
+  manual: True
+  default: True
+
+library
+  exposed-modules:
+      Lithon.Examples.Triangle
+      Lithon.Examples.Triangle.Shaders
+  other-modules:
+      Paths_lithon_examples
+  autogen-modules:
+      Paths_lithon_examples
+  hs-source-dirs:
+      src
+  default-extensions:
+      BlockArguments
+      DataKinds
+      DuplicateRecordFields
+      NoFieldSelectors
+      OverloadedRecordDot
+      OverloadedStrings
+      PatternSynonyms
+  ghc-options: -Wall -threaded
+  build-depends:
+      JuicyPixels ==3.3.*
+    , base <4.22.0.0
+    , bytestring ==0.12.*
+    , file-embed >=0.0.16 && <0.1
+    , lithon-core
+    , lithon-vk
+    , vector ==0.13.*
+    , vector-sized ==1.6.*
+  default-language: GHC2024
+
+executable sdl3-raw
+  main-is: Main.hs
+  other-modules:
+      Paths_lithon_examples
+  autogen-modules:
+      Paths_lithon_examples
+  hs-source-dirs:
+      app/sdl3-raw
+  default-extensions:
+      BlockArguments
+      DataKinds
+      DuplicateRecordFields
+      NoFieldSelectors
+      OverloadedRecordDot
+      OverloadedStrings
+      PatternSynonyms
+  ghc-options: -Wall -threaded
+  build-depends:
+      base <4.22.0.0
+    , bytestring ==0.12.*
+    , lithon-core
+    , lithon-vk
+    , sdl3-bindgen-sys
+    , vector ==0.13.*
+  default-language: GHC2024
+
+executable shmup
+  main-is: Main.hs
+  other-modules:
+      Paths_lithon_examples
+  autogen-modules:
+      Paths_lithon_examples
+  hs-source-dirs:
+      app/shmup
+  default-extensions:
+      BlockArguments
+      DataKinds
+      DuplicateRecordFields
+      NoFieldSelectors
+      OverloadedRecordDot
+      OverloadedStrings
+      PatternSynonyms
+  ghc-options: -Wall -threaded
+  build-depends:
+      apecs ==0.10.*
+    , base <4.22.0.0
+    , bytestring ==0.12.*
+    , lithon-core
+    , lithon-vk
+    , random ==1.3.*
+    , sdl3-bindgen-sys
+    , vector ==0.13.*
+  default-language: GHC2024
+
+executable triangle-offscreen
+  main-is: Main.hs
+  other-modules:
+      Paths_lithon_examples
+  autogen-modules:
+      Paths_lithon_examples
+  hs-source-dirs:
+      app/offscreen
+  default-extensions:
+      BlockArguments
+      DataKinds
+      DuplicateRecordFields
+      NoFieldSelectors
+      OverloadedRecordDot
+      OverloadedStrings
+      PatternSynonyms
+  ghc-options: -Wall -threaded
+  build-depends:
+      JuicyPixels
+    , base <4.22.0.0
+    , bytestring ==0.12.*
+    , lithon-core
+    , lithon-examples
+    , lithon-vk
+    , vector ==0.13.*
+  default-language: GHC2024
+
+executable triangle-sdl
+  main-is: Main.hs
+  other-modules:
+      Paths_lithon_examples
+  autogen-modules:
+      Paths_lithon_examples
+  hs-source-dirs:
+      app/sdl
+  default-extensions:
+      BlockArguments
+      DataKinds
+      DuplicateRecordFields
+      NoFieldSelectors
+      OverloadedRecordDot
+      OverloadedStrings
+      PatternSynonyms
+  ghc-options: -Wall -threaded
+  build-depends:
+      base <4.22.0.0
+    , bytestring ==0.12.*
+    , lithon-core
+    , lithon-vk
+    , vector ==0.13.*
+  default-language: GHC2024
+  if flag(sdl)
+    build-depends:
+        lithon-examples
+      , sdl2 ==2.5.*
+      , vector-sized
+  else
+    buildable: False
+
+test-suite lithon-examples-test
+  type: exitcode-stdio-1.0
+  main-is: Driver.hs
+  other-modules:
+      RoundtripTest
+      Paths_lithon_examples
+  autogen-modules:
+      Paths_lithon_examples
+  hs-source-dirs:
+      test
+  default-extensions:
+      BlockArguments
+      DataKinds
+      DuplicateRecordFields
+      NoFieldSelectors
+      OverloadedRecordDot
+      OverloadedStrings
+      PatternSynonyms
+  ghc-options: -Wall -threaded
+  build-tool-depends:
+      tasty-discover:tasty-discover
+  build-depends:
+      base <4.22.0.0
+    , bytestring ==0.12.*
+    , hedgehog ==1.7.*
+    , lithon-core
+    , lithon-examples
+    , lithon-vk
+    , tasty ==1.5.*
+    , tasty-hedgehog ==1.4.*
+    , tasty-hunit ==0.10.*
+    , vector ==0.13.*
+    , vector-sized ==1.6.*
+  default-language: GHC2024

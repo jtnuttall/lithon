@@ -1,0 +1,39 @@
+{
+  "aliases": [],
+  "availability": {
+    "contents": {
+      "contents": {
+        "major": 1,
+        "minor": 0
+      },
+      "tag": "AvailVersion"
+    },
+    "tag": "AtomF"
+  },
+  "comment": null,
+  "deprecation": null,
+  "dispatchable": true,
+  "name": "VkDevice",
+  "objectTypeValue": "VK_OBJECT_TYPE_DEVICE",
+  "origins": [
+    {
+      "blockComment": "Device commands",
+      "blockIndex": 7,
+      "condition": null,
+      "pos": "19762:9",
+      "profile": null,
+      "source": {
+        "feature": "VK_VERSION_1_0",
+        "tag": "FromFeature",
+        "version": {
+          "major": 1,
+          "minor": 0
+        }
+      },
+      "tier": "VK_BASE_VERSION_1_0"
+    }
+  ],
+  "parent": "VkPhysicalDevice",
+  "platformGuards": [],
+  "pos": "606:9"
+}

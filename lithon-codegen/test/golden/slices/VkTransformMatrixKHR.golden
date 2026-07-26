@@ -1,0 +1,102 @@
+{
+  "body": {
+    "contents": {
+      "contents": {
+        "allowDuplicate": null,
+        "comments": [],
+        "members": [
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "float",
+                    "6689:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                                                   ",
+                    "6689:39"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "matrix",
+                    null,
+                    "6689:90"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    "[3][4]",
+                    "6689:109"
+                  ],
+                  "tag": "ChunkText"
+                }
+              ],
+              "raw": "float                                                   matrix[3][4]"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [
+                {
+                  "contents": 3,
+                  "tag": "DimLit"
+                },
+                {
+                  "contents": 4,
+                  "tag": "DimLit"
+                }
+              ],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "matrix",
+              "nameAlias": null,
+              "pointers": [],
+              "pos": "6689:90",
+              "structKw": false,
+              "typeName": {
+                "name": "float",
+                "pos": "6689:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6689:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          }
+        ],
+        "name": "VkTransformMatrixKHR",
+        "requiredLimitType": false,
+        "returnedOnly": false,
+        "structExtends": []
+      },
+      "tag": "FullDef"
+    },
+    "tag": "TStruct"
+  },
+  "common": {
+    "api": "all",
+    "comment": null,
+    "deprecated": null,
+    "pos": "6688:9",
+    "requires": null
+  }
+}

@@ -1,0 +1,1090 @@
+{
+  "body": {
+    "contents": {
+      "contents": {
+        "allowDuplicate": null,
+        "comments": [],
+        "members": [
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkStructureType",
+                    "6176:84"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    " ",
+                    "6176:112"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "sType",
+                    null,
+                    "6176:113"
+                  ],
+                  "tag": "ChunkName"
+                }
+              ],
+              "raw": "VkStructureType sType"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "sType",
+              "nameAlias": null,
+              "pointers": [],
+              "pos": "6176:113",
+              "structKw": false,
+              "typeName": {
+                "name": "VkStructureType",
+                "pos": "6176:84"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6176:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": [
+              "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_1_FEATURES"
+            ]
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "void",
+                    "6177:37"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "*    ",
+                    "6177:54"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "pNext",
+                    null,
+                    "6177:59"
+                  ],
+                  "tag": "ChunkName"
+                }
+              ],
+              "raw": "void*    pNext"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "pNext",
+              "nameAlias": null,
+              "pointers": [
+                {
+                  "isConst": false
+                }
+              ],
+              "pos": "6177:59",
+              "structKw": false,
+              "typeName": {
+                "name": "void",
+                "pos": "6177:37"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": [
+              true
+            ],
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6177:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkBool32",
+                    "6178:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                         ",
+                    "6178:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "storageBuffer16BitAccess",
+                    {
+                      "contents": {
+                        "member": "storageBuffer16BitAccess",
+                        "struct": "VkPhysicalDevice16BitStorageFeatures"
+                      },
+                      "tag": "NameAliasPath"
+                    },
+                    "6178:67"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    "16-bit integer/floating-point variables supported in BufferBlock",
+                    "6178:175"
+                  ],
+                  "tag": "ChunkComment"
+                }
+              ],
+              "raw": "VkBool32                         storageBuffer16BitAccess"
+            },
+            "comment": "16-bit integer/floating-point variables supported in BufferBlock",
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "storageBuffer16BitAccess",
+              "nameAlias": {
+                "contents": {
+                  "member": "storageBuffer16BitAccess",
+                  "struct": "VkPhysicalDevice16BitStorageFeatures"
+                },
+                "tag": "NameAliasPath"
+              },
+              "pointers": [],
+              "pos": "6178:67",
+              "structKw": false,
+              "typeName": {
+                "name": "VkBool32",
+                "pos": "6178:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6178:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkBool32",
+                    "6179:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                         ",
+                    "6179:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "uniformAndStorageBuffer16BitAccess",
+                    {
+                      "contents": {
+                        "member": "uniformAndStorageBuffer16BitAccess",
+                        "struct": "VkPhysicalDevice16BitStorageFeatures"
+                      },
+                      "tag": "NameAliasPath"
+                    },
+                    "6179:67"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    "16-bit integer/floating-point variables supported in BufferBlock and Block",
+                    "6179:195"
+                  ],
+                  "tag": "ChunkComment"
+                }
+              ],
+              "raw": "VkBool32                         uniformAndStorageBuffer16BitAccess"
+            },
+            "comment": "16-bit integer/floating-point variables supported in BufferBlock and Block",
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "uniformAndStorageBuffer16BitAccess",
+              "nameAlias": {
+                "contents": {
+                  "member": "uniformAndStorageBuffer16BitAccess",
+                  "struct": "VkPhysicalDevice16BitStorageFeatures"
+                },
+                "tag": "NameAliasPath"
+              },
+              "pointers": [],
+              "pos": "6179:67",
+              "structKw": false,
+              "typeName": {
+                "name": "VkBool32",
+                "pos": "6179:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6179:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkBool32",
+                    "6180:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                         ",
+                    "6180:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "storagePushConstant16",
+                    {
+                      "contents": {
+                        "member": "storagePushConstant16",
+                        "struct": "VkPhysicalDevice16BitStorageFeatures"
+                      },
+                      "tag": "NameAliasPath"
+                    },
+                    "6180:67"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    "16-bit integer/floating-point variables supported in PushConstant",
+                    "6180:169"
+                  ],
+                  "tag": "ChunkComment"
+                }
+              ],
+              "raw": "VkBool32                         storagePushConstant16"
+            },
+            "comment": "16-bit integer/floating-point variables supported in PushConstant",
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "storagePushConstant16",
+              "nameAlias": {
+                "contents": {
+                  "member": "storagePushConstant16",
+                  "struct": "VkPhysicalDevice16BitStorageFeatures"
+                },
+                "tag": "NameAliasPath"
+              },
+              "pointers": [],
+              "pos": "6180:67",
+              "structKw": false,
+              "typeName": {
+                "name": "VkBool32",
+                "pos": "6180:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6180:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkBool32",
+                    "6181:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                         ",
+                    "6181:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "storageInputOutput16",
+                    {
+                      "contents": {
+                        "member": "storageInputOutput16",
+                        "struct": "VkPhysicalDevice16BitStorageFeatures"
+                      },
+                      "tag": "NameAliasPath"
+                    },
+                    "6181:67"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    "16-bit integer/floating-point variables supported in shader inputs and outputs",
+                    "6181:167"
+                  ],
+                  "tag": "ChunkComment"
+                }
+              ],
+              "raw": "VkBool32                         storageInputOutput16"
+            },
+            "comment": "16-bit integer/floating-point variables supported in shader inputs and outputs",
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "storageInputOutput16",
+              "nameAlias": {
+                "contents": {
+                  "member": "storageInputOutput16",
+                  "struct": "VkPhysicalDevice16BitStorageFeatures"
+                },
+                "tag": "NameAliasPath"
+              },
+              "pointers": [],
+              "pos": "6181:67",
+              "structKw": false,
+              "typeName": {
+                "name": "VkBool32",
+                "pos": "6181:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6181:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkBool32",
+                    "6182:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                         ",
+                    "6182:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "multiview",
+                    {
+                      "contents": {
+                        "member": "multiview",
+                        "struct": "VkPhysicalDeviceMultiviewFeatures"
+                      },
+                      "tag": "NameAliasPath"
+                    },
+                    "6182:67"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    "Multiple views in a render pass",
+                    "6182:142"
+                  ],
+                  "tag": "ChunkComment"
+                }
+              ],
+              "raw": "VkBool32                         multiview"
+            },
+            "comment": "Multiple views in a render pass",
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "multiview",
+              "nameAlias": {
+                "contents": {
+                  "member": "multiview",
+                  "struct": "VkPhysicalDeviceMultiviewFeatures"
+                },
+                "tag": "NameAliasPath"
+              },
+              "pointers": [],
+              "pos": "6182:67",
+              "structKw": false,
+              "typeName": {
+                "name": "VkBool32",
+                "pos": "6182:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6182:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkBool32",
+                    "6183:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                         ",
+                    "6183:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "multiviewGeometryShader",
+                    {
+                      "contents": {
+                        "member": "multiviewGeometryShader",
+                        "struct": "VkPhysicalDeviceMultiviewFeatures"
+                      },
+                      "tag": "NameAliasPath"
+                    },
+                    "6183:67"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    "Multiple views in a render pass w/ geometry shader",
+                    "6183:170"
+                  ],
+                  "tag": "ChunkComment"
+                }
+              ],
+              "raw": "VkBool32                         multiviewGeometryShader"
+            },
+            "comment": "Multiple views in a render pass w/ geometry shader",
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "multiviewGeometryShader",
+              "nameAlias": {
+                "contents": {
+                  "member": "multiviewGeometryShader",
+                  "struct": "VkPhysicalDeviceMultiviewFeatures"
+                },
+                "tag": "NameAliasPath"
+              },
+              "pointers": [],
+              "pos": "6183:67",
+              "structKw": false,
+              "typeName": {
+                "name": "VkBool32",
+                "pos": "6183:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6183:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkBool32",
+                    "6184:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                         ",
+                    "6184:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "multiviewTessellationShader",
+                    {
+                      "contents": {
+                        "member": "multiviewTessellationShader",
+                        "struct": "VkPhysicalDeviceMultiviewFeatures"
+                      },
+                      "tag": "NameAliasPath"
+                    },
+                    "6184:67"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    "Multiple views in a render pass w/ tessellation shader",
+                    "6184:178"
+                  ],
+                  "tag": "ChunkComment"
+                }
+              ],
+              "raw": "VkBool32                         multiviewTessellationShader"
+            },
+            "comment": "Multiple views in a render pass w/ tessellation shader",
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "multiviewTessellationShader",
+              "nameAlias": {
+                "contents": {
+                  "member": "multiviewTessellationShader",
+                  "struct": "VkPhysicalDeviceMultiviewFeatures"
+                },
+                "tag": "NameAliasPath"
+              },
+              "pointers": [],
+              "pos": "6184:67",
+              "structKw": false,
+              "typeName": {
+                "name": "VkBool32",
+                "pos": "6184:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6184:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkBool32",
+                    "6185:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                         ",
+                    "6185:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "variablePointersStorageBuffer",
+                    {
+                      "contents": {
+                        "member": "variablePointersStorageBuffer",
+                        "struct": "VkPhysicalDeviceVariablePointersFeatures"
+                      },
+                      "tag": "NameAliasPath"
+                    },
+                    "6185:67"
+                  ],
+                  "tag": "ChunkName"
+                }
+              ],
+              "raw": "VkBool32                         variablePointersStorageBuffer"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "variablePointersStorageBuffer",
+              "nameAlias": {
+                "contents": {
+                  "member": "variablePointersStorageBuffer",
+                  "struct": "VkPhysicalDeviceVariablePointersFeatures"
+                },
+                "tag": "NameAliasPath"
+              },
+              "pointers": [],
+              "pos": "6185:67",
+              "structKw": false,
+              "typeName": {
+                "name": "VkBool32",
+                "pos": "6185:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6185:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkBool32",
+                    "6186:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                         ",
+                    "6186:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "variablePointers",
+                    {
+                      "contents": {
+                        "member": "variablePointers",
+                        "struct": "VkPhysicalDeviceVariablePointersFeatures"
+                      },
+                      "tag": "NameAliasPath"
+                    },
+                    "6186:67"
+                  ],
+                  "tag": "ChunkName"
+                }
+              ],
+              "raw": "VkBool32                         variablePointers"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "variablePointers",
+              "nameAlias": {
+                "contents": {
+                  "member": "variablePointers",
+                  "struct": "VkPhysicalDeviceVariablePointersFeatures"
+                },
+                "tag": "NameAliasPath"
+              },
+              "pointers": [],
+              "pos": "6186:67",
+              "structKw": false,
+              "typeName": {
+                "name": "VkBool32",
+                "pos": "6186:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6186:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkBool32",
+                    "6187:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                         ",
+                    "6187:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "protectedMemory",
+                    {
+                      "contents": {
+                        "member": "protectedMemory",
+                        "struct": "VkPhysicalDeviceProtectedMemoryFeatures"
+                      },
+                      "tag": "NameAliasPath"
+                    },
+                    "6187:67"
+                  ],
+                  "tag": "ChunkName"
+                }
+              ],
+              "raw": "VkBool32                         protectedMemory"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "protectedMemory",
+              "nameAlias": {
+                "contents": {
+                  "member": "protectedMemory",
+                  "struct": "VkPhysicalDeviceProtectedMemoryFeatures"
+                },
+                "tag": "NameAliasPath"
+              },
+              "pointers": [],
+              "pos": "6187:67",
+              "structKw": false,
+              "typeName": {
+                "name": "VkBool32",
+                "pos": "6187:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6187:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkBool32",
+                    "6188:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                         ",
+                    "6188:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "samplerYcbcrConversion",
+                    {
+                      "contents": {
+                        "member": "samplerYcbcrConversion",
+                        "struct": "VkPhysicalDeviceSamplerYcbcrConversionFeatures"
+                      },
+                      "tag": "NameAliasPath"
+                    },
+                    "6188:67"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    "Sampler color conversion supported",
+                    "6188:181"
+                  ],
+                  "tag": "ChunkComment"
+                }
+              ],
+              "raw": "VkBool32                         samplerYcbcrConversion"
+            },
+            "comment": "Sampler color conversion supported",
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "samplerYcbcrConversion",
+              "nameAlias": {
+                "contents": {
+                  "member": "samplerYcbcrConversion",
+                  "struct": "VkPhysicalDeviceSamplerYcbcrConversionFeatures"
+                },
+                "tag": "NameAliasPath"
+              },
+              "pointers": [],
+              "pos": "6188:67",
+              "structKw": false,
+              "typeName": {
+                "name": "VkBool32",
+                "pos": "6188:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6188:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkBool32",
+                    "6189:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                         ",
+                    "6189:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "shaderDrawParameters",
+                    {
+                      "contents": {
+                        "member": "shaderDrawParameters",
+                        "struct": "VkPhysicalDeviceShaderDrawParametersFeatures"
+                      },
+                      "tag": "NameAliasPath"
+                    },
+                    "6189:67"
+                  ],
+                  "tag": "ChunkName"
+                }
+              ],
+              "raw": "VkBool32                         shaderDrawParameters"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "shaderDrawParameters",
+              "nameAlias": {
+                "contents": {
+                  "member": "shaderDrawParameters",
+                  "struct": "VkPhysicalDeviceShaderDrawParametersFeatures"
+                },
+                "tag": "NameAliasPath"
+              },
+              "pointers": [],
+              "pos": "6189:67",
+              "structKw": false,
+              "typeName": {
+                "name": "VkBool32",
+                "pos": "6189:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6189:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          }
+        ],
+        "name": "VkPhysicalDeviceVulkan11Features",
+        "requiredLimitType": false,
+        "returnedOnly": false,
+        "structExtends": [
+          "VkPhysicalDeviceFeatures2",
+          "VkDeviceCreateInfo"
+        ]
+      },
+      "tag": "FullDef"
+    },
+    "tag": "TStruct"
+  },
+  "common": {
+    "api": "all",
+    "comment": null,
+    "deprecated": null,
+    "pos": "6175:9",
+    "requires": null
+  }
+}

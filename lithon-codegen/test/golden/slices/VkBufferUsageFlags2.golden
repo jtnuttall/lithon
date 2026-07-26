@@ -1,0 +1,60 @@
+{
+  "body": {
+    "contents": {
+      "contents": {
+        "bitvalues": "VkBufferUsageFlagBits2",
+        "body": {
+          "chunks": [
+            {
+              "contents": [
+                "typedef ",
+                "421:69"
+              ],
+              "tag": "ChunkText"
+            },
+            {
+              "contents": [
+                "VkFlags64",
+                "421:77"
+              ],
+              "tag": "ChunkType"
+            },
+            {
+              "contents": [
+                " ",
+                "421:99"
+              ],
+              "tag": "ChunkText"
+            },
+            {
+              "contents": [
+                "VkBufferUsageFlags2",
+                null,
+                "421:100"
+              ],
+              "tag": "ChunkName"
+            },
+            {
+              "contents": [
+                ";",
+                "421:132"
+              ],
+              "tag": "ChunkText"
+            }
+          ],
+          "raw": "typedef VkFlags64 VkBufferUsageFlags2;"
+        },
+        "name": "VkBufferUsageFlags2"
+      },
+      "tag": "FullDef"
+    },
+    "tag": "TBitmask"
+  },
+  "common": {
+    "api": "all",
+    "comment": null,
+    "deprecated": null,
+    "pos": "421:9",
+    "requires": null
+  }
+}

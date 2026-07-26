@@ -1,0 +1,53 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Main
+ctypes:
+  - omit:
+      headers: SDL3/SDL_main.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_main.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_main.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_main.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_main.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_main.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_main.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_main.h
+    cname: SDL_main_func
+    hsname: SDL_main_func
+  - omit:
+      headers: SDL3/SDL_main.h
+      cname: SDL_main
+hstypes:
+  - hsname: SDL_main_func
+    representation:
+      newtype:
+        constructor: SDL_main_func
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

@@ -1,0 +1,424 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Haptic
+ctypes:
+  - omit:
+      headers: SDL3/SDL_haptic.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_haptic.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_haptic.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_haptic.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_haptic.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_haptic.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_haptic.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_haptic.h
+    cname: struct SDL_Haptic
+    hsname: SDL_Haptic
+  - headers: SDL3/SDL_haptic.h
+    cname: SDL_Haptic
+    hsname: SDL_Haptic
+  - headers: SDL3/SDL_haptic.h
+    cname: SDL_HapticEffectType
+    hsname: SDL_HapticEffectType
+  - headers: SDL3/SDL_haptic.h
+    cname: SDL_HapticDirectionType
+    hsname: SDL_HapticDirectionType
+  - headers: SDL3/SDL_haptic.h
+    cname: SDL_HapticEffectID
+    hsname: SDL_HapticEffectID
+  - headers: SDL3/SDL_haptic.h
+    cname: struct SDL_HapticDirection
+    hsname: SDL_HapticDirection
+  - headers: SDL3/SDL_haptic.h
+    cname: SDL_HapticDirection
+    hsname: SDL_HapticDirection
+  - headers: SDL3/SDL_haptic.h
+    cname: struct SDL_HapticConstant
+    hsname: SDL_HapticConstant
+  - headers: SDL3/SDL_haptic.h
+    cname: SDL_HapticConstant
+    hsname: SDL_HapticConstant
+  - headers: SDL3/SDL_haptic.h
+    cname: struct SDL_HapticPeriodic
+    hsname: SDL_HapticPeriodic
+  - headers: SDL3/SDL_haptic.h
+    cname: SDL_HapticPeriodic
+    hsname: SDL_HapticPeriodic
+  - headers: SDL3/SDL_haptic.h
+    cname: struct SDL_HapticCondition
+    hsname: SDL_HapticCondition
+  - headers: SDL3/SDL_haptic.h
+    cname: SDL_HapticCondition
+    hsname: SDL_HapticCondition
+  - headers: SDL3/SDL_haptic.h
+    cname: struct SDL_HapticRamp
+    hsname: SDL_HapticRamp
+  - headers: SDL3/SDL_haptic.h
+    cname: SDL_HapticRamp
+    hsname: SDL_HapticRamp
+  - headers: SDL3/SDL_haptic.h
+    cname: struct SDL_HapticLeftRight
+    hsname: SDL_HapticLeftRight
+  - headers: SDL3/SDL_haptic.h
+    cname: SDL_HapticLeftRight
+    hsname: SDL_HapticLeftRight
+  - headers: SDL3/SDL_haptic.h
+    cname: struct SDL_HapticCustom
+    hsname: SDL_HapticCustom
+  - headers: SDL3/SDL_haptic.h
+    cname: SDL_HapticCustom
+    hsname: SDL_HapticCustom
+  - headers: SDL3/SDL_haptic.h
+    cname: union SDL_HapticEffect
+    hsname: SDL_HapticEffect
+  - headers: SDL3/SDL_haptic.h
+    cname: SDL_HapticEffect
+    hsname: SDL_HapticEffect
+  - headers: SDL3/SDL_haptic.h
+    cname: SDL_HapticID
+    hsname: SDL_HapticID
+hstypes:
+  - hsname: SDL_Haptic
+    representation: emptydata
+  - hsname: SDL_HapticCondition
+    representation:
+      record:
+        constructor: SDL_HapticCondition
+        fields:
+          - type'
+          - direction
+          - length
+          - delay
+          - button
+          - interval
+          - right_sat
+          - left_sat
+          - right_coeff
+          - left_coeff
+          - deadband
+          - center
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_HapticConstant
+    representation:
+      record:
+        constructor: SDL_HapticConstant
+        fields:
+          - type'
+          - direction
+          - length
+          - delay
+          - button
+          - interval
+          - level
+          - attack_length
+          - attack_level
+          - fade_length
+          - fade_level
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_HapticCustom
+    representation:
+      record:
+        constructor: SDL_HapticCustom
+        fields:
+          - type'
+          - direction
+          - length
+          - delay
+          - button
+          - interval
+          - channels
+          - period
+          - samples
+          - data'
+          - attack_length
+          - attack_level
+          - fade_length
+          - fade_level
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_HapticDirection
+    representation:
+      record:
+        constructor: SDL_HapticDirection
+        fields:
+          - type'
+          - dir
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_HapticDirectionType
+    representation:
+      newtype:
+        constructor: SDL_HapticDirectionType
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_HapticEffect
+    representation:
+      newtype:
+        constructor: SDL_HapticEffect
+        fields:
+          - unwrap
+    instances:
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - IsUnion
+      - ReadRaw
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_HapticEffectID
+    representation:
+      newtype:
+        constructor: SDL_HapticEffectID
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_HapticEffectType
+    representation:
+      newtype:
+        constructor: SDL_HapticEffectType
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_HapticID
+    representation:
+      newtype:
+        constructor: SDL_HapticID
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_HapticLeftRight
+    representation:
+      record:
+        constructor: SDL_HapticLeftRight
+        fields:
+          - type'
+          - length
+          - large_magnitude
+          - small_magnitude
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_HapticPeriodic
+    representation:
+      record:
+        constructor: SDL_HapticPeriodic
+        fields:
+          - type'
+          - direction
+          - length
+          - delay
+          - button
+          - interval
+          - period
+          - magnitude
+          - offset
+          - phase
+          - attack_length
+          - attack_level
+          - fade_length
+          - fade_level
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_HapticRamp
+    representation:
+      record:
+        constructor: SDL_HapticRamp
+        fields:
+          - type'
+          - direction
+          - length
+          - delay
+          - button
+          - interval
+          - start
+          - end
+          - attack_length
+          - attack_level
+          - fade_length
+          - fade_level
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

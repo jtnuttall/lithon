@@ -1,0 +1,157 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Pen
+ctypes:
+  - omit:
+      headers: SDL3/SDL_pen.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_pen.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_pen.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_pen.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_pen.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_pen.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_pen.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_pen.h
+    cname: SDL_PenID
+    hsname: SDL_PenID
+  - headers: SDL3/SDL_pen.h
+    cname: SDL_PenInputFlags
+    hsname: SDL_PenInputFlags
+  - headers: SDL3/SDL_pen.h
+    cname: enum SDL_PenAxis
+    hsname: SDL_PenAxis
+    enum: open
+  - headers: SDL3/SDL_pen.h
+    cname: SDL_PenAxis
+    hsname: SDL_PenAxis
+  - headers: SDL3/SDL_pen.h
+    cname: enum SDL_PenDeviceType
+    hsname: SDL_PenDeviceType
+    enum: open
+  - headers: SDL3/SDL_pen.h
+    cname: SDL_PenDeviceType
+    hsname: SDL_PenDeviceType
+hstypes:
+  - hsname: SDL_PenAxis
+    representation:
+      newtype:
+        constructor: SDL_PenAxis
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PenDeviceType
+    representation:
+      newtype:
+        constructor: SDL_PenDeviceType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PenID
+    representation:
+      newtype:
+        constructor: SDL_PenID
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PenInputFlags
+    representation:
+      newtype:
+        constructor: SDL_PenInputFlags
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

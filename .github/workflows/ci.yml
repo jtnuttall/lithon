@@ -1,0 +1,209 @@
+# CI here has two important jobs:
+# 1. Verify compilation of lithon's libraries across GHC versions, Cabal
+#    flags, and supported platforms.
+# 2. SDL3: Check ABI validity on supported platforms. Building `sdl3-bindgen-sys`
+#    entails compiling `abi_assertions.c`, which contains static assertions
+#    pinning the expected ABI sizes and alignments.
+name: lithon-ci
+
+on:
+  pull_request:
+  push:
+    branches: [main, dev, next]
+
+env:
+  SDL_VERSION: "3.4.12"
+
+jobs:
+  consumer:
+    if: github.repository == 'jtnuttall/lithon'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            ghc: "9.8.4"
+          - os: ubuntu-latest
+            ghc: "9.10.3"
+          - os: ubuntu-latest
+            ghc: "9.12.4"
+          - os: macos-14
+            ghc: "9.12.4"
+          - os: windows-latest
+            ghc: "9.12.4"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup SDL3 (Linux)
+        if: runner.os == 'Linux'
+        uses: ./.github/actions/setup-sdl-linux
+        with:
+          sdl-version: ${{ env.SDL_VERSION }}
+
+      - name: Setup SDL3 (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install sdl3 pkgconf
+          version=$(pkg-config --modversion sdl3)
+          echo "brew sdl3: $version"
+          [ "$(printf '%s\n3.4.0\n' "$version" | sort -V | head -1)" = "3.4.0" ] \
+            || { echo "need SDL >= 3.4"; exit 1; }
+
+      - name: Setup SDL3 (Windows)
+        if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          release: false
+          msystem: UCRT64
+          install: mingw-w64-ucrt-x86_64-sdl3 mingw-w64-ucrt-x86_64-pkgconf
+
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: "3.12"
+          cabal-update: false
+
+      - name: Build and haddock from sdist
+        shell: bash
+        run: |
+          # 1. OS-Specific Paths
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            export PKG_CONFIG_PATH="/c/msys64/ucrt64/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+            export PATH="/c/msys64/ucrt64/bin:$PATH"
+          elif [ "$RUNNER_OS" = "Linux" ]; then
+            export PKG_CONFIG_PATH="$HOME/sdl3/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+          fi
+
+          pkg-config --modversion sdl3
+
+          # 2. Extract sdist
+          mkdir -p "$RUNNER_TEMP/sdist"
+          (cd sdl3-bindgen-sys && cabal sdist --ignore-project -o "$RUNNER_TEMP/sdist")
+          cd "$RUNNER_TEMP/sdist"
+          tar -xzf sdl3-bindgen-sys-*.tar.gz
+          cd sdl3-bindgen-sys-*/
+
+          # 3. Build & Test
+          cabal update
+          cabal build
+
+          if [ "$RUNNER_OS" != "Windows" ]; then cabal haddock; fi
+          if [ "$RUNNER_OS" = "Linux" ]; then cabal check; fi
+
+      - name: Strict-flag compile smoke
+        if: runner.os == 'Linux' && matrix.ghc == '9.12.4'
+        shell: bash
+        run: |
+          export PKG_CONFIG_PATH="$HOME/sdl3/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+          cd "$RUNNER_TEMP/sdist"/sdl3-bindgen-sys-*/
+          cabal build --flags="strict -optimize"
+
+  consumer-rapidhash:
+    if: github.repository == 'jtnuttall/lithon'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ghc: ["9.8.4", "9.10.3", "9.12.4"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: "3.12"
+          cabal-update: false
+
+      - name: C reference pin matches the committed vectors
+        run: ./scripts/rapidhash-pin.sh
+
+      - name: Sdist carries the vendored headers and pin fixtures
+        run: |
+          mkdir -p "$RUNNER_TEMP/sdist"
+          (cd rapidhash && cabal sdist --ignore-project -o "$RUNNER_TEMP/sdist")
+          tar -tzf "$RUNNER_TEMP"/sdist/rapidhash-*.tar.gz | grep -E 'cbits/rapidhash(_ext)?\.h$'
+          tar -tzf "$RUNNER_TEMP"/sdist/rapidhash-*.tar.gz | grep -F 'test/pin/rapidhash-v3-pin.txt'
+
+      - name: Build, test, doctest, haddock from the sdist
+        run: |
+          cd "$RUNNER_TEMP/sdist"
+          tar -xzf rapidhash-*.tar.gz
+          cd rapidhash-*/
+          cabal update
+          cabal build --enable-tests --write-ghc-environment-files=always
+          cabal test rapidhash-test --test-show-details=direct
+          cabal run rapidhash:rapidhash-doctest --enable-tests --write-ghc-environment-files=always
+          cabal haddock
+          cabal check
+
+      - name: Aeson-flag compile matrix
+        run: |
+          cd "$RUNNER_TEMP"/sdist/rapidhash-*/
+          cabal build --flags="+aeson"
+
+  sdl-shmup-floor:
+    if: github.repository == 'jtnuttall/lithon'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        sdl: ["3.2.0", "3.2.30"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-sdl-linux
+        with:
+          sdl-version: ${{ matrix.sdl }}
+
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: "9.12.4"
+          cabal-version: "3.12"
+          cabal-update: false
+
+      - name: Build the shmup closure against SDL ${{ matrix.sdl }}
+        run: |
+          export PKG_CONFIG_PATH="$HOME/sdl3/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+          version=$(pkg-config --modversion sdl3)
+          echo "sdl3: $version"
+          [ "$version" = "${{ matrix.sdl }}" ] || { echo "resolved the wrong SDL"; exit 1; }
+          cat > cabal.project.shmup <<'EOF'
+          packages:
+            sdl3-bindgen-sys
+            lithon-core
+            lithon-vk
+            lithon-examples
+          index-state: 2026-07-01T00:00:00Z
+          package lithon-examples
+            flags: -sdl
+          EOF
+          # `cabal update` parses the project, and the ROOT project
+          # references vendor submodules this checkout doesn't have.
+          cabal update --project-file=cabal.project.shmup
+          cabal build --project-file=cabal.project.shmup lithon-examples:exe:shmup
+
+      - name: Run shmup headless (pixel-probed)
+        run: |
+          export PKG_CONFIG_PATH="$HOME/sdl3/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+          export LD_LIBRARY_PATH="$HOME/sdl3/lib:${LD_LIBRARY_PATH:-}"
+          SDL_VIDEODRIVER=offscreen \
+            cabal run -v0 --project-file=cabal.project.shmup \
+            lithon-examples:exe:shmup -- --frames 60
+
+  gate-nix:
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch submodules
+        run: git submodule update --init --recursive --filter=tree:0
+
+      - uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            accept-flake-config = true
+
+      - name: Run the gate
+        run: nix develop '.?submodules=1' --command ./scripts/check.sh

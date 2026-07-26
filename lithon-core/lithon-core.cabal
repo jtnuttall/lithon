@@ -1,0 +1,122 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.39.6.
+--
+-- see: https://github.com/sol/hpack
+
+name:           lithon-core
+version:        0.1.0.0
+synopsis:       Hand-written runtime core for the lithon Vulkan binding
+description:    The marshalling and runtime machinery grounding lithon's generated code:
+                arena allocation, C-struct poke/peek classes, sType/pNext chain plumbing,
+                open enums, flag sets, platform opaque types, and the loader bootstrap.
+                Users normally import @lithon@, which re-exports what they need from here.
+category:       Graphics
+homepage:       https://github.com/jtnuttall/lithon#readme
+bug-reports:    https://github.com/jtnuttall/lithon/issues
+author:         Jeremy Nuttall
+maintainer:     jeremy@jeremy-nuttall.com
+copyright:      (c) 2026 Jeremy Nuttall
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-doc-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/jtnuttall/lithon
+
+library
+  exposed-modules:
+      Lithon.Core
+      Lithon.Core.Alloc
+      Lithon.Core.BaseTypes
+      Lithon.Core.Chain
+      Lithon.Core.CStruct
+      Lithon.Core.Flags
+      Lithon.Core.Funptr
+      Lithon.Core.Loader
+      Lithon.Core.Open
+      Lithon.Core.Platform
+      Lithon.Core.Primlike
+      Lithon.Core.Sing
+      Lithon.Core.Unbox
+  other-modules:
+      Paths_lithon_core
+  autogen-modules:
+      Paths_lithon_core
+  hs-source-dirs:
+      src
+  default-extensions:
+      BlockArguments
+      DerivingVia
+      DuplicateRecordFields
+      NoFieldSelectors
+      OverloadedRecordDot
+      PatternSynonyms
+      TypeFamilies
+  ghc-options: -Wmissing-deriving-strategies -Wmissing-export-lists -Wredundant-constraints -Wall
+  build-depends:
+      base <4.22.0.0
+    , bytestring ==0.12.*
+    , primitive ==0.9.*
+    , singletons ==3.0.*
+    , singletons-th ==3.5.*
+    , sop-core ==0.5.*
+    , transformers ==0.6.*
+    , unliftio-core ==0.2.*
+    , vector ==0.13.*
+    , witch ==1.4.*
+  default-language: GHC2024
+  if os(windows)
+    extra-libraries:
+        vulkan-1
+  else
+    pkgconfig-depends:
+        vulkan
+
+test-suite lithon-core-test
+  type: exitcode-stdio-1.0
+  main-is: Driver.hs
+  other-modules:
+      Core.AllocTest
+      Core.ChainTest
+      Core.FlagsTest
+      Core.LoaderTest
+      Core.OpenTest
+      Core.PrimlikeTest
+      Paths_lithon_core
+  autogen-modules:
+      Paths_lithon_core
+  hs-source-dirs:
+      test
+  default-extensions:
+      BlockArguments
+      DerivingVia
+      DuplicateRecordFields
+      NoFieldSelectors
+      OverloadedRecordDot
+      PatternSynonyms
+      TypeFamilies
+  ghc-options: -Wmissing-deriving-strategies -Wmissing-export-lists -Wredundant-constraints -Wall
+  build-tool-depends:
+      tasty-discover:tasty-discover ==5.2.*
+  build-depends:
+      base <4.22.0.0
+    , bytestring ==0.12.*
+    , hedgehog ==1.7.*
+    , lithon-core
+    , primitive ==0.9.*
+    , singletons ==3.0.*
+    , singletons-th ==3.5.*
+    , sop-core ==0.5.*
+    , tasty ==1.5.*
+    , tasty-hedgehog ==1.4.*
+    , tasty-hunit ==0.10.*
+    , transformers ==0.6.*
+    , unliftio-core ==0.2.*
+    , vector ==0.13.*
+    , witch ==1.4.*
+  default-language: GHC2024

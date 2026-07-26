@@ -1,0 +1,111 @@
+name: lithon-examples
+version: 0.1.0.0
+github: "jtnuttall/lithon"
+synopsis: Lithon demos — the hello-triangle gates
+description: |
+  End-to-end demos driving the generated @lithon@ binding. The primary
+  executable renders a triangle offscreen on any Vulkan 1.3 device
+  (lavapipe included), writes a PNG, and probe-asserts pixels — the
+  phase-3 design gate. @triangle-sdl@ presents the same triangle in an
+  SDL2 window through @VK_KHR_swapchain@. @sdl3-raw@ draws a triangle
+  raw through @sdl3-bindgen-sys@ — that package's usability gate — and
+  @shmup@ is the apecs Shmup example, playable, running on and rendering
+  through the same bindings. Not published.
+author: Jeremy Nuttall
+maintainer: jeremy@jeremy-nuttall.com
+license: BSD-3-Clause
+
+language: GHC2024
+
+default-extensions:
+  - BlockArguments
+  - DataKinds
+  - DuplicateRecordFields
+  - NoFieldSelectors
+  - OverloadedRecordDot
+  - OverloadedStrings
+  - PatternSynonyms
+
+ghc-options:
+  - -Wall
+  - -threaded
+
+flags:
+  sdl:
+    description: >-
+      Build the windowed SDL2 triangle (needs SDL2 in the environment;
+      the devshell carries it — disable with -f -sdl elsewhere)
+    manual: true
+    default: true
+
+dependencies:
+  - base <4.22.0.0
+  - bytestring ^>=0.12
+  - lithon-vk
+  - lithon-core
+  - vector ^>=0.13
+
+library:
+  source-dirs: src
+  dependencies:
+    - JuicyPixels ^>=3.3
+    - file-embed ^>=0.0.16
+    - vector-sized ^>=1.6
+
+executables:
+  triangle-offscreen:
+    main: Main.hs
+    source-dirs: app/offscreen
+    dependencies:
+      - lithon-examples
+      - JuicyPixels
+
+  triangle-sdl:
+    main: Main.hs
+    source-dirs: app/sdl
+    when:
+      - condition: flag(sdl)
+        then:
+          dependencies:
+            - lithon-examples
+            - sdl2 ^>=2.5
+            - vector-sized
+        else:
+          buildable: false
+
+  # A vertex-colored triangle through SDL_RenderGeometry, driven raw
+  # through the generated sys layer — the sdl3-bindgen-sys usability gate
+  # (windowed normally; headless + pixel-probed via
+  # SDL_VIDEODRIVER=offscreen).
+  sdl3-raw:
+    main: Main.hs
+    source-dirs: app/sdl3-raw
+    dependencies:
+      - sdl3-bindgen-sys
+
+  # The apecs Shmup example (upstream examples/Shmup.md) ported flat from
+  # gloss to the generated sys layer: apecs world and systems verbatim,
+  # the gloss play loop replaced by an explicit fixed-1/60-step SDL loop
+  # (renderGeometry shapes, renderLine particles, renderDebugText score).
+  # A real playable game by default; bounded + unpaced with --frames N or
+  # under CI (headless via SDL_VIDEODRIVER=offscreen, probe-asserted).
+  shmup:
+    main: Main.hs
+    source-dirs: app/shmup
+    dependencies:
+      - apecs ^>=0.10
+      - random ^>=1.3
+      - sdl3-bindgen-sys
+
+tests:
+  lithon-examples-test:
+    main: Driver.hs
+    source-dirs: test
+    build-tools: tasty-discover:tasty-discover
+    dependencies:
+      - lithon-examples
+      - hedgehog ^>=1.7
+      - vector-sized ^>=1.6
+      - tasty ^>=1.5
+      - tasty-hedgehog ^>=1.4
+      - tasty-hunit ^>=0.10

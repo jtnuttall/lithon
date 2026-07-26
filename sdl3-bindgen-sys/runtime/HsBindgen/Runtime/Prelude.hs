@@ -1,0 +1,64 @@
+-- | Common definitions for interfacing with @hs-bindgen@ generated code.
+--
+-- This prelude re-exports every runtime definition that is safe to use
+-- unqualified, /including/ definitions from modules that are otherwise intended
+-- for qualified import (e.g. 'WithFlam' from "HsBindgen.Runtime.FLAM").
+module HsBindgen.Runtime.Prelude (
+  -- * C enumerations
+  CEnum (..),
+  SequentialCEnum (..),
+  AsCEnum (..),
+  AsSequentialCEnum (..),
+
+  -- * Fields and bit-fields
+  HasCField (..),
+  HasCBitfield (..),
+  BitfieldPtr,
+  mkBitfieldPtr,
+
+  -- * Function pointers and instances
+  ToFunPtr (..),
+  FromFunPtr (..),
+  withFunPtr,
+
+  -- * Pointers
+  plusPtrElem,
+  safeCastFunPtr,
+
+  -- * Arrays
+  ConstantArray, -- opaque
+  IncompleteArray, -- opaque
+  IsArray (Elem),
+
+  -- * Flexible array members
+  WithFlam, -- opaque
+
+  -- * Unions
+  IsUnion,
+
+  -- * Marshaling and serialization
+  StaticSize (..),
+  ReadRaw (..),
+  WriteRaw (..),
+  EquivStorable (..),
+  -- Blocks
+  Block (..),
+
+  -- * Read-only pointers
+  PtrConst, -- type synonym or opaque, depending on version of @base@
+) where
+
+import HsBindgen.Runtime.BitfieldPtr
+import HsBindgen.Runtime.Block
+import HsBindgen.Runtime.CEnum
+import HsBindgen.Runtime.ConstantArray
+import HsBindgen.Runtime.FLAM (WithFlam)
+import HsBindgen.Runtime.HasCBitfield
+import HsBindgen.Runtime.HasCField
+import HsBindgen.Runtime.IncompleteArray
+import HsBindgen.Runtime.IsArray
+import HsBindgen.Runtime.Marshal
+import HsBindgen.Runtime.PtrConst
+import HsBindgen.Runtime.Support.FunPtr
+import HsBindgen.Runtime.Support.Ptr
+import HsBindgen.Runtime.Union

@@ -1,0 +1,197 @@
+{
+  "author": "KHR",
+  "changes": [
+    {
+      "contents": {
+        "api": "all",
+        "comment": null,
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_KHR_PORTABILITY_SUBSET_SPEC_VERSION",
+              "pos": "24448:17",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  {
+                    "parsed": {
+                      "contents": 1,
+                      "tag": "VInt"
+                    },
+                    "raw": "1"
+                  },
+                  null
+                ],
+                "tag": "EvValue"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_KHR_PORTABILITY_SUBSET_EXTENSION_NAME",
+              "pos": "24449:17",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  {
+                    "parsed": {
+                      "contents": "VK_KHR_portability_subset",
+                      "tag": "VString"
+                    },
+                    "raw": "\"VK_KHR_portability_subset\""
+                  },
+                  null
+                ],
+                "tag": "EvValue"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PORTABILITY_SUBSET_FEATURES_KHR",
+              "pos": "24450:17",
+              "protect": {
+                "parsed": {
+                  "contents": "VK_ENABLE_BETA_EXTENSIONS",
+                  "tag": "AtomF"
+                },
+                "raw": "VK_ENABLE_BETA_EXTENSIONS"
+              },
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PORTABILITY_SUBSET_PROPERTIES_KHR",
+              "pos": "24451:17",
+              "protect": {
+                "parsed": {
+                  "contents": "VK_ENABLE_BETA_EXTENSIONS",
+                  "tag": "AtomF"
+                },
+                "raw": "VK_ENABLE_BETA_EXTENSIONS"
+              },
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDevicePortabilitySubsetFeaturesKHR",
+            "pos": "24452:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDevicePortabilitySubsetPropertiesKHR",
+            "pos": "24453:17",
+            "tag": "ReqType"
+          }
+        ],
+        "pos": "24447:13",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": null,
+        "items": [
+          {
+            "comment": null,
+            "names": [
+              "robustBufferAccess"
+            ],
+            "pos": "24456:17",
+            "struct": "VkPhysicalDeviceFeatures",
+            "tag": "ReqFeature"
+          }
+        ],
+        "pos": "24455:13",
+        "reasonLink": null
+      },
+      "tag": "ChRemove"
+    }
+  ],
+  "comment": null,
+  "contact": "Bill Hollings @billhollings",
+  "depends": {
+    "parsed": {
+      "contents": [
+        "OrF",
+        {
+          "contents": {
+            "contents": "VK_KHR_get_physical_device_properties2",
+            "tag": "DependsName"
+          },
+          "tag": "AtomF"
+        },
+        {
+          "contents": {
+            "contents": "VK_VERSION_1_1",
+            "tag": "DependsName"
+          },
+          "tag": "AtomF"
+        }
+      ],
+      "tag": "BinOpF"
+    },
+    "raw": "VK_KHR_get_physical_device_properties2,VK_VERSION_1_1"
+  },
+  "deprecatedBy": null,
+  "extensionType": "ExtDevice",
+  "name": "VK_KHR_portability_subset",
+  "noFeatures": true,
+  "number": 164,
+  "obsoletedBy": null,
+  "platform": "provisional",
+  "pos": "24446:9",
+  "promotedTo": null,
+  "protect": null,
+  "provisional": true,
+  "ratified": [
+    "vulkan"
+  ],
+  "sortOrder": null,
+  "specialUse": [],
+  "supported": [
+    "vulkan"
+  ]
+}

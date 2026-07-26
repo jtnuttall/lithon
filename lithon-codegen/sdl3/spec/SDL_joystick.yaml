@@ -1,0 +1,230 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Joystick
+ctypes:
+  - omit:
+      headers: SDL3/SDL_joystick.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_joystick.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_joystick.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_joystick.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_joystick.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_joystick.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_joystick.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_joystick.h
+    cname: struct SDL_Joystick
+    hsname: SDL_Joystick
+  - headers: SDL3/SDL_joystick.h
+    cname: SDL_Joystick
+    hsname: SDL_Joystick
+  - headers: SDL3/SDL_joystick.h
+    cname: SDL_JoystickID
+    hsname: SDL_JoystickID
+  - headers: SDL3/SDL_joystick.h
+    cname: enum SDL_JoystickType
+    hsname: SDL_JoystickType
+    enum: open
+  - headers: SDL3/SDL_joystick.h
+    cname: SDL_JoystickType
+    hsname: SDL_JoystickType
+  - headers: SDL3/SDL_joystick.h
+    cname: enum SDL_JoystickConnectionState
+    hsname: SDL_JoystickConnectionState
+    enum: open
+  - headers: SDL3/SDL_joystick.h
+    cname: SDL_JoystickConnectionState
+    hsname: SDL_JoystickConnectionState
+  - headers: SDL3/SDL_joystick.h
+    cname: struct SDL_VirtualJoystickTouchpadDesc
+    hsname: SDL_VirtualJoystickTouchpadDesc
+  - headers: SDL3/SDL_joystick.h
+    cname: SDL_VirtualJoystickTouchpadDesc
+    hsname: SDL_VirtualJoystickTouchpadDesc
+  - headers: SDL3/SDL_joystick.h
+    cname: struct SDL_VirtualJoystickSensorDesc
+    hsname: SDL_VirtualJoystickSensorDesc
+  - headers: SDL3/SDL_joystick.h
+    cname: SDL_VirtualJoystickSensorDesc
+    hsname: SDL_VirtualJoystickSensorDesc
+  - headers: SDL3/SDL_joystick.h
+    cname: struct SDL_VirtualJoystickDesc
+    hsname: SDL_VirtualJoystickDesc
+  - headers: SDL3/SDL_joystick.h
+    cname: SDL_VirtualJoystickDesc
+    hsname: SDL_VirtualJoystickDesc
+hstypes:
+  - hsname: SDL_Joystick
+    representation: emptydata
+  - hsname: SDL_JoystickConnectionState
+    representation:
+      newtype:
+        constructor: SDL_JoystickConnectionState
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_JoystickID
+    representation:
+      newtype:
+        constructor: SDL_JoystickID
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_JoystickType
+    representation:
+      newtype:
+        constructor: SDL_JoystickType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_VirtualJoystickDesc
+    representation:
+      record:
+        constructor: SDL_VirtualJoystickDesc
+        fields:
+          - version
+          - type'
+          - padding
+          - vendor_id
+          - product_id
+          - naxes
+          - nbuttons
+          - nballs
+          - nhats
+          - ntouchpads
+          - nsensors
+          - padding2
+          - button_mask
+          - axis_mask
+          - name
+          - touchpads
+          - sensors
+          - userdata
+          - update
+          - setPlayerIndex
+          - rumble
+          - rumbleTriggers
+          - setLED
+          - sendEffect
+          - setSensorsEnabled
+          - cleanup
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_VirtualJoystickSensorDesc
+    representation:
+      record:
+        constructor: SDL_VirtualJoystickSensorDesc
+        fields:
+          - type'
+          - rate
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_VirtualJoystickTouchpadDesc
+    representation:
+      record:
+        constructor: SDL_VirtualJoystickTouchpadDesc
+        fields:
+          - nfingers
+          - padding
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

@@ -1,0 +1,70 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Storage
+ctypes:
+  - omit:
+      headers: SDL3/SDL_storage.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_storage.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_storage.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_storage.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_storage.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_storage.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_storage.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_storage.h
+    cname: struct SDL_StorageInterface
+    hsname: SDL_StorageInterface
+  - headers: SDL3/SDL_storage.h
+    cname: SDL_StorageInterface
+    hsname: SDL_StorageInterface
+  - headers: SDL3/SDL_storage.h
+    cname: struct SDL_Storage
+    hsname: SDL_Storage
+  - headers: SDL3/SDL_storage.h
+    cname: SDL_Storage
+    hsname: SDL_Storage
+hstypes:
+  - hsname: SDL_Storage
+    representation: emptydata
+  - hsname: SDL_StorageInterface
+    representation:
+      record:
+        constructor: SDL_StorageInterface
+        fields:
+          - version
+          - close
+          - ready
+          - enumerate
+          - info
+          - read_file
+          - write_file
+          - mkdir
+          - remove
+          - rename
+          - copy
+          - space_remaining
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

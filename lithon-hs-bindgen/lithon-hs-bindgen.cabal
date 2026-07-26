@@ -1,0 +1,64 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.39.6.
+--
+-- see: https://github.com/sol/hpack
+
+name:           lithon-hs-bindgen
+version:        0.1.0.0
+synopsis:       Curated hs-bindgen surface for lithon
+description:    The only lithon package permitted to build-depend on the vendored
+                hs-bindgen (lithon-hs-bindgen/vendor/). The adapter seam: lithon-owned
+                invocation records and artefact operations (Lithon.HsBindgen.Invoke),
+                AST-level module transforms (Lithon.HsBindgen.Transform), and curated
+                qualified facades over the AST vocabularies the emitters consume. On a
+                vendor bump, this package breaks so the rest of lithon does not.
+category:       Graphics
+homepage:       https://github.com/jtnuttall/lithon#readme
+bug-reports:    https://github.com/jtnuttall/lithon/issues
+author:         Jeremy Nuttall
+maintainer:     jeremy@jeremy-nuttall.com
+copyright:      (c) 2026 Jeremy Nuttall
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-doc-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/jtnuttall/lithon
+
+library
+  exposed-modules:
+      Lithon.HsBindgen
+      Lithon.HsBindgen.C
+      Lithon.HsBindgen.Hs
+      Lithon.HsBindgen.HsDoc
+      Lithon.HsBindgen.HsModule
+      Lithon.HsBindgen.Invoke
+      Lithon.HsBindgen.SHs
+      Lithon.HsBindgen.Transform
+  other-modules:
+      Paths_lithon_hs_bindgen
+  autogen-modules:
+      Paths_lithon_hs_bindgen
+  hs-source-dirs:
+      src
+  default-extensions:
+      BlockArguments
+      OverloadedRecordDot
+      RecordWildCards
+  ghc-options: -Wmissing-deriving-strategies -Wmissing-export-lists -Wredundant-constraints -Wall
+  build-depends:
+      base <4.22.0.0
+    , data-default
+    , debruijn
+    , doxygen-parser
+    , hs-bindgen
+    , libclang-bindings
+    , lithon-prelude
+    , text
+    , text-builder-linear
+  default-language: GHC2024

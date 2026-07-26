@@ -1,0 +1,14 @@
+{
+  "enables": [
+    {
+      "contents": "VK_EXT_shader_viewport_index_layer",
+      "tag": "EnableExtension"
+    },
+    {
+      "contents": "VK_NV_viewport_array2",
+      "tag": "EnableExtension"
+    }
+  ],
+  "name": "ShaderViewportIndexLayerEXT",
+  "pos": "34519:9"
+}

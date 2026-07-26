@@ -1,0 +1,93 @@
+[
+  {
+    "body": {
+      "contents": {
+        "body": {
+          "chunks": [
+            {
+              "contents": [
+                "// Version of this file\n#define ",
+                "189:57"
+              ],
+              "tag": "ChunkText"
+            },
+            {
+              "contents": [
+                "VK_HEADER_VERSION",
+                null,
+                "190:9"
+              ],
+              "tag": "ChunkName"
+            },
+            {
+              "contents": [
+                " 356",
+                "190:39"
+              ],
+              "tag": "ChunkText"
+            }
+          ],
+          "raw": "// Version of this file\n#define VK_HEADER_VERSION 356"
+        },
+        "name": "VK_HEADER_VERSION",
+        "nameFromAttr": false
+      },
+      "tag": "TDefine"
+    },
+    "common": {
+      "api": [
+        "vulkan",
+        "vulkanbase"
+      ],
+      "comment": null,
+      "deprecated": null,
+      "pos": "189:9",
+      "requires": null
+    }
+  },
+  {
+    "body": {
+      "contents": {
+        "body": {
+          "chunks": [
+            {
+              "contents": [
+                "// Version of this file\n#define ",
+                "193:48"
+              ],
+              "tag": "ChunkText"
+            },
+            {
+              "contents": [
+                "VK_HEADER_VERSION",
+                null,
+                "194:9"
+              ],
+              "tag": "ChunkName"
+            },
+            {
+              "contents": [
+                " 21",
+                "194:39"
+              ],
+              "tag": "ChunkText"
+            }
+          ],
+          "raw": "// Version of this file\n#define VK_HEADER_VERSION 21"
+        },
+        "name": "VK_HEADER_VERSION",
+        "nameFromAttr": false
+      },
+      "tag": "TDefine"
+    },
+    "common": {
+      "api": [
+        "vulkansc"
+      ],
+      "comment": null,
+      "deprecated": null,
+      "pos": "193:9",
+      "requires": null
+    }
+  }
+]

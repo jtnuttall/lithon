@@ -1,0 +1,129 @@
+{
+  "api": [
+    "vulkan",
+    "vulkansc",
+    "vulkanbase"
+  ],
+  "apiType": "VisPublic",
+  "changes": [
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Feature requirements",
+        "depends": null,
+        "items": [
+          {
+            "comment": null,
+            "names": [
+              "multiview"
+            ],
+            "pos": "20553:13",
+            "struct": "VkPhysicalDeviceMultiviewFeatures",
+            "tag": "ReqFeature"
+          }
+        ],
+        "pos": "20552:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": null,
+        "depends": {
+          "parsed": {
+            "contents": {
+              "contents": {
+                "member": "uniformAndStorageBuffer16BitAccess",
+                "struct": "VkPhysicalDevice16BitStorageFeatures"
+              },
+              "tag": "DependsFeature"
+            },
+            "tag": "AtomF"
+          },
+          "raw": "VkPhysicalDevice16BitStorageFeatures::uniformAndStorageBuffer16BitAccess"
+        },
+        "items": [
+          {
+            "comment": null,
+            "names": [
+              "storageBuffer16BitAccess"
+            ],
+            "pos": "20556:13",
+            "struct": "VkPhysicalDevice16BitStorageFeatures",
+            "tag": "ReqFeature"
+          }
+        ],
+        "pos": "20555:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": null,
+        "depends": {
+          "parsed": {
+            "contents": {
+              "contents": "VK_KHR_shader_draw_parameters",
+              "tag": "DependsName"
+            },
+            "tag": "AtomF"
+          },
+          "raw": "VK_KHR_shader_draw_parameters"
+        },
+        "items": [
+          {
+            "comment": null,
+            "names": [
+              "shaderDrawParameters"
+            ],
+            "pos": "20559:13",
+            "struct": "VkPhysicalDeviceShaderDrawParametersFeatures",
+            "tag": "ReqFeature"
+          }
+        ],
+        "pos": "20558:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    }
+  ],
+  "comment": "Vulkan 1.1 core API interface definitions",
+  "depends": {
+    "parsed": {
+      "contents": [
+        "OrF",
+        {
+          "contents": {
+            "contents": "VK_VERSION_1_0",
+            "tag": "DependsName"
+          },
+          "tag": "AtomF"
+        },
+        {
+          "contents": {
+            "contents": "VK_GRAPHICS_VERSION_1_1",
+            "tag": "DependsName"
+          },
+          "tag": "AtomF"
+        }
+      ],
+      "tag": "BinOpF"
+    },
+    "raw": "VK_VERSION_1_0,VK_GRAPHICS_VERSION_1_1"
+  },
+  "name": "VK_VERSION_1_1",
+  "number": {
+    "parsed": [
+      1,
+      1
+    ],
+    "raw": "1.1"
+  },
+  "pos": "20551:5",
+  "protect": null,
+  "sortOrder": null
+}

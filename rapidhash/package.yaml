@@ -1,0 +1,167 @@
+name: rapidhash
+version: 0.1.0.0
+github: "jtnuttall/lithon/rapidhash"
+license: BSD-3-Clause
+author: "Jeremy Nuttall"
+maintainer: "jeremy@jeremy-nuttall.com"
+copyright: "(c) 2026 Jeremy Nuttall"
+category: Data
+tested-with:
+  - GHC == 9.8.4
+  - GHC == 9.10.3
+  - GHC == 9.12.4
+
+synopsis: rapidhash v3 - very fast, high-quality, non-cryptographic hashing
+description: |
+  Zero-copy FFI bindings to rapidhash v3, a very fast, high-quality,
+  non-cryptographic hash. The upstream single-header C implementation is
+  vendored and ships with this package, so there is no system dependency.
+
+  The rapidhash algorithm itself is platform-independent. This package's
+  byte-oriented instances (Text, ByteString, ShortByteString, ByteArray)
+  produce stable, portable digests you can persist and compare across
+  machines; the element-typed Vector and PrimArray instances hash raw memory
+  as a fast path for large in-memory working sets and are not portable across
+  word width or endianness.
+
+  This is not a cryptographically secure hash. Use something else if you need cryptographic
+  security.
+
+  For more information, see the upstream repository: https://github.com/Nicoshev/rapidhash
+
+license-file:
+  - LICENSE
+  - LICENSE_rapidhash
+
+extra-doc-files:
+  - README.md
+  - CHANGELOG.md
+
+extra-source-files:
+  - cbits/rapidhash.h
+  - cbits/rapidhash_ext.h
+  - test/pin/pin.c
+  - test/pin/rapidhash-v3-pin.txt
+
+language: GHC2021
+
+include-dirs:
+  - cbits
+
+default-extensions:
+  - BlockArguments
+  - DeriveAnyClass
+  - DerivingStrategies
+  - DerivingVia
+  - DuplicateRecordFields
+  - LambdaCase
+  - NoFieldSelectors
+  - OverloadedLabels
+  - OverloadedRecordDot
+  - RecordWildCards
+
+ghc-options:
+  - -Wmissing-deriving-strategies
+  - -Wmissing-export-lists
+  - -Wredundant-constraints
+  - -Wall
+
+dependencies:
+  - base >=4.19 && <4.22
+  - binary ^>=0.8
+  - bytestring ^>=0.12
+  - bytestring-lexing ^>=0.5
+  - hashable ^>=1.5
+  - primitive >=0.8 && <0.10
+  - text ^>=2.1
+  - text-builder-linear ^>=0.1.1
+  - vector ^>=0.13
+
+library:
+  source-dirs: src
+  when:
+    - condition: flag(optimize)
+      ghc-options:
+        - -O2
+      cc-options:
+        - -O3
+    - condition: flag(aeson)
+      dependencies:
+        - aeson >=2.2 && <2.4
+      cpp-options:
+        - -DWANT_AESON
+
+tests:
+  rapidhash-test:
+    main: Driver.hs
+    source-dirs: test
+    ghc-options:
+      - -Wno-missing-export-lists
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - rapidhash
+      - hedgehog ^>=1.7
+      - tasty ^>=1.5
+      - tasty-hedgehog ^>=1.4
+      - tasty-hunit ^>=0.10
+    build-tools:
+      - tasty-discover:tasty-discover ^>=5.2
+
+  rapidhash-doctest:
+    main: Doctest.hs
+    source-dirs: doctest
+    ghc-options:
+      - -threaded
+    dependencies:
+      - rapidhash
+      - doctest-parallel ^>= 0.4
+
+benchmarks:
+  rapidhash-bench:
+    main: Bench.hs
+    source-dirs: bench
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - '"-with-rtsopts=-N -A32m -T"'
+      - -O2
+    when:
+      - condition: flag(llvm-bench)
+        ghc-options:
+          - -fllvm
+          - -pgmlo opt
+          - -pgmlc llc
+          - -pgmlas clang # GHC >= 9.10
+    dependencies:
+      - rapidhash
+      - bytestring ^>=0.12
+      - deepseq >=1.5 && <1.7
+      - hashable ^>=1.5
+      - murmur-hash ^>=0.1
+      - tasty ^>=1.5
+      - tasty-bench ^>=0.5
+      - text ^>=2.1
+      - xxhash-ffi ^>=0.3
+
+flags:
+  optimize:
+    description: |
+      Turns on optimizations. Right now, this means -O2 for GHC and -O3 for the C compiler.
+
+      Since the library is tiny, this shouldn't be too much trouble, but you can disable
+      this flag if it's slowing your builds too much.
+    default: true
+    manual: true
+  aeson:
+    description: Include ToJSON/FromJSON and ToJSONKey/FromJSONKey instances.
+    default: false
+    manual: true
+  llvm-bench:
+    description: |
+      Builds the benchmarks with GHC's LLVM backend so its effect can be measured
+      on your hardware. Requires an LLVM toolchain matching your GHC's supported
+      window, and GHC >= 9.10 for -pgmlas.
+    default: false
+    manual: true

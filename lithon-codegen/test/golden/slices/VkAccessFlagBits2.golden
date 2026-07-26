@@ -1,0 +1,480 @@
+[
+  {
+    "body": {
+      "contents": {
+        "contents": {
+          "name": "VkAccessFlagBits2"
+        },
+        "tag": "FullDef"
+      },
+      "tag": "TEnumDecl"
+    },
+    "common": {
+      "api": "all",
+      "comment": null,
+      "deprecated": null,
+      "pos": "850:9",
+      "requires": null
+    }
+  },
+  {
+    "bitWidth": "W64",
+    "comment": null,
+    "items": [
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_NONE",
+          "pos": "13716:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": 0,
+                  "tag": "VInt"
+                },
+                "raw": "0"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_INDIRECT_COMMAND_READ_BIT",
+          "pos": "13717:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              0,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_INDEX_READ_BIT",
+          "pos": "13718:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              1,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_VERTEX_ATTRIBUTE_READ_BIT",
+          "pos": "13719:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              2,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_UNIFORM_READ_BIT",
+          "pos": "13720:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              3,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_INPUT_ATTACHMENT_READ_BIT",
+          "pos": "13721:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              4,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_SHADER_READ_BIT",
+          "pos": "13722:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              5,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_SHADER_WRITE_BIT",
+          "pos": "13723:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              6,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_COLOR_ATTACHMENT_READ_BIT",
+          "pos": "13724:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              7,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT",
+          "pos": "13725:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              8,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_READ_BIT",
+          "pos": "13726:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              9,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT",
+          "pos": "13727:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              10,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_TRANSFER_READ_BIT",
+          "pos": "13728:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              11,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_TRANSFER_WRITE_BIT",
+          "pos": "13729:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              12,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_HOST_READ_BIT",
+          "pos": "13730:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              13,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_HOST_WRITE_BIT",
+          "pos": "13731:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              14,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_MEMORY_READ_BIT",
+          "pos": "13732:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              15,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_MEMORY_WRITE_BIT",
+          "pos": "13733:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              16,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": "bitpos 17-31 are specified by extensions to the original VkAccessFlagBits enum",
+        "tag": "ItemComment"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_SHADER_SAMPLED_READ_BIT",
+          "pos": "13735:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              32,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_SHADER_STORAGE_READ_BIT",
+          "pos": "13736:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              33,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": null,
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ACCESS_2_SHADER_STORAGE_WRITE_BIT",
+          "pos": "13737:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              34,
+              null
+            ],
+            "tag": "EvBitpos"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      }
+    ],
+    "kind": "KindBitmask",
+    "name": "VkAccessFlagBits2",
+    "pos": "13715:5"
+  }
+]

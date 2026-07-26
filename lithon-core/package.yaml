@@ -1,0 +1,71 @@
+name: lithon-core
+version: 0.1.0.0
+github: "jtnuttall/lithon"
+license: BSD-3-Clause
+author: "Jeremy Nuttall"
+maintainer: "jeremy@jeremy-nuttall.com"
+copyright: "(c) 2026 Jeremy Nuttall"
+category: Graphics
+
+synopsis: Hand-written runtime core for the lithon Vulkan binding
+description: |
+  The marshalling and runtime machinery grounding lithon's generated code:
+  arena allocation, C-struct poke/peek classes, sType/pNext chain plumbing,
+  open enums, flag sets, platform opaque types, and the loader bootstrap.
+  Users normally import @lithon@, which re-exports what they need from here.
+
+extra-doc-files:
+  - README.md
+  - CHANGELOG.md
+
+language: GHC2024
+
+default-extensions:
+  - BlockArguments
+  - DerivingVia
+  - DuplicateRecordFields
+  - NoFieldSelectors
+  - OverloadedRecordDot
+  - PatternSynonyms
+  - TypeFamilies
+
+ghc-options:
+  - -Wmissing-deriving-strategies
+  - -Wmissing-export-lists
+  - -Wredundant-constraints
+  - -Wall
+
+dependencies:
+  - base <4.22.0.0
+  - bytestring ^>=0.12
+  - primitive ^>=0.9
+  - singletons ^>=3.0
+  # singletons-th majors track GHC releases; 3.5 is the GHC 9.12 line
+  - singletons-th ^>=3.5
+  - sop-core ^>=0.5
+  - transformers ^>=0.6
+  - unliftio-core ^>=0.2
+  - vector ^>=0.13
+  - witch ^>=1.4
+
+library:
+  source-dirs: src
+  when:
+    - condition: os(windows)
+      then:
+        extra-libraries: vulkan-1
+      else:
+        pkg-config-dependencies: vulkan
+
+tests:
+  lithon-core-test:
+    main: Driver.hs
+    source-dirs: test
+    dependencies:
+      - lithon-core
+      - hedgehog ^>=1.7
+      - tasty ^>=1.5
+      - tasty-hedgehog ^>=1.4
+      - tasty-hunit ^>=0.10
+    build-tools:
+      - tasty-discover:tasty-discover ^>=5.2

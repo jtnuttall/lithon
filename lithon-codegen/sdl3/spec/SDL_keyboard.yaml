@@ -1,0 +1,123 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Keyboard
+ctypes:
+  - omit:
+      headers: SDL3/SDL_keyboard.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_keyboard.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_keyboard.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_keyboard.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_keyboard.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_keyboard.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_keyboard.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_keyboard.h
+    cname: SDL_KeyboardID
+    hsname: SDL_KeyboardID
+  - headers: SDL3/SDL_keyboard.h
+    cname: enum SDL_TextInputType
+    hsname: SDL_TextInputType
+    enum: open
+  - headers: SDL3/SDL_keyboard.h
+    cname: SDL_TextInputType
+    hsname: SDL_TextInputType
+  - headers: SDL3/SDL_keyboard.h
+    cname: enum SDL_Capitalization
+    hsname: SDL_Capitalization
+    enum: open
+  - headers: SDL3/SDL_keyboard.h
+    cname: SDL_Capitalization
+    hsname: SDL_Capitalization
+hstypes:
+  - hsname: SDL_Capitalization
+    representation:
+      newtype:
+        constructor: SDL_Capitalization
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_KeyboardID
+    representation:
+      newtype:
+        constructor: SDL_KeyboardID
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TextInputType
+    representation:
+      newtype:
+        constructor: SDL_TextInputType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

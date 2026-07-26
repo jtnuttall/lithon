@@ -1,0 +1,60 @@
+{
+  "blockExtent": null,
+  "blockSize": 3,
+  "chroma": "Chroma420",
+  "compatibilityClass": "8-bit 2-plane 420",
+  "components": [
+    {
+      "bits": {
+        "contents": 8,
+        "tag": "BitsInt"
+      },
+      "name": "G",
+      "numericFormat": "NFUnorm",
+      "planeIndex": 0,
+      "pos": "33316:13"
+    },
+    {
+      "bits": {
+        "contents": 8,
+        "tag": "BitsInt"
+      },
+      "name": "B",
+      "numericFormat": "NFUnorm",
+      "planeIndex": 1,
+      "pos": "33317:13"
+    },
+    {
+      "bits": {
+        "contents": 8,
+        "tag": "BitsInt"
+      },
+      "name": "R",
+      "numericFormat": "NFUnorm",
+      "planeIndex": 1,
+      "pos": "33318:13"
+    }
+  ],
+  "compressed": null,
+  "name": "VK_FORMAT_G8_B8R8_2PLANE_420_UNORM",
+  "packed": null,
+  "planes": [
+    {
+      "compatible": "VK_FORMAT_R8_UNORM",
+      "heightDivisor": 1,
+      "index": 0,
+      "pos": "33319:13",
+      "widthDivisor": 1
+    },
+    {
+      "compatible": "VK_FORMAT_R8G8_UNORM",
+      "heightDivisor": 2,
+      "index": 1,
+      "pos": "33320:13",
+      "widthDivisor": 2
+    }
+  ],
+  "pos": "33315:9",
+  "spirvImageFormats": [],
+  "texelsPerBlock": 1
+}

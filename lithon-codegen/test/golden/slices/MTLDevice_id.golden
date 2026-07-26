@@ -1,0 +1,42 @@
+{
+  "body": {
+    "contents": {
+      "body": {
+        "chunks": [
+          {
+            "contents": [
+              "#ifdef __OBJC__\n@protocol MTLDevice;\ntypedef __unsafe_unretained id<MTLDevice> MTLDevice_id;\n#else\ntypedef void* ",
+              "250:35"
+            ],
+            "tag": "ChunkText"
+          },
+          {
+            "contents": [
+              "MTLDevice_id",
+              null,
+              "254:15"
+            ],
+            "tag": "ChunkName"
+          },
+          {
+            "contents": [
+              ";\n#endif",
+              "254:40"
+            ],
+            "tag": "ChunkText"
+          }
+        ],
+        "raw": "#ifdef __OBJC__\n@protocol MTLDevice;\ntypedef __unsafe_unretained id<MTLDevice> MTLDevice_id;\n#else\ntypedef void* MTLDevice_id;\n#endif"
+      },
+      "name": "MTLDevice_id"
+    },
+    "tag": "TBasetype"
+  },
+  "common": {
+    "api": "all",
+    "comment": null,
+    "deprecated": null,
+    "pos": "250:9",
+    "requires": null
+  }
+}

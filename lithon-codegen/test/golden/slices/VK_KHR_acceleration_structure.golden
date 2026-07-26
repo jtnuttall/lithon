@@ -1,0 +1,1233 @@
+{
+  "author": "KHR",
+  "changes": [
+    {
+      "contents": {
+        "api": "all",
+        "comment": null,
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_KHR_ACCELERATION_STRUCTURE_SPEC_VERSION",
+              "pos": "24041:17",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  {
+                    "parsed": {
+                      "contents": 13,
+                      "tag": "VInt"
+                    },
+                    "raw": "13"
+                  },
+                  null
+                ],
+                "tag": "EvValue"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME",
+              "pos": "24042:17",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  {
+                    "parsed": {
+                      "contents": "VK_KHR_acceleration_structure",
+                      "tag": "VString"
+                    },
+                    "raw": "\"VK_KHR_acceleration_structure\""
+                  },
+                  null
+                ],
+                "tag": "EvValue"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_ACCELERATION_STRUCTURE_KHR",
+              "pos": "24043:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 7,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_BUILD_GEOMETRY_INFO_KHR",
+              "pos": "24044:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_DEVICE_ADDRESS_INFO_KHR",
+              "pos": "24045:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 2,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_AABBS_DATA_KHR",
+              "pos": "24046:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 3,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_INSTANCES_DATA_KHR",
+              "pos": "24047:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 4,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_TRIANGLES_DATA_KHR",
+              "pos": "24048:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 5,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_KHR",
+              "pos": "24049:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 6,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_VERSION_INFO_KHR",
+              "pos": "24050:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 9,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_COPY_ACCELERATION_STRUCTURE_INFO_KHR",
+              "pos": "24051:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 10,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_COPY_ACCELERATION_STRUCTURE_TO_MEMORY_INFO_KHR",
+              "pos": "24052:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 11,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_COPY_MEMORY_TO_ACCELERATION_STRUCTURE_INFO_KHR",
+              "pos": "24053:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 12,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_ACCELERATION_STRUCTURE_FEATURES_KHR",
+              "pos": "24054:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 13,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_ACCELERATION_STRUCTURE_PROPERTIES_KHR",
+              "pos": "24055:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 14,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_CREATE_INFO_KHR",
+              "pos": "24056:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 17,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_BUILD_SIZES_INFO_KHR",
+              "pos": "24057:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 20,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkPipelineStageFlagBits",
+              "name": "VK_PIPELINE_STAGE_ACCELERATION_STRUCTURE_BUILD_BIT_KHR",
+              "pos": "24058:17",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  25,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkDescriptorType",
+              "name": "VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_KHR",
+              "pos": "24059:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkAccessFlagBits",
+              "name": "VK_ACCESS_ACCELERATION_STRUCTURE_READ_BIT_KHR",
+              "pos": "24060:17",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  21,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkAccessFlagBits",
+              "name": "VK_ACCESS_ACCELERATION_STRUCTURE_WRITE_BIT_KHR",
+              "pos": "24061:17",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  22,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkQueryType",
+              "name": "VK_QUERY_TYPE_ACCELERATION_STRUCTURE_COMPACTED_SIZE_KHR",
+              "pos": "24062:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkQueryType",
+              "name": "VK_QUERY_TYPE_ACCELERATION_STRUCTURE_SERIALIZATION_SIZE_KHR",
+              "pos": "24063:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkObjectType",
+              "name": "VK_OBJECT_TYPE_ACCELERATION_STRUCTURE_KHR",
+              "pos": "24064:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 166,
+              "extends": "VkIndexType",
+              "name": "VK_INDEX_TYPE_NONE_KHR",
+              "pos": "24065:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkFormatFeatureFlagBits",
+              "name": "VK_FORMAT_FEATURE_ACCELERATION_STRUCTURE_VERTEX_BUFFER_BIT_KHR",
+              "pos": "24066:17",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  29,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkBufferUsageFlagBits",
+              "name": "VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR",
+              "pos": "24067:17",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  19,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkBufferUsageFlagBits",
+              "name": "VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR",
+              "pos": "24068:17",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  20,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkCopyAccelerationStructureModeKHR",
+              "name": "VK_COPY_ACCELERATION_STRUCTURE_MODE_SERIALIZE_KHR",
+              "pos": "24069:17",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  {
+                    "parsed": {
+                      "contents": 2,
+                      "tag": "VInt"
+                    },
+                    "raw": "2"
+                  },
+                  null
+                ],
+                "tag": "EvValue"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkCopyAccelerationStructureModeKHR",
+              "name": "VK_COPY_ACCELERATION_STRUCTURE_MODE_DESERIALIZE_KHR",
+              "pos": "24070:17",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  {
+                    "parsed": {
+                      "contents": 3,
+                      "tag": "VInt"
+                    },
+                    "raw": "3"
+                  },
+                  null
+                ],
+                "tag": "EvValue"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureTypeKHR",
+            "pos": "24071:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkDeviceOrHostAddressKHR",
+            "pos": "24072:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkDeviceOrHostAddressConstKHR",
+            "pos": "24073:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureBuildRangeInfoKHR",
+            "pos": "24074:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAabbPositionsKHR",
+            "pos": "24075:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureGeometryTrianglesDataKHR",
+            "pos": "24076:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkTransformMatrixKHR",
+            "pos": "24077:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureBuildGeometryInfoKHR",
+            "pos": "24078:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureBuildTypeKHR",
+            "pos": "24079:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureGeometryAabbsDataKHR",
+            "pos": "24080:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureInstanceKHR",
+            "pos": "24081:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureGeometryInstancesDataKHR",
+            "pos": "24082:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureGeometryDataKHR",
+            "pos": "24083:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureGeometryKHR",
+            "pos": "24084:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkGeometryFlagsKHR",
+            "pos": "24085:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkGeometryInstanceFlagsKHR",
+            "pos": "24086:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkGeometryFlagBitsKHR",
+            "pos": "24087:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkGeometryInstanceFlagBitsKHR",
+            "pos": "24088:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureCreateInfoKHR",
+            "pos": "24089:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureKHR",
+            "pos": "24090:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkBuildAccelerationStructureFlagBitsKHR",
+            "pos": "24091:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkBuildAccelerationStructureFlagsKHR",
+            "pos": "24092:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkCopyAccelerationStructureModeKHR",
+            "pos": "24093:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkGeometryTypeKHR",
+            "pos": "24094:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkWriteDescriptorSetAccelerationStructureKHR",
+            "pos": "24095:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceAccelerationStructureFeaturesKHR",
+            "pos": "24096:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceAccelerationStructurePropertiesKHR",
+            "pos": "24097:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureDeviceAddressInfoKHR",
+            "pos": "24098:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureVersionInfoKHR",
+            "pos": "24099:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkCopyAccelerationStructureToMemoryInfoKHR",
+            "pos": "24100:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkCopyMemoryToAccelerationStructureInfoKHR",
+            "pos": "24101:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkCopyAccelerationStructureInfoKHR",
+            "pos": "24102:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureCompatibilityKHR",
+            "pos": "24103:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureCreateFlagBitsKHR",
+            "pos": "24104:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureCreateFlagsKHR",
+            "pos": "24105:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkBuildAccelerationStructureModeKHR",
+            "pos": "24106:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkAccelerationStructureBuildSizesInfoKHR",
+            "pos": "24107:17",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkCreateAccelerationStructureKHR",
+            "pos": "24108:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkDestroyAccelerationStructureKHR",
+            "pos": "24109:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkCmdBuildAccelerationStructuresKHR",
+            "pos": "24110:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkCmdBuildAccelerationStructuresIndirectKHR",
+            "pos": "24111:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkBuildAccelerationStructuresKHR",
+            "pos": "24112:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkCopyAccelerationStructureKHR",
+            "pos": "24113:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkCopyAccelerationStructureToMemoryKHR",
+            "pos": "24114:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkCopyMemoryToAccelerationStructureKHR",
+            "pos": "24115:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkWriteAccelerationStructuresPropertiesKHR",
+            "pos": "24116:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkCmdCopyAccelerationStructureKHR",
+            "pos": "24117:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkCmdCopyAccelerationStructureToMemoryKHR",
+            "pos": "24118:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkCmdCopyMemoryToAccelerationStructureKHR",
+            "pos": "24119:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkGetAccelerationStructureDeviceAddressKHR",
+            "pos": "24120:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkCmdWriteAccelerationStructuresPropertiesKHR",
+            "pos": "24121:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkGetDeviceAccelerationStructureCompatibilityKHR",
+            "pos": "24122:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkGetAccelerationStructureBuildSizesKHR",
+            "pos": "24123:17",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "names": [
+              "accelerationStructure"
+            ],
+            "pos": "24124:17",
+            "struct": "VkPhysicalDeviceAccelerationStructureFeaturesKHR",
+            "tag": "ReqFeature"
+          },
+          {
+            "comment": null,
+            "names": [
+              "bufferDeviceAddress"
+            ],
+            "pos": "24125:17",
+            "struct": "VkPhysicalDeviceBufferDeviceAddressFeatures",
+            "tag": "ReqFeature"
+          },
+          {
+            "comment": null,
+            "names": [
+              "descriptorBindingAccelerationStructureUpdateAfterBind"
+            ],
+            "pos": "24126:17",
+            "struct": "VkPhysicalDeviceAccelerationStructureFeaturesKHR",
+            "tag": "ReqFeature"
+          }
+        ],
+        "pos": "24040:13",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": null,
+        "depends": {
+          "parsed": {
+            "contents": [
+              "OrF",
+              {
+                "contents": {
+                  "contents": "VK_KHR_format_feature_flags2",
+                  "tag": "DependsName"
+                },
+                "tag": "AtomF"
+              },
+              {
+                "contents": {
+                  "contents": "VK_VERSION_1_3",
+                  "tag": "DependsName"
+                },
+                "tag": "AtomF"
+              }
+            ],
+            "tag": "BinOpF"
+          },
+          "raw": "VK_KHR_format_feature_flags2,VK_VERSION_1_3"
+        },
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkFormatFeatureFlagBits2",
+              "name": "VK_FORMAT_FEATURE_2_ACCELERATION_STRUCTURE_VERTEX_BUFFER_BIT_KHR",
+              "pos": "24129:17",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  29,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          }
+        ],
+        "pos": "24128:13",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": null,
+        "depends": {
+          "parsed": {
+            "contents": {
+              "contents": "VK_EXT_debug_report",
+              "tag": "DependsName"
+            },
+            "tag": "AtomF"
+          },
+          "raw": "VK_EXT_debug_report"
+        },
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkDebugReportObjectTypeEXT",
+              "name": "VK_DEBUG_REPORT_OBJECT_TYPE_ACCELERATION_STRUCTURE_KHR_EXT",
+              "pos": "24132:17",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          }
+        ],
+        "pos": "24131:13",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": null,
+        "depends": {
+          "parsed": {
+            "contents": {
+              "contents": "VK_VERSION_1_2",
+              "tag": "DependsName"
+            },
+            "tag": "AtomF"
+          },
+          "raw": "VK_VERSION_1_2"
+        },
+        "items": [
+          {
+            "comment": null,
+            "names": [
+              "descriptorIndexing"
+            ],
+            "pos": "24135:17",
+            "struct": "VkPhysicalDeviceVulkan12Features",
+            "tag": "ReqFeature"
+          }
+        ],
+        "pos": "24134:13",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": null,
+        "explanationLink": "legacy-host-builds",
+        "items": [
+          {
+            "name": "vkBuildAccelerationStructuresKHR",
+            "pos": "24138:17",
+            "supersededBy": "vkCmdBuildAccelerationStructuresKHR",
+            "tag": "DepCommand"
+          },
+          {
+            "name": "vkCopyAccelerationStructureKHR",
+            "pos": "24139:17",
+            "supersededBy": "vkCmdCopyAccelerationStructureKHR",
+            "tag": "DepCommand"
+          },
+          {
+            "name": "vkCopyAccelerationStructureToMemoryKHR",
+            "pos": "24140:17",
+            "supersededBy": "vkCmdCopyAccelerationStructureToMemoryKHR",
+            "tag": "DepCommand"
+          },
+          {
+            "name": "vkCopyMemoryToAccelerationStructureKHR",
+            "pos": "24141:17",
+            "supersededBy": "vkCmdCopyMemoryToAccelerationStructureKHR",
+            "tag": "DepCommand"
+          },
+          {
+            "name": "vkWriteAccelerationStructuresPropertiesKHR",
+            "pos": "24142:17",
+            "supersededBy": "vkCmdWriteAccelerationStructuresPropertiesKHR",
+            "tag": "DepCommand"
+          },
+          {
+            "names": [
+              "accelerationStructureHostCommands"
+            ],
+            "pos": "24143:17",
+            "struct": "VkPhysicalDeviceAccelerationStructureFeaturesKHR",
+            "tag": "DepFeature"
+          }
+        ],
+        "pos": "24137:13"
+      },
+      "tag": "ChDeprecate"
+    }
+  ],
+  "comment": null,
+  "contact": "Daniel Koch @dgkoch",
+  "depends": {
+    "parsed": {
+      "contents": [
+        "AndF",
+        {
+          "contents": [
+            "OrF",
+            {
+              "contents": [
+                "AndF",
+                {
+                  "contents": [
+                    "AndF",
+                    {
+                      "contents": {
+                        "contents": "VK_VERSION_1_1",
+                        "tag": "DependsName"
+                      },
+                      "tag": "AtomF"
+                    },
+                    {
+                      "contents": {
+                        "contents": "VK_EXT_descriptor_indexing",
+                        "tag": "DependsName"
+                      },
+                      "tag": "AtomF"
+                    }
+                  ],
+                  "tag": "BinOpF"
+                },
+                {
+                  "contents": {
+                    "contents": "VK_KHR_buffer_device_address",
+                    "tag": "DependsName"
+                  },
+                  "tag": "AtomF"
+                }
+              ],
+              "tag": "BinOpF"
+            },
+            {
+              "contents": {
+                "contents": "VK_VERSION_1_2",
+                "tag": "DependsName"
+              },
+              "tag": "AtomF"
+            }
+          ],
+          "tag": "BinOpF"
+        },
+        {
+          "contents": {
+            "contents": "VK_KHR_deferred_host_operations",
+            "tag": "DependsName"
+          },
+          "tag": "AtomF"
+        }
+      ],
+      "tag": "BinOpF"
+    },
+    "raw": "((VK_VERSION_1_1+VK_EXT_descriptor_indexing+VK_KHR_buffer_device_address),VK_VERSION_1_2)+VK_KHR_deferred_host_operations"
+  },
+  "deprecatedBy": null,
+  "extensionType": "ExtDevice",
+  "name": "VK_KHR_acceleration_structure",
+  "noFeatures": null,
+  "number": 151,
+  "obsoletedBy": null,
+  "platform": null,
+  "pos": "24039:9",
+  "promotedTo": null,
+  "protect": null,
+  "provisional": false,
+  "ratified": [
+    "vulkan"
+  ],
+  "sortOrder": 1,
+  "specialUse": [],
+  "supported": [
+    "vulkan"
+  ]
+}

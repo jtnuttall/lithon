@@ -1,0 +1,2087 @@
+{
+  "aliases": [],
+  "availability": {
+    "contents": {
+      "contents": {
+        "major": 1,
+        "minor": 0
+      },
+      "tag": "AvailVersion"
+    },
+    "tag": "AtomF"
+  },
+  "bitWidth": "W32",
+  "comment": "API result codes",
+  "flow": "FlowBoth",
+  "items": [
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "Command completed successfully",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": 0,
+            "tag": "VInt"
+          },
+          "raw": "0"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_SUCCESS",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12640:9",
+      "value": {
+        "contents": 0,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "A fence or query has not yet completed",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": 1,
+            "tag": "VInt"
+          },
+          "raw": "1"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_NOT_READY",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12641:9",
+      "value": {
+        "contents": 1,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "A wait operation has not completed in the specified time",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": 2,
+            "tag": "VInt"
+          },
+          "raw": "2"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_TIMEOUT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12642:9",
+      "value": {
+        "contents": 2,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "An event is signaled",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": 3,
+            "tag": "VInt"
+          },
+          "raw": "3"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_EVENT_SET",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12643:9",
+      "value": {
+        "contents": 3,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "An event is unsignaled",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": 4,
+            "tag": "VInt"
+          },
+          "raw": "4"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_EVENT_RESET",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12644:9",
+      "value": {
+        "contents": 4,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "A return array was too small for the result",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": 5,
+            "tag": "VInt"
+          },
+          "raw": "5"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_INCOMPLETE",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12645:9",
+      "value": {
+        "contents": 5,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "A host memory allocation has failed",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": -1,
+            "tag": "VInt"
+          },
+          "raw": "-1"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_ERROR_OUT_OF_HOST_MEMORY",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12647:9",
+      "value": {
+        "contents": -1,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "A device memory allocation has failed",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": -2,
+            "tag": "VInt"
+          },
+          "raw": "-2"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_ERROR_OUT_OF_DEVICE_MEMORY",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12648:9",
+      "value": {
+        "contents": -2,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "Initialization of an object has failed",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": -3,
+            "tag": "VInt"
+          },
+          "raw": "-3"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_ERROR_INITIALIZATION_FAILED",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12649:9",
+      "value": {
+        "contents": -3,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "The logical device has been lost. See <<devsandqueues-lost-device>>",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": -4,
+            "tag": "VInt"
+          },
+          "raw": "-4"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_ERROR_DEVICE_LOST",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12650:9",
+      "value": {
+        "contents": -4,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "Mapping of a memory object has failed",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": -5,
+            "tag": "VInt"
+          },
+          "raw": "-5"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_ERROR_MEMORY_MAP_FAILED",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12651:9",
+      "value": {
+        "contents": -5,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "Layer specified does not exist",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": -6,
+            "tag": "VInt"
+          },
+          "raw": "-6"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_ERROR_LAYER_NOT_PRESENT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12652:9",
+      "value": {
+        "contents": -6,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "Extension specified does not exist",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": -7,
+            "tag": "VInt"
+          },
+          "raw": "-7"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_ERROR_EXTENSION_NOT_PRESENT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12653:9",
+      "value": {
+        "contents": -7,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "Requested feature is not available on this device",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": -8,
+            "tag": "VInt"
+          },
+          "raw": "-8"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_ERROR_FEATURE_NOT_PRESENT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12654:9",
+      "value": {
+        "contents": -8,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "Unable to find a Vulkan driver",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": -9,
+            "tag": "VInt"
+          },
+          "raw": "-9"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_ERROR_INCOMPATIBLE_DRIVER",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12655:9",
+      "value": {
+        "contents": -9,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "Too many objects of the type have already been created",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": -10,
+            "tag": "VInt"
+          },
+          "raw": "-10"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_ERROR_TOO_MANY_OBJECTS",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12656:9",
+      "value": {
+        "contents": -10,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "Requested format is not supported on this device",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": -11,
+            "tag": "VInt"
+          },
+          "raw": "-11"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_ERROR_FORMAT_NOT_SUPPORTED",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12657:9",
+      "value": {
+        "contents": -11,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "A requested pool allocation has failed due to fragmentation of the pool's memory",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": -12,
+            "tag": "VInt"
+          },
+          "raw": "-12"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_ERROR_FRAGMENTED_POOL",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12658:9",
+      "value": {
+        "contents": -12,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": null,
+      "comment": "An unknown error has occurred, due to an implementation or application bug",
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": -13,
+            "tag": "VInt"
+          },
+          "raw": "-13"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_ERROR_UNKNOWN",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "12659:9",
+      "value": {
+        "contents": -13,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_pipeline_binary",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 484,
+        "negative": true,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_NOT_ENOUGH_SPACE_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "29446:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_pipeline_binary",
+            "number": 484,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "29480:17",
+      "value": {
+        "contents": -1000483000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_EXT_image_compression_control",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 339,
+        "negative": true,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_COMPRESSION_EXHAUSTED_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "27259:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_EXT_image_compression_control",
+            "number": 339,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "27276:17",
+      "value": {
+        "contents": -1000338000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_video_encode_queue",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 300,
+        "negative": true,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_INVALID_VIDEO_STD_PARAMETERS_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "26369:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_video_encode_queue",
+            "number": 300,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26403:17",
+      "value": {
+        "contents": -1000299000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_EXT_buffer_device_address",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ERROR_INVALID_DEVICE_ADDRESS_EXT",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "25554:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_EXT_buffer_device_address",
+                "number": 245,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "25563:17"
+        },
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_buffer_device_address",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ERROR_INVALID_OPAQUE_CAPTURE_ADDRESS_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "25747:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_buffer_device_address",
+                "number": 258,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "25759:17"
+        }
+      ],
+      "availability": {
+        "contents": {
+          "contents": {
+            "major": 1,
+            "minor": 2
+          },
+          "tag": "AvailVersion"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 258,
+        "negative": true,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_INVALID_OPAQUE_CAPTURE_ADDRESS",
+      "origins": [
+        {
+          "blockComment": "Promoted from VK_KHR_buffer_device_address (extension 258)",
+          "blockIndex": 16,
+          "condition": null,
+          "pos": "20620:9",
+          "profile": null,
+          "source": {
+            "feature": "VK_VERSION_1_2",
+            "tag": "FromFeature",
+            "version": {
+              "major": 1,
+              "minor": 2
+            }
+          },
+          "tier": "VK_BASE_VERSION_1_2"
+        }
+      ],
+      "platformGuards": [],
+      "pos": "20630:13",
+      "value": {
+        "contents": -1000257000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_EXT_full_screen_exclusive",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 256,
+        "negative": true,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_FULL_SCREEN_EXCLUSIVE_MODE_LOST_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "25715:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_EXT_full_screen_exclusive",
+            "number": 256,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [
+        {
+          "platform": "win32",
+          "protect": "VK_USE_PLATFORM_WIN32_KHR"
+        }
+      ],
+      "pos": "25720:17",
+      "value": {
+        "contents": -1000255000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_EXT_present_timing",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 209,
+        "negative": true,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_PRESENT_TIMING_QUEUE_FULL_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "25074:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_EXT_present_timing",
+            "number": 209,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "25089:17",
+      "value": {
+        "contents": -1000208000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_EXT_global_priority",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ERROR_NOT_PERMITTED_EXT",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "24666:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_EXT_global_priority",
+                "number": 175,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "24670:17"
+        },
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_global_priority",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ERROR_NOT_PERMITTED_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "24811:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_global_priority",
+                "number": 189,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "24817:17"
+        }
+      ],
+      "availability": {
+        "contents": {
+          "contents": {
+            "major": 1,
+            "minor": 4
+          },
+          "tag": "AvailVersion"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 175,
+        "negative": true,
+        "offset": 1,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_NOT_PERMITTED",
+      "origins": [
+        {
+          "blockComment": "Promoted from VK_KHR_global_priority (extension 189)",
+          "blockIndex": 4,
+          "condition": null,
+          "pos": "21184:9",
+          "profile": null,
+          "source": {
+            "feature": "VK_VERSION_1_4",
+            "tag": "FromFeature",
+            "version": {
+              "major": 1,
+              "minor": 4
+            }
+          },
+          "tier": "VK_BASE_VERSION_1_4"
+        }
+      ],
+      "platformGuards": [],
+      "pos": "21188:13",
+      "value": {
+        "contents": -1000174001,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_EXT_descriptor_indexing",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ERROR_FRAGMENTATION_EXT",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "24401:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_EXT_descriptor_indexing",
+                "number": 162,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "24415:17"
+        }
+      ],
+      "availability": {
+        "contents": {
+          "contents": {
+            "major": 1,
+            "minor": 2
+          },
+          "tag": "AvailVersion"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 162,
+        "negative": true,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_FRAGMENTATION",
+      "origins": [
+        {
+          "blockComment": "Promoted from VK_EXT_descriptor_indexing (extension 162)",
+          "blockIndex": 22,
+          "condition": null,
+          "pos": "20661:9",
+          "profile": null,
+          "source": {
+            "feature": "VK_VERSION_1_2",
+            "tag": "FromFeature",
+            "version": {
+              "major": 1,
+              "minor": 2
+            }
+          },
+          "tier": "VK_COMPUTE_VERSION_1_2"
+        }
+      ],
+      "platformGuards": [],
+      "pos": "20669:13",
+      "value": {
+        "contents": -1000161000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_EXT_image_drm_format_modifier",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 159,
+        "negative": true,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_INVALID_DRM_FORMAT_MODIFIER_PLANE_LAYOUT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "24348:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_EXT_image_drm_format_modifier",
+            "number": 159,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "24351:17",
+      "value": {
+        "contents": -1000158000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_external_memory",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ERROR_INVALID_EXTERNAL_HANDLE_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "22727:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_external_memory",
+                "number": 73,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "22733:17"
+        }
+      ],
+      "availability": {
+        "contents": {
+          "contents": {
+            "major": 1,
+            "minor": 1
+          },
+          "tag": "AvailVersion"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 73,
+        "negative": true,
+        "offset": 3,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_INVALID_EXTERNAL_HANDLE",
+      "origins": [
+        {
+          "blockComment": "Promoted from VK_KHR_external_memory",
+          "blockIndex": 17,
+          "condition": null,
+          "pos": "20394:9",
+          "profile": null,
+          "source": {
+            "feature": "VK_VERSION_1_1",
+            "tag": "FromFeature",
+            "version": {
+              "major": 1,
+              "minor": 1
+            }
+          },
+          "tier": "VK_BASE_VERSION_1_1"
+        }
+      ],
+      "platformGuards": [],
+      "pos": "20398:13",
+      "value": {
+        "contents": -1000072003,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_maintenance1",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ERROR_OUT_OF_POOL_MEMORY_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "22667:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_maintenance1",
+                "number": 70,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "22672:17"
+        }
+      ],
+      "availability": {
+        "contents": {
+          "contents": {
+            "major": 1,
+            "minor": 1
+          },
+          "tag": "AvailVersion"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 70,
+        "negative": true,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_OUT_OF_POOL_MEMORY",
+      "origins": [
+        {
+          "blockComment": "Promoted from VK_KHR_maintenance1",
+          "blockIndex": 12,
+          "condition": null,
+          "pos": "20300:9",
+          "profile": null,
+          "source": {
+            "feature": "VK_VERSION_1_1",
+            "tag": "FromFeature",
+            "version": {
+              "major": 1,
+              "minor": 1
+            }
+          },
+          "tier": "VK_BASE_VERSION_1_1"
+        }
+      ],
+      "platformGuards": [],
+      "pos": "20301:13",
+      "value": {
+        "contents": -1000069000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_video_queue",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 24,
+        "negative": true,
+        "offset": 5,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_VIDEO_STD_VERSION_NOT_SUPPORTED_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "21933:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_video_queue",
+            "number": 24,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "21962:17",
+      "value": {
+        "contents": -1000023005,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_video_queue",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 24,
+        "negative": true,
+        "offset": 4,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_VIDEO_PROFILE_CODEC_NOT_SUPPORTED_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "21933:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_video_queue",
+            "number": 24,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "21961:17",
+      "value": {
+        "contents": -1000023004,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_video_queue",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 24,
+        "negative": true,
+        "offset": 3,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_VIDEO_PROFILE_FORMAT_NOT_SUPPORTED_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "21933:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_video_queue",
+            "number": 24,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "21960:17",
+      "value": {
+        "contents": -1000023003,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_video_queue",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 24,
+        "negative": true,
+        "offset": 2,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_VIDEO_PROFILE_OPERATION_NOT_SUPPORTED_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "21933:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_video_queue",
+            "number": 24,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "21959:17",
+      "value": {
+        "contents": -1000023002,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_video_queue",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 24,
+        "negative": true,
+        "offset": 1,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_VIDEO_PICTURE_LAYOUT_NOT_SUPPORTED_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "21933:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_video_queue",
+            "number": 24,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "21958:17",
+      "value": {
+        "contents": -1000023001,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_video_queue",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 24,
+        "negative": true,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_IMAGE_USAGE_NOT_SUPPORTED_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "21933:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_video_queue",
+            "number": 24,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "21957:17",
+      "value": {
+        "contents": -1000023000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_NV_glsl_shader",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 13,
+        "negative": true,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_INVALID_SHADER_NV",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "21847:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_NV_glsl_shader",
+            "number": 13,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "21850:17",
+      "value": {
+        "contents": -1000012000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_EXT_debug_report",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ERROR_VALIDATION_FAILED_EXT",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "21823:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_EXT_debug_report",
+                "number": 12,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "21828:17"
+        }
+      ],
+      "availability": {
+        "contents": {
+          "contents": {
+            "major": 1,
+            "minor": 0
+          },
+          "tag": "AvailVersion"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 12,
+        "negative": true,
+        "offset": 1,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_VALIDATION_FAILED",
+      "origins": [
+        {
+          "blockComment": "Retroactively promoted from VK_EXT_debug_report for compatibility with VulkanSC",
+          "blockIndex": 24,
+          "condition": null,
+          "pos": "19957:9",
+          "profile": null,
+          "source": {
+            "feature": "VK_VERSION_1_0",
+            "tag": "FromFeature",
+            "version": {
+              "major": 1,
+              "minor": 0
+            }
+          },
+          "tier": "VK_BASE_VERSION_1_0"
+        }
+      ],
+      "platformGuards": [],
+      "pos": "19958:13",
+      "value": {
+        "contents": -1000011001,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_display_swapchain",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 4,
+        "negative": true,
+        "offset": 1,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_INCOMPATIBLE_DISPLAY_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "21730:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_display_swapchain",
+            "number": 4,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "21734:17",
+      "value": {
+        "contents": -1000003001,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_swapchain",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 2,
+        "negative": true,
+        "offset": 4,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_OUT_OF_DATE_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "21654:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_swapchain",
+            "number": 2,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "21661:17",
+      "value": {
+        "contents": -1000001004,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_surface",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 1,
+        "negative": true,
+        "offset": 1,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_NATIVE_WINDOW_IN_USE_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "21631:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_surface",
+            "number": 1,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "21635:17",
+      "value": {
+        "contents": -1000000001,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_surface",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 1,
+        "negative": true,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_ERROR_SURFACE_LOST_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "21631:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_surface",
+            "number": 1,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "21634:17",
+      "value": {
+        "contents": -1000000000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_swapchain",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 2,
+        "negative": false,
+        "offset": 3,
+        "tag": "FromOffset"
+      },
+      "name": "VK_SUBOPTIMAL_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "21654:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_swapchain",
+            "number": 2,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "21660:17",
+      "value": {
+        "contents": 1000001003,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_deferred_host_operations",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 269,
+        "negative": false,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_THREAD_IDLE_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "25897:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_deferred_host_operations",
+            "number": 269,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "25907:17",
+      "value": {
+        "contents": 1000268000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_deferred_host_operations",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 269,
+        "negative": false,
+        "offset": 1,
+        "tag": "FromOffset"
+      },
+      "name": "VK_THREAD_DONE_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "25897:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_deferred_host_operations",
+            "number": 269,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "25908:17",
+      "value": {
+        "contents": 1000268001,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_deferred_host_operations",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 269,
+        "negative": false,
+        "offset": 2,
+        "tag": "FromOffset"
+      },
+      "name": "VK_OPERATION_DEFERRED_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "25897:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_deferred_host_operations",
+            "number": 269,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "25909:17",
+      "value": {
+        "contents": 1000268002,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_deferred_host_operations",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 269,
+        "negative": false,
+        "offset": 3,
+        "tag": "FromOffset"
+      },
+      "name": "VK_OPERATION_NOT_DEFERRED_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "25897:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_deferred_host_operations",
+            "number": 269,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "25910:17",
+      "value": {
+        "contents": 1000268003,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_EXT_pipeline_creation_cache_control",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ERROR_PIPELINE_COMPILE_REQUIRED_EXT",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26348:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_EXT_pipeline_creation_cache_control",
+                "number": 298,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26355:17"
+        },
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_EXT_pipeline_creation_cache_control",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_PIPELINE_COMPILE_REQUIRED_EXT",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26348:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_EXT_pipeline_creation_cache_control",
+                "number": 298,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26354:17"
+        }
+      ],
+      "availability": {
+        "contents": {
+          "contents": {
+            "major": 1,
+            "minor": 3
+          },
+          "tag": "AvailVersion"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 298,
+        "negative": false,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_PIPELINE_COMPILE_REQUIRED",
+      "origins": [
+        {
+          "blockComment": "Promoted from VK_EXT_pipeline_creation_cache_control (extension 298)",
+          "blockIndex": 20,
+          "condition": null,
+          "pos": "21008:9",
+          "profile": null,
+          "source": {
+            "feature": "VK_VERSION_1_3",
+            "tag": "FromFeature",
+            "version": {
+              "major": 1,
+              "minor": 3
+            }
+          },
+          "tier": "VK_COMPUTE_VERSION_1_3"
+        }
+      ],
+      "platformGuards": [],
+      "pos": "21013:13",
+      "value": {
+        "contents": 1000297000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_EXT_shader_object",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": "DeprAliased",
+          "name": "VK_ERROR_INCOMPATIBLE_SHADER_BINARY_EXT",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "29316:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_EXT_shader_object",
+                "number": 483,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "29327:17"
+        }
+      ],
+      "availability": {
+        "contents": {
+          "contents": "VK_EXT_shader_object",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 483,
+        "negative": false,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_INCOMPATIBLE_SHADER_BINARY_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "29316:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_EXT_shader_object",
+            "number": 483,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "29326:17",
+      "value": {
+        "contents": 1000482000,
+        "tag": "NumSigned"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_pipeline_binary",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "extNumber": 484,
+        "negative": false,
+        "offset": 0,
+        "tag": "FromOffset"
+      },
+      "name": "VK_PIPELINE_BINARY_MISSING_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "29446:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_pipeline_binary",
+            "number": 484,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "29479:17",
+      "value": {
+        "contents": 1000483000,
+        "tag": "NumSigned"
+      }
+    }
+  ],
+  "kind": "KindEnum",
+  "name": "VkResult",
+  "origins": [
+    {
+      "blockComment": "Fundamental types used by many commands and structures",
+      "blockIndex": 2,
+      "condition": null,
+      "pos": "19648:9",
+      "profile": null,
+      "source": {
+        "feature": "VK_VERSION_1_0",
+        "tag": "FromFeature",
+        "version": {
+          "major": 1,
+          "minor": 0
+        }
+      },
+      "tier": "VK_BASE_VERSION_1_0"
+    }
+  ],
+  "pos": "12638:5"
+}

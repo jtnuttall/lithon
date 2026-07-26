@@ -1,0 +1,198 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Thread
+ctypes:
+  - omit:
+      headers: SDL3/SDL_thread.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_thread.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_thread.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_thread.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_thread.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_thread.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_thread.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_thread.h
+    cname: struct SDL_Thread
+    hsname: SDL_Thread
+  - headers: SDL3/SDL_thread.h
+    cname: SDL_Thread
+    hsname: SDL_Thread
+  - headers: SDL3/SDL_thread.h
+    cname: SDL_ThreadID
+    hsname: SDL_ThreadID
+  - headers: SDL3/SDL_thread.h
+    cname: SDL_TLSID
+    hsname: SDL_TLSID
+  - headers: SDL3/SDL_thread.h
+    cname: enum SDL_ThreadPriority
+    hsname: SDL_ThreadPriority
+    enum: open
+  - headers: SDL3/SDL_thread.h
+    cname: SDL_ThreadPriority
+    hsname: SDL_ThreadPriority
+  - headers: SDL3/SDL_thread.h
+    cname: enum SDL_ThreadState
+    hsname: SDL_ThreadState
+    enum: open
+  - headers: SDL3/SDL_thread.h
+    cname: SDL_ThreadState
+    hsname: SDL_ThreadState
+  - headers: SDL3/SDL_thread.h
+    cname: SDL_ThreadFunction
+    hsname: SDL_ThreadFunction
+  - headers: SDL3/SDL_thread.h
+    cname: SDL_TLSDestructorCallback
+    hsname: SDL_TLSDestructorCallback
+hstypes:
+  - hsname: SDL_TLSDestructorCallback
+    representation:
+      newtype:
+        constructor: SDL_TLSDestructorCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TLSID
+    representation:
+      newtype:
+        constructor: SDL_TLSID
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Thread
+    representation: emptydata
+  - hsname: SDL_ThreadFunction
+    representation:
+      newtype:
+        constructor: SDL_ThreadFunction
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_ThreadID
+    representation:
+      newtype:
+        constructor: SDL_ThreadID
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_ThreadPriority
+    representation:
+      newtype:
+        constructor: SDL_ThreadPriority
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_ThreadState
+    representation:
+      newtype:
+        constructor: SDL_ThreadState
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

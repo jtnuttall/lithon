@@ -1,0 +1,80 @@
+{
+  "commandCensus": {
+    "BytesOut": 9,
+    "ChainOut": 13,
+    "DualCall": 30,
+    "FixedOut": 84,
+    "Override": 2,
+    "ResultOnly": 55,
+    "ScalarRet": 10,
+    "SizedOutArray": 7,
+    "Unit": 172
+  },
+  "excluded": [
+    "vkGetDeviceProcAddr",
+    "vkGetInstanceProcAddr"
+  ],
+  "notes": [
+    "VkPipelineCreateInfoKHR is not structextends-extended in the registry; its pNext is emitted write-only-null (affects vkGetPipelineKeyKHR's optional create-info)."
+  ],
+  "retainedInputCounts": [
+    [
+      "vkGetDescriptorEXT",
+      "dataSize"
+    ],
+    [
+      "vkGetQueryPoolResults",
+      "dataSize"
+    ],
+    [
+      "vkGetRayTracingCaptureReplayShaderGroupHandlesKHR",
+      "dataSize"
+    ],
+    [
+      "vkGetRayTracingShaderGroupHandlesKHR",
+      "dataSize"
+    ],
+    [
+      "vkWriteAccelerationStructuresPropertiesKHR",
+      "dataSize"
+    ],
+    [
+      "vkWriteMicromapsPropertiesEXT",
+      "dataSize"
+    ]
+  ],
+  "safeCommands": [
+    "vkAcquireNextImage2KHR",
+    "vkAcquireNextImageKHR",
+    "vkAcquireProfilingLockKHR",
+    "vkBuildAccelerationStructuresKHR",
+    "vkBuildMicromapsEXT",
+    "vkCopyAccelerationStructureKHR",
+    "vkCopyAccelerationStructureToMemoryKHR",
+    "vkCopyImageToImage",
+    "vkCopyImageToMemory",
+    "vkCopyMemoryToAccelerationStructureKHR",
+    "vkCopyMemoryToImage",
+    "vkCopyMemoryToMicromapEXT",
+    "vkCopyMicromapEXT",
+    "vkCopyMicromapToMemoryEXT",
+    "vkCreateComputePipelines",
+    "vkCreateGraphicsPipelines",
+    "vkCreateRayTracingPipelinesKHR",
+    "vkCreateShadersEXT",
+    "vkCreateSwapchainKHR",
+    "vkDeferredOperationJoinKHR",
+    "vkDeviceWaitIdle",
+    "vkGetQueryPoolResults",
+    "vkQueuePresentKHR",
+    "vkQueueSubmit2",
+    "vkQueueWaitIdle",
+    "vkWaitForFences",
+    "vkWaitForPresentKHR",
+    "vkWaitSemaphores"
+  ],
+  "unpairedCreates": [
+    "vkCreateDisplayModeKHR",
+    "vkCreatePipelineBinariesKHR"
+  ]
+}

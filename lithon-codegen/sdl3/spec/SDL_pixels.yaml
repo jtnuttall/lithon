@@ -1,0 +1,545 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Pixels
+ctypes:
+  - omit:
+      headers: SDL3/SDL_pixels.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_pixels.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_pixels.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_pixels.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_pixels.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_pixels.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_pixels.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_pixels.h
+    cname: enum SDL_PixelType
+    hsname: SDL_PixelType
+    enum: open
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_PixelType
+    hsname: SDL_PixelType
+  - headers: SDL3/SDL_pixels.h
+    cname: enum SDL_BitmapOrder
+    hsname: SDL_BitmapOrder
+    enum: open
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_BitmapOrder
+    hsname: SDL_BitmapOrder
+  - headers: SDL3/SDL_pixels.h
+    cname: enum SDL_PackedOrder
+    hsname: SDL_PackedOrder
+    enum: open
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_PackedOrder
+    hsname: SDL_PackedOrder
+  - headers: SDL3/SDL_pixels.h
+    cname: enum SDL_ArrayOrder
+    hsname: SDL_ArrayOrder
+    enum: open
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_ArrayOrder
+    hsname: SDL_ArrayOrder
+  - headers: SDL3/SDL_pixels.h
+    cname: enum SDL_PackedLayout
+    hsname: SDL_PackedLayout
+    enum: open
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_PackedLayout
+    hsname: SDL_PackedLayout
+  - headers: SDL3/SDL_pixels.h
+    cname: enum SDL_PixelFormat
+    hsname: SDL_PixelFormat
+    enum: open
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_PixelFormat
+    hsname: SDL_PixelFormat
+  - headers: SDL3/SDL_pixels.h
+    cname: enum SDL_ColorType
+    hsname: SDL_ColorType
+    enum: open
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_ColorType
+    hsname: SDL_ColorType
+  - headers: SDL3/SDL_pixels.h
+    cname: enum SDL_ColorRange
+    hsname: SDL_ColorRange
+    enum: open
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_ColorRange
+    hsname: SDL_ColorRange
+  - headers: SDL3/SDL_pixels.h
+    cname: enum SDL_ColorPrimaries
+    hsname: SDL_ColorPrimaries
+    enum: open
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_ColorPrimaries
+    hsname: SDL_ColorPrimaries
+  - headers: SDL3/SDL_pixels.h
+    cname: enum SDL_TransferCharacteristics
+    hsname: SDL_TransferCharacteristics
+    enum: open
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_TransferCharacteristics
+    hsname: SDL_TransferCharacteristics
+  - headers: SDL3/SDL_pixels.h
+    cname: enum SDL_MatrixCoefficients
+    hsname: SDL_MatrixCoefficients
+    enum: open
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_MatrixCoefficients
+    hsname: SDL_MatrixCoefficients
+  - headers: SDL3/SDL_pixels.h
+    cname: enum SDL_ChromaLocation
+    hsname: SDL_ChromaLocation
+    enum: open
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_ChromaLocation
+    hsname: SDL_ChromaLocation
+  - headers: SDL3/SDL_pixels.h
+    cname: enum SDL_Colorspace
+    hsname: SDL_Colorspace
+    enum: open
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_Colorspace
+    hsname: SDL_Colorspace
+  - headers: SDL3/SDL_pixels.h
+    cname: struct SDL_Color
+    hsname: SDL_Color
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_Color
+    hsname: SDL_Color
+  - headers: SDL3/SDL_pixels.h
+    cname: struct SDL_FColor
+    hsname: SDL_FColor
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_FColor
+    hsname: SDL_FColor
+  - headers: SDL3/SDL_pixels.h
+    cname: struct SDL_Palette
+    hsname: SDL_Palette
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_Palette
+    hsname: SDL_Palette
+  - headers: SDL3/SDL_pixels.h
+    cname: struct SDL_PixelFormatDetails
+    hsname: SDL_PixelFormatDetails
+  - headers: SDL3/SDL_pixels.h
+    cname: SDL_PixelFormatDetails
+    hsname: SDL_PixelFormatDetails
+hstypes:
+  - hsname: SDL_ArrayOrder
+    representation:
+      newtype:
+        constructor: SDL_ArrayOrder
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_BitmapOrder
+    representation:
+      newtype:
+        constructor: SDL_BitmapOrder
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_ChromaLocation
+    representation:
+      newtype:
+        constructor: SDL_ChromaLocation
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Color
+    representation:
+      record:
+        constructor: SDL_Color
+        fields:
+          - r
+          - g
+          - b
+          - a
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_ColorPrimaries
+    representation:
+      newtype:
+        constructor: SDL_ColorPrimaries
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_ColorRange
+    representation:
+      newtype:
+        constructor: SDL_ColorRange
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_ColorType
+    representation:
+      newtype:
+        constructor: SDL_ColorType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Colorspace
+    representation:
+      newtype:
+        constructor: SDL_Colorspace
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_FColor
+    representation:
+      record:
+        constructor: SDL_FColor
+        fields:
+          - r
+          - g
+          - b
+          - a
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MatrixCoefficients
+    representation:
+      newtype:
+        constructor: SDL_MatrixCoefficients
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PackedLayout
+    representation:
+      newtype:
+        constructor: SDL_PackedLayout
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PackedOrder
+    representation:
+      newtype:
+        constructor: SDL_PackedOrder
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Palette
+    representation:
+      record:
+        constructor: SDL_Palette
+        fields:
+          - ncolors
+          - colors
+          - version
+          - refcount
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PixelFormat
+    representation:
+      newtype:
+        constructor: SDL_PixelFormat
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PixelFormatDetails
+    representation:
+      record:
+        constructor: SDL_PixelFormatDetails
+        fields:
+          - format
+          - bits_per_pixel
+          - bytes_per_pixel
+          - padding
+          - rmask
+          - gmask
+          - bmask
+          - amask
+          - rbits
+          - gbits
+          - bbits
+          - abits
+          - rshift
+          - gshift
+          - bshift
+          - ashift
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PixelType
+    representation:
+      newtype:
+        constructor: SDL_PixelType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TransferCharacteristics
+    representation:
+      newtype:
+        constructor: SDL_TransferCharacteristics
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

@@ -1,0 +1,323 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Gamepad
+ctypes:
+  - omit:
+      headers: SDL3/SDL_gamepad.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_gamepad.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_gamepad.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_gamepad.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_gamepad.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_gamepad.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_gamepad.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_gamepad.h
+    cname: struct SDL_Gamepad
+    hsname: SDL_Gamepad
+  - headers: SDL3/SDL_gamepad.h
+    cname: SDL_Gamepad
+    hsname: SDL_Gamepad
+  - headers: SDL3/SDL_gamepad.h
+    cname: enum SDL_GamepadType
+    hsname: SDL_GamepadType
+    enum: open
+  - headers: SDL3/SDL_gamepad.h
+    cname: SDL_GamepadType
+    hsname: SDL_GamepadType
+  - headers: SDL3/SDL_gamepad.h
+    cname: enum SDL_GamepadButton
+    hsname: SDL_GamepadButton
+    enum: open
+  - headers: SDL3/SDL_gamepad.h
+    cname: SDL_GamepadButton
+    hsname: SDL_GamepadButton
+  - headers: SDL3/SDL_gamepad.h
+    cname: enum SDL_GamepadButtonLabel
+    hsname: SDL_GamepadButtonLabel
+    enum: open
+  - headers: SDL3/SDL_gamepad.h
+    cname: SDL_GamepadButtonLabel
+    hsname: SDL_GamepadButtonLabel
+  - headers: SDL3/SDL_gamepad.h
+    cname: enum SDL_GamepadAxis
+    hsname: SDL_GamepadAxis
+    enum: open
+  - headers: SDL3/SDL_gamepad.h
+    cname: SDL_GamepadAxis
+    hsname: SDL_GamepadAxis
+  - headers: SDL3/SDL_gamepad.h
+    cname: enum SDL_GamepadBindingType
+    hsname: SDL_GamepadBindingType
+    enum: open
+  - headers: SDL3/SDL_gamepad.h
+    cname: SDL_GamepadBindingType
+    hsname: SDL_GamepadBindingType
+  - headers: SDL3/SDL_gamepad.h
+    cname: struct SDL_GamepadBinding
+    hsname: SDL_GamepadBinding
+  - headers: SDL3/SDL_gamepad.h
+    cname: union @SDL_GamepadBinding_input
+    hsname: SDL_GamepadBinding_input
+  - headers: SDL3/SDL_gamepad.h
+    cname: struct @SDL_GamepadBinding_input_axis
+    hsname: SDL_GamepadBinding_input_axis
+  - headers: SDL3/SDL_gamepad.h
+    cname: struct @SDL_GamepadBinding_input_hat
+    hsname: SDL_GamepadBinding_input_hat
+  - headers: SDL3/SDL_gamepad.h
+    cname: union @SDL_GamepadBinding_output
+    hsname: SDL_GamepadBinding_output
+  - headers: SDL3/SDL_gamepad.h
+    cname: struct @SDL_GamepadBinding_output_axis
+    hsname: SDL_GamepadBinding_output_axis
+  - headers: SDL3/SDL_gamepad.h
+    cname: SDL_GamepadBinding
+    hsname: SDL_GamepadBinding
+hstypes:
+  - hsname: SDL_Gamepad
+    representation: emptydata
+  - hsname: SDL_GamepadAxis
+    representation:
+      newtype:
+        constructor: SDL_GamepadAxis
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadBinding
+    representation:
+      record:
+        constructor: SDL_GamepadBinding
+        fields:
+          - input_type
+          - input
+          - output_type
+          - output
+    instances:
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadBindingType
+    representation:
+      newtype:
+        constructor: SDL_GamepadBindingType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadBinding_input
+    representation:
+      newtype:
+        constructor: SDL_GamepadBinding_input
+        fields:
+          - unwrap
+    instances:
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - IsUnion
+      - ReadRaw
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadBinding_input_axis
+    representation:
+      record:
+        constructor: SDL_GamepadBinding_input_axis
+        fields:
+          - axis
+          - axis_min
+          - axis_max
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadBinding_input_hat
+    representation:
+      record:
+        constructor: SDL_GamepadBinding_input_hat
+        fields:
+          - hat
+          - hat_mask
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadBinding_output
+    representation:
+      newtype:
+        constructor: SDL_GamepadBinding_output
+        fields:
+          - unwrap
+    instances:
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - IsUnion
+      - ReadRaw
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadBinding_output_axis
+    representation:
+      record:
+        constructor: SDL_GamepadBinding_output_axis
+        fields:
+          - axis
+          - axis_min
+          - axis_max
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadButton
+    representation:
+      newtype:
+        constructor: SDL_GamepadButton
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadButtonLabel
+    representation:
+      newtype:
+        constructor: SDL_GamepadButtonLabel
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadType
+    representation:
+      newtype:
+        constructor: SDL_GamepadType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

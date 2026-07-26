@@ -1,0 +1,214 @@
+{
+  "aliases": [
+    {
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_maintenance5",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "deprecated": null,
+      "name": "vkCmdBindIndexBuffer2KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "29060:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_maintenance5",
+            "number": 471,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "pos": "17800:9"
+    }
+  ],
+  "allowNoQueues": null,
+  "availability": {
+    "contents": {
+      "contents": {
+        "major": 1,
+        "minor": 4
+      },
+      "tag": "AvailVersion"
+    },
+    "tag": "AtomF"
+  },
+  "cmdBufferLevel": [
+    "LevelPrimary",
+    "LevelSecondary"
+  ],
+  "comment": null,
+  "conditionalRendering": false,
+  "deprecation": {
+    "categories": [
+      "legacy-buffer-commands"
+    ],
+    "marker": null,
+    "since": {
+      "contents": "VK_KHR_device_address_commands",
+      "tag": "AvailExtension"
+    },
+    "supersededBy": "vkCmdBindIndexBuffer3KHR"
+  },
+  "dispatch": "DispatchDevice",
+  "errorCodes": [],
+  "export": [
+    "vulkan"
+  ],
+  "implicitExternSyncParams": [],
+  "name": "vkCmdBindIndexBuffer2",
+  "origins": [
+    {
+      "blockComment": "Promoted from VK_KHR_maintenance5 (extension 471) 'Roadmap 2024'",
+      "blockIndex": 24,
+      "condition": null,
+      "pos": "21376:9",
+      "profile": null,
+      "source": {
+        "feature": "VK_VERSION_1_4",
+        "tag": "FromFeature",
+        "version": {
+          "major": 1,
+          "minor": 4
+        }
+      },
+      "tier": "VK_GRAPHICS_VERSION_1_4"
+    }
+  ],
+  "params": [
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "externSync": {
+        "parsed": {
+          "tag": "SyncTrue"
+        },
+        "raw": "true"
+      },
+      "isOptional": null,
+      "len": null,
+      "name": "commandBuffer",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "17794:13",
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefHandle",
+        "name": "VkCommandBuffer",
+        "spelledAs": null
+      },
+      "validStructs": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "externSync": null,
+      "isOptional": [
+        true
+      ],
+      "len": null,
+      "name": "buffer",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "17795:13",
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefHandle",
+        "name": "VkBuffer",
+        "spelledAs": null
+      },
+      "validStructs": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "externSync": null,
+      "isOptional": null,
+      "len": null,
+      "name": "offset",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "17796:13",
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefBasetype",
+        "name": "VkDeviceSize",
+        "spelledAs": null
+      },
+      "validStructs": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "externSync": null,
+      "isOptional": null,
+      "len": null,
+      "name": "size",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "17797:13",
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefBasetype",
+        "name": "VkDeviceSize",
+        "spelledAs": null
+      },
+      "validStructs": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "externSync": null,
+      "isOptional": null,
+      "len": null,
+      "name": "indexType",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "17798:13",
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefEnum",
+        "name": "VkIndexType",
+        "spelledAs": null
+      },
+      "validStructs": []
+    }
+  ],
+  "platformGuards": [],
+  "pos": "17792:9",
+  "queues": [
+    "VK_QUEUE_GRAPHICS_BIT"
+  ],
+  "renderPass": "ScopeBoth",
+  "returnType": {
+    "kind": "RefVoid",
+    "name": "void",
+    "spelledAs": null
+  },
+  "successCodes": [],
+  "tasks": [
+    "state"
+  ],
+  "videoCoding": null
+}

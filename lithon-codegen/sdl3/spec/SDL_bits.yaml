@@ -1,0 +1,26 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Bits
+ctypes:
+  - omit:
+      headers: SDL3/SDL_bits.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_bits.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_bits.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_bits.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_bits.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_bits.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_bits.h
+      cname: SDL_lroundf

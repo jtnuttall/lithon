@@ -1,0 +1,615 @@
+{
+  "body": {
+    "contents": {
+      "contents": {
+        "allowDuplicate": null,
+        "comments": [],
+        "members": [
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkStructureType",
+                    "1302:69"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    " ",
+                    "1302:97"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "sType",
+                    null,
+                    "1302:98"
+                  ],
+                  "tag": "ChunkName"
+                }
+              ],
+              "raw": "VkStructureType sType"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "sType",
+              "nameAlias": null,
+              "pointers": [],
+              "pos": "1302:98",
+              "structKw": false,
+              "typeName": {
+                "name": "VkStructureType",
+                "pos": "1302:69"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "1302:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": [
+              "VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO"
+            ]
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "const ",
+                    "1303:37"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "void",
+                    "1303:43"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "*     ",
+                    "1303:60"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "pNext",
+                    null,
+                    "1303:66"
+                  ],
+                  "tag": "ChunkName"
+                }
+              ],
+              "raw": "const void*     pNext"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": true,
+              "bitfield": null,
+              "name": "pNext",
+              "nameAlias": null,
+              "pointers": [
+                {
+                  "isConst": false
+                }
+              ],
+              "pos": "1303:66",
+              "structKw": false,
+              "typeName": {
+                "name": "void",
+                "pos": "1303:43"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": [
+              true
+            ],
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "1303:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkInstanceCreateFlags",
+                    "1304:37"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "  ",
+                    "1304:71"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "flags",
+                    null,
+                    "1304:73"
+                  ],
+                  "tag": "ChunkName"
+                }
+              ],
+              "raw": "VkInstanceCreateFlags  flags"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "flags",
+              "nameAlias": null,
+              "pointers": [],
+              "pos": "1304:73",
+              "structKw": false,
+              "typeName": {
+                "name": "VkInstanceCreateFlags",
+                "pos": "1304:37"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": [
+              true
+            ],
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "1304:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "const ",
+                    "1305:37"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "VkApplicationInfo",
+                    "1305:43"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "* ",
+                    "1305:73"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "pApplicationInfo",
+                    null,
+                    "1305:75"
+                  ],
+                  "tag": "ChunkName"
+                }
+              ],
+              "raw": "const VkApplicationInfo* pApplicationInfo"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": true,
+              "bitfield": null,
+              "name": "pApplicationInfo",
+              "nameAlias": null,
+              "pointers": [
+                {
+                  "isConst": false
+                }
+              ],
+              "pos": "1305:75",
+              "structKw": false,
+              "typeName": {
+                "name": "VkApplicationInfo",
+                "pos": "1305:43"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": [
+              true
+            ],
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "1305:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "uint32_t",
+                    "1306:37"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "               ",
+                    "1306:58"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "enabledLayerCount",
+                    null,
+                    "1306:73"
+                  ],
+                  "tag": "ChunkName"
+                }
+              ],
+              "raw": "uint32_t               enabledLayerCount"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "enabledLayerCount",
+              "nameAlias": null,
+              "pointers": [],
+              "pos": "1306:73",
+              "structKw": false,
+              "typeName": {
+                "name": "uint32_t",
+                "pos": "1306:37"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": [
+              true
+            ],
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "1306:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "const ",
+                    "1307:61"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "char",
+                    "1307:67"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "* const*      ",
+                    "1307:84"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "ppEnabledLayerNames",
+                    null,
+                    "1307:98"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    "Ordered list of layer names to be enabled",
+                    "1307:130"
+                  ],
+                  "tag": "ChunkComment"
+                }
+              ],
+              "raw": "const char* const*      ppEnabledLayerNames"
+            },
+            "comment": "Ordered list of layer names to be enabled",
+            "decl": {
+              "arrayDims": [],
+              "baseConst": true,
+              "bitfield": null,
+              "name": "ppEnabledLayerNames",
+              "nameAlias": null,
+              "pointers": [
+                {
+                  "isConst": true
+                },
+                {
+                  "isConst": false
+                }
+              ],
+              "pos": "1307:98",
+              "structKw": false,
+              "typeName": {
+                "name": "char",
+                "pos": "1307:67"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": {
+              "parsed": [
+                {
+                  "contents": [
+                    "enabledLayerCount"
+                  ],
+                  "tag": "LenPath"
+                },
+                {
+                  "tag": "LenNullTerminated"
+                }
+              ],
+              "raw": "enabledLayerCount,null-terminated"
+            },
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "1307:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "uint32_t",
+                    "1308:37"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "               ",
+                    "1308:58"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "enabledExtensionCount",
+                    null,
+                    "1308:73"
+                  ],
+                  "tag": "ChunkName"
+                }
+              ],
+              "raw": "uint32_t               enabledExtensionCount"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "enabledExtensionCount",
+              "nameAlias": null,
+              "pointers": [],
+              "pos": "1308:73",
+              "structKw": false,
+              "typeName": {
+                "name": "uint32_t",
+                "pos": "1308:37"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": [
+              true
+            ],
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "1308:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "const ",
+                    "1309:65"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "char",
+                    "1309:71"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "* const*      ",
+                    "1309:88"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "ppEnabledExtensionNames",
+                    null,
+                    "1309:102"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    "Extension names to be enabled",
+                    "1309:138"
+                  ],
+                  "tag": "ChunkComment"
+                }
+              ],
+              "raw": "const char* const*      ppEnabledExtensionNames"
+            },
+            "comment": "Extension names to be enabled",
+            "decl": {
+              "arrayDims": [],
+              "baseConst": true,
+              "bitfield": null,
+              "name": "ppEnabledExtensionNames",
+              "nameAlias": null,
+              "pointers": [
+                {
+                  "isConst": true
+                },
+                {
+                  "isConst": false
+                }
+              ],
+              "pos": "1309:102",
+              "structKw": false,
+              "typeName": {
+                "name": "char",
+                "pos": "1309:71"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": {
+              "parsed": [
+                {
+                  "contents": [
+                    "enabledExtensionCount"
+                  ],
+                  "tag": "LenPath"
+                },
+                {
+                  "tag": "LenNullTerminated"
+                }
+              ],
+              "raw": "enabledExtensionCount,null-terminated"
+            },
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "1309:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          }
+        ],
+        "name": "VkInstanceCreateInfo",
+        "requiredLimitType": false,
+        "returnedOnly": false,
+        "structExtends": []
+      },
+      "tag": "FullDef"
+    },
+    "tag": "TStruct"
+  },
+  "common": {
+    "api": "all",
+    "comment": null,
+    "deprecated": null,
+    "pos": "1301:9",
+    "requires": null
+  }
+}

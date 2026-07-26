@@ -1,0 +1,138 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Properties
+ctypes:
+  - omit:
+      headers: SDL3/SDL_properties.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_properties.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_properties.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_properties.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_properties.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_properties.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_properties.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_properties.h
+    cname: SDL_PropertiesID
+    hsname: SDL_PropertiesID
+  - headers: SDL3/SDL_properties.h
+    cname: enum SDL_PropertyType
+    hsname: SDL_PropertyType
+    enum: open
+  - headers: SDL3/SDL_properties.h
+    cname: SDL_PropertyType
+    hsname: SDL_PropertyType
+  - headers: SDL3/SDL_properties.h
+    cname: SDL_CleanupPropertyCallback
+    hsname: SDL_CleanupPropertyCallback
+  - headers: SDL3/SDL_properties.h
+    cname: SDL_EnumeratePropertiesCallback
+    hsname: SDL_EnumeratePropertiesCallback
+hstypes:
+  - hsname: SDL_CleanupPropertyCallback
+    representation:
+      newtype:
+        constructor: SDL_CleanupPropertyCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_EnumeratePropertiesCallback
+    representation:
+      newtype:
+        constructor: SDL_EnumeratePropertiesCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PropertiesID
+    representation:
+      newtype:
+        constructor: SDL_PropertiesID
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PropertyType
+    representation:
+      newtype:
+        constructor: SDL_PropertyType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

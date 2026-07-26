@@ -1,0 +1,423 @@
+{
+  "body": {
+    "contents": {
+      "contents": {
+        "allowDuplicate": null,
+        "comments": [
+          "The bitfields in this structure are non-normative since bitfield ordering is implementation-defined in C. The specification defines the normative layout."
+        ],
+        "members": [
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkTransformMatrixKHR",
+                    "6694:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                                    ",
+                    "6694:54"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "transform",
+                    null,
+                    "6694:90"
+                  ],
+                  "tag": "ChunkName"
+                }
+              ],
+              "raw": "VkTransformMatrixKHR                                    transform"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "transform",
+              "nameAlias": null,
+              "pointers": [],
+              "pos": "6694:90",
+              "structKw": false,
+              "typeName": {
+                "name": "VkTransformMatrixKHR",
+                "pos": "6694:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6694:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "uint32_t",
+                    "6695:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                                                ",
+                    "6695:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "instanceCustomIndex",
+                    null,
+                    "6695:90"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    ":24",
+                    "6695:122"
+                  ],
+                  "tag": "ChunkText"
+                }
+              ],
+              "raw": "uint32_t                                                instanceCustomIndex:24"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": 24,
+              "name": "instanceCustomIndex",
+              "nameAlias": null,
+              "pointers": [],
+              "pos": "6695:90",
+              "structKw": false,
+              "typeName": {
+                "name": "uint32_t",
+                "pos": "6695:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6695:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "uint32_t",
+                    "6696:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                                                ",
+                    "6696:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "mask",
+                    null,
+                    "6696:90"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    ":8",
+                    "6696:107"
+                  ],
+                  "tag": "ChunkText"
+                }
+              ],
+              "raw": "uint32_t                                                mask:8"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": 8,
+              "name": "mask",
+              "nameAlias": null,
+              "pointers": [],
+              "pos": "6696:90",
+              "structKw": false,
+              "typeName": {
+                "name": "uint32_t",
+                "pos": "6696:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6696:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "uint32_t",
+                    "6697:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                                                ",
+                    "6697:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "instanceShaderBindingTableRecordOffset",
+                    null,
+                    "6697:90"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    ":24",
+                    "6697:141"
+                  ],
+                  "tag": "ChunkText"
+                }
+              ],
+              "raw": "uint32_t                                                instanceShaderBindingTableRecordOffset:24"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": 24,
+              "name": "instanceShaderBindingTableRecordOffset",
+              "nameAlias": null,
+              "pointers": [],
+              "pos": "6697:90",
+              "structKw": false,
+              "typeName": {
+                "name": "uint32_t",
+                "pos": "6697:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6697:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "VkGeometryInstanceFlagsKHR",
+                    "6698:37"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "              ",
+                    "6698:76"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "flags",
+                    null,
+                    "6698:90"
+                  ],
+                  "tag": "ChunkName"
+                },
+                {
+                  "contents": [
+                    ":8",
+                    "6698:108"
+                  ],
+                  "tag": "ChunkText"
+                }
+              ],
+              "raw": "VkGeometryInstanceFlagsKHR              flags:8"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": 8,
+              "name": "flags",
+              "nameAlias": null,
+              "pointers": [],
+              "pos": "6698:90",
+              "structKw": false,
+              "typeName": {
+                "name": "VkGeometryInstanceFlagsKHR",
+                "pos": "6698:37"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": [
+              true
+            ],
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6698:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          },
+          {
+            "altLen": null,
+            "api": "all",
+            "body": {
+              "chunks": [
+                {
+                  "contents": [
+                    "uint64_t",
+                    "6699:21"
+                  ],
+                  "tag": "ChunkType"
+                },
+                {
+                  "contents": [
+                    "                                                ",
+                    "6699:42"
+                  ],
+                  "tag": "ChunkText"
+                },
+                {
+                  "contents": [
+                    "accelerationStructureReference",
+                    null,
+                    "6699:90"
+                  ],
+                  "tag": "ChunkName"
+                }
+              ],
+              "raw": "uint64_t                                                accelerationStructureReference"
+            },
+            "comment": null,
+            "decl": {
+              "arrayDims": [],
+              "baseConst": false,
+              "bitfield": null,
+              "name": "accelerationStructureReference",
+              "nameAlias": null,
+              "pointers": [],
+              "pos": "6699:90",
+              "structKw": false,
+              "typeName": {
+                "name": "uint64_t",
+                "pos": "6699:21"
+              }
+            },
+            "deprecated": null,
+            "externSync": null,
+            "featureLink": null,
+            "flagsExtend": null,
+            "flagsExtendMember": null,
+            "isOptional": null,
+            "len": null,
+            "limitType": null,
+            "noAutoValidity": false,
+            "objectType": null,
+            "pos": "6699:13",
+            "selection": [],
+            "selector": null,
+            "stride": null,
+            "values": []
+          }
+        ],
+        "name": "VkAccelerationStructureInstanceKHR",
+        "requiredLimitType": false,
+        "returnedOnly": false,
+        "structExtends": []
+      },
+      "tag": "FullDef"
+    },
+    "tag": "TStruct"
+  },
+  "common": {
+    "api": "all",
+    "comment": null,
+    "deprecated": null,
+    "pos": "6692:9",
+    "requires": null
+  }
+}

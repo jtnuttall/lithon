@@ -1,0 +1,1287 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Events
+ctypes:
+  - omit:
+      headers: SDL3/SDL_events.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_events.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_events.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_events.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_events.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_events.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_events.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_events.h
+    cname: enum SDL_EventType
+    hsname: SDL_EventType
+    enum: open
+  - headers: SDL3/SDL_events.h
+    cname: SDL_EventType
+    hsname: SDL_EventType
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_CommonEvent
+    hsname: SDL_CommonEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_CommonEvent
+    hsname: SDL_CommonEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_DisplayEvent
+    hsname: SDL_DisplayEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_DisplayEvent
+    hsname: SDL_DisplayEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_WindowEvent
+    hsname: SDL_WindowEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_WindowEvent
+    hsname: SDL_WindowEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_KeyboardDeviceEvent
+    hsname: SDL_KeyboardDeviceEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_KeyboardDeviceEvent
+    hsname: SDL_KeyboardDeviceEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_KeyboardEvent
+    hsname: SDL_KeyboardEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_KeyboardEvent
+    hsname: SDL_KeyboardEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_TextEditingEvent
+    hsname: SDL_TextEditingEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_TextEditingEvent
+    hsname: SDL_TextEditingEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_TextEditingCandidatesEvent
+    hsname: SDL_TextEditingCandidatesEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_TextEditingCandidatesEvent
+    hsname: SDL_TextEditingCandidatesEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_TextInputEvent
+    hsname: SDL_TextInputEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_TextInputEvent
+    hsname: SDL_TextInputEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_MouseDeviceEvent
+    hsname: SDL_MouseDeviceEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_MouseDeviceEvent
+    hsname: SDL_MouseDeviceEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_MouseMotionEvent
+    hsname: SDL_MouseMotionEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_MouseMotionEvent
+    hsname: SDL_MouseMotionEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_MouseButtonEvent
+    hsname: SDL_MouseButtonEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_MouseButtonEvent
+    hsname: SDL_MouseButtonEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_MouseWheelEvent
+    hsname: SDL_MouseWheelEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_MouseWheelEvent
+    hsname: SDL_MouseWheelEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_JoyAxisEvent
+    hsname: SDL_JoyAxisEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_JoyAxisEvent
+    hsname: SDL_JoyAxisEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_JoyBallEvent
+    hsname: SDL_JoyBallEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_JoyBallEvent
+    hsname: SDL_JoyBallEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_JoyHatEvent
+    hsname: SDL_JoyHatEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_JoyHatEvent
+    hsname: SDL_JoyHatEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_JoyButtonEvent
+    hsname: SDL_JoyButtonEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_JoyButtonEvent
+    hsname: SDL_JoyButtonEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_JoyDeviceEvent
+    hsname: SDL_JoyDeviceEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_JoyDeviceEvent
+    hsname: SDL_JoyDeviceEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_JoyBatteryEvent
+    hsname: SDL_JoyBatteryEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_JoyBatteryEvent
+    hsname: SDL_JoyBatteryEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_GamepadAxisEvent
+    hsname: SDL_GamepadAxisEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_GamepadAxisEvent
+    hsname: SDL_GamepadAxisEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_GamepadButtonEvent
+    hsname: SDL_GamepadButtonEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_GamepadButtonEvent
+    hsname: SDL_GamepadButtonEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_GamepadDeviceEvent
+    hsname: SDL_GamepadDeviceEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_GamepadDeviceEvent
+    hsname: SDL_GamepadDeviceEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_GamepadTouchpadEvent
+    hsname: SDL_GamepadTouchpadEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_GamepadTouchpadEvent
+    hsname: SDL_GamepadTouchpadEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_GamepadSensorEvent
+    hsname: SDL_GamepadSensorEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_GamepadSensorEvent
+    hsname: SDL_GamepadSensorEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_AudioDeviceEvent
+    hsname: SDL_AudioDeviceEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_AudioDeviceEvent
+    hsname: SDL_AudioDeviceEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_CameraDeviceEvent
+    hsname: SDL_CameraDeviceEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_CameraDeviceEvent
+    hsname: SDL_CameraDeviceEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_RenderEvent
+    hsname: SDL_RenderEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_RenderEvent
+    hsname: SDL_RenderEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_TouchFingerEvent
+    hsname: SDL_TouchFingerEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_TouchFingerEvent
+    hsname: SDL_TouchFingerEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_PinchFingerEvent
+    hsname: SDL_PinchFingerEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_PinchFingerEvent
+    hsname: SDL_PinchFingerEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_PenProximityEvent
+    hsname: SDL_PenProximityEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_PenProximityEvent
+    hsname: SDL_PenProximityEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_PenMotionEvent
+    hsname: SDL_PenMotionEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_PenMotionEvent
+    hsname: SDL_PenMotionEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_PenTouchEvent
+    hsname: SDL_PenTouchEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_PenTouchEvent
+    hsname: SDL_PenTouchEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_PenButtonEvent
+    hsname: SDL_PenButtonEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_PenButtonEvent
+    hsname: SDL_PenButtonEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_PenAxisEvent
+    hsname: SDL_PenAxisEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_PenAxisEvent
+    hsname: SDL_PenAxisEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_DropEvent
+    hsname: SDL_DropEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_DropEvent
+    hsname: SDL_DropEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_ClipboardEvent
+    hsname: SDL_ClipboardEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_ClipboardEvent
+    hsname: SDL_ClipboardEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_SensorEvent
+    hsname: SDL_SensorEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_SensorEvent
+    hsname: SDL_SensorEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_QuitEvent
+    hsname: SDL_QuitEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_QuitEvent
+    hsname: SDL_QuitEvent
+  - headers: SDL3/SDL_events.h
+    cname: struct SDL_UserEvent
+    hsname: SDL_UserEvent
+  - headers: SDL3/SDL_events.h
+    cname: SDL_UserEvent
+    hsname: SDL_UserEvent
+  - headers: SDL3/SDL_events.h
+    cname: union SDL_Event
+    hsname: SDL_Event
+  - headers: SDL3/SDL_events.h
+    cname: SDL_Event
+    hsname: SDL_Event
+  - headers: SDL3/SDL_events.h
+    cname: enum SDL_EventAction
+    hsname: SDL_EventAction
+    enum: open
+  - headers: SDL3/SDL_events.h
+    cname: SDL_EventAction
+    hsname: SDL_EventAction
+  - headers: SDL3/SDL_events.h
+    cname: SDL_EventFilter
+    hsname: SDL_EventFilter
+hstypes:
+  - hsname: SDL_AudioDeviceEvent
+    representation:
+      record:
+        constructor: SDL_AudioDeviceEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+          - recording
+          - padding1
+          - padding2
+          - padding3
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_CameraDeviceEvent
+    representation:
+      record:
+        constructor: SDL_CameraDeviceEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_ClipboardEvent
+    representation:
+      record:
+        constructor: SDL_ClipboardEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - owner
+          - num_mime_types
+          - mime_types
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_CommonEvent
+    representation:
+      record:
+        constructor: SDL_CommonEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_DisplayEvent
+    representation:
+      record:
+        constructor: SDL_DisplayEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - displayID
+          - data1
+          - data2
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_DropEvent
+    representation:
+      record:
+        constructor: SDL_DropEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - x
+          - "y"
+          - source
+          - data'
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Event
+    representation:
+      newtype:
+        constructor: SDL_Event
+        fields:
+          - unwrap
+    instances:
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - IsUnion
+      - ReadRaw
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_EventAction
+    representation:
+      newtype:
+        constructor: SDL_EventAction
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_EventFilter
+    representation:
+      newtype:
+        constructor: SDL_EventFilter
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_EventType
+    representation:
+      newtype:
+        constructor: SDL_EventType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadAxisEvent
+    representation:
+      record:
+        constructor: SDL_GamepadAxisEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+          - axis
+          - padding1
+          - padding2
+          - padding3
+          - value
+          - padding4
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadButtonEvent
+    representation:
+      record:
+        constructor: SDL_GamepadButtonEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+          - button
+          - down
+          - padding1
+          - padding2
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadDeviceEvent
+    representation:
+      record:
+        constructor: SDL_GamepadDeviceEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadSensorEvent
+    representation:
+      record:
+        constructor: SDL_GamepadSensorEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+          - sensor
+          - data'
+          - sensor_timestamp
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GamepadTouchpadEvent
+    representation:
+      record:
+        constructor: SDL_GamepadTouchpadEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+          - touchpad
+          - finger
+          - x
+          - "y"
+          - pressure
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_JoyAxisEvent
+    representation:
+      record:
+        constructor: SDL_JoyAxisEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+          - axis
+          - padding1
+          - padding2
+          - padding3
+          - value
+          - padding4
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_JoyBallEvent
+    representation:
+      record:
+        constructor: SDL_JoyBallEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+          - ball
+          - padding1
+          - padding2
+          - padding3
+          - xrel
+          - yrel
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_JoyBatteryEvent
+    representation:
+      record:
+        constructor: SDL_JoyBatteryEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+          - state
+          - percent
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_JoyButtonEvent
+    representation:
+      record:
+        constructor: SDL_JoyButtonEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+          - button
+          - down
+          - padding1
+          - padding2
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_JoyDeviceEvent
+    representation:
+      record:
+        constructor: SDL_JoyDeviceEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_JoyHatEvent
+    representation:
+      record:
+        constructor: SDL_JoyHatEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+          - hat
+          - value
+          - padding1
+          - padding2
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_KeyboardDeviceEvent
+    representation:
+      record:
+        constructor: SDL_KeyboardDeviceEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_KeyboardEvent
+    representation:
+      record:
+        constructor: SDL_KeyboardEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - which
+          - scancode
+          - key
+          - mod
+          - raw
+          - down
+          - repeat
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MouseButtonEvent
+    representation:
+      record:
+        constructor: SDL_MouseButtonEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - which
+          - button
+          - down
+          - clicks
+          - padding
+          - x
+          - "y"
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MouseDeviceEvent
+    representation:
+      record:
+        constructor: SDL_MouseDeviceEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MouseMotionEvent
+    representation:
+      record:
+        constructor: SDL_MouseMotionEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - which
+          - state
+          - x
+          - "y"
+          - xrel
+          - yrel
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MouseWheelEvent
+    representation:
+      record:
+        constructor: SDL_MouseWheelEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - which
+          - x
+          - "y"
+          - direction
+          - mouse_x
+          - mouse_y
+          - integer_x
+          - integer_y
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PenAxisEvent
+    representation:
+      record:
+        constructor: SDL_PenAxisEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - which
+          - pen_state
+          - x
+          - "y"
+          - axis
+          - value
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PenButtonEvent
+    representation:
+      record:
+        constructor: SDL_PenButtonEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - which
+          - pen_state
+          - x
+          - "y"
+          - button
+          - down
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PenMotionEvent
+    representation:
+      record:
+        constructor: SDL_PenMotionEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - which
+          - pen_state
+          - x
+          - "y"
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PenProximityEvent
+    representation:
+      record:
+        constructor: SDL_PenProximityEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - which
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PenTouchEvent
+    representation:
+      record:
+        constructor: SDL_PenTouchEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - which
+          - pen_state
+          - x
+          - "y"
+          - eraser
+          - down
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PinchFingerEvent
+    representation:
+      record:
+        constructor: SDL_PinchFingerEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - scale
+          - windowID
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_QuitEvent
+    representation:
+      record:
+        constructor: SDL_QuitEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_RenderEvent
+    representation:
+      record:
+        constructor: SDL_RenderEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_SensorEvent
+    representation:
+      record:
+        constructor: SDL_SensorEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - which
+          - data'
+          - sensor_timestamp
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TextEditingCandidatesEvent
+    representation:
+      record:
+        constructor: SDL_TextEditingCandidatesEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - candidates
+          - num_candidates
+          - selected_candidate
+          - horizontal
+          - padding1
+          - padding2
+          - padding3
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TextEditingEvent
+    representation:
+      record:
+        constructor: SDL_TextEditingEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - text
+          - start
+          - length
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TextInputEvent
+    representation:
+      record:
+        constructor: SDL_TextInputEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - text
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TouchFingerEvent
+    representation:
+      record:
+        constructor: SDL_TouchFingerEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - touchID
+          - fingerID
+          - x
+          - "y"
+          - dx
+          - dy
+          - pressure
+          - windowID
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_UserEvent
+    representation:
+      record:
+        constructor: SDL_UserEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - code
+          - data1
+          - data2
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_WindowEvent
+    representation:
+      record:
+        constructor: SDL_WindowEvent
+        fields:
+          - type'
+          - reserved
+          - timestamp
+          - windowID
+          - data1
+          - data2
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

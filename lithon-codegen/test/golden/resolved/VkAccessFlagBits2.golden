@@ -1,0 +1,2700 @@
+{
+  "aliases": [
+    {
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_synchronization2",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "deprecated": null,
+      "name": "VkAccessFlagBits2KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "26657:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_synchronization2",
+            "number": 315,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "pos": "851:9"
+    }
+  ],
+  "availability": {
+    "contents": {
+      "contents": {
+        "major": 1,
+        "minor": 3
+      },
+      "tag": "AvailVersion"
+    },
+    "tag": "AtomF"
+  },
+  "bitWidth": "W64",
+  "comment": null,
+  "flow": "FlowIn",
+  "items": [
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_NONE_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26673:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": {
+          "parsed": {
+            "contents": 0,
+            "tag": "VInt"
+          },
+          "raw": "0"
+        },
+        "tag": "FromLiteral"
+      },
+      "name": "VK_ACCESS_2_NONE",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13716:9",
+      "value": {
+        "contents": 0,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_INDIRECT_COMMAND_READ_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26674:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 0,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_INDIRECT_COMMAND_READ_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13717:9",
+      "value": {
+        "contents": 1,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_INDEX_READ_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26675:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 1,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_INDEX_READ_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13718:9",
+      "value": {
+        "contents": 2,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_VERTEX_ATTRIBUTE_READ_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26676:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 2,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_VERTEX_ATTRIBUTE_READ_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13719:9",
+      "value": {
+        "contents": 4,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_UNIFORM_READ_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26677:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 3,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_UNIFORM_READ_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13720:9",
+      "value": {
+        "contents": 8,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_INPUT_ATTACHMENT_READ_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26678:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 4,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_INPUT_ATTACHMENT_READ_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13721:9",
+      "value": {
+        "contents": 16,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_SHADER_READ_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26679:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 5,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_SHADER_READ_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13722:9",
+      "value": {
+        "contents": 32,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_SHADER_WRITE_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26680:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 6,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_SHADER_WRITE_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13723:9",
+      "value": {
+        "contents": 64,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_COLOR_ATTACHMENT_READ_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26681:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 7,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_COLOR_ATTACHMENT_READ_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13724:9",
+      "value": {
+        "contents": 128,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26682:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 8,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13725:9",
+      "value": {
+        "contents": 256,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_READ_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26683:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 9,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_READ_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13726:9",
+      "value": {
+        "contents": 512,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26684:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 10,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13727:9",
+      "value": {
+        "contents": 1024,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_TRANSFER_READ_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26685:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 11,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_TRANSFER_READ_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13728:9",
+      "value": {
+        "contents": 2048,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_TRANSFER_WRITE_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26686:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 12,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_TRANSFER_WRITE_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13729:9",
+      "value": {
+        "contents": 4096,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_HOST_READ_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26687:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 13,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_HOST_READ_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13730:9",
+      "value": {
+        "contents": 8192,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_HOST_WRITE_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26688:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 14,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_HOST_WRITE_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13731:9",
+      "value": {
+        "contents": 16384,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_MEMORY_READ_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26689:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 15,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_MEMORY_READ_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13732:9",
+      "value": {
+        "contents": 32768,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_MEMORY_WRITE_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26690:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 16,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_MEMORY_WRITE_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13733:9",
+      "value": {
+        "contents": 65536,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_SHADER_SAMPLED_READ_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26691:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 32,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_SHADER_SAMPLED_READ_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13735:9",
+      "value": {
+        "contents": 4294967296,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_SHADER_STORAGE_READ_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26692:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 33,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_SHADER_STORAGE_READ_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13736:9",
+      "value": {
+        "contents": 8589934592,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_SHADER_STORAGE_WRITE_BIT_KHR",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 0,
+              "condition": null,
+              "pos": "26657:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26693:17"
+        }
+      ],
+      "availability": null,
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 34,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_SHADER_STORAGE_WRITE_BIT",
+      "origins": [],
+      "platformGuards": [],
+      "pos": "13737:9",
+      "value": {
+        "contents": 17179869184,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": [
+              "AndF",
+              {
+                "contents": {
+                  "contents": "VK_KHR_synchronization2",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              },
+              {
+                "contents": {
+                  "contents": "VK_NV_device_generated_commands",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              }
+            ],
+            "tag": "BinOpF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_COMMAND_PREPROCESS_READ_BIT_NV",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 3,
+              "condition": {
+                "contents": {
+                  "contents": "VK_NV_device_generated_commands",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              },
+              "pos": "26754:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26756:17"
+        }
+      ],
+      "availability": {
+        "contents": [
+          "AndF",
+          {
+            "contents": {
+              "contents": "VK_EXT_device_generated_commands",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          }
+        ],
+        "tag": "BinOpF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 17,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_COMMAND_PREPROCESS_READ_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 4,
+          "condition": {
+            "contents": {
+              "contents": "VK_EXT_device_generated_commands",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "pos": "26759:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_synchronization2",
+            "number": 315,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26761:17",
+      "value": {
+        "contents": 131072,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": [
+              "AndF",
+              {
+                "contents": {
+                  "contents": "VK_KHR_synchronization2",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              },
+              {
+                "contents": {
+                  "contents": "VK_NV_device_generated_commands",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              }
+            ],
+            "tag": "BinOpF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_COMMAND_PREPROCESS_WRITE_BIT_NV",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 3,
+              "condition": {
+                "contents": {
+                  "contents": "VK_NV_device_generated_commands",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              },
+              "pos": "26754:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26757:17"
+        }
+      ],
+      "availability": {
+        "contents": [
+          "AndF",
+          {
+            "contents": {
+              "contents": "VK_EXT_device_generated_commands",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          }
+        ],
+        "tag": "BinOpF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 18,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_COMMAND_PREPROCESS_WRITE_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 4,
+          "condition": {
+            "contents": {
+              "contents": "VK_EXT_device_generated_commands",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "pos": "26759:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_synchronization2",
+            "number": 315,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26762:17",
+      "value": {
+        "contents": 262144,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": [
+          "AndF",
+          {
+            "contents": {
+              "contents": "VK_EXT_blend_operation_advanced",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          }
+        ],
+        "tag": "BinOpF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 19,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_COLOR_ATTACHMENT_READ_NONCOHERENT_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 11,
+          "condition": {
+            "contents": {
+              "contents": "VK_EXT_blend_operation_advanced",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "pos": "26790:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_synchronization2",
+            "number": 315,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26791:17",
+      "value": {
+        "contents": 524288,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": [
+          "AndF",
+          {
+            "contents": {
+              "contents": "VK_EXT_conditional_rendering",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          }
+        ],
+        "tag": "BinOpF"
+      },
+      "comment": "read access flag for reading conditional rendering predicate",
+      "deprecation": null,
+      "encoding": {
+        "contents": 20,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_CONDITIONAL_RENDERING_READ_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 2,
+          "condition": {
+            "contents": {
+              "contents": "VK_EXT_conditional_rendering",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "pos": "26750:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_synchronization2",
+            "number": 315,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26752:17",
+      "value": {
+        "contents": 1048576,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": [
+              "AndF",
+              {
+                "contents": {
+                  "contents": "VK_KHR_synchronization2",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              },
+              {
+                "contents": {
+                  "contents": "VK_NV_ray_tracing",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              }
+            ],
+            "tag": "BinOpF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_ACCELERATION_STRUCTURE_READ_BIT_NV",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 9,
+              "condition": {
+                "contents": {
+                  "contents": "VK_NV_ray_tracing",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              },
+              "pos": "26780:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26783:17"
+        }
+      ],
+      "availability": {
+        "contents": [
+          "AndF",
+          {
+            "contents": {
+              "contents": "VK_KHR_acceleration_structure",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          }
+        ],
+        "tag": "BinOpF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 21,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_ACCELERATION_STRUCTURE_READ_BIT_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 7,
+          "condition": {
+            "contents": {
+              "contents": "VK_KHR_acceleration_structure",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "pos": "26772:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_synchronization2",
+            "number": 315,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26774:17",
+      "value": {
+        "contents": 2097152,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": [
+              "AndF",
+              {
+                "contents": {
+                  "contents": "VK_KHR_synchronization2",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              },
+              {
+                "contents": {
+                  "contents": "VK_NV_ray_tracing",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              }
+            ],
+            "tag": "BinOpF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_ACCELERATION_STRUCTURE_WRITE_BIT_NV",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 9,
+              "condition": {
+                "contents": {
+                  "contents": "VK_NV_ray_tracing",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              },
+              "pos": "26780:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26784:17"
+        }
+      ],
+      "availability": {
+        "contents": [
+          "AndF",
+          {
+            "contents": {
+              "contents": "VK_KHR_acceleration_structure",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          }
+        ],
+        "tag": "BinOpF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 22,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_ACCELERATION_STRUCTURE_WRITE_BIT_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 7,
+          "condition": {
+            "contents": {
+              "contents": "VK_KHR_acceleration_structure",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "pos": "26772:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_synchronization2",
+            "number": 315,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26775:17",
+      "value": {
+        "contents": 4194304,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [
+        {
+          "availability": {
+            "contents": [
+              "AndF",
+              {
+                "contents": {
+                  "contents": "VK_KHR_synchronization2",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              },
+              {
+                "contents": {
+                  "contents": "VK_NV_shading_rate_image",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              }
+            ],
+            "tag": "BinOpF"
+          },
+          "deprecated": null,
+          "name": "VK_ACCESS_2_SHADING_RATE_IMAGE_READ_BIT_NV",
+          "origins": [
+            {
+              "blockComment": null,
+              "blockIndex": 6,
+              "condition": {
+                "contents": {
+                  "contents": "VK_NV_shading_rate_image",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              },
+              "pos": "26768:13",
+              "profile": null,
+              "source": {
+                "extension": "VK_KHR_synchronization2",
+                "number": 315,
+                "tag": "FromExtension"
+              },
+              "tier": null
+            }
+          ],
+          "pos": "26770:17"
+        }
+      ],
+      "availability": {
+        "contents": [
+          "AndF",
+          {
+            "contents": {
+              "contents": "VK_KHR_fragment_shading_rate",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          }
+        ],
+        "tag": "BinOpF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 23,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_FRAGMENT_SHADING_RATE_ATTACHMENT_READ_BIT_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 5,
+          "condition": {
+            "contents": {
+              "contents": "VK_KHR_fragment_shading_rate",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "pos": "26764:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_synchronization2",
+            "number": 315,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26766:17",
+      "value": {
+        "contents": 8388608,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": [
+          "AndF",
+          {
+            "contents": {
+              "contents": "VK_EXT_fragment_density_map",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          }
+        ],
+        "tag": "BinOpF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 24,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_FRAGMENT_DENSITY_MAP_READ_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 10,
+          "condition": {
+            "contents": {
+              "contents": "VK_EXT_fragment_density_map",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "pos": "26786:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_synchronization2",
+            "number": 315,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26788:17",
+      "value": {
+        "contents": 16777216,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": [
+          "AndF",
+          {
+            "contents": {
+              "contents": "VK_EXT_transform_feedback",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          }
+        ],
+        "tag": "BinOpF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 25,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_TRANSFORM_FEEDBACK_WRITE_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 1,
+          "condition": {
+            "contents": {
+              "contents": "VK_EXT_transform_feedback",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "pos": "26744:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_synchronization2",
+            "number": 315,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26746:17",
+      "value": {
+        "contents": 33554432,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": [
+          "AndF",
+          {
+            "contents": {
+              "contents": "VK_EXT_transform_feedback",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          }
+        ],
+        "tag": "BinOpF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 26,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_TRANSFORM_FEEDBACK_COUNTER_READ_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 1,
+          "condition": {
+            "contents": {
+              "contents": "VK_EXT_transform_feedback",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "pos": "26744:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_synchronization2",
+            "number": 315,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26747:17",
+      "value": {
+        "contents": 67108864,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": [
+          "AndF",
+          {
+            "contents": {
+              "contents": "VK_EXT_transform_feedback",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          {
+            "contents": {
+              "contents": "VK_KHR_synchronization2",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          }
+        ],
+        "tag": "BinOpF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 27,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_TRANSFORM_FEEDBACK_COUNTER_WRITE_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 1,
+          "condition": {
+            "contents": {
+              "contents": "VK_EXT_transform_feedback",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          "pos": "26744:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_synchronization2",
+            "number": 315,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26748:17",
+      "value": {
+        "contents": 134217728,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_video_decode_queue",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 35,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_VIDEO_DECODE_READ_BIT_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "22013:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_video_decode_queue",
+            "number": 25,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "22022:17",
+      "value": {
+        "contents": 34359738368,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_video_decode_queue",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 36,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_VIDEO_DECODE_WRITE_BIT_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "22013:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_video_decode_queue",
+            "number": 25,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "22023:17",
+      "value": {
+        "contents": 68719476736,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_video_encode_queue",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 37,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_VIDEO_ENCODE_READ_BIT_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "26369:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_video_encode_queue",
+            "number": 300,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26374:17",
+      "value": {
+        "contents": 137438953472,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_KHR_video_encode_queue",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 38,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_VIDEO_ENCODE_WRITE_BIT_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "26369:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_video_encode_queue",
+            "number": 300,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26375:17",
+      "value": {
+        "contents": 274877906944,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_HUAWEI_invocation_mask",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 39,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_INVOCATION_MASK_READ_BIT_HUAWEI",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "27655:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_HUAWEI_invocation_mask",
+            "number": 371,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "27659:17",
+      "value": {
+        "contents": 549755813888,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": [
+          "AndF",
+          {
+            "contents": [
+              "AndF",
+              {
+                "contents": {
+                  "contents": "VK_KHR_ray_tracing_maintenance1",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              },
+              {
+                "contents": {
+                  "contents": "VK_KHR_ray_tracing_pipeline",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              }
+            ],
+            "tag": "BinOpF"
+          },
+          {
+            "contents": [
+              "OrF",
+              {
+                "contents": {
+                  "contents": "VK_KHR_synchronization2",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              },
+              {
+                "contents": {
+                  "contents": {
+                    "major": 1,
+                    "minor": 3
+                  },
+                  "tag": "AvailVersion"
+                },
+                "tag": "AtomF"
+              }
+            ],
+            "tag": "BinOpF"
+          }
+        ],
+        "tag": "BinOpF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 40,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_SHADER_BINDING_TABLE_READ_BIT_KHR",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 2,
+          "condition": {
+            "contents": [
+              "AndF",
+              {
+                "contents": [
+                  "OrF",
+                  {
+                    "contents": {
+                      "contents": "VK_KHR_synchronization2",
+                      "tag": "AvailExtension"
+                    },
+                    "tag": "AtomF"
+                  },
+                  {
+                    "contents": {
+                      "contents": {
+                        "major": 1,
+                        "minor": 3
+                      },
+                      "tag": "AvailVersion"
+                    },
+                    "tag": "AtomF"
+                  }
+                ],
+                "tag": "BinOpF"
+              },
+              {
+                "contents": {
+                  "contents": "VK_KHR_ray_tracing_pipeline",
+                  "tag": "AvailExtension"
+                },
+                "tag": "AtomF"
+              }
+            ],
+            "tag": "BinOpF"
+          },
+          "pos": "27880:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_ray_tracing_maintenance1",
+            "number": 387,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "27881:17",
+      "value": {
+        "contents": 1099511627776,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_EXT_descriptor_buffer",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 41,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_DESCRIPTOR_BUFFER_READ_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "26825:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_EXT_descriptor_buffer",
+            "number": 317,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26850:17",
+      "value": {
+        "contents": 2199023255552,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_NV_optical_flow",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 42,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_OPTICAL_FLOW_READ_BIT_NV",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "28959:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_NV_optical_flow",
+            "number": 465,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "28974:17",
+      "value": {
+        "contents": 4398046511104,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_NV_optical_flow",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 43,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_OPTICAL_FLOW_WRITE_BIT_NV",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "28959:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_NV_optical_flow",
+            "number": 465,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "28975:17",
+      "value": {
+        "contents": 8796093022208,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_EXT_opacity_micromap",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 44,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_MICROMAP_READ_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "27994:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_EXT_opacity_micromap",
+            "number": 397,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "28008:17",
+      "value": {
+        "contents": 17592186044416,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_EXT_opacity_micromap",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 45,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_MICROMAP_WRITE_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "27994:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_EXT_opacity_micromap",
+            "number": 397,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "28009:17",
+      "value": {
+        "contents": 35184372088832,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_ARM_data_graph",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 47,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_DATA_GRAPH_READ_BIT_ARM",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "29804:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_ARM_data_graph",
+            "number": 508,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "29830:17",
+      "value": {
+        "contents": 140737488355328,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_ARM_data_graph",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 48,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_DATA_GRAPH_WRITE_BIT_ARM",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "29804:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_ARM_data_graph",
+            "number": 508,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "29831:17",
+      "value": {
+        "contents": 281474976710656,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_QCOM_tile_shading",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 51,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_SHADER_TILE_ATTACHMENT_READ_BIT_QCOM",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "26562:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_QCOM_tile_shading",
+            "number": 310,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26571:17",
+      "value": {
+        "contents": 2251799813685248,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_QCOM_tile_shading",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 52,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_SHADER_TILE_ATTACHMENT_WRITE_BIT_QCOM",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "26562:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_QCOM_tile_shading",
+            "number": 310,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "26572:17",
+      "value": {
+        "contents": 4503599627370496,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_EXT_memory_decompression",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 55,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_MEMORY_DECOMPRESSION_READ_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "30399:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_EXT_memory_decompression",
+            "number": 551,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "30406:17",
+      "value": {
+        "contents": 36028797018963968,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_EXT_memory_decompression",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 56,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_MEMORY_DECOMPRESSION_WRITE_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "30399:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_EXT_memory_decompression",
+            "number": 551,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "30407:17",
+      "value": {
+        "contents": 72057594037927936,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_EXT_descriptor_heap",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 57,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_SAMPLER_HEAP_READ_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "23656:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_EXT_descriptor_heap",
+            "number": 136,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "23697:17",
+      "value": {
+        "contents": 144115188075855872,
+        "tag": "NumBits"
+      }
+    },
+    {
+      "aliases": [],
+      "availability": {
+        "contents": {
+          "contents": "VK_EXT_descriptor_heap",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      "comment": null,
+      "deprecation": null,
+      "encoding": {
+        "contents": 58,
+        "tag": "FromBitpos"
+      },
+      "name": "VK_ACCESS_2_RESOURCE_HEAP_READ_BIT_EXT",
+      "origins": [
+        {
+          "blockComment": null,
+          "blockIndex": 0,
+          "condition": null,
+          "pos": "23656:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_EXT_descriptor_heap",
+            "number": 136,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "platformGuards": [],
+      "pos": "23698:17",
+      "value": {
+        "contents": 288230376151711744,
+        "tag": "NumBits"
+      }
+    }
+  ],
+  "kind": "KindBitmask",
+  "name": "VkAccessFlagBits2",
+  "origins": [
+    {
+      "blockComment": "Promoted from VK_KHR_synchronization2 (extension 315)",
+      "blockIndex": 7,
+      "condition": null,
+      "pos": "20872:9",
+      "profile": null,
+      "source": {
+        "feature": "VK_VERSION_1_3",
+        "tag": "FromFeature",
+        "version": {
+          "major": 1,
+          "minor": 3
+        }
+      },
+      "tier": "VK_BASE_VERSION_1_3"
+    }
+  ],
+  "pos": "13715:5"
+}

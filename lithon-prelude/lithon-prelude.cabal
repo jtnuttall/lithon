@@ -1,0 +1,106 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.39.6.
+--
+-- see: https://github.com/sol/hpack
+
+name:           lithon-prelude
+version:        0.1.0.0
+synopsis:       Internal prelude and effect toolkit for the lithon family
+description:    The lithon family's shared vocabulary: the custom prelude (universum +
+                lens + witch + display/error idiom) and the effectful runtime layer
+                (logging, monotonic-clock tracing, ANSI pretty-printing, pkg-config
+                discovery). Internal to the lithon repo; not for Hackage.
+category:       Graphics
+homepage:       https://github.com/jtnuttall/lithon#readme
+bug-reports:    https://github.com/jtnuttall/lithon/issues
+author:         Jeremy Nuttall
+maintainer:     jeremy@jeremy-nuttall.com
+copyright:      (c) 2026 Jeremy Nuttall
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-doc-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/jtnuttall/lithon
+
+library
+  exposed-modules:
+      Lithon.Effect.ClangEnv
+      Lithon.Effect.Clock
+      Lithon.Effect.Log
+      Lithon.Effect.PrettyPrint
+      Lithon.Effect.Util
+      Lithon.Prelude
+      Lithon.Prelude.Container
+      Lithon.Prelude.Display
+      Lithon.Prelude.Errors
+      Lithon.Prelude.Generics.SOP
+      Lithon.Prelude.Monad
+  other-modules:
+      Paths_lithon_prelude
+  autogen-modules:
+      Paths_lithon_prelude
+  hs-source-dirs:
+      src
+  default-extensions:
+      BlockArguments
+      DeriveAnyClass
+      DerivingVia
+      DuplicateRecordFields
+      NoFieldSelectors
+      NoImplicitPrelude
+      OverloadedLabels
+      OverloadedRecordDot
+      PatternSynonyms
+      RecordWildCards
+      TypeFamilies
+  ghc-options: -Wmissing-deriving-strategies -Wmissing-export-lists -Wredundant-constraints -Wall
+  build-depends:
+      Blammo ==2.1.*
+    , aeson ==2.3.*
+    , ansi-terminal ==1.1.*
+    , base <4.22.0.0
+    , bytestring ==0.12.*
+    , containers ==0.7.*
+    , data-default ==0.8.*
+    , deepseq ==1.5.*
+    , dlist ==1.0.*
+    , effectful ==2.6.*
+    , effectful-core ==2.6.*
+    , effectful-plugin ==2.1.*
+    , effectful-th ==1.0.*
+    , filepath ==1.5.*
+    , generic-lens ==2.3.*
+    , generics-sop ==0.5.*
+    , lens ==5.3.*
+    , monad-logger-aeson ==0.4.*
+    , monoidal-containers ==0.6.*
+    , mtl ==2.3.*
+    , neat-interpolation ==0.5.*
+    , nonempty-containers ==0.3.*
+    , ordered-containers ==0.2.*
+    , prettyprinter ==1.7.*
+    , prettyprinter-ansi-terminal ==1.1.*
+    , process ==1.6.*
+    , profunctors ==5.6.*
+    , singletons ==3.0.*
+    , singletons-th ==3.5.*
+    , tagged ==0.8.*
+    , template-haskell
+    , text ==2.1.*
+    , text-builder-linear ==0.1.*
+    , text-display ==1.0.*
+    , transformers ==0.6.*
+    , typed-process ==0.2.*
+    , typed-product-builder
+    , universum ==1.8.*
+    , unordered-containers ==0.2.*
+    , validation ==1.2.*
+    , witch ==1.4.*
+    , witherable ==0.5.*
+  default-language: GHC2024

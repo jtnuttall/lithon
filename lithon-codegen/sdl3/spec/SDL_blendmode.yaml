@@ -1,0 +1,123 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Blendmode
+ctypes:
+  - omit:
+      headers: SDL3/SDL_blendmode.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_blendmode.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_blendmode.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_blendmode.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_blendmode.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_blendmode.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_blendmode.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_blendmode.h
+    cname: SDL_BlendMode
+    hsname: SDL_BlendMode
+  - headers: SDL3/SDL_blendmode.h
+    cname: enum SDL_BlendOperation
+    hsname: SDL_BlendOperation
+    enum: open
+  - headers: SDL3/SDL_blendmode.h
+    cname: SDL_BlendOperation
+    hsname: SDL_BlendOperation
+  - headers: SDL3/SDL_blendmode.h
+    cname: enum SDL_BlendFactor
+    hsname: SDL_BlendFactor
+    enum: open
+  - headers: SDL3/SDL_blendmode.h
+    cname: SDL_BlendFactor
+    hsname: SDL_BlendFactor
+hstypes:
+  - hsname: SDL_BlendFactor
+    representation:
+      newtype:
+        constructor: SDL_BlendFactor
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_BlendMode
+    representation:
+      newtype:
+        constructor: SDL_BlendMode
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_BlendOperation
+    representation:
+      newtype:
+        constructor: SDL_BlendOperation
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

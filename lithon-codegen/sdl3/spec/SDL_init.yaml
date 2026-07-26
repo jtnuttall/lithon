@@ -1,0 +1,207 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Init
+ctypes:
+  - omit:
+      headers: SDL3/SDL_init.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_init.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_init.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_init.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_init.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_init.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_init.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_init.h
+    cname: SDL_InitFlags
+    hsname: SDL_InitFlags
+  - headers: SDL3/SDL_init.h
+    cname: enum SDL_AppResult
+    hsname: SDL_AppResult
+    enum: open
+  - headers: SDL3/SDL_init.h
+    cname: SDL_AppResult
+    hsname: SDL_AppResult
+  - headers: SDL3/SDL_init.h
+    cname: SDL_AppInit_func
+    hsname: SDL_AppInit_func
+  - headers: SDL3/SDL_init.h
+    cname: SDL_AppIterate_func
+    hsname: SDL_AppIterate_func
+  - headers: SDL3/SDL_init.h
+    cname: SDL_AppEvent_func
+    hsname: SDL_AppEvent_func
+  - headers: SDL3/SDL_init.h
+    cname: SDL_AppQuit_func
+    hsname: SDL_AppQuit_func
+  - headers: SDL3/SDL_init.h
+    cname: SDL_MainThreadCallback
+    hsname: SDL_MainThreadCallback
+hstypes:
+  - hsname: SDL_AppEvent_func
+    representation:
+      newtype:
+        constructor: SDL_AppEvent_func
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AppInit_func
+    representation:
+      newtype:
+        constructor: SDL_AppInit_func
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AppIterate_func
+    representation:
+      newtype:
+        constructor: SDL_AppIterate_func
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AppQuit_func
+    representation:
+      newtype:
+        constructor: SDL_AppQuit_func
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AppResult
+    representation:
+      newtype:
+        constructor: SDL_AppResult
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_InitFlags
+    representation:
+      newtype:
+        constructor: SDL_InitFlags
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MainThreadCallback
+    representation:
+      newtype:
+        constructor: SDL_MainThreadCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

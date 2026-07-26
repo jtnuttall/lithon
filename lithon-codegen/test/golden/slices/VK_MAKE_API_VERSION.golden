@@ -1,0 +1,43 @@
+{
+  "body": {
+    "contents": {
+      "body": {
+        "chunks": [
+          {
+            "contents": [
+              "#define ",
+              "164:33"
+            ],
+            "tag": "ChunkText"
+          },
+          {
+            "contents": [
+              "VK_MAKE_API_VERSION",
+              null,
+              "164:41"
+            ],
+            "tag": "ChunkName"
+          },
+          {
+            "contents": [
+              "(variant, major, minor, patch) \\\n    ((((uint32_t)(variant)) << 29U) | (((uint32_t)(major)) << 22U) | (((uint32_t)(minor)) << 12U) | ((uint32_t)(patch)))",
+              "164:73"
+            ],
+            "tag": "ChunkText"
+          }
+        ],
+        "raw": "#define VK_MAKE_API_VERSION(variant, major, minor, patch) \\\n    ((((uint32_t)(variant)) << 29U) | (((uint32_t)(major)) << 22U) | (((uint32_t)(minor)) << 12U) | ((uint32_t)(patch)))"
+      },
+      "name": "VK_MAKE_API_VERSION",
+      "nameFromAttr": false
+    },
+    "tag": "TDefine"
+  },
+  "common": {
+    "api": "all",
+    "comment": null,
+    "deprecated": null,
+    "pos": "164:9",
+    "requires": null
+  }
+}

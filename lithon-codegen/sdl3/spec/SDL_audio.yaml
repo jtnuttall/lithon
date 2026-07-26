@@ -1,0 +1,194 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Audio
+ctypes:
+  - omit:
+      headers: SDL3/SDL_audio.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_audio.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_audio.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_audio.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_audio.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_audio.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_audio.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_audio.h
+    cname: enum SDL_AudioFormat
+    hsname: SDL_AudioFormat
+    enum: open
+  - headers: SDL3/SDL_audio.h
+    cname: SDL_AudioFormat
+    hsname: SDL_AudioFormat
+  - headers: SDL3/SDL_audio.h
+    cname: SDL_AudioDeviceID
+    hsname: SDL_AudioDeviceID
+  - headers: SDL3/SDL_audio.h
+    cname: struct SDL_AudioSpec
+    hsname: SDL_AudioSpec
+  - headers: SDL3/SDL_audio.h
+    cname: SDL_AudioSpec
+    hsname: SDL_AudioSpec
+  - headers: SDL3/SDL_audio.h
+    cname: struct SDL_AudioStream
+    hsname: SDL_AudioStream
+  - headers: SDL3/SDL_audio.h
+    cname: SDL_AudioStream
+    hsname: SDL_AudioStream
+  - headers: SDL3/SDL_audio.h
+    cname: SDL_AudioStreamDataCompleteCallback
+    hsname: SDL_AudioStreamDataCompleteCallback
+  - headers: SDL3/SDL_audio.h
+    cname: SDL_AudioStreamCallback
+    hsname: SDL_AudioStreamCallback
+  - headers: SDL3/SDL_audio.h
+    cname: SDL_AudioPostmixCallback
+    hsname: SDL_AudioPostmixCallback
+hstypes:
+  - hsname: SDL_AudioDeviceID
+    representation:
+      newtype:
+        constructor: SDL_AudioDeviceID
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AudioFormat
+    representation:
+      newtype:
+        constructor: SDL_AudioFormat
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AudioPostmixCallback
+    representation:
+      newtype:
+        constructor: SDL_AudioPostmixCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AudioSpec
+    representation:
+      record:
+        constructor: SDL_AudioSpec
+        fields:
+          - format
+          - channels
+          - freq
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AudioStream
+    representation: emptydata
+  - hsname: SDL_AudioStreamCallback
+    representation:
+      newtype:
+        constructor: SDL_AudioStreamCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AudioStreamDataCompleteCallback
+    representation:
+      newtype:
+        constructor: SDL_AudioStreamDataCompleteCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

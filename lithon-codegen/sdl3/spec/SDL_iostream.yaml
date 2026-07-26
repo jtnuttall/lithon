@@ -1,0 +1,127 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Iostream
+ctypes:
+  - omit:
+      headers: SDL3/SDL_iostream.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_iostream.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_iostream.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_iostream.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_iostream.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_iostream.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_iostream.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_iostream.h
+    cname: enum SDL_IOStatus
+    hsname: SDL_IOStatus
+    enum: open
+  - headers: SDL3/SDL_iostream.h
+    cname: SDL_IOStatus
+    hsname: SDL_IOStatus
+  - headers: SDL3/SDL_iostream.h
+    cname: enum SDL_IOWhence
+    hsname: SDL_IOWhence
+    enum: open
+  - headers: SDL3/SDL_iostream.h
+    cname: SDL_IOWhence
+    hsname: SDL_IOWhence
+  - headers: SDL3/SDL_iostream.h
+    cname: struct SDL_IOStreamInterface
+    hsname: SDL_IOStreamInterface
+  - headers: SDL3/SDL_iostream.h
+    cname: SDL_IOStreamInterface
+    hsname: SDL_IOStreamInterface
+  - headers: SDL3/SDL_iostream.h
+    cname: struct SDL_IOStream
+    hsname: SDL_IOStream
+  - headers: SDL3/SDL_iostream.h
+    cname: SDL_IOStream
+    hsname: SDL_IOStream
+hstypes:
+  - hsname: SDL_IOStatus
+    representation:
+      newtype:
+        constructor: SDL_IOStatus
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_IOStream
+    representation: emptydata
+  - hsname: SDL_IOStreamInterface
+    representation:
+      record:
+        constructor: SDL_IOStreamInterface
+        fields:
+          - version
+          - size
+          - seek
+          - read
+          - write
+          - flush
+          - close
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_IOWhence
+    representation:
+      newtype:
+        constructor: SDL_IOWhence
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

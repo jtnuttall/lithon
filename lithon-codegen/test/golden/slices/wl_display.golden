@@ -1,0 +1,15 @@
+{
+  "body": {
+    "contents": {
+      "name": "wl_display"
+    },
+    "tag": "TExternal"
+  },
+  "common": {
+    "api": "all",
+    "comment": null,
+    "deprecated": null,
+    "pos": "126:9",
+    "requires": "wayland-client.h"
+  }
+}

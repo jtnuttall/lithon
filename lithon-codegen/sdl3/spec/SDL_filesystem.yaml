@@ -1,0 +1,205 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Filesystem
+ctypes:
+  - omit:
+      headers: SDL3/SDL_filesystem.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_filesystem.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_filesystem.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_filesystem.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_filesystem.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_filesystem.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_filesystem.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_filesystem.h
+    cname: enum SDL_Folder
+    hsname: SDL_Folder
+    enum: open
+  - headers: SDL3/SDL_filesystem.h
+    cname: SDL_Folder
+    hsname: SDL_Folder
+  - headers: SDL3/SDL_filesystem.h
+    cname: enum SDL_PathType
+    hsname: SDL_PathType
+    enum: open
+  - headers: SDL3/SDL_filesystem.h
+    cname: SDL_PathType
+    hsname: SDL_PathType
+  - headers: SDL3/SDL_filesystem.h
+    cname: struct SDL_PathInfo
+    hsname: SDL_PathInfo
+  - headers: SDL3/SDL_filesystem.h
+    cname: SDL_PathInfo
+    hsname: SDL_PathInfo
+  - headers: SDL3/SDL_filesystem.h
+    cname: SDL_GlobFlags
+    hsname: SDL_GlobFlags
+  - headers: SDL3/SDL_filesystem.h
+    cname: enum SDL_EnumerationResult
+    hsname: SDL_EnumerationResult
+    enum: open
+  - headers: SDL3/SDL_filesystem.h
+    cname: SDL_EnumerationResult
+    hsname: SDL_EnumerationResult
+  - headers: SDL3/SDL_filesystem.h
+    cname: SDL_EnumerateDirectoryCallback
+    hsname: SDL_EnumerateDirectoryCallback
+hstypes:
+  - hsname: SDL_EnumerateDirectoryCallback
+    representation:
+      newtype:
+        constructor: SDL_EnumerateDirectoryCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_EnumerationResult
+    representation:
+      newtype:
+        constructor: SDL_EnumerationResult
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Folder
+    representation:
+      newtype:
+        constructor: SDL_Folder
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GlobFlags
+    representation:
+      newtype:
+        constructor: SDL_GlobFlags
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PathInfo
+    representation:
+      record:
+        constructor: SDL_PathInfo
+        fields:
+          - type'
+          - size
+          - create_time
+          - modify_time
+          - access_time
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_PathType
+    representation:
+      newtype:
+        constructor: SDL_PathType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

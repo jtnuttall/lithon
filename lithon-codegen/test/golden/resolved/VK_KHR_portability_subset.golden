@@ -1,0 +1,44 @@
+{
+  "author": "KHR",
+  "comment": null,
+  "depends": {
+    "contents": [
+      "OrF",
+      {
+        "contents": {
+          "contents": "VK_KHR_get_physical_device_properties2",
+          "tag": "AvailExtension"
+        },
+        "tag": "AtomF"
+      },
+      {
+        "contents": {
+          "contents": {
+            "major": 1,
+            "minor": 1
+          },
+          "tag": "AvailVersion"
+        },
+        "tag": "AtomF"
+      }
+    ],
+    "tag": "BinOpF"
+  },
+  "deviceFeatures": [],
+  "extensionType": "ExtDevice",
+  "name": "VK_KHR_portability_subset",
+  "nameString": "VK_KHR_portability_subset",
+  "number": 164,
+  "platformGuard": {
+    "platform": "provisional",
+    "protect": "VK_ENABLE_BETA_EXTENSIONS"
+  },
+  "pos": "24446:9",
+  "provisional": true,
+  "ratified": true,
+  "specVersion": 1,
+  "specialUse": [],
+  "status": {
+    "tag": "StatusCurrent"
+  }
+}

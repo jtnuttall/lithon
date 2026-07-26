@@ -1,0 +1,73 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Clipboard
+ctypes:
+  - omit:
+      headers: SDL3/SDL_clipboard.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_clipboard.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_clipboard.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_clipboard.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_clipboard.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_clipboard.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_clipboard.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_clipboard.h
+    cname: SDL_ClipboardDataCallback
+    hsname: SDL_ClipboardDataCallback
+  - headers: SDL3/SDL_clipboard.h
+    cname: SDL_ClipboardCleanupCallback
+    hsname: SDL_ClipboardCleanupCallback
+hstypes:
+  - hsname: SDL_ClipboardCleanupCallback
+    representation:
+      newtype:
+        constructor: SDL_ClipboardCleanupCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_ClipboardDataCallback
+    representation:
+      newtype:
+        constructor: SDL_ClipboardDataCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

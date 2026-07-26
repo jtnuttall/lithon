@@ -1,0 +1,66 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Process
+ctypes:
+  - omit:
+      headers: SDL3/SDL_process.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_process.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_process.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_process.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_process.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_process.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_process.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_process.h
+    cname: struct SDL_Process
+    hsname: SDL_Process
+  - headers: SDL3/SDL_process.h
+    cname: SDL_Process
+    hsname: SDL_Process
+  - headers: SDL3/SDL_process.h
+    cname: enum SDL_ProcessIO
+    hsname: SDL_ProcessIO
+    enum: open
+  - headers: SDL3/SDL_process.h
+    cname: SDL_ProcessIO
+    hsname: SDL_ProcessIO
+hstypes:
+  - hsname: SDL_Process
+    representation: emptydata
+  - hsname: SDL_ProcessIO
+    representation:
+      newtype:
+        constructor: SDL_ProcessIO
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

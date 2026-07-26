@@ -1,0 +1,220 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Render
+ctypes:
+  - omit:
+      headers: SDL3/SDL_render.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_render.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_render.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_render.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_render.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_render.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_render.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_render.h
+    cname: struct SDL_Vertex
+    hsname: SDL_Vertex
+  - headers: SDL3/SDL_render.h
+    cname: SDL_Vertex
+    hsname: SDL_Vertex
+  - headers: SDL3/SDL_render.h
+    cname: enum SDL_TextureAccess
+    hsname: SDL_TextureAccess
+    enum: open
+  - headers: SDL3/SDL_render.h
+    cname: SDL_TextureAccess
+    hsname: SDL_TextureAccess
+  - headers: SDL3/SDL_render.h
+    cname: enum SDL_TextureAddressMode
+    hsname: SDL_TextureAddressMode
+    enum: open
+  - headers: SDL3/SDL_render.h
+    cname: SDL_TextureAddressMode
+    hsname: SDL_TextureAddressMode
+  - headers: SDL3/SDL_render.h
+    cname: enum SDL_RendererLogicalPresentation
+    hsname: SDL_RendererLogicalPresentation
+    enum: open
+  - headers: SDL3/SDL_render.h
+    cname: SDL_RendererLogicalPresentation
+    hsname: SDL_RendererLogicalPresentation
+  - headers: SDL3/SDL_render.h
+    cname: struct SDL_Renderer
+    hsname: SDL_Renderer
+  - headers: SDL3/SDL_render.h
+    cname: SDL_Renderer
+    hsname: SDL_Renderer
+  - headers: SDL3/SDL_render.h
+    cname: struct SDL_Texture
+    hsname: SDL_Texture
+  - headers: SDL3/SDL_render.h
+    cname: SDL_Texture
+    hsname: SDL_Texture
+  - headers: SDL3/SDL_render.h
+    cname: struct SDL_GPURenderStateCreateInfo
+    hsname: SDL_GPURenderStateCreateInfo
+  - headers: SDL3/SDL_render.h
+    cname: SDL_GPURenderStateCreateInfo
+    hsname: SDL_GPURenderStateCreateInfo
+  - headers: SDL3/SDL_render.h
+    cname: struct SDL_GPURenderState
+    hsname: SDL_GPURenderState
+  - headers: SDL3/SDL_render.h
+    cname: SDL_GPURenderState
+    hsname: SDL_GPURenderState
+hstypes:
+  - hsname: SDL_GPURenderState
+    representation: emptydata
+  - hsname: SDL_GPURenderStateCreateInfo
+    representation:
+      record:
+        constructor: SDL_GPURenderStateCreateInfo
+        fields:
+          - fragment_shader
+          - num_sampler_bindings
+          - sampler_bindings
+          - num_storage_textures
+          - storage_textures
+          - num_storage_buffers
+          - storage_buffers
+          - props
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Renderer
+    representation: emptydata
+  - hsname: SDL_RendererLogicalPresentation
+    representation:
+      newtype:
+        constructor: SDL_RendererLogicalPresentation
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Texture
+    representation:
+      record:
+        constructor: SDL_Texture
+        fields:
+          - format
+          - w
+          - h
+          - refcount
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TextureAccess
+    representation:
+      newtype:
+        constructor: SDL_TextureAccess
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TextureAddressMode
+    representation:
+      newtype:
+        constructor: SDL_TextureAddressMode
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Vertex
+    representation:
+      record:
+        constructor: SDL_Vertex
+        fields:
+          - position
+          - color
+          - tex_coord
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

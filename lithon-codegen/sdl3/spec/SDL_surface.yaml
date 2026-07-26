@@ -1,0 +1,154 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Surface
+ctypes:
+  - omit:
+      headers: SDL3/SDL_surface.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_surface.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_surface.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_surface.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_surface.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_surface.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_surface.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_surface.h
+    cname: SDL_SurfaceFlags
+    hsname: SDL_SurfaceFlags
+  - headers: SDL3/SDL_surface.h
+    cname: enum SDL_ScaleMode
+    hsname: SDL_ScaleMode
+    enum: open
+  - headers: SDL3/SDL_surface.h
+    cname: SDL_ScaleMode
+    hsname: SDL_ScaleMode
+  - headers: SDL3/SDL_surface.h
+    cname: enum SDL_FlipMode
+    hsname: SDL_FlipMode
+    enum: open
+  - headers: SDL3/SDL_surface.h
+    cname: SDL_FlipMode
+    hsname: SDL_FlipMode
+  - headers: SDL3/SDL_surface.h
+    cname: struct SDL_Surface
+    hsname: SDL_Surface
+  - headers: SDL3/SDL_surface.h
+    cname: SDL_Surface
+    hsname: SDL_Surface
+hstypes:
+  - hsname: SDL_FlipMode
+    representation:
+      newtype:
+        constructor: SDL_FlipMode
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_ScaleMode
+    representation:
+      newtype:
+        constructor: SDL_ScaleMode
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Surface
+    representation:
+      record:
+        constructor: SDL_Surface
+        fields:
+          - flags
+          - format
+          - w
+          - h
+          - pitch
+          - pixels
+          - refcount
+          - reserved
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_SurfaceFlags
+    representation:
+      newtype:
+        constructor: SDL_SurfaceFlags
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

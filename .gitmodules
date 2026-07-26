@@ -1,0 +1,19 @@
+[submodule "lithon-codegen/Vulkan-Docs"]
+	path = lithon-codegen/Vulkan-Docs
+	url = https://github.com/KhronosGroup/Vulkan-Docs.git
+[submodule "vendor/hs-bindgen"]
+	path = lithon-hs-bindgen/vendor/hs-bindgen
+	url = https://github.com/jtnuttall/hs-bindgen.git
+	ignore = untracked
+	branch = lithon/vendor-patches
+[submodule "lithon-hs-bindgen/vendor/libclang-bindings"]
+	path = lithon-hs-bindgen/vendor/libclang-bindings
+	url = https://github.com/well-typed/libclang-bindings.git
+[submodule "lithon-hs-bindgen/vendor/c-expr"]
+	path = lithon-hs-bindgen/vendor/c-expr
+	url = https://github.com/well-typed/c-expr.git
+[submodule "lithon-hs-bindgen/vendor/doxygen-parser"]
+	path = lithon-hs-bindgen/vendor/doxygen-parser
+	url = https://github.com/jtnuttall/doxygen-parser.git
+	branch = lithon/vendor-patches
+

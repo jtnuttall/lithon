@@ -1,0 +1,213 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Mouse
+ctypes:
+  - omit:
+      headers: SDL3/SDL_mouse.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_mouse.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_mouse.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_mouse.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_mouse.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_mouse.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_mouse.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_mouse.h
+    cname: SDL_MouseID
+    hsname: SDL_MouseID
+  - headers: SDL3/SDL_mouse.h
+    cname: struct SDL_Cursor
+    hsname: SDL_Cursor
+  - headers: SDL3/SDL_mouse.h
+    cname: SDL_Cursor
+    hsname: SDL_Cursor
+  - headers: SDL3/SDL_mouse.h
+    cname: enum SDL_SystemCursor
+    hsname: SDL_SystemCursor
+    enum: open
+  - headers: SDL3/SDL_mouse.h
+    cname: SDL_SystemCursor
+    hsname: SDL_SystemCursor
+  - headers: SDL3/SDL_mouse.h
+    cname: enum SDL_MouseWheelDirection
+    hsname: SDL_MouseWheelDirection
+    enum: open
+  - headers: SDL3/SDL_mouse.h
+    cname: SDL_MouseWheelDirection
+    hsname: SDL_MouseWheelDirection
+  - headers: SDL3/SDL_mouse.h
+    cname: struct SDL_CursorFrameInfo
+    hsname: SDL_CursorFrameInfo
+  - headers: SDL3/SDL_mouse.h
+    cname: SDL_CursorFrameInfo
+    hsname: SDL_CursorFrameInfo
+  - headers: SDL3/SDL_mouse.h
+    cname: SDL_MouseButtonFlags
+    hsname: SDL_MouseButtonFlags
+  - headers: SDL3/SDL_mouse.h
+    cname: SDL_MouseMotionTransformCallback
+    hsname: SDL_MouseMotionTransformCallback
+hstypes:
+  - hsname: SDL_Cursor
+    representation: emptydata
+  - hsname: SDL_CursorFrameInfo
+    representation:
+      record:
+        constructor: SDL_CursorFrameInfo
+        fields:
+          - surface
+          - duration
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MouseButtonFlags
+    representation:
+      newtype:
+        constructor: SDL_MouseButtonFlags
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MouseID
+    representation:
+      newtype:
+        constructor: SDL_MouseID
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MouseMotionTransformCallback
+    representation:
+      newtype:
+        constructor: SDL_MouseMotionTransformCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MouseWheelDirection
+    representation:
+      newtype:
+        constructor: SDL_MouseWheelDirection
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_SystemCursor
+    representation:
+      newtype:
+        constructor: SDL_SystemCursor
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

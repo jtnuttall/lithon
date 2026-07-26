@@ -1,0 +1,49 @@
+packages:
+  lithon-vk
+  lithon-codegen
+  lithon-core
+  lithon-examples
+  lithon-hs-bindgen
+  lithon-prelude
+  rapidhash
+  sdl3-bindgen-sys
+  typed-product-builder
+
+  -- Vendored via git submodules under lithon-hs-bindgen/vendor/
+  lithon-hs-bindgen/vendor/hs-bindgen/hs-bindgen
+  lithon-hs-bindgen/vendor/hs-bindgen/hs-bindgen-runtime
+  lithon-hs-bindgen/vendor/libclang-bindings/libclang-bindings
+  lithon-hs-bindgen/vendor/c-expr/c-expr-runtime
+  lithon-hs-bindgen/vendor/c-expr/c-expr-dsl
+  lithon-hs-bindgen/vendor/doxygen-parser
+
+index-state: 2026-07-01T00:00:00Z
+write-ghc-environment-files: always
+
+-- Vendored packages build as libraries (plus hs-bindgen-cli) only
+package hs-bindgen
+  tests: False
+
+package hs-bindgen-runtime
+  tests: False
+
+package libclang-bindings
+  tests: False
+
+package c-expr-runtime
+  tests: False
+
+package c-expr-dsl
+  tests: False
+
+package doxygen-parser
+  tests: False
+
+-- Exercise rapidhash's optional aeson instances in the repo build/test/CI.
+-- The published flag stays default-off; consumers opt in themselves.
+package rapidhash
+  flags: +aeson
+
+-- hs-bindgen pins aeson <2.3.
+-- Scoped until the bound is widened on the vendor branch.
+allow-newer: hs-bindgen:aeson

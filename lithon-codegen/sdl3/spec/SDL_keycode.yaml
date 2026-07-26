@@ -1,0 +1,95 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Keycode
+ctypes:
+  - omit:
+      headers: SDL3/SDL_keycode.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_keycode.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_keycode.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_keycode.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_keycode.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_keycode.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_keycode.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_keycode.h
+    cname: SDL_Keycode
+    hsname: SDL_Keycode
+  - headers: SDL3/SDL_keycode.h
+    cname: SDL_Keymod
+    hsname: SDL_Keymod
+hstypes:
+  - hsname: SDL_Keycode
+    representation:
+      newtype:
+        constructor: SDL_Keycode
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Keymod
+    representation:
+      newtype:
+        constructor: SDL_Keymod
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

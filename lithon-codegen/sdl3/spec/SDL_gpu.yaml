@@ -1,0 +1,2073 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Gpu
+ctypes:
+  - omit:
+      headers: SDL3/SDL_gpu.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_gpu.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_gpu.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_gpu.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_gpu.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_gpu.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_gpu.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUDevice
+    hsname: SDL_GPUDevice
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUDevice
+    hsname: SDL_GPUDevice
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUBuffer
+    hsname: SDL_GPUBuffer
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUBuffer
+    hsname: SDL_GPUBuffer
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUTransferBuffer
+    hsname: SDL_GPUTransferBuffer
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUTransferBuffer
+    hsname: SDL_GPUTransferBuffer
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUTexture
+    hsname: SDL_GPUTexture
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUTexture
+    hsname: SDL_GPUTexture
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUSampler
+    hsname: SDL_GPUSampler
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUSampler
+    hsname: SDL_GPUSampler
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUShader
+    hsname: SDL_GPUShader
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUShader
+    hsname: SDL_GPUShader
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUComputePipeline
+    hsname: SDL_GPUComputePipeline
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUComputePipeline
+    hsname: SDL_GPUComputePipeline
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUGraphicsPipeline
+    hsname: SDL_GPUGraphicsPipeline
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUGraphicsPipeline
+    hsname: SDL_GPUGraphicsPipeline
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUCommandBuffer
+    hsname: SDL_GPUCommandBuffer
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUCommandBuffer
+    hsname: SDL_GPUCommandBuffer
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPURenderPass
+    hsname: SDL_GPURenderPass
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPURenderPass
+    hsname: SDL_GPURenderPass
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUComputePass
+    hsname: SDL_GPUComputePass
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUComputePass
+    hsname: SDL_GPUComputePass
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUCopyPass
+    hsname: SDL_GPUCopyPass
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUCopyPass
+    hsname: SDL_GPUCopyPass
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUFence
+    hsname: SDL_GPUFence
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUFence
+    hsname: SDL_GPUFence
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUPrimitiveType
+    hsname: SDL_GPUPrimitiveType
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUPrimitiveType
+    hsname: SDL_GPUPrimitiveType
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPULoadOp
+    hsname: SDL_GPULoadOp
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPULoadOp
+    hsname: SDL_GPULoadOp
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUStoreOp
+    hsname: SDL_GPUStoreOp
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUStoreOp
+    hsname: SDL_GPUStoreOp
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUIndexElementSize
+    hsname: SDL_GPUIndexElementSize
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUIndexElementSize
+    hsname: SDL_GPUIndexElementSize
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUTextureFormat
+    hsname: SDL_GPUTextureFormat
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUTextureFormat
+    hsname: SDL_GPUTextureFormat
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUTextureUsageFlags
+    hsname: SDL_GPUTextureUsageFlags
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUTextureType
+    hsname: SDL_GPUTextureType
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUTextureType
+    hsname: SDL_GPUTextureType
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUSampleCount
+    hsname: SDL_GPUSampleCount
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUSampleCount
+    hsname: SDL_GPUSampleCount
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUCubeMapFace
+    hsname: SDL_GPUCubeMapFace
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUCubeMapFace
+    hsname: SDL_GPUCubeMapFace
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUBufferUsageFlags
+    hsname: SDL_GPUBufferUsageFlags
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUTransferBufferUsage
+    hsname: SDL_GPUTransferBufferUsage
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUTransferBufferUsage
+    hsname: SDL_GPUTransferBufferUsage
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUShaderStage
+    hsname: SDL_GPUShaderStage
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUShaderStage
+    hsname: SDL_GPUShaderStage
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUShaderFormat
+    hsname: SDL_GPUShaderFormat
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUVertexElementFormat
+    hsname: SDL_GPUVertexElementFormat
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUVertexElementFormat
+    hsname: SDL_GPUVertexElementFormat
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUVertexInputRate
+    hsname: SDL_GPUVertexInputRate
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUVertexInputRate
+    hsname: SDL_GPUVertexInputRate
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUFillMode
+    hsname: SDL_GPUFillMode
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUFillMode
+    hsname: SDL_GPUFillMode
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUCullMode
+    hsname: SDL_GPUCullMode
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUCullMode
+    hsname: SDL_GPUCullMode
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUFrontFace
+    hsname: SDL_GPUFrontFace
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUFrontFace
+    hsname: SDL_GPUFrontFace
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUCompareOp
+    hsname: SDL_GPUCompareOp
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUCompareOp
+    hsname: SDL_GPUCompareOp
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUStencilOp
+    hsname: SDL_GPUStencilOp
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUStencilOp
+    hsname: SDL_GPUStencilOp
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUBlendOp
+    hsname: SDL_GPUBlendOp
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUBlendOp
+    hsname: SDL_GPUBlendOp
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUBlendFactor
+    hsname: SDL_GPUBlendFactor
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUBlendFactor
+    hsname: SDL_GPUBlendFactor
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUColorComponentFlags
+    hsname: SDL_GPUColorComponentFlags
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUFilter
+    hsname: SDL_GPUFilter
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUFilter
+    hsname: SDL_GPUFilter
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUSamplerMipmapMode
+    hsname: SDL_GPUSamplerMipmapMode
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUSamplerMipmapMode
+    hsname: SDL_GPUSamplerMipmapMode
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUSamplerAddressMode
+    hsname: SDL_GPUSamplerAddressMode
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUSamplerAddressMode
+    hsname: SDL_GPUSamplerAddressMode
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUPresentMode
+    hsname: SDL_GPUPresentMode
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUPresentMode
+    hsname: SDL_GPUPresentMode
+  - headers: SDL3/SDL_gpu.h
+    cname: enum SDL_GPUSwapchainComposition
+    hsname: SDL_GPUSwapchainComposition
+    enum: open
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUSwapchainComposition
+    hsname: SDL_GPUSwapchainComposition
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUViewport
+    hsname: SDL_GPUViewport
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUViewport
+    hsname: SDL_GPUViewport
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUTextureTransferInfo
+    hsname: SDL_GPUTextureTransferInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUTextureTransferInfo
+    hsname: SDL_GPUTextureTransferInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUTransferBufferLocation
+    hsname: SDL_GPUTransferBufferLocation
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUTransferBufferLocation
+    hsname: SDL_GPUTransferBufferLocation
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUTextureLocation
+    hsname: SDL_GPUTextureLocation
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUTextureLocation
+    hsname: SDL_GPUTextureLocation
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUTextureRegion
+    hsname: SDL_GPUTextureRegion
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUTextureRegion
+    hsname: SDL_GPUTextureRegion
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUBlitRegion
+    hsname: SDL_GPUBlitRegion
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUBlitRegion
+    hsname: SDL_GPUBlitRegion
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUBufferLocation
+    hsname: SDL_GPUBufferLocation
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUBufferLocation
+    hsname: SDL_GPUBufferLocation
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUBufferRegion
+    hsname: SDL_GPUBufferRegion
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUBufferRegion
+    hsname: SDL_GPUBufferRegion
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUIndirectDrawCommand
+    hsname: SDL_GPUIndirectDrawCommand
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUIndirectDrawCommand
+    hsname: SDL_GPUIndirectDrawCommand
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUIndexedIndirectDrawCommand
+    hsname: SDL_GPUIndexedIndirectDrawCommand
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUIndexedIndirectDrawCommand
+    hsname: SDL_GPUIndexedIndirectDrawCommand
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUIndirectDispatchCommand
+    hsname: SDL_GPUIndirectDispatchCommand
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUIndirectDispatchCommand
+    hsname: SDL_GPUIndirectDispatchCommand
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUSamplerCreateInfo
+    hsname: SDL_GPUSamplerCreateInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUSamplerCreateInfo
+    hsname: SDL_GPUSamplerCreateInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUVertexBufferDescription
+    hsname: SDL_GPUVertexBufferDescription
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUVertexBufferDescription
+    hsname: SDL_GPUVertexBufferDescription
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUVertexAttribute
+    hsname: SDL_GPUVertexAttribute
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUVertexAttribute
+    hsname: SDL_GPUVertexAttribute
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUVertexInputState
+    hsname: SDL_GPUVertexInputState
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUVertexInputState
+    hsname: SDL_GPUVertexInputState
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUStencilOpState
+    hsname: SDL_GPUStencilOpState
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUStencilOpState
+    hsname: SDL_GPUStencilOpState
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUColorTargetBlendState
+    hsname: SDL_GPUColorTargetBlendState
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUColorTargetBlendState
+    hsname: SDL_GPUColorTargetBlendState
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUShaderCreateInfo
+    hsname: SDL_GPUShaderCreateInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUShaderCreateInfo
+    hsname: SDL_GPUShaderCreateInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUTextureCreateInfo
+    hsname: SDL_GPUTextureCreateInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUTextureCreateInfo
+    hsname: SDL_GPUTextureCreateInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUBufferCreateInfo
+    hsname: SDL_GPUBufferCreateInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUBufferCreateInfo
+    hsname: SDL_GPUBufferCreateInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUTransferBufferCreateInfo
+    hsname: SDL_GPUTransferBufferCreateInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUTransferBufferCreateInfo
+    hsname: SDL_GPUTransferBufferCreateInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPURasterizerState
+    hsname: SDL_GPURasterizerState
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPURasterizerState
+    hsname: SDL_GPURasterizerState
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUMultisampleState
+    hsname: SDL_GPUMultisampleState
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUMultisampleState
+    hsname: SDL_GPUMultisampleState
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUDepthStencilState
+    hsname: SDL_GPUDepthStencilState
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUDepthStencilState
+    hsname: SDL_GPUDepthStencilState
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUColorTargetDescription
+    hsname: SDL_GPUColorTargetDescription
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUColorTargetDescription
+    hsname: SDL_GPUColorTargetDescription
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUGraphicsPipelineTargetInfo
+    hsname: SDL_GPUGraphicsPipelineTargetInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUGraphicsPipelineTargetInfo
+    hsname: SDL_GPUGraphicsPipelineTargetInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUGraphicsPipelineCreateInfo
+    hsname: SDL_GPUGraphicsPipelineCreateInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUGraphicsPipelineCreateInfo
+    hsname: SDL_GPUGraphicsPipelineCreateInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUComputePipelineCreateInfo
+    hsname: SDL_GPUComputePipelineCreateInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUComputePipelineCreateInfo
+    hsname: SDL_GPUComputePipelineCreateInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUColorTargetInfo
+    hsname: SDL_GPUColorTargetInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUColorTargetInfo
+    hsname: SDL_GPUColorTargetInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUDepthStencilTargetInfo
+    hsname: SDL_GPUDepthStencilTargetInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUDepthStencilTargetInfo
+    hsname: SDL_GPUDepthStencilTargetInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUBlitInfo
+    hsname: SDL_GPUBlitInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUBlitInfo
+    hsname: SDL_GPUBlitInfo
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUBufferBinding
+    hsname: SDL_GPUBufferBinding
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUBufferBinding
+    hsname: SDL_GPUBufferBinding
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUTextureSamplerBinding
+    hsname: SDL_GPUTextureSamplerBinding
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUTextureSamplerBinding
+    hsname: SDL_GPUTextureSamplerBinding
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUStorageBufferReadWriteBinding
+    hsname: SDL_GPUStorageBufferReadWriteBinding
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUStorageBufferReadWriteBinding
+    hsname: SDL_GPUStorageBufferReadWriteBinding
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUStorageTextureReadWriteBinding
+    hsname: SDL_GPUStorageTextureReadWriteBinding
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUStorageTextureReadWriteBinding
+    hsname: SDL_GPUStorageTextureReadWriteBinding
+  - headers: SDL3/SDL_gpu.h
+    cname: struct SDL_GPUVulkanOptions
+    hsname: SDL_GPUVulkanOptions
+  - headers: SDL3/SDL_gpu.h
+    cname: SDL_GPUVulkanOptions
+    hsname: SDL_GPUVulkanOptions
+hstypes:
+  - hsname: SDL_GPUBlendFactor
+    representation:
+      newtype:
+        constructor: SDL_GPUBlendFactor
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUBlendOp
+    representation:
+      newtype:
+        constructor: SDL_GPUBlendOp
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUBlitInfo
+    representation:
+      record:
+        constructor: SDL_GPUBlitInfo
+        fields:
+          - source
+          - destination
+          - load_op
+          - clear_color
+          - flip_mode
+          - filter
+          - cycle
+          - padding1
+          - padding2
+          - padding3
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUBlitRegion
+    representation:
+      record:
+        constructor: SDL_GPUBlitRegion
+        fields:
+          - texture
+          - mip_level
+          - layer_or_depth_plane
+          - x
+          - "y"
+          - w
+          - h
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUBuffer
+    representation: emptydata
+  - hsname: SDL_GPUBufferBinding
+    representation:
+      record:
+        constructor: SDL_GPUBufferBinding
+        fields:
+          - buffer
+          - offset
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUBufferCreateInfo
+    representation:
+      record:
+        constructor: SDL_GPUBufferCreateInfo
+        fields:
+          - usage
+          - size
+          - props
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUBufferLocation
+    representation:
+      record:
+        constructor: SDL_GPUBufferLocation
+        fields:
+          - buffer
+          - offset
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUBufferRegion
+    representation:
+      record:
+        constructor: SDL_GPUBufferRegion
+        fields:
+          - buffer
+          - offset
+          - size
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUBufferUsageFlags
+    representation:
+      newtype:
+        constructor: SDL_GPUBufferUsageFlags
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUColorComponentFlags
+    representation:
+      newtype:
+        constructor: SDL_GPUColorComponentFlags
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUColorTargetBlendState
+    representation:
+      record:
+        constructor: SDL_GPUColorTargetBlendState
+        fields:
+          - src_color_blendfactor
+          - dst_color_blendfactor
+          - color_blend_op
+          - src_alpha_blendfactor
+          - dst_alpha_blendfactor
+          - alpha_blend_op
+          - color_write_mask
+          - enable_blend
+          - enable_color_write_mask
+          - padding1
+          - padding2
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUColorTargetDescription
+    representation:
+      record:
+        constructor: SDL_GPUColorTargetDescription
+        fields:
+          - format
+          - blend_state
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUColorTargetInfo
+    representation:
+      record:
+        constructor: SDL_GPUColorTargetInfo
+        fields:
+          - texture
+          - mip_level
+          - layer_or_depth_plane
+          - clear_color
+          - load_op
+          - store_op
+          - resolve_texture
+          - resolve_mip_level
+          - resolve_layer
+          - cycle
+          - cycle_resolve_texture
+          - padding1
+          - padding2
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUCommandBuffer
+    representation: emptydata
+  - hsname: SDL_GPUCompareOp
+    representation:
+      newtype:
+        constructor: SDL_GPUCompareOp
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUComputePass
+    representation: emptydata
+  - hsname: SDL_GPUComputePipeline
+    representation: emptydata
+  - hsname: SDL_GPUComputePipelineCreateInfo
+    representation:
+      record:
+        constructor: SDL_GPUComputePipelineCreateInfo
+        fields:
+          - code_size
+          - code
+          - entrypoint
+          - format
+          - num_samplers
+          - num_readonly_storage_textures
+          - num_readonly_storage_buffers
+          - num_readwrite_storage_textures
+          - num_readwrite_storage_buffers
+          - num_uniform_buffers
+          - threadcount_x
+          - threadcount_y
+          - threadcount_z
+          - props
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUCopyPass
+    representation: emptydata
+  - hsname: SDL_GPUCubeMapFace
+    representation:
+      newtype:
+        constructor: SDL_GPUCubeMapFace
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUCullMode
+    representation:
+      newtype:
+        constructor: SDL_GPUCullMode
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUDepthStencilState
+    representation:
+      record:
+        constructor: SDL_GPUDepthStencilState
+        fields:
+          - compare_op
+          - back_stencil_state
+          - front_stencil_state
+          - compare_mask
+          - write_mask
+          - enable_depth_test
+          - enable_depth_write
+          - enable_stencil_test
+          - padding1
+          - padding2
+          - padding3
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUDepthStencilTargetInfo
+    representation:
+      record:
+        constructor: SDL_GPUDepthStencilTargetInfo
+        fields:
+          - texture
+          - clear_depth
+          - load_op
+          - store_op
+          - stencil_load_op
+          - stencil_store_op
+          - cycle
+          - clear_stencil
+          - mip_level
+          - layer
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUDevice
+    representation: emptydata
+  - hsname: SDL_GPUFence
+    representation: emptydata
+  - hsname: SDL_GPUFillMode
+    representation:
+      newtype:
+        constructor: SDL_GPUFillMode
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUFilter
+    representation:
+      newtype:
+        constructor: SDL_GPUFilter
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUFrontFace
+    representation:
+      newtype:
+        constructor: SDL_GPUFrontFace
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUGraphicsPipeline
+    representation: emptydata
+  - hsname: SDL_GPUGraphicsPipelineCreateInfo
+    representation:
+      record:
+        constructor: SDL_GPUGraphicsPipelineCreateInfo
+        fields:
+          - vertex_shader
+          - fragment_shader
+          - vertex_input_state
+          - primitive_type
+          - rasterizer_state
+          - multisample_state
+          - depth_stencil_state
+          - target_info
+          - props
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUGraphicsPipelineTargetInfo
+    representation:
+      record:
+        constructor: SDL_GPUGraphicsPipelineTargetInfo
+        fields:
+          - color_target_descriptions
+          - num_color_targets
+          - depth_stencil_format
+          - has_depth_stencil_target
+          - padding1
+          - padding2
+          - padding3
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUIndexElementSize
+    representation:
+      newtype:
+        constructor: SDL_GPUIndexElementSize
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUIndexedIndirectDrawCommand
+    representation:
+      record:
+        constructor: SDL_GPUIndexedIndirectDrawCommand
+        fields:
+          - num_indices
+          - num_instances
+          - first_index
+          - vertex_offset
+          - first_instance
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUIndirectDispatchCommand
+    representation:
+      record:
+        constructor: SDL_GPUIndirectDispatchCommand
+        fields:
+          - groupcount_x
+          - groupcount_y
+          - groupcount_z
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUIndirectDrawCommand
+    representation:
+      record:
+        constructor: SDL_GPUIndirectDrawCommand
+        fields:
+          - num_vertices
+          - num_instances
+          - first_vertex
+          - first_instance
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPULoadOp
+    representation:
+      newtype:
+        constructor: SDL_GPULoadOp
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUMultisampleState
+    representation:
+      record:
+        constructor: SDL_GPUMultisampleState
+        fields:
+          - sample_count
+          - sample_mask
+          - enable_mask
+          - enable_alpha_to_coverage
+          - padding2
+          - padding3
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUPresentMode
+    representation:
+      newtype:
+        constructor: SDL_GPUPresentMode
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUPrimitiveType
+    representation:
+      newtype:
+        constructor: SDL_GPUPrimitiveType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPURasterizerState
+    representation:
+      record:
+        constructor: SDL_GPURasterizerState
+        fields:
+          - fill_mode
+          - cull_mode
+          - front_face
+          - depth_bias_constant_factor
+          - depth_bias_clamp
+          - depth_bias_slope_factor
+          - enable_depth_bias
+          - enable_depth_clip
+          - padding1
+          - padding2
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPURenderPass
+    representation: emptydata
+  - hsname: SDL_GPUSampleCount
+    representation:
+      newtype:
+        constructor: SDL_GPUSampleCount
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUSampler
+    representation: emptydata
+  - hsname: SDL_GPUSamplerAddressMode
+    representation:
+      newtype:
+        constructor: SDL_GPUSamplerAddressMode
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUSamplerCreateInfo
+    representation:
+      record:
+        constructor: SDL_GPUSamplerCreateInfo
+        fields:
+          - min_filter
+          - mag_filter
+          - mipmap_mode
+          - address_mode_u
+          - address_mode_v
+          - address_mode_w
+          - mip_lod_bias
+          - max_anisotropy
+          - compare_op
+          - min_lod
+          - max_lod
+          - enable_anisotropy
+          - enable_compare
+          - padding1
+          - padding2
+          - props
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUSamplerMipmapMode
+    representation:
+      newtype:
+        constructor: SDL_GPUSamplerMipmapMode
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUShader
+    representation: emptydata
+  - hsname: SDL_GPUShaderCreateInfo
+    representation:
+      record:
+        constructor: SDL_GPUShaderCreateInfo
+        fields:
+          - code_size
+          - code
+          - entrypoint
+          - format
+          - stage
+          - num_samplers
+          - num_storage_textures
+          - num_storage_buffers
+          - num_uniform_buffers
+          - props
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUShaderFormat
+    representation:
+      newtype:
+        constructor: SDL_GPUShaderFormat
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUShaderStage
+    representation:
+      newtype:
+        constructor: SDL_GPUShaderStage
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUStencilOp
+    representation:
+      newtype:
+        constructor: SDL_GPUStencilOp
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUStencilOpState
+    representation:
+      record:
+        constructor: SDL_GPUStencilOpState
+        fields:
+          - fail_op
+          - pass_op
+          - depth_fail_op
+          - compare_op
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUStorageBufferReadWriteBinding
+    representation:
+      record:
+        constructor: SDL_GPUStorageBufferReadWriteBinding
+        fields:
+          - buffer
+          - cycle
+          - padding1
+          - padding2
+          - padding3
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUStorageTextureReadWriteBinding
+    representation:
+      record:
+        constructor: SDL_GPUStorageTextureReadWriteBinding
+        fields:
+          - texture
+          - mip_level
+          - layer
+          - cycle
+          - padding1
+          - padding2
+          - padding3
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUStoreOp
+    representation:
+      newtype:
+        constructor: SDL_GPUStoreOp
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUSwapchainComposition
+    representation:
+      newtype:
+        constructor: SDL_GPUSwapchainComposition
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUTexture
+    representation: emptydata
+  - hsname: SDL_GPUTextureCreateInfo
+    representation:
+      record:
+        constructor: SDL_GPUTextureCreateInfo
+        fields:
+          - type'
+          - format
+          - usage
+          - width
+          - height
+          - layer_count_or_depth
+          - num_levels
+          - sample_count
+          - props
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUTextureFormat
+    representation:
+      newtype:
+        constructor: SDL_GPUTextureFormat
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUTextureLocation
+    representation:
+      record:
+        constructor: SDL_GPUTextureLocation
+        fields:
+          - texture
+          - mip_level
+          - layer
+          - x
+          - "y"
+          - z
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUTextureRegion
+    representation:
+      record:
+        constructor: SDL_GPUTextureRegion
+        fields:
+          - texture
+          - mip_level
+          - layer
+          - x
+          - "y"
+          - z
+          - w
+          - h
+          - d
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUTextureSamplerBinding
+    representation:
+      record:
+        constructor: SDL_GPUTextureSamplerBinding
+        fields:
+          - texture
+          - sampler
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUTextureTransferInfo
+    representation:
+      record:
+        constructor: SDL_GPUTextureTransferInfo
+        fields:
+          - transfer_buffer
+          - offset
+          - pixels_per_row
+          - rows_per_layer
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUTextureType
+    representation:
+      newtype:
+        constructor: SDL_GPUTextureType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUTextureUsageFlags
+    representation:
+      newtype:
+        constructor: SDL_GPUTextureUsageFlags
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUTransferBuffer
+    representation: emptydata
+  - hsname: SDL_GPUTransferBufferCreateInfo
+    representation:
+      record:
+        constructor: SDL_GPUTransferBufferCreateInfo
+        fields:
+          - usage
+          - size
+          - props
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUTransferBufferLocation
+    representation:
+      record:
+        constructor: SDL_GPUTransferBufferLocation
+        fields:
+          - transfer_buffer
+          - offset
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUTransferBufferUsage
+    representation:
+      newtype:
+        constructor: SDL_GPUTransferBufferUsage
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUVertexAttribute
+    representation:
+      record:
+        constructor: SDL_GPUVertexAttribute
+        fields:
+          - location
+          - buffer_slot
+          - format
+          - offset
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUVertexBufferDescription
+    representation:
+      record:
+        constructor: SDL_GPUVertexBufferDescription
+        fields:
+          - slot
+          - pitch
+          - input_rate
+          - instance_step_rate
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUVertexElementFormat
+    representation:
+      newtype:
+        constructor: SDL_GPUVertexElementFormat
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUVertexInputRate
+    representation:
+      newtype:
+        constructor: SDL_GPUVertexInputRate
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUVertexInputState
+    representation:
+      record:
+        constructor: SDL_GPUVertexInputState
+        fields:
+          - vertex_buffer_descriptions
+          - num_vertex_buffers
+          - vertex_attributes
+          - num_vertex_attributes
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUViewport
+    representation:
+      record:
+        constructor: SDL_GPUViewport
+        fields:
+          - x
+          - "y"
+          - w
+          - h
+          - min_depth
+          - max_depth
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GPUVulkanOptions
+    representation:
+      record:
+        constructor: SDL_GPUVulkanOptions
+        fields:
+          - vulkan_api_version
+          - feature_list
+          - vulkan_10_physical_device_features
+          - device_extension_count
+          - device_extension_names
+          - instance_extension_count
+          - instance_extension_names
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

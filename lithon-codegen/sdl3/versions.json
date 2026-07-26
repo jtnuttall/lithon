@@ -1,0 +1,102 @@
+{
+  "decls": {
+    "SDL_ProgressState": {
+      "since": "3.4.0",
+      "note": "Header claims \\since 3.2.8; absent from every 3.2.x through 3.2.30. The empirical floor is 3.4.0."
+    },
+    "SDL_PinchFingerEvent": {
+      "since": "3.4.0",
+      "note": "No \\since upstream at all; first appears in 3.4.0."
+    },
+    "SDL_StretchSurface": {
+      "since": "3.2.4",
+      "note": "Header claims \\since 3.4.0; present since 3.2.4. Correcting keeps the function live on 3.2.4+ instead of stubbing it."
+    }
+  },
+  "enum-constants": {
+    "SDL_PIXELFORMAT_MJPG": { "since": "3.2.6" },
+    "SDL_SCALEMODE_INVALID": { "since": "3.2.10" },
+    "SDL_SENSOR_COUNT": {
+      "since": "3.2.30",
+      "note": "First observed in the matrix between 3.2.16 and 3.2.30; inclusive upper bound recorded (over-gating a sentinel is harmless)."
+    },
+    "SDL_SCALEMODE_PIXELART": { "since": "3.4.0" },
+    "SDL_FLIP_HORIZONTAL_AND_VERTICAL": { "since": "3.4.0" },
+    "SDL_GAMEPAD_TYPE_GAMECUBE": { "since": "3.4.0" },
+    "SDL_EVENT_DISPLAY_USABLE_BOUNDS_CHANGED": { "since": "3.4.0" },
+    "SDL_EVENT_SCREEN_KEYBOARD_SHOWN": { "since": "3.4.0" },
+    "SDL_EVENT_SCREEN_KEYBOARD_HIDDEN": { "since": "3.4.0" },
+    "SDL_EVENT_PINCH_BEGIN": { "since": "3.4.0" },
+    "SDL_EVENT_PINCH_UPDATE": { "since": "3.4.0" },
+    "SDL_EVENT_PINCH_END": { "since": "3.4.0" }
+  },
+  "value-gates": {
+    "SDL_COLORSPACE_YUV_DEFAULT": {
+      "since": "3.4.0",
+      "note": "3.2: = SDL_COLORSPACE_JPEG; 3.4: = SDL_COLORSPACE_BT601_LIMITED. A real semantic change, also documented in the package README."
+    },
+    "SDL_GAMEPAD_TYPE_COUNT": { "since": "3.4.0", "note": "11 -> 12." },
+    "SDL_EVENT_DISPLAY_LAST": { "since": "3.4.0", "note": "343 -> 344." }
+  },
+  "macro-constants": {
+    "SDL_PEN_INPUT_IN_PROXIMITY": { "since": "3.4.0" },
+    "SDL_WINDOW_FILL_DOCUMENT": { "since": "3.4.0" }
+  },
+  "structs": {
+    "SDL_MouseWheelEvent": {
+      "sizeof-since": "3.2.12",
+      "note": "integer_x/integer_y added in 3.2.12; sizeof 48 -> 56, so the size/alignment asserts carry the same gate.",
+      "members": { "integer_x": "3.2.12", "integer_y": "3.2.12" }
+    },
+    "SDL_GPUMultisampleState": {
+      "note": "Member slotted into existing padding; sizeof unchanged.",
+      "members": { "enable_alpha_to_coverage": "3.4.0" }
+    },
+    "SDL_GPUDepthStencilTargetInfo": {
+      "note": "Members slotted into existing padding; sizeof unchanged.",
+      "members": { "mip_level": "3.4.0", "layer": "3.4.0" }
+    }
+  },
+  "prologue-typedefs": {
+    "SDL_CameraPermissionState": {
+      "shape": "int",
+      "headers": ["SDL_camera.h"],
+      "note": "enum; SDL_GetCameraPermissionState exists at 3.2 returning int (retype)"
+    },
+    "SDL_HapticEffectID": {
+      "shape": "int",
+      "headers": ["SDL_haptic.h"],
+      "note": "typedef int upstream; the six 3.2-era haptic-effect functions retype to it at 3.4"
+    },
+    "SDL_TextureAddressMode": { "shape": "int", "headers": ["SDL_render.h"], "note": "enum" },
+    "SDL_ProgressState": { "shape": "int", "headers": ["SDL_video.h"], "note": "enum" },
+    "SDL_PenDeviceType": { "shape": "int", "headers": ["SDL_pen.h"], "note": "enum" },
+    "SDL_CursorFrameInfo": {
+      "shape": "opaque-struct",
+      "headers": ["SDL_mouse.h"],
+      "note": "pointer-position only"
+    },
+    "SDL_GPURenderState": { "shape": "opaque-struct", "headers": ["SDL_render.h"] },
+    "SDL_GPURenderStateCreateInfo": { "shape": "opaque-struct", "headers": ["SDL_render.h"] },
+    "SDL_MouseMotionTransformCallback": {
+      "shape": "void-ptr",
+      "headers": ["SDL_mouse.h"],
+      "note": "function pointer"
+    },
+    "SDL_AudioStreamDataCompleteCallback": {
+      "shape": "void-ptr",
+      "headers": ["SDL_audio.h"],
+      "note": "function pointer"
+    },
+    "SDL_GPUDevice": {
+      "shape": "opaque-struct",
+      "headers": ["SDL_render.h"],
+      "note": "Exists at 3.2 but unreachable from the SDL_render.h wrapper TU's single include."
+    },
+    "SDL_PropertiesID": {
+      "shape": "uint32",
+      "headers": ["SDL_hidapi.h"],
+      "note": "Exists at 3.2 but unreachable from the SDL_hidapi.h wrapper TU's single include."
+    }
+  }
+}

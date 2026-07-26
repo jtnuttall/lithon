@@ -1,0 +1,52 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Locale
+ctypes:
+  - omit:
+      headers: SDL3/SDL_locale.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_locale.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_locale.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_locale.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_locale.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_locale.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_locale.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_locale.h
+    cname: struct SDL_Locale
+    hsname: SDL_Locale
+  - headers: SDL3/SDL_locale.h
+    cname: SDL_Locale
+    hsname: SDL_Locale
+hstypes:
+  - hsname: SDL_Locale
+    representation:
+      record:
+        constructor: SDL_Locale
+        fields:
+          - language
+          - country
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

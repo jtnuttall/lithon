@@ -1,0 +1,194 @@
+{
+  "aliases": [
+    {
+      "availability": {
+        "contents": [
+          "OrF",
+          {
+            "contents": {
+              "contents": "VK_KHR_extended_flags",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          },
+          {
+            "contents": {
+              "contents": "VK_KHR_maintenance5",
+              "tag": "AvailExtension"
+            },
+            "tag": "AtomF"
+          }
+        ],
+        "tag": "BinOpF"
+      },
+      "deprecated": null,
+      "name": "VkPipelineCreateFlags2CreateInfoKHR",
+      "origins": [
+        {
+          "blockComment": "Split off new 64-bit flags separately, for the moment",
+          "blockIndex": 1,
+          "condition": null,
+          "pos": "29083:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_maintenance5",
+            "number": 471,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        },
+        {
+          "blockComment": "64-bit flags and related structures initially defined by VK_KHR_maintenance5",
+          "blockIndex": 24,
+          "condition": null,
+          "pos": "31995:13",
+          "profile": null,
+          "source": {
+            "extension": "VK_KHR_extended_flags",
+            "number": 669,
+            "tag": "FromExtension"
+          },
+          "tier": null
+        }
+      ],
+      "pos": "1719:9"
+    }
+  ],
+  "allowDuplicate": false,
+  "availability": {
+    "contents": {
+      "contents": {
+        "major": 1,
+        "minor": 4
+      },
+      "tag": "AvailVersion"
+    },
+    "tag": "AtomF"
+  },
+  "comment": null,
+  "deprecation": null,
+  "extendedBy": [],
+  "extends": [
+    "VkComputePipelineCreateInfo",
+    "VkGraphicsPipelineCreateInfo",
+    "VkRayTracingPipelineCreateInfoNV",
+    "VkRayTracingPipelineCreateInfoKHR"
+  ],
+  "kind": "SKStruct",
+  "members": [
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": null,
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "sType",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "1715:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefEnum",
+        "name": "VkStructureType",
+        "spelledAs": null
+      },
+      "values": [
+        "VK_STRUCTURE_TYPE_PIPELINE_CREATE_FLAGS_2_CREATE_INFO"
+      ]
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": true,
+      "bitfield": null,
+      "comment": null,
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": [
+        true
+      ],
+      "len": null,
+      "limitType": null,
+      "name": "pNext",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [
+        {
+          "isConst": false
+        }
+      ],
+      "pos": "1716:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefVoid",
+        "name": "void",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": null,
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": [
+        true
+      ],
+      "len": null,
+      "limitType": null,
+      "name": "flags",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "1717:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefBitmask",
+        "name": "VkPipelineCreateFlags2",
+        "spelledAs": null
+      },
+      "values": []
+    }
+  ],
+  "name": "VkPipelineCreateFlags2CreateInfo",
+  "origins": [
+    {
+      "blockComment": "Promoted from VK_KHR_maintenance5 (extension 471) 'Roadmap 2024'",
+      "blockIndex": 14,
+      "condition": null,
+      "pos": "21294:9",
+      "profile": null,
+      "source": {
+        "feature": "VK_VERSION_1_4",
+        "tag": "FromFeature",
+        "version": {
+          "major": 1,
+          "minor": 4
+        }
+      },
+      "tier": "VK_COMPUTE_VERSION_1_4"
+    }
+  ],
+  "platformGuards": [],
+  "pos": "1714:9",
+  "returnedOnly": false,
+  "sType": "VK_STRUCTURE_TYPE_PIPELINE_CREATE_FLAGS_2_CREATE_INFO"
+}

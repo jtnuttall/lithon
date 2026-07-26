@@ -1,0 +1,232 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Messagebox
+ctypes:
+  - omit:
+      headers: SDL3/SDL_messagebox.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_messagebox.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_messagebox.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_messagebox.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_messagebox.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_messagebox.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_messagebox.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_messagebox.h
+    cname: SDL_MessageBoxFlags
+    hsname: SDL_MessageBoxFlags
+  - headers: SDL3/SDL_messagebox.h
+    cname: SDL_MessageBoxButtonFlags
+    hsname: SDL_MessageBoxButtonFlags
+  - headers: SDL3/SDL_messagebox.h
+    cname: struct SDL_MessageBoxButtonData
+    hsname: SDL_MessageBoxButtonData
+  - headers: SDL3/SDL_messagebox.h
+    cname: SDL_MessageBoxButtonData
+    hsname: SDL_MessageBoxButtonData
+  - headers: SDL3/SDL_messagebox.h
+    cname: struct SDL_MessageBoxColor
+    hsname: SDL_MessageBoxColor
+  - headers: SDL3/SDL_messagebox.h
+    cname: SDL_MessageBoxColor
+    hsname: SDL_MessageBoxColor
+  - headers: SDL3/SDL_messagebox.h
+    cname: enum SDL_MessageBoxColorType
+    hsname: SDL_MessageBoxColorType
+    enum: open
+  - headers: SDL3/SDL_messagebox.h
+    cname: SDL_MessageBoxColorType
+    hsname: SDL_MessageBoxColorType
+  - headers: SDL3/SDL_messagebox.h
+    cname: struct SDL_MessageBoxColorScheme
+    hsname: SDL_MessageBoxColorScheme
+  - headers: SDL3/SDL_messagebox.h
+    cname: SDL_MessageBoxColorScheme
+    hsname: SDL_MessageBoxColorScheme
+  - headers: SDL3/SDL_messagebox.h
+    cname: struct SDL_MessageBoxData
+    hsname: SDL_MessageBoxData
+  - headers: SDL3/SDL_messagebox.h
+    cname: SDL_MessageBoxData
+    hsname: SDL_MessageBoxData
+hstypes:
+  - hsname: SDL_MessageBoxButtonData
+    representation:
+      record:
+        constructor: SDL_MessageBoxButtonData
+        fields:
+          - flags
+          - buttonID
+          - text
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MessageBoxButtonFlags
+    representation:
+      newtype:
+        constructor: SDL_MessageBoxButtonFlags
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MessageBoxColor
+    representation:
+      record:
+        constructor: SDL_MessageBoxColor
+        fields:
+          - r
+          - g
+          - b
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MessageBoxColorScheme
+    representation:
+      record:
+        constructor: SDL_MessageBoxColorScheme
+        fields:
+          - colors
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MessageBoxColorType
+    representation:
+      newtype:
+        constructor: SDL_MessageBoxColorType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MessageBoxData
+    representation:
+      record:
+        constructor: SDL_MessageBoxData
+        fields:
+          - flags
+          - window
+          - title
+          - message
+          - numbuttons
+          - buttons
+          - colorScheme
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_MessageBoxFlags
+    representation:
+      newtype:
+        constructor: SDL_MessageBoxFlags
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

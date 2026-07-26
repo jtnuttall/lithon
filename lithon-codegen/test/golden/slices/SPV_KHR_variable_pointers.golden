@@ -1,0 +1,14 @@
+{
+  "enables": [
+    {
+      "contents": "VK_VERSION_1_1",
+      "tag": "EnableVersion"
+    },
+    {
+      "contents": "VK_KHR_variable_pointers",
+      "tag": "EnableExtension"
+    }
+  ],
+  "name": "SPV_KHR_variable_pointers",
+  "pos": "33957:9"
+}

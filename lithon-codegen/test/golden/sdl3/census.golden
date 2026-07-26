@@ -1,0 +1,67 @@
+namespace: SDL3.Sys.Bindgen
+curated namespace: SDL3.Sys
+headers (specs): 58
+modules: 291
+curated modules: 59
+wrapper-splice modules: 162
+registry: both=104 safe-only=18 unsafe-only=133 renames=0 skip=0
+facades: SDL3.Sys.Bindgen.Runtime SDL3.Sys.Bindgen.Runtime.BitfieldPtr SDL3.Sys.Bindgen.Runtime.Block SDL3.Sys.Bindgen.Runtime.CBool SDL3.Sys.Bindgen.Runtime.CEnum SDL3.Sys.Bindgen.Runtime.CExpr SDL3.Sys.Bindgen.Runtime.ConstantArray SDL3.Sys.Bindgen.Runtime.FLAM SDL3.Sys.Bindgen.Runtime.HasCBitfield SDL3.Sys.Bindgen.Runtime.HasCField SDL3.Sys.Bindgen.Runtime.IncompleteArray SDL3.Sys.Bindgen.Runtime.IsArray SDL3.Sys.Bindgen.Runtime.Marshal SDL3.Sys.Bindgen.Runtime.PtrConst SDL3.Sys.Bindgen.Runtime.Union SDL3.Sys.Runtime
+per-header:
+  SDL_assert.h: types safe unsafe funptr sys
+  SDL_asyncio.h: types safe unsafe funptr sys
+  SDL_atomic.h: types safe unsafe funptr sys
+  SDL_audio.h: types safe unsafe funptr sys
+  SDL_bits.h: safe unsafe funptr sys
+  SDL_blendmode.h: types safe unsafe funptr sys
+  SDL_camera.h: types safe unsafe funptr sys
+  SDL_clipboard.h: types safe unsafe funptr sys
+  SDL_cpuinfo.h: types safe unsafe funptr sys
+  SDL_dialog.h: types safe unsafe funptr sys
+  SDL_dlopennote.h: types sys
+  SDL_endian.h: types safe unsafe funptr sys
+  SDL_error.h: safe unsafe funptr sys
+  SDL_events.h: types safe unsafe funptr sys
+  SDL_filesystem.h: types safe unsafe funptr sys
+  SDL_gamepad.h: types safe unsafe funptr sys
+  SDL_gpu.h: types safe unsafe funptr sys
+  SDL_guid.h: types safe unsafe funptr sys
+  SDL_haptic.h: types safe unsafe funptr sys
+  SDL_hidapi.h: types safe unsafe funptr sys
+  SDL_hints.h: types safe unsafe funptr sys
+  SDL_init.h: types safe unsafe funptr sys
+  SDL_iostream.h: types safe unsafe funptr sys
+  SDL_joystick.h: types safe unsafe funptr sys
+  SDL_keyboard.h: types safe unsafe funptr sys
+  SDL_keycode.h: types sys
+  SDL_loadso.h: types safe unsafe funptr sys
+  SDL_locale.h: types safe unsafe funptr sys
+  SDL_log.h: types safe unsafe funptr sys
+  SDL_main.h: types safe unsafe funptr sys
+  SDL_messagebox.h: types safe unsafe funptr sys
+  SDL_metal.h: types safe unsafe funptr sys
+  SDL_misc.h: safe unsafe funptr sys
+  SDL_mouse.h: types safe unsafe funptr sys
+  SDL_mutex.h: types safe unsafe funptr sys
+  SDL_pen.h: types safe unsafe funptr sys
+  SDL_pixels.h: types safe unsafe funptr sys
+  SDL_platform.h: safe unsafe funptr sys
+  SDL_platform_defines.h: types sys
+  SDL_power.h: types safe unsafe funptr sys
+  SDL_process.h: types safe unsafe funptr sys
+  SDL_properties.h: types safe unsafe funptr sys
+  SDL_rect.h: types safe unsafe funptr sys
+  SDL_render.h: types safe unsafe funptr sys
+  SDL_scancode.h: types sys
+  SDL_sensor.h: types safe unsafe funptr sys
+  SDL_stdinc.h: types safe unsafe funptr sys
+  SDL_storage.h: types safe unsafe funptr sys
+  SDL_surface.h: types safe unsafe funptr sys
+  SDL_system.h: types safe unsafe funptr sys
+  SDL_thread.h: types safe unsafe funptr sys
+  SDL_time.h: types safe unsafe funptr sys
+  SDL_timer.h: types safe unsafe funptr sys
+  SDL_touch.h: types safe unsafe funptr sys
+  SDL_tray.h: types safe unsafe funptr sys
+  SDL_version.h: types safe unsafe funptr sys
+  SDL_video.h: types safe unsafe funptr sys
+  SDL_vulkan.h: types safe unsafe funptr sys

@@ -1,0 +1,401 @@
+{
+  "contents": {
+    "allowNoQueues": null,
+    "api": "all",
+    "cmdBufferLevel": [],
+    "comment": null,
+    "conditionalRendering": null,
+    "errorCodes": [],
+    "export": [
+      "vulkan",
+      "vulkansc"
+    ],
+    "implicitExternSyncParams": [],
+    "params": [
+      {
+        "altLen": null,
+        "api": "all",
+        "body": {
+          "chunks": [
+            {
+              "contents": [
+                "VkDevice",
+                "15272:20"
+              ],
+              "tag": "ChunkType"
+            },
+            {
+              "contents": [
+                " ",
+                "15272:41"
+              ],
+              "tag": "ChunkText"
+            },
+            {
+              "contents": [
+                "device",
+                null,
+                "15272:42"
+              ],
+              "tag": "ChunkName"
+            }
+          ],
+          "raw": "VkDevice device"
+        },
+        "decl": {
+          "arrayDims": [],
+          "baseConst": false,
+          "bitfield": null,
+          "name": "device",
+          "nameAlias": null,
+          "pointers": [],
+          "pos": "15272:42",
+          "structKw": false,
+          "typeName": {
+            "name": "VkDevice",
+            "pos": "15272:20"
+          }
+        },
+        "externSync": null,
+        "isOptional": null,
+        "len": null,
+        "noAutoValidity": false,
+        "objectType": null,
+        "pos": "15272:13",
+        "selector": null,
+        "stride": null,
+        "validStructs": []
+      },
+      {
+        "altLen": null,
+        "api": "all",
+        "body": {
+          "chunks": [
+            {
+              "contents": [
+                "uint32_t",
+                "15273:36"
+              ],
+              "tag": "ChunkType"
+            },
+            {
+              "contents": [
+                " ",
+                "15273:57"
+              ],
+              "tag": "ChunkText"
+            },
+            {
+              "contents": [
+                "descriptorWriteCount",
+                null,
+                "15273:58"
+              ],
+              "tag": "ChunkName"
+            }
+          ],
+          "raw": "uint32_t descriptorWriteCount"
+        },
+        "decl": {
+          "arrayDims": [],
+          "baseConst": false,
+          "bitfield": null,
+          "name": "descriptorWriteCount",
+          "nameAlias": null,
+          "pointers": [],
+          "pos": "15273:58",
+          "structKw": false,
+          "typeName": {
+            "name": "uint32_t",
+            "pos": "15273:36"
+          }
+        },
+        "externSync": null,
+        "isOptional": [
+          true
+        ],
+        "len": null,
+        "noAutoValidity": false,
+        "objectType": null,
+        "pos": "15273:13",
+        "selector": null,
+        "stride": null,
+        "validStructs": []
+      },
+      {
+        "altLen": null,
+        "api": "all",
+        "body": {
+          "chunks": [
+            {
+              "contents": [
+                "const ",
+                "15274:93"
+              ],
+              "tag": "ChunkText"
+            },
+            {
+              "contents": [
+                "VkWriteDescriptorSet",
+                "15274:99"
+              ],
+              "tag": "ChunkType"
+            },
+            {
+              "contents": [
+                "* ",
+                "15274:132"
+              ],
+              "tag": "ChunkText"
+            },
+            {
+              "contents": [
+                "pDescriptorWrites",
+                null,
+                "15274:134"
+              ],
+              "tag": "ChunkName"
+            }
+          ],
+          "raw": "const VkWriteDescriptorSet* pDescriptorWrites"
+        },
+        "decl": {
+          "arrayDims": [],
+          "baseConst": true,
+          "bitfield": null,
+          "name": "pDescriptorWrites",
+          "nameAlias": null,
+          "pointers": [
+            {
+              "isConst": false
+            }
+          ],
+          "pos": "15274:134",
+          "structKw": false,
+          "typeName": {
+            "name": "VkWriteDescriptorSet",
+            "pos": "15274:99"
+          }
+        },
+        "externSync": {
+          "parsed": {
+            "contents": [
+              [
+                {
+                  "field": "pDescriptorWrites",
+                  "indexed": true
+                },
+                {
+                  "field": "dstSet",
+                  "indexed": false
+                }
+              ]
+            ],
+            "tag": "SyncMaybeParams"
+          },
+          "raw": "maybe:pDescriptorWrites[].dstSet"
+        },
+        "isOptional": null,
+        "len": {
+          "parsed": [
+            {
+              "contents": [
+                "descriptorWriteCount"
+              ],
+              "tag": "LenPath"
+            }
+          ],
+          "raw": "descriptorWriteCount"
+        },
+        "noAutoValidity": false,
+        "objectType": null,
+        "pos": "15274:13",
+        "selector": null,
+        "stride": null,
+        "validStructs": []
+      },
+      {
+        "altLen": null,
+        "api": "all",
+        "body": {
+          "chunks": [
+            {
+              "contents": [
+                "uint32_t",
+                "15275:36"
+              ],
+              "tag": "ChunkType"
+            },
+            {
+              "contents": [
+                " ",
+                "15275:57"
+              ],
+              "tag": "ChunkText"
+            },
+            {
+              "contents": [
+                "descriptorCopyCount",
+                null,
+                "15275:58"
+              ],
+              "tag": "ChunkName"
+            }
+          ],
+          "raw": "uint32_t descriptorCopyCount"
+        },
+        "decl": {
+          "arrayDims": [],
+          "baseConst": false,
+          "bitfield": null,
+          "name": "descriptorCopyCount",
+          "nameAlias": null,
+          "pointers": [],
+          "pos": "15275:58",
+          "structKw": false,
+          "typeName": {
+            "name": "uint32_t",
+            "pos": "15275:36"
+          }
+        },
+        "externSync": null,
+        "isOptional": [
+          true
+        ],
+        "len": null,
+        "noAutoValidity": false,
+        "objectType": null,
+        "pos": "15275:13",
+        "selector": null,
+        "stride": null,
+        "validStructs": []
+      },
+      {
+        "altLen": null,
+        "api": "all",
+        "body": {
+          "chunks": [
+            {
+              "contents": [
+                "const ",
+                "15276:46"
+              ],
+              "tag": "ChunkText"
+            },
+            {
+              "contents": [
+                "VkCopyDescriptorSet",
+                "15276:52"
+              ],
+              "tag": "ChunkType"
+            },
+            {
+              "contents": [
+                "* ",
+                "15276:84"
+              ],
+              "tag": "ChunkText"
+            },
+            {
+              "contents": [
+                "pDescriptorCopies",
+                null,
+                "15276:86"
+              ],
+              "tag": "ChunkName"
+            }
+          ],
+          "raw": "const VkCopyDescriptorSet* pDescriptorCopies"
+        },
+        "decl": {
+          "arrayDims": [],
+          "baseConst": true,
+          "bitfield": null,
+          "name": "pDescriptorCopies",
+          "nameAlias": null,
+          "pointers": [
+            {
+              "isConst": false
+            }
+          ],
+          "pos": "15276:86",
+          "structKw": false,
+          "typeName": {
+            "name": "VkCopyDescriptorSet",
+            "pos": "15276:52"
+          }
+        },
+        "externSync": null,
+        "isOptional": null,
+        "len": {
+          "parsed": [
+            {
+              "contents": [
+                "descriptorCopyCount"
+              ],
+              "tag": "LenPath"
+            }
+          ],
+          "raw": "descriptorCopyCount"
+        },
+        "noAutoValidity": false,
+        "objectType": null,
+        "pos": "15276:13",
+        "selector": null,
+        "stride": null,
+        "validStructs": []
+      }
+    ],
+    "pos": "15270:9",
+    "proto": {
+      "body": {
+        "chunks": [
+          {
+            "contents": [
+              "void",
+              "15271:20"
+            ],
+            "tag": "ChunkType"
+          },
+          {
+            "contents": [
+              " ",
+              "15271:37"
+            ],
+            "tag": "ChunkText"
+          },
+          {
+            "contents": [
+              "vkUpdateDescriptorSets",
+              null,
+              "15271:38"
+            ],
+            "tag": "ChunkName"
+          }
+        ],
+        "raw": "void vkUpdateDescriptorSets"
+      },
+      "decl": {
+        "arrayDims": [],
+        "baseConst": false,
+        "bitfield": null,
+        "name": "vkUpdateDescriptorSets",
+        "nameAlias": null,
+        "pointers": [],
+        "pos": "15271:38",
+        "structKw": false,
+        "typeName": {
+          "name": "void",
+          "pos": "15271:20"
+        }
+      },
+      "pos": "15271:13"
+    },
+    "queues": [],
+    "renderPass": null,
+    "successCodes": [],
+    "tasks": [],
+    "videoCoding": null
+  },
+  "tag": "CommandDef"
+}

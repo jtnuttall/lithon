@@ -1,0 +1,733 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Video
+ctypes:
+  - omit:
+      headers: SDL3/SDL_video.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_video.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_video.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_video.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_video.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_video.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_video.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_video.h
+    cname: SDL_DisplayID
+    hsname: SDL_DisplayID
+  - headers: SDL3/SDL_video.h
+    cname: SDL_WindowID
+    hsname: SDL_WindowID
+  - headers: SDL3/SDL_video.h
+    cname: enum SDL_SystemTheme
+    hsname: SDL_SystemTheme
+    enum: open
+  - headers: SDL3/SDL_video.h
+    cname: SDL_SystemTheme
+    hsname: SDL_SystemTheme
+  - headers: SDL3/SDL_video.h
+    cname: struct SDL_DisplayModeData
+    hsname: SDL_DisplayModeData
+  - headers: SDL3/SDL_video.h
+    cname: SDL_DisplayModeData
+    hsname: SDL_DisplayModeData
+  - headers: SDL3/SDL_video.h
+    cname: struct SDL_DisplayMode
+    hsname: SDL_DisplayMode
+  - headers: SDL3/SDL_video.h
+    cname: SDL_DisplayMode
+    hsname: SDL_DisplayMode
+  - headers: SDL3/SDL_video.h
+    cname: enum SDL_DisplayOrientation
+    hsname: SDL_DisplayOrientation
+    enum: open
+  - headers: SDL3/SDL_video.h
+    cname: SDL_DisplayOrientation
+    hsname: SDL_DisplayOrientation
+  - headers: SDL3/SDL_video.h
+    cname: struct SDL_Window
+    hsname: SDL_Window
+  - headers: SDL3/SDL_video.h
+    cname: SDL_Window
+    hsname: SDL_Window
+  - headers: SDL3/SDL_video.h
+    cname: SDL_WindowFlags
+    hsname: SDL_WindowFlags
+  - headers: SDL3/SDL_video.h
+    cname: enum SDL_FlashOperation
+    hsname: SDL_FlashOperation
+    enum: open
+  - headers: SDL3/SDL_video.h
+    cname: SDL_FlashOperation
+    hsname: SDL_FlashOperation
+  - headers: SDL3/SDL_video.h
+    cname: enum SDL_ProgressState
+    hsname: SDL_ProgressState
+    enum: open
+  - headers: SDL3/SDL_video.h
+    cname: SDL_ProgressState
+    hsname: SDL_ProgressState
+  - headers: SDL3/SDL_video.h
+    cname: struct SDL_GLContextState
+    hsname: SDL_GLContextState
+  - headers: SDL3/SDL_video.h
+    cname: SDL_GLContext
+    hsname: SDL_GLContext
+  - headers: SDL3/SDL_video.h
+    cname: SDL_EGLDisplay
+    hsname: SDL_EGLDisplay
+  - headers: SDL3/SDL_video.h
+    cname: SDL_EGLConfig
+    hsname: SDL_EGLConfig
+  - headers: SDL3/SDL_video.h
+    cname: SDL_EGLSurface
+    hsname: SDL_EGLSurface
+  - headers: SDL3/SDL_video.h
+    cname: SDL_EGLAttrib
+    hsname: SDL_EGLAttrib
+  - headers: SDL3/SDL_video.h
+    cname: SDL_EGLint
+    hsname: SDL_EGLint
+  - headers: SDL3/SDL_video.h
+    cname: SDL_EGLAttribArrayCallback
+    hsname: SDL_EGLAttribArrayCallback
+  - headers: SDL3/SDL_video.h
+    cname: SDL_EGLIntArrayCallback
+    hsname: SDL_EGLIntArrayCallback
+  - headers: SDL3/SDL_video.h
+    cname: enum SDL_GLAttr
+    hsname: SDL_GLAttr
+    enum: open
+  - headers: SDL3/SDL_video.h
+    cname: SDL_GLAttr
+    hsname: SDL_GLAttr
+  - headers: SDL3/SDL_video.h
+    cname: SDL_GLProfile
+    hsname: SDL_GLProfile
+  - headers: SDL3/SDL_video.h
+    cname: SDL_GLContextFlag
+    hsname: SDL_GLContextFlag
+  - headers: SDL3/SDL_video.h
+    cname: SDL_GLContextReleaseFlag
+    hsname: SDL_GLContextReleaseFlag
+  - headers: SDL3/SDL_video.h
+    cname: SDL_GLContextResetNotification
+    hsname: SDL_GLContextResetNotification
+  - headers: SDL3/SDL_video.h
+    cname: enum SDL_HitTestResult
+    hsname: SDL_HitTestResult
+    enum: open
+  - headers: SDL3/SDL_video.h
+    cname: SDL_HitTestResult
+    hsname: SDL_HitTestResult
+  - headers: SDL3/SDL_video.h
+    cname: SDL_HitTest
+    hsname: SDL_HitTest
+hstypes:
+  - hsname: SDL_DisplayID
+    representation:
+      newtype:
+        constructor: SDL_DisplayID
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_DisplayMode
+    representation:
+      record:
+        constructor: SDL_DisplayMode
+        fields:
+          - displayID
+          - format
+          - w
+          - h
+          - pixel_density
+          - refresh_rate
+          - refresh_rate_numerator
+          - refresh_rate_denominator
+          - internal
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_DisplayModeData
+    representation: emptydata
+  - hsname: SDL_DisplayOrientation
+    representation:
+      newtype:
+        constructor: SDL_DisplayOrientation
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_EGLAttrib
+    representation:
+      newtype:
+        constructor: SDL_EGLAttrib
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_EGLAttribArrayCallback
+    representation:
+      newtype:
+        constructor: SDL_EGLAttribArrayCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_EGLConfig
+    representation:
+      newtype:
+        constructor: SDL_EGLConfig
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_EGLDisplay
+    representation:
+      newtype:
+        constructor: SDL_EGLDisplay
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_EGLIntArrayCallback
+    representation:
+      newtype:
+        constructor: SDL_EGLIntArrayCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_EGLSurface
+    representation:
+      newtype:
+        constructor: SDL_EGLSurface
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_EGLint
+    representation:
+      newtype:
+        constructor: SDL_EGLint
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_FlashOperation
+    representation:
+      newtype:
+        constructor: SDL_FlashOperation
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GLAttr
+    representation:
+      newtype:
+        constructor: SDL_GLAttr
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GLContext
+    representation:
+      newtype:
+        constructor: SDL_GLContext
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GLContextFlag
+    representation:
+      newtype:
+        constructor: SDL_GLContextFlag
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GLContextReleaseFlag
+    representation:
+      newtype:
+        constructor: SDL_GLContextReleaseFlag
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GLContextResetNotification
+    representation:
+      newtype:
+        constructor: SDL_GLContextResetNotification
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_GLContextState
+    representation: emptydata
+  - hsname: SDL_GLProfile
+    representation:
+      newtype:
+        constructor: SDL_GLProfile
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_HitTest
+    representation:
+      newtype:
+        constructor: SDL_HitTest
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_HitTestResult
+    representation:
+      newtype:
+        constructor: SDL_HitTestResult
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_ProgressState
+    representation:
+      newtype:
+        constructor: SDL_ProgressState
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_SystemTheme
+    representation:
+      newtype:
+        constructor: SDL_SystemTheme
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Window
+    representation: emptydata
+  - hsname: SDL_WindowFlags
+    representation:
+      newtype:
+        constructor: SDL_WindowFlags
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_WindowID
+    representation:
+      newtype:
+        constructor: SDL_WindowID
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

@@ -1,0 +1,494 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.39.6.
+--
+-- see: https://github.com/sol/hpack
+
+name:           lithon-codegen
+version:        0.1.0.0
+synopsis:       Code generator for lithon-vk and sdl3-bindgen-sys
+description:    Lithon's code generation tool. Lithon aims to be a performant, modern Vulkan binding amenable to type-level programming.
+category:       Graphics
+homepage:       https://github.com/jtnuttall/lithon#readme
+bug-reports:    https://github.com/jtnuttall/lithon/issues
+author:         Jeremy Nuttall
+maintainer:     jeremy@jeremy-nuttall.com
+copyright:      (c) 2026 Jeremy Nuttall
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    sdl3/static/CHANGELOG.md
+    sdl3/static/package.yaml
+    sdl3/static/README.md
+    sdl3/aliases.json
+    sdl3/constants.json
+    sdl3/versions.json
+    sdl3/overrides.yaml
+extra-doc-files:
+    README.md
+    CHANGELOG.md
+data-dir:       Vulkan-Docs
+
+source-repository head
+  type: git
+  location: https://github.com/jtnuttall/lithon
+
+library
+  exposed-modules:
+      Lithon.Codegen.Backend.Emit
+      Lithon.Codegen.Backend.Hs
+      Lithon.Codegen.Backend.Json
+      Lithon.Codegen.Cli
+      Lithon.Codegen.Effect.ClangEnv
+      Lithon.Codegen.Effect.Clock
+      Lithon.Codegen.Effect.Log
+      Lithon.Codegen.Effect.PrettyPrint
+      Lithon.Codegen.Effect.Util
+      Lithon.Codegen.Prelude
+      Lithon.Codegen.Prelude.Container
+      Lithon.Codegen.Prelude.Display
+      Lithon.Codegen.Prelude.Errors
+      Lithon.Codegen.Prelude.Generics.SOP
+      Lithon.Codegen.Prelude.Monad
+      Lithon.Codegen.Prelude.Naming
+      Lithon.Codegen.Sdl3
+      Lithon.Codegen.Sdl3.Abi
+      Lithon.Codegen.Sdl3.Alias
+      Lithon.Codegen.Sdl3.Alias.Config
+      Lithon.Codegen.Sdl3.Alias.Constants
+      Lithon.Codegen.Sdl3.Alias.Names
+      Lithon.Codegen.Sdl3.Bindgen
+      Lithon.Codegen.Sdl3.Env
+      Lithon.Codegen.Sdl3.Package
+      Lithon.Codegen.Sdl3.Versions
+      Lithon.Codegen.Vulkan
+      Lithon.Codegen.Vulkan.Curate
+      Lithon.Codegen.Vulkan.Curate.Closure
+      Lithon.Codegen.Vulkan.Curate.Profile
+      Lithon.Codegen.Vulkan.Curate.Prune
+      Lithon.Codegen.Vulkan.Curate.Report
+      Lithon.Codegen.Vulkan.Generate
+      Lithon.Codegen.Vulkan.Generate.Cmds
+      Lithon.Codegen.Vulkan.Generate.Docs
+      Lithon.Codegen.Vulkan.Generate.Layout
+      Lithon.Codegen.Vulkan.Generate.Lower
+      Lithon.Codegen.Vulkan.Generate.Marshal
+      Lithon.Codegen.Vulkan.Generate.Modules
+      Lithon.Codegen.Vulkan.Generate.Names
+      Lithon.Codegen.Vulkan.Generate.Render
+      Lithon.Codegen.Vulkan.Registry
+      Lithon.Codegen.Vulkan.Registry.IgnoreList
+      Lithon.Codegen.Vulkan.Registry.Micro.BoolExpr
+      Lithon.Codegen.Vulkan.Registry.Micro.CDecl
+      Lithon.Codegen.Vulkan.Registry.Micro.Common
+      Lithon.Codegen.Vulkan.Registry.Micro.ExternSync
+      Lithon.Codegen.Vulkan.Registry.Micro.Len
+      Lithon.Codegen.Vulkan.Registry.Micro.Literal
+      Lithon.Codegen.Vulkan.Registry.Parse.Commands
+      Lithon.Codegen.Vulkan.Registry.Parse.Common
+      Lithon.Codegen.Vulkan.Registry.Parse.Decls
+      Lithon.Codegen.Vulkan.Registry.Parse.Enums
+      Lithon.Codegen.Vulkan.Registry.Parse.Features
+      Lithon.Codegen.Vulkan.Registry.Parse.Misc
+      Lithon.Codegen.Vulkan.Registry.Parse.Types
+      Lithon.Codegen.Vulkan.Registry.Specialize
+      Lithon.Codegen.Vulkan.Registry.Summary
+      Lithon.Codegen.Vulkan.Registry.Types.CDecl
+      Lithon.Codegen.Vulkan.Registry.Types.Commands
+      Lithon.Codegen.Vulkan.Registry.Types.Common
+      Lithon.Codegen.Vulkan.Registry.Types.Core
+      Lithon.Codegen.Vulkan.Registry.Types.Enums
+      Lithon.Codegen.Vulkan.Registry.Types.Features
+      Lithon.Codegen.Vulkan.Registry.Types.Misc
+      Lithon.Codegen.Vulkan.Resolve
+      Lithon.Codegen.Vulkan.Resolve.Aliases
+      Lithon.Codegen.Vulkan.Resolve.CrossRef
+      Lithon.Codegen.Vulkan.Resolve.Enums
+      Lithon.Codegen.Vulkan.Resolve.Flow
+      Lithon.Codegen.Vulkan.Resolve.Require
+      Lithon.Codegen.Vulkan.Resolve.Symbols
+      Lithon.Codegen.Vulkan.Resolve.TierMerge
+      Lithon.Codegen.Vulkan.Resolved
+      Lithon.Codegen.Vulkan.Resolved.Avail
+      Lithon.Codegen.Vulkan.Resolved.Commands
+      Lithon.Codegen.Vulkan.Resolved.Core
+      Lithon.Codegen.Vulkan.Resolved.Enums
+      Lithon.Codegen.Vulkan.Resolved.Enums.Value
+      Lithon.Codegen.Vulkan.Resolved.Registry
+      Lithon.Codegen.Vulkan.Resolved.Summary
+      Lithon.Codegen.Vulkan.Xml
+      Lithon.Codegen.Vulkan.Xml.Decode
+      Lithon.Codegen.Vulkan.Xml.Load
+      Lithon.Codegen.Vulkan.Xml.Types
+  other-modules:
+      Paths_lithon_codegen
+  autogen-modules:
+      Paths_lithon_codegen
+  hs-source-dirs:
+      src
+  default-extensions:
+      BlockArguments
+      DeriveAnyClass
+      DerivingVia
+      DuplicateRecordFields
+      NoFieldSelectors
+      NoImplicitPrelude
+      OverloadedLabels
+      OverloadedRecordDot
+      PatternSynonyms
+      RecordWildCards
+      TypeFamilies
+  ghc-options: -Wmissing-deriving-strategies -Wmissing-export-lists -Wredundant-constraints -Wall
+  build-depends:
+      Blammo ==2.1.*
+    , aeson ==2.3.*
+    , aeson-pretty ==0.8.*
+    , algebraic-graphs ==0.8.*
+    , ansi-terminal ==1.1.*
+    , autodocodec ==0.5.*
+    , barbies ==2.1.*
+    , base <4.22.0.0
+    , bifunctors ==5.6.*
+    , bytestring ==0.12.*
+    , case-insensitive ==1.2.*
+    , comonad ==5.0.*
+    , concurrent-output ==1.10.*
+    , conduit ==1.3.*
+    , conduit-extra ==1.3.*
+    , constraints-extras ==0.4.*
+    , containers ==0.7.*
+    , data-default ==0.8.*
+    , data-fix ==0.3.*
+    , deepseq ==1.5.*
+    , dependent-map ==0.4.*
+    , dependent-sum ==0.7.*
+    , dependent-sum-template ==0.2.*
+    , deriving-compat ==0.6.*
+    , directory ==1.3.*
+    , distributive ==0.6.*
+    , dlist ==1.0.*
+    , doxygen-parser
+    , effectful ==2.6.*
+    , effectful-core ==2.6.*
+    , effectful-plugin ==2.1.*
+    , effectful-th ==1.0.*
+    , file-embed ==0.0.16.*
+    , filepath ==1.5.*
+    , first-class-families ==0.8.*
+    , foldl ==1.4.*
+    , free ==5.2.*
+    , generic-lens ==2.3.*
+    , generics-sop ==0.5.*
+    , ghc-source-gen ==0.4.*
+    , hashable ==1.5.*
+    , hpack ==0.39.*
+    , indexed-traversable ==0.1.*
+    , lens ==5.3.*
+    , lithon-hs-bindgen
+    , lithon-prelude
+    , megaparsec >=9.7
+    , monad-logger-aeson ==0.4.*
+    , monoidal-containers ==0.6.*
+    , mtl ==2.3.*
+    , neat-interpolation ==0.5.*
+    , nonempty-containers ==0.3.*
+    , optparse-applicative ==0.19.*
+    , ordered-containers ==0.2.*
+    , prettyprinter ==1.7.*
+    , prettyprinter-ansi-terminal ==1.1.*
+    , process ==1.6.*
+    , profunctors ==5.6.*
+    , rapidhash
+    , recursion-schemes ==5.2.*
+    , regex-tdfa ==1.3.*
+    , resourcet-effectful ==1.0.*
+    , scientific ==0.3.*
+    , semialign ==1.4.*
+    , singletons ==3.0.*
+    , singletons-th ==3.5.*
+    , tagged ==0.8.*
+    , template-haskell
+    , temporary ==1.3.*
+    , text ==2.1.*
+    , text-builder-linear ==0.1.*
+    , text-display ==1.0.*
+    , these ==1.2.*
+    , transformers ==0.6.*
+    , typed-process ==0.2.*
+    , typed-product-builder
+    , universum ==1.8.*
+    , unliftio ==0.2.*
+    , unordered-containers ==0.2.*
+    , validation ==1.2.*
+    , vector ==0.13.*
+    , witch ==1.4.*
+    , witherable ==0.5.*
+    , xml-conduit ==1.10.*
+    , xml-types ==0.3.*
+  default-language: GHC2024
+
+executable lithon-codegen
+  main-is: Main.hs
+  other-modules:
+      Paths_lithon_codegen
+  autogen-modules:
+      Paths_lithon_codegen
+  hs-source-dirs:
+      app
+  default-extensions:
+      BlockArguments
+      DeriveAnyClass
+      DerivingVia
+      DuplicateRecordFields
+      NoFieldSelectors
+      NoImplicitPrelude
+      OverloadedLabels
+      OverloadedRecordDot
+      PatternSynonyms
+      RecordWildCards
+      TypeFamilies
+  ghc-options: -Wmissing-deriving-strategies -Wmissing-export-lists -Wredundant-constraints -Wall
+  build-depends:
+      Blammo ==2.1.*
+    , aeson ==2.3.*
+    , aeson-pretty ==0.8.*
+    , algebraic-graphs ==0.8.*
+    , ansi-terminal ==1.1.*
+    , autodocodec ==0.5.*
+    , barbies ==2.1.*
+    , base <4.22.0.0
+    , bifunctors ==5.6.*
+    , bytestring ==0.12.*
+    , case-insensitive ==1.2.*
+    , comonad ==5.0.*
+    , concurrent-output ==1.10.*
+    , conduit ==1.3.*
+    , conduit-extra ==1.3.*
+    , constraints-extras ==0.4.*
+    , containers ==0.7.*
+    , data-default ==0.8.*
+    , data-fix ==0.3.*
+    , deepseq ==1.5.*
+    , dependent-map ==0.4.*
+    , dependent-sum ==0.7.*
+    , dependent-sum-template ==0.2.*
+    , deriving-compat ==0.6.*
+    , directory ==1.3.*
+    , distributive ==0.6.*
+    , dlist ==1.0.*
+    , doxygen-parser
+    , effectful ==2.6.*
+    , effectful-core ==2.6.*
+    , effectful-plugin ==2.1.*
+    , effectful-th ==1.0.*
+    , file-embed ==0.0.16.*
+    , filepath ==1.5.*
+    , first-class-families ==0.8.*
+    , foldl ==1.4.*
+    , free ==5.2.*
+    , generic-lens ==2.3.*
+    , generics-sop ==0.5.*
+    , ghc-source-gen ==0.4.*
+    , hashable ==1.5.*
+    , hpack ==0.39.*
+    , indexed-traversable ==0.1.*
+    , lens ==5.3.*
+    , lithon-codegen
+    , lithon-hs-bindgen
+    , lithon-prelude
+    , megaparsec >=9.7
+    , monad-logger-aeson ==0.4.*
+    , monoidal-containers ==0.6.*
+    , mtl ==2.3.*
+    , neat-interpolation ==0.5.*
+    , nonempty-containers ==0.3.*
+    , optparse-applicative ==0.19.*
+    , ordered-containers ==0.2.*
+    , prettyprinter ==1.7.*
+    , prettyprinter-ansi-terminal ==1.1.*
+    , process ==1.6.*
+    , profunctors ==5.6.*
+    , rapidhash
+    , recursion-schemes ==5.2.*
+    , regex-tdfa ==1.3.*
+    , resourcet-effectful ==1.0.*
+    , scientific ==0.3.*
+    , semialign ==1.4.*
+    , singletons ==3.0.*
+    , singletons-th ==3.5.*
+    , tagged ==0.8.*
+    , template-haskell
+    , temporary ==1.3.*
+    , text ==2.1.*
+    , text-builder-linear ==0.1.*
+    , text-display ==1.0.*
+    , these ==1.2.*
+    , transformers ==0.6.*
+    , typed-process ==0.2.*
+    , typed-product-builder
+    , universum ==1.8.*
+    , unliftio ==0.2.*
+    , unordered-containers ==0.2.*
+    , validation ==1.2.*
+    , vector ==0.13.*
+    , witch ==1.4.*
+    , witherable ==0.5.*
+    , xml-conduit ==1.10.*
+    , xml-types ==0.3.*
+  default-language: GHC2024
+
+test-suite lithon-codegen-test
+  type: exitcode-stdio-1.0
+  main-is: Driver.hs
+  other-modules:
+      Backend.EmitTest
+      Sdl3.AbiRenderTest
+      Sdl3.AdapterSmokeTest
+      Sdl3.AliasConfigTest
+      Sdl3.AliasNamesTest
+      Sdl3.AliasRenderTest
+      Sdl3.CensusTest
+      Sdl3.PlatformShimTest
+      Vulkan.Curate.ClosureTest
+      Vulkan.CurateTest
+      Vulkan.Generate.AbiTest
+      Vulkan.Generate.CmdsTest
+      Vulkan.Generate.DocsTest
+      Vulkan.Generate.GoldenTest
+      Vulkan.Generate.MarshalTest
+      Vulkan.Generate.ModulesTest
+      Vulkan.Generate.NamesTest
+      Vulkan.GoldenTest
+      Vulkan.InvariantTest
+      Vulkan.Registry.Micro.CDeclTest
+      Vulkan.Registry.Micro.ExprTest
+      Vulkan.Registry.Micro.ValueTest
+      Vulkan.Registry.SpecializeTest
+      Vulkan.RegistryDraftTest
+      Vulkan.Resolve.CrossRefTest
+      Vulkan.Resolve.EnumMaterializeTest
+      Vulkan.Resolve.RequireTest
+      Vulkan.Resolve.SymbolsTest
+      Vulkan.Resolve.TierMergeTest
+      Vulkan.Resolved.AvailTest
+      Vulkan.Resolved.GoldenTest
+      Vulkan.SmokeTest
+      Vulkan.Support.Paths
+      Vulkan.Support.Registry
+      Vulkan.Support.Resolve
+      Vulkan.Xml.DecodeTest
+      Vulkan.Xml.LoadTest
+      Paths_lithon_codegen
+  autogen-modules:
+      Paths_lithon_codegen
+  hs-source-dirs:
+      test
+  default-extensions:
+      BlockArguments
+      DeriveAnyClass
+      DerivingVia
+      DuplicateRecordFields
+      NoFieldSelectors
+      NoImplicitPrelude
+      OverloadedLabels
+      OverloadedRecordDot
+      PatternSynonyms
+      RecordWildCards
+      TypeFamilies
+  ghc-options: -Wmissing-deriving-strategies -Wmissing-export-lists -Wredundant-constraints -Wall
+  build-tool-depends:
+      tasty-discover:tasty-discover ==5.2.*
+  build-depends:
+      Blammo ==2.1.*
+    , aeson ==2.3.*
+    , aeson-pretty ==0.8.*
+    , algebraic-graphs ==0.8.*
+    , ansi-terminal ==1.1.*
+    , autodocodec ==0.5.*
+    , barbies ==2.1.*
+    , base <4.22.0.0
+    , bifunctors ==5.6.*
+    , bytestring ==0.12.*
+    , case-insensitive ==1.2.*
+    , comonad ==5.0.*
+    , concurrent-output ==1.10.*
+    , conduit ==1.3.*
+    , conduit-extra ==1.3.*
+    , constraints-extras ==0.4.*
+    , containers ==0.7.*
+    , data-default ==0.8.*
+    , data-fix ==0.3.*
+    , deepseq ==1.5.*
+    , dependent-map ==0.4.*
+    , dependent-sum ==0.7.*
+    , dependent-sum-template ==0.2.*
+    , deriving-compat ==0.6.*
+    , directory ==1.3.*
+    , distributive ==0.6.*
+    , dlist ==1.0.*
+    , doxygen-parser
+    , effectful ==2.6.*
+    , effectful-core ==2.6.*
+    , effectful-plugin ==2.1.*
+    , effectful-th ==1.0.*
+    , file-embed ==0.0.16.*
+    , filepath ==1.5.*
+    , first-class-families ==0.8.*
+    , foldl ==1.4.*
+    , free ==5.2.*
+    , generic-lens ==2.3.*
+    , generics-sop ==0.5.*
+    , ghc-source-gen ==0.4.*
+    , hashable ==1.5.*
+    , hedgehog ==1.7.*
+    , hpack ==0.39.*
+    , indexed-traversable ==0.1.*
+    , lens ==5.3.*
+    , lithon-codegen
+    , lithon-hs-bindgen
+    , lithon-prelude
+    , megaparsec >=9.7
+    , monad-logger-aeson ==0.4.*
+    , monoidal-containers ==0.6.*
+    , mtl ==2.3.*
+    , neat-interpolation ==0.5.*
+    , nonempty-containers ==0.3.*
+    , optparse-applicative ==0.19.*
+    , ordered-containers ==0.2.*
+    , prettyprinter ==1.7.*
+    , prettyprinter-ansi-terminal ==1.1.*
+    , process ==1.6.*
+    , profunctors ==5.6.*
+    , rapidhash
+    , recursion-schemes ==5.2.*
+    , regex-tdfa ==1.3.*
+    , resourcet-effectful ==1.0.*
+    , scientific ==0.3.*
+    , semialign ==1.4.*
+    , singletons ==3.0.*
+    , singletons-th ==3.5.*
+    , tagged ==0.8.*
+    , tasty ==1.5.*
+    , tasty-golden ==2.3.*
+    , tasty-hedgehog ==1.4.*
+    , tasty-hunit ==0.10.*
+    , template-haskell
+    , temporary ==1.3.*
+    , text ==2.1.*
+    , text-builder-linear ==0.1.*
+    , text-display ==1.0.*
+    , these ==1.2.*
+    , transformers ==0.6.*
+    , typed-process ==0.2.*
+    , typed-product-builder
+    , universum ==1.8.*
+    , unliftio ==0.2.*
+    , unordered-containers ==0.2.*
+    , validation ==1.2.*
+    , vector ==0.13.*
+    , witch ==1.4.*
+    , witherable ==0.5.*
+    , xml-conduit ==1.10.*
+    , xml-types ==0.3.*
+  default-language: GHC2024

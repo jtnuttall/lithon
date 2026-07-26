@@ -1,0 +1,111 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Assert
+ctypes:
+  - omit:
+      headers: SDL3/SDL_assert.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_assert.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_assert.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_assert.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_assert.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_assert.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_assert.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_assert.h
+    cname: enum SDL_AssertState
+    hsname: SDL_AssertState
+    enum: open
+  - headers: SDL3/SDL_assert.h
+    cname: SDL_AssertState
+    hsname: SDL_AssertState
+  - headers: SDL3/SDL_assert.h
+    cname: struct SDL_AssertData
+    hsname: SDL_AssertData
+  - headers: SDL3/SDL_assert.h
+    cname: SDL_AssertData
+    hsname: SDL_AssertData
+  - headers: SDL3/SDL_assert.h
+    cname: SDL_AssertionHandler
+    hsname: SDL_AssertionHandler
+hstypes:
+  - hsname: SDL_AssertData
+    representation:
+      record:
+        constructor: SDL_AssertData
+        fields:
+          - always_ignore
+          - trigger_count
+          - condition
+          - filename
+          - linenum
+          - function
+          - next
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AssertState
+    representation:
+      newtype:
+        constructor: SDL_AssertState
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AssertionHandler
+    representation:
+      newtype:
+        constructor: SDL_AssertionHandler
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

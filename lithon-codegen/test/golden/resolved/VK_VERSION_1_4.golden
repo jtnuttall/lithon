@@ -1,0 +1,496 @@
+{
+  "comment": "Vulkan 1.4 core API interface definitions",
+  "deviceFeatures": [
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "fullDrawIndexUint32",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21438:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "imageCubeArray",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21439:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "independentBlend",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21440:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "sampleRateShading",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21441:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "drawIndirectFirstInstance",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21442:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "depthClamp",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21443:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "depthBiasClamp",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21444:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "samplerAnisotropy",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21445:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "fragmentStoresAndAtomics",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21446:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "shaderStorageImageExtendedFormats",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21447:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "shaderUniformBufferArrayDynamicIndexing",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21448:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "shaderSampledImageArrayDynamicIndexing",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21449:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "shaderStorageBufferArrayDynamicIndexing",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21450:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "shaderStorageImageArrayDynamicIndexing",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21451:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "shaderImageGatherExtended",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21452:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "shaderInt16",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21453:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "largePoints",
+          "struct": "VkPhysicalDeviceFeatures"
+        }
+      ],
+      "pos": "21454:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "samplerYcbcrConversion",
+          "struct": "VkPhysicalDeviceVulkan11Features"
+        }
+      ],
+      "pos": "21455:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "storageBuffer16BitAccess",
+          "struct": "VkPhysicalDeviceVulkan11Features"
+        }
+      ],
+      "pos": "21456:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "variablePointers",
+          "struct": "VkPhysicalDeviceVulkan11Features"
+        }
+      ],
+      "pos": "21457:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "variablePointersStorageBuffer",
+          "struct": "VkPhysicalDeviceVulkan11Features"
+        }
+      ],
+      "pos": "21458:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "samplerMirrorClampToEdge",
+          "struct": "VkPhysicalDeviceVulkan12Features"
+        }
+      ],
+      "pos": "21459:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "scalarBlockLayout",
+          "struct": "VkPhysicalDeviceVulkan12Features"
+        }
+      ],
+      "pos": "21460:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "shaderUniformTexelBufferArrayDynamicIndexing",
+          "struct": "VkPhysicalDeviceVulkan12Features"
+        }
+      ],
+      "pos": "21461:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "shaderStorageTexelBufferArrayDynamicIndexing",
+          "struct": "VkPhysicalDeviceVulkan12Features"
+        }
+      ],
+      "pos": "21462:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "shaderInt8",
+          "struct": "VkPhysicalDeviceVulkan12Features"
+        }
+      ],
+      "pos": "21463:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "storageBuffer8BitAccess",
+          "struct": "VkPhysicalDeviceVulkan12Features"
+        }
+      ],
+      "pos": "21464:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "globalPriorityQuery",
+          "struct": "VkPhysicalDeviceGlobalPriorityQueryFeatures"
+        }
+      ],
+      "pos": "21465:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "shaderSubgroupRotate",
+          "struct": "VkPhysicalDeviceShaderSubgroupRotateFeatures"
+        }
+      ],
+      "pos": "21466:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "shaderSubgroupRotateClustered",
+          "struct": "VkPhysicalDeviceShaderSubgroupRotateFeatures"
+        }
+      ],
+      "pos": "21467:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "shaderFloatControls2",
+          "struct": "VkPhysicalDeviceShaderFloatControls2Features"
+        }
+      ],
+      "pos": "21468:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "shaderExpectAssume",
+          "struct": "VkPhysicalDeviceShaderExpectAssumeFeatures"
+        }
+      ],
+      "pos": "21469:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "bresenhamLines",
+          "struct": "VkPhysicalDeviceLineRasterizationFeatures"
+        }
+      ],
+      "pos": "21470:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "vertexAttributeInstanceRateDivisor",
+          "struct": "VkPhysicalDeviceVertexAttributeDivisorFeatures"
+        }
+      ],
+      "pos": "21471:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "indexTypeUint8",
+          "struct": "VkPhysicalDeviceIndexTypeUint8Features"
+        }
+      ],
+      "pos": "21472:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "maintenance5",
+          "struct": "VkPhysicalDeviceMaintenance5Features"
+        }
+      ],
+      "pos": "21473:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "pushDescriptor",
+          "struct": "VkPhysicalDeviceVulkan14Features"
+        }
+      ],
+      "pos": "21474:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "dynamicRenderingLocalRead",
+          "struct": "VkPhysicalDeviceDynamicRenderingLocalReadFeatures"
+        }
+      ],
+      "pos": "21475:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "maintenance6",
+          "struct": "VkPhysicalDeviceMaintenance6Features"
+        }
+      ],
+      "pos": "21476:13",
+      "removedBy": null
+    },
+    {
+      "condition": null,
+      "paths": [
+        {
+          "member": "pipelineRobustness",
+          "struct": "VkPhysicalDevicePipelineRobustnessFeatures"
+        }
+      ],
+      "pos": "21477:13",
+      "removedBy": null
+    },
+    {
+      "condition": {
+        "contents": {
+          "contents": {
+            "member": "protectedMemory",
+            "struct": "VkPhysicalDeviceProtectedMemoryFeatures"
+          },
+          "tag": "AvailFeature"
+        },
+        "tag": "AtomF"
+      },
+      "paths": [
+        {
+          "member": "pipelineProtectedAccess",
+          "struct": "VkPhysicalDevicePipelineProtectedAccessFeatures"
+        }
+      ],
+      "pos": "21480:13",
+      "removedBy": null
+    },
+    {
+      "condition": {
+        "contents": {
+          "contents": {
+            "member": "protectedMemory",
+            "struct": "VkPhysicalDeviceProtectedMemoryFeatures"
+          },
+          "tag": "AvailFeature"
+        },
+        "tag": "AtomF"
+      },
+      "paths": [
+        {
+          "member": "pipelineProtectedAccess",
+          "struct": "VkPhysicalDeviceVulkan14Features"
+        }
+      ],
+      "pos": "21481:13",
+      "removedBy": null
+    }
+  ],
+  "mergedTiers": [
+    "VK_BASE_VERSION_1_4",
+    "VK_COMPUTE_VERSION_1_4",
+    "VK_GRAPHICS_VERSION_1_4"
+  ],
+  "name": "VK_VERSION_1_4",
+  "pos": "21436:5",
+  "version": {
+    "major": 1,
+    "minor": 4
+  }
+}

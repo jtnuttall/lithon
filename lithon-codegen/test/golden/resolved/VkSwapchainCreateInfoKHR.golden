@@ -1,0 +1,575 @@
+{
+  "aliases": [],
+  "allowDuplicate": false,
+  "availability": {
+    "contents": {
+      "contents": "VK_KHR_swapchain",
+      "tag": "AvailExtension"
+    },
+    "tag": "AtomF"
+  },
+  "comment": null,
+  "deprecation": null,
+  "extendedBy": [
+    "VkDeviceGroupSwapchainCreateInfoKHR",
+    "VkImageCompressionControlEXT",
+    "VkImageFormatListCreateInfo",
+    "VkImageUsageFlags2CreateInfoKHR",
+    "VkSurfaceFullScreenExclusiveInfoEXT",
+    "VkSurfaceFullScreenExclusiveWin32InfoEXT",
+    "VkSwapchainCounterCreateInfoEXT",
+    "VkSwapchainDisplayNativeHdrCreateInfoAMD",
+    "VkSwapchainLatencyCreateInfoNV",
+    "VkSwapchainPresentBarrierCreateInfoNV",
+    "VkSwapchainPresentModesCreateInfoKHR",
+    "VkSwapchainPresentScalingCreateInfoKHR"
+  ],
+  "extends": [],
+  "kind": "SKStruct",
+  "members": [
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": null,
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "sType",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2499:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefEnum",
+        "name": "VkStructureType",
+        "spelledAs": null
+      },
+      "values": [
+        "VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR"
+      ]
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": true,
+      "bitfield": null,
+      "comment": null,
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": [
+        true
+      ],
+      "len": null,
+      "limitType": null,
+      "name": "pNext",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [
+        {
+          "isConst": false
+        }
+      ],
+      "pos": "2500:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefVoid",
+        "name": "void",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": null,
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": [
+        true
+      ],
+      "len": null,
+      "limitType": null,
+      "name": "flags",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2501:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefBitmask",
+        "name": "VkSwapchainCreateFlagsKHR",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": "The swapchain's target surface",
+      "deprecation": null,
+      "externSync": {
+        "parsed": {
+          "tag": "SyncTrue"
+        },
+        "raw": "true"
+      },
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "surface",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2502:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefHandle",
+        "name": "VkSurfaceKHR",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": "Minimum number of presentation images the application needs",
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "minImageCount",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2503:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefExternal",
+        "name": "uint32_t",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": "Format of the presentation images",
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "imageFormat",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2504:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefEnum",
+        "name": "VkFormat",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": "Colorspace of the presentation images",
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "imageColorSpace",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2505:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefEnum",
+        "name": "VkColorSpaceKHR",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": "Dimensions of the presentation images",
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "imageExtent",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2506:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefStruct",
+        "name": "VkExtent2D",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": "Determines the number of views for multiview/stereo presentation",
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "imageArrayLayers",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2507:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefExternal",
+        "name": "uint32_t",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": "Bits indicating how the presentation images will be used",
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "imageUsage",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2508:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefBitmask",
+        "name": "VkImageUsageFlags",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": "Sharing mode used for the presentation images",
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "imageSharingMode",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2509:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefEnum",
+        "name": "VkSharingMode",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": "Number of queue families having access to the images in case of concurrent sharing mode",
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": [
+        true
+      ],
+      "len": null,
+      "limitType": null,
+      "name": "queueFamilyIndexCount",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2510:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefExternal",
+        "name": "uint32_t",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": true,
+      "bitfield": null,
+      "comment": "Array of queue family indices having access to the images in case of concurrent sharing mode",
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": {
+        "parsed": [
+          {
+            "contents": [
+              "queueFamilyIndexCount"
+            ],
+            "tag": "LenPath"
+          }
+        ],
+        "raw": "queueFamilyIndexCount"
+      },
+      "limitType": null,
+      "name": "pQueueFamilyIndices",
+      "noAutoValidity": true,
+      "objectType": null,
+      "pointers": [
+        {
+          "isConst": false
+        }
+      ],
+      "pos": "2511:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefExternal",
+        "name": "uint32_t",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": "The transform, relative to the device's natural orientation, applied to the image content prior to presentation",
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "preTransform",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2512:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefEnum",
+        "name": "VkSurfaceTransformFlagBitsKHR",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": "The alpha blending mode used when compositing this surface with other surfaces in the window system",
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "compositeAlpha",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2513:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefEnum",
+        "name": "VkCompositeAlphaFlagBitsKHR",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": "Which presentation mode to use for presents on this swap chain",
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "presentMode",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2514:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefEnum",
+        "name": "VkPresentModeKHR",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": "Specifies whether presentable images may be affected by window clip regions",
+      "deprecation": null,
+      "externSync": null,
+      "featureLink": null,
+      "isOptional": null,
+      "len": null,
+      "limitType": null,
+      "name": "clipped",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2515:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefBasetype",
+        "name": "VkBool32",
+        "spelledAs": null
+      },
+      "values": []
+    },
+    {
+      "altLen": null,
+      "arrayDims": [],
+      "baseConst": false,
+      "bitfield": null,
+      "comment": "Existing swap chain to replace, if any",
+      "deprecation": null,
+      "externSync": {
+        "parsed": {
+          "tag": "SyncTrue"
+        },
+        "raw": "true"
+      },
+      "featureLink": null,
+      "isOptional": [
+        true
+      ],
+      "len": null,
+      "limitType": null,
+      "name": "oldSwapchain",
+      "noAutoValidity": false,
+      "objectType": null,
+      "pointers": [],
+      "pos": "2516:13",
+      "selection": [],
+      "selector": null,
+      "stride": null,
+      "typeRef": {
+        "kind": "RefHandle",
+        "name": "VkSwapchainKHR",
+        "spelledAs": null
+      },
+      "values": []
+    }
+  ],
+  "name": "VkSwapchainCreateInfoKHR",
+  "origins": [
+    {
+      "blockComment": null,
+      "blockIndex": 0,
+      "condition": null,
+      "pos": "21654:13",
+      "profile": null,
+      "source": {
+        "extension": "VK_KHR_swapchain",
+        "number": 2,
+        "tag": "FromExtension"
+      },
+      "tier": null
+    }
+  ],
+  "platformGuards": [],
+  "pos": "2498:9",
+  "returnedOnly": false,
+  "sType": "VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR"
+}

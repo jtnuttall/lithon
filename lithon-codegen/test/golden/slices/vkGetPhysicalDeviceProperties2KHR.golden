@@ -1,0 +1,8 @@
+{
+  "alias": "vkGetPhysicalDeviceProperties2",
+  "api": "all",
+  "comment": null,
+  "name": "vkGetPhysicalDeviceProperties2KHR",
+  "pos": "16228:9",
+  "tag": "CommandAlias"
+}

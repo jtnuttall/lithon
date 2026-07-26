@@ -1,0 +1,106 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Dialog
+ctypes:
+  - omit:
+      headers: SDL3/SDL_dialog.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_dialog.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_dialog.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_dialog.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_dialog.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_dialog.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_dialog.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_dialog.h
+    cname: struct SDL_DialogFileFilter
+    hsname: SDL_DialogFileFilter
+  - headers: SDL3/SDL_dialog.h
+    cname: SDL_DialogFileFilter
+    hsname: SDL_DialogFileFilter
+  - headers: SDL3/SDL_dialog.h
+    cname: SDL_DialogFileCallback
+    hsname: SDL_DialogFileCallback
+  - headers: SDL3/SDL_dialog.h
+    cname: enum SDL_FileDialogType
+    hsname: SDL_FileDialogType
+    enum: open
+  - headers: SDL3/SDL_dialog.h
+    cname: SDL_FileDialogType
+    hsname: SDL_FileDialogType
+hstypes:
+  - hsname: SDL_DialogFileCallback
+    representation:
+      newtype:
+        constructor: SDL_DialogFileCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_DialogFileFilter
+    representation:
+      record:
+        constructor: SDL_DialogFileFilter
+        fields:
+          - name
+          - pattern'
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_FileDialogType
+    representation:
+      newtype:
+        constructor: SDL_FileDialogType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

@@ -1,0 +1,136 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Asyncio
+ctypes:
+  - omit:
+      headers: SDL3/SDL_asyncio.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_asyncio.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_asyncio.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_asyncio.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_asyncio.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_asyncio.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_asyncio.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_asyncio.h
+    cname: struct SDL_AsyncIO
+    hsname: SDL_AsyncIO
+  - headers: SDL3/SDL_asyncio.h
+    cname: SDL_AsyncIO
+    hsname: SDL_AsyncIO
+  - headers: SDL3/SDL_asyncio.h
+    cname: enum SDL_AsyncIOTaskType
+    hsname: SDL_AsyncIOTaskType
+    enum: open
+  - headers: SDL3/SDL_asyncio.h
+    cname: SDL_AsyncIOTaskType
+    hsname: SDL_AsyncIOTaskType
+  - headers: SDL3/SDL_asyncio.h
+    cname: enum SDL_AsyncIOResult
+    hsname: SDL_AsyncIOResult
+    enum: open
+  - headers: SDL3/SDL_asyncio.h
+    cname: SDL_AsyncIOResult
+    hsname: SDL_AsyncIOResult
+  - headers: SDL3/SDL_asyncio.h
+    cname: struct SDL_AsyncIOOutcome
+    hsname: SDL_AsyncIOOutcome
+  - headers: SDL3/SDL_asyncio.h
+    cname: SDL_AsyncIOOutcome
+    hsname: SDL_AsyncIOOutcome
+  - headers: SDL3/SDL_asyncio.h
+    cname: struct SDL_AsyncIOQueue
+    hsname: SDL_AsyncIOQueue
+  - headers: SDL3/SDL_asyncio.h
+    cname: SDL_AsyncIOQueue
+    hsname: SDL_AsyncIOQueue
+hstypes:
+  - hsname: SDL_AsyncIO
+    representation: emptydata
+  - hsname: SDL_AsyncIOOutcome
+    representation:
+      record:
+        constructor: SDL_AsyncIOOutcome
+        fields:
+          - asyncio
+          - type'
+          - result
+          - buffer
+          - offset
+          - bytes_requested
+          - bytes_transferred
+          - userdata
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AsyncIOQueue
+    representation: emptydata
+  - hsname: SDL_AsyncIOResult
+    representation:
+      newtype:
+        constructor: SDL_AsyncIOResult
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AsyncIOTaskType
+    representation:
+      newtype:
+        constructor: SDL_AsyncIOTaskType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

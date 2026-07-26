@@ -1,0 +1,107 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Timer
+ctypes:
+  - omit:
+      headers: SDL3/SDL_timer.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_timer.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_timer.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_timer.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_timer.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_timer.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_timer.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_timer.h
+    cname: SDL_TimerID
+    hsname: SDL_TimerID
+  - headers: SDL3/SDL_timer.h
+    cname: SDL_TimerCallback
+    hsname: SDL_TimerCallback
+  - headers: SDL3/SDL_timer.h
+    cname: SDL_NSTimerCallback
+    hsname: SDL_NSTimerCallback
+hstypes:
+  - hsname: SDL_NSTimerCallback
+    representation:
+      newtype:
+        constructor: SDL_NSTimerCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TimerCallback
+    representation:
+      newtype:
+        constructor: SDL_TimerCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TimerID
+    representation:
+      newtype:
+        constructor: SDL_TimerID
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

@@ -1,0 +1,566 @@
+[
+  {
+    "body": {
+      "contents": {
+        "contents": {
+          "name": "VkResult"
+        },
+        "tag": "FullDef"
+      },
+      "tag": "TEnumDecl"
+    },
+    "common": {
+      "api": "all",
+      "comment": null,
+      "deprecated": null,
+      "pos": "732:9",
+      "requires": null
+    }
+  },
+  {
+    "bitWidth": "W32",
+    "comment": "API result codes",
+    "items": [
+      {
+        "contents": "Return codes (positive values)",
+        "tag": "ItemComment"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "Command completed successfully",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_SUCCESS",
+          "pos": "12640:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": 0,
+                  "tag": "VInt"
+                },
+                "raw": "0"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "A fence or query has not yet completed",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_NOT_READY",
+          "pos": "12641:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": 1,
+                  "tag": "VInt"
+                },
+                "raw": "1"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "A wait operation has not completed in the specified time",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_TIMEOUT",
+          "pos": "12642:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": 2,
+                  "tag": "VInt"
+                },
+                "raw": "2"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "An event is signaled",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_EVENT_SET",
+          "pos": "12643:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": 3,
+                  "tag": "VInt"
+                },
+                "raw": "3"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "An event is unsignaled",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_EVENT_RESET",
+          "pos": "12644:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": 4,
+                  "tag": "VInt"
+                },
+                "raw": "4"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "A return array was too small for the result",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_INCOMPLETE",
+          "pos": "12645:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": 5,
+                  "tag": "VInt"
+                },
+                "raw": "5"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": "Error codes (negative values)",
+        "tag": "ItemComment"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "A host memory allocation has failed",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ERROR_OUT_OF_HOST_MEMORY",
+          "pos": "12647:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": -1,
+                  "tag": "VInt"
+                },
+                "raw": "-1"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "A device memory allocation has failed",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ERROR_OUT_OF_DEVICE_MEMORY",
+          "pos": "12648:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": -2,
+                  "tag": "VInt"
+                },
+                "raw": "-2"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "Initialization of an object has failed",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ERROR_INITIALIZATION_FAILED",
+          "pos": "12649:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": -3,
+                  "tag": "VInt"
+                },
+                "raw": "-3"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "The logical device has been lost. See <<devsandqueues-lost-device>>",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ERROR_DEVICE_LOST",
+          "pos": "12650:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": -4,
+                  "tag": "VInt"
+                },
+                "raw": "-4"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "Mapping of a memory object has failed",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ERROR_MEMORY_MAP_FAILED",
+          "pos": "12651:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": -5,
+                  "tag": "VInt"
+                },
+                "raw": "-5"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "Layer specified does not exist",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ERROR_LAYER_NOT_PRESENT",
+          "pos": "12652:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": -6,
+                  "tag": "VInt"
+                },
+                "raw": "-6"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "Extension specified does not exist",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ERROR_EXTENSION_NOT_PRESENT",
+          "pos": "12653:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": -7,
+                  "tag": "VInt"
+                },
+                "raw": "-7"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "Requested feature is not available on this device",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ERROR_FEATURE_NOT_PRESENT",
+          "pos": "12654:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": -8,
+                  "tag": "VInt"
+                },
+                "raw": "-8"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "Unable to find a Vulkan driver",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ERROR_INCOMPATIBLE_DRIVER",
+          "pos": "12655:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": -9,
+                  "tag": "VInt"
+                },
+                "raw": "-9"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "Too many objects of the type have already been created",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ERROR_TOO_MANY_OBJECTS",
+          "pos": "12656:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": -10,
+                  "tag": "VInt"
+                },
+                "raw": "-10"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "Requested format is not supported on this device",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ERROR_FORMAT_NOT_SUPPORTED",
+          "pos": "12657:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": -11,
+                  "tag": "VInt"
+                },
+                "raw": "-11"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "A requested pool allocation has failed due to fragmentation of the pool's memory",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ERROR_FRAGMENTED_POOL",
+          "pos": "12658:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": -12,
+                  "tag": "VInt"
+                },
+                "raw": "-12"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "api": "all",
+          "comment": "An unknown error has occurred, due to an implementation or application bug",
+          "deprecated": null,
+          "extNumber": null,
+          "extends": null,
+          "name": "VK_ERROR_UNKNOWN",
+          "pos": "12659:9",
+          "protect": null,
+          "spec": {
+            "contents": [
+              {
+                "parsed": {
+                  "contents": -13,
+                  "tag": "VInt"
+                },
+                "raw": "-13"
+              },
+              null
+            ],
+            "tag": "EvValue"
+          },
+          "valueType": null
+        },
+        "tag": "ItemEnum"
+      },
+      {
+        "contents": {
+          "comment": "This is the next unused available error code (negative value)",
+          "end": null,
+          "pos": "12660:13",
+          "start": {
+            "parsed": {
+              "contents": -14,
+              "tag": "VInt"
+            },
+            "raw": "-14"
+          },
+          "vendor": null
+        },
+        "tag": "ItemUnused"
+      }
+    ],
+    "kind": "KindEnum",
+    "name": "VkResult",
+    "pos": "12638:5"
+  }
+]

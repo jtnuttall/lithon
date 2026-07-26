@@ -1,0 +1,108 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Tray
+ctypes:
+  - omit:
+      headers: SDL3/SDL_tray.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_tray.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_tray.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_tray.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_tray.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_tray.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_tray.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_tray.h
+    cname: struct SDL_Tray
+    hsname: SDL_Tray
+  - headers: SDL3/SDL_tray.h
+    cname: SDL_Tray
+    hsname: SDL_Tray
+  - headers: SDL3/SDL_tray.h
+    cname: struct SDL_TrayMenu
+    hsname: SDL_TrayMenu
+  - headers: SDL3/SDL_tray.h
+    cname: SDL_TrayMenu
+    hsname: SDL_TrayMenu
+  - headers: SDL3/SDL_tray.h
+    cname: struct SDL_TrayEntry
+    hsname: SDL_TrayEntry
+  - headers: SDL3/SDL_tray.h
+    cname: SDL_TrayEntry
+    hsname: SDL_TrayEntry
+  - headers: SDL3/SDL_tray.h
+    cname: SDL_TrayEntryFlags
+    hsname: SDL_TrayEntryFlags
+  - headers: SDL3/SDL_tray.h
+    cname: SDL_TrayCallback
+    hsname: SDL_TrayCallback
+hstypes:
+  - hsname: SDL_Tray
+    representation: emptydata
+  - hsname: SDL_TrayCallback
+    representation:
+      newtype:
+        constructor: SDL_TrayCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TrayEntry
+    representation: emptydata
+  - hsname: SDL_TrayEntryFlags
+    representation:
+      newtype:
+        constructor: SDL_TrayEntryFlags
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TrayMenu
+    representation: emptydata

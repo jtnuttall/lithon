@@ -1,0 +1,153 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Touch
+ctypes:
+  - omit:
+      headers: SDL3/SDL_touch.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_touch.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_touch.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_touch.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_touch.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_touch.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_touch.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_touch.h
+    cname: SDL_TouchID
+    hsname: SDL_TouchID
+  - headers: SDL3/SDL_touch.h
+    cname: SDL_FingerID
+    hsname: SDL_FingerID
+  - headers: SDL3/SDL_touch.h
+    cname: enum SDL_TouchDeviceType
+    hsname: SDL_TouchDeviceType
+    enum: open
+  - headers: SDL3/SDL_touch.h
+    cname: SDL_TouchDeviceType
+    hsname: SDL_TouchDeviceType
+  - headers: SDL3/SDL_touch.h
+    cname: struct SDL_Finger
+    hsname: SDL_Finger
+  - headers: SDL3/SDL_touch.h
+    cname: SDL_Finger
+    hsname: SDL_Finger
+hstypes:
+  - hsname: SDL_Finger
+    representation:
+      record:
+        constructor: SDL_Finger
+        fields:
+          - id
+          - x
+          - "y"
+          - pressure
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_FingerID
+    representation:
+      newtype:
+        constructor: SDL_FingerID
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TouchDeviceType
+    representation:
+      newtype:
+        constructor: SDL_TouchDeviceType
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TouchID
+    representation:
+      newtype:
+        constructor: SDL_TouchID
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

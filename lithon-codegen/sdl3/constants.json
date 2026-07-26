@@ -1,0 +1,121 @@
+{
+  "groups": {
+    "SDL_BlendMode": {
+      "combine": "value",
+      "prefix": "SDL_BLENDMODE_"
+    },
+    "SDL_GLContextFlag": {
+      "combine": "bitmask",
+      "prefix": "SDL_GL_CONTEXT_",
+      "suffix": "_FLAG"
+    },
+    "SDL_GLContextReleaseFlag": {
+      "combine": "value",
+      "prefix": "SDL_GL_CONTEXT_RELEASE_BEHAVIOR_"
+    },
+    "SDL_GLContextResetNotification": {
+      "combine": "value",
+      "prefix": "SDL_GL_CONTEXT_RESET_",
+      "exclude": ["SDL_GL_CONTEXT_RESET_ISOLATION_FLAG"]
+    },
+    "SDL_GLProfile": {
+      "combine": "value",
+      "prefix": "SDL_GL_CONTEXT_PROFILE_"
+    },
+    "SDL_GPUBufferUsageFlags": {
+      "combine": "bitmask",
+      "prefix": "SDL_GPU_BUFFERUSAGE_"
+    },
+    "SDL_GPUColorComponentFlags": {
+      "combine": "bitmask",
+      "prefix": "SDL_GPU_COLORCOMPONENT_"
+    },
+    "SDL_GPUShaderFormat": {
+      "combine": "bitmask",
+      "prefix": "SDL_GPU_SHADERFORMAT_"
+    },
+    "SDL_GPUTextureUsageFlags": {
+      "combine": "bitmask",
+      "prefix": "SDL_GPU_TEXTUREUSAGE_"
+    },
+    "SDL_GlobFlags": {
+      "combine": "bitmask",
+      "prefix": "SDL_GLOB_"
+    },
+    "SDL_HapticDirectionType": {
+      "combine": "value",
+      "members": [
+        "SDL_HAPTIC_POLAR",
+        "SDL_HAPTIC_CARTESIAN",
+        "SDL_HAPTIC_SPHERICAL",
+        "SDL_HAPTIC_STEERING_AXIS"
+      ]
+    },
+    "SDL_HapticEffectType": {
+      "combine": "bitmask",
+      "members": [
+        "SDL_HAPTIC_CONSTANT",
+        "SDL_HAPTIC_SINE",
+        "SDL_HAPTIC_SQUARE",
+        "SDL_HAPTIC_TRIANGLE",
+        "SDL_HAPTIC_SAWTOOTHUP",
+        "SDL_HAPTIC_SAWTOOTHDOWN",
+        "SDL_HAPTIC_RAMP",
+        "SDL_HAPTIC_SPRING",
+        "SDL_HAPTIC_DAMPER",
+        "SDL_HAPTIC_INERTIA",
+        "SDL_HAPTIC_FRICTION",
+        "SDL_HAPTIC_LEFTRIGHT",
+        "SDL_HAPTIC_RESERVED1",
+        "SDL_HAPTIC_RESERVED2",
+        "SDL_HAPTIC_RESERVED3",
+        "SDL_HAPTIC_CUSTOM"
+      ]
+    },
+    "SDL_InitFlags": {
+      "combine": "bitmask",
+      "prefix": "SDL_INIT_"
+    },
+    "SDL_Keymod": {
+      "combine": "bitmask",
+      "prefix": "SDL_KMOD_"
+    },
+    "SDL_MessageBoxButtonFlags": {
+      "combine": "bitmask",
+      "prefix": "SDL_MESSAGEBOX_BUTTON_"
+    },
+    "SDL_MessageBoxFlags": {
+      "combine": "bitmask",
+      "prefix": "SDL_MESSAGEBOX_",
+      "exclude": [
+        "SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT",
+        "SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT"
+      ]
+    },
+    "SDL_MouseButtonFlags": {
+      "combine": "bitmask",
+      "prefix": "SDL_BUTTON_",
+      "suffix": "MASK"
+    },
+    "SDL_PenInputFlags": {
+      "combine": "bitmask",
+      "prefix": "SDL_PEN_INPUT_"
+    },
+    "SDL_SurfaceFlags": {
+      "combine": "bitmask",
+      "prefix": "SDL_SURFACE_"
+    },
+    "SDL_TrayEntryFlags": {
+      "combine": "bitmask",
+      "prefix": "SDL_TRAYENTRY_"
+    },
+    "SDL_WindowFlags": {
+      "combine": "bitmask",
+      "prefix": "SDL_WINDOW_",
+      "exclude": [
+        "SDL_WINDOW_SURFACE_VSYNC_DISABLED",
+        "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE"
+      ]
+    }
+  }
+}

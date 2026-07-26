@@ -1,0 +1,65 @@
+{
+  "capabilities": [
+    "VkVideoDecodeH264CapabilitiesKHR"
+  ],
+  "extend": "Decode",
+  "formats": [],
+  "name": "H.264 Decode",
+  "pos": "35387:9",
+  "profiles": [
+    {
+      "members": [
+        {
+          "name": "stdProfileIdc",
+          "pos": "35389:17",
+          "values": [
+            {
+              "name": "Baseline",
+              "pos": "35390:21",
+              "value": "STD_VIDEO_H264_PROFILE_IDC_BASELINE"
+            },
+            {
+              "name": "Main",
+              "pos": "35391:21",
+              "value": "STD_VIDEO_H264_PROFILE_IDC_MAIN"
+            },
+            {
+              "name": "High",
+              "pos": "35392:21",
+              "value": "STD_VIDEO_H264_PROFILE_IDC_HIGH"
+            },
+            {
+              "name": "High 4:4:4 Predictive",
+              "pos": "35393:21",
+              "value": "STD_VIDEO_H264_PROFILE_IDC_HIGH_444_PREDICTIVE"
+            }
+          ]
+        },
+        {
+          "name": "pictureLayout",
+          "pos": "35395:17",
+          "values": [
+            {
+              "name": "progressive",
+              "pos": "35396:21",
+              "value": "VK_VIDEO_DECODE_H264_PICTURE_LAYOUT_PROGRESSIVE_KHR"
+            },
+            {
+              "name": "interlaced (interleaved lines)",
+              "pos": "35397:21",
+              "value": "VK_VIDEO_DECODE_H264_PICTURE_LAYOUT_INTERLACED_INTERLEAVED_LINES_BIT_KHR"
+            },
+            {
+              "name": "interlaced (separate planes)",
+              "pos": "35398:21",
+              "value": "VK_VIDEO_DECODE_H264_PICTURE_LAYOUT_INTERLACED_SEPARATE_PLANES_BIT_KHR"
+            }
+          ]
+        }
+      ],
+      "pos": "35388:13",
+      "struct": "VkVideoDecodeH264ProfileInfoKHR"
+    }
+  ],
+  "value": "VK_VIDEO_CODEC_OPERATION_DECODE_H264_BIT_KHR"
+}

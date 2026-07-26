@@ -1,0 +1,116 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Mutex
+ctypes:
+  - omit:
+      headers: SDL3/SDL_mutex.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_mutex.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_mutex.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_mutex.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_mutex.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_mutex.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_mutex.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_mutex.h
+    cname: struct SDL_Mutex
+    hsname: SDL_Mutex
+  - headers: SDL3/SDL_mutex.h
+    cname: SDL_Mutex
+    hsname: SDL_Mutex
+  - headers: SDL3/SDL_mutex.h
+    cname: struct SDL_RWLock
+    hsname: SDL_RWLock
+  - headers: SDL3/SDL_mutex.h
+    cname: SDL_RWLock
+    hsname: SDL_RWLock
+  - headers: SDL3/SDL_mutex.h
+    cname: struct SDL_Semaphore
+    hsname: SDL_Semaphore
+  - headers: SDL3/SDL_mutex.h
+    cname: SDL_Semaphore
+    hsname: SDL_Semaphore
+  - headers: SDL3/SDL_mutex.h
+    cname: struct SDL_Condition
+    hsname: SDL_Condition
+  - headers: SDL3/SDL_mutex.h
+    cname: SDL_Condition
+    hsname: SDL_Condition
+  - headers: SDL3/SDL_mutex.h
+    cname: enum SDL_InitStatus
+    hsname: SDL_InitStatus
+    enum: open
+  - headers: SDL3/SDL_mutex.h
+    cname: SDL_InitStatus
+    hsname: SDL_InitStatus
+  - headers: SDL3/SDL_mutex.h
+    cname: struct SDL_InitState
+    hsname: SDL_InitState
+  - headers: SDL3/SDL_mutex.h
+    cname: SDL_InitState
+    hsname: SDL_InitState
+hstypes:
+  - hsname: SDL_Condition
+    representation: emptydata
+  - hsname: SDL_InitState
+    representation:
+      record:
+        constructor: SDL_InitState
+        fields:
+          - status
+          - thread
+          - reserved
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_InitStatus
+    representation:
+      newtype:
+        constructor: SDL_InitStatus
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Mutex
+    representation: emptydata
+  - hsname: SDL_RWLock
+    representation: emptydata
+  - hsname: SDL_Semaphore
+    representation: emptydata

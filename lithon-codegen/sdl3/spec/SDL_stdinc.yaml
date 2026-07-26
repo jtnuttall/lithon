@@ -1,0 +1,586 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Stdinc
+ctypes:
+  - headers: SDL3/SDL_stdinc.h
+    cname: Sint8
+    hsname: Sint8
+  - headers: SDL3/SDL_stdinc.h
+    cname: Uint8
+    hsname: Uint8
+  - headers: SDL3/SDL_stdinc.h
+    cname: Sint16
+    hsname: Sint16
+  - headers: SDL3/SDL_stdinc.h
+    cname: Uint16
+    hsname: Uint16
+  - headers: SDL3/SDL_stdinc.h
+    cname: Sint32
+    hsname: Sint32
+  - headers: SDL3/SDL_stdinc.h
+    cname: Uint32
+    hsname: Uint32
+  - headers: SDL3/SDL_stdinc.h
+    cname: Sint64
+    hsname: Sint64
+  - headers: SDL3/SDL_stdinc.h
+    cname: Uint64
+    hsname: Uint64
+  - headers: SDL3/SDL_stdinc.h
+    cname: SDL_Time
+    hsname: SDL_Time
+  - headers: SDL3/SDL_stdinc.h
+    cname: struct SDL_alignment_test
+    hsname: SDL_alignment_test
+  - headers: SDL3/SDL_stdinc.h
+    cname: SDL_alignment_test
+    hsname: SDL_alignment_test
+  - headers: SDL3/SDL_stdinc.h
+    cname: enum SDL_DUMMY_ENUM
+    hsname: SDL_DUMMY_ENUM
+    enum: open
+  - headers: SDL3/SDL_stdinc.h
+    cname: SDL_DUMMY_ENUM
+    hsname: SDL_DUMMY_ENUM
+  - headers: SDL3/SDL_stdinc.h
+    cname: SDL_malloc_func
+    hsname: SDL_malloc_func
+  - headers: SDL3/SDL_stdinc.h
+    cname: SDL_calloc_func
+    hsname: SDL_calloc_func
+  - headers: SDL3/SDL_stdinc.h
+    cname: SDL_realloc_func
+    hsname: SDL_realloc_func
+  - headers: SDL3/SDL_stdinc.h
+    cname: SDL_free_func
+    hsname: SDL_free_func
+  - headers: SDL3/SDL_stdinc.h
+    cname: struct SDL_Environment
+    hsname: SDL_Environment
+  - headers: SDL3/SDL_stdinc.h
+    cname: SDL_Environment
+    hsname: SDL_Environment
+  - headers: SDL3/SDL_stdinc.h
+    cname: SDL_CompareCallback
+    hsname: SDL_CompareCallback
+  - headers: SDL3/SDL_stdinc.h
+    cname: SDL_CompareCallback_r
+    hsname: SDL_CompareCallback_r
+  - omit:
+      headers: SDL3/SDL_stdinc.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_stdinc.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_stdinc.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_stdinc.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_stdinc.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_stdinc.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_stdinc.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_stdinc.h
+    cname: struct SDL_iconv_data_t
+    hsname: SDL_iconv_data_t
+  - headers: SDL3/SDL_stdinc.h
+    cname: SDL_iconv_t
+    hsname: SDL_iconv_t
+  - headers: SDL3/SDL_stdinc.h
+    cname: SDL_FunctionPointer
+    hsname: SDL_FunctionPointer
+hstypes:
+  - hsname: SDL_CompareCallback
+    representation:
+      newtype:
+        constructor: SDL_CompareCallback
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_CompareCallback_r
+    representation:
+      newtype:
+        constructor: SDL_CompareCallback_r
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_DUMMY_ENUM
+    representation:
+      newtype:
+        constructor: SDL_DUMMY_ENUM
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Environment
+    representation: emptydata
+  - hsname: SDL_FunctionPointer
+    representation:
+      newtype:
+        constructor: SDL_FunctionPointer
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Time
+    representation:
+      newtype:
+        constructor: SDL_Time
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_alignment_test
+    representation:
+      record:
+        constructor: SDL_alignment_test
+        fields:
+          - a
+          - b
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_calloc_func
+    representation:
+      newtype:
+        constructor: SDL_calloc_func
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_free_func
+    representation:
+      newtype:
+        constructor: SDL_free_func
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_iconv_data_t
+    representation: emptydata
+  - hsname: SDL_iconv_t
+    representation:
+      newtype:
+        constructor: SDL_iconv_t
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_malloc_func
+    representation:
+      newtype:
+        constructor: SDL_malloc_func
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_realloc_func
+    representation:
+      newtype:
+        constructor: SDL_realloc_func
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Sint16
+    representation:
+      newtype:
+        constructor: Sint16
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Sint32
+    representation:
+      newtype:
+        constructor: Sint32
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Sint64
+    representation:
+      newtype:
+        constructor: Sint64
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Sint8
+    representation:
+      newtype:
+        constructor: Sint8
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Uint16
+    representation:
+      newtype:
+        constructor: Uint16
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Uint32
+    representation:
+      newtype:
+        constructor: Uint32
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Uint64
+    representation:
+      newtype:
+        constructor: Uint64
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Uint8
+    representation:
+      newtype:
+        constructor: Uint8
+        fields:
+          - unwrap
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

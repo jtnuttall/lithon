@@ -1,0 +1,131 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: SDL3.Sys.Bindgen.Rect
+ctypes:
+  - omit:
+      headers: SDL3/SDL_rect.h
+      cname: SDL_wcstol
+  - omit:
+      headers: SDL3/SDL_rect.h
+      cname: SDL_ltoa
+  - omit:
+      headers: SDL3/SDL_rect.h
+      cname: SDL_ultoa
+  - omit:
+      headers: SDL3/SDL_rect.h
+      cname: SDL_strtol
+  - omit:
+      headers: SDL3/SDL_rect.h
+      cname: SDL_strtoul
+  - omit:
+      headers: SDL3/SDL_rect.h
+      cname: SDL_lround
+  - omit:
+      headers: SDL3/SDL_rect.h
+      cname: SDL_lroundf
+  - headers: SDL3/SDL_rect.h
+    cname: struct SDL_Point
+    hsname: SDL_Point
+  - headers: SDL3/SDL_rect.h
+    cname: SDL_Point
+    hsname: SDL_Point
+  - headers: SDL3/SDL_rect.h
+    cname: struct SDL_FPoint
+    hsname: SDL_FPoint
+  - headers: SDL3/SDL_rect.h
+    cname: SDL_FPoint
+    hsname: SDL_FPoint
+  - headers: SDL3/SDL_rect.h
+    cname: struct SDL_Rect
+    hsname: SDL_Rect
+  - headers: SDL3/SDL_rect.h
+    cname: SDL_Rect
+    hsname: SDL_Rect
+  - headers: SDL3/SDL_rect.h
+    cname: struct SDL_FRect
+    hsname: SDL_FRect
+  - headers: SDL3/SDL_rect.h
+    cname: SDL_FRect
+    hsname: SDL_FRect
+hstypes:
+  - hsname: SDL_FPoint
+    representation:
+      record:
+        constructor: SDL_FPoint
+        fields:
+          - x
+          - "y"
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_FRect
+    representation:
+      record:
+        constructor: SDL_FRect
+        fields:
+          - x
+          - "y"
+          - w
+          - h
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Point
+    representation:
+      record:
+        constructor: SDL_Point
+        fields:
+          - x
+          - "y"
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_Rect
+    representation:
+      record:
+        constructor: SDL_Rect
+        fields:
+          - x
+          - "y"
+          - w
+          - h
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

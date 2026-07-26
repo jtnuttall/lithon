@@ -1,0 +1,2884 @@
+{
+  "api": [
+    "vulkan",
+    "vulkansc",
+    "vulkanbase"
+  ],
+  "apiType": "VisInternal",
+  "changes": [
+    {
+      "contents": {
+        "api": "all",
+        "comment": "API version macros",
+        "depends": null,
+        "items": [
+          {
+            "comment": null,
+            "name": "VK_API_VERSION_1_1",
+            "pos": "20200:13",
+            "tag": "ReqType"
+          }
+        ],
+        "pos": "20199:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Device Initialization",
+        "depends": null,
+        "items": [
+          {
+            "comment": null,
+            "name": "vkEnumerateInstanceVersion",
+            "pos": "20203:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": "needed for property queries",
+            "name": "VkSubgroupFeatureFlagBits",
+            "pos": "20204:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": "needed for property queries",
+            "name": "VkSubgroupFeatureFlags",
+            "pos": "20205:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": "needed for property queries",
+            "name": "VkPointClippingBehavior",
+            "pos": "20206:13",
+            "tag": "ReqType"
+          }
+        ],
+        "pos": "20202:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_bind_memory2",
+        "depends": null,
+        "items": [
+          {
+            "comment": null,
+            "name": "vkBindBufferMemory2",
+            "pos": "20209:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkBindImageMemory2",
+            "pos": "20210:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 158,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_BIND_BUFFER_MEMORY_INFO",
+              "pos": "20211:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 158,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_BIND_IMAGE_MEMORY_INFO",
+              "pos": "20212:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkImageCreateFlagBits",
+              "name": "VK_IMAGE_CREATE_ALIAS_BIT",
+              "pos": "20213:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  10,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkBindBufferMemoryInfo",
+            "pos": "20214:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkBindImageMemoryInfo",
+            "pos": "20215:13",
+            "tag": "ReqType"
+          }
+        ],
+        "pos": "20208:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_dedicated_allocation",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 128,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_MEMORY_DEDICATED_REQUIREMENTS",
+              "pos": "20218:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 128,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_MEMORY_DEDICATED_ALLOCATE_INFO",
+              "pos": "20219:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkMemoryDedicatedRequirements",
+            "pos": "20220:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkMemoryDedicatedAllocateInfo",
+            "pos": "20221:13",
+            "tag": "ReqType"
+          }
+        ],
+        "pos": "20217:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_device_group",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 61,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_FLAGS_INFO",
+              "pos": "20224:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": "offset 1 reserved for the old VK_STRUCTURE_TYPE_BIND_BUFFER_MEMORY_INFO_KHX enum",
+            "tag": "ReqComment"
+          },
+          {
+            "contents": "offset 2 reserved for the old VK_STRUCTURE_TYPE_BIND_IMAGE_MEMORY_INFO_KHX enum",
+            "tag": "ReqComment"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 61,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_DEVICE_GROUP_COMMAND_BUFFER_BEGIN_INFO",
+              "pos": "20227:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 4,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 61,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_DEVICE_GROUP_SUBMIT_INFO",
+              "pos": "20228:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 5,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 61,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_DEVICE_GROUP_BIND_SPARSE_INFO",
+              "pos": "20229:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 6,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkPeerMemoryFeatureFlags",
+            "pos": "20230:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPeerMemoryFeatureFlagBits",
+            "pos": "20231:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkMemoryAllocateFlags",
+            "pos": "20232:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkMemoryAllocateFlagBits",
+            "pos": "20233:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkMemoryAllocateFlagsInfo",
+            "pos": "20234:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkDeviceGroupCommandBufferBeginInfo",
+            "pos": "20235:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkDeviceGroupSubmitInfo",
+            "pos": "20236:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkDeviceGroupBindSparseInfo",
+            "pos": "20237:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkGetDeviceGroupPeerMemoryFeatures",
+            "pos": "20238:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkCmdSetDeviceMask",
+            "pos": "20239:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": "Dependency is across devices",
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkDependencyFlagBits",
+              "name": "VK_DEPENDENCY_DEVICE_GROUP_BIT",
+              "pos": "20240:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  2,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          }
+        ],
+        "pos": "20223:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_device_group + VK_KHR_bind_memory2",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 61,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_BIND_BUFFER_MEMORY_DEVICE_GROUP_INFO",
+              "pos": "20243:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 13,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 61,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_BIND_IMAGE_MEMORY_DEVICE_GROUP_INFO",
+              "pos": "20244:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 14,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkBindBufferMemoryDeviceGroupInfo",
+            "pos": "20245:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkBindImageMemoryDeviceGroupInfo",
+            "pos": "20246:13",
+            "tag": "ReqType"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": "Allows using VkBindImageMemoryDeviceGroupInfo::pSplitInstanceBindRegions when binding memory to the image",
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkImageCreateFlagBits",
+              "name": "VK_IMAGE_CREATE_SPLIT_INSTANCE_BIND_REGIONS_BIT",
+              "pos": "20247:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  6,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          }
+        ],
+        "pos": "20242:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_device_group_creation",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 71,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_GROUP_PROPERTIES",
+              "pos": "20250:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 71,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_DEVICE_GROUP_DEVICE_CREATE_INFO",
+              "pos": "20251:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_MAX_DEVICE_GROUP_SIZE",
+              "pos": "20252:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceGroupProperties",
+            "pos": "20253:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkDeviceGroupDeviceCreateInfo",
+            "pos": "20254:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkEnumeratePhysicalDeviceGroups",
+            "pos": "20255:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": "If set, heap allocations allocate multiple instances by default",
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkMemoryHeapFlagBits",
+              "name": "VK_MEMORY_HEAP_MULTI_INSTANCE_BIT",
+              "pos": "20256:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  1,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          }
+        ],
+        "pos": "20249:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_get_memory_requirements2",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 147,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_BUFFER_MEMORY_REQUIREMENTS_INFO_2",
+              "pos": "20259:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 147,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_IMAGE_MEMORY_REQUIREMENTS_INFO_2",
+              "pos": "20260:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 147,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_IMAGE_SPARSE_MEMORY_REQUIREMENTS_INFO_2",
+              "pos": "20261:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 2,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 147,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_MEMORY_REQUIREMENTS_2",
+              "pos": "20262:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 3,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 147,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_SPARSE_IMAGE_MEMORY_REQUIREMENTS_2",
+              "pos": "20263:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 4,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkBufferMemoryRequirementsInfo2",
+            "pos": "20264:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkImageMemoryRequirementsInfo2",
+            "pos": "20265:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkImageSparseMemoryRequirementsInfo2",
+            "pos": "20266:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkMemoryRequirements2",
+            "pos": "20267:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseImageMemoryRequirements2",
+            "pos": "20268:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkGetImageMemoryRequirements2",
+            "pos": "20269:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkGetBufferMemoryRequirements2",
+            "pos": "20270:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkGetImageSparseMemoryRequirements2",
+            "pos": "20271:13",
+            "tag": "ReqCommand"
+          }
+        ],
+        "pos": "20258:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_get_physical_device_properties2",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 60,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2",
+              "pos": "20274:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 60,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2",
+              "pos": "20275:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 60,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_FORMAT_PROPERTIES_2",
+              "pos": "20276:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 2,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 60,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_IMAGE_FORMAT_PROPERTIES_2",
+              "pos": "20277:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 3,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 60,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_IMAGE_FORMAT_INFO_2",
+              "pos": "20278:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 4,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 60,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_QUEUE_FAMILY_PROPERTIES_2",
+              "pos": "20279:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 5,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 60,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_PROPERTIES_2",
+              "pos": "20280:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 6,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 60,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_SPARSE_IMAGE_FORMAT_PROPERTIES_2",
+              "pos": "20281:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 7,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 60,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SPARSE_IMAGE_FORMAT_INFO_2",
+              "pos": "20282:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 8,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceFeatures2",
+            "pos": "20283:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceProperties2",
+            "pos": "20284:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkFormatProperties2",
+            "pos": "20285:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkImageFormatProperties2",
+            "pos": "20286:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceImageFormatInfo2",
+            "pos": "20287:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkQueueFamilyProperties2",
+            "pos": "20288:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceMemoryProperties2",
+            "pos": "20289:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkSparseImageFormatProperties2",
+            "pos": "20290:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceSparseImageFormatInfo2",
+            "pos": "20291:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkGetPhysicalDeviceFeatures2",
+            "pos": "20292:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkGetPhysicalDeviceProperties2",
+            "pos": "20293:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkGetPhysicalDeviceFormatProperties2",
+            "pos": "20294:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkGetPhysicalDeviceImageFormatProperties2",
+            "pos": "20295:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkGetPhysicalDeviceQueueFamilyProperties2",
+            "pos": "20296:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkGetPhysicalDeviceMemoryProperties2",
+            "pos": "20297:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "comment": null,
+            "name": "vkGetPhysicalDeviceSparseImageFormatProperties2",
+            "pos": "20298:13",
+            "tag": "ReqCommand"
+          }
+        ],
+        "pos": "20273:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_maintenance1",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 70,
+              "extends": "VkResult",
+              "name": "VK_ERROR_OUT_OF_POOL_MEMORY",
+              "pos": "20301:13",
+              "protect": null,
+              "spec": {
+                "negative": true,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": "Format can be used as the source image of image transfer commands",
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkFormatFeatureFlagBits",
+              "name": "VK_FORMAT_FEATURE_TRANSFER_SRC_BIT",
+              "pos": "20302:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  14,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": "Format can be used as the destination image of image transfer commands",
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkFormatFeatureFlagBits",
+              "name": "VK_FORMAT_FEATURE_TRANSFER_DST_BIT",
+              "pos": "20303:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  15,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": "The 3D image can be viewed as a 2D or 2D array image",
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkImageCreateFlagBits",
+              "name": "VK_IMAGE_CREATE_2D_ARRAY_COMPATIBLE_BIT",
+              "pos": "20304:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  5,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "vkTrimCommandPool",
+            "pos": "20305:13",
+            "tag": "ReqCommand"
+          },
+          {
+            "contents": "Additional dependent types / tokens extending enumerants, not explicitly mentioned",
+            "tag": "ReqComment"
+          },
+          {
+            "comment": null,
+            "name": "VkCommandPoolTrimFlags",
+            "pos": "20307:13",
+            "tag": "ReqType"
+          }
+        ],
+        "pos": "20300:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_maintenance2",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkImageCreateFlagBits",
+              "name": "VK_IMAGE_CREATE_BLOCK_TEXEL_VIEW_COMPATIBLE_BIT",
+              "pos": "20310:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  7,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkImageCreateFlagBits",
+              "name": "VK_IMAGE_CREATE_EXTENDED_USAGE_BIT",
+              "pos": "20311:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  8,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 118,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_IMAGE_VIEW_USAGE_CREATE_INFO",
+              "pos": "20312:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 2,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkImageViewUsageCreateInfo",
+            "pos": "20313:13",
+            "tag": "ReqType"
+          }
+        ],
+        "pos": "20309:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Originally based on VK_KHR_protected_memory (extension 146), which was never published; thus the mystifying large value= numbers below. These are not aliased since they were not actually promoted from an extension.",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 146,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PROTECTED_SUBMIT_INFO",
+              "pos": "20316:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 146,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROTECTED_MEMORY_FEATURES",
+              "pos": "20317:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 146,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROTECTED_MEMORY_PROPERTIES",
+              "pos": "20318:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 2,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 146,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_DEVICE_QUEUE_INFO_2",
+              "pos": "20319:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 3,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": "Queues may support protected operations",
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkQueueFlagBits",
+              "name": "VK_QUEUE_PROTECTED_BIT",
+              "pos": "20320:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  4,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": "Queue is a protected-capable device queue",
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkDeviceQueueCreateFlagBits",
+              "name": "VK_DEVICE_QUEUE_CREATE_PROTECTED_BIT",
+              "pos": "20321:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  0,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": "Memory is protected",
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkMemoryPropertyFlagBits",
+              "name": "VK_MEMORY_PROPERTY_PROTECTED_BIT",
+              "pos": "20322:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  5,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": "Buffer requires protected memory",
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkBufferCreateFlagBits",
+              "name": "VK_BUFFER_CREATE_PROTECTED_BIT",
+              "pos": "20323:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  3,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": "Image requires protected memory",
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkImageCreateFlagBits",
+              "name": "VK_IMAGE_CREATE_PROTECTED_BIT",
+              "pos": "20324:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  11,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": "Command buffers allocated from pool are protected command buffers",
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkCommandPoolCreateFlagBits",
+              "name": "VK_COMMAND_POOL_CREATE_PROTECTED_BIT",
+              "pos": "20325:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  2,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkDeviceQueueCreateFlagBits",
+            "pos": "20326:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceProtectedMemoryFeatures",
+            "pos": "20327:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceProtectedMemoryProperties",
+            "pos": "20328:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkDeviceQueueInfo2",
+            "pos": "20329:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkProtectedSubmitInfo",
+            "pos": "20330:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkGetDeviceQueue2",
+            "pos": "20331:13",
+            "tag": "ReqCommand"
+          }
+        ],
+        "pos": "20315:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_sampler_ycbcr_conversion",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G8B8G8R8_422_UNORM",
+              "pos": "20334:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_B8G8R8G8_422_UNORM",
+              "pos": "20335:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G8_B8_R8_3PLANE_420_UNORM",
+              "pos": "20336:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 2,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G8_B8R8_2PLANE_420_UNORM",
+              "pos": "20337:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 3,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G8_B8_R8_3PLANE_422_UNORM",
+              "pos": "20338:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 4,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G8_B8R8_2PLANE_422_UNORM",
+              "pos": "20339:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 5,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G8_B8_R8_3PLANE_444_UNORM",
+              "pos": "20340:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 6,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_R10X6_UNORM_PACK16",
+              "pos": "20341:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 7,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_R10X6G10X6_UNORM_2PACK16",
+              "pos": "20342:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 8,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_R10X6G10X6B10X6A10X6_UNORM_4PACK16",
+              "pos": "20343:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 9,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G10X6B10X6G10X6R10X6_422_UNORM_4PACK16",
+              "pos": "20344:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 10,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_B10X6G10X6R10X6G10X6_422_UNORM_4PACK16",
+              "pos": "20345:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 11,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_420_UNORM_3PACK16",
+              "pos": "20346:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 12,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G10X6_B10X6R10X6_2PLANE_420_UNORM_3PACK16",
+              "pos": "20347:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 13,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_422_UNORM_3PACK16",
+              "pos": "20348:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 14,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G10X6_B10X6R10X6_2PLANE_422_UNORM_3PACK16",
+              "pos": "20349:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 15,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_444_UNORM_3PACK16",
+              "pos": "20350:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 16,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_R12X4_UNORM_PACK16",
+              "pos": "20351:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 17,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_R12X4G12X4_UNORM_2PACK16",
+              "pos": "20352:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 18,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_R12X4G12X4B12X4A12X4_UNORM_4PACK16",
+              "pos": "20353:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 19,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G12X4B12X4G12X4R12X4_422_UNORM_4PACK16",
+              "pos": "20354:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 20,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_B12X4G12X4R12X4G12X4_422_UNORM_4PACK16",
+              "pos": "20355:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 21,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_420_UNORM_3PACK16",
+              "pos": "20356:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 22,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G12X4_B12X4R12X4_2PLANE_420_UNORM_3PACK16",
+              "pos": "20357:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 23,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_422_UNORM_3PACK16",
+              "pos": "20358:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 24,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G12X4_B12X4R12X4_2PLANE_422_UNORM_3PACK16",
+              "pos": "20359:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 25,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_444_UNORM_3PACK16",
+              "pos": "20360:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 26,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G16B16G16R16_422_UNORM",
+              "pos": "20361:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 27,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_B16G16R16G16_422_UNORM",
+              "pos": "20362:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 28,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G16_B16_R16_3PLANE_420_UNORM",
+              "pos": "20363:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 29,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G16_B16R16_2PLANE_420_UNORM",
+              "pos": "20364:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 30,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G16_B16_R16_3PLANE_422_UNORM",
+              "pos": "20365:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 31,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G16_B16R16_2PLANE_422_UNORM",
+              "pos": "20366:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 32,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 157,
+              "extends": "VkFormat",
+              "name": "VK_FORMAT_G16_B16_R16_3PLANE_444_UNORM",
+              "pos": "20367:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 33,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkImageAspectFlagBits",
+              "name": "VK_IMAGE_ASPECT_PLANE_0_BIT",
+              "pos": "20368:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  4,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkImageAspectFlagBits",
+              "name": "VK_IMAGE_ASPECT_PLANE_1_BIT",
+              "pos": "20369:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  5,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkImageAspectFlagBits",
+              "name": "VK_IMAGE_ASPECT_PLANE_2_BIT",
+              "pos": "20370:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  6,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": "VkImageCreateFlagBits",
+              "name": "VK_IMAGE_CREATE_DISJOINT_BIT",
+              "pos": "20371:13",
+              "protect": null,
+              "spec": {
+                "contents": [
+                  9,
+                  null
+                ],
+                "tag": "EvBitpos"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkBindImagePlaneMemoryInfo",
+            "pos": "20372:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkImagePlaneMemoryRequirementsInfo",
+            "pos": "20373:13",
+            "tag": "ReqType"
+          }
+        ],
+        "pos": "20333:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_external_memory_capabilities",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 72,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTERNAL_IMAGE_FORMAT_INFO",
+              "pos": "20376:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 72,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_EXTERNAL_IMAGE_FORMAT_PROPERTIES",
+              "pos": "20377:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 72,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTERNAL_BUFFER_INFO",
+              "pos": "20378:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 2,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 72,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_EXTERNAL_BUFFER_PROPERTIES",
+              "pos": "20379:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 3,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 72,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_ID_PROPERTIES",
+              "pos": "20380:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 4,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_LUID_SIZE",
+              "pos": "20381:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalMemoryHandleTypeFlags",
+            "pos": "20382:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalMemoryHandleTypeFlagBits",
+            "pos": "20383:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalMemoryFeatureFlags",
+            "pos": "20384:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalMemoryFeatureFlagBits",
+            "pos": "20385:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalMemoryProperties",
+            "pos": "20386:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceExternalImageFormatInfo",
+            "pos": "20387:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalImageFormatProperties",
+            "pos": "20388:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceExternalBufferInfo",
+            "pos": "20389:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalBufferProperties",
+            "pos": "20390:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceIDProperties",
+            "pos": "20391:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkGetPhysicalDeviceExternalBufferProperties",
+            "pos": "20392:13",
+            "tag": "ReqCommand"
+          }
+        ],
+        "pos": "20375:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_external_memory",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 73,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_EXTERNAL_MEMORY_BUFFER_CREATE_INFO",
+              "pos": "20395:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 73,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_EXTERNAL_MEMORY_IMAGE_CREATE_INFO",
+              "pos": "20396:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 73,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_EXPORT_MEMORY_ALLOCATE_INFO",
+              "pos": "20397:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 2,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 73,
+              "extends": "VkResult",
+              "name": "VK_ERROR_INVALID_EXTERNAL_HANDLE",
+              "pos": "20398:13",
+              "protect": null,
+              "spec": {
+                "negative": true,
+                "offset": 3,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": null,
+              "extends": null,
+              "name": "VK_QUEUE_FAMILY_EXTERNAL",
+              "pos": "20399:13",
+              "protect": null,
+              "spec": {
+                "tag": "EvNone"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalMemoryImageCreateInfo",
+            "pos": "20400:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalMemoryBufferCreateInfo",
+            "pos": "20401:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExportMemoryAllocateInfo",
+            "pos": "20402:13",
+            "tag": "ReqType"
+          }
+        ],
+        "pos": "20394:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_external_fence_capabilities",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 113,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTERNAL_FENCE_INFO",
+              "pos": "20405:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 113,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_EXTERNAL_FENCE_PROPERTIES",
+              "pos": "20406:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalFenceHandleTypeFlags",
+            "pos": "20407:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalFenceHandleTypeFlagBits",
+            "pos": "20408:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalFenceFeatureFlags",
+            "pos": "20409:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalFenceFeatureFlagBits",
+            "pos": "20410:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceExternalFenceInfo",
+            "pos": "20411:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalFenceProperties",
+            "pos": "20412:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkGetPhysicalDeviceExternalFenceProperties",
+            "pos": "20413:13",
+            "tag": "ReqCommand"
+          }
+        ],
+        "pos": "20404:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_external_fence",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 114,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_EXPORT_FENCE_CREATE_INFO",
+              "pos": "20416:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkFenceImportFlags",
+            "pos": "20417:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkFenceImportFlagBits",
+            "pos": "20418:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExportFenceCreateInfo",
+            "pos": "20419:13",
+            "tag": "ReqType"
+          }
+        ],
+        "pos": "20415:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_external_semaphore",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 78,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_EXPORT_SEMAPHORE_CREATE_INFO",
+              "pos": "20422:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkSemaphoreImportFlags",
+            "pos": "20423:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkSemaphoreImportFlagBits",
+            "pos": "20424:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExportSemaphoreCreateInfo",
+            "pos": "20425:13",
+            "tag": "ReqType"
+          }
+        ],
+        "pos": "20421:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": "Promoted from VK_KHR_external_semaphore_capabilities",
+        "depends": null,
+        "items": [
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 77,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTERNAL_SEMAPHORE_INFO",
+              "pos": "20428:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 0,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "contents": {
+              "api": "all",
+              "comment": null,
+              "deprecated": null,
+              "extNumber": 77,
+              "extends": "VkStructureType",
+              "name": "VK_STRUCTURE_TYPE_EXTERNAL_SEMAPHORE_PROPERTIES",
+              "pos": "20429:13",
+              "protect": null,
+              "spec": {
+                "negative": false,
+                "offset": 1,
+                "tag": "EvOffset"
+              },
+              "valueType": null
+            },
+            "tag": "ReqEnum"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalSemaphoreHandleTypeFlags",
+            "pos": "20430:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalSemaphoreHandleTypeFlagBits",
+            "pos": "20431:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalSemaphoreFeatureFlags",
+            "pos": "20432:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalSemaphoreFeatureFlagBits",
+            "pos": "20433:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkPhysicalDeviceExternalSemaphoreInfo",
+            "pos": "20434:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "VkExternalSemaphoreProperties",
+            "pos": "20435:13",
+            "tag": "ReqType"
+          },
+          {
+            "comment": null,
+            "name": "vkGetPhysicalDeviceExternalSemaphoreProperties",
+            "pos": "20436:13",
+            "tag": "ReqCommand"
+          }
+        ],
+        "pos": "20427:9",
+        "profile": null
+      },
+      "tag": "ChRequire"
+    },
+    {
+      "contents": {
+        "api": "all",
+        "comment": null,
+        "explanationLink": "legacy-gpdp2",
+        "items": [
+          {
+            "name": "vkGetPhysicalDeviceFeatures",
+            "pos": "20439:13",
+            "supersededBy": "vkGetPhysicalDeviceFeatures2",
+            "tag": "DepCommand"
+          },
+          {
+            "name": "vkGetPhysicalDeviceProperties",
+            "pos": "20440:13",
+            "supersededBy": "vkGetPhysicalDeviceProperties2",
+            "tag": "DepCommand"
+          },
+          {
+            "name": "vkGetPhysicalDeviceFormatProperties",
+            "pos": "20441:13",
+            "supersededBy": "vkGetPhysicalDeviceFormatProperties2",
+            "tag": "DepCommand"
+          },
+          {
+            "name": "vkGetPhysicalDeviceImageFormatProperties",
+            "pos": "20442:13",
+            "supersededBy": "vkGetPhysicalDeviceImageFormatProperties2",
+            "tag": "DepCommand"
+          },
+          {
+            "name": "vkGetPhysicalDeviceQueueFamilyProperties",
+            "pos": "20443:13",
+            "supersededBy": "vkGetPhysicalDeviceQueueFamilyProperties2",
+            "tag": "DepCommand"
+          },
+          {
+            "name": "vkGetPhysicalDeviceMemoryProperties",
+            "pos": "20444:13",
+            "supersededBy": "vkGetPhysicalDeviceMemoryProperties2",
+            "tag": "DepCommand"
+          },
+          {
+            "name": "vkGetPhysicalDeviceSparseImageFormatProperties",
+            "pos": "20445:13",
+            "supersededBy": "vkGetPhysicalDeviceSparseImageFormatProperties2",
+            "tag": "DepCommand"
+          }
+        ],
+        "pos": "20438:9"
+      },
+      "tag": "ChDeprecate"
+    }
+  ],
+  "comment": "Vulkan base 1.1 API interface definitions.",
+  "depends": {
+    "parsed": {
+      "contents": {
+        "contents": "VK_BASE_VERSION_1_0",
+        "tag": "DependsName"
+      },
+      "tag": "AtomF"
+    },
+    "raw": "VK_BASE_VERSION_1_0"
+  },
+  "name": "VK_BASE_VERSION_1_1",
+  "number": {
+    "parsed": [
+      1,
+      1
+    ],
+    "raw": "1.1"
+  },
+  "pos": "20198:5",
+  "protect": null,
+  "sortOrder": null
+}

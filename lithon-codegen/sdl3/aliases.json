@@ -1,0 +1,1027 @@
+{
+  "naming": "camel-segments",
+  "functions": {
+    "SDL_AcquireGPUSwapchainTexture": {
+      "safety": "both",
+      "rationale": "can block on swapchain availability"
+    },
+    "SDL_AddEventWatch": {
+      "safety": "both",
+      "rationale": "registration; the watch runs from later event pumping"
+    },
+    "SDL_AddHintCallback": {
+      "safety": "safe-only",
+      "rationale": "invokes the callback once immediately with the current hint value"
+    },
+    "SDL_AddTimer": {
+      "safety": "both",
+      "rationale": "registration; the timer fires on SDL's timer thread"
+    },
+    "SDL_AddTimerNS": {
+      "safety": "both",
+      "rationale": "registration; the timer fires on SDL's timer thread"
+    },
+    "SDL_ClearAudioStream": {
+      "safety": "both",
+      "rationale": "may invoke a pending data-complete callback synchronously"
+    },
+    "SDL_ClearError": {
+      "safety": "unsafe-only",
+      "rationale": "touches only the thread-local error buffer; cannot block, lock, or call back"
+    },
+    "SDL_ClearProperty": {
+      "safety": "both",
+      "rationale": "clearing a cleanup property invokes its cleanup synchronously"
+    },
+    "SDL_CloseIO": {
+      "safety": "both",
+      "rationale": "flushes and closes through the stream's SDL_IOStreamInterface, which may be implemented in Haskell"
+    },
+    "SDL_CreateThreadRuntime": {
+      "safety": "both",
+      "rationale": "the entry function runs on the spawned thread, not during the call"
+    },
+    "SDL_CreateThreadWithPropertiesRuntime": {
+      "safety": "both",
+      "rationale": "the entry function runs on the spawned thread, not during the call"
+    },
+    "SDL_Delay": {
+      "safety": "both",
+      "rationale": "sleeps the OS thread; an unsafe call stalls every capability and GC for the duration"
+    },
+    "SDL_DelayNS": {
+      "safety": "both",
+      "rationale": "sleeps the OS thread; an unsafe call stalls every capability and GC for the duration"
+    },
+    "SDL_DelayPrecise": {
+      "safety": "both",
+      "rationale": "sleeps the OS thread; an unsafe call stalls every capability and GC for the duration"
+    },
+    "SDL_DestroyAudioStream": {
+      "safety": "both",
+      "rationale": "may invoke a pending data-complete callback synchronously"
+    },
+    "SDL_DestroyProperties": {
+      "safety": "both",
+      "rationale": "invokes cleanup callbacks synchronously"
+    },
+    "SDL_DetachVirtualJoystick": {
+      "safety": "both",
+      "rationale": "a virtual joystick's cleanup callback runs synchronously"
+    },
+    "SDL_EGL_SetAttributeCallbacks": {
+      "safety": "both",
+      "rationale": "registration; callbacks fire during later EGL context creation"
+    },
+    "SDL_EnterAppMainCallbacks": {
+      "safety": "safe-only",
+      "rationale": "runs the whole app main loop through the callbacks synchronously"
+    },
+    "SDL_EnumerateDirectory": {
+      "safety": "safe-only",
+      "rationale": "invokes the callback per entry synchronously"
+    },
+    "SDL_EnumerateProperties": {
+      "safety": "safe-only",
+      "rationale": "invokes the callback per property synchronously"
+    },
+    "SDL_EnumerateStorageDirectory": {
+      "safety": "safe-only",
+      "rationale": "invokes the callback per entry synchronously"
+    },
+    "SDL_FilterEvents": {
+      "safety": "safe-only",
+      "rationale": "runs the filter over the queue synchronously"
+    },
+    "SDL_FlushAudioStream": {
+      "safety": "both",
+      "rationale": "may invoke a pending data-complete callback synchronously"
+    },
+    "SDL_FlushIO": {
+      "safety": "both",
+      "rationale": "dispatches through the stream's SDL_IOStreamInterface, which may be implemented in Haskell"
+    },
+    "SDL_GL_SwapWindow": {
+      "safety": "both",
+      "rationale": "can block on vsync"
+    },
+    "SDL_GetAudioStreamData": {
+      "safety": "both",
+      "rationale": "runs a registered get callback synchronously on the calling thread"
+    },
+    "SDL_GetClipboardData": {
+      "safety": "both",
+      "rationale": "when this app owns the clipboard, its data-provider callback runs synchronously"
+    },
+    "SDL_GetClipboardText": {
+      "safety": "both",
+      "rationale": "when this app owns the clipboard, its data-provider callback runs synchronously"
+    },
+    "SDL_GetError": {
+      "safety": "unsafe-only",
+      "rationale": "touches only the thread-local error buffer; cannot block, lock, or call back"
+    },
+    "SDL_GetPerformanceCounter": {
+      "safety": "unsafe-only",
+      "rationale": "reads a monotonic clock value; cannot block, lock, or call back"
+    },
+    "SDL_GetPerformanceFrequency": {
+      "safety": "unsafe-only",
+      "rationale": "reads a monotonic clock value; cannot block, lock, or call back"
+    },
+    "SDL_GetPlatform": {
+      "safety": "unsafe-only",
+      "rationale": "returns a compiled-in constant; cannot block, lock, or call back"
+    },
+    "SDL_GetRectAndLineIntersection": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_GetRectAndLineIntersectionFloat": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_GetRectEnclosingPoints": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_GetRectEnclosingPointsFloat": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_GetRectIntersection": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_GetRectIntersectionFloat": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_GetRectUnion": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_GetRectUnionFloat": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_GetRevision": {
+      "safety": "unsafe-only",
+      "rationale": "returns a compiled-in constant; cannot block, lock, or call back"
+    },
+    "SDL_GetTicks": {
+      "safety": "unsafe-only",
+      "rationale": "reads a monotonic clock value; cannot block, lock, or call back"
+    },
+    "SDL_GetTicksNS": {
+      "safety": "unsafe-only",
+      "rationale": "reads a monotonic clock value; cannot block, lock, or call back"
+    },
+    "SDL_GetVersion": {
+      "safety": "unsafe-only",
+      "rationale": "returns a compiled-in constant; cannot block, lock, or call back"
+    },
+    "SDL_GlobDirectory": {
+      "safety": "both",
+      "rationale": "blocks on directory traversal"
+    },
+    "SDL_GlobStorageDirectory": {
+      "safety": "both",
+      "rationale": "dispatches through the storage's SDL_StorageInterface, which may be implemented in Haskell"
+    },
+    "SDL_HasClipboardData": {
+      "safety": "both",
+      "rationale": "when this app owns the clipboard, its data-provider callback runs synchronously"
+    },
+    "SDL_HasRectIntersection": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_HasRectIntersectionFloat": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_Init": {
+      "safety": "both",
+      "rationale": "driver loading can take hundreds of milliseconds"
+    },
+    "SDL_InitSubSystem": {
+      "safety": "both",
+      "rationale": "driver loading can take hundreds of milliseconds"
+    },
+    "SDL_LoadBMP": {
+      "safety": "both",
+      "rationale": "blocks on whole-file I/O"
+    },
+    "SDL_LoadBMP_IO": {
+      "safety": "both",
+      "rationale": "reads the whole stream; a Haskell SDL_IOStreamInterface re-enters synchronously"
+    },
+    "SDL_LoadFile": {
+      "safety": "both",
+      "rationale": "blocks on whole-file I/O; an unsafe call stalls every capability and GC for the duration"
+    },
+    "SDL_LoadFile_IO": {
+      "safety": "both",
+      "rationale": "reads the whole stream; a Haskell SDL_IOStreamInterface re-enters synchronously"
+    },
+    "SDL_LoadWAV": {
+      "safety": "both",
+      "rationale": "blocks on whole-file I/O"
+    },
+    "SDL_LoadWAV_IO": {
+      "safety": "both",
+      "rationale": "reads the whole stream; a Haskell SDL_IOStreamInterface re-enters synchronously"
+    },
+    "SDL_LockMutex": {
+      "safety": "both",
+      "rationale": "blocks on contention"
+    },
+    "SDL_LockRWLockForReading": {
+      "safety": "both",
+      "rationale": "blocks on contention"
+    },
+    "SDL_LockRWLockForWriting": {
+      "safety": "both",
+      "rationale": "blocks on contention"
+    },
+    "SDL_OpenAudioDeviceStream": {
+      "safety": "both",
+      "rationale": "callback is optional (NULL bypass) and fires on the audio thread"
+    },
+    "SDL_OutOfMemory": {
+      "safety": "unsafe-only",
+      "rationale": "touches only the thread-local error buffer; cannot block, lock, or call back"
+    },
+    "SDL_PeepEvents": {
+      "safety": "both",
+      "rationale": "SDL_ADDEVENT runs registered event filters/watchers synchronously"
+    },
+    "SDL_PointInRect": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_PointInRectFloat": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_PollEvent": {
+      "safety": "both",
+      "rationale": "pumps events; may re-enter registered watchers/filters/hit tests"
+    },
+    "SDL_PumpEvents": {
+      "safety": "both",
+      "rationale": "may re-enter registered watchers/filters/hit tests"
+    },
+    "SDL_PushEvent": {
+      "safety": "both",
+      "rationale": "runs registered event filters/watchers synchronously"
+    },
+    "SDL_PutAudioStreamData": {
+      "safety": "both",
+      "rationale": "runs a registered put callback synchronously on the calling thread"
+    },
+    "SDL_PutAudioStreamDataNoCopy": {
+      "safety": "both",
+      "rationale": "completion callback is deferred; see the curated stream teardown entries"
+    },
+    "SDL_Quit": {
+      "safety": "both",
+      "rationale": "video quit invokes the clipboard cleanup callback synchronously"
+    },
+    "SDL_QuitSubSystem": {
+      "safety": "both",
+      "rationale": "video quit invokes the clipboard cleanup callback synchronously"
+    },
+    "SDL_ReadIO": {
+      "safety": "both",
+      "rationale": "dispatches through the stream's SDL_IOStreamInterface, which may be implemented in Haskell"
+    },
+    "SDL_ReadProcess": {
+      "safety": "both",
+      "rationale": "blocks until the process closes its output"
+    },
+    "SDL_ReadStorageFile": {
+      "safety": "both",
+      "rationale": "dispatches through the storage's SDL_StorageInterface, which may be implemented in Haskell"
+    },
+    "SDL_RectEmpty": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_RectEmptyFloat": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_RectToFRect": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_RectsEqual": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_RectsEqualEpsilon": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_RectsEqualFloat": {
+      "safety": "unsafe-only",
+      "rationale": "pure geometry on caller-supplied structs; cannot block, lock, or call back"
+    },
+    "SDL_RemoveEventWatch": {
+      "safety": "both",
+      "rationale": "deregistration only"
+    },
+    "SDL_RemoveHintCallback": {
+      "safety": "both",
+      "rationale": "deregistration only"
+    },
+    "SDL_RenderPresent": {
+      "safety": "both",
+      "rationale": "can block on vsync"
+    },
+    "SDL_RenderReadPixels": {
+      "safety": "both",
+      "rationale": "full GPU sync plus readback; a very slow operation"
+    },
+    "SDL_ResetHint": {
+      "safety": "both",
+      "rationale": "runs registered hint callbacks synchronously"
+    },
+    "SDL_ResetHints": {
+      "safety": "both",
+      "rationale": "runs registered hint callbacks synchronously"
+    },
+    "SDL_RumbleJoystick": {
+      "safety": "both",
+      "rationale": "a virtual joystick's rumble callback runs synchronously"
+    },
+    "SDL_RunApp": {
+      "safety": "safe-only",
+      "rationale": "runs the provided main function synchronously"
+    },
+    "SDL_RunOnMainThread": {
+      "safety": "safe-only",
+      "rationale": "invokes synchronously on the main thread, or blocks until the main thread runs it"
+    },
+    "SDL_SaveBMP": {
+      "safety": "both",
+      "rationale": "blocks on whole-file I/O"
+    },
+    "SDL_SaveBMP_IO": {
+      "safety": "both",
+      "rationale": "writes the whole stream; a Haskell SDL_IOStreamInterface re-enters synchronously"
+    },
+    "SDL_SaveFile": {
+      "safety": "both",
+      "rationale": "blocks on whole-file I/O"
+    },
+    "SDL_SaveFile_IO": {
+      "safety": "both",
+      "rationale": "writes the whole stream; a Haskell SDL_IOStreamInterface re-enters synchronously"
+    },
+    "SDL_SendJoystickEffect": {
+      "safety": "both",
+      "rationale": "a virtual joystick's effect callback runs synchronously"
+    },
+    "SDL_SetAssertionHandler": {
+      "safety": "both",
+      "rationale": "registration; the handler fires from failed SDL assertions"
+    },
+    "SDL_SetAudioPostmixCallback": {
+      "safety": "both",
+      "rationale": "registration; fires on the audio thread"
+    },
+    "SDL_SetAudioStreamGetCallback": {
+      "safety": "both",
+      "rationale": "registration; fires on the audio thread and synchronously during SDL_GetAudioStreamData"
+    },
+    "SDL_SetAudioStreamPutCallback": {
+      "safety": "both",
+      "rationale": "registration; fires on the audio thread and synchronously during SDL_PutAudioStreamData"
+    },
+    "SDL_SetClipboardData": {
+      "safety": "safe-only",
+      "rationale": "may invoke the previous cleanup callback synchronously"
+    },
+    "SDL_SetEventFilter": {
+      "safety": "both",
+      "rationale": "registration; the filter runs from later event calls"
+    },
+    "SDL_SetHint": {
+      "safety": "both",
+      "rationale": "runs registered hint callbacks synchronously"
+    },
+    "SDL_SetHintWithPriority": {
+      "safety": "both",
+      "rationale": "runs registered hint callbacks synchronously"
+    },
+    "SDL_SetLogOutputFunction": {
+      "safety": "both",
+      "rationale": "registration; the output function runs from later logging calls"
+    },
+    "SDL_SetMemoryFunctions": {
+      "safety": "both",
+      "rationale": "registration; replacement allocators run inside every later SDL call"
+    },
+    "SDL_SetPointerProperty": {
+      "safety": "both",
+      "rationale": "overwriting a cleanup property invokes its cleanup synchronously"
+    },
+    "SDL_SetPointerPropertyWithCleanup": {
+      "safety": "safe-only",
+      "rationale": "invokes the cleanup callback synchronously on failure or overwrite"
+    },
+    "SDL_SetRelativeMouseTransform": {
+      "safety": "both",
+      "rationale": "registration; the transform runs during event pumping"
+    },
+    "SDL_SetTLS": {
+      "safety": "both",
+      "rationale": "registration; the destructor runs at thread cleanup"
+    },
+    "SDL_SetTrayEntryCallback": {
+      "safety": "both",
+      "rationale": "registration; fires from the event loop"
+    },
+    "SDL_SetWindowHitTest": {
+      "safety": "both",
+      "rationale": "registration; the hit test runs during event pumping"
+    },
+    "SDL_SetX11EventHook": {
+      "safety": "both",
+      "rationale": "registration; the hook runs during event pumping"
+    },
+    "SDL_ShowFileDialogWithProperties": {
+      "safety": "safe-only",
+      "rationale": "may invoke the callback synchronously on validation failure"
+    },
+    "SDL_ShowMessageBox": {
+      "safety": "both",
+      "rationale": "modal; blocks until dismissed"
+    },
+    "SDL_ShowOpenFileDialog": {
+      "safety": "safe-only",
+      "rationale": "may invoke the callback synchronously on validation failure"
+    },
+    "SDL_ShowOpenFolderDialog": {
+      "safety": "safe-only",
+      "rationale": "may invoke the callback synchronously on validation failure"
+    },
+    "SDL_ShowSaveFileDialog": {
+      "safety": "safe-only",
+      "rationale": "may invoke the callback synchronously on validation failure"
+    },
+    "SDL_ShowSimpleMessageBox": {
+      "safety": "both",
+      "rationale": "modal; blocks until dismissed"
+    },
+    "SDL_StepBackUTF8": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_StepUTF8": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_SwapFloat": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on an immediate value; cannot block, lock, or call back"
+    },
+    "SDL_SyncWindow": {
+      "safety": "both",
+      "rationale": "blocks until pending window state settles (up to a timeout)"
+    },
+    "SDL_UCS4ToUTF8": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_UpdateGamepads": {
+      "safety": "both",
+      "rationale": "routes through joystick update; virtual-device callbacks run synchronously"
+    },
+    "SDL_UpdateJoysticks": {
+      "safety": "both",
+      "rationale": "virtual-device callbacks run synchronously"
+    },
+    "SDL_UpdateSensors": {
+      "safety": "both",
+      "rationale": "routes through joystick update; virtual-device callbacks run synchronously"
+    },
+    "SDL_WaitAndAcquireGPUSwapchainTexture": {
+      "safety": "both",
+      "rationale": "blocks until a swapchain texture is available"
+    },
+    "SDL_WaitAsyncIOResult": {
+      "safety": "both",
+      "rationale": "blocks until a result is ready (timeoutMS = -1 waits forever); an unsafe call stalls every capability and GC"
+    },
+    "SDL_WaitCondition": {
+      "safety": "both",
+      "rationale": "blocks indefinitely"
+    },
+    "SDL_WaitConditionTimeout": {
+      "safety": "both",
+      "rationale": "blocks up to the timeout"
+    },
+    "SDL_WaitEvent": {
+      "safety": "both",
+      "rationale": "blocks the calling capability; a blocking unsafe call stalls GC program-wide"
+    },
+    "SDL_WaitEventTimeout": {
+      "safety": "both",
+      "rationale": "blocks up to the timeout"
+    },
+    "SDL_WaitForGPUFences": {
+      "safety": "both",
+      "rationale": "blocks on fences"
+    },
+    "SDL_WaitForGPUIdle": {
+      "safety": "both",
+      "rationale": "blocks until the GPU is idle"
+    },
+    "SDL_WaitForGPUSwapchain": {
+      "safety": "both",
+      "rationale": "blocks until the swapchain is available"
+    },
+    "SDL_WaitProcess": {
+      "safety": "both",
+      "rationale": "blocks until the process exits"
+    },
+    "SDL_WaitSemaphore": {
+      "safety": "both",
+      "rationale": "blocks indefinitely"
+    },
+    "SDL_WaitSemaphoreTimeout": {
+      "safety": "both",
+      "rationale": "blocks up to the timeout"
+    },
+    "SDL_WaitThread": {
+      "safety": "both",
+      "rationale": "blocks until the thread exits"
+    },
+    "SDL_WriteIO": {
+      "safety": "both",
+      "rationale": "dispatches through the stream's SDL_IOStreamInterface, which may be implemented in Haskell"
+    },
+    "SDL_WriteStorageFile": {
+      "safety": "both",
+      "rationale": "dispatches through the storage's SDL_StorageInterface, which may be implemented in Haskell"
+    },
+    "SDL_abs": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_acos": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_acosf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_asin": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_asinf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_atan": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_atan2": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_atan2f": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_atanf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_atof": {
+      "safety": "unsafe-only",
+      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
+    },
+    "SDL_atoi": {
+      "safety": "unsafe-only",
+      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
+    },
+    "SDL_bsearch": {
+      "safety": "safe-only",
+      "rationale": "invokes the comparator synchronously"
+    },
+    "SDL_bsearch_r": {
+      "safety": "safe-only",
+      "rationale": "invokes the comparator synchronously"
+    },
+    "SDL_ceil": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_ceilf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_copysign": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_copysignf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_cos": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_cosf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_exp": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_expf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_fabs": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_fabsf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_floor": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_floorf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_fmod": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_fmodf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_hid_enumerate": {
+      "safety": "both",
+      "rationale": "USB round-trip; blocks on device enumeration"
+    },
+    "SDL_hid_get_feature_report": {
+      "safety": "both",
+      "rationale": "USB round-trip; blocks on the device"
+    },
+    "SDL_hid_get_input_report": {
+      "safety": "both",
+      "rationale": "USB round-trip; blocks on the device"
+    },
+    "SDL_hid_open": {
+      "safety": "both",
+      "rationale": "USB round-trip; blocks on the device"
+    },
+    "SDL_hid_read": {
+      "safety": "both",
+      "rationale": "blocks in the device's blocking mode (the default); an unsafe call stalls every capability and GC"
+    },
+    "SDL_hid_read_timeout": {
+      "safety": "both",
+      "rationale": "blocks up to the timeout"
+    },
+    "SDL_hid_send_feature_report": {
+      "safety": "both",
+      "rationale": "USB round-trip; blocks on the device"
+    },
+    "SDL_hid_write": {
+      "safety": "both",
+      "rationale": "USB round-trip; blocks on the device"
+    },
+    "SDL_isalnum": {
+      "safety": "unsafe-only",
+      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
+    },
+    "SDL_isalpha": {
+      "safety": "unsafe-only",
+      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
+    },
+    "SDL_isblank": {
+      "safety": "unsafe-only",
+      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
+    },
+    "SDL_iscntrl": {
+      "safety": "unsafe-only",
+      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
+    },
+    "SDL_isdigit": {
+      "safety": "unsafe-only",
+      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
+    },
+    "SDL_isgraph": {
+      "safety": "unsafe-only",
+      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
+    },
+    "SDL_isinf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_isinff": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_islower": {
+      "safety": "unsafe-only",
+      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
+    },
+    "SDL_isnan": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_isnanf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_isprint": {
+      "safety": "unsafe-only",
+      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
+    },
+    "SDL_ispunct": {
+      "safety": "unsafe-only",
+      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
+    },
+    "SDL_isspace": {
+      "safety": "unsafe-only",
+      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
+    },
+    "SDL_isupper": {
+      "safety": "unsafe-only",
+      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
+    },
+    "SDL_isxdigit": {
+      "safety": "unsafe-only",
+      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
+    },
+    "SDL_itoa": {
+      "safety": "unsafe-only",
+      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
+    },
+    "SDL_lltoa": {
+      "safety": "unsafe-only",
+      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
+    },
+    "SDL_log": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_log10": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_log10f": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_logf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_modf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_modff": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_pow": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_powf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_qsort": {
+      "safety": "safe-only",
+      "rationale": "invokes the comparator synchronously"
+    },
+    "SDL_qsort_r": {
+      "safety": "safe-only",
+      "rationale": "invokes the comparator synchronously"
+    },
+    "SDL_round": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_roundf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_scalbn": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_scalbnf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_sin": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_sinf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_sqrt": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_sqrtf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_strcasecmp": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strcasestr": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strchr": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strcmp": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strlcat": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strlcpy": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strlen": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strlwr": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strncasecmp": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strncmp": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strnlen": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strnstr": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strpbrk": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strrchr": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strrev": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strstr": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strtod": {
+      "safety": "unsafe-only",
+      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
+    },
+    "SDL_strtok_r": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_strtoll": {
+      "safety": "unsafe-only",
+      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
+    },
+    "SDL_strtoull": {
+      "safety": "unsafe-only",
+      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
+    },
+    "SDL_strupr": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_tan": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_tanf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_tolower": {
+      "safety": "unsafe-only",
+      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
+    },
+    "SDL_toupper": {
+      "safety": "unsafe-only",
+      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
+    },
+    "SDL_trunc": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_truncf": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "SDL_uitoa": {
+      "safety": "unsafe-only",
+      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
+    },
+    "SDL_ulltoa": {
+      "safety": "unsafe-only",
+      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
+    },
+    "SDL_utf8strlcpy": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_utf8strlen": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_utf8strnlen": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_wcscasecmp": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_wcscmp": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_wcslcat": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_wcslcpy": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_wcslen": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_wcsncasecmp": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_wcsncmp": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_wcsnlen": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_wcsnstr": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "SDL_wcsstr": {
+      "safety": "unsafe-only",
+      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    }
+  },
+  "renames": {},
+  "skip": []
+}
