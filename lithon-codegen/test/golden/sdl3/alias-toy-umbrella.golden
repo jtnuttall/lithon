@@ -12,7 +12,7 @@
 -- These bindings are still experimental and in flux, and will not stabilize
 -- at least until hs-bindgen is itself released stably. 
 --
--- Pin to a minor version (e.g. `>=0.0.0.1 && <0.0.1`) until this library hits `0.1.0.0`.
+-- Pin to a minor version (e.g. @>=0.0.0.1 && <0.0.1@) until this library hits @0.1.0.0@.
 --
 -- __Conventions__
 --
