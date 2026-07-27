@@ -29,18 +29,28 @@ This library aims to be:
 
 ## Quick start
 
+### Install build requirements
+
 Install SDL **>= 3.2** development files where `pkg-config` can find
-them: `apt install libsdl3-dev` (Debian/Ubuntu), `brew install sdl3`
-(macOS), `pacman -S sdl3` (Arch), MSYS2's `mingw-w64-ucrt-x86_64-sdl3`
-(Windows), or
-[build from source](https://wiki.libsdl.org/SDL3/Installation) on
-distros that don't package SDL3 yet.
+them. The development headers must be present, not just the shared
+library.
 
-The development _headers_ must be present, not just the shared library.
+Common setups:
 
-Add `sdl3-bindgen-sys` to `build-depends`, and:
+- **Debian/Ubuntu**: `apt install libsdl3-dev`
+- **macOS**: `brew install sdl3`
+- **Arch**: `pacman -S sdl3`
+- **Fedora**: `dnf install SDL3-devel`
+- **Windows**: WSL2 with the Linux instructions, or native MSYS2.
+  See [Windows set up](#windows-set-up)
+
+### Set up your project
+
+1. Add `sdl3-bindgen-sys` to `build-depends`
+2. Replace the contents of `Main.hs` with:
 
 ```haskell
+{-# LANGUAGE GHC2021 #-}
 {-# LANGUAGE BlockArguments #-}
 
 import Control.Monad (unless)
@@ -61,13 +71,61 @@ main = do
   SDL3.quit
 ```
 
-For something real, see
+For more examples and templates, see
 [`lithon-examples`](https://github.com/jtnuttall/lithon/tree/main/lithon-examples)
 in the repository:
 
 - `sdl3-raw` is a minimal triangle with an event loop
 - `shmup` is a playable `apecs` game running on and rendering through
   these bindings
+
+### Windows set up
+
+There are two ways to set this up that I am aware of. In order of
+convenience:
+
+#### WSL2
+
+The Linux instructions apply unchanged. Under WSLg an SDL window
+displays like any Linux app.
+
+#### Native (MSYS2)
+
+Install build dependencies:
+
+```sh
+pacman -Syyu # repeat/restart terminal if pacman asks you to
+pacman -S mingw-w64-ucrt-x86_64-sdl3 mingw-w64-ucrt-x86_64-pkgconf
+```
+
+> [!NOTE]
+> The UCRT64 pkgconf is required. MSYS2 `pkg-config` reports POSIX-style
+> paths that GHC can't use on Windows.
+
+##### Stack users
+
+> [!IMPORTANT]
+> Stack users need some additional setup.
+>
+> Adjust the library version in `extra-deps` to your desired target.
+
+1. Run the `pacman` commands above through `stack exec -- pacman ...` so
+   that the packages are installed in `stack`'s MSYS2.
+2. Add `msys-environment: UCRT64` to your `stack.yaml`.
+3. Add `sdl3-bindgen-sys-0.0.0.2` to `extra-deps` in your `stack.yaml`. Running
+   `stack build` should print out a helpful, pasteable entry for
+   this purpose.
+
+Your `stack.yaml` should look something like this:
+
+```yaml
+snapshot: lts-24.51
+packages:
+  - .
+extra-deps:
+  - sdl3-bindgen-sys-0.0.0.2 # hash may be here if you copy from stack build
+msys-environment: UCRT64 # important: build will not work without this
+```
 
 ## Library structure
 

@@ -1,5 +1,17 @@
 # Changelog — sdl3-bindgen-sys
 
+## 0.0.0.2 - 2026-07-26
+
+Documentation-only patch.
+
+### Changed
+
+- README: per-platform install list in Quick start and a
+  `Windows set up` section.
+
+Thanks to @oddron in the Haskell GameDev Discord for giving the library
+a try on Windows!
+
 ## 0.0.0.1 - 2026-07-26
 
 Initial release.
