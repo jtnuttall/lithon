@@ -8,6 +8,7 @@ Documentation-only patch.
 
 - README: per-platform install list in Quick start and a
   `Windows set up` section.
+- Add @oddron as a contributor.
 
 Thanks to @oddron in the Haskell GameDev Discord for giving the library
 a try on Windows!

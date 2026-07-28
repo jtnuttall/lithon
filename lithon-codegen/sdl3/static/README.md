@@ -202,14 +202,11 @@ rejected by the ABI assertions — 64-bit layouts are baked in.
 
 Known gaps, so you can discover them here instead of mid-build:
 
-- **Variadic functions** — hs-bindgen skips them. That means the
-  `SDL_Log` family (including the `V`-suffixed `va_list` variants),
-  `SDL_SetError`, and `SDL_RenderDebugTextFormat` (the fixed-string
-  `SDL_RenderDebugText` _is_ bound). For logging, format in Haskell
-  first and write a one-line `"%s"` C shim if you need SDL's log
-  routing; for `SDL_SetError` there is currently **no workaround** in
-  this package.
-- **Function-like macros** — no linkable symbol exists. Macro
+- **Variadic functions**: hs-bindgen skips them, meaning the `SDL_Log`
+  family, `SDL_SetError`, and `SDL_RenderDebugTextFormat` are currently
+  unbound. In a future version, these will be bound via a fixed-arity
+  C shim.
+- **Function-like macros**: no linkable symbol exists. Macro
   _constants_ are bound; see [Typed constants](#typed-constants).
 - The seven `long`-typed `SDL_stdinc.h` libc clones (`strtol`/`ltoa`
   families, `lround`/`lroundf`): their FFI types cannot be correct on
