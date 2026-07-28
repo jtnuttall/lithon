@@ -35,8 +35,9 @@ module Lithon.Codegen.Vulkan.Registry.Types.Misc (
 ) where
 
 import Data.Aeson (ToJSON)
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.BoolExpr (DependsExpr)
 import Lithon.Codegen.Vulkan.Registry.Types.Common (Raw)
 import Lithon.Codegen.Vulkan.Xml.Types (Pos)

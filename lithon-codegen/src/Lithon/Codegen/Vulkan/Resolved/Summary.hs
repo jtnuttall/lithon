@@ -11,10 +11,10 @@ module Lithon.Codegen.Vulkan.Resolved.Summary (
 
 import Data.Aeson (ToJSON)
 import Data.Map.Strict qualified as Map
+import Lithon.Prelude
 import Prettyprinter (Doc, comma, hsep, indent, pretty, punctuate, vsep, (<+>))
 
 import Lithon.Codegen.Backend.Json (canonicalJsonBytes, digestText)
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Resolved.Commands (DispatchLevel (..), ResolvedCommand (..))
 import Lithon.Codegen.Vulkan.Resolved.Enums (EnumFlow (..), ResolvedEnumBlock (..))
 import Lithon.Codegen.Vulkan.Resolved.Registry (ResolvedRegistry (..))

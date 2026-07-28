@@ -22,11 +22,12 @@ import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 import Data.Vector qualified as V
+import Lithon.Prelude
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Golden (goldenVsStringDiff)
 
 import Lithon.Codegen.Backend.Json (canonicalJsonBytes, digestText)
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Resolved.Registry (ResolvedFeature (..), ResolvedRegistry (..))
 import Lithon.Codegen.Vulkan.Resolved.Summary (summarizeResolved)
 import Vulkan.Support.Resolve (pinnedResolved)

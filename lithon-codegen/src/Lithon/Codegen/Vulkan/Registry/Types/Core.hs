@@ -21,8 +21,9 @@ module Lithon.Codegen.Vulkan.Registry.Types.Core (
 ) where
 
 import Data.Aeson (ToJSON)
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.ExternSync (ExternSync)
 import Lithon.Codegen.Vulkan.Registry.Micro.Len (AltLen, LenSpec)
 import Lithon.Codegen.Vulkan.Registry.Types.CDecl (Declaration (..), MixedBody)

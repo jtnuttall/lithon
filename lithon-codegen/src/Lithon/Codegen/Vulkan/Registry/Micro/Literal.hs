@@ -22,11 +22,11 @@ module Lithon.Codegen.Vulkan.Registry.Micro.Literal (
 import Data.Aeson (ToJSON)
 import Data.Scientific (FPFormat (Fixed), Scientific, formatScientific)
 import Data.Text qualified as T
+import Lithon.Prelude
 import Text.Megaparsec (oneOf, takeWhileP, try)
 import Text.Megaparsec.Char (char, string)
 import Text.Megaparsec.Char.Lexer qualified as L
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (P, viaMegaparsec)
 
 -- | The C bit-width spelled by a complement literal's suffix.

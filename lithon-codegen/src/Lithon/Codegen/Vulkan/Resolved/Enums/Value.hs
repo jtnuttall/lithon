@@ -13,9 +13,9 @@ module Lithon.Codegen.Vulkan.Resolved.Enums.Value (
 import Data.Aeson (ToJSON)
 import Data.Scientific (FPFormat (Fixed), Scientific, formatScientific)
 import Data.Text qualified as T
+import Lithon.Prelude
 import Numeric (showHex)
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Registry.Micro.Literal (ValueLiteral)
 import Lithon.Codegen.Vulkan.Registry.Types.Common (Raw)
 

@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE StrictData #-}
 {-# OPTIONS_GHC -fplugin=Effectful.Plugin #-}
 
 -- | Loads XML bytes into the positioned tree of "Lithon.Codegen.Vulkan.Xml.Types"
@@ -23,47 +24,47 @@ import Data.XML.Types qualified as XML
 import Effectful (Eff, IOE, runPureEff, (:>))
 import Effectful.Exception (try)
 import Effectful.Resource (Resource)
+import Lithon.Prelude
 import Text.XML.Stream.Parse qualified as XP
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Xml.Types (Pos (..), XElement (..), XNode (..), noPos)
 
 -- | Everything that can go wrong turning bytes into an 'XElement'. Positions
 -- are best-effort ('noPos' when the parser reported none).
 data XmlLoadError
   = -- | Malformed XML (or I/O failure), rendered from the underlying exception.
-    XmlUnparseable !Text
-  | XmlDoctypeForbidden !Pos
-  | XmlInstructionForbidden !Pos
+    XmlUnparseable Text
+  | XmlDoctypeForbidden Pos
+  | XmlInstructionForbidden Pos
   | -- | A namespaced or prefixed name; the registry uses plain local names only.
-    XmlNamespacedName !Text !Pos
+    XmlNamespacedName Text Pos
   | -- | An entity the parser could not resolve to text.
-    XmlUnresolvedEntity !Text !Pos
-  | XmlDuplicateAttribute !Text !Pos
-  | XmlTextOutsideRoot !Pos
-  | XmlMultipleRoots !Pos
+    XmlUnresolvedEntity Text Pos
+  | XmlDuplicateAttribute Text Pos
+  | XmlTextOutsideRoot Pos
+  | XmlMultipleRoots Pos
   | XmlNoRootElement
   | -- | Defensive: the parser is expected to throw before these two arise.
-    XmlUnbalancedEnd !Pos
-  | XmlUnclosedElement !Text !Pos
+    XmlUnbalancedEnd Pos
+  | XmlUnclosedElement Text Pos
   deriving stock (Eq, Show)
 
 instance Display XmlLoadError where
   displayBuilder =
-    displayBuilder @Text . \case
-      XmlUnparseable msg -> "unparseable XML: " <> msg
+    \case
+      XmlUnparseable msg -> "unparseable XML: " <> from msg
       XmlDoctypeForbidden p -> at p "doctype declarations are not allowed"
       XmlInstructionForbidden p -> at p "processing instructions are not allowed"
-      XmlNamespacedName n p -> at p ("namespaced name is not allowed: " <> n)
-      XmlUnresolvedEntity e p -> at p ("unresolved entity: &" <> e <> ";")
-      XmlDuplicateAttribute a p -> at p ("duplicate attribute: " <> a)
+      XmlNamespacedName n p -> at p ("namespaced name is not allowed: " <> from n)
+      XmlUnresolvedEntity e p -> at p ("unresolved entity: &" <> from e <> ";")
+      XmlDuplicateAttribute a p -> at p ("duplicate attribute: " <> from a)
       XmlTextOutsideRoot p -> at p "non-whitespace text outside the root element"
       XmlMultipleRoots p -> at p "multiple root elements"
       XmlNoRootElement -> "no root element"
       XmlUnbalancedEnd p -> at p "unbalanced end tag"
-      XmlUnclosedElement n p -> at p ("unclosed element: " <> n)
+      XmlUnclosedElement n p -> at p ("unclosed element: " <> from n)
    where
-    at p msg = display p <> ": " <> msg
+    at p msg = from p <> ": " <> msg
 
 -- | Load from in-memory bytes. Pure; meant for tests and small fixtures.
 loadXmlBytes :: ByteString -> Either XmlLoadError XElement
@@ -87,10 +88,10 @@ runLoad pipeline =
 
 -- | An element under construction: children accumulate in reverse.
 data Frame = Frame
-  { name :: !Text
-  , attrs :: !(Map Text Text)
-  , pos :: !Pos
-  , childrenRev :: ![XNode]
+  { name :: Text
+  , attrs :: Map Text Text
+  , pos :: Pos
+  , childrenRev :: [XNode]
   }
 
 treeSink :: (Monad m) => ConduitT XP.EventPos Void m (Either XmlLoadError XElement)

@@ -75,7 +75,6 @@ Usage: lithon-codegen vulkan parse [VK_XML] [--json FILE] [--summary]
   Parse and dump IR / summary / slices
 
 Available options:
-  VK_XML                   Path to vk.xml (default: the Vulkan-Docs submodule)
   --json FILE              Write the full IR as canonical JSON
   --summary                Print section counts and digests
   --slice NAME             Dump one named entity's IR as canonical JSON
@@ -87,7 +86,6 @@ Usage: lithon-codegen vulkan check [VK_XML] [--profile FILE]
   Parse strictly and report all diagnostics (CI gate)
 
 Available options:
-  VK_XML                   Path to vk.xml (default: the Vulkan-Docs submodule)
   --profile FILE           Also gate resolve + curation for FILE
   -h,--help                Show this help text
 
@@ -98,7 +96,6 @@ Usage: lithon-codegen vulkan resolve
   Specialize to vulkan and run the resolve passes (phase 2)
 
 Available options:
-  VK_XML                   Path to vk.xml (default: the Vulkan-Docs submodule)
   --json FILE              Write the resolved registry as canonical JSON
   --summary                Print resolved table counts and digests
   --slice NAME             Dump one named resolved entity as canonical JSON
@@ -112,7 +109,6 @@ Usage: lithon-codegen vulkan curate
   Resolve, then curate to a profile (closure + prune + report)
 
 Available options:
-  VK_XML                   Path to vk.xml (default: the Vulkan-Docs submodule)
   --profile FILE           Curation profile (JSON)
   --json FILE              Write the curated registry as canonical JSON
   --report FILE            Write the curation report as canonical JSON ("-" =
@@ -129,7 +125,6 @@ Usage: lithon-codegen vulkan generate
   Curate, then emit the lithon package sources (phase 3)
 
 Available options:
-  VK_XML                   Path to vk.xml (default: the Vulkan-Docs submodule)
   --profile FILE           Curation profile (JSON)
   --out DIR                Target package directory (default: "lithon-vk")
   --check                  Diff fresh output against the tree; write nothing (CI

@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE StrictData #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# OPTIONS_GHC -Wno-redundant-constraints #-}
@@ -13,7 +14,9 @@ module Lithon.Effect.Clock (
   runClock,
   timedWith,
   timedWithWHNF,
+  logTimedWHNF,
   timedWithNF,
+  logTimedNF,
   timedWithStrat,
 ) where
 
@@ -23,6 +26,7 @@ import Effectful.Dispatch.Static (SideEffects (..), StaticRep, evalStaticRep, un
 import GHC.Clock qualified
 import Text.Printf (printf)
 
+import Lithon.Effect.Log
 import Lithon.Prelude
 
 data Clock :: Effect
@@ -55,8 +59,20 @@ timedWith = timedWithStrat (const $ pure ())
 timedWithWHNF :: (Clock :> es) => (a -> Timespan -> Eff es r) -> Eff es a -> Eff es r
 timedWithWHNF = timedWithStrat (unsafeEff_ . evaluate . (`seq` ()))
 
+logTimedWHNF :: (HasCallStack, Clock :> es, Log :> es) => Text -> Eff es a -> Eff es a
+logTimedWHNF tag = timedWithWHNF \a ts -> do
+  logInfo
+    ("[Clock] " <> tag <> ": " <> renderTimespan ts :# ["callStack" .= prettyCallStack callStack])
+  pure a
+
 timedWithNF :: (NFData a, Clock :> es) => (a -> Timespan -> Eff es r) -> Eff es a -> Eff es r
 timedWithNF = timedWithStrat (unsafeEff_ . evaluate . rnf)
+
+logTimedNF :: (HasCallStack, NFData a, Clock :> es, Log :> es) => Text -> Eff es a -> Eff es a
+logTimedNF tag = timedWithNF \a ts -> do
+  logInfo
+    ("[Clock] " <> tag <> ": " <> renderTimespan ts :# ["callStack" .= prettyCallStack callStack])
+  pure a
 
 timedWithStrat
   :: (Clock :> es) => (a -> Eff es ()) -> (a -> Timespan -> Eff es r) -> Eff es a -> Eff es r

@@ -16,9 +16,9 @@ import Data.Vector qualified as V
 import Hedgehog (Gen, forAll, property, (===))
 import Hedgehog qualified
 import Hedgehog.Gen qualified as Gen
+import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Registry (Registry (..))
 import Lithon.Codegen.Vulkan.Registry.Micro.BoolExpr (
   DependsAtom (..),

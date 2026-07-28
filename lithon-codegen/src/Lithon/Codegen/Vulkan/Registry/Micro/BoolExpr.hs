@@ -36,10 +36,11 @@ import Data.Deriving (deriveEq1, deriveShow1)
 import Data.Fix (Fix (Fix))
 import Data.Functor.Foldable (cata, para)
 import GHC.Generics (Generic1)
+import Lithon.Prelude hiding (many)
 import Text.Megaparsec (between, many)
 import Text.Megaparsec.Char (char, string)
 
-import Lithon.Codegen.Prelude hiding (many)
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (
   FeaturePath (..),
   P,

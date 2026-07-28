@@ -8,6 +8,7 @@ module Lithon.Codegen.Sdl3.Env (
   Sdl3Env (..),
   Sdl3Gen,
   getSdl3Env,
+  getScratchDirectory,
   runSdl3Gen,
 ) where
 
@@ -18,9 +19,9 @@ import Effectful
 import Effectful.Dispatch.Dynamic
 import Effectful.Error.Dynamic
 import Effectful.Reader.Dynamic
-
-import Lithon.Codegen.Effect.ClangEnv
-import Lithon.Codegen.Prelude
+import Lithon.Effect.ClangEnv
+import Lithon.Effect.Temporary (SystemTempDir, Temporary, withSystemTempDirectory)
+import Lithon.Prelude
 
 data SdlResolutionError
   = Sdl3Missing PkgMetaDb
@@ -62,6 +63,7 @@ data Sdl3Env = Sdl3Env
   , sdlVersion :: Text
   -- ^ @pkg-config --modversion sdl3@.
   , pkgDbEntry :: PkgDbEntry
+  , scratchDirectory :: SystemTempDir
   }
   deriving stock (Generic, Show)
   deriving anyclass (A.ToJSON)
@@ -74,8 +76,13 @@ type instance DispatchOf Sdl3Gen = Dynamic
 getSdl3Env :: (Sdl3Gen :> es) => Eff es Sdl3Env
 getSdl3Env = send GetSdl3Env
 
-runSdl3Gen :: (ClangEnv :> es, Error SdlResolutionError :> es) => Eff (Sdl3Gen : es) a -> Eff es a
-runSdl3Gen eff = do
+getScratchDirectory :: (Sdl3Gen :> es) => Eff es SystemTempDir
+getScratchDirectory = (.scratchDirectory) <$> getSdl3Env
+
+runSdl3Gen
+  :: (ClangEnv :> es, Temporary :> es, Error SdlResolutionError :> es)
+  => Eff (Sdl3Gen : es) a -> Eff es a
+runSdl3Gen eff = withSystemTempDirectory "lithon-sdl3-gen-scratch" \scratchDirectory -> do
   pkgDbEntry <- noteErrM (Sdl3Missing <$> getPkgMetaDb) =<< getPkgDbEntry "sdl3"
 
   PkgVarValue includeDirVar <-

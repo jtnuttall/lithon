@@ -20,8 +20,9 @@ import Data.Aeson (ToJSON)
 import Data.List.NonEmpty qualified as NE
 import Data.Set.NonEmpty qualified as NESet
 import Data.Vector qualified as V
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.IgnoreList
 import Lithon.Codegen.Vulkan.Registry.Parse.Commands
 import Lithon.Codegen.Vulkan.Registry.Parse.Enums
@@ -158,14 +159,14 @@ data ParseSuccess = ParseSuccess
   { registry :: Registry
   , warnings :: [Warning]
   }
-  deriving stock (Generic)
+  deriving stock (Generic, Show)
   deriving anyclass (NFData, ToJSON)
 
 data ParseFailure = ParseFailure
   { errors :: NonEmpty ParseError
   , warnings :: [Warning]
   }
-  deriving stock (Generic)
+  deriving stock (Generic, Show)
   deriving anyclass (NFData, ToJSON)
 
 -- | Parse a loaded @vk.xml@ root element. Any recorded error fails the

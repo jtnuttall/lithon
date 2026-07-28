@@ -15,8 +15,7 @@ module Lithon.Codegen.Backend.Hs (
 
 import Data.Aeson (ToJSON)
 import Data.Text qualified as T
-
-import Lithon.Codegen.Prelude
+import Lithon.Prelude
 
 -- | A dotted Haskell module path, e.g. @Lithon.Core10.Enums.Result@.
 newtype ModulePath = ModulePath {dotted :: Text}

@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# OPTIONS_GHC -fplugin=Effectful.Plugin #-}
 
 module Backend.EmitTest (
   unit_syncThenCheckIsFresh,
@@ -18,8 +19,10 @@ import Data.Text qualified as T
 import Data.Text.IO qualified as TIO
 import Effectful (runEff)
 import Effectful.Concurrent (runConcurrent)
-import Effectful.Error.Dynamic (runError)
 import Effectful.FileSystem (runFileSystem)
+import Lithon.Effect.Error
+import Lithon.Effect.Log (runLog)
+import Lithon.Prelude
 import System.Directory qualified as Dir
 import System.FilePath ((</>))
 import System.IO.Temp (withSystemTempDirectory)
@@ -34,9 +37,6 @@ import Lithon.Codegen.Backend.Emit (
   emitPackageWith,
   manifestFileName,
  )
-import Lithon.Codegen.Effect.Log (runLog)
-import Lithon.Codegen.Effect.Util
-import Lithon.Codegen.Prelude
 
 -- | Emit always runs with 'SkipFormat': these tests stage into throwaway
 -- directories where the fourmolu\/dprint configs are not discoverable, and the
@@ -47,8 +47,7 @@ runEmit strategy t fs =
     . runEff
     . runLog "emit-test"
     . runError @Text
-    . mapDynError @EmitError display
-    . runError
+    . runErrorDisplay
     . runFileSystem
     . runConcurrent
     $ emitPackageWith SkipFormat strategy t fs

@@ -57,8 +57,7 @@ import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Doxygen.Parser.Types qualified as Doxy
 import Lithon.HsBindgen.C qualified as C
-
-import Lithon.Codegen.Prelude
+import Lithon.Prelude
 
 -- | Which C sort an 'AbiDecl' describes.
 data AbiKind = AbiStruct | AbiUnion | AbiEnum
@@ -329,12 +328,14 @@ renderAbiAssertions includes decls macroConsts =
     -- guard get nested guards; consecutive same-version members share
     -- one block.
     entries =
-      [ (d.sizeSince
+      [
+        ( d.sizeSince
         , sassert
             ("sizeof(" <> d.cTypeName <> ") == " <> show d.sizeof)
             (d.cTypeName <> ": baked sizeof " <> show d.sizeof <> divergence)
         )
-      , (d.sizeSince
+      ,
+        ( d.sizeSince
         , sassert
             ("_Alignof(" <> d.cTypeName <> ") == " <> show d.alignment)
             (d.cTypeName <> ": baked alignment " <> show d.alignment <> divergence)

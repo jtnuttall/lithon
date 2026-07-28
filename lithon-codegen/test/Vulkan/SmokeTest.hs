@@ -9,10 +9,9 @@ module Vulkan.SmokeTest (
 import Hedgehog (Property, forAll, property, (===))
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
+import Lithon.Prelude
 import Test.Tasty (TestTree)
 import Test.Tasty.HUnit (testCase, (@?=))
-
-import Lithon.Codegen.Prelude
 
 unit_sanity :: IO ()
 unit_sanity = (2 + 2 :: Int) @?= 4

@@ -10,9 +10,9 @@ module Vulkan.RegistryDraftTest (
 import Data.ByteString qualified as BS
 import Data.Text qualified as T
 import Data.Vector qualified as V
+import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Registry (
   ParseFailure (..),
   ParseSuccess (..),

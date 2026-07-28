@@ -19,6 +19,7 @@ module Vulkan.Generate.AbiTest (
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Data.Text.IO qualified as TIO
+import Lithon.Prelude
 import System.Directory (
   createDirectoryIfMissing,
   findExecutable,
@@ -30,7 +31,6 @@ import System.FilePath ((</>))
 import System.Process (readProcessWithExitCode)
 import Test.Tasty.HUnit (Assertion, assertBool, assertFailure)
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Curate (Curated (..))
 import Lithon.Codegen.Vulkan.Generate.Layout (
   FieldLayout (..),
@@ -39,6 +39,7 @@ import Lithon.Codegen.Vulkan.Generate.Layout (
   computeLayouts,
  )
 import Lithon.Codegen.Vulkan.Generate.Lower (lowerStructs)
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Resolved.Avail (PlatformGuard (..))
 import Lithon.Codegen.Vulkan.Resolved.Core (ResolvedStruct (..), StructKind (..))
 import Lithon.Codegen.Vulkan.Resolved.Registry (ResolvedRegistry (..))

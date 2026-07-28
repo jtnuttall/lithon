@@ -38,10 +38,10 @@ import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Data.Vector qualified as V
+import Lithon.Prelude
 import Numeric (showHex)
 
 import Lithon.Codegen.Backend.Hs (ModulePath (..))
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Generate.Cmds (CmdDecl (..))
 import Lithon.Codegen.Vulkan.Generate.Docs (DocKey (..), DocsMap (..))
 import Lithon.Codegen.Vulkan.Generate.Layout (
@@ -66,6 +66,7 @@ import Lithon.Codegen.Vulkan.Generate.Modules (
   versionModule,
  )
 import Lithon.Codegen.Vulkan.Generate.Names (Names (..))
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Types.Enums (BitWidth (..), EnumsKind (..))
 import Lithon.Codegen.Vulkan.Resolved.Avail (CoreVersion (..))
 import Lithon.Codegen.Vulkan.Resolved.Core (

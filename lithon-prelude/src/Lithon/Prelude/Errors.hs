@@ -34,6 +34,7 @@ module Lithon.Prelude.Errors (
 import Control.DeepSeq (NFData)
 import Control.Lens (Iso', review, view)
 import Control.Monad.Error.Class (MonadError, liftEither)
+import Data.Aeson qualified as A
 import Data.Bifunctor (first)
 import Data.DList.DNonEmpty (DNonEmpty)
 import Data.DList.DNonEmpty qualified as DNonEmpty
@@ -47,7 +48,7 @@ import Prelude
 
 -- | At least one error, accumulated left-to-right with O(1) '<>'.
 newtype Errors e = Errors (DNonEmpty e)
-  deriving newtype (Eq, Foldable, Functor, NFData, Semigroup, Show)
+  deriving newtype (A.ToJSON, Eq, Foldable, Functor, NFData, Semigroup, Show)
 
 instance Container (Errors e)
 

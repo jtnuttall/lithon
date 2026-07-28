@@ -25,9 +25,10 @@ module Vulkan.Registry.Micro.CDeclTest (
 
 import Data.ByteString qualified as BS
 import Data.Text qualified as T
+import Lithon.Prelude
 import Test.Tasty.HUnit (Assertion, assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.CDecl (chunksFromNodes, parseDeclaration)
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (FeaturePath (..))
 import Lithon.Codegen.Vulkan.Registry.Types.CDecl (

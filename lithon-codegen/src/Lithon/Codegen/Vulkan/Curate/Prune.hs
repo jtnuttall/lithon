@@ -16,10 +16,11 @@ module Lithon.Codegen.Vulkan.Curate.Prune (
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Vector qualified as V
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Curate.Closure (Closure (..))
 import Lithon.Codegen.Vulkan.Curate.Profile (Profile (..))
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Types.Common (Platform (..))
 import Lithon.Codegen.Vulkan.Registry.Types.Misc (
   Enable (..),

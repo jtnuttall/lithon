@@ -21,13 +21,13 @@ import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 import Data.Text.IO qualified as TIO
 import Lithon.HsBindgen qualified as HB
+import Lithon.Prelude
 import System.FilePath ((</>))
 import System.IO.Temp (withSystemTempDirectory)
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Golden (goldenVsStringDiff)
 import Test.Tasty.HUnit (assertFailure, (@?=))
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Sdl3.Alias (
   FamilyDecls (..),
   aliasRewriteMap,
@@ -114,7 +114,6 @@ test_aliasRenderGolden =
             }
     validated <-
       either (assertFailure . toString . display) pure
-        . validationToEither
         $ validateAliasConfig census config
     -- The constants pipeline, minus the probe: membership from the toy
     -- header's scanned macros, values/sizeofs supplied directly (what the
@@ -158,7 +157,6 @@ test_aliasRenderGolden =
             }
     constantPlans <-
       either (assertFailure . toString . display) pure
-        . validationToEither
         $ planConstants
           constantsConfig
           [familyConstants]
@@ -170,7 +168,6 @@ test_aliasRenderGolden =
           Map.fromListWith (flip (<>)) [(p.familyBase, [p]) | p <- constantPlans]
     aliasModules <-
       either (assertFailure . toString . display) pure
-        . validationToEither
         $ planAliasLayer validated plansByFamily [facts]
     let rewriteMap = aliasRewriteMap aliasModules
         modules = map (renderAliasModule rewriteMap) aliasModules

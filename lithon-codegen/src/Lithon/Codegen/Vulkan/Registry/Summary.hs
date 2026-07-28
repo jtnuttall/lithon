@@ -11,10 +11,10 @@ module Lithon.Codegen.Vulkan.Registry.Summary (
 import Data.Aeson (ToJSON)
 import Data.Map.Strict qualified as Map
 import Data.Vector qualified as V
+import Lithon.Prelude
 import Prettyprinter (Doc, fill, pretty, vsep, (<+>))
 
 import Lithon.Codegen.Backend.Json (canonicalJsonBytes, digestText)
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Registry
 import Lithon.Codegen.Vulkan.Registry.Types.Common qualified as Common
 import Lithon.Codegen.Vulkan.Registry.Types.Core (TypeBody (..), TypeDecl (..))

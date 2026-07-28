@@ -9,8 +9,8 @@ module Lithon.Codegen.Vulkan.Curate (
 ) where
 
 import Data.Generics.SOP.Builder.Typed qualified as TB
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Curate.Closure (Closure, CurateError, computeClosure)
 import Lithon.Codegen.Vulkan.Curate.Profile (Profile)
 import Lithon.Codegen.Vulkan.Curate.Prune (Pruned (..), pruneRegistry)

@@ -3,7 +3,7 @@
 {-# LANGUAGE TypeFamilies #-}
 
 -- | Typed registry identifiers.
-module Lithon.Codegen.Prelude.Naming (
+module Lithon.Codegen.Vulkan.Names (
   -- * Namespaces, singled
   Namespace (..),
   CommandNSSym0,
@@ -42,18 +42,10 @@ module Lithon.Codegen.Prelude.Naming (
 ) where
 
 import Autodocodec qualified as AD
-import Control.DeepSeq (NFData)
 import Data.Aeson (ToJSON (..), ToJSONKey)
 import Data.Aeson qualified as Aeson
-import Data.Singletons (fromSing)
 import Data.Singletons.TH (genSingletons)
-import Data.String (IsString)
-import Data.Text (Text)
-import Data.Text.Display (Display (..), display)
-import GHC.Generics (Generic)
-import Prelude
-
-import Lithon.Codegen.Prelude.Container
+import Lithon.Prelude
 
 -- | The registry namespace a name lives in — the tag dynamic-kind errors
 -- carry, and the promoted index of 'WithNS'.

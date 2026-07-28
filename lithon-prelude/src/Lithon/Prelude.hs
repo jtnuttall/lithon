@@ -99,6 +99,7 @@ import Control.Lens (
  )
 import Control.Lens qualified as Lens
 import Control.Monad.Error.Class (MonadError (throwError))
+import Data.Aeson qualified as A
 import Data.Bitraversable (Bitraversable, bifor, bisequence, bitraverse, firstA, secondA)
 import Data.Coerce (coerce)
 import Data.Containers.ListUtils (nubOrd)
@@ -172,14 +173,20 @@ intercalateTB sep = fold . L.intersperse sep
 instance From TB.Builder Text where
   from = TB.runBuilder
 
+instance A.ToJSON (P.ProcessConfig () () ()) where
+  toJSON pc = A.toJSON (show @Text pc)
+
 newtype ProcessStdout = ProcessStdout Text
-  deriving stock (Show)
+  deriving stock (Generic, Show)
+  deriving anyclass (A.ToJSON)
 
 newtype ProcessStderr = ProcessStderr LText
-  deriving stock (Show)
+  deriving stock (Generic, Show)
+  deriving anyclass (A.ToJSON)
 
 newtype ProcessFailureCode = ProcessFailureCode Int
-  deriving stock (Show)
+  deriving stock (Generic, Show)
+  deriving anyclass (A.ToJSON)
 
 readProcessStdoutOrError
   :: (MonadError e m, MonadIO m)

@@ -22,8 +22,9 @@ module Lithon.Codegen.Vulkan.Registry.Types.CDecl (
 
 import Data.Aeson (ToJSON)
 import Data.Vector qualified as V
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (FeaturePath)
 import Lithon.Codegen.Vulkan.Xml.Types (Pos)
 

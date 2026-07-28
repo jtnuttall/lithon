@@ -6,7 +6,8 @@ module Lithon.Codegen.Vulkan.Registry.Parse.Enums (
   enumDefD,
 ) where
 
-import Lithon.Codegen.Prelude
+import Lithon.Prelude
+
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (rawEither)
 import Lithon.Codegen.Vulkan.Registry.Micro.Literal (parseValueLiteral)
 import Lithon.Codegen.Vulkan.Registry.Parse.Common (

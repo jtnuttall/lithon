@@ -25,8 +25,9 @@ import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Data.Text.Read qualified as TR
 import Data.Vector qualified as V
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry (Registry (..), Specialized)
 import Lithon.Codegen.Vulkan.Registry.Types.CDecl (MixedBody (..))
 import Lithon.Codegen.Vulkan.Registry.Types.Common (Api, Platform (..), Raw (..), VendorTag)

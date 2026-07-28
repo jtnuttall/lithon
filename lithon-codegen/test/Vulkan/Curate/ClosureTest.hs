@@ -17,9 +17,9 @@ import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text.Lazy qualified as TL
 import Data.Text.Lazy.Encoding qualified as TLE
+import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Curate.Closure (
   Closure (..),
   CurateError (..),
@@ -38,6 +38,7 @@ import Lithon.Codegen.Vulkan.Curate.Profile (
   RegistryPin (..),
   decodeProfile,
  )
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Resolved.Avail (
   CoreVersion (..),
   InterfaceItemNamespace (..),

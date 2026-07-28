@@ -1,5 +1,5 @@
 [submodule "lithon-codegen/Vulkan-Docs"]
-	path = lithon-codegen/Vulkan-Docs
+	path = lithon-codegen/data/vulkan/Vulkan-Docs
 	url = https://github.com/KhronosGroup/Vulkan-Docs.git
 [submodule "vendor/hs-bindgen"]
 	path = lithon-hs-bindgen/vendor/hs-bindgen

@@ -26,8 +26,9 @@ import Data.Aeson (ToJSON)
 import Data.List.NonEmpty qualified as NE
 import Data.Map.Strict qualified as Map
 import Data.Vector qualified as V
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry (Registry, Specialized)
 import Lithon.Codegen.Vulkan.Registry.Micro.BoolExpr (DependsExpr)
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (FeaturePath (..))

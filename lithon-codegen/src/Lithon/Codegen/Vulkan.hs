@@ -1,3 +1,4 @@
+{-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE StrictData #-}
 {-# OPTIONS_GHC -fplugin=Effectful.Plugin #-}
@@ -9,12 +10,12 @@
 -- (canonical JSON), a summary table, or single named entities. @generate@
 -- emits the @lithon@ package through "Lithon.Codegen.Backend.Emit".
 module Lithon.Codegen.Vulkan (
-  Env (..),
   VulkanCmd (..),
   vulkanCmdP,
   runVulkan,
 ) where
 
+import Data.Aeson qualified as A
 import Data.Aeson qualified as Aeson
 import Data.ByteString.Lazy qualified as LBS
 import Data.Map.Strict qualified as Map
@@ -25,15 +26,17 @@ import Effectful.Concurrent.Async (Concurrent)
 import Effectful.Console.ByteString qualified as Console
 import Effectful.Console.ByteString.Lazy (Console)
 import Effectful.Console.ByteString.Lazy qualified as LazyConsole
-import Effectful.Error.Dynamic (Error, runError, throwError_)
-import Effectful.FileSystem (
+import Effectful.FileSystem.IO.ByteString.Lazy qualified as ELBS
+import Effectful.Resource (Resource)
+import Lithon.Effect.Clock (Clock, logTimedNF)
+import Lithon.Effect.Error
+import Lithon.Effect.FileSystem (
   FileSystem,
   createDirectoryIfMissing,
-  doesFileExist,
  )
-import Effectful.FileSystem.IO.ByteString.Lazy qualified as ELBS
-import Effectful.Reader.Dynamic (Reader, ask)
-import Effectful.Resource (Resource)
+import Lithon.Effect.Log
+import Lithon.Effect.PrettyPrint
+import Lithon.Prelude
 import Options.Applicative (
   command,
   help,
@@ -43,13 +46,12 @@ import Options.Applicative (
   metavar,
   progDesc,
   showDefault,
-  strArgument,
   strOption,
   switch,
   value,
  )
 import Options.Applicative qualified as Opts
-import System.FilePath (takeDirectory, (<.>), (</>))
+import System.FilePath (takeDirectory)
 
 import Lithon.Codegen.Backend.Emit (
   EmitError,
@@ -58,16 +60,18 @@ import Lithon.Codegen.Backend.Emit (
   emitPackage,
  )
 import Lithon.Codegen.Backend.Json (canonicalJsonBytes)
-import Lithon.Codegen.Effect.Clock (Clock, renderTimespan, timedWith, timedWithNF)
-import Lithon.Codegen.Effect.Log
-import Lithon.Codegen.Effect.PrettyPrint
-import Lithon.Codegen.Effect.Util (mapDynError)
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Curate (Curated (..), curate)
-import Lithon.Codegen.Vulkan.Curate.Closure (explainName)
-import Lithon.Codegen.Vulkan.Curate.Profile (Profile (..), decodeProfile)
+import Lithon.Codegen.Vulkan.Curate.Closure (CurateError, explainName)
+import Lithon.Codegen.Vulkan.Curate.Profile (Profile (..), ProfileDecodeError, decodeProfile)
 import Lithon.Codegen.Vulkan.Curate.Report (CurationReport (..), prettyReport)
-import Lithon.Codegen.Vulkan.Generate (GenOutput (..), generate)
+import Lithon.Codegen.Vulkan.Env (
+  VulkanGen,
+  VulkanResolutionError,
+  getVulkanXmlPath,
+  runVulkanGen,
+ )
+import Lithon.Codegen.Vulkan.Generate (GenOutput (..), GenerateError, generate)
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry (
   ParseFailure (..),
   ParseSuccess (..),
@@ -86,15 +90,59 @@ import Lithon.Codegen.Vulkan.Registry.Types.Core (TypeDecl (..), typeBodyName)
 import Lithon.Codegen.Vulkan.Registry.Types.Enums (EnumsBlock (..))
 import Lithon.Codegen.Vulkan.Registry.Types.Features (Extension (..), Feature (..))
 import Lithon.Codegen.Vulkan.Registry.Types.Misc (Format (..))
-import Lithon.Codegen.Vulkan.Resolve (resolveRegistry)
+import Lithon.Codegen.Vulkan.Resolve (ResolveError, resolveRegistry)
 import Lithon.Codegen.Vulkan.Resolved.Registry (ResolvedFeature (..), ResolvedRegistry (..))
 import Lithon.Codegen.Vulkan.Resolved.Summary (prettyResolvedSummary, summarizeResolved)
 import Lithon.Codegen.Vulkan.Xml.Decode (ParseError)
-import Lithon.Codegen.Vulkan.Xml.Load (loadXmlFile)
-import Lithon.Codegen.Vulkan.Xml.Types (XElement)
+import Lithon.Codegen.Vulkan.Xml.Load (XmlLoadError, loadXmlFile)
 
-newtype Env = Env
-  {dataDir :: FilePath}
+data VulkanError
+  = VulkanResolutionError VulkanResolutionError
+  | VulkanXmlLoadError XmlLoadError
+  | VulkanXmlParseError FilePath ParseFailure
+  | VulkanProfileLoadError FilePath ProfileDecodeError
+  | ResolveError (Errors ResolveError)
+  | CurateError (Errors CurateError)
+  | GenerateError (Errors GenerateError)
+  | NoSuchEntity Text
+  | EmitError EmitError
+  deriving stock (Generic, Show)
+  deriving anyclass (Exception)
+
+instance From VulkanResolutionError VulkanError where
+  from = VulkanResolutionError
+
+instance From (Errors ResolveError) VulkanError where
+  from = ResolveError
+
+instance From (Errors CurateError) VulkanError where
+  from = CurateError
+
+instance From (Errors GenerateError) VulkanError where
+  from = GenerateError
+
+instance From EmitError VulkanError where
+  from = EmitError
+
+instance Display VulkanError where
+  displayBuilder = \case
+    VulkanResolutionError err -> "Failed to initialize vulkan generator: " <> from err
+    VulkanXmlLoadError err -> "Failed to load Vulkan XML: " <> from err
+    VulkanXmlParseError path err ->
+      "Registry at "
+        <> show path
+        <> " failed to parse with "
+        <> show (length err.errors)
+        <> " errors and "
+        <> show (length err.warnings)
+        <> " warnings:"
+        <> via @(Errors ParseError) err.errors
+    VulkanProfileLoadError pfl err -> "Failed to load profile " <> show pfl <> ": " <> from err
+    ResolveError err -> "Failed to resolve Vulkan registry: " <> from err
+    CurateError err -> "Failed to curate Vulkan registry: " <> from err
+    GenerateError err -> "Failed to generate Vulkan library: " <> from err
+    NoSuchEntity name -> "No such entity " <> show name
+    EmitError err -> "Failed to emit library: " <> from err
 
 data VulkanCmd
   = CmdParse ParseOpts
@@ -102,43 +150,6 @@ data VulkanCmd
   | CmdResolve ResolveOpts
   | CmdCurate CurateOpts
   | CmdGenerate GenerateOpts
-
-data ParseOpts = ParseOpts
-  { registryPath :: Maybe FilePath
-  , jsonOut :: Maybe FilePath
-  , summary :: Bool
-  , slices :: [Text]
-  }
-
-data CheckOpts = CheckOpts
-  { registryPath :: Maybe FilePath
-  , profilePath :: Maybe FilePath
-  }
-
-data ResolveOpts = ResolveOpts
-  { registryPath :: Maybe FilePath
-  , jsonOut :: Maybe FilePath
-  , summary :: Bool
-  , slices :: [Text]
-  }
-
-data CurateOpts = CurateOpts
-  { registryPath :: Maybe FilePath
-  , profilePath :: FilePath
-  , jsonOut :: Maybe FilePath
-  , reportOut :: Maybe FilePath
-  , summary :: Bool
-  , slices :: [Text]
-  , explains :: [Text]
-  }
-
-data GenerateOpts = GenerateOpts
-  { registryPath :: Maybe FilePath
-  , profilePath :: FilePath
-  , outDir :: FilePath
-  , checkOnly :: Bool
-  , reportPath :: Maybe FilePath
-  }
 
 vulkanCmdP :: Opts.Parser VulkanCmd
 vulkanCmdP =
@@ -169,142 +180,155 @@ vulkanCmdP =
           )
     )
 
-registryPathP :: Opts.Parser (Maybe FilePath)
-registryPathP =
-  optional
-    ( strArgument
-        (metavar "VK_XML" <> help "Path to vk.xml (default: the Vulkan-Docs submodule)")
-    )
+data ParseOpts = ParseOpts
+  { jsonOut :: Maybe FilePath
+  , summary :: Bool
+  , slices :: [Text]
+  }
 
 parseOptsP :: Opts.Parser ParseOpts
-parseOptsP =
-  ParseOpts
-    <$> registryPathP
-    <*> optional
+parseOptsP = do
+  jsonOut <-
+    optional
       (strOption (long "json" <> metavar "FILE" <> help "Write the full IR as canonical JSON"))
-    <*> switch (long "summary" <> help "Print section counts and digests")
-    <*> many
+  summary <- switch (long "summary" <> help "Print section counts and digests")
+  slices <-
+    many
       ( strOption
           (long "slice" <> metavar "NAME" <> help "Dump one named entity's IR as canonical JSON")
       )
+  pure ParseOpts{..}
+
+newtype CheckOpts = CheckOpts
+  { profilePath :: Maybe FilePath
+  }
 
 checkOptsP :: Opts.Parser CheckOpts
-checkOptsP =
-  CheckOpts
-    <$> registryPathP
-    <*> optional
+checkOptsP = do
+  profilePath <-
+    optional
       ( strOption
           (long "profile" <> metavar "FILE" <> help "Also gate resolve + curation for FILE")
       )
+  pure CheckOpts{..}
+
+data ResolveOpts = ResolveOpts
+  { jsonOut :: Maybe FilePath
+  , summary :: Bool
+  , slices :: [Text]
+  }
 
 resolveOptsP :: Opts.Parser ResolveOpts
-resolveOptsP =
-  ResolveOpts
-    <$> registryPathP
-    <*> optional
+resolveOptsP = do
+  jsonOut <-
+    optional
       ( strOption
           (long "json" <> metavar "FILE" <> help "Write the resolved registry as canonical JSON")
       )
-    <*> switch (long "summary" <> help "Print resolved table counts and digests")
-    <*> many
+  summary <- switch (long "summary" <> help "Print resolved table counts and digests")
+  slices <-
+    many
       ( strOption
           ( long "slice"
               <> metavar "NAME"
               <> help "Dump one named resolved entity as canonical JSON"
           )
       )
+  pure ResolveOpts{..}
+
+data CurateOpts = CurateOpts
+  { profilePath :: FilePath
+  , jsonOut :: Maybe FilePath
+  , reportOut :: Maybe FilePath
+  , summary :: Bool
+  , slices :: [Text]
+  , explains :: [Text]
+  }
 
 curateOptsP :: Opts.Parser CurateOpts
-curateOptsP =
-  CurateOpts
-    <$> registryPathP
-    <*> strOption (long "profile" <> metavar "FILE" <> help "Curation profile (JSON)")
-    <*> optional
+curateOptsP = do
+  profilePath <- strOption (long "profile" <> metavar "FILE" <> help "Curation profile (JSON)")
+  jsonOut <-
+    optional
       ( strOption
           (long "json" <> metavar "FILE" <> help "Write the curated registry as canonical JSON")
       )
-    <*> optional
+  reportOut <-
+    optional
       ( strOption
           ( long "report"
               <> metavar "FILE"
               <> help "Write the curation report as canonical JSON (\"-\" = text on stdout)"
           )
       )
-    <*> switch (long "summary" <> help "Print curated table counts and digests")
-    <*> many
+  summary <- switch (long "summary" <> help "Print curated table counts and digests")
+  slices <-
+    many
       ( strOption
           (long "slice" <> metavar "NAME" <> help "Dump one curated entity as canonical JSON")
       )
-    <*> many
+  explains <-
+    many
       ( strOption
           (long "explain" <> metavar "NAME" <> help "Print why NAME is in the curated set")
       )
+  pure CurateOpts{..}
+
+data GenerateOpts = GenerateOpts
+  { profilePath :: FilePath
+  , outDir :: FilePath
+  , checkOnly :: Bool
+  , reportPath :: Maybe FilePath
+  }
 
 generateOptsP :: Opts.Parser GenerateOpts
-generateOptsP =
-  GenerateOpts
-    <$> registryPathP
-    <*> strOption (long "profile" <> metavar "FILE" <> help "Curation profile (JSON)")
-    <*> strOption
+generateOptsP = do
+  profilePath <- strOption (long "profile" <> metavar "FILE" <> help "Curation profile (JSON)")
+  outDir <-
+    strOption
       ( long "out"
           <> metavar "DIR"
           <> value "lithon-vk"
           <> showDefault
           <> help "Target package directory"
       )
-    <*> switch (long "check" <> help "Diff fresh output against the tree; write nothing (CI gate)")
-    <*> optional
+  checkOnly <-
+    switch (long "check" <> help "Diff fresh output against the tree; write nothing (CI gate)")
+  reportPath <-
+    optional
       ( strOption
           ( long "report"
               <> metavar "FILE"
               <> help "Write the planning report (census, unpaired creates, retained counts) as canonical JSON"
           )
       )
-
-resolveRegistryPath
-  :: (Error Text :> es, FileSystem :> es, Reader Env :> es, Log :> es)
-  => Maybe FilePath -> Eff es FilePath
-resolveRegistryPath = \case
-  Just explicit -> pure explicit
-  Nothing -> do
-    env <- ask
-    let vkXmlPath = env.dataDir </> "xml" </> "vk" <.> "xml"
-    logDebug $ "checking for vk.xml" :# ["vkXmlPath" .= vkXmlPath]
-    exists <- doesFileExist vkXmlPath
-    unless exists $ throwError_ "vk.xml not found; pass an explicit path or update the data-dir"
-    pure vkXmlPath
+  pure GenerateOpts{..}
 
 runVulkan
-  :: ( IOE :> es
+  :: ( HasCallStack
+     , IOE :> es
      , Log :> es
      , Clock :> es
      , Concurrent :> es
      , PrettyPrint :> es
-     , Error Text :> es
-     , Reader Env :> es
+     , Error VulkanError :> es
      , FileSystem :> es
      , Console :> es
      , Resource :> es
      )
   => VulkanCmd -> Eff es ()
-runVulkan = \case
+runVulkan cmd = runErrorFrom @VulkanResolutionError $ runVulkanGen case cmd of
   CmdCheck opts -> do
-    (_, ok) <- loadAndParse opts.registryPath
-    registry <- checkParseResult ok
+    registry <- loadAndParseRegistry
     whenJust opts.profilePath \profilePath -> do
-      resolved <-
-        checkPassResult "resolve"
-          =<< timedWithNF (logTime "resolved") (pure (resolveRegistry ApiVulkan registry))
+      resolved <- runPass "resolve" (resolveRegistry ApiVulkan) registry
       profile <- loadProfile profilePath
-      curated <-
-        checkPassResult "curation"
-          =<< timedWithNF (logTime "curated") (pure (curate profile resolved))
+      curated <- runPass "curation" (curate profile) resolved
       logInfo
         $ "curation gate passed"
         :# ["extensions" .= length curated.report.selectedExtensions]
   CmdParse opts -> do
-    (_, ok) <- loadAndParse opts.registryPath
-    registry <- checkParseResult ok
+    registry <- loadAndParseRegistry
     whenJust opts.jsonOut \path -> do
       ELBS.writeFile path (canonicalJsonBytes registry)
       logInfo $ "wrote canonical IR JSON" :# ["outputPath" .= T.pack path]
@@ -313,15 +337,12 @@ runVulkan = \case
     for_ opts.slices \name ->
       case sliceNamespace name registry of
         Just rendered -> LazyConsole.putStr rendered
-        Nothing -> throwError_ $ "no entity named " <> T.show name
+        Nothing -> throwError $ NoSuchEntity name
     unless (opts.summary || isJust opts.jsonOut || not (null opts.slices))
       $ logInfo "parse succeeded (use --summary, --json, or --slice for output)"
   CmdResolve opts -> do
-    (_, ok) <- loadAndParse opts.registryPath
-    registry <- checkParseResult ok
-    resolved <-
-      checkPassResult "resolve"
-        =<< timedWithNF (logTime "resolved") (pure (resolveRegistry ApiVulkan registry))
+    registry <- loadAndParseRegistry
+    resolved <- runPass "resolve" (resolveRegistry ApiVulkan) registry
     whenJust opts.jsonOut \path -> do
       ELBS.writeFile path (canonicalJsonBytes resolved)
       logInfo $ "wrote resolved registry JSON" :# ["outputPath" .= T.pack path]
@@ -330,19 +351,14 @@ runVulkan = \case
     for_ opts.slices \name ->
       case resolvedSliceNamespace name resolved of
         Just rendered -> LazyConsole.putStr rendered
-        Nothing -> throwError_ $ "no resolved entity named " <> T.show name
+        Nothing -> throwError $ NoSuchEntity name
     unless (opts.summary || isJust opts.jsonOut || not (null opts.slices))
       $ logInfo "resolve succeeded (use --summary, --json, or --slice for output)"
   CmdCurate opts -> do
-    (_, ok) <- loadAndParse opts.registryPath
-    registry <- checkParseResult ok
-    resolved <-
-      checkPassResult "resolve"
-        =<< timedWithNF (logTime "resolved") (pure (resolveRegistry ApiVulkan registry))
+    registry <- loadAndParseRegistry
+    resolved <- runPass "resolve" (resolveRegistry ApiVulkan) registry
     profile <- loadProfile opts.profilePath
-    curated <-
-      checkPassResult "curation"
-        =<< timedWithNF (logTime "curated") (pure (curate profile resolved))
+    curated <- runPass "curate" (curate profile) resolved
     whenJust opts.jsonOut \path -> do
       ELBS.writeFile path (canonicalJsonBytes curated.registry)
       logInfo $ "wrote curated registry JSON" :# ["outputPath" .= T.pack path]
@@ -356,11 +372,11 @@ runVulkan = \case
     for_ opts.slices \name ->
       case resolvedSliceNamespace name curated.registry of
         Just rendered -> LazyConsole.putStr rendered
-        Nothing -> throwError_ $ "no curated entity named " <> T.show name
+        Nothing -> throwError $ NoSuchEntity name
     for_ opts.explains \name ->
       case explainName curated.closure name of
         Just explanation -> Console.putStrLn (encodeUtf8 explanation)
-        Nothing -> throwError_ $ "not in the curated set: " <> T.show name
+        Nothing -> throwError $ NoSuchEntity name
     unless
       ( opts.summary
           || isJust opts.jsonOut
@@ -370,24 +386,16 @@ runVulkan = \case
       )
       $ logInfo "curation succeeded (use --summary, --json, --report, --slice, or --explain)"
   CmdGenerate opts -> do
-    (_, ok) <- loadAndParse opts.registryPath
-    registry <- checkParseResult ok
-    resolved <-
-      checkPassResult "resolve"
-        =<< timedWithNF (logTime "resolved") (pure (resolveRegistry ApiVulkan registry))
+    registry <- loadAndParseRegistry
+    resolved <- runPass "resolve" (resolveRegistry ApiVulkan) registry
     profile <- loadProfile opts.profilePath
-    curated <-
-      checkPassResult "curation"
-        =<< timedWithNF (logTime "curated") (pure (curate profile resolved))
-    gen <-
-      checkPassResult "generate"
-        =<< timedWithNF (logTime "generated") (pure (generate curated))
+    curated <- runPass "curate" (curate profile) resolved
+    gen <- runPass "generate" generate curated
     whenJust opts.reportPath \rp -> do
       createDirectoryIfMissing True (takeDirectory rp)
       ELBS.writeFile rp (canonicalJsonBytes gen.report)
       logInfo $ "wrote planning report" :# ["path" .= T.pack rp]
-    mapDynError @EmitError display
-      . runError
+    runErrorFrom @EmitError @VulkanError
       $ emitPackage
         HaskellPackage
         EmitTarget
@@ -400,63 +408,47 @@ runVulkan = \case
           , checkOnly = opts.checkOnly
           }
         gen.files
- where
-  logTime tag a ts = logInfo (tag <> " in " <> renderTimespan ts :# []) >> pure a
 
 -- | Read and decode a curation profile.
 loadProfile
-  :: (FileSystem :> es, Error Text :> es) => FilePath -> Eff es Profile
+  :: (HasCallStack, FileSystem :> es, Error VulkanError :> es) => FilePath -> Eff es Profile
 loadProfile path = do
   bytes <- ELBS.readFile path
   case decodeProfile bytes of
     Right profile -> pure profile
-    Left err -> throwError_ ("profile " <> T.pack path <> ": " <> err)
+    Left err -> throwError $ VulkanProfileLoadError path err
 
--- | Load and parse, logging phase timings.
-loadAndParse
-  :: ( IOE :> es
+loadAndParseRegistry
+  :: ( HasCallStack
+     , IOE :> es
      , Clock :> es
      , Log :> es
-     , Error Text :> es
-     , Reader Env :> es
-     , FileSystem :> es
+     , Error VulkanError :> es
      , Resource :> es
+     , VulkanGen :> es
      )
-  => Maybe FilePath
-  -> Eff es (XElement, Either ParseFailure ParseSuccess)
-loadAndParse explicitPath = do
-  path <- resolveRegistryPath explicitPath
-  root <- timedWith (logTime "loaded and parsed") do
+  => Eff es Registry
+loadAndParseRegistry = do
+  path <- getVulkanXmlPath
+  res <- logTimedNF "loaded and parsed" do
     loaded <- loadXmlFile path
     case loaded of
-      Left err -> throwError_ $ display err
-      Right el -> pure el
-  outcome <- timedWithNF (logTime "parsed") (pure (parseRegistry root))
-  pure (root, outcome)
- where
-  logTime tag a ts = logInfo (tag <> " in " <> renderTimespan ts :# []) >> pure a
+      Left err -> throwError $ VulkanXmlLoadError err
+      Right root -> pure $ parseRegistry root
 
--- | Print every diagnostic; exit non-zero if any error was recorded.
-checkParseResult
-  :: (Error Text :> es, Log :> es) => Either ParseFailure ParseSuccess -> Eff es Registry
-checkParseResult = \case
-  Right ok -> do
-    logWarnings ok.warnings
-    pure ok.registry
-  Left failure -> do
-    logWarnings failure.warnings
-    throwError_
-      $ "registry failed to parse with "
-      <> T.show (length failure.errors)
-      <> " errors and "
-      <> T.show (length failure.warnings)
-      <> " warnings:"
-      <> display (into @(Errors ParseError) failure.errors)
+  case res of
+    Left err -> do
+      warn err.warnings
+      throwError $ VulkanXmlParseError path err
+    Right ok -> do
+      warn ok.warnings
+      pure ok.registry
  where
-  logWarnings [] = pure ()
-  logWarnings warnings =
-    let heading = ["registry parsed with " <> T.show (length warnings) <> " warnings:"]
-     in logWarn $ T.intercalate "\n  - " (heading <> map display warnings) :# []
+  warn = \case
+    [] -> pure ()
+    warnings ->
+      let heading = ["registry parsed with " <> T.show (length warnings) <> " warnings:"]
+       in logWarn $ T.intercalate "\n  - " (heading <> map display warnings) :# []
 
 -- | Find one entity by name across the resolved tables and render it.
 resolvedSliceNamespace :: Text -> ResolvedRegistry -> Maybe LBS.ByteString
@@ -476,18 +468,16 @@ resolvedSliceNamespace name reg =
     , canonicalJsonBytes <$> V.find (\f -> f.name == WithNS name) reg.features
     ]
 
--- | Surface a pass's accumulated errors through the CLI error channel.
-checkPassResult
-  :: (Display e, Error Text :> es) => Text -> Either (Errors e) a -> Eff es a
-checkPassResult what = \case
-  Right a -> pure a
-  Left errs ->
-    throwError_
-      $ what
-      <> " failed with "
-      <> T.show (length errs)
-      <> " errors:"
-      <> display errs
+runPass
+  :: ( From (Errors e) VulkanError
+     , NFData e
+     , NFData r
+     , Clock :> es
+     , Error VulkanError :> es
+     , Log :> es
+     )
+  => Text -> (a -> Either (Errors e) r) -> a -> Eff es r
+runPass what f a = logTimedNF what (pure (f a)) >>= either (throwError . from) pure
 
 -- | Find one entity by name across the name-bearing sections and render it.
 sliceNamespace :: Text -> Registry -> Maybe LBS.ByteString

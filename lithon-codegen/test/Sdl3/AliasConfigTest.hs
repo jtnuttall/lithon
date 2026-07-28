@@ -5,22 +5,14 @@
 -- registry and the real function census is @sdl3 generate --check@'s job;
 -- these tests pin the decode surface and every validation failure path
 -- over synthetic censuses.
-module Sdl3.AliasConfigTest (
-  unit_committedRegistryDecodes,
-  unit_validationTotalizesSafeties,
-  unit_unclassifiedCallbackErrors,
-  unit_unknownNamesAccumulate,
-  unit_deadAndContradictoryConfigErrors,
-  unit_missingRationaleErrors,
-  unit_skipRemovesFromSurface,
-) where
+module Sdl3.AliasConfigTest where
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
+import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Sdl3.Alias.Config (
   AliasConfig (..),
   FunctionEntry (..),
@@ -75,7 +67,6 @@ unit_validationTotalizesSafeties = do
           }
   validated <-
     either (assertFailure . toString . display) pure
-      . validationToEither
       $ validateAliasConfig census config
   -- Total over the census: the unlisted non-callback function defaults to
   -- both flavors.
@@ -159,7 +150,6 @@ unit_deadAndContradictoryConfigErrors = do
           }
   validated <-
     either (assertFailure . toString . display) pure
-      . validationToEither
       $ validateAliasConfig census okConfig
   validated.safeties
     @?= Map.fromList [("SDL_CreateWindow", UnsafeOnly), ("SDL_WaitEvent", Both)]
@@ -194,13 +184,12 @@ unit_skipRemovesFromSurface = do
       config = emptyConfig{skip = ["SDL_EnumerateDirectory"]}
   validated <-
     either (assertFailure . toString . display) pure
-      . validationToEither
       $ validateAliasConfig census config
   -- Skipping a callback function needs no classification and removes it.
   validated.safeties @?= Map.fromList [("SDL_CreateWindow", Both)]
   validated.skipped @?= Set.fromList ["SDL_EnumerateDirectory"]
 
-failures :: Validation (Errors e) a -> [e]
+failures :: Either (Errors e) a -> [e]
 failures = \case
-  Failure es -> toList es
-  Success _ -> []
+  Left es -> toList es
+  Right _ -> []

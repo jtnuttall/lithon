@@ -37,8 +37,8 @@ import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Data.Vector qualified as V
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Generate.Layout (FieldLayout (..), Layouts (..), StructLayout (..))
 import Lithon.Codegen.Vulkan.Generate.Lower (
   CPrim (..),
@@ -46,6 +46,7 @@ import Lithon.Codegen.Vulkan.Generate.Lower (
   Lowered (..),
   LoweredMember (..),
  )
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (Raw (..))
 import Lithon.Codegen.Vulkan.Registry.Micro.Len (LenLevel (..), LenSpec (..))
 import Lithon.Codegen.Vulkan.Registry.Types.Enums (EnumsKind (..))

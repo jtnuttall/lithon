@@ -17,12 +17,12 @@ import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 import Effectful (runPureEff)
 import Effectful.Error.Dynamic (runErrorNoCallStack)
+import Lithon.Prelude
 import System.Directory (listDirectory)
 import Test.Tasty (TestTree)
 import Test.Tasty.Golden (goldenVsStringDiff)
 
 import Lithon.Codegen.Backend.Emit (Manifest (..), manifestFileName)
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Sdl3.Alias (sysModuleName, sysNamespace)
 import Lithon.Codegen.Sdl3.Alias.Config (AliasConfig (..), FunctionEntry (..), decodeAliasConfig)
 import Lithon.Codegen.Sdl3.Alias.Names (Safety (..))

@@ -35,8 +35,8 @@ import Data.List.NonEmpty (NonEmpty (..))
 import Data.Map.Strict (Map)
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Sdl3.Abi (
   AbiOverrides (..),
   AbiSince (..),

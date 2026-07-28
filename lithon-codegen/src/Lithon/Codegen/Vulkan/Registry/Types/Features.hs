@@ -21,8 +21,9 @@ module Lithon.Codegen.Vulkan.Registry.Types.Features (
 
 import Data.Aeson (ToJSON)
 import Data.Aeson qualified as Aeson
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.BoolExpr (DependsExpr, ProtectExpr)
 import Lithon.Codegen.Vulkan.Registry.Types.Common (Api, ApiSet, Raw)
 import Lithon.Codegen.Vulkan.Registry.Types.Enums (EnumDef)

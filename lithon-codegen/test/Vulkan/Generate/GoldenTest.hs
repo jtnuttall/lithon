@@ -19,11 +19,11 @@ module Vulkan.Generate.GoldenTest (
 import Data.ByteString.Lazy qualified as LBS
 import Data.Map.Strict qualified as Map
 import Data.Text.Encoding qualified as TE
+import Lithon.Prelude
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Golden (goldenVsStringDiff)
 
 import Lithon.Codegen.Backend.Json (canonicalJsonBytes, digestText)
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Curate (Curated (..))
 import Lithon.Codegen.Vulkan.Generate (GenOutput (..), generate)
 import Lithon.Codegen.Vulkan.Generate.Lower (lowerStructs)

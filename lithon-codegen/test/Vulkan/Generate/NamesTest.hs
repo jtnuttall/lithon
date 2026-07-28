@@ -14,9 +14,9 @@ import Data.Char qualified as Char
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
+import Lithon.Prelude
 import Test.Tasty.HUnit (Assertion, assertBool, assertEqual, assertFailure)
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Curate (Curated (..))
 import Lithon.Codegen.Vulkan.Generate.Names
 import Vulkan.Support.Resolve (pinnedCurated)

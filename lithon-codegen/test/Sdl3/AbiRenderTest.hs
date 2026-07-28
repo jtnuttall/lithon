@@ -17,17 +17,17 @@ module Sdl3.AbiRenderTest (
 ) where
 
 import Data.ByteString.Lazy qualified as LBS
+import Data.Map.Strict qualified as Map
 import Data.Text.Encoding qualified as TE
 import Data.Text.IO qualified as TIO
 import Lithon.HsBindgen qualified as HB
+import Lithon.Prelude
 import System.FilePath ((</>))
 import System.IO.Temp (withSystemTempDirectory)
 import Test.Tasty (TestTree)
 import Test.Tasty.Golden (goldenVsStringDiff)
 import Test.Tasty.HUnit (assertFailure, (@?=))
 
-import Lithon.Codegen.Prelude
-import Data.Map.Strict qualified as Map
 import Lithon.Codegen.Sdl3.Abi (
   AbiDecl (..),
   AbiEnumConst (..),
@@ -91,7 +91,8 @@ test_abiRenderGolden =
       , macros = mempty
       , structs =
           Map.fromList
-            [ ( "SDL_ToyMix"
+            [
+              ( "SDL_ToyMix"
               , StructOverrides
                   { sizeofSince = Just AbiSince{major = 3, minor = 2, patch = 12}
                   , members = Map.fromList [("wide", AbiSince{major = 3, minor = 2, patch = 12})]

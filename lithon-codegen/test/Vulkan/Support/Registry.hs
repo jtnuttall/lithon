@@ -9,9 +9,9 @@ module Vulkan.Support.Registry (
 
 import Data.ByteString qualified as BS
 import Data.Vector qualified as V
+import Lithon.Prelude
 import System.IO.Unsafe (unsafePerformIO)
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Registry (ParseSuccess (..), Registry (..), parseRegistry)
 import Lithon.Codegen.Vulkan.Registry.Specialize (Specialized (..))
 import Lithon.Codegen.Vulkan.Registry.Types.Features (Feature)

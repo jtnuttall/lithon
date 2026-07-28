@@ -27,11 +27,13 @@ import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Effectful
 import Effectful.Error.Dynamic
+import Lithon.Effect.Log
+import Lithon.Effect.Temporary (SystemTempDir (SystemTempDir))
 import Lithon.HsBindgen qualified as HB
+import Lithon.HsBindgen.C qualified as C
+import Lithon.Prelude
 import System.FilePath ((<.>), (</>))
 
-import Lithon.Codegen.Effect.Log
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Sdl3.Abi (AbiDecl, AbiSince (..), declSince, distillAbi, sdlBaseline)
 import Lithon.Codegen.Sdl3.Alias (FamilyDecls, distillFamily)
 import Lithon.Codegen.Sdl3.Env
@@ -42,7 +44,6 @@ import Lithon.Codegen.Sdl3.Versions (
   VersionsRegistry (..),
   abiOverrides,
  )
-import Lithon.HsBindgen.C qualified as C
 
 data BindgenError
   = DuplicateModules (Set Text)
@@ -249,18 +250,17 @@ mangleModule basename = do
 -- binding specifications and writes its own into @specDir@.
 chainHeaders
   :: (IOE :> es, Log :> es, Error BindgenError :> es, Sdl3Gen :> es)
-  => FilePath
-  -- ^ Spec working directory (absolute); filled as the fold advances.
-  -> Maybe FilePath
+  => Maybe FilePath
   -- ^ The curated prescriptive spec (overrides), if present.
   -> VersionsRegistry
   -- ^ The empirical availability registry (@sdl3\/versions.json@).
   -> [HeaderUnit]
   -> Eff es [HeaderResult]
-chainHeaders specDir overrides registry = go []
+chainHeaders overrides registry = go []
  where
   go _ [] = pure []
   go priorSpecs (unit : rest) = do
+    SystemTempDir specDir <- getScratchDirectory
     logInfo $ "processing header" :# ["unit" .= unit]
     res <- runHeader specDir priorSpecs overrides registry unit
     (res :) <$> go ((specDir </> unit.specFile) : priorSpecs) rest
@@ -279,16 +279,19 @@ runHeader
 runHeader specDir priorSpecs overrides registry unit = do
   (family, hsDecls, cDecls, mdoc) <- invoke
   shimmed <-
-    liftEither . first (ModuleShimFailed unit.headerName) $
-      HB.applyStubEdits
+    liftEither
+      . first (ModuleShimFailed unit.headerName)
+      $ HB.applyStubEdits
         (stubEditsFor unit.headerName <> versionStubEdits registry unit.headerName cDecls)
         family
   modules <-
-    liftEither . first (ModuleShimFailed unit.headerName) $
-      HB.renderFamilyWith (textEditsFor unit.headerName) shimmed
+    liftEither
+      . first (ModuleShimFailed unit.headerName)
+      $ HB.renderFamilyWith (textEditsFor unit.headerName) shimmed
   abi <-
-    liftEither . first (AbiDistillationFailure unit.headerName) $
-      distillAbi unit.headerName (abiOverrides registry) cDecls
+    liftEither
+      . first (AbiDistillationFailure unit.headerName)
+      $ distillAbi unit.headerName (abiOverrides registry) cDecls
   let hasBaseModule = unit.moduleName `elem` map fst modules
   pure
     HeaderResult
@@ -413,9 +416,12 @@ versionStubEdits registry headerName cDecls =
   retypePrologue
     <> [ versionGate name since (length fn.args)
        | decl <- cDecls
-       , C.DeclFunction fn <- [decl.kind]
        , let name = decl.info.id.cName.name.text
-       , Just since <- [Map.lookup name declOverrides <|> declSince decl.info]
+       , C.DeclFunction fn <- [decl.kind]
+       , Just since <-
+           [ Map.lookup name declOverrides
+               <|> declSince decl.info
+           ]
        , since > sdlBaseline
        ]
  where
@@ -434,15 +440,15 @@ versionStubEdits registry headerName cDecls =
           , symbol = Nothing
           , target = "wrappers referencing " <> T.intercalate ", " (map fst entries)
           , edit = \ls ->
-              if any (\(n, _) -> any (n `T.isInfixOf`) ls) entries
-                then
-                  Just
-                    ( ["#include <SDL3/SDL_version.h>", "#if !SDL_VERSION_ATLEAST(3, 4, 0)"]
-                        <> map snd entries
-                        <> ["#endif"]
-                        <> ls
-                    )
-                else Nothing
+              if any (\(n, _) -> any (n `T.isInfixOf`) ls) entries then
+                Just
+                  ( ["#include <SDL3/SDL_version.h>", "#if !SDL_VERSION_ATLEAST(3, 4, 0)"]
+                      <> map snd entries
+                      <> ["#endif"]
+                      <> ls
+                  )
+              else
+                Nothing
           }
       ]
 
@@ -470,9 +476,12 @@ versionStubEdits registry headerName cDecls =
       }
    where
     isTargetLine l =
-      ("  return (" <> sym <> ")(") `T.isPrefixOf` l
-        || ("  (" <> sym <> ")(") `T.isPrefixOf` l
-        || l == ("  return &" <> sym <> ";")
+      ("  return (" <> sym <> ")(")
+        `T.isPrefixOf` l
+        || ("  (" <> sym <> ")(")
+        `T.isPrefixOf` l
+        || l
+        == ("  return &" <> sym <> ";")
 
     guardBlock line =
       [ "#if SDL_VERSION_ATLEAST(" <> versionArgs <> ")"

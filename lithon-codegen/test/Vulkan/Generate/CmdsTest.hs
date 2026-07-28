@@ -11,10 +11,10 @@ module Vulkan.Generate.CmdsTest (
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
+import Lithon.Prelude
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.HUnit (assertBool, assertEqual, testCase)
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Curate (Curated (..))
 import Lithon.Codegen.Vulkan.Generate.Cmds
 import Lithon.Codegen.Vulkan.Generate.Layout (computeLayouts)
@@ -22,6 +22,7 @@ import Lithon.Codegen.Vulkan.Generate.Lower (lowerStructs)
 import Lithon.Codegen.Vulkan.Generate.Marshal (planStructs)
 import Lithon.Codegen.Vulkan.Generate.Modules (assignModules)
 import Lithon.Codegen.Vulkan.Generate.Names (buildNames)
+import Lithon.Codegen.Vulkan.Names
 import Vulkan.Support.Resolve (pinnedCurated)
 
 pinnedPlans :: CommandPlans

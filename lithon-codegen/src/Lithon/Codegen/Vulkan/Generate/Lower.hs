@@ -20,8 +20,9 @@ module Lithon.Codegen.Vulkan.Generate.Lower (
 import Data.Aeson (ToJSON)
 import Data.Map.Strict qualified as Map
 import Data.Vector qualified as V
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Types.Enums (BitWidth (..), EnumsKind (..))
 import Lithon.Codegen.Vulkan.Resolved.Core (
   ResolvedBitmask (..),

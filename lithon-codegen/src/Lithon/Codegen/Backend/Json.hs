@@ -17,8 +17,7 @@ import Data.Aeson.Encode.Pretty (
  )
 import Data.ByteString.Lazy qualified as LBS
 import Data.Hash.RapidHash.Class (rapidhash)
-
-import Lithon.Codegen.Prelude
+import Lithon.Prelude
 
 canonicalJsonBytes :: (ToJSON a) => a -> LBS.ByteString
 canonicalJsonBytes =

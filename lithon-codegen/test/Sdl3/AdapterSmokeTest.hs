@@ -20,6 +20,7 @@ import Data.List qualified as L
 import Data.Text qualified as T
 import Data.Text.IO qualified as TIO
 import Lithon.HsBindgen qualified as HB
+import Lithon.Prelude
 import System.Directory (
   createDirectoryIfMissing,
   getTemporaryDirectory,
@@ -27,8 +28,6 @@ import System.Directory (
  )
 import System.FilePath ((</>))
 import Test.Tasty.HUnit (Assertion, assertBool, assertFailure)
-
-import Lithon.Codegen.Prelude
 
 unit_adapterSmoke :: Assertion
 unit_adapterSmoke = do

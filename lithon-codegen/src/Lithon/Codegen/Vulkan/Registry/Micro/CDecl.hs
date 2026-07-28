@@ -27,8 +27,9 @@ import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Data.Text.Read qualified as T
 import Data.Vector qualified as V
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (parseFeaturePath)
 import Lithon.Codegen.Vulkan.Registry.Types.CDecl (
   ArrayDim (..),

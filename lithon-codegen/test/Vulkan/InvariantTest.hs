@@ -13,9 +13,9 @@ module Vulkan.InvariantTest (
 
 import Data.List.NonEmpty qualified as NE
 import Data.Vector qualified as V
+import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, (@?=))
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Registry (Registry (..))
 import Lithon.Codegen.Vulkan.Registry.Micro.BoolExpr
 import Lithon.Codegen.Vulkan.Registry.Micro.Len (LenLevel (..), LenSpec (..))

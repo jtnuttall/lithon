@@ -18,12 +18,13 @@ module Vulkan.Support.Resolve (
 ) where
 
 import Data.ByteString.Lazy qualified as LBS
+import Lithon.Prelude
 import System.Directory (doesFileExist)
 import System.IO.Unsafe (unsafePerformIO)
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Curate (Curated, curate)
 import Lithon.Codegen.Vulkan.Curate.Profile (Profile, decodeProfile)
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry (Registry, Specialize (..), Specialized)
 import Lithon.Codegen.Vulkan.Registry.Types.Common (Api (..))
 import Lithon.Codegen.Vulkan.Resolve (resolveRegistry)

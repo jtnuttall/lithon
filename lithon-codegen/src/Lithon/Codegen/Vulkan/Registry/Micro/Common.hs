@@ -29,9 +29,10 @@ import Data.Aeson (ToJSON)
 import Data.Char (isAlphaNum)
 import Data.Text qualified as T
 import Data.Text.Read qualified as TR
+import Lithon.Prelude
 import Text.Megaparsec (Parsec, eof, errorBundlePretty, parse, takeWhile1P)
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 
 -- | A parsed artifact that keeps its source text. Everything the registry
 -- parser interprets structurally is stored this way, so IR dumps and later

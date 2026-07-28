@@ -18,10 +18,10 @@ module Lithon.Codegen.Vulkan.Registry.Micro.ExternSync (
 import Data.Aeson (ToJSON)
 import Data.List.NonEmpty qualified as NE
 import Data.Text qualified as T
+import Lithon.Prelude
 import Text.Megaparsec (eof, sepBy1, try)
 import Text.Megaparsec.Char (char, string)
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (P, identifier, viaMegaparsec)
 
 -- | One path segment; 'indexed' marks a @[]@ suffix (element-wise sync).

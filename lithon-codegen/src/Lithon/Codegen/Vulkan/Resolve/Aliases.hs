@@ -28,8 +28,9 @@ module Lithon.Codegen.Vulkan.Resolve.Aliases (
 import Data.Aeson (ToJSON)
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Types.Commands (Command (..))
 import Lithon.Codegen.Vulkan.Registry.Types.Common (Deprecation)
 import Lithon.Codegen.Vulkan.Registry.Types.Core (

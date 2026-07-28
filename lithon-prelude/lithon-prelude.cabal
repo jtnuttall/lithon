@@ -32,9 +32,11 @@ library
   exposed-modules:
       Lithon.Effect.ClangEnv
       Lithon.Effect.Clock
+      Lithon.Effect.Error
+      Lithon.Effect.FileSystem
       Lithon.Effect.Log
       Lithon.Effect.PrettyPrint
-      Lithon.Effect.Util
+      Lithon.Effect.Temporary
       Lithon.Prelude
       Lithon.Prelude.Container
       Lithon.Prelude.Display

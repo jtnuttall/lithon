@@ -82,8 +82,9 @@ import Effectful (Eff, runPureEff)
 import Effectful.Error.Static (Error, catchError, runErrorNoCallStack, throwError)
 import Effectful.Reader.Static (Reader, ask, asks, local, runReader)
 import Effectful.State.Static.Local (State, evalState, get, modify, put, runState)
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Xml.Types (
   PathSeg (..),
   Pos,

@@ -15,10 +15,11 @@ import Data.List qualified as L
 import Data.List.NonEmpty qualified as NE
 import Data.Map.Strict qualified as Map
 import Data.Vector qualified as V
+import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
 import Lithon.Codegen.Backend.Json (canonicalJsonBytes)
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry
 import Lithon.Codegen.Vulkan.Registry.Micro.BoolExpr (parseDepends)
 import Lithon.Codegen.Vulkan.Registry.Types.Common (Api (..), Raw (..))

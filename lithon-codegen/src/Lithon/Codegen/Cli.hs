@@ -15,22 +15,20 @@ import Data.Text qualified as T
 import Effectful (runEff)
 import Effectful.Concurrent.Async (runConcurrent)
 import Effectful.Console.ByteString.Lazy (runConsole)
-import Effectful.Error.Dynamic (runError)
+import Effectful.Environment (runEnvironment)
 import Effectful.FileSystem (runFileSystem)
-import Effectful.Reader.Dynamic (runReader)
 import Effectful.Resource (runResource)
+import Lithon.Effect.ClangEnv
+import Lithon.Effect.Clock (runClock)
+import Lithon.Effect.Error
+import Lithon.Effect.Log
+import Lithon.Effect.PrettyPrint
+import Lithon.Effect.Temporary (runTemporary)
+import Lithon.Prelude
 import Options.Applicative hiding (ParseError, asum)
 
-import Lithon.Codegen.Effect.ClangEnv
-import Lithon.Codegen.Effect.Clock (runClock)
-import Lithon.Codegen.Effect.Log
-import Lithon.Codegen.Effect.PrettyPrint
-import Lithon.Codegen.Effect.Util (mapDynError)
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Sdl3 (Sdl3Cmd, runSdl3, sdl3CmdP)
-import Lithon.Codegen.Sdl3.Env (SdlResolutionError, runSdl3Gen)
-import Lithon.Codegen.Vulkan (Env (..), VulkanCmd, runVulkan, vulkanCmdP)
-import Paths_lithon_codegen qualified
+import Lithon.Codegen.Vulkan (VulkanCmd, runVulkan, vulkanCmdP)
 
 newtype Opts = Opts
   { cmd :: Cmd
@@ -43,24 +41,25 @@ data Cmd
 main :: IO ()
 main = do
   opts <- execParser cliInfo
-  dataDir <- Paths_lithon_codegen.getDataDir
   runEff $ runLog "lithon-codegen" do
     res <- runError @Text
+      . runEnvironment
       . runConcurrent
       . runFileSystem
-      . mapDynError @ClangEnvError display
-      . runError
-      . runClangEnv
-      . mapDynError @SdlResolutionError display
-      . runError
-      . runSdl3Gen
+      . runTemporary
       . runConsole
       . runPrettyPrintH defaultLayoutOptions stdout
       . runClock
       . runResource
       $ case opts.cmd of
-        CmdVulkan cmd -> runReader Env{..} $ runVulkan cmd
-        CmdSdl3 cmd -> runSdl3 cmd
+        CmdVulkan cmd ->
+          runErrorDisplay
+            $ runVulkan cmd
+        CmdSdl3 cmd ->
+          runErrorDisplay
+            . runClangEnv
+            . runErrorDisplay
+            $ runSdl3 cmd
 
     case res of
       Right () -> pure ()

@@ -28,7 +28,7 @@ extra-source-files:
 extra-doc-files:
     README.md
     CHANGELOG.md
-data-dir:       Vulkan-Docs
+data-dir:       data
 
 source-repository head
   type: git
@@ -40,18 +40,6 @@ library
       Lithon.Codegen.Backend.Hs
       Lithon.Codegen.Backend.Json
       Lithon.Codegen.Cli
-      Lithon.Codegen.Effect.ClangEnv
-      Lithon.Codegen.Effect.Clock
-      Lithon.Codegen.Effect.Log
-      Lithon.Codegen.Effect.PrettyPrint
-      Lithon.Codegen.Effect.Util
-      Lithon.Codegen.Prelude
-      Lithon.Codegen.Prelude.Container
-      Lithon.Codegen.Prelude.Display
-      Lithon.Codegen.Prelude.Errors
-      Lithon.Codegen.Prelude.Generics.SOP
-      Lithon.Codegen.Prelude.Monad
-      Lithon.Codegen.Prelude.Naming
       Lithon.Codegen.Sdl3
       Lithon.Codegen.Sdl3.Abi
       Lithon.Codegen.Sdl3.Alias
@@ -68,6 +56,7 @@ library
       Lithon.Codegen.Vulkan.Curate.Profile
       Lithon.Codegen.Vulkan.Curate.Prune
       Lithon.Codegen.Vulkan.Curate.Report
+      Lithon.Codegen.Vulkan.Env
       Lithon.Codegen.Vulkan.Generate
       Lithon.Codegen.Vulkan.Generate.Cmds
       Lithon.Codegen.Vulkan.Generate.Docs
@@ -77,6 +66,7 @@ library
       Lithon.Codegen.Vulkan.Generate.Modules
       Lithon.Codegen.Vulkan.Generate.Names
       Lithon.Codegen.Vulkan.Generate.Render
+      Lithon.Codegen.Vulkan.Names
       Lithon.Codegen.Vulkan.Registry
       Lithon.Codegen.Vulkan.Registry.IgnoreList
       Lithon.Codegen.Vulkan.Registry.Micro.BoolExpr
@@ -152,7 +142,6 @@ library
     , bifunctors ==5.6.*
     , bytestring ==0.12.*
     , case-insensitive ==1.2.*
-    , comonad ==5.0.*
     , concurrent-output ==1.10.*
     , conduit ==1.3.*
     , conduit-extra ==1.3.*
@@ -166,21 +155,15 @@ library
     , dependent-sum-template ==0.2.*
     , deriving-compat ==0.6.*
     , directory ==1.3.*
-    , distributive ==0.6.*
     , dlist ==1.0.*
     , doxygen-parser
     , effectful ==2.6.*
     , effectful-core ==2.6.*
     , effectful-plugin ==2.1.*
-    , effectful-th ==1.0.*
     , file-embed ==0.0.16.*
     , filepath ==1.5.*
-    , first-class-families ==0.8.*
-    , foldl ==1.4.*
-    , free ==5.2.*
     , generic-lens ==2.3.*
     , generics-sop ==0.5.*
-    , ghc-source-gen ==0.4.*
     , hashable ==1.5.*
     , hpack ==0.39.*
     , indexed-traversable ==0.1.*
@@ -261,7 +244,6 @@ executable lithon-codegen
     , bifunctors ==5.6.*
     , bytestring ==0.12.*
     , case-insensitive ==1.2.*
-    , comonad ==5.0.*
     , concurrent-output ==1.10.*
     , conduit ==1.3.*
     , conduit-extra ==1.3.*
@@ -275,21 +257,15 @@ executable lithon-codegen
     , dependent-sum-template ==0.2.*
     , deriving-compat ==0.6.*
     , directory ==1.3.*
-    , distributive ==0.6.*
     , dlist ==1.0.*
     , doxygen-parser
     , effectful ==2.6.*
     , effectful-core ==2.6.*
     , effectful-plugin ==2.1.*
-    , effectful-th ==1.0.*
     , file-embed ==0.0.16.*
     , filepath ==1.5.*
-    , first-class-families ==0.8.*
-    , foldl ==1.4.*
-    , free ==5.2.*
     , generic-lens ==2.3.*
     , generics-sop ==0.5.*
-    , ghc-source-gen ==0.4.*
     , hashable ==1.5.*
     , hpack ==0.39.*
     , indexed-traversable ==0.1.*
@@ -396,7 +372,7 @@ test-suite lithon-codegen-test
       PatternSynonyms
       RecordWildCards
       TypeFamilies
-  ghc-options: -Wmissing-deriving-strategies -Wmissing-export-lists -Wredundant-constraints -Wall
+  ghc-options: -Wmissing-deriving-strategies -Wmissing-export-lists -Wredundant-constraints -Wall -Wno-missing-export-lists
   build-tool-depends:
       tasty-discover:tasty-discover ==5.2.*
   build-depends:
@@ -411,7 +387,6 @@ test-suite lithon-codegen-test
     , bifunctors ==5.6.*
     , bytestring ==0.12.*
     , case-insensitive ==1.2.*
-    , comonad ==5.0.*
     , concurrent-output ==1.10.*
     , conduit ==1.3.*
     , conduit-extra ==1.3.*
@@ -425,21 +400,15 @@ test-suite lithon-codegen-test
     , dependent-sum-template ==0.2.*
     , deriving-compat ==0.6.*
     , directory ==1.3.*
-    , distributive ==0.6.*
     , dlist ==1.0.*
     , doxygen-parser
     , effectful ==2.6.*
     , effectful-core ==2.6.*
     , effectful-plugin ==2.1.*
-    , effectful-th ==1.0.*
     , file-embed ==0.0.16.*
     , filepath ==1.5.*
-    , first-class-families ==0.8.*
-    , foldl ==1.4.*
-    , free ==5.2.*
     , generic-lens ==2.3.*
     , generics-sop ==0.5.*
-    , ghc-source-gen ==0.4.*
     , hashable ==1.5.*
     , hedgehog ==1.7.*
     , hpack ==0.39.*

@@ -16,8 +16,9 @@ module Lithon.Codegen.Vulkan.Registry.Parse.Common (
 
 import Data.List.NonEmpty qualified as NE
 import Data.Text qualified as T
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.BoolExpr (
   DependsExpr,
   ProtectExpr,

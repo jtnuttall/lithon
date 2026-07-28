@@ -33,8 +33,7 @@ import Data.Char qualified as Char
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
-
-import Lithon.Codegen.Prelude
+import Lithon.Prelude
 
 -- | Foreign-import safety flavor of a single alias binding.
 data Flavor = SafeFlavor | UnsafeFlavor

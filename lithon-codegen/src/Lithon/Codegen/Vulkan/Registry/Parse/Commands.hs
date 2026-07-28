@@ -8,8 +8,8 @@ module Lithon.Codegen.Vulkan.Registry.Parse.Commands (
 
 import Data.Text qualified as T
 import Data.Vector qualified as V
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Registry.Parse.Common (
   apiAttr,
   commentAttr,

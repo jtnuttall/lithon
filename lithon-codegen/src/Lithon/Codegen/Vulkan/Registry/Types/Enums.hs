@@ -20,8 +20,9 @@ module Lithon.Codegen.Vulkan.Registry.Types.Enums (
 ) where
 
 import Data.Aeson (ToJSON)
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.BoolExpr (ProtectExpr)
 import Lithon.Codegen.Vulkan.Registry.Micro.Literal (ValueLiteral)
 import Lithon.Codegen.Vulkan.Registry.Types.Common (ApiSet, Deprecation, Raw)

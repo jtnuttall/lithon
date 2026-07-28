@@ -30,8 +30,9 @@ import Data.Aeson qualified as Aeson
 import Data.List.NonEmpty qualified as NE
 import Data.Set.NonEmpty qualified as NESet
 import Data.Text qualified as T
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (FeaturePath (..), Raw (..))
 import Lithon.Codegen.Vulkan.Xml.Types (Pos)
 

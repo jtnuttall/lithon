@@ -16,6 +16,7 @@ import Data.List.NonEmpty qualified as NE
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
+import Lithon.Prelude
 import Prettyprinter (
   Doc,
   Pretty,
@@ -31,7 +32,6 @@ import Prettyprinter (
  )
 import Prettyprinter.Render.Terminal (AnsiStyle, Color (..), bold, color, italicized)
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Curate.Closure (
   Closure (..),
   InclusionTrace (..),
@@ -40,6 +40,7 @@ import Lithon.Codegen.Vulkan.Curate.Closure (
  )
 import Lithon.Codegen.Vulkan.Curate.Profile (Profile (..), ProfilePolicy (..), RegistryPin (..))
 import Lithon.Codegen.Vulkan.Curate.Prune (PruneNotes (..), Pruned (..))
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Resolved.Registry (ResolvedRegistry (..))
 import Lithon.Codegen.Vulkan.Resolved.Summary (ResolvedSummary, summarizeResolved)
 

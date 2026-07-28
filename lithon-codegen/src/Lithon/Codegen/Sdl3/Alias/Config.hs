@@ -40,8 +40,8 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Sdl3.Alias.Names (AliasError (..), Safety (..))
 
 -- | The alias-layer naming rule. Single-valued today; an enum so the
@@ -170,17 +170,18 @@ validateAliasConfig
   :: Map Text Bool
   -- ^ Census: C name -> takes a callback parameter.
   -> AliasConfig
-  -> Validation (Errors AliasError) ValidatedAliasConfig
+  -> Either (Errors AliasError) ValidatedAliasConfig
 validateAliasConfig census config =
-  failUnlessEmpty
-    (unknowns <> unclassified <> conflicts)
-    ValidatedAliasConfig
-      { naming = config.naming
-      , safeties
-      , rationales = Map.mapMaybe (.rationale) config.functions
-      , renames = config.renames
-      , skipped
-      }
+  validationToEither
+    $ failUnlessEmpty
+      (unknowns <> unclassified <> conflicts)
+      ValidatedAliasConfig
+        { naming = config.naming
+        , safeties
+        , rationales = Map.mapMaybe (.rationale) config.functions
+        , renames = config.renames
+        , skipped
+        }
  where
   skipped = Set.fromList config.skip
 

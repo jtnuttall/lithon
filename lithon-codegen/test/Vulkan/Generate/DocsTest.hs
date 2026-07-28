@@ -14,10 +14,10 @@ import Data.Text qualified as T
 import Hedgehog
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
+import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool)
 
 import Lithon.Codegen.Backend.Hs (escapeHaddock)
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Curate (Curated (..))
 import Lithon.Codegen.Vulkan.Generate.Docs (DocKey (..), DocsMap (..), synthesizeDocs)
 import Lithon.Codegen.Vulkan.Generate.Layout (computeLayouts)

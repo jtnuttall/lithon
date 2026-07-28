@@ -21,11 +21,12 @@ import Data.Char (isAlphaNum)
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 import Data.Vector qualified as V
+import Lithon.Prelude
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Golden (goldenVsStringDiff)
 
 import Lithon.Codegen.Backend.Json (canonicalJsonBytes, digestText)
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry (Registry (..))
 import Lithon.Codegen.Vulkan.Registry.Summary (summarize)
 import Lithon.Codegen.Vulkan.Registry.Types.CDecl (Declaration (..))

@@ -26,8 +26,7 @@ module Lithon.Codegen.Vulkan.Xml.Types (
 import Data.Aeson (ToJSON (toJSON))
 import Data.Aeson qualified as Aeson
 import Data.Text qualified as T
-
-import Lithon.Codegen.Prelude
+import Lithon.Prelude
 
 -- | 1-based line/column of an open tag or text run. @'Pos' 0 0@ ('noPos') is
 -- the sentinel for "position unavailable".

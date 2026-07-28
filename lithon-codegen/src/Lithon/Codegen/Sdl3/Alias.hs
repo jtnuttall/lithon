@@ -50,9 +50,9 @@ import Lithon.HsBindgen.Hs qualified as Hs
 import Lithon.HsBindgen.HsDoc qualified as HsDoc
 import Lithon.HsBindgen.HsModule qualified as HsModule
 import Lithon.HsBindgen.SHs qualified as SHs
+import Lithon.Prelude hiding (group, one)
 import Numeric (showHex)
 
-import Lithon.Codegen.Prelude hiding (group, one)
 import Lithon.Codegen.Sdl3.Alias.Config (ValidatedAliasConfig (..))
 import Lithon.Codegen.Sdl3.Alias.Constants (
   Combine (..),
@@ -205,8 +205,8 @@ planAliasLayer
   -> Map Text [ConstantGroupPlan]
   -- ^ Planned constant groups, keyed by family base module.
   -> [FamilyDecls]
-  -> Validation (Errors AliasError) [AliasModule]
-planAliasLayer validated constantPlans families =
+  -> Either (Errors AliasError) [AliasModule]
+planAliasLayer validated constantPlans families = validationToEither
   case mintAliasNames validated.renames classified of
     Failure errs -> Failure errs
     Success minted ->

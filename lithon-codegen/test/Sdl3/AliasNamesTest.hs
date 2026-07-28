@@ -15,9 +15,9 @@ module Sdl3.AliasNamesTest (
 ) where
 
 import Data.Map.Strict qualified as Map
+import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Sdl3.Alias.Names (
   AliasError (..),
   MintedAlias (..),

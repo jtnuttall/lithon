@@ -20,12 +20,12 @@ import Data.List qualified as L
 import Data.Text qualified as T
 import Data.Text.IO qualified as TIO
 import Lithon.HsBindgen qualified as HB
+import Lithon.Prelude
 import System.Directory (createDirectoryIfMissing)
 import System.FilePath (takeDirectory, (</>))
 import System.IO.Temp (withSystemTempDirectory)
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Sdl3.Bindgen (stubEditsFor, textEditsFor)
 
 -- | Drive one toy header through the seam and hand back the translated
@@ -69,11 +69,11 @@ unit_linuxStubsRewriteTheFamily :: IO ()
 unit_linuxStubsRewriteTheFamily = do
   family <- toyFamily "SDL_system_toy.h" systemToyHeader
   shimmed <-
-    either (assertFailure . show) pure $
-      HB.applyStubEdits (stubEditsFor "SDL_system.h") family
+    either (assertFailure . show) pure
+      $ HB.applyStubEdits (stubEditsFor "SDL_system.h") family
   rendered <-
-    either (assertFailure . show) pure $
-      HB.renderFamilyWith [] shimmed
+    either (assertFailure . show) pure
+      $ HB.renderFamilyWith [] shimmed
   let everything = T.concat (map snd rendered)
   -- Two call edits land in Unsafe AND Safe, two address edits in FunPtr:
   -- six guards, each with a loud SetError stub.
@@ -88,8 +88,8 @@ unit_mainHandledInsertsDefine = do
   -- The include argument mirrors production (@SDL3\/SDL_main.h@) so the
   -- rendered wrapper splice carries the exact needle the text edit targets.
   family <-
-    toyFamily "SDL3/SDL_main.h" $
-      unlines
+    toyFamily "SDL3/SDL_main.h"
+      $ unlines
         [ "#ifndef SDL_MAIN_TOY_H"
         , "#define SDL_MAIN_TOY_H"
         , "typedef struct SDL_ToyEvent { int t; } SDL_ToyEvent;"
@@ -97,8 +97,8 @@ unit_mainHandledInsertsDefine = do
         , "#endif"
         ]
   rendered <-
-    either (assertFailure . show) pure $
-      HB.renderFamilyWith (textEditsFor "SDL_main.h") family
+    either (assertFailure . show) pure
+      $ HB.renderFamilyWith (textEditsFor "SDL_main.h") family
   assertBool "SDL_MAIN_HANDLED define inserted before the include"
     $ any (T.isInfixOf "#define SDL_MAIN_HANDLED" . snd) rendered
 
@@ -107,8 +107,8 @@ unit_shimDriftFails = do
   -- A family that never declares the guarded symbols: every stub edit
   -- must miss, and the first miss fails generation loudly.
   family <-
-    toyFamily "SDL_other_toy.h" $
-      unlines
+    toyFamily "SDL_other_toy.h"
+      $ unlines
         [ "#ifndef SDL_OTHER_TOY_H"
         , "#define SDL_OTHER_TOY_H"
         , "int SDL_ToyOther(int x);"
@@ -119,7 +119,9 @@ unit_shimDriftFails = do
     Left (HB.StubEditMissed label symbol target) -> do
       label @?= "SDL_SetLinuxThreadPriority call"
       symbol @?= "SDL_SetLinuxThreadPriority"
-      assertBool "shows the expected stub line" ("return (SDL_SetLinuxThreadPriority)" `T.isInfixOf` target)
+      assertBool
+        "shows the expected stub line"
+        ("return (SDL_SetLinuxThreadPriority)" `T.isInfixOf` target)
     Left other -> assertFailure ("unexpected transform error: " <> show other)
 
 unit_unshimmedHeaderUntouched :: IO ()
@@ -128,12 +130,12 @@ unit_unshimmedHeaderUntouched = do
   length (stubEditsFor "SDL_video.h") @?= 0
   length (textEditsFor "SDL_video.h") @?= 0
   rendered0 <-
-    either (assertFailure . show) pure $
-      HB.renderFamilyWith [] family
+    either (assertFailure . show) pure
+      $ HB.renderFamilyWith [] family
   shimmed <-
-    either (assertFailure . show) pure $
-      HB.applyStubEdits (stubEditsFor "SDL_video.h") family
+    either (assertFailure . show) pure
+      $ HB.applyStubEdits (stubEditsFor "SDL_video.h") family
   rendered1 <-
-    either (assertFailure . show) pure $
-      HB.renderFamilyWith (textEditsFor "SDL_video.h") shimmed
+    either (assertFailure . show) pure
+      $ HB.renderFamilyWith (textEditsFor "SDL_video.h") shimmed
   rendered1 @?= rendered0

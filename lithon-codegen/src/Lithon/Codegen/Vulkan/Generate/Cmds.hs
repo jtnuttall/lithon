@@ -69,9 +69,9 @@ import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Data.Vector qualified as V
+import Lithon.Prelude
 
 import Lithon.Codegen.Backend.Hs (ModulePath (..))
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Generate.Docs (DocKey (..), DocsMap (..))
 import Lithon.Codegen.Vulkan.Generate.Layout (FieldLayout (..), Layouts (..), StructLayout (..))
 import Lithon.Codegen.Vulkan.Generate.Marshal (
@@ -82,6 +82,7 @@ import Lithon.Codegen.Vulkan.Generate.Marshal (
  )
 import Lithon.Codegen.Vulkan.Generate.Modules (ModuleMap (..))
 import Lithon.Codegen.Vulkan.Generate.Names (Names (..))
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (Raw (..))
 import Lithon.Codegen.Vulkan.Registry.Micro.Len (LenLevel (..), LenSpec (..))
 import Lithon.Codegen.Vulkan.Registry.Types.Enums (BitWidth (..), EnumsKind (..))

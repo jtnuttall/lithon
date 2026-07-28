@@ -24,9 +24,10 @@ import Data.Text qualified as T
 import Hedgehog (Gen, Property, forAll, property, (===))
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
+import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, (@?=))
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.BoolExpr
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (FeaturePath (..))
 

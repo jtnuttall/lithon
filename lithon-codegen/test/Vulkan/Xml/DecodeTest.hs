@@ -31,9 +31,9 @@ import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Data.Vector qualified as V
+import Lithon.Prelude
 import Test.Tasty.HUnit (Assertion, assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Xml.Decode (
   Decode,
   ErrorKind (..),

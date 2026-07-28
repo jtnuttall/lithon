@@ -20,8 +20,7 @@ import Data.Aeson (ToJSON)
 import Data.Char (isDigit)
 import Data.List.NonEmpty qualified as NE
 import Data.Text qualified as T
-
-import Lithon.Codegen.Prelude
+import Lithon.Prelude
 
 data LenLevel
   = LenNullTerminated

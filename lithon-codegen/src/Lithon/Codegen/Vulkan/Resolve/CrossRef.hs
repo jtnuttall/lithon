@@ -12,8 +12,9 @@ module Lithon.Codegen.Vulkan.Resolve.CrossRef (
 ) where
 
 import Data.Aeson (ToJSON)
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry (Registry, Specialized)
 import Lithon.Codegen.Vulkan.Resolve.Aliases (Aliases)
 import Lithon.Codegen.Vulkan.Resolve.Enums (MaterializedEnums)

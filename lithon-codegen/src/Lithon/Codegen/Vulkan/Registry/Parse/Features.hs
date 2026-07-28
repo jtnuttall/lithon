@@ -9,8 +9,8 @@ module Lithon.Codegen.Vulkan.Registry.Parse.Features (
 import Data.List.NonEmpty qualified as NE
 import Data.Set.NonEmpty qualified as NESet
 import Data.Text qualified as T
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (parseDecimal, rawEither)
 import Lithon.Codegen.Vulkan.Registry.Micro.Literal (parseVersion)
 import Lithon.Codegen.Vulkan.Registry.Parse.Common (

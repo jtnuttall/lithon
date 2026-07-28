@@ -12,8 +12,9 @@ import Data.Aeson (ToJSON)
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Vector qualified as V
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry (Registry, Specialized)
 import Lithon.Codegen.Vulkan.Registry.Types.CDecl (Declaration (..), TypeRef (..))
 import Lithon.Codegen.Vulkan.Registry.Types.Commands (

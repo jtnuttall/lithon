@@ -3,22 +3,19 @@
 -- | The api-specialization pass over the pinned registry: SC-only and
 -- disabled content drops, api-collision pairs collapse, and the result is
 -- name-unique per namespace (proven by 'specializeToApi' returning Right).
-module Vulkan.Registry.SpecializeTest (
-  unit_specializeToVulkan,
-  unit_specializeToVulkanSC,
-) where
+module Vulkan.Registry.SpecializeTest where
 
 import Data.Vector qualified as V
+import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Registry
 import Lithon.Codegen.Vulkan.Registry.Types.Common (Api (..))
 import Lithon.Codegen.Vulkan.Registry.Types.Core (TypeDecl (..), typeBodyName)
 import Lithon.Codegen.Vulkan.Registry.Types.Features (Feature (..))
 import Vulkan.Support.Registry (pinnedRegistry)
 
-specializeOrFail :: Api -> IO (Specialized Registry)
+specializeOrFail :: (HasCallStack) => Api -> IO (Specialized Registry)
 specializeOrFail api = case specialize api pinnedRegistry of
   Failure errs ->
     assertFailure

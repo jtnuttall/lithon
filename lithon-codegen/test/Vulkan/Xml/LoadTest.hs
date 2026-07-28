@@ -22,9 +22,9 @@ module Vulkan.Xml.LoadTest (
 import Data.Map.Strict qualified as Map
 import Effectful (runEff)
 import Effectful.Resource (runResource)
+import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Xml.Load (XmlLoadError (..), loadXmlBytes, loadXmlFile)
 import Lithon.Codegen.Vulkan.Xml.Types (Pos (..), XElement (..), XNode (..), noPos)
 import Vulkan.Support.Paths (registryXmlPath)

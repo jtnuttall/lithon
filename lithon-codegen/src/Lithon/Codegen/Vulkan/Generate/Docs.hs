@@ -25,15 +25,16 @@ import Data.Aeson (ToJSON)
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Data.Vector qualified as V
+import Lithon.Prelude
 
 import Lithon.Codegen.Backend.Hs (escapeHaddock)
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Generate.Marshal (
   CountPlan (..),
   FieldPlan (..),
   StructPlan (..),
   StructPlans (..),
  )
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Resolved.Avail (
   AliasInfo (..),
   AvailExpr,

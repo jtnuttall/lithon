@@ -7,7 +7,8 @@ module Lithon.Codegen.Vulkan.Registry.Parse.Decls (
   paramD,
 ) where
 
-import Lithon.Codegen.Prelude
+import Lithon.Prelude
+
 import Lithon.Codegen.Vulkan.Registry.Micro.CDecl (decodeDeclaration)
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (rawEither)
 import Lithon.Codegen.Vulkan.Registry.Micro.ExternSync (parseExternSync)

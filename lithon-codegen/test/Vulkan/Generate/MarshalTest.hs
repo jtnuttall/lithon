@@ -8,9 +8,9 @@ module Vulkan.Generate.MarshalTest (
 ) where
 
 import Data.Set qualified as Set
+import Lithon.Prelude
 import Test.Tasty.HUnit (Assertion, assertBool, assertEqual, assertFailure)
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Curate (Curated (..))
 import Lithon.Codegen.Vulkan.Generate.Layout (computeLayouts)
 import Lithon.Codegen.Vulkan.Generate.Lower (lowerStructs)

@@ -41,8 +41,8 @@ import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Data.Vector qualified as V
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Curate.Profile (
   DependencyPolicy (..),
   LegacyCoreMode (..),
@@ -52,6 +52,7 @@ import Lithon.Codegen.Vulkan.Curate.Profile (
   ProfileExtension (..),
   ProfilePolicy (..),
  )
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.BoolExpr (
   pattern BAnd,
   pattern BAtom,

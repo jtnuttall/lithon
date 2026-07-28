@@ -21,8 +21,8 @@ module Lithon.Codegen.Vulkan.Registry.Specialize (
 ) where
 
 import GHC.Records qualified as GHC
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Registry.Types.Common (Api)
 
 newtype Specialized a = Specialized a

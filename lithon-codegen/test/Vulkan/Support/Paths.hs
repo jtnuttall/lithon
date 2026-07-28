@@ -1,27 +1,27 @@
--- | Locating the pinned Vulkan registry from wherever the test binary runs.
+{-# LANGUAGE ImplicitParams #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# OPTIONS_GHC -fplugin=Effectful.Plugin #-}
+
 module Vulkan.Support.Paths (
   registryXmlPath,
 ) where
 
-import System.Directory (doesFileExist)
+import Control.Exception (throwIO)
+import Effectful
+import Lithon.Effect.Error
+import Lithon.Effect.FileSystem
+import Lithon.Effect.Log
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Env (VulkanDirs (..), resolveVulkanDirs)
 
--- | Path to the pinned @vk.xml@. Probes relative to the working directory,
--- which is the package directory under @cabal test@ and the repo root when
--- run from there.
-registryXmlPath :: IO FilePath
-registryXmlPath = probe candidates
- where
-  candidates =
-    [ "Vulkan-Docs/xml/vk.xml"
-    , "lithon-codegen/Vulkan-Docs/xml/vk.xml"
-    , "../lithon-codegen/Vulkan-Docs/xml/vk.xml"
-    ]
-  probe [] =
-    fail
-      "vk.xml not found; expected the Vulkan-Docs submodule at \
-      \lithon-codegen/Vulkan-Docs (is the submodule initialized?)"
-  probe (c : cs) = do
-    exists <- doesFileExist c
-    if exists then pure c else probe cs
+registryXmlPath :: (HasCallStack) => IO FilePath
+registryXmlPath =
+  runEff . runLog "test" $ runFileSystem do
+    r <- runError resolveVulkanDirs
+    case r of
+      Right a -> pure a.vulkanXmlFile
+      Left (cs, e) -> do
+        logError $ "Failed to resolve vulkan environment" :# ["error" .= show @Text e]
+        let ?callStack = cs
+        liftIO (throwIO e)

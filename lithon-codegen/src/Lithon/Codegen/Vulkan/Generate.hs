@@ -16,11 +16,12 @@ module Lithon.Codegen.Vulkan.Generate (
   generate,
 ) where
 
+import Data.Aeson qualified as A
 import Data.Generics.SOP.Builder.Typed qualified as TB
 import Data.Map.Strict qualified as Map
+import Lithon.Prelude
 
 import Lithon.Codegen.Backend.Hs (moduleFilePath)
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Curate (Curated (..))
 import Lithon.Codegen.Vulkan.Generate.Cmds (
   CmdsError,
@@ -57,7 +58,7 @@ data GenerateError
   | GDocs DocsError
   | GRender RenderError
   deriving stock (Eq, Generic, Show)
-  deriving anyclass (HasDatatypeInfo, NFData, SOPGeneric)
+  deriving anyclass (A.ToJSON, HasDatatypeInfo, NFData, SOPGeneric)
   deriving (Display) via (GDisplayNoDelim GenerateError)
 
 -- | Run the generate chain over a curated registry.

@@ -61,8 +61,7 @@ import Data.Char (isAlphaNum, isDigit)
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
-
-import Lithon.Codegen.Prelude hiding (group)
+import Lithon.Prelude hiding (group)
 
 -- | How a group's members combine: a bitmask vocabulary (documented with
 -- the 'Data.Bits..|.' idiom) or a plain value space. Purely documentary —
@@ -388,9 +387,11 @@ planConstants
   -- ^ Probed @sizeof@ per group type, bytes.
   -> Map Text Integer
   -- ^ Probed value per member macro.
-  -> Validation (Errors ConstantError) [ConstantGroupPlan]
+  -> Either (Errors ConstantError) [ConstantGroupPlan]
 planConstants config families sizeofs values =
-  overlapCheck *> traverse planGroup (Map.toAscList config.groups)
+  validationToEither
+    $ overlapCheck
+    *> traverse planGroup (Map.toAscList config.groups)
  where
   familiesOf typeName =
     [f | f <- families, Map.member typeName f.newtypeConstrs]

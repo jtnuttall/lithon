@@ -10,8 +10,9 @@ module Lithon.Codegen.Vulkan.Registry.Parse.Misc (
 ) where
 
 import Data.Text qualified as T
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (parseDecimal, rawEither)
 import Lithon.Codegen.Vulkan.Registry.Parse.Common (
   commentAttr,

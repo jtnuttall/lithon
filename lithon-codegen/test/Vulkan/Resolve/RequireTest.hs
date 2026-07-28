@@ -12,9 +12,9 @@ module Vulkan.Resolve.RequireTest (
 import Data.List.NonEmpty qualified as NE
 import Data.Map.Strict qualified as Map
 import Data.Vector qualified as V
+import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (FeaturePath (..))
 import Lithon.Codegen.Vulkan.Resolve.Require (Requirements (..))
 import Lithon.Codegen.Vulkan.Resolved.Avail (

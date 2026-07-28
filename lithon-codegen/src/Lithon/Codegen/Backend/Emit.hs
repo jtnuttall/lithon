@@ -29,7 +29,7 @@ import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Data.Version (showVersion)
-import Effectful (Eff, IOE, (:>))
+import Effectful
 import Effectful.Concurrent.Async (
   Concurrent,
   forConcurrently,
@@ -54,6 +54,8 @@ import Effectful.FileSystem.IO.ByteString.Lazy qualified as ELBS
 import Hpack qualified
 import Hpack.Config qualified as Hpack
 import Hpack.Error qualified as Hpack
+import Lithon.Effect.Log
+import Lithon.Prelude
 import System.FilePath (
   addTrailingPathSeparator,
   isAbsolute,
@@ -69,19 +71,18 @@ import System.Process.Typed qualified as P
 import Text.Regex.TDFA ((=~))
 
 import Lithon.Codegen.Backend.Json (canonicalJsonBytes, digestText)
-import Lithon.Codegen.Effect.Log
-import Lithon.Codegen.Prelude
 import Paths_lithon_codegen qualified
 
 data EmitError
   = UnsafePaths Text [Text]
   | EmitCheckFailed EmitTarget [Text]
   | CommandFailed Text (P.ProcessConfig () () ()) ProcessFailureCode ProcessStdout ProcessStderr
+  | ManifestDecodeError FilePath String
   | PackageYamlMissing FilePath
   | HpackError Hpack.HpackError
   | HpackBadResult Hpack.Result
   | UnresolvableFilePath FilepathResolutionError
-  deriving stock (Show)
+  deriving stock (Generic, Show)
 
 instance From Hpack.HpackError EmitError where
   from = HpackError
@@ -132,6 +133,18 @@ instance Display EmitError where
 
               Command: $cfgd
             |]
+    ManifestDecodeError path err ->
+      let pathd = from path
+          errd = from err
+       in from
+            [trimmingQQ|
+               manifest $pathd exists but does not decode:
+
+                 $errd
+
+               Refusing to proceed to avoid orphaning manifest files. Restore it from Git 
+               history or regenerate from a clean checkout.
+             |]
     PackageYamlMissing path ->
       let pathd = from path
        in from
@@ -209,7 +222,6 @@ emitPackage
      , Log :> es
      , Concurrent :> es
      , FileSystem :> es
-     , Error Text :> es
      , Error EmitError :> es
      )
   => EmitStrategy -> EmitTarget -> Map FilePath Text -> Eff es ()
@@ -223,7 +235,6 @@ emitPackageWith
      , Log :> es
      , Concurrent :> es
      , FileSystem :> es
-     , Error Text :> es
      , Error EmitError :> es
      )
   => FormatMode -> EmitStrategy -> EmitTarget -> Map FilePath Text -> Eff es ()
@@ -319,7 +330,6 @@ emitWith
      , Concurrent :> es
      , Log :> es
      , FileSystem :> es
-     , Error Text :> es
      , Error EmitError :> es
      )
   => FormatMode
@@ -428,7 +438,7 @@ emitCabalFile staging = do
     pure $ takeFileName r.resultCabalFile
 
 listStaleFiles
-  :: (Error Text :> es, Error EmitError :> es, FileSystem :> es)
+  :: (HasCallStack, Error EmitError :> es, FileSystem :> es)
   => FilePath -> [FileMeta] -> Eff es [FilePath]
 listStaleFiles manifestPath entries = bool (pure []) checkedRead =<< doesFileExist manifestPath
  where
@@ -445,18 +455,7 @@ listStaleFiles manifestPath entries = bool (pure []) checkedRead =<< doesFileExi
     bytes <- EBS.readFile path
     case A.eitherDecode @Manifest (LBS.fromStrict bytes) of
       Right m -> pure m
-      Left err ->
-        let pathd = from path
-            errd = show err
-         in throwError_
-              [trimmingQQ|
-                    manifest $pathd exists but does not decode:
-
-                      $errd
-
-                    Refusing to proceed to avoid orphaning manifest files. Restore it from Git 
-                    history or regenerate from a clean checkout.
-                  |]
+      Left err -> throwError (ManifestDecodeError path err)
 
 checkEmission
   :: (Error EmitError :> es, FileSystem :> es, Log :> es)
@@ -508,8 +507,13 @@ cleanDirectory dir = do
   exists <- doesDirectoryExist dir
   when exists (removeDirectoryRecursive dir)
 
-data FilepathResolutionError = FilepathResolutionError {message :: Text, source :: FilePath, target :: FilePath}
-  deriving stock (Show)
+data FilepathResolutionError = FilepathResolutionError
+  { message :: Text
+  , source :: FilePath
+  , target :: FilePath
+  }
+  deriving stock (Generic, Show)
+  deriving anyclass (A.ToJSON)
 
 instance Display FilepathResolutionError where
   displayBuilder e =

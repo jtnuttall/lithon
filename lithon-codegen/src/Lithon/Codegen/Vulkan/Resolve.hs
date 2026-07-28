@@ -15,8 +15,8 @@ module Lithon.Codegen.Vulkan.Resolve (
 ) where
 
 import Data.Generics.SOP.Builder.Typed qualified as TB
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Registry
 import Lithon.Codegen.Vulkan.Registry.Types.Common (Api)
 import Lithon.Codegen.Vulkan.Resolve.Aliases (AliasError, resolveAliases)

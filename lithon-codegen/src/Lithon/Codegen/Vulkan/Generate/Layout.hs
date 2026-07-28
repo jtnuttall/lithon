@@ -32,8 +32,8 @@ import Data.Char qualified as Char
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
+import Lithon.Prelude
 
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Vulkan.Generate.Lower (
   CPrim (..),
   CType (..),
@@ -41,6 +41,7 @@ import Lithon.Codegen.Vulkan.Generate.Lower (
   LoweredMember (..),
   primSizeAlign,
  )
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Types.Enums (BitWidth (..))
 import Lithon.Codegen.Vulkan.Resolved.Core (ResolvedStruct (..), StructKind (..))
 import Lithon.Codegen.Vulkan.Resolved.Registry (ResolvedRegistry (..))

@@ -18,11 +18,11 @@ import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as T
+import Lithon.Prelude
 import System.Directory qualified as Dir
 import System.FilePath (joinPath, (</>))
 
 import Lithon.Codegen.Backend.Hs (moduleNameFilePath)
-import Lithon.Codegen.Prelude
 import Lithon.Codegen.Sdl3.Abi (AbiMacroConst, renderAbiAssertions)
 import Lithon.Codegen.Sdl3.Bindgen (HeaderResult (..), baseNamespace, mainIncludes)
 

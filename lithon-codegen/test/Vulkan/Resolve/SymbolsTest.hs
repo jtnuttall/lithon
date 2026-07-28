@@ -11,9 +11,10 @@ module Vulkan.Resolve.SymbolsTest (
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Vector qualified as V
+import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Prelude
+import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry (Registry (..))
 import Lithon.Codegen.Vulkan.Registry.Micro.Common (FeaturePath (..))
 import Lithon.Codegen.Vulkan.Registry.Types.Common (ApiSet (..))
