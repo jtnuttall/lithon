@@ -102,6 +102,7 @@ library
     , typed-process ==0.2.*
     , typed-product-builder
     , universum ==1.8.*
+    , unliftio ==0.2.*
     , unordered-containers ==0.2.*
     , validation ==1.2.*
     , witch ==1.4.*

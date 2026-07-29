@@ -1,13 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell #-}
 
--- | The committed alias registry decodes and its census validation is
--- loud, total, and accumulating. Live agreement between the committed
--- registry and the real function census is @sdl3 generate --check@'s job;
--- these tests pin the decode surface and every validation failure path
--- over synthetic censuses.
 module Sdl3.AliasConfigTest where
 
 import Data.ByteString.Lazy qualified as LBS
+import Data.FileEmbed (embedFileRelative)
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Lithon.Prelude
@@ -23,13 +20,9 @@ import Lithon.Codegen.Sdl3.Alias.Config (
  )
 import Lithon.Codegen.Sdl3.Alias.Names (AliasError (..), Safety (..))
 
--- Relative to the lithon-codegen package directory (the test CWD).
-registryPath :: FilePath
-registryPath = "sdl3/aliases.json"
-
 unit_committedRegistryDecodes :: IO ()
 unit_committedRegistryDecodes = do
-  bytes <- LBS.readFile registryPath
+  let bytes = LBS.fromStrict $(embedFileRelative "data/sdl3/aliases.json")
   config <- either (assertFailure . toString) pure (decodeAliasConfig bytes)
   config.naming @?= CamelSegments
   config.renames @?= mempty

@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# OPTIONS_GHC -Wno-orphans #-}
 
 -- | The accumulated-error bundle every fallible pass produces.
 --
@@ -29,11 +30,16 @@ module Lithon.Prelude.Errors (
   validationEither,
   eitherToValidation,
   validationToEither,
+
+  -- * 'UnliftIO.Exception'
+  UnliftIO.StringException,
+  throwString,
 ) where
 
 import Control.DeepSeq (NFData)
 import Control.Lens (Iso', review, view)
 import Control.Monad.Error.Class (MonadError, liftEither)
+import Control.Monad.IO.Class (MonadIO)
 import Data.Aeson qualified as A
 import Data.Bifunctor (first)
 import Data.DList.DNonEmpty (DNonEmpty)
@@ -43,6 +49,8 @@ import Data.Text.Display (Display (..))
 import Data.Validation (ReviewFailure (..), ReviewSuccess (..), Validation (..))
 import Data.Validation qualified as Validation
 import Universum.Container (Container)
+import Universum.String (ToString (toString))
+import UnliftIO.Exception qualified as UnliftIO
 import Witch (From (..))
 import Prelude
 
@@ -94,3 +102,12 @@ eitherToValidation = review Validation.either
 
 validationToEither :: Validation a b -> Either a b
 validationToEither = view Validation.either
+
+instance From (Either a b) (Validation a b) where
+  from = eitherToValidation
+
+instance From (Validation a b) (Either a b) where
+  from = validationToEither
+
+throwString :: (MonadIO m, ToString a) => a -> m b
+throwString = UnliftIO.throwString . toString

@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 -- | Census golden over the COMMITTED sdl3 artifacts (like the Vulkan
 -- 382-wrapper census): per-header category-module coverage, spec
@@ -11,12 +12,14 @@ module Sdl3.CensusTest (test_sdl3Census) where
 import Data.Aeson qualified as Aeson
 import Data.ByteString qualified as BS
 import Data.ByteString.Lazy qualified as LBS
+import Data.FileEmbed (embedFileRelative, makeRelativeToProject)
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 import Effectful (runPureEff)
 import Effectful.Error.Dynamic (runErrorNoCallStack)
+import Language.Haskell.TH (stringE)
 import Lithon.Prelude
 import System.Directory (listDirectory)
 import Test.Tasty (TestTree)
@@ -28,11 +31,14 @@ import Lithon.Codegen.Sdl3.Alias.Config (AliasConfig (..), FunctionEntry (..), d
 import Lithon.Codegen.Sdl3.Alias.Names (Safety (..))
 import Lithon.Codegen.Sdl3.Bindgen (BindgenError, baseNamespace, mangleModule)
 
--- Paths are relative to the lithon-codegen package directory (the test
--- CWD under `cabal test`).
 packageDir, specDir :: FilePath
-packageDir = "../sdl3-bindgen-sys"
-specDir = "sdl3/spec"
+packageDir = $(stringE =<< makeRelativeToProject "../sdl3-bindgen-sys")
+specDir = $(stringE =<< makeRelativeToProject "data/sdl3/spec")
+
+aliasesRegistry :: AliasConfig
+aliasesRegistry = case decodeAliasConfig $ LBS.fromStrict $(embedFileRelative "data/sdl3/aliases.json") of
+  Left e -> error $ "aliases.json failed to decode: " <> show e
+  Right a -> a
 
 categories :: [(Text, Text)]
 categories =
@@ -56,10 +62,6 @@ test_sdl3Census =
       maybe (error "unreadable sdl3-bindgen-sys manifest") pure
         . Aeson.decode
         =<< LBS.readFile (packageDir <> "/" <> manifestFileName)
-    registry <-
-      either (error . ("unreadable aliases.json: " <>)) pure
-        . decodeAliasConfig
-        =<< LBS.readFile "sdl3/aliases.json"
     specs <- sort . map T.pack <$> listDirectory specDir
     let srcPaths = [p | p <- Map.keys manifest.files, "src/" `isPrefixOf` p]
         moduleNames =
@@ -93,7 +95,7 @@ test_sdl3Census =
           Set.toList
             (moduleNames `Set.difference` familyModules `Set.difference` curatedModules)
         classified safety =
-          length [() | e <- Map.elems registry.functions, e.safety == safety]
+          length [() | e <- Map.elems aliasesRegistry.functions, e.safety == safety]
     wrapperModules <- countWrapperModules srcPaths
     pure
       $ LBS.fromStrict
@@ -112,9 +114,9 @@ test_sdl3Census =
             <> " unsafe-only="
             <> T.show (classified UnsafeOnly)
             <> " renames="
-            <> T.show (Map.size registry.renames)
+            <> T.show (Map.size aliasesRegistry.renames)
             <> " skip="
-            <> T.show (length registry.skip)
+            <> T.show (length aliasesRegistry.skip)
         , "facades: " <> T.unwords facades
         , "per-header:"
         ]

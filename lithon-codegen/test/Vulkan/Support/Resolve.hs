@@ -1,26 +1,11 @@
--- | Shared phase-2 pass results over the pinned registry, computed once as
--- CAFs. Tests that exercise a pass directly should run it themselves (for
--- proper failure reporting); tests of DOWNSTREAM passes use these. Passes
--- take their inputs through @HasType@ constraints, so a bare value or a
--- tuple of the pinned artifacts serves as the context.
-module Vulkan.Support.Resolve (
-  pinnedSpecialized,
-  pinnedTiered,
-  pinnedSymbols,
-  pinnedAliases,
-  pinnedRequirements,
-  pinnedMaterialized,
-  pinnedTypeGraph,
-  pinnedFlows,
-  pinnedResolved,
-  lithonProfile,
-  pinnedCurated,
-) where
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell #-}
+
+module Vulkan.Support.Resolve where
 
 import Data.ByteString.Lazy qualified as LBS
+import Data.FileEmbed (embedFileRelative)
 import Lithon.Prelude
-import System.Directory (doesFileExist)
-import System.IO.Unsafe (unsafePerformIO)
 
 import Lithon.Codegen.Vulkan.Curate (Curated, curate)
 import Lithon.Codegen.Vulkan.Curate.Profile (Profile, decodeProfile)
@@ -78,18 +63,11 @@ pinnedFlows = flows
 pinnedResolved :: ResolvedRegistry
 pinnedResolved = orDie "resolve" (resolveRegistry ApiVulkan pinnedRegistry)
 
--- | The checked-in lithon-core profile.
 lithonProfile :: Profile
-lithonProfile = unsafePerformIO do
-  path <- probe ["profiles/lithon-core.json", "lithon-codegen/profiles/lithon-core.json"]
-  bytes <- LBS.readFile path
-  either (fail . ("lithon-core profile: " <>) . show) pure (decodeProfile bytes)
- where
-  probe [] = fail "profiles/lithon-core.json not found"
-  probe (p : rest) = do
-    exists <- doesFileExist p
-    if exists then pure p else probe rest
-{-# NOINLINE lithonProfile #-}
+lithonProfile =
+  case decodeProfile (LBS.fromStrict $(embedFileRelative "data/vulkan/profiles/lithon-core.json")) of
+    Left e -> error $ "Failed to decode lithon core profile: " <> show e
+    Right p -> p
 
 pinnedCurated :: Curated
 pinnedCurated = orDie "curation" (curate lithonProfile pinnedResolved)

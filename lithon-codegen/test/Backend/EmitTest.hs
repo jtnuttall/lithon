@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE QuasiQuotes #-}
 {-# OPTIONS_GHC -fplugin=Effectful.Plugin #-}
 
 module Backend.EmitTest where
@@ -21,7 +22,6 @@ import Test.Tasty.HUnit (Assertion, assertBool, assertEqual, assertFailure)
 
 import Lithon.Codegen.Backend.Emit (
   EmitEffect (..),
-  EmitError,
   EmitStrategy (..),
   EmitTarget (..),
   FormatMode (..),
@@ -114,9 +114,18 @@ unit_unsafeManifestPathsRefused = withSystemTempDirectory "emit-test" \root -> d
       outside = root </> "outside.txt"
   Dir.createDirectoryIfMissing True out
   TIO.writeFile outside "must survive\n"
-  TIO.writeFile (out </> manifestFileName)
-    $ "{\"generatorVersion\":\"0\",\"meta\":{},\"files\":"
-    <> "{\"/etc/hostname\":\"x\",\"../outside.txt\":\"y\"}}"
+  TIO.writeFile
+    (out </> manifestFileName)
+    [trimmingQQ| 
+      {
+        "generatorVersion":"0",
+        "meta":{},
+        "files": {
+          "/etc/hostname": "rhv3:1234567890abcdef",
+          "../outside.txt": "rhv3:1234567890abcdef"
+        }
+      }
+    |]
   r <- runEmit ArtifactsOnly (target out) twoFiles
   expectLeftContaining ["/etc/hostname", "../outside.txt", "Unsafe output path"] r
   survived <- Dir.doesFileExist outside
