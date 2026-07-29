@@ -341,7 +341,7 @@
     "src/SDL3/Sys/Video.hs": "rhv3:f4fc388f78f3ae2b",
     "src/SDL3/Sys/Vulkan.hs": "rhv3:34a06391149ab60a"
   },
-  "generatorVersion": "0.1.0.0",
+  "generatorVersion": "0.1.1.0",
   "meta": {
     "aliasConfig": "rhv3:3ff69829b44e13b1",
     "aliasNaming": "camel-segments",

@@ -279,7 +279,7 @@
     "src/Lithon/Vk/Result.hs": "rhv3:ec4d8c6b4a4a37fe",
     "src/Lithon/Vk/Version.hs": "rhv3:89bd0b48e7b5bd81"
   },
-  "generatorVersion": "0.1.0.0",
+  "generatorVersion": "0.1.1.0",
   "meta": {
     "profileName": "lithon-core",
     "registryHeaderVersion": 356

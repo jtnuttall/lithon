@@ -5,7 +5,7 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           lithon-codegen
-version:        0.1.0.0
+version:        0.1.1.0
 synopsis:       Code generator for lithon-vk and sdl3-bindgen-sys
 description:    Lithon's code generation tool. Lithon aims to be a performant, modern Vulkan binding amenable to type-level programming.
 category:       Graphics

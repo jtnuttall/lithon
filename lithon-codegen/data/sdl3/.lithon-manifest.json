@@ -59,7 +59,7 @@
     "spec/SDL_video.yaml": "rhv3:4e441f9d48352047",
     "spec/SDL_vulkan.yaml": "rhv3:1b71b380210d0844"
   },
-  "generatorVersion": "0.1.0.0",
+  "generatorVersion": "0.1.1.0",
   "meta": {
     "headers": 58,
     "sdlVersion": "3.4.2"

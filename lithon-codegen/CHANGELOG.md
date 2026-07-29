@@ -1,6 +1,18 @@
 # Changelog
 
-## Unreleased
+## 0.1.1.0 - 2026-07-29
+
+### Changed
+
+- Internal refactor of codegen tool to standardize effect handling, prepare
+  for more bindings.
+- Changelog now in keep-a-changelog format
+- Tests now use Data.FileEmbed to prevent drift
+- Per-API specifications now live in a data directory
+
+## 0.1.0.0 - 2026-07-27
+
+### Added
 
 Vulkan generator:
 
@@ -45,7 +57,3 @@ SDL3 alias layer:
 - `SDL_main` is omitted at the bindgen level (prescriptive
   `overrides.yaml`): no C shim, no `&SDL_main` accessor, no alias — the
   symbol belongs to the application.
-
-## 0.1.0.0
-
-- Initial scaffolding.
