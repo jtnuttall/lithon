@@ -71,6 +71,7 @@ dependencies:
   - binary ^>=0.8
   - bytestring ^>=0.12
   - bytestring-lexing ^>=0.5
+  - deepseq >=1.5 && <1.7
   - hashable ^>=1.5
   - primitive >=0.8 && <0.10
   - text ^>=2.1
@@ -137,7 +138,7 @@ benchmarks:
     dependencies:
       - rapidhash
       - bytestring ^>=0.12
-      - deepseq >=1.5 && <1.7
+      - deepseq >=1.4 && <1.7
       - hashable ^>=1.5
       - murmur-hash ^>=0.1
       - tasty ^>=1.5

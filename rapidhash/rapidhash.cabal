@@ -102,6 +102,7 @@ library
     , binary ==0.8.*
     , bytestring ==0.12.*
     , bytestring-lexing ==0.5.*
+    , deepseq >=1.5 && <1.7
     , hashable ==1.5.*
     , primitive >=0.8 && <0.10
     , text ==2.1.*
@@ -144,6 +145,7 @@ test-suite rapidhash-doctest
     , binary ==0.8.*
     , bytestring ==0.12.*
     , bytestring-lexing ==0.5.*
+    , deepseq >=1.5 && <1.7
     , doctest-parallel ==0.4.*
     , hashable ==1.5.*
     , primitive >=0.8 && <0.10
@@ -184,6 +186,7 @@ test-suite rapidhash-test
     , binary ==0.8.*
     , bytestring ==0.12.*
     , bytestring-lexing ==0.5.*
+    , deepseq >=1.5 && <1.7
     , hashable ==1.5.*
     , hedgehog ==1.7.*
     , primitive >=0.8 && <0.10
@@ -224,7 +227,7 @@ benchmark rapidhash-bench
     , binary ==0.8.*
     , bytestring ==0.12.*
     , bytestring-lexing ==0.5.*
-    , deepseq >=1.5 && <1.7
+    , deepseq >=1.4 && <1.7
     , hashable ==1.5.*
     , murmur-hash ==0.1.*
     , primitive >=0.8 && <0.10

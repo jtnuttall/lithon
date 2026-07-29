@@ -25,6 +25,7 @@ module Data.Hash.RapidHash.Types (
   readsRapidHash,
 ) where
 
+import Control.DeepSeq (NFData)
 import Control.Monad (when)
 import Control.Monad.ST.Strict (ST)
 import Data.Binary (Binary)
@@ -79,7 +80,7 @@ import Prelude (
 -- | Minimal wrapper around a rapidhash seed.
 newtype RapidSeed = RapidSeed Word64
   deriving stock (Generic, Read, Show)
-  deriving newtype (Eq, Num, Ord)
+  deriving newtype (Eq, NFData, Num, Ord)
 
 -- | rapidhash's default seed is 0 in the reference implementation
 defaultSeed :: RapidSeed
@@ -102,7 +103,7 @@ defaultSeed = RapidSeed 0
 -- rhv3:0000000000000abc
 newtype RapidHash = RapidHash Word64
   deriving stock (Generic)
-  deriving newtype (Eq, Hashable, Ord)
+  deriving newtype (Eq, Hashable, NFData, Ord)
 
 -- |
 -- The prefix used during serialization and deserialization. This is not a universal
