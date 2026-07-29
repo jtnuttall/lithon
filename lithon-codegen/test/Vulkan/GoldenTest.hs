@@ -11,21 +11,19 @@
 --
 -- Regenerate after INTENDED changes with:
 -- @cabal test lithon-codegen-test --test-options=--accept@
-module Vulkan.GoldenTest (
-  test_goldens,
-) where
+module Vulkan.GoldenTest where
 
 import Data.Aeson (Value, toJSON)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Char (isAlphaNum)
+import Data.Hash.RapidHash
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
 import Data.Vector qualified as V
 import Lithon.Prelude
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Golden (goldenVsStringDiff)
 
-import Lithon.Codegen.Backend.Json (canonicalJsonBytes, digestText)
+import Lithon.Codegen.Backend.Json (canonicalJsonBytes)
 import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry (Registry (..))
 import Lithon.Codegen.Vulkan.Registry.Summary (summarize)
@@ -84,7 +82,7 @@ test_goldens =
       , golden
           "full-dump-digest"
           "test/golden/registry.digest"
-          (LBS.fromStrict (TE.encodeUtf8 (digestText (canonicalJsonBytes reg) <> "\n")))
+          (show @LByteString (rapidhash (LBS.toStrict (canonicalJsonBytes reg))) <> "\n")
       ]
         <> map sliceGolden sliceNames
     )

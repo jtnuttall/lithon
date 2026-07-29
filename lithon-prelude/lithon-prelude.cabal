@@ -76,6 +76,7 @@ library
     , effectful-core ==2.6.*
     , effectful-plugin ==2.1.*
     , effectful-th ==1.0.*
+    , extra ==1.8.*
     , filepath ==1.5.*
     , generic-lens ==2.3.*
     , generics-sop ==0.5.*

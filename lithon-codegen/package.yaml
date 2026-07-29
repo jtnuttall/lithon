@@ -11,9 +11,9 @@ synopsis: Code generator for lithon-vk and sdl3-bindgen-sys
 description: Lithon's code generation tool. Lithon aims to be a performant, modern Vulkan binding amenable to type-level programming.
 
 extra-source-files:
-  - sdl3/static/*
-  - sdl3/*.json
-  - sdl3/overrides.yaml
+  - data/sdl3/static/*
+  - data/sdl3/*.json
+  - data/sdl3/overrides.yaml
 
 extra-doc-files:
   - README.md
@@ -75,6 +75,7 @@ dependencies:
   - effectful ^>=2.6
   - effectful-core ^>=2.6
   - effectful-plugin ^>=2.1
+  - extra ^>=1.8
   - file-embed >=0.0.16 && <0.0.17
   - filepath ^>=1.5
   - generic-lens ^>=2.3

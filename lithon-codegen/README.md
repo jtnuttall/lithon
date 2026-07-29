@@ -145,15 +145,6 @@ the core-version window (`baseline` … `max`), target `platforms`, the
 block (dependency-closure mode, promoted-to-core handling, provisional/deprecated
 toggles, legacy-core categories, registry-drift warning).
 
-One profile ships today — `profiles/lithon-core.json`, the lithon engine surface
-(Vulkan 1.3 baseline with optional 1.4, modern WSI, debugging/perf tooling, ray
-tracing, mesh shading, and the dynamic-pipeline family; Turing/RDNA2-class and
-newer). The mechanism is generic, though: point `--profile` at your own JSON to
-curate a different surface. The closure auto-selects transitive dependencies and
-the extension spellings of anything promoted to a selected core version;
-`<deprecate>`-block categories listed under `policy.legacyCore` (sync1,
-render-pass 1/2) are excluded unless something selected still references them.
-
 ## SDL3
 
 The SDL3 pipeline drives `hs-bindgen` (through `lithon-hs-bindgen`) over the SDL

@@ -6,21 +6,25 @@
 -- | Assembling the @sdl3-bindgen-sys@ package itself. The code generator
 -- owns everything in the package; nothing in it is ever edited by hand.
 module Lithon.Codegen.Sdl3.Package (
+  FileTree (..),
   assemblePackage,
   packageYaml,
   readme,
   changelog,
 ) where
 
-import Data.ByteString qualified as BS
 import Data.FileEmbed (embedFileRelative)
+import Data.List.Extra (dropPrefix)
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as T
+import Effectful
+import Effectful.FileSystem.IO.ByteString qualified as EBS
+import Lithon.Effect.FileSystem
+import Lithon.Effect.Log
 import Lithon.Prelude
-import System.Directory qualified as Dir
-import System.FilePath (joinPath, (</>))
+import System.FilePath (addTrailingPathSeparator, isRelative, joinPath, (</>))
 
 import Lithon.Codegen.Backend.Hs (moduleNameFilePath)
 import Lithon.Codegen.Sdl3.Abi (AbiMacroConst, renderAbiAssertions)
@@ -35,19 +39,22 @@ vendorCExprDir = joinPath ["lithon-hs-bindgen", "vendor", "c-expr"]
 -- modules, the rendered @SDL3.Sys.*@ alias layer, runtime copies, facades,
 -- and metadata.
 assemblePackage
-  :: [(Text, Text)]
+  :: (HasCallStack, FileSystem :> es, Log :> es)
+  => [(Text, Text)]
   -> [AbiMacroConst]
   -- ^ Probed typed-constant values (curated layer), re-asserted in the TU.
   -> [HeaderResult]
-  -> IO (Either Text (Map FilePath Text))
+  -> Eff es (Either Text FileTree)
 assemblePackage aliasModules macroConsts results = do
-  runtime <- copyTree (vendorRuntimeDir </> "src") "runtime"
+  runtime <- readTree (vendorRuntimeDir </> "src") "runtime"
   -- c-expr-runtime keeps two source dirs upstream (core + lib); the module
   -- trees are disjoint, so they merge into one here.
-  cexprCore <- copyTree (vendorCExprDir </> "c-expr-runtime" </> "core") "runtime-cexpr"
-  cexprLib <- copyTree (vendorCExprDir </> "c-expr-runtime" </> "lib") "runtime-cexpr"
-  hsBindgenLicense <- decodeUtf8 <$> BS.readFile (vendorRuntimeDir </> "LICENSE")
-  cexprLicense <- decodeUtf8 <$> BS.readFile (vendorCExprDir </> "LICENSE")
+  cexprCore <- readTree (vendorCExprDir </> "c-expr-runtime" </> "core") "runtime-cexpr"
+  cexprLib <- readTree (vendorCExprDir </> "c-expr-runtime" </> "lib") "runtime-cexpr"
+  hsBindgenLicense <- decodeUtf8 <$> EBS.readFile (vendorRuntimeDir </> "LICENSE")
+  cexprLicense <- decodeUtf8 <$> EBS.readFile (vendorCExprDir </> "LICENSE")
+  logInfo "Resolved file trees"
+
   pure do
     let generated =
           Map.fromList
@@ -64,26 +71,28 @@ assemblePackage aliasModules macroConsts results = do
     facades <- hsBindgenRuntimeReexports census
     abiAssertions <- renderAbiAssertions mainIncludes (concatMap (.abi) results) macroConsts
     Right
-      $ Map.unions
-        [ generated
-        , aliases
+      $ mconcat
+        [ FileTree generated
+        , FileTree aliases
         , runtime
         , cexprCore
         , cexprLib
-        , Map.fromList
-            [ (moduleNameFilePath name, source)
-            | (name, source) <- facades
-            ]
-        , Map.fromList
-            [ ("package.yaml", packageYaml)
-            , ("README.md", readme)
-            , ("CHANGELOG.md", changelog)
-            , ("cbits/abi_assertions.c", abiAssertions)
-            , ("LICENSE", lithonLicense)
-            , ("LICENSE_SDL", sdlLicense)
-            , ("LICENSE_hs-bindgen-runtime", hsBindgenLicense)
-            , ("LICENSE_c-expr-runtime", cexprLicense)
-            ]
+        , FileTree
+            $ Map.fromList
+              [ (moduleNameFilePath name, source)
+              | (name, source) <- facades
+              ]
+        , FileTree
+            $ Map.fromList
+              [ ("package.yaml", packageYaml)
+              , ("README.md", readme)
+              , ("CHANGELOG.md", changelog)
+              , ("cbits/abi_assertions.c", abiAssertions)
+              , ("LICENSE", lithonLicense)
+              , ("LICENSE_SDL", sdlLicense)
+              , ("LICENSE_hs-bindgen-runtime", hsBindgenLicense)
+              , ("LICENSE_c-expr-runtime", cexprLicense)
+              ]
         ]
 
 -- | Every @HsBindgen.Runtime.*@ \/ @C.Expr.*@ module imported by the
@@ -205,13 +214,13 @@ runtimeLeafFacades =
   ]
 
 packageYaml :: Text
-packageYaml = T.decodeUtf8 $(embedFileRelative "sdl3/static/package.yaml")
+packageYaml = T.decodeUtf8 $(embedFileRelative "data/sdl3/static/package.yaml")
 
 readme :: Text
-readme = T.decodeUtf8 $(embedFileRelative "sdl3/static/README.md")
+readme = T.decodeUtf8 $(embedFileRelative "data/sdl3/static/README.md")
 
 changelog :: Text
-changelog = T.decodeUtf8 $(embedFileRelative "sdl3/static/CHANGELOG.md")
+changelog = T.decodeUtf8 $(embedFileRelative "data/sdl3/static/CHANGELOG.md")
 
 lithonLicense :: Text
 lithonLicense = T.decodeUtf8 $(embedFileRelative "../LICENSE")
@@ -224,19 +233,19 @@ lithonLicense = T.decodeUtf8 $(embedFileRelative "../LICENSE")
 sdlLicense :: Text
 sdlLicense = T.decodeUtf8 $(embedFileRelative "../LICENSE_SDL3")
 
+newtype FileTree = FileTree (Map FilePath Text)
+  deriving stock (Show)
+  deriving newtype (Monoid, Semigroup)
+
 -- | Read a source tree verbatim: relative path under @root@ -> text,
 -- re-rooted at @dest@.
-copyTree :: FilePath -> FilePath -> IO (Map FilePath Text)
-copyTree root dest = go ""
- where
-  go rel = do
-    let dir = if null rel then root else root </> rel
-    entries <- Dir.listDirectory dir
-    fmap Map.unions . forM (sort entries) $ \entry -> do
-      let relPath = if null rel then entry else rel </> entry
-      isDir <- Dir.doesDirectoryExist (root </> relPath)
-      if isDir then
-        go relPath
-      else do
-        contents <- decodeUtf8 <$> BS.readFile (root </> relPath)
-        pure (Map.singleton (dest </> relPath) contents)
+readTree :: (HasCallStack, Log :> es, FileSystem :> es) => FilePath -> FilePath -> Eff es FileTree
+readTree root dest
+  | isRelative root = do
+      logInfo $ "reading tree" :# ["root" .= root, "dest" .= dest]
+      paths <- listFilesRecursive root
+      FileTree . Map.fromList <$> for paths \rootPath -> do
+        contents <- decodeUtf8 <$> EBS.readFile rootPath
+        let pathSeg = dropPrefix (addTrailingPathSeparator root) rootPath
+        pure (dest </> pathSeg, contents)
+  | otherwise = error $ "root of readTreeRelative must be relative, but got: " <> show root

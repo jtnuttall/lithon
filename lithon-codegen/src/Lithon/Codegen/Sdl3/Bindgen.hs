@@ -250,19 +250,18 @@ mangleModule basename = do
 -- binding specifications and writes its own into @specDir@.
 chainHeaders
   :: (IOE :> es, Log :> es, Error BindgenError :> es, Sdl3Gen :> es)
-  => Maybe FilePath
-  -- ^ The curated prescriptive spec (overrides), if present.
-  -> VersionsRegistry
+  => VersionsRegistry
   -- ^ The empirical availability registry (@sdl3\/versions.json@).
   -> [HeaderUnit]
   -> Eff es [HeaderResult]
-chainHeaders overrides registry = go []
+chainHeaders registry = go []
  where
   go _ [] = pure []
   go priorSpecs (unit : rest) = do
-    SystemTempDir specDir <- getScratchDirectory
+    env <- getSdl3Env
+    let SystemTempDir specDir = env.scratchDirectory
     logInfo $ "processing header" :# ["unit" .= unit]
-    res <- runHeader specDir priorSpecs overrides registry unit
+    res <- runHeader specDir priorSpecs env.overridesRegistryPath registry unit
     (res :) <$> go ((specDir </> unit.specFile) : priorSpecs) rest
 
 -- | One header's invocation: translate every category module, apply the

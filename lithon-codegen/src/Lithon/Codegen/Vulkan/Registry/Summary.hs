@@ -9,12 +9,14 @@ module Lithon.Codegen.Vulkan.Registry.Summary (
 ) where
 
 import Data.Aeson (ToJSON)
+import Data.ByteString.Lazy qualified as LBS
+import Data.Hash.RapidHash
 import Data.Map.Strict qualified as Map
 import Data.Vector qualified as V
 import Lithon.Prelude
 import Prettyprinter (Doc, fill, pretty, vsep, (<+>))
 
-import Lithon.Codegen.Backend.Json (canonicalJsonBytes, digestText)
+import Lithon.Codegen.Backend.Json (canonicalJsonBytes)
 import Lithon.Codegen.Vulkan.Registry
 import Lithon.Codegen.Vulkan.Registry.Types.Common qualified as Common
 import Lithon.Codegen.Vulkan.Registry.Types.Core (TypeBody (..), TypeDecl (..))
@@ -33,7 +35,7 @@ data Summary = Summary
   , enumsKinds :: ![(Text, Int)]
   , extensionSupport :: ![(Text, Int)]
   , internalFeatures :: !Int
-  , sectionDigests :: ![(Text, Text)]
+  , sectionDigests :: ![(Text, RapidHash)]
   }
   deriving stock (Eq, Generic, Show)
   deriving anyclass (ToJSON)
@@ -80,8 +82,8 @@ summarize reg =
  where
   sumSync :: (SyncSection -> Vector a) -> Int
   sumSync f = sum (map (V.length . f) (V.toList reg.sync))
-  digest :: (ToJSON a) => a -> Text
-  digest = digestText . canonicalJsonBytes
+  digest :: (ToJSON a) => a -> RapidHash
+  digest = rapidhash . LBS.toStrict . canonicalJsonBytes
   histogram :: [Text] -> [(Text, Int)]
   histogram = Map.toAscList . counts
   categoryOf t = case t.body of
@@ -121,7 +123,7 @@ prettySummary s =
     , "-- features with apitype=internal:" <+> pretty s.internalFeatures
     , mempty
     , "-- section digests"
-    , vsep [fill 22 (pretty name) <+> pretty d | (name, d) <- s.sectionDigests]
+    , vsep [fill 22 (pretty name) <+> pretty (show @Text d) | (name, d) <- s.sectionDigests]
     ]
  where
   table rows = vsep [fill 22 (pretty name) <+> pretty n | (name, n) <- rows]

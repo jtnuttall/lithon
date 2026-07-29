@@ -10,11 +10,13 @@ module Lithon.Codegen.Vulkan.Resolved.Summary (
 ) where
 
 import Data.Aeson (ToJSON)
+import Data.ByteString.Lazy qualified as LBS
+import Data.Hash.RapidHash
 import Data.Map.Strict qualified as Map
 import Lithon.Prelude
 import Prettyprinter (Doc, comma, hsep, indent, pretty, punctuate, vsep, (<+>))
 
-import Lithon.Codegen.Backend.Json (canonicalJsonBytes, digestText)
+import Lithon.Codegen.Backend.Json (canonicalJsonBytes)
 import Lithon.Codegen.Vulkan.Resolved.Commands (DispatchLevel (..), ResolvedCommand (..))
 import Lithon.Codegen.Vulkan.Resolved.Enums (EnumFlow (..), ResolvedEnumBlock (..))
 import Lithon.Codegen.Vulkan.Resolved.Registry (ResolvedRegistry (..))
@@ -24,7 +26,7 @@ data ResolvedSummary = ResolvedSummary
   , tableCounts :: [(Text, Int)]
   , enumFlows :: [(Text, Int)]
   , dispatchLevels :: [(Text, Int)]
-  , tableDigests :: [(Text, Text)]
+  , tableDigests :: [(Text, RapidHash)]
   }
   deriving stock (Eq, Generic, Show)
   deriving anyclass (NFData, ToJSON)
@@ -84,8 +86,8 @@ summarizeResolved reg =
         ]
     }
  where
-  digestOf :: (ToJSON a) => a -> Text
-  digestOf = digestText . canonicalJsonBytes
+  digestOf :: (ToJSON a) => a -> RapidHash
+  digestOf = rapidhash . LBS.toStrict . canonicalJsonBytes
 
 -- | Returns an abstract document tree for terminal reporting.
 prettyResolvedSummary :: ResolvedSummary -> Doc ann

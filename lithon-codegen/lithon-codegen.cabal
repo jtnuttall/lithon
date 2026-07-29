@@ -18,13 +18,13 @@ license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
-    sdl3/static/CHANGELOG.md
-    sdl3/static/package.yaml
-    sdl3/static/README.md
-    sdl3/aliases.json
-    sdl3/constants.json
-    sdl3/versions.json
-    sdl3/overrides.yaml
+    data/sdl3/static/CHANGELOG.md
+    data/sdl3/static/package.yaml
+    data/sdl3/static/README.md
+    data/sdl3/aliases.json
+    data/sdl3/constants.json
+    data/sdl3/versions.json
+    data/sdl3/overrides.yaml
 extra-doc-files:
     README.md
     CHANGELOG.md
@@ -160,6 +160,7 @@ library
     , effectful ==2.6.*
     , effectful-core ==2.6.*
     , effectful-plugin ==2.1.*
+    , extra ==1.8.*
     , file-embed ==0.0.16.*
     , filepath ==1.5.*
     , generic-lens ==2.3.*
@@ -262,6 +263,7 @@ executable lithon-codegen
     , effectful ==2.6.*
     , effectful-core ==2.6.*
     , effectful-plugin ==2.1.*
+    , extra ==1.8.*
     , file-embed ==0.0.16.*
     , filepath ==1.5.*
     , generic-lens ==2.3.*
@@ -405,6 +407,7 @@ test-suite lithon-codegen-test
     , effectful ==2.6.*
     , effectful-core ==2.6.*
     , effectful-plugin ==2.1.*
+    , extra ==1.8.*
     , file-embed ==0.0.16.*
     , filepath ==1.5.*
     , generic-lens ==2.3.*

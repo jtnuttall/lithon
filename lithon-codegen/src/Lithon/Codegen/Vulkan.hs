@@ -15,7 +15,6 @@ module Lithon.Codegen.Vulkan (
   runVulkan,
 ) where
 
-import Data.Aeson qualified as A
 import Data.Aeson qualified as Aeson
 import Data.ByteString.Lazy qualified as LBS
 import Data.Map.Strict qualified as Map
@@ -54,9 +53,11 @@ import Options.Applicative qualified as Opts
 import System.FilePath (takeDirectory)
 
 import Lithon.Codegen.Backend.Emit (
+  EmitEffect,
   EmitError,
   EmitStrategy (HaskellPackage),
   EmitTarget (..),
+  emitEffectOptP,
   emitPackage,
  )
 import Lithon.Codegen.Backend.Json (canonicalJsonBytes)
@@ -277,7 +278,7 @@ curateOptsP = do
 data GenerateOpts = GenerateOpts
   { profilePath :: FilePath
   , outDir :: FilePath
-  , checkOnly :: Bool
+  , emitEffect :: EmitEffect
   , reportPath :: Maybe FilePath
   }
 
@@ -292,8 +293,7 @@ generateOptsP = do
           <> showDefault
           <> help "Target package directory"
       )
-  checkOnly <-
-    switch (long "check" <> help "Diff fresh output against the tree; write nothing (CI gate)")
+  emitEffect <- emitEffectOptP
   reportPath <-
     optional
       ( strOption
@@ -405,7 +405,7 @@ runVulkan cmd = runErrorFrom @VulkanResolutionError $ runVulkanGen case cmd of
                 [ ("profileName", Aeson.toJSON profile.name)
                 , ("registryHeaderVersion", Aeson.toJSON curated.registry.headerVersion)
                 ]
-          , checkOnly = opts.checkOnly
+          , effect = opts.emitEffect
           }
         gen.files
 

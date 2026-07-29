@@ -1,16 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -fplugin=Effectful.Plugin #-}
 
-module Backend.EmitTest (
-  unit_syncThenCheckIsFresh,
-  unit_checkFlagsDriftAndMissing,
-  unit_corruptManifestRefused,
-  unit_unsafeManifestPathsRefused,
-  unit_shrinkDeletesStale,
-  unit_cabalTrackedAndStable,
-  unit_stagingCleanedOnFailure,
-  unit_unsafeFilesMapKeyRejected,
-) where
+module Backend.EmitTest where
 
 import Data.Aeson qualified as Aeson
 import Data.ByteString.Lazy qualified as LBS
@@ -29,6 +20,7 @@ import System.IO.Temp (withSystemTempDirectory)
 import Test.Tasty.HUnit (Assertion, assertBool, assertEqual, assertFailure)
 
 import Lithon.Codegen.Backend.Emit (
+  EmitEffect (..),
   EmitError,
   EmitStrategy (..),
   EmitTarget (..),
@@ -57,7 +49,7 @@ target out =
   EmitTarget
     { outDir = out
     , manifestMeta = mempty
-    , checkOnly = False
+    , effect = WriteFiles
     }
 
 twoFiles :: Map FilePath Text
@@ -91,17 +83,17 @@ unit_syncThenCheckIsFresh = withSystemTempDirectory "emit-test" \out -> do
   expectRight =<< runEmit ArtifactsOnly (target out) twoFiles
   m <- readManifest out
   assertEqual "manifest tracks both files" 2 (Map.size m.files)
-  expectRight =<< runEmit ArtifactsOnly (target out){checkOnly = True} twoFiles
+  expectRight =<< runEmit ArtifactsOnly (target out){effect = CheckOnly} twoFiles
 
 -- | Check names exactly what drifted: a mutated file and a deleted one.
 unit_checkFlagsDriftAndMissing :: Assertion
 unit_checkFlagsDriftAndMissing = withSystemTempDirectory "emit-test" \out -> do
   expectRight =<< runEmit ArtifactsOnly (target out) twoFiles
   TIO.writeFile (out </> "src/A.hs") "module A where\n-- drifted\n"
-  r1 <- runEmit ArtifactsOnly (target out){checkOnly = True} twoFiles
+  r1 <- runEmit ArtifactsOnly (target out){effect = CheckOnly} twoFiles
   expectLeftContaining ["differs: src/A.hs"] r1
   Dir.removeFile (out </> "src/B.hs")
-  r2 <- runEmit ArtifactsOnly (target out){checkOnly = True} twoFiles
+  r2 <- runEmit ArtifactsOnly (target out){effect = CheckOnly} twoFiles
   expectLeftContaining ["missing from tree: src/B.hs"] r2
 
 -- | A manifest that exists but does not decode is a hard stop, not a
@@ -157,14 +149,14 @@ unit_cabalTrackedAndStable = withSystemTempDirectory "emit-test" \out -> do
   assertBool "cabal written" cabalExists
   m <- readManifest out
   assertBool "cabal tracked in the manifest" (Map.member "toy.cabal" m.files)
-  expectRight =<< runEmit HaskellPackage t{checkOnly = True} files
+  expectRight =<< runEmit HaskellPackage t{effect = CheckOnly} files
   -- the regression this pins: a second sync used to judge staleness
   -- against the input map and delete the cabal it had just captured
   expectRight =<< runEmit HaskellPackage t files
   stillThere <- Dir.doesFileExist (out </> "toy.cabal")
   assertBool "second sync does not delete the cabal" stillThere
   TIO.appendFile (out </> "toy.cabal") "-- hand edit\n"
-  r <- runEmit HaskellPackage t{checkOnly = True} files
+  r <- runEmit HaskellPackage t{effect = CheckOnly} files
   expectLeftContaining ["differs: toy.cabal"] r
 
 -- | A failing emit (cabal capture with no package.yaml anywhere) leaves no

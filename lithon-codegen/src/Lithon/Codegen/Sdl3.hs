@@ -24,6 +24,7 @@ module Lithon.Codegen.Sdl3 (
 import Data.Aeson qualified as Aeson
 import Data.ByteString.Lazy qualified as LBS
 import Data.Conduit.Process.Typed (ProcessConfig)
+import Data.Hash.RapidHash
 import Data.Map.Strict qualified as Map
 import Data.Text.IO qualified as TIO
 import Effectful (Eff, IOE, (:>))
@@ -39,8 +40,14 @@ import Lithon.Prelude
 import Options.Applicative hiding (ParseError, asum)
 import System.FilePath ((</>))
 
-import Lithon.Codegen.Backend.Emit (EmitError, EmitStrategy (..), EmitTarget (..), emitPackage)
-import Lithon.Codegen.Backend.Json (digestText)
+import Lithon.Codegen.Backend.Emit (
+  EmitEffect (..),
+  EmitError,
+  EmitStrategy (..),
+  EmitTarget (..),
+  emitEffectOptP,
+  emitPackage,
+ )
 import Lithon.Codegen.Sdl3.Abi (AbiMacroConst (..))
 import Lithon.Codegen.Sdl3.Alias (
   AliasModule (..),
@@ -88,7 +95,7 @@ import Lithon.Codegen.Sdl3.Env (
   getSdl3Env,
   runSdl3Gen,
  )
-import Lithon.Codegen.Sdl3.Package (assemblePackage)
+import Lithon.Codegen.Sdl3.Package (FileTree (..), assemblePackage)
 import Lithon.Codegen.Sdl3.Versions (
   Versioned (..),
   VersionsRegistry (..),
@@ -179,26 +186,22 @@ sdl3CmdP =
           )
     )
 
-data SpecOpts = SpecOpts
-  { specDir :: FilePath
-  , checkOnly :: Bool
+newtype SpecOpts = SpecOpts
+  { emitEffect :: EmitEffect
   }
 
 specOptsP :: Parser SpecOpts
 specOptsP = do
-  specDir <- specDirP
-  checkOnly <- checkP
+  emitEffect <- emitEffectOptP
   pure SpecOpts{..}
 
 data GenerateOpts = GenerateOpts
-  { specDir :: FilePath
-  , outDir :: FilePath
-  , checkOnly :: Bool
+  { outDir :: FilePath
+  , emitEffect :: EmitEffect
   }
 
 generateOptsP :: Parser GenerateOpts
 generateOptsP = do
-  specDir <- specDirP
   outDir <-
     strOption
       ( long "out"
@@ -207,21 +210,8 @@ generateOptsP = do
           <> showDefault
           <> help "Target package directory"
       )
-  checkOnly <- checkP
+  emitEffect <- emitEffectOptP
   pure GenerateOpts{..}
-
-specDirP :: Parser FilePath
-specDirP =
-  strOption
-    ( long "spec-dir"
-        <> metavar "DIR"
-        <> value "lithon-codegen/sdl3"
-        <> showDefault
-        <> help "SDL3 artifact directory (spec/ + overrides.yaml + manifest)"
-    )
-
-checkP :: Parser Bool
-checkP = switch (long "check" <> help "Diff fresh output against the tree; write nothing (CI gate)")
 
 runSdl3
   :: ( IOE :> es
@@ -236,19 +226,19 @@ runSdl3
   => Sdl3Cmd -> Eff es ()
 runSdl3 cmd = runErrorFrom @SdlResolutionError $ runSdl3Gen case cmd of
   CmdSpec opts -> do
-    registry <- loadVersionsRegistry opts.specDir
-    results <- runChain registry opts.specDir
-    syncSpecs SpecTarget{specDir = opts.specDir, checkOnly = opts.checkOnly} results
+    registry <- loadVersionsRegistry
+    results <- runChain registry
+    syncSpecs opts.emitEffect results
   CmdGenerate opts -> do
-    registry <- loadVersionsRegistry opts.specDir
-    results <- runChain registry opts.specDir
+    registry <- loadVersionsRegistry
+    results <- runChain registry
     -- Specs and package come from the same chain run, so they can never
     -- skew; both emits respect --check.
-    syncSpecs SpecTarget{specDir = opts.specDir, checkOnly = opts.checkOnly} results
+    syncSpecs opts.emitEffect results
     (aliasFiles, macroConsts, aliasMeta) <-
-      planAliases registry opts.specDir results
-    packageFiles <-
-      liftEither . first PackagingError =<< liftIO (assemblePackage aliasFiles macroConsts results)
+      planAliases registry results
+    FileTree packageFiles <-
+      liftEither . first PackagingError =<< assemblePackage aliasFiles macroConsts results
     manifestMeta <- chainMeta results
     runErrorFrom @EmitError @Sdl3Error
       $ emitPackage
@@ -256,7 +246,7 @@ runSdl3 cmd = runErrorFrom @SdlResolutionError $ runSdl3Gen case cmd of
         EmitTarget
           { outDir = opts.outDir
           , manifestMeta = manifestMeta <> aliasMeta
-          , checkOnly = opts.checkOnly
+          , effect = opts.emitEffect
           }
         packageFiles
 
@@ -276,22 +266,20 @@ planAliases
      , FileSystem :> es
      )
   => VersionsRegistry
-  -> FilePath
   -> [HeaderResult]
   -> Eff es ([(Text, Text)], [AbiMacroConst], Map Text Aeson.Value)
-planAliases registry specDir headerResults = do
-  let registryPath = specDir </> "aliases.json"
-      families = map (.facts) headerResults
-  assertFileExists registryPath AliasesRegistryMissing
+planAliases registry headerResults = do
+  env <- getSdl3Env
+  let families = map (.facts) headerResults
 
-  registryBytes <- LBS.fromStrict <$> EBS.readFile registryPath
+  registryBytes <- LBS.fromStrict <$> EBS.readFile env.aliasesRegistryPath
   config <- liftEither . first AliasesRegistryDecodeError $ decodeAliasConfig registryBytes
   validated <-
     liftEither
       . first from
       $ validateAliasConfig (functionCensus families) config
 
-  (constantPlans, constantsBytes) <- planConstantGroups specDir families
+  (constantPlans, constantsBytes) <- planConstantGroups families
   let plansByFamily =
         Map.fromListWith
           (flip (<>))
@@ -324,8 +312,8 @@ planAliases registry specDir headerResults = do
     , macroConsts
     , Map.fromList
         [ ("aliasNaming", Aeson.toJSON (namingRuleText validated.naming))
-        , ("aliasConfig", Aeson.toJSON (digestText registryBytes))
-        , ("constantsConfig", Aeson.toJSON (digestText constantsBytes))
+        , ("aliasConfig", Aeson.toJSON (rapidhash (LBS.toStrict registryBytes)))
+        , ("constantsConfig", Aeson.toJSON (rapidhash (LBS.toStrict constantsBytes)))
         , ("constants", Aeson.toJSON (length macroConsts))
         ]
     )
@@ -336,13 +324,11 @@ planAliases registry specDir headerResults = do
 -- against those same headers, and validate the lot.
 planConstantGroups
   :: (IOE :> es, Sdl3Gen :> es, Error Sdl3Error :> es, FileSystem :> es)
-  => FilePath -> [FamilyDecls] -> Eff es ([ConstantGroupPlan], LByteString)
-planConstantGroups specDir families = do
+  => [FamilyDecls] -> Eff es ([ConstantGroupPlan], LByteString)
+planConstantGroups families = do
   env <- getSdl3Env
-  let constantsPath = specDir </> "constants.json"
-  assertFileExists constantsPath ConstantsRegistryMissing
 
-  constantsBytes <- LBS.fromStrict <$> EBS.readFile constantsPath
+  constantsBytes <- LBS.fromStrict <$> EBS.readFile env.constantsRegistryPath
   constantsConfig <-
     liftEither . first ConstantsRegistryParseError $ decodeConstantsConfig constantsBytes
 
@@ -403,17 +389,12 @@ probeConstants probeInputs
 
       liftEither . first ConstantsProbeParseError $ parseProbeOutput runOut
 
--- | Resolve the environment, order the headers, and run the chain with
--- specs accumulating in the caller's scratch directory.
--- | Load the empirical availability registry — required, like
--- @aliases.json@: version gating without the empirical corrections would
--- silently trust SDL's lying @\\since@ annotations.
 loadVersionsRegistry
-  :: (HasCallStack, Error Sdl3Error :> es, FileSystem :> es) => FilePath -> Eff es VersionsRegistry
-loadVersionsRegistry specDir = do
-  let path = specDir </> "versions.json"
-  assertFileExists path VersionsRegistryMissing
-  bytes <- LBS.fromStrict <$> EBS.readFile path
+  :: (Sdl3Gen :> es, Error Sdl3Error :> es, FileSystem :> es)
+  => Eff es VersionsRegistry
+loadVersionsRegistry = do
+  env <- getSdl3Env
+  bytes <- LBS.fromStrict <$> EBS.readFile env.versionsRegistryPath
   liftEither $ first VersionsRegistryDecodeError (decodeVersionsRegistry bytes)
 
 runChain
@@ -423,10 +404,9 @@ runChain
      , Log :> es
      , Sdl3Gen :> es
      , Error Sdl3Error :> es
-     , FileSystem :> es
      )
-  => VersionsRegistry -> FilePath -> Eff es [HeaderResult]
-runChain registry outDir = runErrorFrom do
+  => VersionsRegistry -> Eff es [HeaderResult]
+runChain registry = runErrorFrom do
   env <- getSdl3Env
   -- libc headers reach libclang only via BINDGEN_EXTRA_CLANG_ARGS (the
   -- devshell's hs-bindgen hook populates it from the cc-wrapper's
@@ -440,23 +420,13 @@ runChain registry outDir = runErrorFrom do
   units <- planHeaders graph
   logInfo $ "planned headers" :# ["count" .= length units]
 
-  overridesPath <- do
-    path <- makeAbsolute (outDir </> "overrides.yaml")
-    logInfo $ "using prescriptive overrides" :# ["path" .= path]
-    bool Nothing (Just path) <$> doesFileExist path
-
-  results <- chainHeaders overridesPath registry units
+  results <- chainHeaders registry units
   logInfo
     $ "chain complete"
     :# [ "headers" .= length results
        , "modules" .= sum [length r.modules | r <- results]
        ]
   pure results
-
-data SpecTarget = SpecTarget
-  { specDir :: FilePath
-  , checkOnly :: Bool
-  }
 
 -- | Sync the freshly generated specs (and the manifest recording them)
 -- into the artifact directory.
@@ -469,8 +439,9 @@ syncSpecs
      , Error Sdl3Error :> es
      , FileSystem :> es
      )
-  => SpecTarget -> [HeaderResult] -> Eff es ()
-syncSpecs target results = do
+  => EmitEffect -> [HeaderResult] -> Eff es ()
+syncSpecs effect results = do
+  env <- getSdl3Env
   SystemTempDir scratch <- getScratchDirectory
   specMap <-
     fmap Map.fromList . for results $ \r -> do
@@ -481,8 +452,7 @@ syncSpecs target results = do
     $ emitPackage
       ArtifactsOnly
       EmitTarget
-        { outDir = target.specDir
-        , checkOnly = target.checkOnly
+        { outDir = env.sdl3SpecDir
         , ..
         }
       specMap

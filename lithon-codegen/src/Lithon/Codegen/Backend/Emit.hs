@@ -1,5 +1,5 @@
+{-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE PartialTypeSignatures #-}
 {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE StrictData #-}
 {-# OPTIONS_GHC -fplugin=Effectful.Plugin #-}
@@ -13,6 +13,8 @@ module Lithon.Codegen.Backend.Emit (
   EmitError (..),
   EmitStrategy (..),
   FormatMode (..),
+  EmitEffect (..),
+  emitEffectOptP,
   EmitTarget (..),
   Manifest (..),
   manifestFileName,
@@ -25,6 +27,7 @@ import Data.Aeson (FromJSON, ToJSON)
 import Data.Aeson qualified as A
 import Data.ByteString qualified as BS
 import Data.ByteString.Lazy qualified as LBS
+import Data.Hash.RapidHash
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
@@ -56,6 +59,7 @@ import Hpack.Config qualified as Hpack
 import Hpack.Error qualified as Hpack
 import Lithon.Effect.Log
 import Lithon.Prelude
+import Options.Applicative qualified as Opt
 import System.FilePath (
   addTrailingPathSeparator,
   isAbsolute,
@@ -70,7 +74,7 @@ import System.FilePath (
 import System.Process.Typed qualified as P
 import Text.Regex.TDFA ((=~))
 
-import Lithon.Codegen.Backend.Json (canonicalJsonBytes, digestText)
+import Lithon.Codegen.Backend.Json (canonicalJsonBytes)
 import Paths_lithon_codegen qualified
 
 data EmitError
@@ -96,17 +100,15 @@ instance From FilepathResolutionError EmitError where
 instance Display EmitError where
   displayBuilder = \case
     UnsafePaths what bad ->
-      let badd = T.intercalate "\n -" bad
+      let badd = T.intercalate "\n - " bad
        in from
             [trimmingQQ|
-              Unsafe output path(s) during emit. Refusing to continue.
+              Unsafe output path(s) during emit $what. Refusing to continue.
 
               The following paths appear unsafe:
                 $badd
 
               This is a lithon-codegen bug.
-
-              $what
             |]
     EmitCheckFailed target problems ->
       let outDir = from target.outDir
@@ -171,6 +173,17 @@ instance Display EmitError where
             |]
     UnresolvableFilePath err -> displayBuilder err
 
+data EmitEffect
+  = CheckOnly
+  | WriteFiles
+  deriving stock (Show)
+
+emitEffectOptP :: Opt.Parser EmitEffect
+emitEffectOptP = do
+  checkOnly <-
+    Opt.switch (Opt.long "check" <> Opt.help "Diff fresh output against the tree; write nothing")
+  pure $ if checkOnly then CheckOnly else WriteFiles
+
 -- | Where and how to emit a generated file set.
 data EmitTarget = EmitTarget
   { outDir :: FilePath
@@ -178,7 +191,7 @@ data EmitTarget = EmitTarget
   -- every emitted path are relative to it.
   , manifestMeta :: Map Text A.Value
   -- ^ Run the fourmolu batch over the staged files.
-  , checkOnly :: Bool
+  , effect :: EmitEffect
   -- ^ Diff fresh output against the tree and write nothing (CI gate).
   }
   deriving stock (Show)
@@ -189,8 +202,8 @@ data EmitTarget = EmitTarget
 data Manifest = Manifest
   { generatorVersion :: Text
   , meta :: Map Text A.Value
-  , files :: Map FilePath Text
-  -- ^ path -> fnv1a64 digest of the emitted (formatted) source.
+  , files :: Map FilePath RapidHash
+  -- ^ path -> rapidhash digest of the emitted (formatted) source.
   }
   deriving stock (Eq, Generic, Show)
   deriving anyclass (FromJSON, ToJSON)
@@ -276,11 +289,13 @@ readFileMeta
   :: ( Show e
      , From FilepathResolutionError e
      , Error e :> es
+     , Log :> es
      , FileSystem :> es
      )
-  => FilePath -> (FilePath, Maybe LBS.ByteString) -> Eff es FileMeta
+  => FilePath -> (FilePath, Maybe LByteString) -> Eff es FileMeta
 readFileMeta base (mpath, mcontents) = do
   (absPath, relPath) <- resolveFilepath base mpath
+  logInfo $ "reading file meta" :# ["absPath" .= absPath]
   bytes <- maybe (ELBS.readFile absPath) pure mcontents
   let formatter
         | takeExtension relPath /= ".hs" = DPrint
@@ -293,7 +308,7 @@ format
   => FormatMode
   -> FilePath
   -> [FileMeta]
-  -> Eff es [(FileMeta, Text, LByteString)]
+  -> Eff es [(FileMeta, RapidHash, LByteString)]
 format formatMode staging metas = do
   case formatMode of
     SkipFormat -> logInfo $ "Skipping formatting" :# ["stagingDir" .= staging]
@@ -318,7 +333,7 @@ format formatMode staging metas = do
   forConcurrently metas \meta -> do
     logDebug $ "reading formatted file" :# ["meta" .= meta]
     formatted <- ELBS.readFile meta.absPath
-    pure (meta, digestText formatted, formatted)
+    pure (meta, rapidhash (BS.toStrict formatted), formatted)
 
 invokeCommand :: (IOE :> es, Error EmitError :> es) => FilePath -> Text -> [Text] -> Eff es Text
 invokeCommand cwd cmd args =
@@ -340,6 +355,8 @@ emitWith
   -- ^ Inject extra files, given a staging directory. These override on conflict.
   -> Eff es ()
 emitWith formatMode staging target files resolveExtras = do
+  logInfo $ "staging package" :# ["staging" .= staging]
+
   for_ (Map.toList files) \(rel, contents) -> do
     let dest = staging </> rel
     createDirectoryIfMissing True (takeDirectory dest)
@@ -364,40 +381,40 @@ emitWith formatMode staging target files resolveExtras = do
 
   staleFiles <- listStaleFiles manifestPath (map (view _1) entries)
 
-  if target.checkOnly then do
-    checkEmission target manifestPath manifestBytes staleFiles entries
-  else do
-    logInfo $ "Emitting staged files" :# ["nStaged" .= length staleFiles]
+  case target.effect of
+    CheckOnly -> checkEmission target manifestPath manifestBytes staleFiles entries
+    WriteFiles -> do
+      logInfo $ "Emitting staged files" :# ["nStaged" .= length staleFiles]
 
-    written <- fmap (length . filter id) . for entries $ \(meta, _, bytes) -> do
-      let dest = target.outDir </> meta.relPath
-      createDirectoryIfMissing True (takeDirectory dest)
-      exists <- doesFileExist dest
-      same <-
-        if exists then
-          (== BS.toStrict bytes) <$> EBS.readFile dest
-        else
-          pure False
-      if same then pure False else True <$ ELBS.writeFile dest bytes
+      written <- fmap (length . filter id) . for entries $ \(meta, _, bytes) -> do
+        let dest = target.outDir </> meta.relPath
+        createDirectoryIfMissing True (takeDirectory dest)
+        exists <- doesFileExist dest
+        same <-
+          if exists then
+            (== BS.toStrict bytes) <$> EBS.readFile dest
+          else
+            pure False
+        if same then pure False else True <$ ELBS.writeFile dest bytes
 
-    for_ staleFiles \rel -> do
-      let dest = target.outDir </> rel
-      exists <- doesFileExist dest
-      when exists (removeFile dest)
+      for_ staleFiles \rel -> do
+        let dest = target.outDir </> rel
+        exists <- doesFileExist dest
+        when exists (removeFile dest)
 
-    -- Atomic manifest write: the temp lives inside staging (same
-    -- filesystem, so the rename is atomic), and a crash before the rename
-    -- leaves the OLD manifest intact instead of a torn one.
-    let manifestTmp = staging </> "manifest.tmp"
-    ELBS.writeFile manifestTmp manifestBytes
-    renameFile manifestTmp manifestPath
-    logInfo
-      $ "emitted"
-      :# [ "files" .= length entries
-         , "written" .= written
-         , "deleted" .= length staleFiles
-         , "outDir" .= T.pack target.outDir
-         ]
+      -- Atomic manifest write: the temp lives inside staging (same
+      -- filesystem, so the rename is atomic), and a crash before the rename
+      -- leaves the OLD manifest intact instead of a torn one.
+      let manifestTmp = staging </> "manifest.tmp"
+      ELBS.writeFile manifestTmp manifestBytes
+      renameFile manifestTmp manifestPath
+      logInfo
+        $ "emitted"
+        :# [ "files" .= length entries
+           , "written" .= written
+           , "deleted" .= length staleFiles
+           , "outDir" .= T.pack target.outDir
+           ]
 
 emitCabalFile
   :: (IOE :> es, Log :> es, Error EmitError :> es)
@@ -425,15 +442,14 @@ emitCabalFile staging = do
     Hpack.ExistingCabalFileWasModifiedManually -> throwError (from res)
  where
   success r = do
-    let log = case r.resultWarnings of
-          [] -> logInfo
-          _ -> logWarn
+    let logMeta =
+          [ "cabalFile" .= r.resultCabalFile
+          , "warnings" .= r.resultWarnings
+          ]
 
-    log
-      $ "hpack succeded"
-      :# [ "cabalFile" .= r.resultCabalFile
-         , "warnings" .= r.resultWarnings
-         ]
+    case r.resultWarnings of
+      [] -> logInfo $ "hpack succeeded" :# logMeta
+      _ -> logWarn $ "hpack succeeded with warnings" :# logMeta
 
     pure $ takeFileName r.resultCabalFile
 
@@ -461,9 +477,9 @@ checkEmission
   :: (Error EmitError :> es, FileSystem :> es, Log :> es)
   => EmitTarget
   -> FilePath
-  -> LBS.LazyByteString
+  -> LByteString
   -> [String]
-  -> [(FileMeta, b, LBS.LazyByteString)]
+  -> [(FileMeta, b, LByteString)]
   -> Eff es ()
 checkEmission target manifestPath manifestBytes staleFiles entries = do
   fileDiffs <- forMaybe entries $ \(meta, _, bytes) -> do
@@ -493,7 +509,7 @@ checkEmission target manifestPath manifestBytes staleFiles entries = do
 
 checkPaths :: (Error EmitError :> es) => Text -> [FilePath] -> Eff es ()
 checkPaths what paths = do
-  let unsafe = [T.pack p <> " (" <> reason <> ")" | p <- paths, Just reason <- [unsafeReason p]]
+  let unsafe = [from p <> " (" <> reason <> ")" | p <- paths, Just reason <- [unsafeReason p]]
   guardWithError (UnsafePaths what unsafe) (null unsafe)
  where
   unsafeReason p

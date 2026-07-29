@@ -4,24 +4,20 @@
 -- invariant over the pruned output (the plan's critical whole-output
 -- check), surface spot checks, and the reviewable goldens (curation report
 -- + curated summary).
-module Vulkan.CurateTest (
-  unit_curatedSurfaceSpotChecks,
-  unit_noDanglingReferences,
-  test_curatedGoldens,
-) where
+module Vulkan.CurateTest where
 
 import Data.ByteString.Lazy qualified as LBS
+import Data.Hash.RapidHash
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
 import Data.Vector qualified as V
 import Lithon.Prelude
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Golden (goldenVsStringDiff)
 import Test.Tasty.HUnit (assertBool, (@?=))
 
-import Lithon.Codegen.Backend.Json (canonicalJsonBytes, digestText)
+import Lithon.Codegen.Backend.Json (canonicalJsonBytes)
 import Lithon.Codegen.Vulkan.Curate (Curated (..))
 import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Resolved.Commands (ResolvedCommand (..))
@@ -169,9 +165,7 @@ test_curatedGoldens =
     , golden
         "curated-dump-digest"
         "test/golden/curated.digest"
-        ( LBS.fromStrict
-            (TE.encodeUtf8 (digestText (canonicalJsonBytes pinnedCurated.registry) <> "\n"))
-        )
+        (show @LByteString (rapidhash (LBS.toStrict (canonicalJsonBytes pinnedCurated.registry) <> "\n")))
     ]
  where
   golden name path bytes = goldenVsStringDiff name diffCmd path (pure bytes)

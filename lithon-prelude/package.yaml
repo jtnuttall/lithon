@@ -51,6 +51,7 @@ dependencies:
   - data-default ^>=0.8
   - deepseq ^>=1.5
   - dlist ^>= 1.0
+  - extra ^>=1.8
   - generic-lens ^>=2.3
   - generics-sop ^>=0.5
   - lens ^>=5.3

@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-redundant-constraints #-}
 {-# OPTIONS_GHC -fplugin=Effectful.Plugin #-}
 
 module Lithon.Effect.FileSystem (
@@ -10,10 +11,13 @@ module Lithon.Effect.FileSystem (
   whenFileExists,
   unlessFileExists,
   assertFileExists,
+  listFilesRecursive,
 ) where
 
 import Effectful
+import Effectful.Dispatch.Static (unsafeEff_)
 import Effectful.FileSystem
+import System.Directory.Extra qualified
 
 import Lithon.Effect.Error
 import Lithon.Prelude
@@ -45,3 +49,6 @@ unlessFileExists p f = withFileExists p (`unless` f)
 assertFileExists
   :: (HasCallStack, FileSystem :> es, Show e, Error e :> es) => FilePath -> (FilePath -> e) -> Eff es ()
 assertFileExists p f = unlessFileExists p (throwError (f p))
+
+listFilesRecursive :: (FileSystem :> es) => FilePath -> Eff es [FilePath]
+listFilesRecursive = unsafeEff_ . System.Directory.Extra.listFilesRecursive

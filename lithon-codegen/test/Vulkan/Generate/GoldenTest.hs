@@ -17,13 +17,14 @@ module Vulkan.Generate.GoldenTest (
 ) where
 
 import Data.ByteString.Lazy qualified as LBS
+import Data.Hash.RapidHash
 import Data.Map.Strict qualified as Map
 import Data.Text.Encoding qualified as TE
 import Lithon.Prelude
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Golden (goldenVsStringDiff)
 
-import Lithon.Codegen.Backend.Json (canonicalJsonBytes, digestText)
+import Lithon.Codegen.Backend.Json (canonicalJsonBytes)
 import Lithon.Codegen.Vulkan.Curate (Curated (..))
 import Lithon.Codegen.Vulkan.Generate (GenOutput (..), generate)
 import Lithon.Codegen.Vulkan.Generate.Lower (lowerStructs)
@@ -88,9 +89,8 @@ test_generateGoldens =
       Success mm -> mm
       Failure errs -> error ("modules failed: " <> display errs)
   digests =
-    Map.map (digestText . LBS.fromStrict . TE.encodeUtf8) pinnedGenerated.files
-  digestLine bytes =
-    LBS.fromStrict (TE.encodeUtf8 (digestText bytes <> "\n"))
+    Map.map (show @Text . rapidhash) pinnedGenerated.files
+  digestLine bytes = show @LByteString (rapidhash (LBS.toStrict bytes)) <> "\n"
   golden name path bytes = goldenVsStringDiff name diffCmd path (pure bytes)
   diffCmd ref new = ["diff", "-u", ref, new]
   sliceGolden rel =
