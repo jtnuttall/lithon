@@ -30,4 +30,10 @@ import HsBindgen.Backend.Hs.AST (
   PatSyn (..),
  )
 import HsBindgen.Backend.Hs.Name (TermName (..), termNameToText)
-import HsBindgen.Language.Haskell (ExtRef (..), Import (..), ModuleName (..), Name (..), SomeName (..))
+import HsBindgen.Language.Haskell (
+  ExtRef (..),
+  Import (..),
+  ModuleName (..),
+  Name (..),
+  SomeName (..),
+ )

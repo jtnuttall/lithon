@@ -37,12 +37,18 @@ module Lithon.HsBindgen (
   QualifiedStyle (..),
 ) where
 
-import HsBindgen.Backend.Category (ByCategory (..), ByCategory_ (..), Category (..), TermCategory (..))
+import HsBindgen.Backend.Category (
+  ByCategory (..),
+  ByCategory_ (..),
+  Category (..),
+  TermCategory (..),
+ )
 import HsBindgen.Config.Prelims (
   BaseModuleName (..),
   FieldNamingStrategy (..),
   ModuleRenderConfig (..),
   QualifiedStyle (..),
  )
+
 import Lithon.HsBindgen.Invoke
 import Lithon.HsBindgen.Transform

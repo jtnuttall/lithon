@@ -38,12 +38,9 @@ module Lithon.HsBindgen.C (
   getCanonicalType,
 ) where
 
-import Prelude hiding (Enum)
-
 import HsBindgen.Frontend.Pass.Final (Final (..))
 import HsBindgen.IR.C (
   Comment (..),
-  getCanonicalType,
   Decl (..),
   DeclId (..),
   DeclInfo (..),
@@ -61,6 +58,8 @@ import HsBindgen.IR.C (
   TypeF (..),
   TypeFunArgF (..),
   Union (..),
+  getCanonicalType,
   renderDeclNameC,
  )
 import HsBindgen.IR.Translation (DeclIdPair (..), ScopedNamePair (..))
+import Prelude hiding (Enum)

@@ -1,6 +1,6 @@
 {-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE NoFieldSelectors #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoFieldSelectors #-}
 
 -- | Driving hs-bindgen: lithon-owned invocation configuration and the
 -- artefact operations lithon consumes.
@@ -29,26 +29,35 @@ module Lithon.HsBindgen.Invoke (
   sortedIncludeGraph,
 ) where
 
+import Clang.Paths (getSourcePath)
 import Control.Monad (when)
 import Data.Default (def)
 import Data.Functor.Const (getConst)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TB
-
-import Clang.Paths (getSourcePath)
 import Doxygen.Parser qualified as Doxy
 import HsBindgen
 import HsBindgen.Artefact (Artefact (..), ArtefactMsg (..))
 import HsBindgen.ArtefactM (DirPolicy (..), FilePolicy (..))
-import HsBindgen.Backend.Category (ByCategory (..), ByCategory_ (..), Category (..), TermCategory (..))
+import HsBindgen.Backend.Category (
+  ByCategory (..),
+  ByCategory_ (..),
+  Category (..),
+  TermCategory (..),
+ )
 import HsBindgen.Backend.Hs.AST qualified as Hs
 import HsBindgen.Backend.Hs.Haddock.Documentation qualified as HsDoc
 import HsBindgen.Backend.HsModule.Translation (HsModule, translateModuleMultiple)
 import HsBindgen.BindingSpec
 import HsBindgen.Config hiding (ConfigTH (..))
 import HsBindgen.Config.ClangArgs
-import HsBindgen.Config.Prelims (BaseModuleName (..), FieldNamingStrategy (..), UniqueId (..), fromBaseModuleName)
+import HsBindgen.Config.Prelims (
+  BaseModuleName (..),
+  FieldNamingStrategy (..),
+  UniqueId (..),
+  fromBaseModuleName,
+ )
 import HsBindgen.Frontend.Analysis.IncludeGraph qualified as IncludeGraph
 import HsBindgen.Frontend.Pass.Final (Final)
 import HsBindgen.IR.C qualified as C
@@ -56,7 +65,6 @@ import HsBindgen.Language.Haskell (ModuleName (..))
 import HsBindgen.Macro (CExpr, cExpr)
 import HsBindgen.TraceMsg
 import HsBindgen.Util.Tracer
-
 import Lithon.Prelude.Display (Display (..))
 
 -- | Per-project invocation environment: everything lithon varies about
@@ -95,7 +103,7 @@ instance Display BindgenFailure where
 
 -- | The artefact operations available inside one invocation.
 newtype BindgenM a = BindgenM (Artefact CExpr a)
-  deriving newtype (Functor, Applicative, Monad)
+  deriving newtype (Applicative, Functor, Monad)
 
 -- | Run one hs-bindgen invocation.
 runBindgen :: InvocationEnv -> InvocationSpec -> BindgenM a -> IO (Either BindgenFailure a)

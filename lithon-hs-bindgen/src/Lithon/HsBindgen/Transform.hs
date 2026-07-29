@@ -1,6 +1,6 @@
 {-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE NoFieldSelectors #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoFieldSelectors #-}
 
 -- | AST-level transforms over translated (pre-render) modules.
 --
@@ -33,7 +33,6 @@ import Data.Bifunctor (second)
 import Data.Maybe (fromMaybe)
 import Data.Text (Text)
 import Data.Text qualified as T
-
 import HsBindgen.Backend.Hs.CallConv (CWrapper (..), CallConv (..))
 import HsBindgen.Backend.HsModule.Render (render)
 import HsBindgen.Backend.HsModule.Translation (HsModule (..))
@@ -69,9 +68,10 @@ replaceStubLine label symbol needle replacementLines =
     , symbol = Just symbol
     , target = needle
     , edit = \ls ->
-        if needle `elem` ls
-          then Just (concatMap (\l -> if l == needle then replacementLines else [l]) ls)
-          else Nothing
+        if needle `elem` ls then
+          Just (concatMap (\l -> if l == needle then replacementLines else [l]) ls)
+        else
+          Nothing
     }
 
 data TransformError
@@ -103,16 +103,18 @@ applyStubEdits edits family = foldM applyOne family edits
   applyOne fam e =
     let edited = map (second (editModule e)) fam
         hits = sum [n | (_, (n, _)) <- edited]
-     in if hits == (0 :: Int)
-          then Left (StubEditMissed e.label (fromMaybe "<any wrapper>" e.symbol) e.target)
-          else Right [(name, m) | (name, (_, m)) <- edited]
+     in if hits == (0 :: Int) then
+          Left (StubEditMissed e.label (fromMaybe "<any wrapper>" e.symbol) e.target)
+        else
+          Right [(name, m) | (name, (_, m)) <- edited]
 
   editModule :: StubEdit -> HsModule -> (Int, HsModule)
   editModule e m =
     let (n, decls') = mapAccumEdit e m.decls
-     in if n == 0
-          then (0, m)
-          else (n, m{decls = decls', cWrappers = wrappersOf decls'})
+     in if n == 0 then
+          (0, m)
+        else
+          (n, m{decls = decls', cWrappers = wrappersOf decls'})
 
   mapAccumEdit :: StubEdit -> [SDecl] -> (Int, [SDecl])
   mapAccumEdit e = foldr step (0, [])
@@ -156,6 +158,7 @@ renderFamilyWith edits family = foldM applyOne rendered edits
 
   applyOne fam e =
     let hits = sum (map (T.count e.needle . snd) fam)
-     in if hits == 0
-          then Left (TextEditMissed e.label e.needle)
-          else Right (map (second (T.replace e.needle e.replacement)) fam)
+     in if hits == 0 then
+          Left (TextEditMissed e.label e.needle)
+        else
+          Right (map (second (T.replace e.needle e.replacement)) fam)
