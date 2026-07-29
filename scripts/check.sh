@@ -13,14 +13,13 @@ if [[ -n "${LITHON_LAVAPIPE_ICD:-}" ]]; then
   export VK_ADD_DRIVER_FILES="${LITHON_LAVAPIPE_ICD}${VK_ADD_DRIVER_FILES:+:${VK_ADD_DRIVER_FILES}}"
 fi
 
-VK_XML=lithon-codegen/Vulkan-Docs/xml/vk.xml
-PROFILE=lithon-codegen/profiles/lithon-core.json
+PROFILE=lithon-codegen/data/vulkan/profiles/lithon-core.json
 
 echo "== build =="
 cabal build all
 
 echo "== generated tree freshness (vulkan) =="
-cabal run lithon-codegen -- vulkan generate "$VK_XML" --profile "$PROFILE" --check
+cabal run lithon-codegen -- vulkan generate --profile "$PROFILE" --check
 
 echo "== generated tree freshness (sdl3: specs + sdl3-bindgen-sys) =="
 cabal run lithon-codegen -- sdl3 generate --check
