@@ -103,6 +103,7 @@ dependencies:
   - resourcet-effectful ^>=1.0
   - scientific ^>=0.3
   - semialign ^>=1.4
+  - semigroupoids ^>=6.0
   - singletons ^>=3.0
   - singletons-th ^>=3.5
   - tagged ^>=0.8

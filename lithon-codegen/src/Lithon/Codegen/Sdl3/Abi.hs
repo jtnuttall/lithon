@@ -52,7 +52,6 @@ module Lithon.Codegen.Sdl3.Abi (
 
 import Data.Char (isDigit)
 import Data.List.NonEmpty qualified as NE
-import Data.Map.Strict (Map)
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Doxygen.Parser.Types qualified as Doxy
@@ -61,7 +60,7 @@ import Lithon.Prelude
 
 -- | Which C sort an 'AbiDecl' describes.
 data AbiKind = AbiStruct | AbiUnion | AbiEnum
-  deriving stock (Eq, Show)
+  deriving stock (Eq, Generic, Show)
 
 -- | An assertable (explicit, non-bitfield) struct member.
 data AbiField = AbiField
@@ -71,7 +70,7 @@ data AbiField = AbiField
   -- ^ Member-level availability (fields never carry @\\since@ upstream;
   -- this comes from the empirical override map).
   }
-  deriving stock (Eq, Show)
+  deriving stock (Eq, Generic, Show)
 
 data AbiEnumConst = AbiEnumConst
   { name :: Text
@@ -82,7 +81,7 @@ data AbiEnumConst = AbiEnumConst
   -- is emitted only at or above this version — for value changes, the
   -- baked value is the truth from this version on.
   }
-  deriving stock (Eq, Show)
+  deriving stock (Eq, Generic, Show)
 
 -- | A typed-constant macro whose probed value the curated layer baked as
 -- a pattern synonym (see "Lithon.Codegen.Sdl3.Alias.Constants"). Every
@@ -96,7 +95,7 @@ data AbiMacroConst = AbiMacroConst
   -- ^ From the empirical override map (macro constants' own docs are not
   -- trusted for availability).
   }
-  deriving stock (Eq, Show)
+  deriving stock (Eq, Generic, Show)
 
 -- | The SDL release a declaration's docs mark it @\@since@.
 data AbiSince = AbiSince
@@ -104,7 +103,7 @@ data AbiSince = AbiSince
   , minor :: Int
   , patch :: Int
   }
-  deriving stock (Eq, Ord, Show)
+  deriving stock (Eq, Generic, Ord, Show)
 
 -- | The oldest SDL with a stable ABI; @\@since@ at the baseline needs no
 -- version guard.
@@ -133,7 +132,7 @@ data AbiDecl = AbiDecl
   -- separately from the decl's existence: the type predates this
   -- version but grew (e.g. @SDL_MouseWheelEvent@ 48 -> 56 at 3.2.12).
   }
-  deriving stock (Eq, Show)
+  deriving stock (Eq, Generic, Show)
 
 -- | Empirical availability overrides for the @>= 3.2.0@ floor, loaded
 -- from @sdl3\/versions.json@ ("Lithon.Codegen.Sdl3.Versions"). SDL's
@@ -151,13 +150,13 @@ data AbiOverrides = AbiOverrides
   , structs :: Map Text StructOverrides
   -- ^ Per-struct member/size gates.
   }
-  deriving stock (Eq, Show)
+  deriving stock (Eq, Generic, Show)
 
 data StructOverrides = StructOverrides
   { sizeofSince :: Maybe AbiSince
   , members :: Map Text AbiSince
   }
-  deriving stock (Eq, Show)
+  deriving stock (Eq, Generic, Show)
 
 emptyAbiOverrides :: AbiOverrides
 emptyAbiOverrides =
@@ -182,9 +181,8 @@ distillAbi headerName ov = sequenceA . mapMaybe abiDeclOf
       | named ->
           Just
             ( Right
-                (base AbiEnum e.sizeof e.alignment :: AbiDecl)
-                  { constants = constsOf ov.constants e.constants
-                  }
+                $ base AbiEnum e.sizeof e.alignment
+                & (#constants .~ constsOf ov.constants e.constants)
             )
     _notAssertable -> Nothing
    where

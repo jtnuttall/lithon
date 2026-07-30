@@ -31,8 +31,6 @@ module Lithon.Codegen.Sdl3.Versions (
 
 import Autodocodec
 import Data.ByteString.Lazy qualified as LBS
-import Data.List.NonEmpty (NonEmpty (..))
-import Data.Map.Strict (Map)
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Lithon.Prelude

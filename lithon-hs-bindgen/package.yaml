@@ -22,6 +22,8 @@ extra-doc-files:
 
 language: GHC2024
 
+data-dir: vendor
+
 default-extensions:
   - BlockArguments
   - OverloadedRecordDot
@@ -35,12 +37,15 @@ ghc-options:
 
 dependencies:
   - base <4.22.0.0
-  - data-default
-  - debruijn
   - doxygen-parser
   - hs-bindgen
   - libclang-bindings
   - lithon-prelude
+  - bytestring
+  - debruijn
+  - data-default
+  - file-embed
+  - filepath
   - text
   - text-builder-linear
 

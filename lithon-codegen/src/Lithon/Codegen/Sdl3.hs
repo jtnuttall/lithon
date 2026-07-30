@@ -48,6 +48,7 @@ import Lithon.Codegen.Backend.Emit (
   emitEffectOptP,
   emitPackage,
  )
+import Lithon.Codegen.Backend.FileTree (pattern FileTree)
 import Lithon.Codegen.Sdl3.Abi (AbiMacroConst (..))
 import Lithon.Codegen.Sdl3.Alias (
   AliasModule (..),
@@ -95,7 +96,7 @@ import Lithon.Codegen.Sdl3.Env (
   getSdl3Env,
   runSdl3Gen,
  )
-import Lithon.Codegen.Sdl3.Package (FileTree (..), assemblePackage)
+import Lithon.Codegen.Sdl3.Package (PackageAssemblyError, assemblePackage)
 import Lithon.Codegen.Sdl3.Versions (
   Versioned (..),
   VersionsRegistry (..),
@@ -116,7 +117,7 @@ data Sdl3Error
   | ToolCallFailed Text (ProcessConfig () () ()) ProcessFailureCode ProcessStdout ProcessStderr
   | BindgenError BindgenError
   | EmitError EmitError
-  | PackagingError Text
+  | PackagingError PackageAssemblyError
   deriving stock (Show)
 
 instance From (Errors AliasError) Sdl3Error where
@@ -238,7 +239,7 @@ runSdl3 cmd = runErrorFrom @SdlResolutionError $ runSdl3Gen case cmd of
     (aliasFiles, macroConsts, aliasMeta) <-
       planAliases registry results
     FileTree packageFiles <-
-      liftEither . first PackagingError =<< assemblePackage aliasFiles macroConsts results
+      liftEither . first PackagingError $ assemblePackage aliasFiles macroConsts results
     manifestMeta <- chainMeta results
     runErrorFrom @EmitError @Sdl3Error
       $ emitPackage

@@ -25,6 +25,7 @@ build-type:     Simple
 extra-doc-files:
     README.md
     CHANGELOG.md
+data-dir:       vendor
 
 source-repository head
   type: git
@@ -38,6 +39,7 @@ library
       Lithon.HsBindgen.HsDoc
       Lithon.HsBindgen.HsModule
       Lithon.HsBindgen.Invoke
+      Lithon.HsBindgen.Runtime
       Lithon.HsBindgen.SHs
       Lithon.HsBindgen.Transform
   other-modules:
@@ -53,9 +55,12 @@ library
   ghc-options: -Wmissing-deriving-strategies -Wmissing-export-lists -Wredundant-constraints -Wall
   build-depends:
       base <4.22.0.0
+    , bytestring
     , data-default
     , debruijn
     , doxygen-parser
+    , file-embed
+    , filepath
     , hs-bindgen
     , libclang-bindings
     , lithon-prelude

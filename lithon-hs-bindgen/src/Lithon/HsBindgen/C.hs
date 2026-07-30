@@ -30,7 +30,7 @@ module Lithon.HsBindgen.C (
   renderDeclNameC,
 
   -- * Final-pass vocabulary ("HsBindgen.Frontend.Pass.Final")
-  Final (..),
+  Final,
   DeclIdPair (..),
   ScopedNamePair (..),
 
@@ -38,7 +38,7 @@ module Lithon.HsBindgen.C (
   getCanonicalType,
 ) where
 
-import HsBindgen.Frontend.Pass.Final (Final (..))
+import HsBindgen.Frontend.Pass.Final (Final)
 import HsBindgen.IR.C (
   Comment (..),
   Decl (..),

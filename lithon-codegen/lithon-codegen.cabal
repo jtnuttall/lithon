@@ -37,6 +37,7 @@ source-repository head
 library
   exposed-modules:
       Lithon.Codegen.Backend.Emit
+      Lithon.Codegen.Backend.FileTree
       Lithon.Codegen.Backend.Hs
       Lithon.Codegen.Backend.Json
       Lithon.Codegen.Cli
@@ -189,6 +190,7 @@ library
     , resourcet-effectful ==1.0.*
     , scientific ==0.3.*
     , semialign ==1.4.*
+    , semigroupoids ==6.0.*
     , singletons ==3.0.*
     , singletons-th ==3.5.*
     , tagged ==0.8.*
@@ -293,6 +295,7 @@ executable lithon-codegen
     , resourcet-effectful ==1.0.*
     , scientific ==0.3.*
     , semialign ==1.4.*
+    , semigroupoids ==6.0.*
     , singletons ==3.0.*
     , singletons-th ==3.5.*
     , tagged ==0.8.*
@@ -438,6 +441,7 @@ test-suite lithon-codegen-test
     , resourcet-effectful ==1.0.*
     , scientific ==0.3.*
     , semialign ==1.4.*
+    , semigroupoids ==6.0.*
     , singletons ==3.0.*
     , singletons-th ==3.5.*
     , tagged ==0.8.*
