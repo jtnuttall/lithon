@@ -1,3 +1,5 @@
+{-# LANGUAGE DuplicateRecordFields #-}
+
 -- | Curated hs-bindgen surface for lithon.
 --
 -- Only modules in this package may import @HsBindgen.*@, and

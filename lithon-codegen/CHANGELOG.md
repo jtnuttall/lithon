@@ -1,14 +1,20 @@
 # Changelog
 
-## 0.1.1.0 - 2026-07-29
+## 0.1.1.0 - 2026-07-30
 
 ### Changed
 
 - Internal refactor of codegen tool to standardize effect handling, prepare
   for more bindings.
 - Changelog now in keep-a-changelog format
-- Tests now use Data.FileEmbed to prevent drift
+- Tests now use Data.FileEmbed to prevent drift and difficult-to-track failures
 - Per-API specifications now live in a data directory
+- All codegen-time dependencies now live in the codegen tool, either in the
+  data directory or embedded directly into the executable. Solves a class of
+  pathing issues.
+- New combined Haskell module abstraction `Module.Meta` semantics unifies module
+  management.
+- New `FileTree` domain concept unifies bespoke file handling.
 
 ## 0.1.0.0 - 2026-07-27
 

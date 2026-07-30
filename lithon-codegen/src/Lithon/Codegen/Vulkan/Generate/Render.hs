@@ -1,4 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE StrictData #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 -- | Value-layer source rendering (generate pass g9, M2 scope).
 --
@@ -41,7 +43,7 @@ import Data.Vector qualified as V
 import Lithon.Prelude
 import Numeric (showHex)
 
-import Lithon.Codegen.Backend.Hs (ModulePath (..))
+import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Vulkan.Generate.Cmds (CmdDecl (..))
 import Lithon.Codegen.Vulkan.Generate.Docs (DocKey (..), DocsMap (..))
 import Lithon.Codegen.Vulkan.Generate.Layout (
@@ -89,18 +91,18 @@ import Lithon.Codegen.Vulkan.Resolved.Registry (ResolvedFeature (..), ResolvedRe
 
 -- | One emitted module: its dotted path and full source text.
 data RenderedModule = RenderedModule
-  { path :: !ModulePath
-  , contents :: !Text
+  { meta :: Module.Meta
+  , contents :: Text
   }
   deriving stock (Eq, Generic, Show)
   deriving anyclass (NFData, ToJSON)
 
 data RenderError
-  = REnumValueNotInt32 {block :: !Text, item :: !Text, value :: !Integer}
-  | REnumBlockNot32Bit {block :: !Text}
-  | REnumValueNotBits {block :: !Text, item :: !Text}
-  | RUnmintedName {what :: !Text, name :: !Text}
-  | RUnsupportedField {struct :: !Text, reason :: !Text}
+  = REnumValueNotInt32 {block :: Text, item :: Text, value :: Integer}
+  | REnumBlockNot32Bit {block :: Text}
+  | REnumValueNotBits {block :: Text, item :: Text}
+  | RUnmintedName {what :: Text, name :: Text}
+  | RUnsupportedField {struct :: Text, reason :: Text}
   deriving stock (Eq, Generic, Show)
   deriving anyclass (NFData, ToJSON)
 
@@ -160,7 +162,7 @@ renderValueLayer cxt =
   cmdDecls =
     [ Decl
         { site = cd.site
-        , needs = Set.delete ("import " <> cd.site.dotted) cd.needs
+        , needs = Set.delete ("import " <> Module.hsName cd.site) cd.needs
         , exports = cd.exports
         , source = cd.source
         }
@@ -217,7 +219,7 @@ renderValueLayer cxt =
           ]
         allButUmbrella = entityModules <> fixed
      in allButUmbrella
-          <> [umbrellaSource ((.path) <$> allButUmbrella)]
+          <> [umbrellaSource ((.meta) <$> allButUmbrella)]
 
   -- ── enum + bits blocks ────────────────────────────────────────────────
 
@@ -389,7 +391,7 @@ renderValueLayer cxt =
       Decl
         { site = at
         , needs =
-            Set.delete ("import " <> at.dotted)
+            Set.delete ("import " <> Module.hsName at)
               $ Set.unions ((\(_, _, g) -> g.imports) <$> gens)
               <> Set.fromList
                 [ "import Foreign.Storable (Storable (..))"
@@ -412,7 +414,7 @@ renderValueLayer cxt =
         { site = at
         , needs =
             Set.map dropPeekOnlyNames
-              . Set.delete ("import " <> at.dotted)
+              . Set.delete ("import " <> Module.hsName at)
               $ Set.unions ((\(_, _, g) -> g.imports) <$> gens)
               <> Set.fromList
                 [ "import Foreign.Storable (Storable (..))"
@@ -466,7 +468,7 @@ renderValueLayer cxt =
       Decl
         { site = at
         , needs =
-            Set.delete ("import " <> at.dotted)
+            Set.delete ("import " <> Module.hsName at)
               $ Set.unions [imp | (_, _, _, _, imp) <- gens]
               <> marshalBaseImports
               <> one "import Foreign.Marshal.Utils (fillBytes)"
@@ -730,7 +732,7 @@ renderValueLayer cxt =
       NumBits w -> toInteger w
 
   moduleImportOf = \case
-    Just m -> one ("import " <> m.dotted)
+    Just m -> one ("import " <> Module.hsName m)
     Nothing -> Set.empty
 
   -- ── marshalled structs ────────────────────────────────────────────────
@@ -744,7 +746,7 @@ renderValueLayer cxt =
         Decl
           { site = at
           , needs =
-              Set.delete ("import " <> at.dotted)
+              Set.delete ("import " <> Module.hsName at)
                 $ Set.unions [g.imports | Just g <- gens]
                 <> marshalBaseImports
           , exports = [minted <> " (..)"]
@@ -1334,22 +1336,22 @@ sortedItems block =
 
 -- | One declaration group destined for a module.
 data Decl = Decl
-  { site :: !ModulePath
-  , needs :: !(Set Text)
+  { site :: Module.Meta
+  , needs :: Set Text
   -- ^ Literal import lines (deduped and sorted per module; two lines may
   -- import from the same module — legal and warning-free).
-  , exports :: ![Text]
-  , source :: !Text
+  , exports :: [Text]
+  , source :: Text
   }
 
 -- | One payload position's surface type and wire expressions. @pokeE@
 -- takes the accessor text (@x.width@) so call sites read naturally.
 data FieldGen = FieldGen
-  { hsType :: !Text
-  , peekE :: !Text
-  , pokeE :: !(Text -> Text)
-  , nilE :: !Text
-  , imports :: !(Set Text)
+  { hsType :: Text
+  , peekE :: Text
+  , pokeE :: Text -> Text
+  , nilE :: Text
+  , imports :: Set Text
   }
 
 reservedWords :: Set Text
@@ -1744,14 +1746,14 @@ generatedHeader =
   \{-# LANGUAGE TypeFamilies #-}\n\
   \{-# LANGUAGE UndecidableInstances #-}\n"
 
-moduleSource :: ModulePath -> [Decl] -> RenderedModule
+moduleSource :: Module.Meta -> [Decl] -> RenderedModule
 moduleSource at ds =
   RenderedModule
-    { path = at
+    { meta = at
     , contents =
         T.unlines
           $ [ generatedHeader
-            , "module " <> at.dotted <> " ("
+            , "module " <> Module.hsName at <> " ("
             ]
           <> [ "  " <> e <> ","
              | e <- concatMap (.exports) ds
@@ -1902,8 +1904,8 @@ dedupByValue = go Set.empty
 hex :: Integer -> Text
 hex v = "0x" <> toText (showHex v "")
 
-extendsModule :: ModulePath
-extendsModule = ModulePath "Lithon.Vk.Extends"
+extendsModule :: Module.Meta
+extendsModule = $$(Module.metaLit ["Lithon", "Vk", "Extends"])
 
 -- | Every @Extends@ instance in one place (the upstream-proven shape):
 -- child modules would otherwise import their chain parents' modules, whose
@@ -1913,18 +1915,18 @@ extendsModule = ModulePath "Lithon.Vk.Extends"
 extendsSource :: Names -> ModuleMap -> StructPlans -> RenderedModule
 extendsSource names moduleMap sp =
   RenderedModule
-    { path = extendsModule
+    { meta = extendsModule
     , contents =
         T.unlines
           $ [ generatedHeader
             , "{-# OPTIONS_GHC -Wno-orphans #-}"
             , ""
             , "-- | The registry's structextends topology, as 'Extends' instances."
-            , "module " <> extendsModule.dotted <> " () where"
+            , "module " <> Module.hsName extendsModule <> " () where"
             , ""
             , "import Lithon.Core.Chain (Extends)"
             ]
-          <> ["import " <> m.dotted | m <- sort (toList involvedModules)]
+          <> ["import " <> Module.hsName m | m <- sort (toList involvedModules)]
           <> [""]
           <> instances
     }
@@ -1955,7 +1957,7 @@ extendsSource names moduleMap sp =
 constantsSource :: ResolvedRegistry -> Names -> RenderedModule
 constantsSource registry names =
   RenderedModule
-    { path = constantsModule
+    { meta = constantsModule
     , contents =
         T.unlines
           $ [ generatedHeader
@@ -1964,7 +1966,7 @@ constantsSource registry names =
             , "-- | The registry's API constants. @VK_TRUE@\\/@VK_FALSE@ are"
             , "-- deliberately absent — 'Lithon.Core.BaseTypes.Bool32' supersedes"
             , "-- them."
-            , "module " <> constantsModule.dotted <> " ("
+            , "module " <> Module.hsName constantsModule <> " ("
             ]
           <> ["  pattern " <> n <> "," | (_, n, _) <- rows]
           <> [ ") where"
@@ -2006,13 +2008,13 @@ constantsSource registry names =
 versionSource :: ResolvedRegistry -> RenderedModule
 versionSource registry =
   RenderedModule
-    { path = versionModule
+    { meta = versionModule
     , contents =
         T.unlines
           $ [ generatedHeader
             , "-- | Curated API versions and the registry pin this binding was"
             , "-- generated from."
-            , "module " <> versionModule.dotted <> " ("
+            , "module " <> Module.hsName versionModule <> " ("
             ]
           <> ["  pattern API_VERSION_" <> tag v <> "," | v <- versions]
           <> [ "  pattern HEADER_VERSION,"
@@ -2053,13 +2055,13 @@ versionSource registry =
 resultSource :: Names -> ModuleMap -> RenderedModule
 resultSource names moduleMap =
   RenderedModule
-    { path = resultModule
+    { meta = resultModule
     , contents = contents'
     }
  where
   resultTy = fromMaybe "Result" (Map.lookup "VkResult" names.typeNames)
   resultAt =
-    maybe "Lithon.Vk.Core10.Enums.Result" (.dotted)
+    maybe "Lithon.Vk.Core10.Enums.Result" Module.hsName
       $ Map.lookup "VkResult" moduleMap.enumModules
   contents' =
     T.unlines
@@ -2074,7 +2076,7 @@ resultSource names moduleMap =
       , "-- never resolved throws 'Lithon.Core.Loader.MissingCommand', and a"
       , "-- vector whose length contradicts its count source is an 'error' —"
       , "-- both are API-contract violations, not driver results."
-      , "module " <> resultModule.dotted <> " ("
+      , "module " <> Module.hsName resultModule <> " ("
       , "  Outcome (..),"
       , "  result,"
       , "  isError,"
@@ -2142,36 +2144,37 @@ resultSource names moduleMap =
       , "instance Exception VulkanError"
       ]
 
-umbrellaSource :: [ModulePath] -> RenderedModule
+umbrellaSource :: [Module.Meta] -> RenderedModule
 umbrellaSource paths =
   RenderedModule
-    { path = umbrellaModule
+    { meta = umbrellaModule
     , contents =
         T.unlines
           $ [ generatedHeader
             , "-- | Everything, re-exported. Fine-grained imports remain available"
             , "-- via the per-module tree; @lithon-core@'s marshalling vocabulary"
             , "-- is re-exported so a single import works for typical use."
-            , "module " <> umbrellaModule.dotted <> " ("
+            , "module " <> Module.hsName umbrellaModule <> " ("
             ]
-          <> ["  module " <> p.dotted <> "," | p <- reexports]
+          <> ["  module " <> Module.hsName p <> "," | p <- reexports]
           <> [ ") where"
              , ""
              ]
-          <> ["import " <> p.dotted | p <- reexports]
+          <> ["import " <> Module.hsName p | p <- reexports]
     }
  where
   reexports =
     sort (coreReexports <> paths)
   coreReexports =
-    ModulePath
-      <$> [ "Lithon.Core.Alloc"
-          , "Lithon.Core.CStruct"
-          , "Lithon.Core.Chain"
-          , "Lithon.Core.Open"
-          , "Lithon.Core.Flags"
-          , "Lithon.Core.BaseTypes"
-          , "Lithon.Core.Platform"
-          , "Lithon.Core.Funptr"
-          , "Lithon.Core.Unbox"
+    $$( Module.metaLits
+          [ ["Lithon", "Core", "Alloc"]
+          , ["Lithon", "Core", "CStruct"]
+          , ["Lithon", "Core", "Chain"]
+          , ["Lithon", "Core", "Open"]
+          , ["Lithon", "Core", "Flags"]
+          , ["Lithon", "Core", "BaseTypes"]
+          , ["Lithon", "Core", "Platform"]
+          , ["Lithon", "Core", "Funptr"]
+          , ["Lithon", "Core", "Unbox"]
           ]
+      )

@@ -17,6 +17,7 @@ import Data.Text qualified as T
 import Lithon.Prelude
 import Test.Tasty.HUnit (Assertion, assertBool, assertEqual, assertFailure)
 
+import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Vulkan.Curate (Curated (..))
 import Lithon.Codegen.Vulkan.Generate.Names
 import Vulkan.Support.Resolve (pinnedCurated)
@@ -72,7 +73,7 @@ unit_mintedNamesAreValidIdentifiers =
       mapM_ (assertShape conid) (Map.elems names.ctorNames)
       mapM_ (assertShape conid) (Map.elems names.constantNames)
       mapM_ (assertShape varid) (Map.elems names.commandNames)
-      mapM_ (assertShape conid) (Map.elems names.extensionModules)
+      mapM_ (assertShape conid . Module.hsName) (Map.elems names.extensionModules)
  where
   conid t = case T.uncons t of
     Just (c, rest) -> Char.isUpper c && T.all identChar rest

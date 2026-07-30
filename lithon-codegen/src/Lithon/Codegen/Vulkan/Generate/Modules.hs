@@ -1,4 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE StrictData #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 -- | Module assignment (generate pass g6), value-layer scope.
 --
@@ -53,7 +55,7 @@ import Data.Set qualified as Set
 import Data.Text qualified as T
 import Lithon.Prelude
 
-import Lithon.Codegen.Backend.Hs (ModulePath (..))
+import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Vulkan.Generate.Lower (CType (..), Lowered (..), LoweredMember (..))
 import Lithon.Codegen.Vulkan.Generate.Names (Names (..), stripVkPrefix)
 import Lithon.Codegen.Vulkan.Names
@@ -80,15 +82,15 @@ import Lithon.Codegen.Vulkan.Resolved.Registry (ResolvedFeature (..), ResolvedRe
 -- | Where each value-layer entity is emitted. Keys are canonical registry
 -- spellings.
 data ModuleMap = ModuleMap
-  { enumModules :: !(Map TypeName ModulePath)
+  { enumModules :: Map TypeName Module.Meta
   -- ^ Enum and FlagBits blocks ('KindConstants' blocks are not emitted as
   -- modules — the API-constants surface is 'constantsModule').
-  , bitmaskModules :: !(Map TypeName ModulePath)
+  , bitmaskModules :: Map TypeName Module.Meta
   -- ^ @Flags@ synonyms — the module of their bits block, or their own.
-  , handleModules :: !(Map TypeName ModulePath)
-  , structModules :: !(Map TypeName ModulePath)
-  , funcpointerModules :: !(Map TypeName ModulePath)
-  , commandModules :: !(Map CommandName ModulePath)
+  , handleModules :: Map TypeName Module.Meta
+  , structModules :: Map TypeName Module.Meta
+  , funcpointerModules :: Map TypeName Module.Meta
+  , commandModules :: Map CommandName Module.Meta
   -- ^ Structs and unions. Core 1.0 groups by require-block comment
   -- (\"Device initialization\" -> @Core10.DeviceInitialization@); Core 1.1+
   -- blocks rarely carry comments, so those group by promoted-from
@@ -101,35 +103,43 @@ data ModuleMap = ModuleMap
 
 data ModuleError
   = ModuleNoOrigin
-      { kind :: !Namespace
-      , name :: !Text
+      { kind :: Namespace
+      , name :: Text
       }
   | ModuleUnmintedName
-      { kind :: !Namespace
-      , name :: !Text
+      { kind :: Namespace
+      , name :: Text
       }
+  | ModuleMetaError Module.MetaError
   deriving stock (Eq, Generic, Show)
   deriving anyclass (NFData, ToJSON)
 
+instance From Module.MetaError ModuleError where
+  from = ModuleMetaError
+
 instance Display ModuleError where
   displayBuilder =
-    displayBuilder @Text . \case
+    \case
       ModuleNoOrigin{kind, name} ->
-        "cannot assign a module: no origins on " <> display kind <> " '" <> name <> "'"
+        "cannot assign a module: no origins on " <> from kind <> " '" <> from name <> "'"
       ModuleUnmintedName{kind, name} ->
-        "cannot assign a module: no minted name for " <> display kind <> " '" <> name <> "'"
+        "cannot assign a module: no minted name for " <> from kind <> " '" <> from name <> "'"
+      ModuleMetaError err -> displayBuilder err
 
-constantsModule :: ModulePath
-constantsModule = ModulePath "Lithon.Vk.Constants"
+constantsModule :: Module.Meta
+constantsModule = $$(Module.metaLit ["Lithon", "Vk", "Constants"])
 
-versionModule :: ModulePath
-versionModule = ModulePath "Lithon.Vk.Version"
+versionModule :: Module.Meta
+versionModule = $$(Module.metaLit ["Lithon", "Vk", "Version"])
 
-resultModule :: ModulePath
-resultModule = ModulePath "Lithon.Vk.Result"
+resultModule :: Module.Meta
+resultModule = $$(Module.metaLit ["Lithon", "Vk", "Result"])
 
-umbrellaModule :: ModulePath
-umbrellaModule = ModulePath "Lithon.Vk"
+extensionModule :: Module.Meta
+extensionModule = $$(Module.metaLit ["Lithon", "Vk", "Extensions"])
+
+umbrellaModule :: Module.Meta
+umbrellaModule = $$(Module.metaLit ["Lithon", "Vk"])
 
 -- | Assign every entity to its module, then deterministically merge any
 -- module-level reference cycles (the registry's require-groups are not
@@ -144,9 +154,9 @@ assignModules
 assignModules cxt =
   mergeCycles
     <$> ( ModuleMap
-            <$> enumAssignments
+            <$> liftErrors enumAssignments
             <*> bitmaskAssignments
-            <*> handleAssignments
+            <*> liftErrors handleAssignments
             <*> structAssignments
             <*> funcpointerAssignments
             <*> commandAssignments
@@ -154,9 +164,11 @@ assignModules cxt =
  where
   lowered = getTyped @Lowered cxt
 
+  liftErrors = first errors1 . eitherToValidation
+
   mergeCycles mm =
     let remap = cycleRemap mm
-        apply :: Map k ModulePath -> Map k ModulePath
+        apply :: Map k Module.Meta -> Map k Module.Meta
         apply = Map.map (\at -> Map.findWithDefault at at remap)
      in ModuleMap
           { enumModules = apply mm.enumModules
@@ -225,39 +237,47 @@ assignModules cxt =
   registry = getTyped @ResolvedRegistry cxt
   names = getTyped @Names cxt
 
+  assignTypeModule
+    :: (HasField' "origins" r [Origin], HasField' "aliases" r (Vector (AliasInfo k)))
+    => TypeName -> r -> Either ModuleError (TypeName, Module.Meta)
+  assignTypeModule name block = do
+    base <-
+      baseOf TypeNS (forgetNamespace name) (withAliasOrigins (block ^. #origins) (block ^. #aliases))
+    minted <- mintedType name
+    (name,) <$> nest base ["Enums", minted]
+
   enumAssignments =
     fmap Map.fromList
-      . traverse assignEnum
+      . traverse (uncurry assignTypeModule)
       . Map.toList
       $ Map.filter (\b -> b.kind /= KindConstants) registry.enums
-  assignEnum (name, block) =
-    enumsSited name
-      <$> baseOf TypeNS (forgetNamespace name) (withAliasOrigins block.origins block.aliases)
-      <*> mintedType name
 
   bitmaskAssignments =
     fmap Map.fromList . traverse assignBitmask . Map.toList $ registry.bitmasks
-  assignBitmask (name, bm) = case bm.bitsBlock of
-    -- co-locate with the bits block (which always has kind /= KindConstants)
-    Just bits -> case Map.lookup bits registry.enums of
-      Nothing -> failing ModuleNoOrigin{kind = TypeNS, name = forgetNamespace bits}
-      Just block ->
-        enumsSited name
-          <$> baseOf TypeNS (forgetNamespace bits) (withAliasOrigins block.origins block.aliases)
-          <*> mintedType bits
-    -- reserved-empty mask: its own Enums module, from its own origins
-    Nothing ->
-      enumsSited name
-        <$> baseOf TypeNS (forgetNamespace name) (withAliasOrigins bm.origins bm.aliases)
-        <*> mintedType name
 
-  enumsSited name base leaf = (name, nest base ("Enums." <> leaf))
+  assignBitmask (name, bm) = first errors1 $ eitherToValidation do
+    case bm.bitsBlock of
+      -- Co-locate with the bits block: its origins AND its minted name decide
+      -- the module (the Flags synonym lives in its FlagBits module).
+      Just bits -> do
+        block <-
+          noteErr (ModuleNoOrigin{kind = TypeNS, name = forgetNamespace bits})
+            $ Map.lookup bits registry.enums
+        (_bits, meta) <- assignTypeModule bits block
+        pure (name, meta)
+      -- Reserved-empty mask: its own Enums module, from its own origins.
+      Nothing -> do
+        assignTypeModule name bm
 
   handleAssignments =
-    fmap Map.fromList . traverse assignHandle . Map.toList $ registry.handles
-  assignHandle (name, h) =
-    (\base -> (name, nest base "Handles"))
-      <$> baseOf TypeNS (forgetNamespace name) (withAliasOrigins h.origins h.aliases)
+    fmap Map.fromList
+      . traverse assignHandle
+      . Map.toList
+      $ registry.handles
+
+  assignHandle (name, h) = do
+    base <- baseOf TypeNS (forgetNamespace name) (withAliasOrigins h.origins h.aliases)
+    (name,) <$> nest base ["Handles"]
 
   structAssignments =
     fmap Map.fromList . traverse assignStruct . Map.toList $ registry.structs
@@ -279,30 +299,21 @@ assignModules cxt =
   -- Structs land in require-group modules rather than flat version
   -- buckets; the group label depends on the era of the earliest curated
   -- (or raw — same fallback as 'baseOf') origin.
-  structSite :: Text -> [Origin] -> Validation (Errors ModuleError) ModulePath
-  structSite name origins = case filter originCurated origins <> origins of
-    [] -> failing ModuleNoOrigin{kind = TypeNS, name}
-    all'@(o : _) -> case o.source of
-      FromExtension{extension} ->
-        pure
-          . extensionPath
-          $ fromMaybe
-            (stripVkPrefix (forgetNamespace extension))
-            (Map.lookup extension names.extensionModules)
+  structSite :: Text -> [Origin] -> Validation (Errors ModuleError) Module.Meta
+  structSite name origins = eitherToValidation case filter originCurated origins <> origins of
+    [] -> Left $ errors1 ModuleNoOrigin{kind = TypeNS, name}
+    allOrigins@(o : _) -> first (errors1 . from) case o.source of
+      FromExtension{extension} -> mintExtModule names extension
       FromFeature{version = CoreVersion{major, minor}}
         | (major, minor) == (1, 0) ->
-            pure
-              . ModulePath
-              $ "Lithon.Vk.Core10."
-              <> maybe "Other" groupLabel o.blockComment
+            Module.fromSegments ["Lithon", "Vk", "Core10", maybe "Other" groupLabel o.blockComment]
         | otherwise ->
-            pure
-              . ModulePath
-              $ "Lithon.Vk.Core"
-              <> show major
-              <> show minor
-              <> "."
-              <> promotedLabel all'
+            Module.fromSegments
+              [ "Lithon"
+              , "Vk"
+              , "Core" <> show major <> show minor
+              , promotedLabel allOrigins
+              ]
 
   -- \"Device initialization\" -> DeviceInitialization (words PascalCased,
   -- non-alphanumerics dropped).
@@ -327,29 +338,13 @@ assignModules cxt =
   withAliasOrigins :: [Origin] -> Vector (AliasInfo k) -> [Origin]
   withAliasOrigins own aliases = own <> concatMap (.origins) (toList aliases)
 
-  -- The base module of an entity's earliest curated origin — or, for
-  -- reference-closed entities with no curated require-site at all (e.g.
-  -- VkBlendOverlapEXT, pulled in because extended_dynamic_state3's structs
-  -- reference it), the earliest RAW origin: the type's true home extension
-  -- names its module even when that extension isn't otherwise bound. Docs
-  -- mark such modules as referenced-types-only (M6). Extension modules are
-  -- flat (entities co-live in the one extension module), so nesting only
-  -- applies to core versions.
-  baseOf :: Namespace -> Text -> [Origin] -> Validation (Errors ModuleError) Base
+  baseOf :: Namespace -> Text -> [Origin] -> Either ModuleError Base
   baseOf kind name origins = case filter originCurated origins <> origins of
-    [] -> failing ModuleNoOrigin{kind, name}
-    (o : _) -> case o.source of
+    [] -> Left $ ModuleNoOrigin{kind, name}
+    (o : _) -> first from case o.source of
       FromFeature{version = CoreVersion{major, minor}} ->
         pure (BaseCore (show major <> show minor))
-      FromExtension{extension} ->
-        -- Uncurated home extensions aren't in the minted map; their
-        -- segment is minted on the spot (same rule, collisions would
-        -- surface as duplicate emission paths).
-        pure
-          . BaseExtension
-          $ fromMaybe
-            (stripVkPrefix (forgetNamespace extension))
-            (Map.lookup extension names.extensionModules)
+      FromExtension{extension} -> BaseExtension <$> mintExtModule names extension
 
   -- An origin survives when its source did: curated features are exactly
   -- the registry's feature vector, curated extensions its extensions map.
@@ -360,21 +355,22 @@ assignModules cxt =
     Set.fromList [f.version | f <- toList registry.features]
 
   mintedType name = case Map.lookup name names.typeNames of
-    Just t -> pure t
-    Nothing -> failing ModuleUnmintedName{kind = TypeNS, name = forgetNamespace name}
+    Just t -> Right t
+    Nothing -> Left ModuleUnmintedName{kind = TypeNS, name = forgetNamespace name}
 
-  failing :: ModuleError -> Validation (Errors ModuleError) a
-  failing = Failure . errors1
+mintExtModule :: Names -> ExtensionName -> Either Module.MetaError Module.Meta
+mintExtModule names ext = fmap (extensionModule <>) case Map.lookup ext names.extensionModules of
+  Just mods -> pure mods
+  Nothing -> Module.fromSegments [stripVkPrefix (forgetNamespace ext)]
 
 -- | Core versions nest (@Lithon.Core10.Enums.Result@); extension modules
 -- are flat (@Lithon.Extensions.KHR_swapchain@ holds everything the
 -- extension introduces).
-data Base = BaseCore Text | BaseExtension Text
+data Base = BaseCore Text | BaseExtension Module.Meta
 
-nest :: Base -> Text -> ModulePath
-nest base leaf = case base of
-  BaseCore v -> ModulePath ("Lithon.Vk.Core" <> v <> "." <> leaf)
-  BaseExtension seg -> extensionPath seg
-
-extensionPath :: Text -> ModulePath
-extensionPath seg = ModulePath ("Lithon.Vk.Extensions." <> seg)
+nest :: Base -> [Text] -> Either ModuleError Module.Meta
+nest base leaves = first from case base of
+  BaseCore v -> Module.fromSegments $ ["Lithon", "Vk", "Core" <> v] <> leaves
+  -- Extension modules are flat and 'mintExtModule' already prefixed the
+  -- extension namespace; the leaves apply only to versioned core homes.
+  BaseExtension m -> pure m

@@ -28,9 +28,14 @@ import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
 import Lithon.Codegen.Sdl3.Bindgen (stubEditsFor, textEditsFor)
 
+-- | Project a rendered family onto (dotted name, source) pairs — the seam
+-- types deliberately carry no 'Eq'\/'Show'.
+renderedPairs :: [HB.NameableModule HB.RenderedHsModule] -> [(Text, Text)]
+renderedPairs = map \m -> (HB.moduleName m, m.hsModule.text)
+
 -- | Drive one toy header through the seam and hand back the translated
 -- family (pre-render).
-toyFamily :: FilePath -> Text -> IO [(Text, HB.HsModule)]
+toyFamily :: FilePath -> Text -> IO [HB.NameableModule HB.HsModule]
 toyFamily include header = withSystemTempDirectory "lithon-sdl3-shim-toy" \dir -> do
   createDirectoryIfMissing True (takeDirectory (dir </> include))
   TIO.writeFile (dir </> include) header
@@ -74,13 +79,13 @@ unit_linuxStubsRewriteTheFamily = do
   rendered <-
     either (assertFailure . show) pure
       $ HB.renderFamilyWith [] shimmed
-  let everything = T.concat (map snd rendered)
+  let everything = T.concat (map snd (renderedPairs rendered))
   -- Two call edits land in Unsafe AND Safe, two address edits in FunPtr:
   -- six guards, each with a loud SetError stub.
   T.count "#ifdef SDL_PLATFORM_LINUX" everything @?= 6
   T.count "SDL_SetError" everything @?= 6
   -- The types module is untouched even though no edit matches it.
-  let typesSrc = fromMaybe "" (L.lookup "SDL3.Sys.Bindgen.ShimToy" rendered)
+  let typesSrc = fromMaybe "" (L.lookup "SDL3.Sys.Bindgen.ShimToy" (renderedPairs rendered))
   T.count "#ifdef SDL_PLATFORM_LINUX" typesSrc @?= 0
 
 unit_mainHandledInsertsDefine :: IO ()
@@ -100,7 +105,7 @@ unit_mainHandledInsertsDefine = do
     either (assertFailure . show) pure
       $ HB.renderFamilyWith (textEditsFor "SDL_main.h") family
   assertBool "SDL_MAIN_HANDLED define inserted before the include"
-    $ any (T.isInfixOf "#define SDL_MAIN_HANDLED" . snd) rendered
+    $ any (T.isInfixOf "#define SDL_MAIN_HANDLED" . snd) (renderedPairs rendered)
 
 unit_shimDriftFails :: IO ()
 unit_shimDriftFails = do
@@ -138,4 +143,4 @@ unit_unshimmedHeaderUntouched = do
   rendered1 <-
     either (assertFailure . show) pure
       $ HB.renderFamilyWith (textEditsFor "SDL_video.h") shimmed
-  rendered1 @?= rendered0
+  renderedPairs rendered1 @?= renderedPairs rendered0

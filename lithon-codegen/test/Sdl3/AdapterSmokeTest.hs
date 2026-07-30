@@ -64,8 +64,9 @@ unit_adapterSmoke = do
       assertBool "include graph has entries" (not (null deps))
       rendered <-
         either (assertFailure . show) pure (HB.renderFamilyWith [] family)
-      let typesSrc = fromMaybe "" (L.lookup "Toy.Bindgen" rendered)
-          safeSrc = fromMaybe "" (L.lookup "Toy.Bindgen.Safe" rendered)
+      let pairs = map (\m -> (HB.moduleName m, m.hsModule.text)) rendered
+          typesSrc = fromMaybe "" (L.lookup "Toy.Bindgen" pairs)
+          safeSrc = fromMaybe "" (L.lookup "Toy.Bindgen.Safe" pairs)
       assertBool
         "types module rendered under the base name"
         ("module Toy.Bindgen" `T.isInfixOf` typesSrc)

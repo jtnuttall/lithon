@@ -34,6 +34,7 @@ import Lithon.HsBindgen.C qualified as C
 import Lithon.Prelude
 import System.FilePath ((<.>), (</>))
 
+import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Sdl3.Abi (AbiDecl, AbiSince (..), declSince, distillAbi, sdlBaseline)
 import Lithon.Codegen.Sdl3.Alias (FamilyDecls, distillFamily)
 import Lithon.Codegen.Sdl3.Env
@@ -52,6 +53,7 @@ data BindgenError
   | HsBindgenError Text HB.BindgenFailure
   | ModuleShimFailed FilePath HB.TransformError
   | AbiDistillationFailure FilePath Text
+  | ModuleMangleError Module.MangleError
   | BindgenPanic Text
   deriving stock (Show)
 
@@ -95,6 +97,7 @@ instance Display BindgenError where
 
               $reason
             |]
+    ModuleMangleError err -> displayBuilder err
     BindgenPanic what ->
       from
         [trimmingQQ|
@@ -123,7 +126,7 @@ data HeaderUnit = HeaderUnit
 -- | The rendered output of one header's invocation.
 data HeaderResult = HeaderResult
   { unit :: HeaderUnit
-  , modules :: [(Text, Text)]
+  , modules :: [HB.NameableModule HB.RenderedHsModule]
   -- ^ Module name -> source text, for the categories hs-bindgen produced.
   , facts :: FamilyDecls
   -- ^ The alias-layer distillate (function census + translated decls).
@@ -291,7 +294,7 @@ runHeader specDir priorSpecs overrides registry unit = do
     liftEither
       . first (AbiDistillationFailure unit.headerName)
       $ distillAbi unit.headerName (abiOverrides registry) cDecls
-  let hasBaseModule = unit.moduleName `elem` map fst modules
+  let hasBaseModule = unit.moduleName `elem` map HB.moduleName modules
   pure
     HeaderResult
       { unit
@@ -475,12 +478,11 @@ versionStubEdits registry headerName cDecls =
       }
    where
     isTargetLine l =
-      ("  return (" <> sym <> ")(")
-        `T.isPrefixOf` l
-        || ("  (" <> sym <> ")(")
-        `T.isPrefixOf` l
-        || l
-        == ("  return &" <> sym <> ";")
+      or @[Bool]
+        [ ("  return (" <> sym <> ")(") `T.isPrefixOf` l
+        , ("  (" <> sym <> ")(") `T.isPrefixOf` l
+        , l == ("  return &" <> sym <> ";")
+        ]
 
     guardBlock line =
       [ "#if SDL_VERSION_ATLEAST(" <> versionArgs <> ")"

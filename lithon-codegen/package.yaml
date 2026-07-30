@@ -57,6 +57,7 @@ dependencies:
   - bifunctors ^>=5.6
   - Blammo ^>=2.1
   - bytestring ^>=0.12
+  - bytestring-trie ^>=0.2
   - case-insensitive ^>=1.2
   - concurrent-output ^>=1.10
   - conduit ^>=1.3

@@ -1,5 +1,7 @@
 {-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE OverloadedLabels #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE StrictData #-}
 {-# LANGUAGE NoFieldSelectors #-}
 
 -- | Driving hs-bindgen: lithon-owned invocation configuration and the
@@ -21,6 +23,9 @@ module Lithon.HsBindgen.Invoke (
   -- * Operations
   BindgenM,
   HsModule,
+  NameableModule (..),
+  moduleName,
+  moduleNameSegments,
   translatedFamily,
   reifiedHs,
   reifiedC,
@@ -37,8 +42,9 @@ import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TB
 import Doxygen.Parser qualified as Doxy
+import GHC.Generics (Generic)
 import HsBindgen
-import HsBindgen.Artefact (Artefact (..), ArtefactMsg (..))
+import HsBindgen.Artefact (ArtefactMsg (..))
 import HsBindgen.ArtefactM (DirPolicy (..), FilePolicy (..))
 import HsBindgen.Backend.Category (
   ByCategory (..),
@@ -49,13 +55,10 @@ import HsBindgen.Backend.Category (
 import HsBindgen.Backend.Hs.AST qualified as Hs
 import HsBindgen.Backend.Hs.Haddock.Documentation qualified as HsDoc
 import HsBindgen.Backend.HsModule.Translation (HsModule, translateModuleMultiple)
-import HsBindgen.BindingSpec
+import HsBindgen.BindingSpec hiding (moduleName)
 import HsBindgen.Config hiding (ConfigTH (..))
 import HsBindgen.Config.ClangArgs
 import HsBindgen.Config.Prelims (
-  BaseModuleName (..),
-  FieldNamingStrategy (..),
-  UniqueId (..),
   fromBaseModuleName,
  )
 import HsBindgen.Frontend.Analysis.IncludeGraph qualified as IncludeGraph
@@ -65,6 +68,7 @@ import HsBindgen.Language.Haskell (ModuleName (..))
 import HsBindgen.Macro (CExpr, cExpr)
 import HsBindgen.TraceMsg
 import HsBindgen.Util.Tracer
+import Lithon.Prelude ((&), (.~))
 import Lithon.Prelude.Display (Display (..))
 
 -- | Per-project invocation environment: everything lithon varies about
@@ -122,10 +126,9 @@ runBindgen env spec (BindgenM artefacts) =
   config =
     (def :: Config_ FilePath)
       { clang =
-          def
-            { extraIncludeDirs = env.extraIncludeDirs
-            , defineMacros = env.defineMacros
-            }
+          (def :: ClangArgsConfig FilePath)
+            & (#extraIncludeDirs .~ env.extraIncludeDirs)
+            & (#defineMacros .~ env.defineMacros)
       , fieldNamingStrategy = env.fieldNaming
       , doxygenConfig = Doxy.defaultConfig{Doxy.aliases = env.doxygenAliases}
       , bindingSpec =
@@ -135,11 +138,27 @@ runBindgen env spec (BindgenM artefacts) =
             }
       }
 
+data NameableModule a = NameableModule
+  { name :: BaseModuleName
+  , category :: Maybe Category
+  , hsModule :: a
+  }
+  deriving stock (Functor, Generic)
+
+-- | The full dotted module name of one family member (base + category
+-- suffix). Reads only the name metadata, so it works on any payload —
+-- pre-render 'HsModule' or post-render alike.
+moduleName :: NameableModule a -> Text
+moduleName m = (fromBaseModuleName m.name m.category).text
+
+moduleNameSegments :: NameableModule a -> [Text]
+moduleNameSegments = T.splitOn "." . moduleName
+
 -- | The translated (pre-render) module family: module name -> module AST,
 -- one entry per non-empty binding category, names minted by hs-bindgen's
 -- own category mapping. Feed the result through
 -- "Lithon.HsBindgen.Transform" and render there.
-translatedFamily :: BindgenM [(Text, HsModule)]
+translatedFamily :: BindgenM [NameableModule HsModule]
 translatedFamily = BindgenM do
   name <- ModuleBaseName
   decls <- FinalDecls
@@ -156,10 +175,10 @@ translatedFamily = BindgenM do
   nullDecls :: (Foldable f, Foldable g) => (f a, g b) -> Bool
   nullDecls (xs, ys) = null xs && null ys
 
-  familyModules :: BaseModuleName -> ByCategory_ (Maybe HsModule) -> [(Text, HsModule)]
+  familyModules :: BaseModuleName -> ByCategory_ (Maybe HsModule) -> [NameableModule HsModule]
   familyModules name (ByCategory_ inner) =
-    [ ((fromBaseModuleName name cat).text, m)
-    | (cat, Just m) <-
+    [ NameableModule{..}
+    | (category, Just hsModule) <-
         [ (Just CType, getConst inner.cType)
         , (Just (CTerm CSafe), getConst inner.cSafe)
         , (Just (CTerm CUnsafe), getConst inner.cUnsafe)

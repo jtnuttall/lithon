@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 -- | Command planning and rendering (generate pass g5).
 --
@@ -71,7 +72,7 @@ import Data.Text qualified as T
 import Data.Vector qualified as V
 import Lithon.Prelude
 
-import Lithon.Codegen.Backend.Hs (ModulePath (..))
+import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Vulkan.Generate.Docs (DocKey (..), DocsMap (..))
 import Lithon.Codegen.Vulkan.Generate.Layout (FieldLayout (..), Layouts (..), StructLayout (..))
 import Lithon.Codegen.Vulkan.Generate.Marshal (
@@ -109,10 +110,10 @@ import Lithon.Codegen.Vulkan.Resolved.Registry (ResolvedRegistry (..))
 -- | A rendered declaration group destined for a module (mirrors the struct
 -- renderer's internal shape; the render pass adapts it).
 data CmdDecl = CmdDecl
-  { site :: !ModulePath
-  , needs :: !(Set Text)
-  , exports :: ![Text]
-  , source :: !Text
+  { site :: Module.Meta
+  , needs :: Set Text
+  , exports :: [Text]
+  , source :: Text
   }
   deriving stock (Eq, Generic, Show)
   deriving anyclass (NFData, ToJSON)
@@ -134,8 +135,8 @@ instance Display CmdsError where
       CResultPolicy{command, reason} ->
         "result policy for " <> command <> ": " <> reason
 
-dispatchModule :: ModulePath
-dispatchModule = ModulePath "Lithon.Vk.Dispatch"
+dispatchModule :: Module.Meta
+dispatchModule = $$(Module.metaLit ["Lithon", "Vk", "Dispatch"])
 
 -- | Curated blocking-prone commands: imported @safe@ so a stalled or
 -- long-running driver call cannot wedge the RTS. Two classes qualify:
@@ -623,7 +624,7 @@ planCommands cxt =
                   , reason = "payloadUnwrittenOn cannot apply to an override; encode the policy in the override source"
                   }
             errWires <- traverse (vkResultWire registry (forgetNamespace name)) c.errorCodes
-            unless (null (filter (>= 0) errWires))
+            when (any (>= 0) errWires)
               $ failing
                 CResultPolicy
                   { command = forgetNamespace name
@@ -830,7 +831,7 @@ planCommands cxt =
                 BracketPlan
                   { withName = "with" <> capitalize stripped
                   , destroyMinted = dplan.minted
-                  , destroyModule = (.dotted) <$> Map.lookup dn moduleMap.commandModules
+                  , destroyModule = Module.hsName <$> Map.lookup dn moduleMap.commandModules
                   , kind = k
                   , allocatorExpr = alloc
                   , rcvExpr = r
@@ -1217,10 +1218,10 @@ planCommands cxt =
           , member == fld
           ]
     case (retained, absorbed, Map.lookup rootP.typeRef.name plans'.plans) of
-      ((f : _), _, _) ->
+      (f : _, _, _) ->
         pure
           CountBind{bindName = bind, source = CSRetainedField{arg = rootArg, field = f}, wireTy = "Word32"}
-      ([], ((vf, sc) : _), _) ->
+      ([], (vf, sc) : _, _) ->
         pure
           CountBind
             { bindName = bind
@@ -1667,8 +1668,8 @@ planCommands cxt =
             ( \minted ->
                 ScalarGen
                   { ty = "Flags " <> minted
-                  , toWire = \v -> "(\\(Flags w) -> w) " <> v
-                  , fromWire = \v -> "Flags " <> v
+                  , toWire = ("(\\(Flags w) -> w) " <>)
+                  , fromWire = ("Flags " <>)
                   , sizeAlign = case block.bitWidth of W32 -> (4, 4); W64 -> (8, 8)
                   , wireT = case block.bitWidth of W32 -> "Word32"; W64 -> "Word64"
                   , imports = enumImport ref.name
@@ -1681,8 +1682,8 @@ planCommands cxt =
                 if open then
                   ScalarGen
                     { ty = "Open " <> minted
-                    , toWire = \v -> "openToWire " <> v
-                    , fromWire = \v -> "openFromWire " <> v
+                    , toWire = ("openToWire " <>)
+                    , fromWire = ("openFromWire " <>)
                     , sizeAlign = (4, 4)
                     , wireT = "Int32"
                     , imports = enumImport ref.name
@@ -1690,8 +1691,8 @@ planCommands cxt =
                 else
                   ScalarGen
                     { ty = minted
-                    , toWire = \v -> "toWire " <> v
-                    , fromWire = \v -> "unsafeFromWire " <> v
+                    , toWire = ("toWire " <>)
+                    , fromWire = ("unsafeFromWire " <>)
                     , sizeAlign = (4, 4)
                     , wireT = "Int32"
                     , imports = enumImport ref.name
@@ -1831,7 +1832,7 @@ planCommands cxt =
   enumImport t = moduleImp (Map.lookup t moduleMap.enumModules)
   bitmaskImport t = moduleImp (Map.lookup t moduleMap.bitmaskModules)
   handleImport t = moduleImp (Map.lookup t moduleMap.handleModules)
-  moduleImp = maybe Set.empty (\m -> one ("import " <> m.dotted))
+  moduleImp = maybe Set.empty (\m -> one ("import " <> Module.hsName m))
 
   -- ── out generators ──────────────────────────────────────────────────
 
@@ -2181,7 +2182,10 @@ planCommands cxt =
     Nothing -> (8, 8)
 
   structImport t =
-    maybe Set.empty (\m -> Set.fromList ["import " <> m.dotted]) (Map.lookup t moduleMap.structModules)
+    maybe
+      Set.empty
+      (\m -> Set.fromList ["import " <> Module.hsName m])
+      (Map.lookup t moduleMap.structModules)
 
   mintedTypeOf cmd t = case Map.lookup t names.typeNames of
     Just m -> pure m
@@ -2834,14 +2838,14 @@ renderCommands cxt =
 -- ── plan-independent helpers ────────────────────────────────────────────
 
 data ScalarGen = ScalarGen
-  { ty :: !Text
-  , toWire :: !(Text -> Text)
-  , fromWire :: !(Text -> Text)
-  , sizeAlign :: !(Int, Int)
-  , wireT :: !Text
+  { ty :: Text
+  , toWire :: Text -> Text
+  , fromWire :: Text -> Text
+  , sizeAlign :: (Int, Int)
+  , wireT :: Text
   -- ^ The raw FFI-side type; peeks are annotated with it so @fromIntegral@
   -- conversions in generated code are never ambiguous.
-  , imports :: !(Set Text)
+  , imports :: Set Text
   }
 
 paramOptional :: ResolvedParam -> Bool

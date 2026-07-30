@@ -19,6 +19,7 @@ import Data.FileEmbed (embedFileRelative)
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as T
+import Lithon.HsBindgen qualified as HB
 import Lithon.HsBindgen.Runtime (
   cexprRuntimeCoreTree,
   cexprRuntimeLibTree,
@@ -32,7 +33,7 @@ import Witch (TryFromException (..))
 
 import Lithon.Codegen.Backend.FileTree (FileTree)
 import Lithon.Codegen.Backend.FileTree qualified as FileTree
-import Lithon.Codegen.Backend.Hs (moduleNameFilePath)
+import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Sdl3.Abi (AbiMacroConst, renderAbiAssertions)
 import Lithon.Codegen.Sdl3.Bindgen (HeaderResult (..), baseNamespace, mainIncludes)
 
@@ -83,6 +84,7 @@ cexprRuntimeOut = "runtime-cexpr"
 data PackageAssemblyError
   = MergedTreeInvalid FileTree.DuplicateFiles
   | GeneratorOutputInvalid Text (TryFromException [(FilePath, Text)] FileTree)
+  | GeneratorEmittedInvalidModuleName Text Text Module.MetaError
   | GeneratorEmittedOutOfTreeModules [Text]
   | AbiAssertionsInvalid Text
   deriving stock (Show)
@@ -94,6 +96,8 @@ instance Display PackageAssemblyError where
   displayBuilder = \case
     MergedTreeInvalid dupes -> "while trying to assemble package, " <> displayBuilder dupes
     GeneratorOutputInvalid what except -> "[" <> from what <> "]: generator emitted duplicate paths: " <> show except
+    GeneratorEmittedInvalidModuleName what name err ->
+      "[" <> from what <> "]: generator emitted invalid module name " <> show name <> ": " <> displayBuilder err
     GeneratorEmittedOutOfTreeModules mods ->
       "generated code imports vendored-runtime modules outside the"
         <> " expected surface: "
@@ -111,8 +115,12 @@ assemblePackage
   -> [HeaderResult]
   -> Either PackageAssemblyError FileTree
 assemblePackage aliasModules macroConsts results = do
-  let generatedPairs = first moduleNameFilePath <$> concatMap (.modules) results
-      aliasPairs = first moduleNameFilePath <$> aliasModules
+  generatedPairs <- for (concatMap (.modules) results) \m -> do
+    p <- pathFor "generated modules" (HB.moduleNameSegments m)
+    pure (p, m.hsModule.text)
+  aliasPairs <- for aliasModules \(name, contents) -> do
+    p <- pathFor "aliases" (T.splitOn "." name)
+    pure (p, contents)
   hsBindgenFacades <-
     hsBindgenRuntimeReexports . runtimeImports . map snd $ generatedPairs <> aliasPairs
   abiAssertions <-
@@ -121,7 +129,9 @@ assemblePackage aliasModules macroConsts results = do
   generated :: FileTree <- first (GeneratorOutputInvalid "generated modules") $ tryFrom generatedPairs
   aliases :: FileTree <- first (GeneratorOutputInvalid "aliases") $ tryFrom aliasPairs
 
-  let facadePairs = first moduleNameFilePath <$> hsBindgenFacades
+  facadePairs <- for hsBindgenFacades \(name, contents) -> do
+    p <- pathFor "hs-bindgen facades" (T.splitOn "." name)
+    pure (p, contents)
   facades <- first (GeneratorOutputInvalid "hs-bindgen facades") $ tryFrom facadePairs
 
   let hsBindgenRuntime = FileTree.prependPath hsbindgenRuntimeOut $ FileTree.fromUniqueListBS hsBindgenRuntimeTree
@@ -143,13 +153,17 @@ assemblePackage aliasModules macroConsts results = do
         hsBindgenRuntime
           :| [ cexprRuntimeCore
              , cexprRuntimeLib
-             , generated
-             , aliases
-             , facades
+             , FileTree.prependPath "src" generated
+             , FileTree.prependPath "src" aliases
+             , FileTree.prependPath "src" facades
              , rootFiles
              ]
 
   first from $ FileTree.cata tree
+ where
+  pathFor what segs =
+    bimap (GeneratorEmittedInvalidModuleName what (T.intercalate "." segs)) Module.path
+      $ Module.fromSegments segs
 
 -- | Every @HsBindgen.Runtime.*@ \/ @C.Expr.*@ module imported by the
 -- generated sources.

@@ -18,10 +18,10 @@ module Lithon.Codegen.Vulkan.Generate (
 
 import Data.Aeson qualified as A
 import Data.Generics.SOP.Builder.Typed qualified as TB
-import Data.Map.Strict qualified as Map
 import Lithon.Prelude
+import System.FilePath ((</>))
 
-import Lithon.Codegen.Backend.Hs (moduleFilePath)
+import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Vulkan.Curate (Curated (..))
 import Lithon.Codegen.Vulkan.Generate.Cmds (
   CmdsError,
@@ -66,7 +66,7 @@ generate :: Curated -> Either (Errors GenerateError) GenOutput
 generate curated = do
   cxt <-
     TB.buildNP
-      $ TB.inject_ (I curated.registry)
+      $ TB.injectI_ curated.registry
       >>> TB.injectIA (\c -> buildNames c <??> GName)
       >>> TB.injectIA (\c -> lowerStructs c <??> GLower)
       >>> TB.injectIA (\c -> assignModules c <??> GModule)
@@ -79,8 +79,6 @@ generate curated = do
   let rendered = getTyped @[RenderedModule] cxt
   pure
     GenOutput
-      { files =
-          Map.fromList
-            [(moduleFilePath m.path, m.contents) | m <- rendered]
+      { files = fromList [("src" </> Module.path m.meta, m.contents) | m <- rendered]
       , report = genReport (getTyped @CommandPlans cxt)
       }

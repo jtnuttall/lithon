@@ -62,8 +62,10 @@ library
     , file-embed
     , filepath
     , hs-bindgen
+    , lens
     , libclang-bindings
     , lithon-prelude
+    , mtl
     , text
     , text-builder-linear
   default-language: GHC2024

@@ -46,6 +46,8 @@ dependencies:
   - data-default
   - file-embed
   - filepath
+  - lens
+  - mtl
   - text
   - text-builder-linear
 

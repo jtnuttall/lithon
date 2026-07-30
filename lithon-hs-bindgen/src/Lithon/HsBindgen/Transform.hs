@@ -1,4 +1,5 @@
 {-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE OverloadedLabels #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoFieldSelectors #-}
 
@@ -22,21 +23,28 @@ module Lithon.HsBindgen.Transform (
 
   -- * Rendered-text edits (the escape hatch)
   TextEdit (..),
+  RenderedHsModule (..),
   renderFamilyWith,
 
   -- * Failure
   TransformError (..),
 ) where
 
+import Control.Lens (traverseOf)
 import Control.Monad (foldM)
-import Data.Bifunctor (second)
+import Control.Monad.Writer.Strict
+import Data.Function (applyWhen)
 import Data.Maybe (fromMaybe)
+import Data.Monoid (Any (Any))
 import Data.Text (Text)
 import Data.Text qualified as T
 import HsBindgen.Backend.Hs.CallConv (CWrapper (..), CallConv (..))
 import HsBindgen.Backend.HsModule.Render (render)
 import HsBindgen.Backend.HsModule.Translation (HsModule (..))
 import HsBindgen.Backend.SHs.AST (ForeignImport (..), SDecl (..))
+import Lithon.Prelude (Display (..), From (..))
+
+import Lithon.HsBindgen.Invoke (NameableModule (..))
 
 -- | One targeted edit of a foreign import's C stub, keyed on the wrapped
 -- C declaration ('CWrapper's @wraps@ field — the foreign import's own
@@ -78,64 +86,55 @@ data TransformError
   = -- | The stub edit landed on no wrapper in the family: label, wrapped
     -- C declaration, expected stub shape. Either the declaration is gone
     -- or its stub no longer has the expected line.
-    StubEditMissed Text Text Text
+    StubEditMissed {label :: Text, symbol :: Text, target :: Text}
   | -- | The rendered-text edit's needle appears nowhere in the family.
-    TextEditMissed Text Text
+    TextEditMissed {label :: Text, needle :: Text}
   deriving stock (Eq, Show)
 
--- | Apply stub edits across a translated module family. Each edit must
--- land at least once across the family or the whole application fails.
---
--- 'HsModule' carries the wrapper set twice — per foreign import
--- ('CallConvUserlandCapi') and collected in @cWrappers@ — so after a
--- successful edit the module's @cWrappers@ are re-derived from its decls;
--- callers cannot desynchronize the two.
+instance Display TransformError where
+  displayBuilder = \case
+    StubEditMissed{..} ->
+      "stub edit '"
+        <> from label
+        <> "' for symbol '"
+        <> from symbol
+        <> "' with target '"
+        <> from target
+        <> "' did not land in at least one module"
+    TextEditMissed{..} ->
+      "text edit '"
+        <> from label
+        <> "' with needle '"
+        <> from needle
+        <> "' did not land in at least one module"
+
 applyStubEdits
   :: [StubEdit]
-  -> [(Text, HsModule)]
-  -> Either TransformError [(Text, HsModule)]
-applyStubEdits edits family = foldM applyOne family edits
+  -> [NameableModule HsModule]
+  -> Either TransformError [NameableModule HsModule]
+applyStubEdits edits family = foldM step family edits
  where
-  applyOne
-    :: [(Text, HsModule)]
-    -> StubEdit
-    -> Either TransformError [(Text, HsModule)]
-  applyOne fam e =
-    let edited = map (second (editModule e)) fam
-        hits = sum [n | (_, (n, _)) <- edited]
-     in if hits == (0 :: Int) then
-          Left (StubEditMissed e.label (fromMaybe "<any wrapper>" e.symbol) e.target)
-        else
-          Right [(name, m) | (name, (_, m)) <- edited]
-
-  editModule :: StubEdit -> HsModule -> (Int, HsModule)
-  editModule e m =
-    let (n, decls') = mapAccumEdit e m.decls
-     in if n == 0 then
-          (0, m)
-        else
-          (n, m{decls = decls', cWrappers = wrappersOf decls'})
-
-  mapAccumEdit :: StubEdit -> [SDecl] -> (Int, [SDecl])
-  mapAccumEdit e = foldr step (0, [])
+  step fam e
+    | changed = Right fam'
+    | otherwise = Left $ StubEditMissed e.label (fromMaybe "<any wrapper>" e.symbol) e.target
    where
-    step d (n, ds) = case editDecl e d of
-      Just d' -> (n + 1, d' : ds)
-      Nothing -> (n, d : ds)
+    (fam', Any changed) = runWriter (traverse (editModule e) fam)
 
-  editDecl :: StubEdit -> SDecl -> Maybe SDecl
-  editDecl e = \case
+  editModule e = traverseOf #hsModule \s -> do
+    (decls', Any changed) <- listen (traverse (editDecl e) s.decls)
+    pure $ applyWhen changed (\s' -> s'{decls = decls', cWrappers = wrappersOf decls'}) s
+
+  editDecl e decl = case decl of
     DForeignImport fi
       | CallConvUserlandCapi w <- fi.callConv
       , maybe True (w.wraps ==) e.symbol
-      , Just ls' <- e.edit (T.splitOn "\n" (T.pack w.definition)) ->
-          Just $
+      , Just ls' <- e.edit (T.splitOn "\n" (T.pack w.definition)) -> do
+          tell (Any True)
+          pure $
             DForeignImport
               fi{callConv = CallConvUserlandCapi w{definition = T.unpack (T.intercalate "\n" ls')}}
-    _otherDecl -> Nothing
+    _otherDecl -> pure decl
 
-  -- Mirror of the collection the translator performs (SHs.Translation
-  -- getCWrappers): every userland-capi import's wrapper, in decl order.
   wrappersOf ds = [w | DForeignImport fi <- ds, CallConvUserlandCapi w <- [fi.callConv]]
 
 -- | One rendered-text rewrite (see module haddock for why this exists).
@@ -146,19 +145,24 @@ data TextEdit = TextEdit
   }
   deriving stock (Eq, Show)
 
+newtype RenderedHsModule = RenderedHsModule
+  {text :: Text}
+  deriving stock (Show)
+
 -- | Render a translated family and apply the text-level escape hatches,
 -- each required to land at least once across the family.
 renderFamilyWith
   :: [TextEdit]
-  -> [(Text, HsModule)]
-  -> Either TransformError [(Text, Text)]
-renderFamilyWith edits family = foldM applyOne rendered edits
+  -> [NameableModule HsModule]
+  -> Either TransformError [NameableModule RenderedHsModule]
+renderFamilyWith edits family = map (fmap RenderedHsModule) <$> foldM step rendered edits
  where
-  rendered = map (second (T.pack . render)) family
+  rendered :: [NameableModule Text]
+  rendered = map (fmap (T.pack . render)) family
 
-  applyOne fam e =
-    let hits = sum (map (T.count e.needle . snd) fam)
-     in if hits == 0 then
-          Left (TextEditMissed e.label e.needle)
-        else
-          Right (map (second (T.replace e.needle e.replacement)) fam)
+  step :: [NameableModule Text] -> TextEdit -> Either TransformError [NameableModule Text]
+  step fam TextEdit{..}
+    | hits == 0 = Left $ TextEditMissed{..}
+    | otherwise = Right $ map (fmap (T.replace needle replacement)) fam
+   where
+    hits = sum (map (T.count needle . (.hsModule)) fam)

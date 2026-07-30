@@ -1,4 +1,6 @@
+{-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE StrictData #-}
 
 -- | C -> Haskell name resolution (generate pass g1).
 --
@@ -48,6 +50,7 @@ import Data.Text qualified as T
 import Data.Vector qualified as V
 import Lithon.Prelude
 
+import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Types.Common (VendorTag (..))
 import Lithon.Codegen.Vulkan.Resolved.Enums (
@@ -60,19 +63,19 @@ import Lithon.Codegen.Vulkan.Resolved.Registry (ResolvedRegistry (..))
 -- | The total name maps for the curated surface. Keys are canonical
 -- registry spellings; values are the Haskell identifiers phase 3 emits.
 data Names = Names
-  { typeNames :: !(Map TypeName Text)
+  { typeNames :: Map TypeName Text
   -- ^ Every named type (structs, unions, handles, enums, bitmasks,
   -- funcpointers, basetypes) -> Haskell type constructor name.
-  , commandNames :: !(Map CommandName Text)
+  , commandNames :: Map CommandName Text
   -- ^ Command -> Haskell function name.
-  , ctorNames :: !(Map EnumValueName Text)
+  , ctorNames :: Map EnumValueName Text
   -- ^ Enum item (canonical spelling) -> Haskell constructor \/ pattern name.
   -- Item names are globally unique in the registry, so one map suffices.
-  , constantNames :: !(Map EnumValueName Text)
+  , constantNames :: Map EnumValueName Text
   -- ^ API constant -> Haskell pattern name.
-  , extensionModules :: !(Map ExtensionName Text)
+  , extensionModules :: Map ExtensionName Module.Meta
   -- ^ Extension -> trailing module segment (@KHR_swapchain@).
-  , structCtorNames :: !(Map TypeName Text)
+  , structCtorNames :: Map TypeName Text
   -- ^ Struct record\/constructor names: the type name, unless that
   -- collides with an enum-value\/constant constructor at the term level
   -- (the registry names @VkPipelineCacheHeaderVersionOne@ — the struct —
@@ -84,49 +87,57 @@ data Names = Names
 
 data NameError
   = NameEmptyAfterStrip
-      { kind :: !Namespace
-      , original :: !Text
+      { kind :: Namespace
+      , original :: Text
       }
   | NameCollision
-      { kind :: !Namespace
-      , minted :: !Text
-      , originals :: ![Text]
+      { kind :: Namespace
+      , minted :: Text
+      , originals :: [Text]
       -- ^ Every registry spelling that mapped to the same identifier,
       -- name-sorted.
       }
+  | NameBadModule {kind :: Namespace, err :: Module.MetaError}
   deriving stock (Eq, Generic, Show)
   deriving anyclass (NFData, ToJSON)
 
 instance Display NameError where
   displayBuilder =
-    displayBuilder @Text . \case
+    \case
       NameEmptyAfterStrip{kind, original} ->
         "name is empty after prefix strip: "
-          <> display kind
+          <> from kind
           <> " '"
-          <> original
+          <> from original
           <> "'"
       NameCollision{kind, minted, originals} ->
         "generated "
-          <> display kind
+          <> from kind
           <> " name '"
-          <> minted
+          <> from minted
           <> "' collides between: "
-          <> T.intercalate ", " originals
+          <> intercalateTB ", " (map from originals)
+      NameBadModule{kind, err} ->
+        "generation for a "
+          <> from kind
+          <> " produces a bad module name: "
+          <> from err
 
 -- | Mint every generated identifier for the curated registry.
 buildNames
   :: (HasType ResolvedRegistry cxt)
   => cxt
   -> Validation (Errors NameError) Names
-buildNames cxt =
-  Names
-    <$> uniquely TypeNS typeEntries
-    <*> uniquely CommandNS commandEntries
-    <*> uniquely EnumValueNS ctorEntries
-    <*> uniquely EnumValueNS constantEntries
-    <*> uniquely ExtensionNS extensionEntries
-    <*> uniquely TypeNS structCtorEntries
+buildNames cxt = do
+  typeNames <- uniquely TypeNS typeEntries
+  commandNames <- uniquely CommandNS commandEntries
+  ctorNames <- uniquely EnumValueNS ctorEntries
+  constantNames <- uniquely EnumValueNS constantEntries
+  extensionModules <- eitherToValidation do
+    m <- validationToEither $ uniquely ExtensionNS extensionEntries
+    first (errors1 . NameBadModule ExtensionNS) $ traverse (Module.fromSegments . pure) m
+  structCtorNames <- uniquely TypeNS structCtorEntries
+  pure Names{..}
  where
   registry = getTyped @ResolvedRegistry cxt
   vendorTags = Set.fromList [t.name | t <- V.toList registry.tags]
@@ -177,20 +188,21 @@ buildNames cxt =
 
   -- Validate one scope: every minted name nonempty and unique.
   uniquely
-    :: forall (k :: Namespace)
-     . Namespace
-    -> [(WithNS k, Text)]
-    -> Validation (Errors NameError) (Map (WithNS k) Text)
+    :: forall (k :: Namespace) t
+     . (Container t, Display t, Ord t)
+    => Namespace
+    -> [(WithNS k, t)]
+    -> Validation (Errors NameError) (Map (WithNS k) t)
   uniquely kind entries =
     failUnlessEmpty (empties <> collisions) (Map.fromList entries)
    where
     empties =
       [ NameEmptyAfterStrip{kind, original = display orig}
       | (orig, minted) <- entries
-      , T.null minted
+      , null minted
       ]
     collisions =
-      [ NameCollision{kind, minted, originals = sort (map display origs)}
+      [ NameCollision{kind, minted = display minted, originals = sort (map display origs)}
       | (minted, origs) <- Map.toList byMinted
       , length origs > 1
       ]

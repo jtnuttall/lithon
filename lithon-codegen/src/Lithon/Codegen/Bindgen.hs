@@ -1,0 +1,393 @@
+{-# LANGUAGE OverloadedLists #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE StrictData #-}
+{-# LANGUAGE NoMonomorphismRestriction #-}
+
+-- | Placeholder for the target-agnostic bindgen driver (the fold-with-visitors
+-- reseam). The commented sketch below is the working notes; nothing is
+-- exported until the driver lands.
+module Lithon.Codegen.Bindgen () where
+
+-- (
+--   BindgenError (..),
+--   Bindgen,
+--   HeaderUnit (..),
+--   HeaderResult (..),
+--   preflightGraph,
+--   planHeaders,
+--   chainHeaders,
+--   baseNamespace,
+--   mainIncludes,
+--   mangleModule,
+--   stubEditsFor,
+--   textEditsFor,
+-- ) where
+
+-- import Data.Aeson qualified as A
+-- import Data.Text qualified as T
+-- import Data.Version
+-- import Effectful
+-- import Effectful.Dispatch.Dynamic
+-- import Effectful.Dispatch.Static
+-- import Effectful.Error.Dynamic
+-- import Lithon.Effect.FileSystem (FileSystem)
+-- import Lithon.Effect.Log
+-- import Lithon.Effect.Temporary (SystemTempDir (SystemTempDir), Temporary, withSystemTempDirectory)
+-- import Lithon.HsBindgen qualified as HB
+-- import Lithon.HsBindgen.C qualified as C
+-- import Lithon.Prelude
+-- import System.FilePath ((<.>), (</>))
+--
+-- import Lithon.Codegen.Sdl3.Alias (FamilyDecls, distillFamily)
+-- import Lithon.Codegen.Sdl3.Env
+-- import Lithon.Codegen.Sdl3.Versions (
+--   VersionsRegistry (..),
+--  )
+--
+-- data BindgenError
+--   = DuplicateModules (Set Text)
+--   | NoHeadersFound
+--   | UnexpectedHeaderName FilePath
+--   | HsBindgenError Text HB.BindgenFailure
+--   | ModuleShimFailed FilePath HB.TransformError
+--   | BindgenPanic Text
+--   deriving stock (Show)
+--
+-- instance Display BindgenError where
+--   displayBuilder = \case
+--     DuplicateModules dupes -> "module name collisions:" <> intercalateTB "\n - " (map from . toList $ dupes)
+--     NoHeadersFound -> "no SDL3 headers found in the include graph"
+--     UnexpectedHeaderName path ->
+--       "found an SDL header that does not conform to the SDL_name.h convention: " <> from path
+--     HsBindgenError cxt err ->
+--       let errd = display err
+--        in from
+--             [trimmingQQ|
+--               $cxt: hs-bindgen invokation failed:
+--
+--               $errd
+--             |]
+--     ModuleShimFailed header terr ->
+--       let headerd = from header
+--           detail = case terr of
+--             HB.StubEditMissed label symbol target ->
+--               "stub edit "
+--                 <> label
+--                 <> " landed on no wrapper of "
+--                 <> symbol
+--                 <> " (expected: "
+--                 <> target
+--                 <> ")"
+--             HB.TextEditMissed label needle ->
+--               "text edit " <> label <> " matched no module (needle=" <> needle <> ")"
+--           detaild = detail
+--        in from
+--             [trimmingQQ|
+--               $headerd: platform shim drifted: $detaild
+--             |]
+--     BindgenPanic what ->
+--       from
+--         [trimmingQQ|
+--           panicked while trying to generate bindings via hs-bindgen:
+--
+--             $what
+--
+--           This is a bug in lithon-codegen; please open an issue upstream.
+--         |]
+--
+-- {-
+-- NOTE: Going to make the directory structure conventional. `data/<lib>/*`
+--   - data/<lib>/spec - hs-bindgen specifications
+--   - data/<lib>/static - packaging statics, maybe as templates using mustache eventually,
+--   -                     possibly rename to `/package`
+--   - data/<lib>/<FILE or DIR> - other specific config for this library
+--  -}
+--
+-- -- GetIncludeDirs :: Bindgen m [FilePath]
+-- -- GetScratchDirectory :: Bindgen m SystemTempDir
+--
+-- data PackageInfo = PackageInfo
+--   { packageName :: Text
+--   , packageDataDir :: FilePath
+--   , packageVersion :: Maybe Version
+--   }
+--   deriving stock (Generic, Show)
+--   deriving anyclass (A.ToJSON)
+--
+-- data BindgenOpts = BindgenOpts
+--   { includeDirs :: [FilePath]
+--   , packageInfo :: PackageInfo
+--   }
+--   deriving stock (Generic, Show)
+--   deriving anyclass (A.ToJSON)
+--
+-- data Bindgen :: Effect
+-- type instance DispatchOf Bindgen = Static WithSideEffects
+-- data instance StaticRep Bindgen = BindgenEnv
+--   { includeDirs :: [FilePath]
+--   , scratchDir :: SystemTempDir
+--   , packageInfo :: PackageInfo
+--   }
+--   deriving stock (Generic, Show)
+--   deriving anyclass (A.ToJSON)
+--
+-- runBindgen
+--   :: (IOE :> es, Temporary :> es) => BindgenOpts -> Eff (Bindgen : es) a -> Eff es a
+-- runBindgen BindgenOpts{..} eff = withSystemTempDirectory (toString packageInfo.packageName) \scratchDir -> do
+--   evalStaticRep BindgenEnv{..} eff
+--
+-- -- getIncludeDirs :: (Bindgen :> es) => Eff es [FilePath]
+-- -- getIncludeDirs = send GetIncludeDirs
+--
+-- -- | The resolved generation environment: where the SDL3 headers live and
+-- -- which SDL version they belong to.
+-- --
+-- -- hs-bindgen additionally honors @BINDGEN_EXTRA_CLANG_ARGS@ from the environment
+-- -- on top of this.
+-- data BindgenEnv = BindgenEnv'
+--   { includeDir :: FilePath
+--   -- ^ The directory containing @SDL3\/@ (passed as @-I@).
+--   , sdlVersion :: Text
+--   , scratchDirectory :: SystemTempDir
+--   , versionsRegistryPath :: FilePath
+--   , aliasesRegistryPath :: FilePath
+--   , sdl3SpecDir :: FilePath
+--   , constantsRegistryPath :: FilePath
+--   , overridesRegistryPath :: Maybe FilePath
+--   , sdl3StaticDir :: FilePath
+--   }
+--   deriving stock (Generic, Show)
+--   deriving anyclass (A.ToJSON)
+--
+-- -- | One public header = one invocation = one module family.
+-- data HeaderUnit = HeaderUnit
+--   { include :: FilePath
+--   -- ^ The hash-include argument, e.g. @SDL3\/SDL_video.h@.
+--   , headerName :: FilePath
+--   -- ^ Basename, e.g. @SDL_video.h@
+--   , moduleName :: Text
+--   -- ^ The Haskell module, e.g. @SDL3.Sys.Bindgen.Video@
+--   , specFile :: FilePath
+--   -- ^ Spec artifact basename, e.g. @SDL_video.yaml@.
+--   }
+--   deriving stock (Eq, Generic, Show)
+--   deriving anyclass (A.ToJSON)
+--
+-- -- | The rendered output of one header's invocation.
+-- data HeaderResult = HeaderResult
+--   { unit :: HeaderUnit
+--   , modules :: [(Text, Text)]
+--   -- ^ Module name -> source text, for the categories hs-bindgen produced.
+--   , facts :: FamilyDecls
+--   -- ^ The alias-layer distillate (function census + translated decls).
+--   -- , abi :: [AbiDecl]
+--   -- -- ^ The layout distillate feeding the ABI assertion TU.
+--   }
+--
+-- -- | Root of the generated namespace.
+-- baseNamespace :: Text
+-- baseNamespace = "SDL3.Sys.Bindgen"
+--
+-- excludedHeaders :: Set FilePath
+-- excludedHeaders = sdlMain <> sdlInternal <> egl <> gl
+--  where
+--   sdlMain = ["SDL.h", "SDL_main_impl.h"]
+--   sdlInternal =
+--     [ "SDL_begin_code.h"
+--     , "SDL_close_code.h"
+--     , "SDL_copying.h"
+--     , "SDL_oldnames.h"
+--     ]
+--   egl = ["SDL_egl.h"]
+--   gl =
+--     from
+--       [ "SDL_opengl" <> suffix <.> "h"
+--       | suffix <-
+--           ["", "_glext", "es", "es2", "es2_gl2", "es2_gl2ext", "es2_gl2platform", "es2_khrplatform"]
+--       ]
+--
+-- -- | Headers bound although @SDL.h@ does not include them.
+-- extraMains :: [FilePath]
+-- extraMains = ["SDL3/SDL_vulkan.h", "SDL3/SDL_main.h"]
+--
+-- -- | The census include set — the umbrella plus 'extraMains'. Consumers
+-- -- that must mirror generation exactly (the preflight, the ABI assertion
+-- -- TU's prologue) take it from here so they cannot drift from the chain.
+-- mainIncludes :: [FilePath]
+-- mainIncludes = "SDL3/SDL.h" : extraMains
+--
+-- -- | Invocation environment shared by every hs-bindgen run.
+-- --
+-- -- - @SDL_MAIN_HANDLED@ keeps @SDL_main.h@ from planting its @#define main@
+-- -- hijack (the declarations remain).
+-- --
+-- -- - Field prefixes are omitted per the lithon record style; hs-bindgen emits
+-- -- @DuplicateRecordFields@ + @NoFieldSelectors@ pragmas as needed.
+-- --
+-- -- - Program slicing stays OFF (the seam's default): the SDL headers are
+-- -- self-contained, so an unresolved reference will fail loudly.
+-- sdl3InvocationEnv :: Sdl3Env -> HB.InvocationEnv
+-- sdl3InvocationEnv env =
+--   HB.InvocationEnv
+--     { extraIncludeDirs = [env.includeDir]
+--     , defineMacros = ["SDL_MAIN_HANDLED"]
+--     , -- SDL's Doxyfile defines \threadsafety; without the alias doxygen
+--       -- passes the command through as literal text and every function doc
+--       -- leaks "\threadsafety ..." verbatim. \par routes it through the
+--       -- existing simplesect rendering as a bold "Thread safety:" line.
+--       doxygenAliases = [("threadsafety", "\\par Thread safety:^^")]
+--     , fieldNaming = HB.OmitFieldPrefixes
+--     , uniqueId = "sdl3-bindgen-sys"
+--     }
+--
+-- -- | One boot+frontend run over the umbrella + extras, returning the
+-- -- include graph (dependency-ordered source paths) that orders the real
+-- -- per-header chain.
+-- preflightGraph :: (IOE :> es, Sdl3Gen :> es, Error BindgenError :> es) => Eff es [FilePath]
+-- preflightGraph = invokeBindgen [] Nothing "Preflight" mainIncludes HB.sortedIncludeGraph
+--
+-- -- | Project the include graph onto the bound header set, in dependency order.
+-- planHeaders :: (Error BindgenError :> es) => [FilePath] -> Eff es [HeaderUnit]
+-- planHeaders graph = do
+--   let inScope =
+--         [ basename
+--         | path <- graph
+--         , Just basename <- [sdl3Basename path]
+--         , basename `notElem` excludedHeaders
+--         ]
+--   units <- traverse toUnit inScope
+--
+--   case duplicates (map (.moduleName) units) of
+--     [] -> pure ()
+--     collisions -> throwError $ DuplicateModules collisions
+--
+--   when (null units) $ throwError NoHeadersFound
+--   pure units
+--  where
+--   toUnit basename = do
+--     moduleName <- mangleModule basename
+--     pure
+--       HeaderUnit
+--         { include = "SDL3" </> basename
+--         , headerName = basename
+--         , moduleName
+--         , specFile = toString (T.dropEnd 2 (T.pack basename)) <.> "yaml"
+--         }
+--
+-- -- | Absolute source path -> SDL3 public-header basename (@Nothing@ for
+-- -- libc headers, clang builtins, and anything else outside @SDL3\/@).
+-- sdl3Basename :: FilePath -> Maybe FilePath
+-- sdl3Basename path =
+--   case T.splitOn "/SDL3/" (T.pack path) of
+--     [_, basename]
+--       | not (T.null basename)
+--       , not ("/" `T.isInfixOf` basename) ->
+--           Just (toString basename)
+--     _ -> Nothing
+--
+-- -- | @SDL_platform_defines.h@ -> @SDL3.Sys.Bindgen.PlatformDefines@.
+-- mangleModule :: (Error BindgenError :> es) => FilePath -> Eff es Text
+-- mangleModule basename = do
+--   let mstem = T.stripPrefix "SDL_" (T.pack basename) >>= T.stripSuffix ".h"
+--   stem <- maybe (throwError (UnexpectedHeaderName basename)) pure mstem
+--   let segments = filter (not . T.null) (T.splitOn "_" stem)
+--   when (null segments) do
+--     throwError $ BindgenPanic ("header name mangles to nothing: " <> T.pack basename)
+--
+--   pure (baseNamespace <> "." <> T.concat (map capitalize segments))
+--  where
+--   capitalize seg = T.toUpper (T.take 1 seg) <> T.drop 1 seg
+--
+-- -- | Fold the chain in dependency order: every invocation consumes the
+-- -- specs generated by its predecessors (plus the stdlib spec) as external
+-- -- binding specifications and writes its own into @specDir@.
+-- chainHeaders
+--   :: (IOE :> es, Log :> es, Error BindgenError :> es, Sdl3Gen :> es)
+--   => VersionsRegistry
+--   -> [HeaderUnit]
+--   -> Eff es [HeaderResult]
+-- chainHeaders registry = go []
+--  where
+--   go _ [] = pure []
+--   go priorSpecs (unit : rest) = do
+--     env <- getSdl3Env
+--     let SystemTempDir specDir = env.scratchDirectory
+--         outFile = specDir </> unit.specFile
+--     logInfo $ "processing header" :# ["unit" .= unit, "outFile" .= outFile]
+--     res <- runHeader specDir priorSpecs env.overridesRegistryPath registry unit
+--     (res :) <$> go (outFile : priorSpecs) rest
+--
+-- runHeader
+--   :: (IOE :> es, Error BindgenError :> es, Sdl3Gen :> es)
+--   => FilePath
+--   -> [FilePath]
+--   -> Maybe FilePath
+--   -> VersionsRegistry
+--   -> HeaderUnit
+--   -> Eff es HeaderResult
+-- runHeader specDir priorSpecs overrides registry unit = do
+--   (family, hsDecls, cDecls, mdoc) <- invoke
+--   shimmed <-
+--     liftEither
+--       . first (ModuleShimFailed unit.headerName)
+--       $ HB.applyStubEdits
+--         (stubEditsFor unit.headerName <> versionStubEdits registry unit.headerName cDecls)
+--         family
+--   modules <-
+--     liftEither
+--       . first (ModuleShimFailed unit.headerName)
+--       $ HB.renderFamilyWith (textEditsFor unit.headerName) shimmed
+--   -- abi <-
+--   --   liftEither
+--   --     . first (AbiDistillationFailure unit.headerName)
+--   --     $ distillAbi unit.headerName (abiOverrides registry) cDecls
+--   let hasBaseModule = unit.moduleName `elem` map fst modules
+--   pure
+--     HeaderResult
+--       { unit
+--       , modules
+--       , facts =
+--           distillFamily unit.moduleName unit.headerName hasBaseModule mdoc hsDecls cDecls
+--           -- , abi
+--       }
+--  where
+--   invoke = invokeBindgen priorSpecs overrides unit.moduleName [unit.include] do
+--     family <- HB.translatedFamily
+--     hsDecls <- HB.reifiedHs
+--     cDecls <- HB.reifiedC
+--     mdoc <- HB.headerComment
+--     HB.writeSpec (specDir </> unit.specFile)
+--     pure (family, hsDecls, cDecls, mdoc)
+--
+-- invokeBindgen
+--   :: (IOE :> es, Sdl3Gen :> es, Error BindgenError :> es)
+--   => [FilePath]
+--   -> Maybe FilePath
+--   -> Text
+--   -> [FilePath]
+--   -> HB.BindgenM a
+--   -> Eff es a
+-- invokeBindgen priorSpecs overrides baseModule includes ops = do
+--   env <- getSdl3Env
+--   let spec =
+--         HB.InvocationSpec
+--           { baseModule
+--           , includes
+--           , priorSpecs
+--           , prescriptiveSpec = overrides
+--           }
+--   res <- liftIO $ HB.runBindgen (sdl3InvocationEnv env) spec ops
+--   either (throwError . HsBindgenError baseModule) pure res
+--
+-- -- | Replacers for specific line matches
+-- stubEditsFor :: FilePath -> [HB.StubEdit]
+-- stubEditsFor = undefined
+--
+-- -- | Textual edits
+-- textEditsFor :: FilePath -> [HB.TextEdit]
+-- textEditsFor = undefined
+--
+-- -- | Injects SDL_VERSION_ATLEAST according to the registry
+-- versionStubEdits :: VersionsRegistry -> FilePath -> [C.Decl l C.Final] -> [HB.StubEdit]
+-- versionStubEdits = undefined

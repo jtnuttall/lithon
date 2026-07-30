@@ -216,16 +216,17 @@ toyFamily = withSystemTempDirectory "lithon-sdl3-alias-toy" \dir -> do
     Right (family, hsDecls, cDecls, mdoc) -> do
       rendered <-
         either (assertFailure . show) pure (HB.renderFamilyWith [] family)
+      let pairs = map (\m -> (HB.moduleName m, m.hsModule.text)) rendered
       baseModule <-
         maybe
           (assertFailure "no Bindgen base module for the toy header")
           pure
-          (L.lookup "SDL3.Sys.Bindgen.Toy" rendered)
+          (L.lookup "SDL3.Sys.Bindgen.Toy" pairs)
       pure
         ( distillFamily
             "SDL3.Sys.Bindgen.Toy"
             "SDL_toy.h"
-            (any ((== "SDL3.Sys.Bindgen.Toy") . fst) rendered)
+            (any ((== "SDL3.Sys.Bindgen.Toy") . fst) pairs)
             mdoc
             hsDecls
             cDecls

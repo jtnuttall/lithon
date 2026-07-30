@@ -14,7 +14,7 @@ import Data.Map.Strict qualified as Map
 import Lithon.Prelude
 import Test.Tasty.HUnit (Assertion, assertBool, assertEqual, assertFailure)
 
-import Lithon.Codegen.Backend.Hs (ModulePath (..))
+import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Vulkan.Curate (Curated (..))
 import Lithon.Codegen.Vulkan.Generate.Lower (lowerStructs)
 import Lithon.Codegen.Vulkan.Generate.Modules
@@ -35,8 +35,8 @@ assigned =
             Failure errs -> error ("modules: " <> display errs)
             Success mm -> mm
 
-lookupDotted :: Map TypeName ModulePath -> TypeName -> Maybe Text
-lookupDotted m k = (.dotted) <$> Map.lookup k m
+lookupDotted :: Map TypeName Module.Meta -> TypeName -> Maybe Text
+lookupDotted m k = Module.hsName <$> Map.lookup k m
 
 unit_coreEnumPlacement :: Assertion
 unit_coreEnumPlacement =

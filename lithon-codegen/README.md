@@ -150,10 +150,12 @@ toggles, legacy-core categories, registry-drift warning).
 The SDL3 pipeline drives `hs-bindgen` (through `lithon-hs-bindgen`) over the SDL
 headers and emits the complete `sdl3-bindgen-sys` package: the generated modules,
 the curated `SDL3.Sys.*` alias layer, the ABI-assertion translation unit, and the
-static README/CHANGELOG/package.yaml under `sdl3/static/`. Curation decisions —
-FFI flavors, typed-constant membership, documentation overrides — live in the
-checked-in registries (`sdl3/aliases.json`, `sdl3/constants.json`,
-`sdl3/overrides.yaml`).
+static README/CHANGELOG/package.yaml under `data/sdl3/static/`. Curation
+decisions — FFI flavors, typed-constant membership, documentation overrides —
+live in the checked-in registries (`data/sdl3/aliases.json`,
+`data/sdl3/constants.json`, `data/sdl3/overrides.yaml`); the binding-spec
+artifacts sync into `data/sdl3/spec/`, resolved through the tool's data
+directory rather than a flag.
 
 ```
 $ lithon-codegen sdl3 --help
@@ -176,25 +178,21 @@ Available commands:
 
 ```
 $ lithon-codegen sdl3 spec --help
-Usage: lithon-codegen sdl3 spec [--spec-dir DIR] [--check]
+Usage: lithon-codegen sdl3 spec [--check]
 
   Run the per-header chain and sync the binding-spec artifacts (steps 1-2)
 
 Available options:
-  --spec-dir DIR           SDL3 artifact directory (spec/ + overrides.yaml +
-                           manifest) (default: "lithon-codegen/sdl3")
   --check                  Diff fresh output against the tree; write nothing (CI
                            gate)
   -h,--help                Show this help text
 
 $ lithon-codegen sdl3 generate --help
-Usage: lithon-codegen sdl3 generate [--spec-dir DIR] [--out DIR] [--check]
+Usage: lithon-codegen sdl3 generate [--out DIR] [--check]
 
   Run the chain and emit the sdl3-bindgen-sys package + spec artifacts (step 3)
 
 Available options:
-  --spec-dir DIR           SDL3 artifact directory (spec/ + overrides.yaml +
-                           manifest) (default: "lithon-codegen/sdl3")
   --out DIR                Target package directory
                            (default: "sdl3-bindgen-sys")
   --check                  Diff fresh output against the tree; write nothing (CI
