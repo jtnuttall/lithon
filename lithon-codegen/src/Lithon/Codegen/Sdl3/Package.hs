@@ -56,10 +56,10 @@ changelog :: Text
 changelog = T.decodeUtf8 $(embedFileRelative "data/sdl3/static/CHANGELOG.md")
 
 lithonLicense :: Text
-lithonLicense = T.decodeUtf8 $(embedFileRelative "../LICENSE")
+lithonLicense = T.decodeUtf8 $(embedFileRelative "LICENSE")
 
 sdlLicense :: Text
-sdlLicense = T.decodeUtf8 $(embedFileRelative "../LICENSE_SDL3")
+sdlLicense = T.decodeUtf8 $(embedFileRelative "LICENSE_SDL3")
 
 hsbindgenRuntimeOut, cexprRuntimeOut :: FilePath
 hsbindgenRuntimeOut = "runtime"
