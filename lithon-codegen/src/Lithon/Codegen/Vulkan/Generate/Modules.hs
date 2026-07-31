@@ -55,6 +55,7 @@ import Data.Set qualified as Set
 import Data.Text qualified as T
 import Lithon.Prelude
 
+import Lithon.Codegen.Backend.Hs (capitalize)
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Vulkan.Generate.Lower (CType (..), Lowered (..), LoweredMember (..))
 import Lithon.Codegen.Vulkan.Generate.Names (Names (..), stripVkPrefix)
@@ -321,9 +322,7 @@ assignModules cxt =
     case mconcat (capWord <$> words comment) of
       "" -> "Other"
       label -> label
-  capWord w = case T.uncons (T.filter Char.isAlphaNum w) of
-    Just (c, cs) -> T.cons (Char.toUpper c) cs
-    Nothing -> ""
+  capWord = capitalize . T.filter Char.isAlphaNum
 
   -- The first extension origin ANYWHERE in the (own <> alias) lists names
   -- the promoted-from module; raw origins deliberately count (the promoted-

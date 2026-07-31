@@ -82,7 +82,7 @@ renderXPath (XPath segs) = T.intercalate "/" (map renderSeg (reverse segs))
   renderSeg s =
     s.element
       <> "["
-      <> T.pack (show s.index)
+      <> show s.index
       <> "]"
       <> maybe "" (\n -> "{" <> n <> "}") s.name
 

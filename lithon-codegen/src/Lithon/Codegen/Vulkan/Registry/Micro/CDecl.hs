@@ -138,7 +138,7 @@ describeTok = \case
   TokLBracket _ -> "'['"
   TokRBracket _ -> "']'"
   TokColon _ -> "':'"
-  TokInt n _ -> "integer " <> T.pack (show n)
+  TokInt n _ -> "integer " <> show n
   TokTypeRef t _ -> "<type>" <> t <> "</type>"
   TokNameDef t _ _ -> "<name>" <> t <> "</name>"
   TokEnumRef t _ -> "<enum>" <> t <> "</enum>"

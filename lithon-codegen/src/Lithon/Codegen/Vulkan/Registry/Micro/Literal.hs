@@ -105,4 +105,4 @@ parseVersion :: Text -> Either Text (Int, Int)
 parseVersion = viaMegaparsec ((,) <$> L.decimal <* char '.' <*> L.decimal)
 
 renderVersion :: (Int, Int) -> Text
-renderVersion (major, minor) = T.pack (show major) <> "." <> T.pack (show minor)
+renderVersion (major, minor) = show major <> "." <> show minor

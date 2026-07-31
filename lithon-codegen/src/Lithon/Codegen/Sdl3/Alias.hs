@@ -772,7 +772,7 @@ constantsBlock aliasModule = case aliasModule.constants of
     Bitmask ->
       let digits = max 1 (group.widthBits `div` 4)
        in "0x" <> T.justifyRight digits '0' (T.pack (showHex v ""))
-    ValueSpace -> T.pack (show v)
+    ValueSpace -> show v
 
 -- | Doxygen leaves SDL-wiki-relative markdown links (@[x](CategoryY)@) as
 -- plain text inside peeled category overviews, where they never become

@@ -16,7 +16,7 @@ import Effectful (runEff)
 import Effectful.Concurrent.Async (runConcurrent)
 import Effectful.Console.ByteString.Lazy (runConsole)
 import Effectful.Environment (runEnvironment)
-import Effectful.FileSystem (runFileSystem)
+import Lithon.Effect.FileSystem (runFileSystem)
 import Effectful.Resource (runResource)
 import Lithon.Effect.ClangEnv
 import Lithon.Effect.Clock (runClock)

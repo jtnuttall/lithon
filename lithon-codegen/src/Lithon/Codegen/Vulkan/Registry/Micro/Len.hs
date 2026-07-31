@@ -107,7 +107,7 @@ renderLen (LenSpec levels) = T.intercalate "," (map renderLevel (NE.toList level
  where
   renderLevel = \case
     LenNullTerminated -> "null-terminated"
-    LenConst n -> T.pack (show n)
+    LenConst n -> show n
     LenPath path -> T.intercalate "->" (NE.toList path)
     LenLatex t -> t
     LenOther t -> t

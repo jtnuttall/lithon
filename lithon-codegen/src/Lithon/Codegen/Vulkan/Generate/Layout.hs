@@ -28,12 +28,12 @@ module Lithon.Codegen.Vulkan.Generate.Layout (
 ) where
 
 import Data.Aeson (ToJSON)
-import Data.Char qualified as Char
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Lithon.Prelude
 
+import Lithon.Codegen.Backend.Hs (capitalize)
 import Lithon.Codegen.Vulkan.Generate.Lower (
   CPrim (..),
   CType (..),
@@ -238,9 +238,6 @@ computeLayouts cxt = case go Map.empty Set.empty (Map.keys lowered.structs) of
     (b : rest) ->
       b.member
         <> mconcat ["And" <> capitalize r.member | r <- rest]
-  capitalize t = case T.uncons t of
-    Just (c, cs) -> T.cons (Char.toUpper c) cs
-    Nothing -> t
 
 alignUp :: Int -> Int -> Int
 alignUp off a = ((off + a - 1) `div` a) * a

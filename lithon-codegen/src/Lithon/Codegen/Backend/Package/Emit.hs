@@ -21,7 +21,7 @@ import Effectful (Eff, IOE, (:>))
 import Effectful.Concurrent.Async (Concurrent)
 import Effectful.Console.ByteString (Console)
 import Effectful.Error.Dynamic (Error)
-import Effectful.FileSystem (
+import Lithon.Effect.FileSystem (
   FileSystem,
   doesFileExist,
   getCurrentDirectory,

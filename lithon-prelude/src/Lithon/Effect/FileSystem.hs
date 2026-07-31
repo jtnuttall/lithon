@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -Wno-redundant-constraints #-}
 {-# OPTIONS_GHC -fplugin=Effectful.Plugin #-}
 
@@ -11,16 +12,21 @@ module Lithon.Effect.FileSystem (
   whenFileExists,
   unlessFileExists,
   assertFileExists,
+  removeDirectoryIfExists,
   listFilesRecursive,
+  FilepathResolutionError (..),
+  resolveFilepath,
 ) where
 
 import Effectful
 import Effectful.Dispatch.Static (unsafeEff_)
 import Effectful.FileSystem
 import System.Directory.Extra qualified
+import System.FilePath (addTrailingPathSeparator, isAbsolute, isRelative, makeRelative, (</>))
 
 import Lithon.Effect.Error
 import Lithon.Prelude
+import Lithon.Prelude.Display (Display (..))
 
 withDirectoryExists
   :: (FileSystem :> es)
@@ -50,5 +56,47 @@ assertFileExists
   :: (HasCallStack, FileSystem :> es, Show e, Error e :> es) => FilePath -> (FilePath -> e) -> Eff es ()
 assertFileExists p f = unlessFileExists p (throwError (f p))
 
+removeDirectoryIfExists :: (FileSystem :> es) => FilePath -> Eff es ()
+removeDirectoryIfExists dir = whenDirectoryExists dir (removeDirectoryRecursive dir)
+
 listFilesRecursive :: (FileSystem :> es) => FilePath -> Eff es [FilePath]
 listFilesRecursive = unsafeEff_ . System.Directory.Extra.listFilesRecursive
+
+data FilepathResolutionError = FilepathResolutionError
+  { message :: Text
+  , source :: FilePath
+  , target :: FilePath
+  }
+  deriving stock (Generic, Show)
+
+instance Display FilepathResolutionError where
+  displayBuilder e =
+    "Failed to resolve path: "
+      <> from e.message
+      <> "\n "
+      <> "Source: "
+      <> from e.source
+      <> "\n "
+      <> "Target: "
+      <> from e.target
+
+-- | Resolve a path against a base directory, canonically, refusing targets
+-- that escape the base.
+resolveFilepath
+  :: (FileSystem :> es, Show e, From FilepathResolutionError e, Error e :> es)
+  => FilePath -> FilePath -> Eff es (FilePath, FilePath) -- (AbsolutePath, RelativePath)
+resolveFilepath baseDir inputPath = do
+  realBase <- canonicalizePath baseDir
+  let rawTarget
+        | isAbsolute inputPath = inputPath
+        | otherwise = realBase </> inputPath
+
+  realTarget <- canonicalizePath rawTarget
+  let safeBase = addTrailingPathSeparator realBase
+      rel = makeRelative safeBase realTarget
+
+  guardWithError
+    (from (FilepathResolutionError "Outside base directory" realBase realTarget))
+    (isRelative rel)
+
+  pure (realTarget, rel)

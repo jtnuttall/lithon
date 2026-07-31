@@ -44,18 +44,19 @@ import Effectful.Console.ByteString (Console)
 import Effectful.Console.ByteString qualified as Console
 import Effectful.Error.Dynamic (Error, throwError, throwError_)
 import Effectful.Exception qualified as EEx
-import Effectful.FileSystem (
+import Lithon.Effect.FileSystem (
+  FilepathResolutionError (..),
   FileSystem,
-  canonicalizePath,
   createDirectoryIfMissing,
   doesDirectoryExist,
   doesFileExist,
   getCurrentDirectory,
   listDirectory,
   makeAbsolute,
-  removeDirectoryRecursive,
+  removeDirectoryIfExists,
   removeFile,
   renameFile,
+  resolveFilepath,
  )
 import Effectful.FileSystem.IO.ByteString qualified as EBS
 import Effectful.FileSystem.IO.ByteString.Lazy qualified as ELBS
@@ -66,9 +67,7 @@ import Lithon.Effect.Log
 import Lithon.Prelude
 import Options.Applicative qualified as Opt
 import System.FilePath (
-  addTrailingPathSeparator,
   isAbsolute,
-  isRelative,
   makeRelative,
   splitDirectories,
   takeDirectory,
@@ -308,13 +307,13 @@ emitPackageWith formatMode strategy target files = do
     HaskellPackage ->
       unless (Map.member "package.yaml" files)
         $ throwError (PackageYamlMissing (target.outDir </> "package.yaml"))
-  cleanDirectory staging
+  removeDirectoryIfExists staging
   let emit = emitWith formatMode staging target files case strategy of
         ArtifactsOnly -> pure []
         HaskellPackage -> do
           cabalFile <- emitCabalFile staging
           pure [(cabalFile, Nothing)]
-  emit `EEx.finally` cleanDirectory staging
+  emit `EEx.finally` removeDirectoryIfExists staging
 
 -- | The wrong-working-directory guard: a write proceeds silently only when
 -- the resolved output directory already carries a manifest AND sits inside
@@ -630,46 +629,3 @@ checkPaths what paths = do
     | any (`elem` [".", ".."]) (splitDirectories p) = Just "dot segment"
     | otherwise = Nothing
 
-cleanDirectory :: (FileSystem :> es) => FilePath -> Eff es ()
-cleanDirectory dir = do
-  exists <- doesDirectoryExist dir
-  when exists (removeDirectoryRecursive dir)
-
-data FilepathResolutionError = FilepathResolutionError
-  { message :: Text
-  , source :: FilePath
-  , target :: FilePath
-  }
-  deriving stock (Generic, Show)
-  deriving anyclass (A.ToJSON)
-
-instance Display FilepathResolutionError where
-  displayBuilder e =
-    "Failed to resolve path: "
-      <> from e.message
-      <> "\n "
-      <> "Source: "
-      <> from e.source
-      <> "\n "
-      <> "Target: "
-      <> from e.target
-
--- TODO: move to extras
-resolveFilepath
-  :: (FileSystem :> es, Show e, From FilepathResolutionError e, Error e :> es)
-  => FilePath -> FilePath -> Eff es (FilePath, FilePath) -- (AbsolutePath, RelativePath)
-resolveFilepath baseDir inputPath = do
-  realBase <- canonicalizePath baseDir
-  let rawTarget
-        | isAbsolute inputPath = inputPath
-        | otherwise = realBase </> inputPath
-
-  realTarget <- canonicalizePath rawTarget
-  let safeBase = addTrailingPathSeparator realBase
-      rel = makeRelative safeBase realTarget
-
-  guardWithError
-    (from (FilepathResolutionError "Outside base directory" realBase realTarget))
-    (isRelative rel)
-
-  pure (realTarget, rel)

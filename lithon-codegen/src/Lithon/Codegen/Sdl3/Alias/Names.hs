@@ -26,7 +26,6 @@ module Lithon.Codegen.Sdl3.Alias.Names (
   -- * Primitives (exposed for tests and downstream passes)
   normalizeFunctionName,
   validVarId,
-  haskellKeywords,
 ) where
 
 import Data.Char qualified as Char
@@ -34,6 +33,8 @@ import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Lithon.Prelude
+
+import Lithon.Codegen.Backend.Hs (reservedWords)
 
 -- | Foreign-import safety flavor of a single alias binding.
 data Flavor = SafeFlavor | UnsafeFlavor
@@ -262,7 +263,7 @@ normalizeFunctionName cName =
 validVarId :: Text -> Maybe Text
 validVarId t
   | T.null t = Just "empty after prefix strip"
-  | Set.member t haskellKeywords = Just "Haskell keyword"
+  | Set.member t reservedWords = Just "Haskell keyword"
   | Just (c, _) <- T.uncons t
   , not (Char.isLower c || c == '_') =
       Just "does not start with a lowercase letter"
@@ -272,37 +273,3 @@ validVarId t
  where
   identChar c = Char.isAlphaNum c || c == '_' || c == '\''
 
-haskellKeywords :: Set Text
-haskellKeywords =
-  Set.fromList
-    [ "case"
-    , "class"
-    , "data"
-    , "default"
-    , "deriving"
-    , "do"
-    , "else"
-    , "family"
-    , "forall"
-    , "foreign"
-    , "if"
-    , "import"
-    , "in"
-    , "infix"
-    , "infixl"
-    , "infixr"
-    , "instance"
-    , "let"
-    , "mdo"
-    , "module"
-    , "newtype"
-    , "of"
-    , "pattern"
-    , "proc"
-    , "rec"
-    , "role"
-    , "static"
-    , "then"
-    , "type"
-    , "where"
-    ]

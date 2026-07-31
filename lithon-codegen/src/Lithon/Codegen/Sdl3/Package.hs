@@ -104,7 +104,9 @@ assembleSdl3Package aliasModules macroConsts results = do
     meta <- metaFor "aliases" (T.splitOn "." name)
     pure (meta, contents)
   facadeSources <-
-    hsBindgenRuntimeReexports . runtimeImports $ map snd (generated <> aliases)
+    hsBindgenRuntimeReexports
+      $ typedRuntimeImports (concatMap (.modules) results)
+      <> runtimeImports (map snd aliases)
   facades <- for facadeSources \(name, contents) -> do
     meta <- metaFor "hs-bindgen facades" (T.splitOn "." name)
     pure (meta, contents)
@@ -140,8 +142,24 @@ assembleSdl3Package aliasModules macroConsts results = do
     first (GeneratorEmittedInvalidModuleName what (T.intercalate "." segs))
       $ Module.fromSegments segs
 
+isRuntimeModule :: Text -> Bool
+isRuntimeModule token =
+  ("HsBindgen.Runtime." `T.isPrefixOf` token) || ("C.Expr." `T.isPrefixOf` token)
+
+-- | Runtime modules imported by the generated families, read from the
+-- typed import lists the seam captures at render — no text scraping.
+typedRuntimeImports :: [HB.NameableModule HB.RenderedHsModule] -> Set Text
+typedRuntimeImports mods =
+  fromList
+    [ imported
+    | m <- mods
+    , imported <- m.hsModule.importedModules
+    , isRuntimeModule imported
+    ]
+
 -- | Every @HsBindgen.Runtime.*@ \/ @C.Expr.*@ module imported by the
--- generated sources.
+-- AUTHORED alias sources (rendered text is all we hold for them today;
+-- their typed import lists arrive when the alias boundary is typed).
 runtimeImports :: [Text] -> Set Text
 runtimeImports sources =
   fromList
@@ -151,7 +169,7 @@ runtimeImports sources =
     , Just rest <- [T.stripPrefix "import " (T.stripStart line)]
     , imported <- take 1 do
         token <- T.words rest
-        guard $ ("HsBindgen.Runtime." `T.isPrefixOf` token) || ("C.Expr." `T.isPrefixOf` token)
+        guard $ isRuntimeModule token
         pure token
     ]
 

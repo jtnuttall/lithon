@@ -12,7 +12,7 @@ import Data.Text.IO qualified as TIO
 import Effectful (runEff)
 import Effectful.Concurrent (runConcurrent)
 import Effectful.Console.ByteString (runConsole)
-import Effectful.FileSystem (runFileSystem)
+import Lithon.Effect.FileSystem (runFileSystem)
 import Lithon.Effect.Error
 import Lithon.Effect.Log (runLog)
 import Lithon.Prelude

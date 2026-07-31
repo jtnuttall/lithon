@@ -35,7 +35,6 @@ module Lithon.Codegen.Vulkan.Generate.Render (
 
 import Data.Aeson (ToJSON)
 import Data.Bits (popCount, shiftL, (.|.))
-import Data.Char qualified as Char
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
@@ -43,6 +42,7 @@ import Data.Vector qualified as V
 import Lithon.Prelude
 import Numeric (showHex)
 
+import Lithon.Codegen.Backend.Hs (capitalize, parenIfSpaced, primeReserved)
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Vulkan.Generate.Cmds (CmdDecl (..))
 import Lithon.Codegen.Vulkan.Generate.Docs (DocKey (..), DocsMap (..))
@@ -437,7 +437,7 @@ renderValueLayer cxt =
       | otherwise = line
     armGen f =
       (f.name,f,) <$> fieldGenOf name 0 f.ctype
-    armCtor minted m = minted <> capitalizeText m
+    armCtor minted m = minted <> capitalize m
 
   -- Non-POD unions (marshalled or extensible arms): CStruct-only — no
   -- Storable instance (pointer arms can't sit in storable vectors), arms
@@ -480,7 +480,7 @@ renderValueLayer cxt =
               (DocType name)
               (unionMarshalSource minted layout [(armC minted m, ty, nil', kind) | (m, ty, nil', kind, _) <- gens])
         }
-    armC minted m = minted <> capitalizeText m
+    armC minted m = minted <> capitalize m
 
   -- One record\/union payload position: surface type + wire expressions.
   fieldGenOf owner off = \case
@@ -588,10 +588,10 @@ renderValueLayer cxt =
       | arrayElemOk e ->
           ( \eg ->
               FieldGen
-                { hsType = "VSS.Vector " <> show n <> " " <> parenType eg.hsType
+                { hsType = "VSS.Vector " <> show n <> " " <> parenIfSpaced eg.hsType
                 , peekE = direct
                 , pokeE = directPoke
-                , nilE = "VSS.replicate " <> parenExpr eg.nilE
+                , nilE = "VSS.replicate " <> parenIfSpaced eg.nilE
                 , imports =
                     eg.imports <> one "import Data.Vector.Storable.Sized qualified as VSS"
                 }
@@ -810,8 +810,8 @@ renderValueLayer cxt =
                       { fieldMay =
                           Just
                             ( f
-                            , "V.Vector " <> parenType eg.hsType
-                            , "V.replicate " <> show n <> " " <> parenExpr eg.nilE
+                            , "V.Vector " <> parenIfSpaced eg.hsType
+                            , "V.replicate " <> show n <> " " <> parenIfSpaced eg.nilE
                             )
                       , pokeLines =
                           [ "unless (V.length x."
@@ -938,7 +938,7 @@ renderValueLayer cxt =
               (esz, _) = ctypeSizeAlign elemC
            in Just
                 MGen
-                  { fieldMay = Just (f, "V.Vector " <> parenType eg.hsType, "V.empty")
+                  { fieldMay = Just (f, "V.Vector " <> parenIfSpaced eg.hsType, "V.empty")
                   , pokeLines =
                       [ "p_"
                           <> f
@@ -1293,7 +1293,7 @@ renderValueLayer cxt =
     ffiRet f
       | not (null f.returnPointers) = "IO (Ptr ())"
       | forgetNamespace f.returnType.name == "void" = "IO ()"
-      | otherwise = "IO " <> parenType (ffiScalar f.returnType)
+      | otherwise = "IO " <> parenIfSpaced (ffiScalar f.returnType)
     ffiScalar ref = case forgetNamespace ref.name of
       "VkBool32" -> "Bool32"
       "uint32_t" -> "Word32"
@@ -1354,48 +1354,8 @@ data FieldGen = FieldGen
   , imports :: Set Text
   }
 
-reservedWords :: Set Text
-reservedWords =
-  Set.fromList
-    [ "case"
-    , "class"
-    , "data"
-    , "default"
-    , "deriving"
-    , "do"
-    , "else"
-    , "family"
-    , "if"
-    , "import"
-    , "in"
-    , "infix"
-    , "infixl"
-    , "infixr"
-    , "instance"
-    , "let"
-    , "module"
-    , "newtype"
-    , "of"
-    , "then"
-    , "type"
-    , "where"
-    ]
-
 fieldNameOf :: Text -> Text
-fieldNameOf n
-  | Set.member n reservedWords = n <> "'"
-  | otherwise = n
-
-capitalizeText :: Text -> Text
-capitalizeText t = case T.uncons t of
-  Just (c, cs) -> T.cons (Char.toUpper c) cs
-  Nothing -> t
-
-parenType :: Text -> Text
-parenType t = if T.any (== ' ') t then "(" <> t <> ")" else t
-
-parenExpr :: Text -> Text
-parenExpr t = if T.any (== ' ') t then "(" <> t <> ")" else t
+fieldNameOf = primeReserved
 
 recordSource :: (Text, Text) -> StructLayout -> [(Text, FieldLayout, FieldGen)] -> Bool -> Text
 recordSource (minted, ctor) layout gens isPeekable =
@@ -1414,9 +1374,9 @@ recordSource (minted, ctor) layout gens isPeekable =
     [] -> ["data " <> minted <> " = " <> ctor, derivingLine]
     ((f0, fl0, g0) : rest) ->
       ["data " <> minted <> " = " <> ctor]
-        <> (("  { " <> f0 <> " :: !" <> parenType g0.hsType) : carrierNote fl0)
+        <> (("  { " <> f0 <> " :: !" <> parenIfSpaced g0.hsType) : carrierNote fl0)
         <> concat
-          [ ("  , " <> f <> " :: !" <> parenType g.hsType) : carrierNote fl
+          [ ("  , " <> f <> " :: !" <> parenIfSpaced g.hsType) : carrierNote fl
           | (f, fl, g) <- rest
           ]
         <> ["  }", derivingLine]
@@ -1442,7 +1402,7 @@ recordSource (minted, ctor) layout gens isPeekable =
     _ ->
       "  peek p ="
         : ("    " <> ctor)
-        : [ "      " <> op <> " " <> parenExpr g.peekE
+        : [ "      " <> op <> " " <> parenIfSpaced g.peekE
           | (op, (_, _, g)) <- zip ("<$>" : repeat "<*>") gens
           ]
   pokeD = case gens of
@@ -1495,8 +1455,8 @@ unionSource minted layout arms =
       <> case arms of
         [] -> ["  = " <> rawCtor <> " !(" <> rawType <> ")"]
         ((c0, g0) : rest) ->
-          ["  = " <> c0 <> " !" <> parenType g0.hsType]
-            <> ["  | " <> c <> " !" <> parenType g.hsType | (c, g) <- rest]
+          ["  = " <> c0 <> " !" <> parenIfSpaced g0.hsType]
+            <> ["  | " <> c <> " !" <> parenIfSpaced g.hsType | (c, g) <- rest]
             <> [ "  | -- | What 'Foreign.Storable.peek' returns: the union's bytes"
                , "    -- verbatim (the wire carries no discriminant). Re-poking them"
                , "    -- reproduces the value exactly; reinterpret via the typed arms'"
@@ -1532,7 +1492,7 @@ unionSource minted layout arms =
       ]
     ((c0, g0) : _) ->
       [ "instance Nil " <> minted <> " where"
-      , "  nil = " <> c0 <> " " <> parenExpr g0.nilE
+      , "  nil = " <> c0 <> " " <> parenIfSpaced g0.nilE
       ]
 
 -- | One marshalled member's generated snippets. @pokeLines@ run in the
@@ -1689,8 +1649,8 @@ unionMarshalSource minted layout arms =
       <> case arms of
         [] -> ["  = " <> rawCtor <> " !(" <> rawType <> ")"]
         ((c0, t0, _, _) : rest) ->
-          ["  = " <> c0 <> " !" <> parenType t0]
-            <> ["  | " <> c <> " !" <> parenType t | (c, t, _, _) <- rest]
+          ["  = " <> c0 <> " !" <> parenIfSpaced t0]
+            <> ["  | " <> c <> " !" <> parenIfSpaced t | (c, t, _, _) <- rest]
             <> [ "  | -- | What peeks return: the union's bytes verbatim (no wire"
                , "    -- discriminant); reinterpret via the typed arms when known."
                , "    " <> rawCtor <> " !(" <> rawType <> ")"
@@ -1721,7 +1681,7 @@ unionMarshalSource minted layout arms =
       ]
     ((c0, _, n0, _) : _) ->
       [ "instance Nil " <> minted <> " where"
-      , "  nil = " <> c0 <> " " <> parenExpr n0
+      , "  nil = " <> c0 <> " " <> parenIfSpaced n0
       ]
 
 -- ── module assembly ─────────────────────────────────────────────────────

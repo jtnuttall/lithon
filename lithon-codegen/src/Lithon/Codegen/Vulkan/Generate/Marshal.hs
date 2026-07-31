@@ -31,7 +31,6 @@ module Lithon.Codegen.Vulkan.Generate.Marshal (
 ) where
 
 import Data.Aeson (ToJSON)
-import Data.Char qualified as Char
 import Data.Map.Lazy qualified as ML
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
@@ -40,6 +39,7 @@ import Data.Vector qualified as V
 import Lithon.Prelude
 
 import Lithon.Codegen.Vulkan.Generate.Layout (FieldLayout (..), Layouts (..), StructLayout (..))
+import Lithon.Codegen.Backend.Hs (lowerFirst, startsUpper)
 import Lithon.Codegen.Vulkan.Generate.Lower (
   CPrim (..),
   CType (..),
@@ -537,8 +537,3 @@ hungarian n
   | Just rest <- T.stripPrefix "pp" n, startsUpper rest = lowerFirst rest
   | Just rest <- T.stripPrefix "p" n, startsUpper rest = lowerFirst rest
   | otherwise = n
- where
-  startsUpper t = maybe False (Char.isUpper . fst) (T.uncons t)
-  lowerFirst t = case T.uncons t of
-    Just (c, cs) -> T.cons (Char.toLower c) cs
-    Nothing -> t

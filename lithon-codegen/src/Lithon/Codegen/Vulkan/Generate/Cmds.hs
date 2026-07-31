@@ -65,13 +65,13 @@ module Lithon.Codegen.Vulkan.Generate.Cmds (
 ) where
 
 import Data.Aeson (ToJSON)
-import Data.Char qualified as Char
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Data.Vector qualified as V
 import Lithon.Prelude
 
+import Lithon.Codegen.Backend.Hs (capitalize, lowerFirst, parenIfSpaced, primeReserved, startsUpper)
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Vulkan.Generate.Docs (DocKey (..), DocsMap (..))
 import Lithon.Codegen.Vulkan.Generate.Layout (FieldLayout (..), Layouts (..), StructLayout (..))
@@ -1318,7 +1318,7 @@ planCommands cxt =
         PIn
           { arg
           , hsType = g.ty
-          , callExpr = parenT (g.toWire arg)
+          , callExpr = parenIfSpaced (g.toWire arg)
           , marshalStmts = []
           , imports = g.imports
           , constraints = []
@@ -1331,7 +1331,7 @@ planCommands cxt =
       ok
         PIn
           { arg
-          , hsType = "V.Vector " <> parenT g.ty
+          , hsType = "V.Vector " <> parenIfSpaced g.ty
           , callExpr = "(castPtr p_" <> arg <> ")"
           , marshalStmts =
               [ "unless (V.length "
@@ -1351,7 +1351,7 @@ planCommands cxt =
                   <> " (i * "
                   <> show esz
                   <> ") "
-                  <> parenT (g.toWire "v_")
+                  <> parenIfSpaced (g.toWire "v_")
                   <> ") "
                   <> arg
                   <> ")"
@@ -1442,7 +1442,7 @@ planCommands cxt =
       ok
         PIn
           { arg
-          , hsType = if isOptional then "Maybe " <> parenT core else core
+          , hsType = if isOptional then "Maybe " <> parenIfSpaced core else core
           , callExpr = "p_" <> arg
           , marshalStmts =
               if isOptional then
@@ -1491,8 +1491,8 @@ planCommands cxt =
         PIn
           { arg
           , hsType =
-              let core = "V.Vector " <> parenT elemT
-               in if isOptional then "Maybe " <> parenT core else core
+              let core = "V.Vector " <> parenIfSpaced elemT
+               in if isOptional then "Maybe " <> parenIfSpaced core else core
           , callExpr = "p_" <> arg
           , marshalStmts =
               if isOptional then
@@ -1527,7 +1527,7 @@ planCommands cxt =
             , "liftIO (V.imapM_ (\\i v_e -> pokeByteOff pv_ (i * "
                 <> show esz
                 <> ") "
-                <> parenT (g.toWire "v_e")
+                <> parenIfSpaced (g.toWire "v_e")
                 <> ") "
                 <> v'
                 <> ")"
@@ -1537,8 +1537,8 @@ planCommands cxt =
         PIn
           { arg
           , hsType =
-              let core = "V.Vector " <> parenT g.ty
-               in if isOptional then "Maybe " <> parenT core else core
+              let core = "V.Vector " <> parenIfSpaced g.ty
+               in if isOptional then "Maybe " <> parenIfSpaced core else core
           , callExpr = "p_" <> arg
           , marshalStmts =
               if isOptional then
@@ -1566,7 +1566,7 @@ planCommands cxt =
       ok
         PIn
           { arg
-          , hsType = (if isOptional then "Maybe " else "") <> parenT g.ty
+          , hsType = (if isOptional then "Maybe " else "") <> parenIfSpaced g.ty
           , callExpr = "(castPtr p_" <> arg <> ")"
           , marshalStmts =
               if isOptional then
@@ -1577,13 +1577,13 @@ planCommands cxt =
                     <> " "
                     <> show al
                     <> "; liftIO (pokeByteOff pv_ 0 "
-                    <> parenT (g.toWire "v_")
+                    <> parenIfSpaced (g.toWire "v_")
                     <> "); pure pv_ }) "
                     <> arg
                 ]
               else
                 [ "p_" <> arg <> " <- arenaBytes " <> show sz <> " " <> show al
-                , "liftIO (pokeByteOff p_" <> arg <> " 0 " <> parenT (g.toWire arg) <> ")"
+                , "liftIO (pokeByteOff p_" <> arg <> " 0 " <> parenIfSpaced (g.toWire arg) <> ")"
                 ]
           , imports = g.imports
           , constraints = []
@@ -1865,7 +1865,7 @@ planCommands cxt =
             , allocStmts = ["p_" <> bind <> " <- arenaBytes " <> show sz <> " " <> show al]
             , callExpr = "castPtr p_" <> bind
             , peekStmts =
-                [ "w_" <> bind <> " <- liftIO (peekByteOff p_" <> bind <> " 0 :: IO " <> parenT g.wireT <> ")"
+                [ "w_" <> bind <> " <- liftIO (peekByteOff p_" <> bind <> " 0 :: IO " <> parenIfSpaced g.wireT <> ")"
                 , "let " <> bind <> " = " <> g.fromWire ("w_" <> bind)
                 ]
             , imports = g.imports
@@ -2008,7 +2008,7 @@ planCommands cxt =
           OutGen
             { kind = if ext then OKChainStructVector else OKStructVector
             , bindName = bind
-            , hsOutType = "V.Vector " <> parenT elemT
+            , hsOutType = "V.Vector " <> parenIfSpaced elemT
             , allocStmts =
                 [ "p_"
                     <> bind
@@ -2025,7 +2025,7 @@ planCommands cxt =
                     <> " `plusPtr` (i * "
                     <> show sz
                     <> "))) (nil :: "
-                    <> parenT elemT
+                    <> parenIfSpaced elemT
                     <> "))"
                 ]
             , callExpr = "castPtr p_" <> bind
@@ -2074,7 +2074,7 @@ planCommands cxt =
           OutGen
             { kind = OKHandleVector
             , bindName = bind
-            , hsOutType = "V.Vector " <> parenT minted
+            , hsOutType = "V.Vector " <> parenIfSpaced minted
             , allocStmts =
                 ["p_" <> bind <> " <- arenaBytes (8 * max 1 (fromIntegral " <> bindVar <> ")) 8"]
             , callExpr = "castPtr p_" <> bind
@@ -2116,7 +2116,7 @@ planCommands cxt =
           OutGen
             { kind = OKScalarVector
             , bindName = bind
-            , hsOutType = "V.Vector " <> parenT g.ty
+            , hsOutType = "V.Vector " <> parenIfSpaced g.ty
             , allocStmts =
                 [ "p_"
                     <> bind
@@ -2139,7 +2139,7 @@ planCommands cxt =
                     <> " (i * "
                     <> show sz
                     <> ") :: IO "
-                    <> parenT g.wireT
+                    <> parenIfSpaced g.wireT
                     <> ")))"
                 ]
             , imports = g.imports
@@ -2421,7 +2421,7 @@ renderCommands cxt =
   ffiRetTy c
     | c.returnType.kind == RefFuncpointer = "IO (FunPtr ())"
     | forgetNamespace c.returnType.name == "void" = "IO ()"
-    | otherwise = "IO " <> parenT (ffiScalarTy c.returnType)
+    | otherwise = "IO " <> parenIfSpaced (ffiScalarTy c.returnType)
   ffiScalarTy ref = case ref.kind of
     RefHandle -> case Map.lookup ref.name registry.handles of
       Just h | h.dispatchable -> "Ptr ()"
@@ -2569,7 +2569,7 @@ renderCommands cxt =
       ]
         <> ["  " <> t <> " ->" | t <- rcvTy]
         <> ["  " <> i.hsType <> " ->" | i <- ins]
-        <> [ "  (Outcome " <> parenT payloadT <> " -> m r) ->"
+        <> [ "  (Outcome " <> parenIfSpaced payloadT <> " -> m r) ->"
            , "  m r"
            ]
     impl =
@@ -2605,8 +2605,8 @@ renderCommands cxt =
 
     -- The gated-payload container. Swap point if a strict Maybe is ever
     -- wanted: these three plus one wrapperBaseImports line.
-    payloadWrapT t = "Maybe " <> parenT t
-    payloadJustE e = "Just " <> parenT e
+    payloadWrapT t = "Maybe " <> parenIfSpaced t
+    payloadJustE e = "Just " <> parenIfSpaced e
     payloadNothingE = "Nothing" :: Text
 
     rcvTy = case receiver of
@@ -2652,8 +2652,8 @@ renderCommands cxt =
       | gated = payloadWrapT payloadT
       | otherwise = payloadT
     retT
-      | returnsResult = "m (Outcome " <> parenT gatedPayloadT <> ")"
-      | otherwise = "m " <> parenT payloadT
+      | returnsResult = "m (Outcome " <> parenIfSpaced gatedPayloadT <> ")"
+      | otherwise = "m " <> parenIfSpaced payloadT
     retDoc
       | gated =
           " -- ^ 'Nothing' when the driver returns "
@@ -2721,8 +2721,8 @@ renderCommands cxt =
     argOf = \case
       PReceiver{arg} -> "(castPtr " <> arg <> ".handle)"
       PIn{callExpr} -> callExpr
-      PCount{callExpr} -> parenT callExpr
-      POut o _ -> parenT o.callExpr
+      PCount{callExpr} -> parenIfSpaced callExpr
+      POut o _ -> parenIfSpaced o.callExpr
 
     -- The table read is guarded: a command the loader never resolved
     -- throws a named MissingCommand instead of jumping to null.
@@ -2758,7 +2758,7 @@ renderCommands cxt =
               <> indent
                 8
                 ( peekAll
-                    <> ["pure (Ok (openFromWire r_) " <> parenT (payloadJustE payloadE) <> ")"]
+                    <> ["pure (Ok (openFromWire r_) " <> parenIfSpaced (payloadJustE payloadE) <> ")"]
                 )
         | otherwise ->
             [ "r_ <- liftIO (" <> callLine <> ")"
@@ -2766,16 +2766,16 @@ renderCommands cxt =
             , "  then pure (Err (openFromWire r_))"
             , "  else do"
             ]
-              <> indent 4 (peekAll <> ["pure (Ok (openFromWire r_) " <> parenT payloadE <> ")"])
+              <> indent 4 (peekAll <> ["pure (Ok (openFromWire r_) " <> parenIfSpaced payloadE <> ")"])
       RetVoid ->
         ["liftIO (" <> callLine <> ")"]
           <> peekAll
-          <> ["pure " <> parenT payloadE]
+          <> ["pure " <> parenIfSpaced payloadE]
       RetScalar{expr} ->
         ["retw_ <- liftIO (" <> callLine <> ")"]
           <> peekAll
           <> ["let ret_ = " <> expr]
-          <> ["pure " <> parenT payloadE]
+          <> ["pure " <> parenIfSpaced payloadE]
 
     -- dual-call: count query -> alloc -> fill, looping on VK_INCOMPLETE (5).
     -- Non-dual outs are peeked in the success path too (mixed shapes like
@@ -2804,13 +2804,13 @@ renderCommands cxt =
                      , "      then pure (Err (openFromWire r2_))"
                      , "      else do"
                      ]
-                  <> indent 8 (dualPeek <> ["pure (Ok (openFromWire r2_) " <> parenT payloadE <> ")"])
+                  <> indent 8 (dualPeek <> ["pure (Ok (openFromWire r2_) " <> parenIfSpaced payloadE <> ")"])
               )
       | otherwise =
           ["_ <- liftIO (" <> callWithNullData <> ")"]
             <> dualAllocAndFill "_ <- liftIO"
             <> dualPeek
-            <> ["pure " <> parenT payloadE]
+            <> ["pure " <> parenIfSpaced payloadE]
     dualAllocAndFill callBind =
       [ dualBindName <> " <- liftIO (peekByteOff p_n_ 0 :: IO " <> dualCountTy <> ")"
       ]
@@ -2866,28 +2866,11 @@ dimLitInt = \case
 
 -- ── text helpers ────────────────────────────────────────────────────────
 
-capitalize :: Text -> Text
-capitalize t = case T.uncons t of
-  Just (c, cs) -> T.cons (Char.toUpper c) cs
-  Nothing -> t
-
 hungarianArg :: Text -> Text
 hungarianArg n
   | Just rest <- T.stripPrefix "pp" n, startsUpper rest = primeReserved (lowerFirst rest)
   | Just rest <- T.stripPrefix "p" n, startsUpper rest = primeReserved (lowerFirst rest)
   | otherwise = primeReserved n
- where
-  startsUpper t = maybe False (Char.isUpper . fst) (T.uncons t)
-
-lowerFirst :: Text -> Text
-lowerFirst t = case T.uncons t of
-  Just (c, cs) -> T.cons (Char.toLower c) cs
-  Nothing -> t
-
-primeReserved :: Text -> Text
-primeReserved n
-  | n `elem` (["type", "data", "instance", "module", "where", "in", "of"] :: [Text]) = n <> "'"
-  | otherwise = n
 
 -- | Count names appear inside generated identifiers; they are plain C
 -- identifiers already, but reserved-word priming keeps @n_data'@-style
@@ -2895,5 +2878,3 @@ primeReserved n
 sanitizeBind :: Text -> Text
 sanitizeBind = primeReserved
 
-parenT :: Text -> Text
-parenT t = if T.any (== ' ') t then "(" <> t <> ")" else t

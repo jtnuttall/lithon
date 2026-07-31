@@ -50,6 +50,7 @@ import Data.Text qualified as T
 import Data.Vector qualified as V
 import Lithon.Prelude
 
+import Lithon.Codegen.Backend.Hs (lowerFirst)
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry.Types.Common (VendorTag (..))
@@ -221,10 +222,6 @@ stripVkCommand :: Text -> Text
 stripVkCommand t = case T.stripPrefix "vk" t of
   Just rest -> lowerFirst rest
   Nothing -> lowerFirst t
- where
-  lowerFirst s = case T.uncons s of
-    Just (c, cs) -> T.cons (Char.toLower c) cs
-    Nothing -> s
 
 stripVkPrefix :: Text -> Text
 stripVkPrefix t = fromMaybe t (T.stripPrefix "VK_" t)

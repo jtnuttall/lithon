@@ -50,10 +50,8 @@ import HsBindgen
 import HsBindgen.Artefact (ArtefactMsg (..))
 import HsBindgen.ArtefactM (DirPolicy (..), FilePolicy (..))
 import HsBindgen.Backend.Category (
-  ByCategory (..),
   ByCategory_ (..),
-  Category (..),
-  TermCategory (..),
+  Category,
   mapWithCategory_,
  )
 import HsBindgen.Backend.Hs.AST qualified as Hs
@@ -74,7 +72,6 @@ import HsBindgen.Frontend.Pass.Final (Final)
 import HsBindgen.IR.C qualified as C
 import HsBindgen.Language.Haskell (ModuleName (..))
 import HsBindgen.Macro (CExpr, cExpr)
-import HsBindgen.TraceMsg
 import HsBindgen.Util.Tracer
 import Lithon.Prelude ((&), (.~))
 import Lithon.Prelude.Display (Display (..))
