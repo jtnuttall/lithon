@@ -191,19 +191,16 @@ jobs:
             cabal run -v0 --project-file=cabal.project.shmup \
             lithon-examples:exe:shmup -- --frames 60
 
-  gate-nix:
-    if: false
+  check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
-
       - name: Fetch submodules
         run: git submodule update --init --recursive --filter=tree:0
-
-      - uses: cachix/install-nix-action@v27
-        with:
-          extra_nix_config: |
-            accept-flake-config = true
-
-      - name: Run the gate
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: check.sh
         run: nix develop '.?submodules=1' --command ./scripts/check.sh
