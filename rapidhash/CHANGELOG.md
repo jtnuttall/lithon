@@ -1,11 +1,12 @@
 # Changelog — rapidhash
 
-## Unreleaed
+## Unreleased
+
+## 0.1.1.0 - 2026-07-26
 
 ### Added
 
-- `rapidhash` now depends on `deepseq`, and provides `NFData` instances
-  for both `RapidHash` and `RapidSeed`.
+- For convenience, provide `NFData` instances for both `RapidHash` and `RapidSeed`.
 
 ## 0.1.0.0 - 2026-07-26
 

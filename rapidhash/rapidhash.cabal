@@ -5,7 +5,7 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           rapidhash
-version:        0.1.0.0
+version:        0.1.1.0
 synopsis:       rapidhash v3 - very fast, high-quality, non-cryptographic hashing
 description:    Zero-copy FFI bindings to rapidhash v3, a very fast, high-quality,
                 non-cryptographic hash. The upstream single-header C implementation is
