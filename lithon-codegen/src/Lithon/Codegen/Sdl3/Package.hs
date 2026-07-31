@@ -33,8 +33,10 @@ import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Backend.Package (PackageSpec (..), RootFiles (..))
 import Lithon.Codegen.Backend.Package qualified as Package
 import Lithon.Codegen.Backend.Package.Assemble (assemblePackage)
+import Lithon.Codegen.Bindgen (HeaderResult (..))
 import Lithon.Codegen.Sdl3.Abi (AbiMacroConst, renderAbiAssertions)
-import Lithon.Codegen.Sdl3.Bindgen (HeaderResult (..), baseNamespace, mainIncludes)
+import Lithon.Codegen.Sdl3.Bindgen (Sdl3Payload (..), mainIncludes)
+import Lithon.Codegen.Sdl3.Bindgen qualified as Bindgen
 
 -- Cheap compile-time sanity check. These are embedded directory tries from 'Data.FileEmbed'.
 do
@@ -62,6 +64,10 @@ hsbindgenRuntimeOut, cexprRuntimeOut :: FilePath
 hsbindgenRuntimeOut = "runtime"
 cexprRuntimeOut = "runtime-cexpr"
 
+-- | The dotted namespace root, for facade rendering.
+baseNamespace :: Text
+baseNamespace = Module.hsName Bindgen.baseNamespace
+
 data Sdl3PackagingError
   = GeneratorEmittedInvalidModuleName Text Text Module.MetaError
   | GeneratorEmittedOutOfTreeModules [Text]
@@ -88,7 +94,7 @@ assembleSdl3Package
   :: [(Text, Text)]
   -> [AbiMacroConst]
   -- ^ Probed typed-constant values (curated layer), re-asserted in the TU.
-  -> [HeaderResult]
+  -> [HeaderResult Sdl3Payload]
   -> Either Sdl3PackagingError FileTree
 assembleSdl3Package aliasModules macroConsts results = do
   generated <- for (concatMap (.modules) results) \m -> do
@@ -103,7 +109,7 @@ assembleSdl3Package aliasModules macroConsts results = do
     meta <- metaFor "hs-bindgen facades" (T.splitOn "." name)
     pure (meta, contents)
   abiAssertions <-
-    first AbiAssertionsInvalid $ renderAbiAssertions mainIncludes (concatMap (.abi) results) macroConsts
+    first AbiAssertionsInvalid $ renderAbiAssertions mainIncludes (concatMap (.payload.abi) results) macroConsts
 
   first Assembly
     $ assemblePackage

@@ -8,7 +8,6 @@ module Lithon.Codegen.Sdl3.Env (
   Sdl3Env (..),
   Sdl3Gen,
   getSdl3Env,
-  getScratchDirectory,
   runSdl3Gen,
 ) where
 
@@ -27,7 +26,6 @@ import Lithon.Effect.FileSystem (
   doesFileExist,
  )
 import Lithon.Effect.Log
-import Lithon.Effect.Temporary (SystemTempDir, Temporary, withSystemTempDirectory)
 import Lithon.Prelude
 import System.FilePath ((</>))
 
@@ -84,7 +82,6 @@ data Sdl3Env = Sdl3Env
   , sdlVersion :: Text
   -- ^ @pkg-config --modversion sdl3@.
   , pkgDbEntry :: PkgDbEntry
-  , scratchDirectory :: SystemTempDir
   , versionsRegistryPath :: FilePath
   , aliasesRegistryPath :: FilePath
   , sdl3SpecDir :: FilePath
@@ -102,19 +99,15 @@ type instance DispatchOf Sdl3Gen = Dynamic
 getSdl3Env :: (Sdl3Gen :> es) => Eff es Sdl3Env
 getSdl3Env = send GetSdl3Env
 
-getScratchDirectory :: (Sdl3Gen :> es) => Eff es SystemTempDir
-getScratchDirectory = (.scratchDirectory) <$> getSdl3Env
-
 runSdl3Gen
   :: ( IOE :> es
      , Log :> es
      , ClangEnv :> es
-     , Temporary :> es
      , FileSystem :> es
      , Error SdlResolutionError :> es
      )
   => Eff (Sdl3Gen : es) a -> Eff es a
-runSdl3Gen eff = withSystemTempDirectory "lithon-sdl3-gen-scratch" \scratchDirectory -> do
+runSdl3Gen eff = do
   sdl3SpecDir <- runErrorFrom @DataDirError $ targetDataDir "sdl3"
   let versionsRegistryPath = sdl3SpecDir </> "versions.json"
       aliasesRegistryPath = sdl3SpecDir </> "aliases.json"

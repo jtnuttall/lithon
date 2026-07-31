@@ -26,6 +26,9 @@ module Lithon.HsBindgen.Invoke (
   NameableModule (..),
   moduleName,
   moduleNameSegments,
+  moduleImports,
+  HeaderArtefacts (..),
+  collectArtefacts,
   translatedFamily,
   reifiedHs,
   reifiedC,
@@ -37,7 +40,7 @@ module Lithon.HsBindgen.Invoke (
 import Clang.Paths (getSourcePath)
 import Control.Monad (when)
 import Data.Default (def)
-import Data.Functor.Const (getConst)
+import Data.Foldable (toList)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TB
@@ -51,10 +54,15 @@ import HsBindgen.Backend.Category (
   ByCategory_ (..),
   Category (..),
   TermCategory (..),
+  mapWithCategory_,
  )
 import HsBindgen.Backend.Hs.AST qualified as Hs
 import HsBindgen.Backend.Hs.Haddock.Documentation qualified as HsDoc
-import HsBindgen.Backend.HsModule.Translation (HsModule, translateModuleMultiple)
+import HsBindgen.Backend.HsModule.Translation (
+  HsModule (..),
+  ImportListItem (..),
+  translateModuleMultiple,
+ )
 import HsBindgen.BindingSpec hiding (moduleName)
 import HsBindgen.Config hiding (ConfigTH (..))
 import HsBindgen.Config.ClangArgs
@@ -154,6 +162,38 @@ moduleName m = (fromBaseModuleName m.name m.category).text
 moduleNameSegments :: NameableModule a -> [Text]
 moduleNameSegments = T.splitOn "." . moduleName
 
+-- | The dotted names of a translated module's typed imports — read from
+-- the AST, never scraped back out of rendered text.
+moduleImports :: HsModule -> [Text]
+moduleImports m =
+  [ n.text
+  | item <- m.imports
+  , n <- case item of
+      QualifiedImportListItem n' _ -> [n']
+      UnqualifiedImportListItem n' _ -> [n']
+  ]
+
+-- | The per-invocation artefact bundle every visitor reads: the translated
+-- family plus the reified declarations and the header's module comment.
+-- 'CExpr' is named only here, inside the seam; callers stay polymorphic in
+-- the macro-expression parameter.
+data HeaderArtefacts = HeaderArtefacts
+  { family :: [NameableModule HsModule]
+  , hsDecls :: ByCategory_ [Hs.Decl CExpr]
+  , cDecls :: [C.Decl CExpr Final]
+  , headerComment :: Maybe HsDoc.Comment
+  }
+
+-- | 'translatedFamily' + 'reifiedHs' + 'reifiedC' + 'headerComment' in one
+-- bundle — what the generic driver hands each visitor.
+collectArtefacts :: BindgenM HeaderArtefacts
+collectArtefacts = do
+  family <- translatedFamily
+  hsDecls <- reifiedHs
+  cDecls <- reifiedC
+  comment <- headerComment
+  pure HeaderArtefacts{family, hsDecls, cDecls, headerComment = comment}
+
 -- | The translated (pre-render) module family: module name -> module AST,
 -- one entry per non-empty binding category, names minted by hs-bindgen's
 -- own category mapping. Feed the result through
@@ -175,16 +215,12 @@ translatedFamily = BindgenM do
   nullDecls :: (Foldable f, Foldable g) => (f a, g b) -> Bool
   nullDecls (xs, ys) = null xs && null ys
 
+  -- Vendor 'toList' order (cType, cSafe, cUnsafe, cFunPtr, cGlobal) is the
+  -- family order downstream sees.
   familyModules :: BaseModuleName -> ByCategory_ (Maybe HsModule) -> [NameableModule HsModule]
-  familyModules name (ByCategory_ inner) =
-    [ NameableModule{..}
-    | (category, Just hsModule) <-
-        [ (Just CType, getConst inner.cType)
-        , (Just (CTerm CSafe), getConst inner.cSafe)
-        , (Just (CTerm CUnsafe), getConst inner.cUnsafe)
-        , (Just (CTerm CFunPtr), getConst inner.cFunPtr)
-        , (Just (CTerm CGlobal), getConst inner.cGlobal)
-        ]
+  familyModules name modules =
+    [ NameableModule{name, category = Just cat, hsModule}
+    | (cat, Just hsModule) <- toList (mapWithCategory_ (,) modules)
     ]
 
 -- | The final Haskell declarations, by category.

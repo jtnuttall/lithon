@@ -7,9 +7,15 @@
 --
 -- Replaces post-render text surgery: passes target typed structure — a
 -- foreign import's C stub matched by its C symbol — instead of rendered
--- lines, so a vendor render change cannot silently move the target. Every
--- pass still fails loudly when it matches nothing ('TransformError'), the
--- property the old text shims enforced with needle hit-counts.
+-- lines, so a vendor render change cannot silently move the target. A
+-- 'RequireHit' pass fails loudly when it matches nothing ('TransformError'),
+-- the property the old text shims enforced with needle hit-counts;
+-- 'AllowMiss' opts a pass out for edits that legitimately apply to a subset
+-- of targets.
+--
+-- Ordering is API contract: edits apply in list order, and a later edit
+-- sees the earlier edits' output. Callers composing edit sets (platform
+-- shims before version gates, say) are relying on exactly that.
 --
 -- The one deliberate exception: 'TextEdit' operates on rendered module
 -- text, for edits the 'CWrapper' model cannot express (its renderer emits
@@ -17,6 +23,7 @@
 -- prologue has no structural home). Keep that set small.
 module Lithon.HsBindgen.Transform (
   -- * C-stub edits (typed, pre-render)
+  MissPolicy (..),
   StubEdit (..),
   replaceStubLine,
   applyStubEdits,
@@ -42,9 +49,16 @@ import HsBindgen.Backend.Hs.CallConv (CWrapper (..), CallConv (..))
 import HsBindgen.Backend.HsModule.Render (render)
 import HsBindgen.Backend.HsModule.Translation (HsModule (..))
 import HsBindgen.Backend.SHs.AST (ForeignImport (..), SDecl (..))
-import Lithon.Prelude (Display (..), From (..))
+import Lithon.Prelude (Display (..), From (..), first)
 
-import Lithon.HsBindgen.Invoke (NameableModule (..))
+import Lithon.HsBindgen.Invoke (NameableModule (..), moduleImports)
+
+-- | What a zero-hit pass means: 'RequireHit' fails generation (right for
+-- platform shims — a miss means the wrapper shape drifted and a guard
+-- would silently vanish); 'AllowMiss' skips (right for passes that
+-- legitimately apply to a subset of targets).
+data MissPolicy = RequireHit | AllowMiss
+  deriving stock (Eq, Show)
 
 -- | One targeted edit of a foreign import's C stub, keyed on the wrapped
 -- C declaration ('CWrapper's @wraps@ field — the foreign import's own
@@ -61,6 +75,7 @@ data StubEdit = StubEdit
   , target :: Text
   -- ^ Human-readable description of what the edit expects to find inside
   -- the stub (shown in the drift error alongside 'label').
+  , onMiss :: MissPolicy
   , edit :: [Text] -> Maybe [Text]
   -- ^ Line-wise rewrite of the stub body; 'Nothing' when the expected
   -- shape is absent (counts as a miss for that stub).
@@ -75,6 +90,7 @@ replaceStubLine label symbol needle replacementLines =
     { label
     , symbol = Just symbol
     , target = needle
+    , onMiss = RequireHit
     , edit = \ls ->
         if needle `elem` ls then
           Just (concatMap (\l -> if l == needle then replacementLines else [l]) ls)
@@ -116,6 +132,7 @@ applyStubEdits edits family = foldM step family edits
  where
   step fam e
     | changed = Right fam'
+    | AllowMiss <- e.onMiss = Right fam
     | otherwise = Left $ StubEditMissed e.label (fromMaybe "<any wrapper>" e.symbol) e.target
    where
     (fam', Any changed) = runWriter (traverse (editModule e) fam)
@@ -142,27 +159,36 @@ data TextEdit = TextEdit
   { label :: Text
   , needle :: Text
   , replacement :: Text
+  , onMiss :: MissPolicy
   }
   deriving stock (Eq, Show)
 
-newtype RenderedHsModule = RenderedHsModule
-  {text :: Text}
+-- | One rendered family member: the full source text plus the dotted names
+-- of its typed imports, captured from the AST at render time (so consumers
+-- never scrape @import@ lines back out of the text).
+data RenderedHsModule = RenderedHsModule
+  { text :: Text
+  , importedModules :: [Text]
+  }
   deriving stock (Show)
 
--- | Render a translated family and apply the text-level escape hatches,
--- each required to land at least once across the family.
+-- | Render a translated family and apply the text-level escape hatches in
+-- list order.
 renderFamilyWith
   :: [TextEdit]
   -> [NameableModule HsModule]
   -> Either TransformError [NameableModule RenderedHsModule]
-renderFamilyWith edits family = map (fmap RenderedHsModule) <$> foldM step rendered edits
+renderFamilyWith edits family = map (fmap toRendered) <$> foldM step prepared edits
  where
-  rendered :: [NameableModule Text]
-  rendered = map (fmap (T.pack . render)) family
+  prepared :: [NameableModule (Text, [Text])]
+  prepared = map (fmap \m -> (T.pack (render m), moduleImports m)) family
 
-  step :: [NameableModule Text] -> TextEdit -> Either TransformError [NameableModule Text]
+  toRendered (text, importedModules) = RenderedHsModule{text, importedModules}
+
+  step :: [NameableModule (Text, [Text])] -> TextEdit -> Either TransformError [NameableModule (Text, [Text])]
   step fam TextEdit{..}
-    | hits == 0 = Left $ TextEditMissed{..}
-    | otherwise = Right $ map (fmap (T.replace needle replacement)) fam
+    | hits > 0 = Right $ map (fmap (first (T.replace needle replacement))) fam
+    | AllowMiss <- onMiss = Right fam
+    | otherwise = Left $ TextEditMissed{..}
    where
-    hits = sum (map (T.count needle . (.hsModule)) fam)
+    hits = sum (map (T.count needle . fst . (.hsModule)) fam)

@@ -23,6 +23,7 @@ module Lithon.Codegen.Backend.Hs.Module (
   MangleError (..),
   HeaderPathStrategy (..),
   HeaderCaseStrategy (..),
+  SegmentJoin (..),
   MangleOpts (..),
   MangledMeta,
   mangleHeader,
@@ -205,12 +206,24 @@ applyCaseStrategy strat p = case strat of
    where
     (a, b) = T.break isUpper t
 
+-- | What becomes of the case-split words of the header name:
+-- 'JoinSegments' makes each its own module segment
+-- (@SDL_platform_defines.h@ -> @….Platform.Defines@); 'JoinConcat' upcases
+-- each and concatenates them into ONE segment
+-- (@SDL_platform_defines.h@ -> @….PlatformDefines@).
+data SegmentJoin
+  = JoinSegments
+  | JoinConcat
+  deriving stock (Eq, Generic, Ord, Show)
+  deriving anyclass (A.ToJSON)
+
 data MangleOpts = MangleOpts
   { pathStrategy :: HeaderPathStrategy
   -- ^ How to split the path to the module
   , caseStrategy :: HeaderCaseStrategy
   -- ^ How to split the actual header name (the terminal element of the path,
   -- regardless of path strategy)
+  , segmentJoin :: SegmentJoin
   , stripPrefix :: Maybe Text
   , stripSuffix :: Maybe Text
   , headerExt :: FilePath
@@ -223,6 +236,7 @@ instance Default MangleOpts where
     MangleOpts
       { pathStrategy = TakeFileName
       , caseStrategy = SplitUnderscore
+      , segmentJoin = JoinSegments
       , stripPrefix = Nothing
       , stripSuffix = Nothing
       , headerExt = "h"
@@ -244,6 +258,9 @@ instance HasMeta MangledMeta where
 --
 -- >>> mangleHeader (joinPath ["some", "path" , "SDL_MetalView.h"]) def{pathStrategy = SplitPath}
 -- Right (MangledMeta {headerPath = "some/path/SDL_MetalView.h", meta = Meta {segments = "Some" :| ["Path","SDL","MetalView"]}})
+--
+-- >>> mangleHeader "SDL_platform_defines.h" def{stripPrefix = Just "SDL_", segmentJoin = JoinConcat}
+-- Right (MangledMeta {headerPath = "SDL_platform_defines.h", meta = Meta {segments = "PlatformDefines" :| []}})
 mangleHeader :: FilePath -> MangleOpts -> Either MangleError MangledMeta
 mangleHeader headerPath opts = do
   let nameEmpty = MangledNameEmpty headerPath opts
@@ -271,8 +288,13 @@ mangleHeader headerPath opts = do
       $ applyCaseStrategy opts.caseStrategy strippedHeaderName
 
   -- Mangling normalizes case (validation deliberately does not): every
-  -- segment's head is upcased before the conid check.
-  let segments = map (over _head toUpper) $ NE.toList (NE.prependList pathSegments fileSegments)
+  -- segment's head is upcased before the conid check. Under 'JoinConcat'
+  -- the case-split words fuse into one PascalCase segment (empty words
+  -- vanish in the concat, mirroring split-on-underscore conventions).
+  let joined = case opts.segmentJoin of
+        JoinSegments -> NE.toList fileSegments
+        JoinConcat -> [T.concat (map (over _head toUpper) (NE.toList fileSegments))]
+      segments = map (over _head toUpper) (pathSegments <> joined)
 
   meta <- first from $ fromSegments segments
 

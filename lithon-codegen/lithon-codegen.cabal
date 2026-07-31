@@ -337,6 +337,7 @@ test-suite lithon-codegen-test
   other-modules:
       Backend.EmitTest
       Backend.PackageTest
+      Bindgen.DriverTest
       Sdl3.AbiRenderTest
       Sdl3.AdapterSmokeTest
       Sdl3.AliasConfigTest

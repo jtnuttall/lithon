@@ -17,8 +17,6 @@ import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
-import Effectful (runPureEff)
-import Effectful.Error.Dynamic (runErrorNoCallStack)
 import Language.Haskell.TH (stringE)
 import Lithon.Prelude
 import System.Directory (listDirectory)
@@ -26,10 +24,11 @@ import Test.Tasty (TestTree)
 import Test.Tasty.Golden (goldenVsStringDiff)
 
 import Lithon.Codegen.Backend.Emit (Manifest (..), manifestFileName)
+import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Sdl3.Alias (sysModuleName, sysNamespace)
 import Lithon.Codegen.Sdl3.Alias.Config (AliasConfig (..), FunctionEntry (..), decodeAliasConfig)
 import Lithon.Codegen.Sdl3.Alias.Names (Safety (..))
-import Lithon.Codegen.Sdl3.Bindgen (BindgenError, baseNamespace, mangleModule)
+import Lithon.Codegen.Sdl3.Bindgen (baseNamespace, sdl3ModuleFor)
 
 packageDir, specDir :: FilePath
 packageDir = $(stringE =<< makeRelativeToProject "../sdl3-bindgen-sys")
@@ -101,7 +100,7 @@ test_sdl3Census =
       $ LBS.fromStrict
       . TE.encodeUtf8
       . T.unlines
-      $ [ "namespace: " <> baseNamespace
+      $ [ "namespace: " <> Module.hsName baseNamespace
         , "curated namespace: " <> sysNamespace
         , "headers (specs): " <> T.show (length specs)
         , "modules: " <> T.show (Set.size moduleNames)
@@ -122,10 +121,10 @@ test_sdl3Census =
         ]
       <> map headerLine headers
 
--- | 'mangleModule' now runs in 'Eff' with an @Error BindgenError@ effect;
--- discharge it purely and surface the error as text for @error@.
+-- | Header basename -> dotted module name, through the chain's own minting
+-- ('sdl3ModuleFor') — the census cannot drift from generation.
 runMangle :: FilePath -> Either Text Text
-runMangle = first display . runPureEff . runErrorNoCallStack @BindgenError . mangleModule
+runMangle = bimap display Module.hsName . sdl3ModuleFor
 
 -- | How many committed source modules embed C via the Template Haskell
 -- @addCSource@ splice.

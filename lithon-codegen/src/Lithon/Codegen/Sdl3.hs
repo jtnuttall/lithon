@@ -90,19 +90,27 @@ import Lithon.Codegen.Sdl3.Alias.Constants (
   scanObjectMacros,
  )
 import Lithon.Codegen.Sdl3.Alias.Names (AliasError)
-import Lithon.Codegen.Sdl3.Bindgen (
+import Lithon.Codegen.Bindgen (
+  Bindgen,
   BindgenError,
   HeaderResult (..),
   HeaderUnit (..),
   chainHeaders,
+  getScratchDirectory,
   planHeaders,
   preflightGraph,
+  runBindgen,
+ )
+import Lithon.Codegen.Sdl3.Bindgen (
+  Sdl3Payload (..),
+  sdl3BindgenOpts,
+  sdl3Plan,
+  sdl3Visitor,
  )
 import Lithon.Codegen.Sdl3.Env (
   Sdl3Env (..),
   Sdl3Gen,
   SdlResolutionError,
-  getScratchDirectory,
   getSdl3Env,
   runSdl3Gen,
  )
@@ -229,24 +237,26 @@ runSdl3
      , Console :> es
      )
   => Maybe ProjectRoot -> Sdl3Cmd -> Eff es ()
-runSdl3 root cmd = runErrorFrom @SdlResolutionError $ runSdl3Gen case cmd of
-  CmdSpec opts -> do
-    registry <- loadVersionsRegistry
-    results <- runChain registry
-    syncSpecs (guardCtx root opts.assumeYes) opts.emitEffect results
-  CmdGenerate opts -> do
-    registry <- loadVersionsRegistry
-    results <- runChain registry
-    -- Specs and package come from the same chain run, so they can never
-    -- skew; both emits respect --check.
-    syncSpecs (guardCtx root opts.out.assumeYes) opts.out.emitEffect results
-    (aliasFiles, macroConsts, aliasMeta) <-
-      planAliases registry results
-    tree <-
-      liftEither . first PackagingError $ assembleSdl3Package aliasFiles macroConsts results
-    manifestMeta <- chainMeta results
-    runErrorFrom @EmitError @Sdl3Error
-      $ emitHaskellPackage root opts.out (manifestMeta <> aliasMeta) tree
+runSdl3 root cmd = runErrorFrom @SdlResolutionError $ runSdl3Gen do
+  env <- getSdl3Env
+  runBindgen (sdl3BindgenOpts env) case cmd of
+    CmdSpec opts -> do
+      registry <- loadVersionsRegistry
+      results <- runChain registry
+      syncSpecs (guardCtx root opts.assumeYes) opts.emitEffect results
+    CmdGenerate opts -> do
+      registry <- loadVersionsRegistry
+      results <- runChain registry
+      -- Specs and package come from the same chain run, so they can never
+      -- skew; both emits respect --check.
+      syncSpecs (guardCtx root opts.out.assumeYes) opts.out.emitEffect results
+      (aliasFiles, macroConsts, aliasMeta) <-
+        planAliases registry results
+      tree <-
+        liftEither . first PackagingError $ assembleSdl3Package aliasFiles macroConsts results
+      manifestMeta <- chainMeta results
+      runErrorFrom @EmitError @Sdl3Error
+        $ emitHaskellPackage root opts.out (manifestMeta <> aliasMeta) tree
 
 -- | Load, validate, plan, and render the curated @SDL3.Sys.*@ layer.
 --
@@ -260,15 +270,16 @@ planAliases
      , IOE :> es
      , Log :> es
      , Sdl3Gen :> es
+     , Bindgen :> es
      , Error Sdl3Error :> es
      , FileSystem :> es
      )
   => VersionsRegistry
-  -> [HeaderResult]
+  -> [HeaderResult Sdl3Payload]
   -> Eff es ([(Text, Text)], [AbiMacroConst], Map Text Aeson.Value)
 planAliases registry headerResults = do
   env <- getSdl3Env
-  let families = map (.facts) headerResults
+  let families = map (.payload.facts) headerResults
 
   registryBytes <- LBS.fromStrict <$> EBS.readFile env.aliasesRegistryPath
   config <- liftEither . first AliasesRegistryDecodeError $ decodeAliasConfig registryBytes
@@ -321,7 +332,7 @@ planAliases registry headerResults = do
 -- headers, evaluate every value and group sizeof in a probe TU compiled
 -- against those same headers, and validate the lot.
 planConstantGroups
-  :: (IOE :> es, Sdl3Gen :> es, Error Sdl3Error :> es, FileSystem :> es)
+  :: (IOE :> es, Sdl3Gen :> es, Bindgen :> es, Error Sdl3Error :> es, FileSystem :> es)
   => [FamilyDecls] -> Eff es ([ConstantGroupPlan], LByteString)
 planConstantGroups families = do
   env <- getSdl3Env
@@ -360,7 +371,7 @@ planConstantGroups families = do
   pure (plans, constantsBytes)
 
 probeConstants
-  :: (IOE :> es, Sdl3Gen :> es, Error Sdl3Error :> es)
+  :: (IOE :> es, Sdl3Gen :> es, Bindgen :> es, Error Sdl3Error :> es)
   => [(Text, [Text])] -> Eff es (Map Text Int, Map Text Integer)
 probeConstants probeInputs
   | null probeInputs = pure (mempty, mempty)
@@ -401,9 +412,10 @@ runChain
      , Environment :> es
      , Log :> es
      , Sdl3Gen :> es
+     , Bindgen :> es
      , Error Sdl3Error :> es
      )
-  => VersionsRegistry -> Eff es [HeaderResult]
+  => VersionsRegistry -> Eff es [HeaderResult Sdl3Payload]
 runChain registry = runErrorFrom do
   env <- getSdl3Env
   -- libc headers reach libclang only via BINDGEN_EXTRA_CLANG_ARGS (the
@@ -414,11 +426,11 @@ runChain registry = runErrorFrom do
   when (isNothing extraClangArgs)
     $ logWarn "BINDGEN_EXTRA_CLANG_ARGS is unset; libclang may fail to find libc headers."
 
-  graph <- preflightGraph
-  units <- planHeaders graph
+  graph <- preflightGraph sdl3Plan
+  units <- planHeaders sdl3Plan graph
   logInfo $ "planned headers" :# ["count" .= length units]
 
-  results <- chainHeaders registry units
+  results <- chainHeaders (sdl3Visitor registry) units
   logInfo
     $ "chain complete"
     :# [ "headers" .= length results
@@ -437,8 +449,9 @@ syncSpecs
      , Error Sdl3Error :> es
      , FileSystem :> es
      , Console :> es
+     , Bindgen :> es
      )
-  => GuardCtx -> EmitEffect -> [HeaderResult] -> Eff es ()
+  => GuardCtx -> EmitEffect -> [HeaderResult Sdl3Payload] -> Eff es ()
 syncSpecs ctx effect results = do
   env <- getSdl3Env
   SystemTempDir scratch <- getScratchDirectory
@@ -457,7 +470,7 @@ syncSpecs ctx effect results = do
         }
       specMap
 
-chainMeta :: (Sdl3Gen :> es) => [HeaderResult] -> Eff es (Map Text Aeson.Value)
+chainMeta :: (Sdl3Gen :> es) => [HeaderResult Sdl3Payload] -> Eff es (Map Text Aeson.Value)
 chainMeta results = do
   env <- getSdl3Env
   pure
