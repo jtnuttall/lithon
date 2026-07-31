@@ -63,7 +63,7 @@ resolveRegistry :: Api -> Registry -> Either (Errors ResolveError) ResolvedRegis
 resolveRegistry api registry = do
   cxt <-
     TB.buildNP
-      $ TB.inject_ (I api)
+      $ TB.injectI_ api
       >>> TB.injectIA (\c -> specialize c registry <??> RSpecialize)
       >>> TB.injectIA (\c -> mergeInternalTiers c <??> RTier)
       >>> TB.injectIA (\c -> buildSymbols c <??> RSymbol)
