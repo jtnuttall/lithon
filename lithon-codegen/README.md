@@ -69,8 +69,7 @@ Available commands:
 
 ```
 $ lithon-codegen vulkan parse --help
-Usage: lithon-codegen vulkan parse [VK_XML] [--json FILE] [--summary]
-                                   [--slice NAME]
+Usage: lithon-codegen vulkan parse [--json FILE] [--summary] [--slice NAME]
 
   Parse and dump IR / summary / slices
 
@@ -81,7 +80,7 @@ Available options:
   -h,--help                Show this help text
 
 $ lithon-codegen vulkan check --help
-Usage: lithon-codegen vulkan check [VK_XML] [--profile FILE]
+Usage: lithon-codegen vulkan check [--profile FILE]
 
   Parse strictly and report all diagnostics (CI gate)
 
@@ -90,8 +89,7 @@ Available options:
   -h,--help                Show this help text
 
 $ lithon-codegen vulkan resolve --help
-Usage: lithon-codegen vulkan resolve
-         [VK_XML] [--json FILE] [--summary] [--slice NAME]
+Usage: lithon-codegen vulkan resolve [--json FILE] [--summary] [--slice NAME]
 
   Specialize to vulkan and run the resolve passes (phase 2)
 
@@ -103,8 +101,8 @@ Available options:
 
 $ lithon-codegen vulkan curate --help
 Usage: lithon-codegen vulkan curate
-         [VK_XML] --profile FILE [--json FILE] [--report FILE] [--summary]
-         [--slice NAME] [--explain NAME]
+         --profile FILE [--json FILE] [--report FILE] [--summary] [--slice NAME]
+         [--explain NAME]
 
   Resolve, then curate to a profile (closure + prune + report)
 
@@ -120,15 +118,15 @@ Available options:
 
 $ lithon-codegen vulkan generate --help
 Usage: lithon-codegen vulkan generate
-         [VK_XML] --profile FILE [--out DIR] [--check] [--report FILE]
+         --profile FILE [--out DIR] [--check] [--yes] [--report FILE]
 
   Curate, then emit the lithon package sources (phase 3)
 
 Available options:
   --profile FILE           Curation profile (JSON)
   --out DIR                Target package directory (default: "lithon-vk")
-  --check                  Diff fresh output against the tree; write nothing (CI
-                           gate)
+  --check                  Diff fresh output against the tree; write nothing
+  --yes                    Skip the output-directory confirmation
   --report FILE            Write the planning report (census, unpaired creates,
                            retained counts) as canonical JSON
   -h,--help                Show this help text
@@ -178,25 +176,25 @@ Available commands:
 
 ```
 $ lithon-codegen sdl3 spec --help
-Usage: lithon-codegen sdl3 spec [--check]
+Usage: lithon-codegen sdl3 spec [--check] [--yes]
 
   Run the per-header chain and sync the binding-spec artifacts (steps 1-2)
 
 Available options:
-  --check                  Diff fresh output against the tree; write nothing (CI
-                           gate)
+  --check                  Diff fresh output against the tree; write nothing
+  --yes                    Skip the output-directory confirmation
   -h,--help                Show this help text
 
 $ lithon-codegen sdl3 generate --help
-Usage: lithon-codegen sdl3 generate [--out DIR] [--check]
+Usage: lithon-codegen sdl3 generate [--out DIR] [--check] [--yes]
 
   Run the chain and emit the sdl3-bindgen-sys package + spec artifacts (step 3)
 
 Available options:
   --out DIR                Target package directory
                            (default: "sdl3-bindgen-sys")
-  --check                  Diff fresh output against the tree; write nothing (CI
-                           gate)
+  --check                  Diff fresh output against the tree; write nothing
+  --yes                    Skip the output-directory confirmation
   -h,--help                Show this help text
 ```
 
@@ -210,6 +208,22 @@ cabal run lithon-codegen -- sdl3 generate
 
 `--check` (on any `generate` or `spec`) diffs fresh output against the tree and
 writes nothing — the CI freshness gate.
+
+## Running lithon-codegen
+
+Run the tool from the repository, via cabal:
+
+```sh
+cabal run lithon-codegen -- <target> <command> ...
+```
+
+- **Data directory.** Inputs (specs, registries, statics, the Vulkan-Docs
+  registry) resolve through the cabal data directory, which `cabal run`
+  points at `lithon-codegen/data/`. The package deliberately declares no
+  `data-files:`.
+- **Output-directory guard.** Write runs confirm the output directory
+  unless it already carries a `.lithon-manifest.json` and sits inside the
+  enclosing `cabal.project` root.
 
 ## Development
 

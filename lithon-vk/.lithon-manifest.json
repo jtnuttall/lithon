@@ -1,6 +1,10 @@
 {
   "files": {
-    "lithon-vk.cabal": "rhv3:a89abc88e9ff7559",
+    "CHANGELOG.md": "rhv3:9cc6d2b12603d780",
+    "LICENSE": "rhv3:e95315cef45a1f9f",
+    "README.md": "rhv3:5bb4fd5c754f828b",
+    "lithon-vk.cabal": "rhv3:19c073978bbf2dc1",
+    "package.yaml": "rhv3:fb670ccac17376ae",
     "src/Lithon/Vk.hs": "rhv3:4ba60f96d60c553c",
     "src/Lithon/Vk/Constants.hs": "rhv3:c835f017466bbd21",
     "src/Lithon/Vk/Core10/BufferCommands.hs": "rhv3:c6de0bf648be1f6e",

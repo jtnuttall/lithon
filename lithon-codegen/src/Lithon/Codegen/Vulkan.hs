@@ -44,23 +44,22 @@ import Options.Applicative (
   long,
   metavar,
   progDesc,
-  showDefault,
   strOption,
   switch,
-  value,
  )
 import Options.Applicative qualified as Opts
 import System.FilePath (takeDirectory)
 
-import Lithon.Codegen.Backend.Emit (
-  EmitEffect,
-  EmitError,
-  EmitStrategy (HaskellPackage),
-  EmitTarget (..),
-  emitEffectOptP,
-  emitPackage,
- )
+import Lithon.Codegen.Backend.Emit (EmitError)
 import Lithon.Codegen.Backend.Json (canonicalJsonBytes)
+import Lithon.Codegen.Backend.Package (PackageAssemblyError)
+import Lithon.Codegen.Backend.Package.Assemble (assemblePackage)
+import Lithon.Codegen.Backend.Package.Emit (
+  PackageOut,
+  ProjectRoot,
+  emitHaskellPackage,
+  packageOutP,
+ )
 import Lithon.Codegen.Vulkan.Curate (Curated (..), curate)
 import Lithon.Codegen.Vulkan.Curate.Closure (CurateError, explainName)
 import Lithon.Codegen.Vulkan.Curate.Profile (Profile (..), ProfileDecodeError, decodeProfile)
@@ -72,6 +71,7 @@ import Lithon.Codegen.Vulkan.Env (
   runVulkanGen,
  )
 import Lithon.Codegen.Vulkan.Generate (GenOutput (..), GenerateError, generate)
+import Lithon.Codegen.Vulkan.Package (vulkanPackageSpec)
 import Lithon.Codegen.Vulkan.Names
 import Lithon.Codegen.Vulkan.Registry (
   ParseFailure (..),
@@ -107,6 +107,7 @@ data VulkanError
   | GenerateError (Errors GenerateError)
   | NoSuchEntity Text
   | EmitError EmitError
+  | PackagingError PackageAssemblyError
   deriving stock (Generic, Show)
   deriving anyclass (Exception)
 
@@ -144,6 +145,7 @@ instance Display VulkanError where
     GenerateError err -> "Failed to generate Vulkan library: " <> from err
     NoSuchEntity name -> "No such entity " <> show name
     EmitError err -> "Failed to emit library: " <> from err
+    PackagingError err -> "Failed to assemble lithon-vk package: " <> displayBuilder err
 
 data VulkanCmd
   = CmdParse ParseOpts
@@ -277,23 +279,14 @@ curateOptsP = do
 
 data GenerateOpts = GenerateOpts
   { profilePath :: FilePath
-  , outDir :: FilePath
-  , emitEffect :: EmitEffect
+  , out :: PackageOut
   , reportPath :: Maybe FilePath
   }
 
 generateOptsP :: Opts.Parser GenerateOpts
 generateOptsP = do
   profilePath <- strOption (long "profile" <> metavar "FILE" <> help "Curation profile (JSON)")
-  outDir <-
-    strOption
-      ( long "out"
-          <> metavar "DIR"
-          <> value "lithon-vk"
-          <> showDefault
-          <> help "Target package directory"
-      )
-  emitEffect <- emitEffectOptP
+  out <- packageOutP "lithon-vk"
   reportPath <-
     optional
       ( strOption
@@ -316,8 +309,8 @@ runVulkan
      , Console :> es
      , Resource :> es
      )
-  => VulkanCmd -> Eff es ()
-runVulkan cmd = runErrorFrom @VulkanResolutionError $ runVulkanGen case cmd of
+  => Maybe ProjectRoot -> VulkanCmd -> Eff es ()
+runVulkan root cmd = runErrorFrom @VulkanResolutionError $ runVulkanGen case cmd of
   CmdCheck opts -> do
     registry <- loadAndParseRegistry
     whenJust opts.profilePath \profilePath -> do
@@ -395,19 +388,18 @@ runVulkan cmd = runErrorFrom @VulkanResolutionError $ runVulkanGen case cmd of
       createDirectoryIfMissing True (takeDirectory rp)
       ELBS.writeFile rp (canonicalJsonBytes gen.report)
       logInfo $ "wrote planning report" :# ["path" .= T.pack rp]
+    tree <-
+      liftEither . first PackagingError $ assemblePackage (vulkanPackageSpec gen.modules)
     runErrorFrom @EmitError @VulkanError
-      $ emitPackage
-        HaskellPackage
-        EmitTarget
-          { outDir = opts.outDir
-          , manifestMeta =
-              Map.fromList
-                [ ("profileName", Aeson.toJSON profile.name)
-                , ("registryHeaderVersion", Aeson.toJSON curated.registry.headerVersion)
-                ]
-          , effect = opts.emitEffect
-          }
-        gen.files
+      $ emitHaskellPackage
+        root
+        opts.out
+        ( Map.fromList
+            [ ("profileName", Aeson.toJSON profile.name)
+            , ("registryHeaderVersion", Aeson.toJSON curated.registry.headerVersion)
+            ]
+        )
+        tree
 
 -- | Read and decode a curation profile.
 loadProfile

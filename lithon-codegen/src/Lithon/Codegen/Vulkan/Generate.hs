@@ -8,8 +8,9 @@
 -- result vocabulary, umbrella); struct\/command passes join the chain at
 -- their milestones.
 --
--- 'generate' is pure: it returns the full file set. Formatting (fourmolu),
--- disk sync, manifest bookkeeping, and hpack live in "Lithon.Codegen.Backend.Emit".
+-- 'generate' is pure: it returns the full module set. Package assembly lives
+-- in "Lithon.Codegen.Vulkan.Package"; formatting (fourmolu), disk sync,
+-- manifest bookkeeping, and hpack live in "Lithon.Codegen.Backend.Emit".
 module Lithon.Codegen.Vulkan.Generate (
   GenOutput (..),
   GenerateError (..),
@@ -19,9 +20,7 @@ module Lithon.Codegen.Vulkan.Generate (
 import Data.Aeson qualified as A
 import Data.Generics.SOP.Builder.Typed qualified as TB
 import Lithon.Prelude
-import System.FilePath ((</>))
 
-import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Vulkan.Curate (Curated (..))
 import Lithon.Codegen.Vulkan.Generate.Cmds (
   CmdsError,
@@ -39,10 +38,11 @@ import Lithon.Codegen.Vulkan.Generate.Modules (ModuleError, assignModules)
 import Lithon.Codegen.Vulkan.Generate.Names (NameError, buildNames)
 import Lithon.Codegen.Vulkan.Generate.Render (RenderError, RenderedModule (..), renderValueLayer)
 
--- | The generated file set: repo-relative paths under the target package
--- directory -> full source text, plus the reviewable planning report.
+-- | The generated module set plus the reviewable planning report. Package
+-- layout (the @src\/@ prefix, root files, licenses) is the packaging
+-- backend's concern — see "Lithon.Codegen.Vulkan.Package".
 data GenOutput = GenOutput
-  { files :: Map FilePath Text
+  { modules :: [RenderedModule]
   , report :: GenReport
   }
   deriving stock (Eq, Generic, Show)
@@ -76,9 +76,8 @@ generate curated = do
       >>> TB.injectIA (\c -> planCommands c <??> GCmds)
       >>> TB.injectIA (\c -> renderCommands c <??> GCmds)
       >>> TB.injectIA (\c -> renderValueLayer c <??> GRender)
-  let rendered = getTyped @[RenderedModule] cxt
   pure
     GenOutput
-      { files = fromList [("src" </> Module.path m.meta, m.contents) | m <- rendered]
+      { modules = getTyped @[RenderedModule] cxt
       , report = genReport (getTyped @CommandPlans cxt)
       }

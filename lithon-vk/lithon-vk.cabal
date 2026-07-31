@@ -4,7 +4,7 @@ cabal-version: 2.2
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: "\144\&0Z\201\229`y\207\218\&4\136\177rL\222I\172i\SUBF\183\130B\STX\245x\154I\DC4B\196\138"
+-- hash: "_9U\NUL\240x8\150t\SUB\191\240\238\157'\213\SYN\177=\133\136e/|\178e\129\225\SO\n\208\220"
 
 name:           lithon-vk
 version:        0.1.0.0
@@ -21,6 +21,7 @@ author:         Jeremy Nuttall
 maintainer:     jeremy@jeremy-nuttall.com
 copyright:      (c) 2026 Jeremy Nuttall
 license:        BSD-3-Clause
+license-file:   LICENSE
 build-type:     Simple
 extra-doc-files:
     README.md

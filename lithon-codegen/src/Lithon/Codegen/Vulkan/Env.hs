@@ -23,18 +23,21 @@ import Lithon.Effect.Log
 import Lithon.Prelude
 import System.FilePath ((<.>), (</>))
 
-import Paths_lithon_codegen qualified
+import Lithon.Codegen.Backend.Env (DataDirError, targetDataDir)
 
 data VulkanResolutionError
-  = VkDataMissing FilePath
+  = VkDataDirError DataDirError
   | VkDocsMissing FilePath
   | VkXmlMissing FilePath
   deriving stock (Generic, Show)
   deriving anyclass (A.ToJSON, Exception)
 
+instance From DataDirError VulkanResolutionError where
+  from = VkDataDirError
+
 instance Display VulkanResolutionError where
   displayBuilder = \case
-    VkDataMissing path -> missing "Vulkan data directory" path
+    VkDataDirError err -> displayBuilder err
     VkDocsMissing path -> missing "Vulkan-Docs directory" path
     VkXmlMissing path -> missing "vk.xml file" path
    where
@@ -50,15 +53,13 @@ data VulkanDirs = VulkanDirs
 resolveVulkanDirs
   :: (IOE :> es, FileSystem :> es, Error VulkanResolutionError :> es, Log :> es) => Eff es VulkanDirs
 resolveVulkanDirs = do
-  dataDir <- liftIO Paths_lithon_codegen.getDataDir
+  vulkanDataDir <- runErrorFrom @DataDirError $ targetDataDir "vulkan"
 
-  logInfo $ "Loading vulkan docs" :# ["dataDir" .= dataDir]
+  logInfo $ "Loading vulkan docs" :# ["dataDir" .= vulkanDataDir]
 
-  let vulkanDataDir = dataDir </> "vulkan"
-      vulkanDocsDir = vulkanDataDir </> "Vulkan-Docs"
+  let vulkanDocsDir = vulkanDataDir </> "Vulkan-Docs"
       vulkanXmlFile = vulkanDocsDir </> "xml" </> "vk" <.> "xml"
 
-  assertDirectoryExists vulkanDataDir VkDataMissing
   assertDirectoryExists vulkanDocsDir VkDocsMissing
   assertFileExists vulkanXmlFile VkXmlMissing
 

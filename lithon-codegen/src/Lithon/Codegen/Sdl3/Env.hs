@@ -20,30 +20,31 @@ import Effectful.Dispatch.Dynamic
 import Effectful.Error.Dynamic
 import Effectful.Reader.Dynamic
 import Lithon.Effect.ClangEnv
+import Lithon.Effect.Error (runErrorFrom)
 import Lithon.Effect.FileSystem (
   FileSystem,
-  assertDirectoryExists,
   assertFileExists,
   doesFileExist,
-  makeAbsolute,
  )
 import Lithon.Effect.Log
 import Lithon.Effect.Temporary (SystemTempDir, Temporary, withSystemTempDirectory)
 import Lithon.Prelude
 import System.FilePath ((</>))
 
-import Paths_lithon_codegen qualified
+import Lithon.Codegen.Backend.Env (DataDirError, targetDataDir)
 
 data SdlResolutionError
   = Sdl3Missing PkgMetaDb
   | Sdl3IncludeDirUnset [PkgVarName]
   | Sdl3MissingVersion
   | VersionsRegistryMissing FilePath
-  | Sdl3StaticDirMissing FilePath
   | AliasesRegistryMissing FilePath
   | ConstantsRegistryMissing FilePath
-  | Sdl3SpecDirMissing FilePath
+  | SdlDataDirError DataDirError
   deriving stock (Generic, Show)
+
+instance From DataDirError SdlResolutionError where
+  from = SdlDataDirError
 
 instance Display SdlResolutionError where
   displayBuilder = \case
@@ -68,10 +69,9 @@ instance Display SdlResolutionError where
             |]
     Sdl3MissingVersion -> "Could not determine SDL3 version from pkg-config!"
     VersionsRegistryMissing path -> "Could not find SDL3 versions registry at: " <> from path
-    Sdl3StaticDirMissing path -> "Could not find SDL3 package statics at: " <> from path
     AliasesRegistryMissing path -> "Could not find SDL3 aliases registry at: " <> from path
     ConstantsRegistryMissing path -> "Could not find SDL3 constants registry at: " <> from path
-    Sdl3SpecDirMissing path -> "Could not find SDL3 spec directory at: " <> from path
+    SdlDataDirError err -> displayBuilder err
 
 -- | The resolved generation environment: where the SDL3 headers live and
 -- which SDL version they belong to.
@@ -90,7 +90,6 @@ data Sdl3Env = Sdl3Env
   , sdl3SpecDir :: FilePath
   , constantsRegistryPath :: FilePath
   , overridesRegistryPath :: Maybe FilePath
-  , sdl3StaticDir :: FilePath
   }
   deriving stock (Generic, Show)
   deriving anyclass (A.ToJSON)
@@ -116,19 +115,12 @@ runSdl3Gen
      )
   => Eff (Sdl3Gen : es) a -> Eff es a
 runSdl3Gen eff = withSystemTempDirectory "lithon-sdl3-gen-scratch" \scratchDirectory -> do
-  dataDir <- liftIO Paths_lithon_codegen.getDataDir
-
-  -- TODO: Some of these paths are universal for all intended bindings and should be
-  -- hoisted out into a binding/packaging backend.
-  sdl3SpecDir <- makeAbsolute $ dataDir </> "sdl3"
+  sdl3SpecDir <- runErrorFrom @DataDirError $ targetDataDir "sdl3"
   let versionsRegistryPath = sdl3SpecDir </> "versions.json"
-      sdl3StaticDir = sdl3SpecDir </> "static"
       aliasesRegistryPath = sdl3SpecDir </> "aliases.json"
       constantsRegistryPath = sdl3SpecDir </> "constants.json"
 
-  assertDirectoryExists sdl3SpecDir Sdl3SpecDirMissing
   assertFileExists versionsRegistryPath VersionsRegistryMissing
-  assertDirectoryExists sdl3StaticDir Sdl3StaticDirMissing
   assertFileExists aliasesRegistryPath AliasesRegistryMissing
   assertFileExists constantsRegistryPath ConstantsRegistryMissing
 

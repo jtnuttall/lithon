@@ -11,6 +11,7 @@ import Data.Text qualified as T
 import Data.Text.IO qualified as TIO
 import Effectful (runEff)
 import Effectful.Concurrent (runConcurrent)
+import Effectful.Console.ByteString (runConsole)
 import Effectful.FileSystem (runFileSystem)
 import Lithon.Effect.Error
 import Lithon.Effect.Log (runLog)
@@ -22,9 +23,11 @@ import Test.Tasty.HUnit (Assertion, assertBool, assertEqual, assertFailure)
 
 import Lithon.Codegen.Backend.Emit (
   EmitEffect (..),
+  EmitGuard (..),
   EmitStrategy (..),
   EmitTarget (..),
   FormatMode (..),
+  GuardCtx (..),
   Manifest (..),
   emitPackageWith,
   manifestFileName,
@@ -42,6 +45,7 @@ runEmit strategy t fs =
     . runErrorDisplay
     . runFileSystem
     . runConcurrent
+    . runConsole
     $ emitPackageWith SkipFormat strategy t fs
 
 target :: FilePath -> EmitTarget
@@ -50,7 +54,15 @@ target out =
     { outDir = out
     , manifestMeta = mempty
     , effect = WriteFiles
+    , guard = Bypass
     }
+
+-- | A guarded target: the wrong-working-directory guard with an explicit
+-- root and @--yes@ state. Tasty runs without a TTY, so the would-prompt
+-- paths deterministically refuse.
+guarded :: Maybe FilePath -> Bool -> FilePath -> EmitTarget
+guarded root yes out =
+  (target out){guard = Guarded GuardCtx{projectRoot = root, assumeYes = yes}}
 
 twoFiles :: Map FilePath Text
 twoFiles =
@@ -189,3 +201,65 @@ unit_unsafeFilesMapKeyRejected = withSystemTempDirectory "emit-test" \out -> do
   expectLeftContaining ["Unsafe output path", "../evil.hs"] r
   staged <- Dir.doesDirectoryExist (out </> ".lithon-staging")
   assertBool "no staging created" (not staged)
+
+-- | A fresh (nonexistent) out dir needs confirmation even inside the root;
+-- without a TTY that is a refusal naming the resolved path and the escape
+-- hatch. This is the historically observed footgun: a wrong-CWD run
+-- materializing a brand-new package inside the repo.
+unit_guardRefusesFreshDirNonInteractive :: Assertion
+unit_guardRefusesFreshDirNonInteractive = withSystemTempDirectory "emit-test" \root -> do
+  let out = root </> "pkg"
+  r <- runEmit ArtifactsOnly (guarded (Just root) False out) twoFiles
+  expectLeftContaining [T.pack out, "--yes", "does not exist yet"] r
+  created <- Dir.doesDirectoryExist out
+  assertBool "nothing written" (not created)
+
+-- | @--yes@ pre-answers the confirmation.
+unit_guardAssumeYesProceeds :: Assertion
+unit_guardAssumeYesProceeds = withSystemTempDirectory "emit-test" \root -> do
+  let out = root </> "pkg"
+  expectRight =<< runEmit ArtifactsOnly (guarded (Just root) True out) twoFiles
+  m <- readManifest out
+  assertEqual "package written" 2 (Map.size m.files)
+
+-- | The fast path: a manifest-carrying out dir inside the project root
+-- writes silently (success under no TTY proves no confirmation was needed).
+unit_guardSilentOverManifestInsideRoot :: Assertion
+unit_guardSilentOverManifestInsideRoot = withSystemTempDirectory "emit-test" \root -> do
+  let out = root </> "pkg"
+  expectRight =<< runEmit ArtifactsOnly (target out) twoFiles
+  expectRight =<< runEmit ArtifactsOnly (guarded (Just root) False out) twoFiles
+
+-- | A manifest is not enough: outside the resolved project root still
+-- needs confirmation.
+unit_guardOutsideRootRefused :: Assertion
+unit_guardOutsideRootRefused = withSystemTempDirectory "emit-test" \root ->
+  withSystemTempDirectory "emit-test-other" \otherRoot -> do
+    let out = root </> "pkg"
+    expectRight =<< runEmit ArtifactsOnly (target out) twoFiles
+    r <- runEmit ArtifactsOnly (guarded (Just otherRoot) False out) twoFiles
+    expectLeftContaining ["outside the enclosing project root"] r
+
+-- | Non-empty without a manifest is the strongest warning sign.
+unit_guardNonEmptyNoManifestRefused :: Assertion
+unit_guardNonEmptyNoManifestRefused = withSystemTempDirectory "emit-test" \root -> do
+  let out = root </> "pkg"
+  Dir.createDirectoryIfMissing True out
+  TIO.writeFile (out </> "stray.txt") "not ours\n"
+  r <- runEmit ArtifactsOnly (guarded (Just root) False out) twoFiles
+  expectLeftContaining ["non-empty", T.pack manifestFileName] r
+
+-- | No project root found: always confirm (refusal without a TTY).
+unit_guardNoRootRefused :: Assertion
+unit_guardNoRootRefused = withSystemTempDirectory "emit-test" \root -> do
+  let out = root </> "pkg"
+  r <- runEmit ArtifactsOnly (guarded Nothing False out) twoFiles
+  expectLeftContaining ["no cabal.project was found"] r
+
+-- | @--check@ never prompts: a wrong directory fails loudly through the
+-- freshness diff, not the guard.
+unit_checkOnlyNeverGuarded :: Assertion
+unit_checkOnlyNeverGuarded = withSystemTempDirectory "emit-test" \root -> do
+  let out = root </> "pkg"
+  r <- runEmit ArtifactsOnly (guarded (Just root) False out){effect = CheckOnly} twoFiles
+  expectLeftContaining ["missing from tree"] r

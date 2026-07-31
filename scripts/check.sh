@@ -24,6 +24,11 @@ cabal run lithon-codegen -- vulkan generate --profile "$PROFILE" --check
 echo "== generated tree freshness (sdl3: specs + sdl3-bindgen-sys) =="
 cabal run lithon-codegen -- sdl3 generate --check
 
+echo "== hpack parity (generated packages) =="
+hpack lithon-vk
+hpack sdl3-bindgen-sys
+git diff --exit-code -- lithon-vk/lithon-vk.cabal sdl3-bindgen-sys/sdl3-bindgen-sys.cabal
+
 echo "== rendered-doc regressions (sdl3-bindgen-sys) =="
 for pat in '@@' '[__@@__]' '__Returns:__' '__Thread safety:__' '__See:__' '__C declaration:__' '__defined at:__' '__exported by:__'; do
   if hits=$(grep -rF -l -- "$pat" sdl3-bindgen-sys/src); then

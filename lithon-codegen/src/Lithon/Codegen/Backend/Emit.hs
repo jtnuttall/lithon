@@ -15,6 +15,8 @@ module Lithon.Codegen.Backend.Emit (
   FormatMode (..),
   EmitEffect (..),
   emitEffectOptP,
+  EmitGuard (..),
+  GuardCtx (..),
   EmitTarget (..),
   Manifest (..),
   manifestFileName,
@@ -38,16 +40,19 @@ import Effectful.Concurrent.Async (
   forConcurrently,
   pooledMapConcurrently,
  )
+import Effectful.Console.ByteString (Console)
+import Effectful.Console.ByteString qualified as Console
 import Effectful.Error.Dynamic (Error, throwError, throwError_)
 import Effectful.Exception qualified as EEx
 import Effectful.FileSystem (
   FileSystem,
   canonicalizePath,
-  copyFile,
   createDirectoryIfMissing,
   doesDirectoryExist,
   doesFileExist,
   getCurrentDirectory,
+  listDirectory,
+  makeAbsolute,
   removeDirectoryRecursive,
   removeFile,
   renameFile,
@@ -71,6 +76,7 @@ import System.FilePath (
   takeFileName,
   (</>),
  )
+import System.IO (hFlush, hIsTerminalDevice)
 import System.Process.Typed qualified as P
 import Text.Regex.TDFA ((=~))
 
@@ -83,6 +89,7 @@ data EmitError
   | CommandFailed Text (P.ProcessConfig () () ()) ProcessFailureCode ProcessStdout ProcessStderr
   | ManifestDecodeError FilePath String
   | PackageYamlMissing FilePath
+  | OutDirRefused FilePath [Text]
   | HpackError Hpack.HpackError
   | HpackBadResult Hpack.Result
   | UnresolvableFilePath FilepathResolutionError
@@ -151,8 +158,23 @@ instance Display EmitError where
       let pathd = from path
        in from
             [trimmingQQ|
-              Wanted a package.yaml file at $pathd, but couldn't find one.
+              The assembled package tree has no package.yaml (expected to emit $pathd).
+              Every generated package's spec must stage its own package.yaml.
             |]
+    OutDirRefused path reasons ->
+      let pathd = from path
+          reasonsd = T.intercalate "\n  - " reasons
+       in from
+            [trimmingQQ|
+              Refusing to write a generated package to:
+
+                $pathd
+
+                - $reasonsd
+
+              Re-run from the repository root, pass --out with the intended
+              directory, or pass --yes to skip this check.
+            |]
     HpackError err ->
       let hpack = from $ Hpack.formatHpackError "lithon-codegen" err
        in from
@@ -184,6 +206,23 @@ emitEffectOptP = do
     Opt.switch (Opt.long "check" <> Opt.help "Diff fresh output against the tree; write nothing")
   pure $ if checkOnly then CheckOnly else WriteFiles
 
+-- | Whether the wrong-working-directory guard runs before a write.
+-- Production always passes 'Guarded'; 'Bypass' exists for tests staging
+-- into throwaway directories.
+data EmitGuard
+  = Guarded GuardCtx
+  | Bypass
+  deriving stock (Show)
+
+-- | What the guard knows: the enclosing project root (if one was found
+-- above the working directory) and whether the user pre-answered the
+-- confirmation (@--yes@).
+data GuardCtx = GuardCtx
+  { projectRoot :: Maybe FilePath
+  , assumeYes :: Bool
+  }
+  deriving stock (Show)
+
 -- | Where and how to emit a generated file set.
 data EmitTarget = EmitTarget
   { outDir :: FilePath
@@ -193,6 +232,8 @@ data EmitTarget = EmitTarget
   -- ^ Run the fourmolu batch over the staged files.
   , effect :: EmitEffect
   -- ^ Diff fresh output against the tree and write nothing (CI gate).
+  , guard :: EmitGuard
+  -- ^ The wrong-working-directory guard (see 'OutDirRefused').
   }
   deriving stock (Show)
 
@@ -235,6 +276,7 @@ emitPackage
      , Log :> es
      , Concurrent :> es
      , FileSystem :> es
+     , Console :> es
      , Error EmitError :> es
      )
   => EmitStrategy -> EmitTarget -> Map FilePath Text -> Eff es ()
@@ -248,27 +290,97 @@ emitPackageWith
      , Log :> es
      , Concurrent :> es
      , FileSystem :> es
+     , Console :> es
      , Error EmitError :> es
      )
   => FormatMode -> EmitStrategy -> EmitTarget -> Map FilePath Text -> Eff es ()
 emitPackageWith formatMode strategy target files = do
+  case target.effect of
+    CheckOnly -> pass
+    WriteFiles -> guardOutDir target
   -- TODO: hoist into an environment
   let staging = target.outDir </> ".lithon-staging"
   checkPaths "While preparing to emit package" (Map.keys files)
+  case strategy of
+    ArtifactsOnly -> pass
+    -- The assembled tree must carry its own package.yaml — hpack runs
+    -- against the staged tree only, never against the target directory.
+    HaskellPackage ->
+      unless (Map.member "package.yaml" files)
+        $ throwError (PackageYamlMissing (target.outDir </> "package.yaml"))
   cleanDirectory staging
   let emit = emitWith formatMode staging target files case strategy of
         ArtifactsOnly -> pure []
         HaskellPackage -> do
-          unless (Map.member "package.yaml" files) do
-            -- XXX: Is this ever used? Is it worth keeping?
-            let src = target.outDir </> "package.yaml"
-            exists <- doesFileExist src
-            unless exists $ throwError (PackageYamlMissing src)
-            copyFile src (staging </> "package.yaml")
-
           cabalFile <- emitCabalFile staging
           pure [(cabalFile, Nothing)]
   emit `EEx.finally` cleanDirectory staging
+
+-- | The wrong-working-directory guard: a write proceeds silently only when
+-- the resolved output directory already carries a manifest AND sits inside
+-- the project root. Anything else — fresh directory, no root found, outside
+-- the root, non-empty without a manifest — needs confirmation: interactive
+-- y\/N on a TTY, refusal otherwise, @--yes@ to pre-answer.
+guardOutDir
+  :: ( HasCallStack
+     , IOE :> es
+     , Log :> es
+     , FileSystem :> es
+     , Console :> es
+     , Error EmitError :> es
+     )
+  => EmitTarget -> Eff es ()
+guardOutDir target = case target.guard of
+  Bypass -> pass
+  Guarded ctx -> do
+    absOut <- makeAbsolute target.outDir
+    hasManifest <- doesFileExist (absOut </> manifestFileName)
+    let escapes rel = isAbsolute rel || ".." `elem` splitDirectories rel
+        insideRoot = maybe False (\root -> not (escapes (makeRelative root absOut))) ctx.projectRoot
+    unless (hasManifest && insideRoot) do
+      exists <- doesDirectoryExist absOut
+      contents <- if exists then listDirectory absOut else pure []
+      let rootReason = case ctx.projectRoot of
+            Nothing -> ["no cabal.project was found above the current working directory"]
+            Just root
+              | insideRoot -> []
+              | otherwise -> ["this directory is outside the enclosing project root (" <> T.pack root <> ")"]
+          stateReason
+            | not exists = ["the directory does not exist yet and will be created"]
+            | hasManifest = []
+            | null contents = ["the directory is empty and has no " <> T.pack manifestFileName]
+            | otherwise = ["the directory exists, is non-empty, and has no " <> T.pack manifestFileName]
+          reasons = rootReason <> stateReason
+      if ctx.assumeYes then
+        logWarn $ "output-directory confirmation skipped (--yes)" :# ["outDir" .= absOut, "reasons" .= reasons]
+      else do
+        interactive <- liftIO $ hIsTerminalDevice stdin
+        unless interactive $ throwError (OutDirRefused absOut reasons)
+        confirmed <- promptOutDir absOut reasons
+        unless confirmed $ throwError (OutDirRefused absOut reasons)
+
+promptOutDir :: (IOE :> es, Console :> es) => FilePath -> [Text] -> Eff es Bool
+promptOutDir absOut reasons = do
+  let pathd = T.pack absOut
+      reasonsd = T.intercalate "\n  - " reasons
+  Console.putStr
+    . encodeUtf8
+    $ [trimmingQQ|
+        lithon-codegen is about to write a generated package to:
+
+          $pathd
+
+          - $reasonsd
+
+        Regeneration overwrites and deletes files under this directory.
+        An unexpected path here usually means the wrong working directory.
+
+        Proceed? [y/N]
+      |]
+    <> " "
+  liftIO $ hFlush stdout
+  answer <- Console.getLine
+  pure $ T.toLower (T.strip (decodeUtf8 answer)) `elem` ["y", "yes"]
 
 data Formatter
   = Fourmolu

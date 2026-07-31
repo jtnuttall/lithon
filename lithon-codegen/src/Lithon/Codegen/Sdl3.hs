@@ -29,6 +29,7 @@ import Data.Map.Strict qualified as Map
 import Data.Text.IO qualified as TIO
 import Effectful (Eff, IOE, (:>))
 import Effectful.Concurrent.Async (Concurrent)
+import Effectful.Console.ByteString (Console)
 import Effectful.Environment
 import Effectful.FileSystem.IO.ByteString qualified as EBS
 import Lithon.Effect.ClangEnv (ClangEnv)
@@ -43,12 +44,21 @@ import System.FilePath ((</>))
 import Lithon.Codegen.Backend.Emit (
   EmitEffect (..),
   EmitError,
+  EmitGuard (..),
   EmitStrategy (..),
   EmitTarget (..),
+  GuardCtx,
   emitEffectOptP,
   emitPackage,
  )
-import Lithon.Codegen.Backend.FileTree (pattern FileTree)
+import Lithon.Codegen.Backend.Package.Emit (
+  PackageOut (..),
+  ProjectRoot,
+  assumeYesP,
+  emitHaskellPackage,
+  guardCtx,
+  packageOutP,
+ )
 import Lithon.Codegen.Sdl3.Abi (AbiMacroConst (..))
 import Lithon.Codegen.Sdl3.Alias (
   AliasModule (..),
@@ -96,7 +106,7 @@ import Lithon.Codegen.Sdl3.Env (
   getSdl3Env,
   runSdl3Gen,
  )
-import Lithon.Codegen.Sdl3.Package (PackageAssemblyError, assemblePackage)
+import Lithon.Codegen.Sdl3.Package (Sdl3PackagingError, assembleSdl3Package)
 import Lithon.Codegen.Sdl3.Versions (
   Versioned (..),
   VersionsRegistry (..),
@@ -117,7 +127,7 @@ data Sdl3Error
   | ToolCallFailed Text (ProcessConfig () () ()) ProcessFailureCode ProcessStdout ProcessStderr
   | BindgenError BindgenError
   | EmitError EmitError
-  | PackagingError PackageAssemblyError
+  | PackagingError Sdl3PackagingError
   deriving stock (Show)
 
 instance From (Errors AliasError) Sdl3Error where
@@ -187,31 +197,24 @@ sdl3CmdP =
           )
     )
 
-newtype SpecOpts = SpecOpts
+data SpecOpts = SpecOpts
   { emitEffect :: EmitEffect
+  , assumeYes :: Bool
   }
 
 specOptsP :: Parser SpecOpts
 specOptsP = do
   emitEffect <- emitEffectOptP
+  assumeYes <- assumeYesP
   pure SpecOpts{..}
 
-data GenerateOpts = GenerateOpts
-  { outDir :: FilePath
-  , emitEffect :: EmitEffect
+newtype GenerateOpts = GenerateOpts
+  { out :: PackageOut
   }
 
 generateOptsP :: Parser GenerateOpts
 generateOptsP = do
-  outDir <-
-    strOption
-      ( long "out"
-          <> metavar "DIR"
-          <> value "sdl3-bindgen-sys"
-          <> showDefault
-          <> help "Target package directory"
-      )
-  emitEffect <- emitEffectOptP
+  out <- packageOutP "sdl3-bindgen-sys"
   pure GenerateOpts{..}
 
 runSdl3
@@ -223,33 +226,27 @@ runSdl3
      , Error Sdl3Error :> es
      , ClangEnv :> es
      , FileSystem :> es
+     , Console :> es
      )
-  => Sdl3Cmd -> Eff es ()
-runSdl3 cmd = runErrorFrom @SdlResolutionError $ runSdl3Gen case cmd of
+  => Maybe ProjectRoot -> Sdl3Cmd -> Eff es ()
+runSdl3 root cmd = runErrorFrom @SdlResolutionError $ runSdl3Gen case cmd of
   CmdSpec opts -> do
     registry <- loadVersionsRegistry
     results <- runChain registry
-    syncSpecs opts.emitEffect results
+    syncSpecs (guardCtx root opts.assumeYes) opts.emitEffect results
   CmdGenerate opts -> do
     registry <- loadVersionsRegistry
     results <- runChain registry
     -- Specs and package come from the same chain run, so they can never
     -- skew; both emits respect --check.
-    syncSpecs opts.emitEffect results
+    syncSpecs (guardCtx root opts.out.assumeYes) opts.out.emitEffect results
     (aliasFiles, macroConsts, aliasMeta) <-
       planAliases registry results
-    FileTree packageFiles <-
-      liftEither . first PackagingError $ assemblePackage aliasFiles macroConsts results
+    tree <-
+      liftEither . first PackagingError $ assembleSdl3Package aliasFiles macroConsts results
     manifestMeta <- chainMeta results
     runErrorFrom @EmitError @Sdl3Error
-      $ emitPackage
-        HaskellPackage
-        EmitTarget
-          { outDir = opts.outDir
-          , manifestMeta = manifestMeta <> aliasMeta
-          , effect = opts.emitEffect
-          }
-        packageFiles
+      $ emitHaskellPackage root opts.out (manifestMeta <> aliasMeta) tree
 
 -- | Load, validate, plan, and render the curated @SDL3.Sys.*@ layer.
 --
@@ -439,9 +436,10 @@ syncSpecs
      , Concurrent :> es
      , Error Sdl3Error :> es
      , FileSystem :> es
+     , Console :> es
      )
-  => EmitEffect -> [HeaderResult] -> Eff es ()
-syncSpecs effect results = do
+  => GuardCtx -> EmitEffect -> [HeaderResult] -> Eff es ()
+syncSpecs ctx effect results = do
   env <- getSdl3Env
   SystemTempDir scratch <- getScratchDirectory
   specMap <-
@@ -454,6 +452,7 @@ syncSpecs effect results = do
       ArtifactsOnly
       EmitTarget
         { outDir = env.sdl3SpecDir
+        , guard = Guarded ctx
         , ..
         }
       specMap

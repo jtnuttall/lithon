@@ -25,6 +25,9 @@ extra-source-files:
     data/sdl3/constants.json
     data/sdl3/versions.json
     data/sdl3/overrides.yaml
+    data/vulkan/static/CHANGELOG.md
+    data/vulkan/static/package.yaml
+    data/vulkan/static/README.md
 extra-doc-files:
     README.md
     CHANGELOG.md
@@ -37,6 +40,7 @@ source-repository head
 library
   exposed-modules:
       Lithon.Codegen.Backend.Emit
+      Lithon.Codegen.Backend.Env
       Lithon.Codegen.Backend.FileTree
       Lithon.Codegen.Backend.Hs
       Lithon.Codegen.Backend.Hs.Module
@@ -73,6 +77,7 @@ library
       Lithon.Codegen.Vulkan.Generate.Names
       Lithon.Codegen.Vulkan.Generate.Render
       Lithon.Codegen.Vulkan.Names
+      Lithon.Codegen.Vulkan.Package
       Lithon.Codegen.Vulkan.Registry
       Lithon.Codegen.Vulkan.Registry.IgnoreList
       Lithon.Codegen.Vulkan.Registry.Micro.BoolExpr
@@ -331,6 +336,7 @@ test-suite lithon-codegen-test
   main-is: Driver.hs
   other-modules:
       Backend.EmitTest
+      Backend.PackageTest
       Sdl3.AbiRenderTest
       Sdl3.AdapterSmokeTest
       Sdl3.AliasConfigTest

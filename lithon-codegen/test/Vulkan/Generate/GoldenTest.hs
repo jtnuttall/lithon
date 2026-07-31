@@ -25,11 +25,13 @@ import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Golden (goldenVsStringDiff)
 
 import Lithon.Codegen.Backend.Json (canonicalJsonBytes)
+import Lithon.Codegen.Backend.Package.Assemble (srcFilePairs)
 import Lithon.Codegen.Vulkan.Curate (Curated (..))
 import Lithon.Codegen.Vulkan.Generate (GenOutput (..), generate)
 import Lithon.Codegen.Vulkan.Generate.Lower (lowerStructs)
 import Lithon.Codegen.Vulkan.Generate.Modules (assignModules)
 import Lithon.Codegen.Vulkan.Generate.Names (buildNames)
+import Lithon.Codegen.Vulkan.Generate.Render (RenderedModule (..))
 import Vulkan.Support.Resolve (pinnedCurated)
 
 -- | Emitted modules pinned as full-text goldens (pre-format), chosen for
@@ -88,8 +90,12 @@ test_generateGoldens =
     Success lowered -> case assignModules (pinnedCurated.registry, names, lowered) of
       Success mm -> mm
       Failure errs -> error ("modules failed: " <> display errs)
+  -- The same path derivation package assembly uses, so slice keys and the
+  -- dump digest stay pinned to the emitted layout.
+  files =
+    Map.fromList (srcFilePairs "src" [(m.meta, m.contents) | m <- pinnedGenerated.modules])
   digests =
-    Map.map (show @Text . rapidhash) pinnedGenerated.files
+    Map.map (show @Text . rapidhash) files
   digestLine bytes = show @LByteString (rapidhash (LBS.toStrict bytes)) <> "\n"
   golden name path bytes = goldenVsStringDiff name diffCmd path (pure bytes)
   diffCmd ref new = ["diff", "-u", ref, new]
@@ -97,7 +103,7 @@ test_generateGoldens =
     golden
       ("generated slice: " <> rel)
       ("test/golden/generate/" <> map slash rel <> ".golden")
-      case Map.lookup rel pinnedGenerated.files of
+      case Map.lookup rel files of
         Just contents -> LBS.fromStrict (TE.encodeUtf8 contents)
         Nothing -> error ("generated golden slice not found: " <> toText rel)
   slash c = if c == '/' then '-' else c

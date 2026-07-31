@@ -27,6 +27,7 @@ import Lithon.Effect.Temporary (runTemporary)
 import Lithon.Prelude
 import Options.Applicative hiding (ParseError, asum)
 
+import Lithon.Codegen.Backend.Package.Emit (findProjectRoot)
 import Lithon.Codegen.Sdl3 (Sdl3Cmd, runSdl3, sdl3CmdP)
 import Lithon.Codegen.Vulkan (VulkanCmd, runVulkan, vulkanCmdP)
 
@@ -51,15 +52,17 @@ main = do
       . runPrettyPrintH defaultLayoutOptions stdout
       . runClock
       . runResource
-      $ case opts.cmd of
-        CmdVulkan cmd ->
-          runErrorDisplay
-            $ runVulkan cmd
-        CmdSdl3 cmd ->
-          runErrorDisplay
-            . runClangEnv
-            . runErrorDisplay
-            $ runSdl3 cmd
+      $ do
+        root <- findProjectRoot
+        case opts.cmd of
+          CmdVulkan cmd ->
+            runErrorDisplay
+              $ runVulkan root cmd
+          CmdSdl3 cmd ->
+            runErrorDisplay
+              . runClangEnv
+              . runErrorDisplay
+              $ runSdl3 root cmd
 
     case res of
       Right () -> pure ()
