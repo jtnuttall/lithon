@@ -45,8 +45,8 @@ newtype ContentKey = ContentKey ByteString
 
 ## Status
 
-First release, but I consider the API stable. Used for change detection in
-[lithon](https://github.com/jtnuttall/lithon).
+Package is still fresh, but I consider the API stable. Used for change detection
+in [lithon](https://github.com/jtnuttall/lithon).
 
 This project follows the PVP. For stability, pin to the major (e.g., `^>= 0.1`).
 
