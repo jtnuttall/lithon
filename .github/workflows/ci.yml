@@ -15,7 +15,7 @@ env:
   SDL_VERSION: "3.4.12"
 
 jobs:
-  consumer:
+  consumer-sdl3-bindgen-sys:
     if: github.repository == 'jtnuttall/lithon'
     runs-on: ${{ matrix.os }}
     strategy:
@@ -58,7 +58,7 @@ jobs:
           msystem: UCRT64
           install: mingw-w64-ucrt-x86_64-sdl3 mingw-w64-ucrt-x86_64-pkgconf
 
-      - uses: haskell-actions/setup@v2
+      - uses: ./.github/actions/setup-haskell
         with:
           ghc-version: ${{ matrix.ghc }}
           cabal-version: "3.12"
@@ -67,7 +67,6 @@ jobs:
       - name: Build and haddock from sdist
         shell: bash
         run: |
-          # 1. OS-Specific Paths
           if [ "$RUNNER_OS" = "Windows" ]; then
             export PKG_CONFIG_PATH="/c/msys64/ucrt64/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
             export PATH="/c/msys64/ucrt64/bin:$PATH"
@@ -77,14 +76,12 @@ jobs:
 
           pkg-config --modversion sdl3
 
-          # 2. Extract sdist
           mkdir -p "$RUNNER_TEMP/sdist"
           (cd sdl3-bindgen-sys && cabal sdist --ignore-project -o "$RUNNER_TEMP/sdist")
           cd "$RUNNER_TEMP/sdist"
           tar -xzf sdl3-bindgen-sys-*.tar.gz
           cd sdl3-bindgen-sys-*/
 
-          # 3. Build & Test
           cabal update
           cabal build
 
@@ -109,7 +106,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: haskell-actions/setup@v2
+      - uses: ./.github/actions/setup-haskell
         with:
           ghc-version: ${{ matrix.ghc }}
           cabal-version: "3.12"
@@ -156,7 +153,7 @@ jobs:
         with:
           sdl-version: ${{ matrix.sdl }}
 
-      - uses: haskell-actions/setup@v2
+      - uses: ./.github/actions/setup-haskell
         with:
           ghc-version: "9.12.4"
           cabal-version: "3.12"
