@@ -201,6 +201,11 @@ jobs:
       - name: Fetch submodules
         run: git submodule update --init --recursive --filter=tree:0
       - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          extra-conf: |
+            accept-flake-config = true
       - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Hackage index
+        run: nix develop '.?submodules=1#ci' --command cabal update
       - name: check.sh
-        run: nix develop '.?submodules=1' --command ./scripts/check.sh
+        run: nix develop '.?submodules=1#ci' --command ./scripts/check.sh

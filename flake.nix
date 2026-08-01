@@ -183,8 +183,6 @@
                 dasel
                 xmlstarlet
                 ripgrep
-                dprint
-                copybara
               ];
 
               shellHook = ''
@@ -203,13 +201,30 @@
       in
         flake
         // {
-          packages.default = flake.packages."lithon-codegen:exe:lithon-codegen";
-          packages.tests = flake.packages."lithon-codegen:test:lithon-codegen-test";
-          # Hackage-format haddock bundles (correctly cross-linked; see the
-          # setupHaddockFlags above). Build with `nix build .#rapidhash-docs`,
-          # then tar the html at its doc root and `cabal upload -d`.
-          packages."rapidhash-docs" = project.hsPkgs.rapidhash.components.library.doc;
-          packages."sdl3-bindgen-sys-docs" = project.hsPkgs.sdl3-bindgen-sys.components.library.doc;
+          packages = {
+            default = flake.packages."lithon-codegen:exe:lithon-codegen";
+            tests = flake.packages."lithon-codegen:test:lithon-codegen-test";
+            "rapidhash-docs" = project.hsPkgs.rapidhash.components.library.doc;
+            "sdl3-bindgen-sys-docs" = project.hsPkgs.sdl3-bindgen-sys.components.library.doc;
+          };
+
+          devShells =
+            flake.devShells
+            // {
+              ci = project.shellFor {
+                withHoogle = pkgs.lib.mkForce false;
+                tools = pkgs.lib.mkForce {
+                  cabal = "latest";
+                  hpack = "latest";
+                  fourmolu = "latest";
+                };
+
+                buildInputs = with pkgs; [
+                  mesa # lavapipe ICD for offscreen triangle
+                  dprint
+                ];
+              };
+            };
         }
     );
 
