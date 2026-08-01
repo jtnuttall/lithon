@@ -1,20 +1,20 @@
-name: 'Setup Haskell and Cache'
-description: 'Configures GHC/Cabal and caches the Cabal store and local dist folder'
+name: "Setup Haskell and Cache"
+description: "Configures GHC/Cabal and caches the Cabal store and local dist folder"
 
 inputs:
   ghc-version:
-    description: 'The GHC version to install'
+    description: "The GHC version to install"
     required: true
   cabal-version:
-    description: 'The Cabal version to install'
+    description: "The Cabal version to install"
     required: true
   cabal-update:
-    description: 'If set to false, skip cabal update step.'
+    description: "If set to false, skip cabal update step."
     required: false
     default: false
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Setup Haskell
       id: setup-haskell
