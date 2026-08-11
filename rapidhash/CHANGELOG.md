@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- `rapidhashMicro` is now bound
+
 ### Changed
 
 - Small README reword

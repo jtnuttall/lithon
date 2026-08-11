@@ -16,10 +16,13 @@
 -- All foreign calls in this module are @unsafe@, so they will briefly pause the capability and
 -- garbage collector.
 module Data.Hash.RapidHash.FFI (
+  -- * Shared aliases
   COffset,
   CSeed,
 
-  -- * Monomorphic wrappers around FFI
+  -- * rapidhash
+
+  -- ** Monomorphic wrappers around FFI
   rapidhashWithSeed_Text,
   rapidhashWithSeed_ShortByteString,
   rapidhashWithSeed_ByteString,
@@ -27,17 +30,39 @@ module Data.Hash.RapidHash.FFI (
   rapidhashWithSeed_PrimitiveVector,
   rapidhashWithSeed_StorableVector,
 
-  -- * Bare 'unsafeDupablePerformIO' wrappers around FFI
+  -- ** Bare 'unsafeDupablePerformIO' wrappers around FFI
   rapidhashWithSeed_ByteArray,
 
-  -- ** Unlifted
+  -- *** Unlifted
   rapidhashOffsetWithSeed_ByteArray#,
   rapidhashWithSeed_ByteArray#,
 
-  -- ** Raw FFI
+  -- *** Raw FFI
   rapidhashOffsetWithSeedFFI_ByteArray#,
   rapidhashWithSeedFFI_ByteArray#,
   rapidhashWithSeedFFI_Ptr,
+
+  -- * rapidhashMicro
+
+  -- ** Monomorphic wrappers around FFI
+  rapidhashMicroWithSeed_Text,
+  rapidhashMicroWithSeed_ShortByteString,
+  rapidhashMicroWithSeed_ByteString,
+  rapidhashMicroWithSeed_PrimArray,
+  rapidhashMicroWithSeed_PrimitiveVector,
+  rapidhashMicroWithSeed_StorableVector,
+
+  -- ** Bare 'unsafeDupablePerformIO' wrappers around FFI
+  rapidhashMicroWithSeed_ByteArray,
+
+  -- *** Unlifted
+  rapidhashMicroOffsetWithSeed_ByteArray#,
+  rapidhashMicroWithSeed_ByteArray#,
+
+  -- *** Raw FFI
+  rapidhashMicroOffsetWithSeedFFI_ByteArray#,
+  rapidhashMicroWithSeedFFI_ByteArray#,
+  rapidhashMicroWithSeedFFI_Ptr,
 ) where
 
 import Data.Array.Byte (ByteArray (ByteArray))
@@ -126,7 +151,7 @@ rapidhashWithSeed_ByteArray seed (ByteArray ba#) = rapidhashWithSeed_ByteArray# 
 -- 'ByteArray#', which lets us do a zero-copy hash.
 rapidhashWithSeed_Text :: CSeed -> TI.Text -> Word64
 rapidhashWithSeed_Text seed (TI.Text (ByteArray ba#) off len) =
-  rapidhashOffsetWithSeed_ByteArray# seed ba# (CSize (fromIntegral off)) (CSize (fromIntegral len))
+  rapidhashOffsetWithSeed_ByteArray# seed ba# (int2CSize off) (int2CSize len)
 {-# INLINE rapidhashWithSeed_Text #-}
 
 ----------------------------------------------------------------------------------------------------
@@ -144,7 +169,7 @@ rapidhashWithSeed_ShortByteString seed (SBS.ShortByteString ba) = rapidhashWithS
 rapidhashWithSeed_ByteString :: CSeed -> BS.ByteString -> Word64
 rapidhashWithSeed_ByteString seed bs = unsafeDupablePerformIO $
   BSUnsafe.unsafeUseAsCStringLen bs \(cstr, len) ->
-    rapidhashWithSeedFFI_Ptr (castPtr cstr) (CSize (fromIntegral len)) seed
+    rapidhashWithSeedFFI_Ptr (castPtr cstr) (int2CSize len) seed
 {-# INLINE rapidhashWithSeed_ByteString #-}
 
 ----------------------------------------------------------------------------------------------------
@@ -173,9 +198,130 @@ rapidhashWithSeed_StorableVector
   :: forall a. (Storable a) => CSeed -> StorableVector.Vector a -> Word64
 rapidhashWithSeed_StorableVector seed v = unsafeDupablePerformIO $
   StorableVector.unsafeWith v \ptr ->
-    let len = CSize $ fromIntegral (StorableVector.length v * sizeOf @a (error "sizeOf evaluated"))
+    let len = int2CSize $ StorableVector.length v * sizeOf @a (error "sizeOf evaluated")
      in rapidhashWithSeedFFI_Ptr (castPtr ptr) len seed
 {-# INLINE rapidhashWithSeed_StorableVector #-}
+
+----------------------------------------------------------------------------------------------------
+-- rapidhashMicro
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+-- FFI
+----------------------------------------------------------------------------------------------------
+
+foreign import capi unsafe "rapidhash_ext.h rapidhashMicro_offset_withSeed"
+  rapidhashMicroOffsetWithSeedFFI_ByteArray#
+    :: ByteArray#
+    -- ^ The buffer
+    -> COffset
+    -- ^ Offset into buffer, in bytes
+    -> CSize
+    -- ^ Length of buffer after offset, in bytes
+    -> CSeed
+    -> IO Word64
+
+-- |
+-- Binding to @rapidhash_ext.h rapidhashMicro_offset_withSeed@.
+--
+-- This is a small custom shim local to this library, which allows zero-copy hashing of
+-- anything wrapping a 'ByteArray#' with an offset, by offloading the offset math to C.
+rapidhashMicroOffsetWithSeed_ByteArray# :: CSeed -> ByteArray# -> COffset -> CSize -> Word64
+rapidhashMicroOffsetWithSeed_ByteArray# seed ba# off len =
+  unsafeDupablePerformIO $
+    rapidhashMicroOffsetWithSeedFFI_ByteArray# ba# off len seed
+{-# INLINE rapidhashMicroOffsetWithSeed_ByteArray# #-}
+
+foreign import capi unsafe "rapidhash.h rapidhashMicro_withSeed"
+  rapidhashMicroWithSeedFFI_ByteArray# :: ByteArray# -> CSize -> CSeed -> IO Word64
+
+-- |
+-- Direct binding to @rapidhash.h rapidhashMicro_withSeed@, for anything wrapping a 'ByteArray#'
+-- without an offset.
+rapidhashMicroWithSeed_ByteArray# :: CSeed -> ByteArray# -> Word64
+rapidhashMicroWithSeed_ByteArray# seed arr =
+  unsafeDupablePerformIO $
+    rapidhashMicroWithSeedFFI_ByteArray# arr (csizeofByteArray# arr) seed
+{-# INLINE rapidhashMicroWithSeed_ByteArray# #-}
+
+foreign import capi unsafe "rapidhash.h rapidhashMicro_withSeed"
+  rapidhashMicroWithSeedFFI_Ptr :: Ptr Void -> CSize -> CSeed -> IO Word64
+
+----------------------------------------------------------------------------------------------------
+-- Data.Array.Byte
+----------------------------------------------------------------------------------------------------
+
+-- |
+-- Lifted 'rapidhashMicroWithSeed_ByteArray#' for 'ByteArray'.
+rapidhashMicroWithSeed_ByteArray :: CSeed -> ByteArray -> Word64
+rapidhashMicroWithSeed_ByteArray seed (ByteArray ba#) = rapidhashMicroWithSeed_ByteArray# seed ba#
+{-# INLINE rapidhashMicroWithSeed_ByteArray #-}
+
+----------------------------------------------------------------------------------------------------
+-- Data.Text
+----------------------------------------------------------------------------------------------------
+
+-- |
+-- Lifted 'rapidhashMicroOffsetWithSeed_ByteArray#' for 'T.Text'.
+--
+-- This function reaches into 'T.Text'\'s internals to grab the offset and length into the underlying
+-- 'ByteArray#', which lets us do a zero-copy hash.
+rapidhashMicroWithSeed_Text :: CSeed -> TI.Text -> Word64
+rapidhashMicroWithSeed_Text seed (TI.Text (ByteArray ba#) off len) =
+  rapidhashMicroOffsetWithSeed_ByteArray#
+    seed
+    ba#
+    (int2CSize off)
+    (int2CSize len)
+{-# INLINE rapidhashMicroWithSeed_Text #-}
+
+----------------------------------------------------------------------------------------------------
+-- Data.ByteString
+----------------------------------------------------------------------------------------------------
+
+-- |
+-- Applied 'rapidhashMicroWithSeed_ByteArray' for 'SBS.ShortByteString'.
+rapidhashMicroWithSeed_ShortByteString :: CSeed -> SBS.ShortByteString -> Word64
+rapidhashMicroWithSeed_ShortByteString seed (SBS.ShortByteString ba) = rapidhashMicroWithSeed_ByteArray seed ba
+{-# INLINE rapidhashMicroWithSeed_ShortByteString #-}
+
+-- |
+-- Applied 'rapidhashMicroWithSeedFFI_Ptr' for 'BS.ByteString'
+rapidhashMicroWithSeed_ByteString :: CSeed -> BS.ByteString -> Word64
+rapidhashMicroWithSeed_ByteString seed bs = unsafeDupablePerformIO $
+  BSUnsafe.unsafeUseAsCStringLen bs \(cstr, len) ->
+    rapidhashMicroWithSeedFFI_Ptr (castPtr cstr) (int2CSize len) seed
+{-# INLINE rapidhashMicroWithSeed_ByteString #-}
+
+----------------------------------------------------------------------------------------------------
+-- Data.Primitive
+----------------------------------------------------------------------------------------------------
+
+rapidhashMicroWithSeed_PrimArray :: CSeed -> PrimArray a -> Word64
+rapidhashMicroWithSeed_PrimArray seed (PrimArray ba#) = rapidhashMicroWithSeed_ByteArray# seed ba#
+{-# INLINE rapidhashMicroWithSeed_PrimArray #-}
+
+----------------------------------------------------------------------------------------------------
+-- Data.Vector
+----------------------------------------------------------------------------------------------------
+
+rapidhashMicroWithSeed_PrimitiveVector
+  :: forall a. (Prim a) => CSeed -> PrimitiveVector.Vector a -> Word64
+rapidhashMicroWithSeed_PrimitiveVector seed (PrimitiveVector.Vector off len (ByteArray ba#)) =
+  rapidhashMicroOffsetWithSeed_ByteArray#
+    seed
+    ba#
+    (int2CSize (sizeOfType @a * off))
+    (int2CSize (sizeOfType @a * len))
+{-# INLINE rapidhashMicroWithSeed_PrimitiveVector #-}
+
+rapidhashMicroWithSeed_StorableVector
+  :: forall a. (Storable a) => CSeed -> StorableVector.Vector a -> Word64
+rapidhashMicroWithSeed_StorableVector seed v = unsafeDupablePerformIO $
+  StorableVector.unsafeWith v \ptr ->
+    let len = int2CSize $ StorableVector.length v * sizeOf @a (error "sizeOf evaluated")
+     in rapidhashMicroWithSeedFFI_Ptr (castPtr ptr) len seed
+{-# INLINE rapidhashMicroWithSeed_StorableVector #-}
 
 ----------------------------------------------------------------------------------------------------
 -- Utilities

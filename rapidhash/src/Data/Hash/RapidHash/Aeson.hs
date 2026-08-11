@@ -1,8 +1,9 @@
 {-# LANGUAGE CPP #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
--- | Orphan aeson instances for 'Data.Hash.RapidHash.Types.RapidHash', encoding
--- to and from the tagged hex form (e.g. @"rhv3:0123456789abcdef"@).
+-- | Orphan aeson instances for 'Data.Hash.RapidHash.Types.RapidHash' and
+-- 'Data.Hash.RapidHash.Types.RapidHashMicro', encoding to and from the tagged
+-- hex form (e.g. @"rhv3:0123456789abcdef"@, @"rhmv3:0123456789abcdef"@).
 --
 -- Opt-in with the @aeson@ flag; without it this module is empty and the
 -- instances do not exist.
@@ -32,5 +33,25 @@ instance A.ToJSONKey RapidHash where
 
 instance A.FromJSONKey RapidHash where
   fromJSONKey = A.FromJSONKeyTextParser \t -> either fail pure (parseRapidHashText t)
+  {-# INLINEABLE fromJSONKey #-}
+
+instance A.ToJSON RapidHashMicro where
+  toJSON = A.String . showRapidHashMicroText
+  {-# INLINEABLE toJSON #-}
+
+instance A.FromJSON RapidHashMicro where
+  parseJSON = A.withText "rapidhashMicrov3" \t -> case parseRapidHashMicroText t of
+    Right h -> pure h
+    Left err -> fail err
+  {-# INLINEABLE parseJSON #-}
+
+-- | Keys use the same tagged hex form as the value instances, so a map
+-- keyed by @RapidHashMicro@ serializes to a JSON object with @rhmv3:@-prefixed keys.
+instance A.ToJSONKey RapidHashMicro where
+  toJSONKey = A.toJSONKeyText showRapidHashMicroText
+  {-# INLINEABLE toJSONKey #-}
+
+instance A.FromJSONKey RapidHashMicro where
+  fromJSONKey = A.FromJSONKeyTextParser \t -> either fail pure (parseRapidHashMicroText t)
   {-# INLINEABLE fromJSONKey #-}
 #endif

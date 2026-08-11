@@ -38,40 +38,62 @@ module Data.Hash.RapidHash (
 
   -- * Hashes
 
+  -- ** rapidhash
+
   --
 
-  -- | 'RapidHash' is a newtype that provides some affordances for ergonomic, efficient use.
+  -- |
+  -- The general-purpose rapidhash algorithm.
+  --
+  -- 'RapidHash' is a newtype that provides some affordances for ergonomic, efficient use.
   RapidHash (..),
 
-  -- * Serialization
+  -- *** Serialization
   rapidHashTextBuilder,
   showRapidHashText,
   showRapidHashBS,
 
-  -- * Parsing
+  -- *** Parsing
   parseRapidHashText,
   parseRapidHashBS,
 
-  -- * File hashing
+  -- *** File hashing
 
   --
 
   -- |
   -- These are simply useful helpers for hashing a file, assuming you don't need
-  -- to do anything else with the contents. They use strict 'Data.ByteString.ByteString'
-  -- under the hood, so beware very large files: besides residency, the hash
-  -- itself is a single @unsafe@ FFI call, which blocks garbage collection
-  -- across all capabilities for its duration (rapidhash processes tens of
-  -- GB/s, so this matters only for very large inputs).
+  -- to do anything else with the contents. Beware large files. These helpers
+  -- use strict 'Data.ByteString.ByteString' and will pause the capability.
   rapidhashFileWithSeed,
   rapidhashFile,
 
-  -- * DerivingVia
+  -- *** DerivingVia
+  HashViaRapidHash (..),
+
+  -- ** rapidhashMicro
 
   --
 
-  -- | Helpers for deriving 'Data.Hashable.Hashable' and other useful classes.
-  HashViaRapidHash (..),
+  -- |
+  -- A specialized variant of rapidhash, for known-small keys (80 bytes or fewer).
+  --
+  -- Given the size constraints, no file helpers are exported to reduce risk of accidental
+  -- misuse.
+  rapidhashMicro,
+  RapidHashMicro (..),
+
+  -- *** Serialization
+  rapidhashMicroTextBuilder,
+  showRapidHashMicroBS,
+  showRapidHashMicroText,
+
+  -- *** Parsing
+  parseRapidHashMicroText,
+  parseRapidHashMicroBS,
+
+  -- *** DerivingVia
+  HashViaRapidHashMicro (..),
 
   -- * Re-exports
   Prim,
@@ -84,18 +106,26 @@ import Prelude ()
 
 import Data.Hash.RapidHash.Class (
   HashViaRapidHash (..),
+  HashViaRapidHashMicro (..),
   RapidHashable (..),
   rapidhash,
   rapidhashFile,
   rapidhashFileWithSeed,
+  rapidhashMicro,
  )
 import Data.Hash.RapidHash.Types (
   RapidHash (..),
+  RapidHashMicro (..),
   RapidSeed (..),
   parseRapidHashBS,
+  parseRapidHashMicroBS,
+  parseRapidHashMicroText,
   parseRapidHashText,
   rapidHashTextBuilder,
+  rapidhashMicroTextBuilder,
   showRapidHashBS,
+  showRapidHashMicroBS,
+  showRapidHashMicroText,
   showRapidHashText,
  )
 
