@@ -9,6 +9,8 @@
  * read inside a named union (SDL_Event, SDL_HapticEffect) or one the
  * registry marks layout: prefix. SDL may append fields to it; its known
  * fields stay pinned by offset and the union's own size stays exact.
+ * Building with the cabal flag abi-assertions-exact makes every sizeof
+ * exact again, for checking a newer SDL.
  *
  * #if guards mirror each declaration's documented @since — corrected
  * and refined to member granularity by the empirical availability
@@ -16,6 +18,13 @@
  * macros.
  */
 #define LITHON_ABI_HELP ". sdl3-bindgen-sys was generated from SDL 3.9.0; see the README section ABI verification. Please report this at https://github.com/jtnuttall/lithon/issues with your SDL version and platform, and if you are comfortable, open a PR updating the SDL version the bindings are generated from."
+#ifdef LITHON_ABI_EXACT
+#define LITHON_ABI_PREFIX_OP ==
+#define LITHON_ABI_PREFIX_MSG "differs from your SDL3 headers (exact mode)"
+#else
+#define LITHON_ABI_PREFIX_OP >=
+#define LITHON_ABI_PREFIX_MSG "exceeds your SDL3 headers (growth is accepted, shrinking is not)"
+#endif
 #include <stddef.h>
 
 #define SDL_MAIN_HANDLED
@@ -23,10 +32,10 @@
 
 /* ---- SDL_toy_abi.h ---- */
 #if SDL_VERSION_ATLEAST(3, 2, 12)
-_Static_assert(sizeof(struct SDL_ToyMix) >= 24, "struct SDL_ToyMix: sizeof shrank below the baked 24 in your SDL3 headers (growth is accepted)" LITHON_ABI_HELP);
+_Static_assert(sizeof(struct SDL_ToyMix) LITHON_ABI_PREFIX_OP 24, "struct SDL_ToyMix: baked sizeof 24 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
 _Static_assert(_Alignof(struct SDL_ToyMix) == 8, "struct SDL_ToyMix: baked alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
 #else
-_Static_assert(sizeof(struct SDL_ToyMix) >= 12, "struct SDL_ToyMix: sizeof shrank below the pre-3.2.12 12 in your SDL3 headers (growth is accepted)" LITHON_ABI_HELP);
+_Static_assert(sizeof(struct SDL_ToyMix) LITHON_ABI_PREFIX_OP 12, "struct SDL_ToyMix: pre-3.2.12 sizeof 12 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
 _Static_assert(_Alignof(struct SDL_ToyMix) == 4, "struct SDL_ToyMix: pre-3.2.12 alignment 4 differs from your SDL3 headers" LITHON_ABI_HELP);
 #endif
 _Static_assert(offsetof(struct SDL_ToyMix, plain) == 0, "struct SDL_ToyMix.plain: baked offset 0 differs from your SDL3 headers" LITHON_ABI_HELP);
@@ -35,12 +44,12 @@ _Static_assert(offsetof(struct SDL_ToyMix, tag) == 5, "struct SDL_ToyMix.tag: ba
 _Static_assert(offsetof(struct SDL_ToyMix, wide) == 16, "struct SDL_ToyMix.wide: baked offset 16 differs from your SDL3 headers" LITHON_ABI_HELP);
 #endif
 #if SDL_VERSION_ATLEAST(3, 4, 0)
-_Static_assert(sizeof(struct SDL_ToyHolder) >= 8, "struct SDL_ToyHolder: sizeof shrank below the baked 8 in your SDL3 headers (growth is accepted)" LITHON_ABI_HELP);
+_Static_assert(sizeof(struct SDL_ToyHolder) LITHON_ABI_PREFIX_OP 8, "struct SDL_ToyHolder: baked sizeof 8 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
 _Static_assert(_Alignof(struct SDL_ToyHolder) == 4, "struct SDL_ToyHolder: baked alignment 4 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_ToyHolder, kind) == 0, "struct SDL_ToyHolder.kind: baked offset 0 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_ToyHolder, payload) == 4, "struct SDL_ToyHolder.payload: baked offset 4 differs from your SDL3 headers" LITHON_ABI_HELP);
 #endif
-_Static_assert(sizeof(struct SDL_ToyBody) >= 8, "struct SDL_ToyBody: sizeof shrank below the baked 8 in your SDL3 headers (growth is accepted)" LITHON_ABI_HELP);
+_Static_assert(sizeof(struct SDL_ToyBody) LITHON_ABI_PREFIX_OP 8, "struct SDL_ToyBody: baked sizeof 8 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
 _Static_assert(_Alignof(struct SDL_ToyBody) == 4, "struct SDL_ToyBody: baked alignment 4 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_ToyBody, type) == 0, "struct SDL_ToyBody.type: baked offset 0 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_ToyBody, x) == 4, "struct SDL_ToyBody.x: baked offset 4 differs from your SDL3 headers" LITHON_ABI_HELP);

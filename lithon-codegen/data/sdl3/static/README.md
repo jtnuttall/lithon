@@ -290,6 +290,10 @@ every layout the Haskell side expects against your SDL headers.
   are asserted as a prefix. The union's size provides the exact ceiling, so
   upstream can and will add fields in minors.
 
+Maintainers can build with `-f abi-assertions-exact` to assert every
+`sizeof` exactly. That is how a CI job against a newer SDL flags that
+the bindings need regenerating; consumers should leave it off.
+
 ### What to do when you get "static assertion failed"
 
 1. Check your SDL: `pkg-config --modversion sdl3`. SDL >= 3.2.0 is

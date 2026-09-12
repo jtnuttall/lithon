@@ -38,9 +38,10 @@
 -- Sizes are asserted @==@ by default: SDL fills most structs into memory
 -- the bindings allocate at the baked size. A struct read only inside a
 -- named union is asserted as a layout prefix instead ('LayoutPrefix':
--- offsets and alignment exact, sizeof @>=@) — derived from union
--- membership across every header, overridable either way by the
--- registry. A registry growth gate ('AbiGrowth') keeps the assertion on
+-- offsets and alignment exact, sizeof @>=@, or @==@ again under the
+-- package's @abi-assertions-exact@ flag) — derived from union membership
+-- across every header, overridable either way by the registry. A
+-- registry growth gate ('AbiGrowth') keeps the assertion on
 -- both sides, each under the struct's layout policy: the baked layout at
 -- or above the gate, the recorded pre-growth layout in an @#else@ branch
 -- below it.
@@ -127,9 +128,9 @@ sdlBaseline = AbiSince{major = 3, minor = 2, patch = 0}
 
 data AbiLayout
   = LayoutExact
-  | -- | Offsets and alignment stay @==@ but sizeof is asserted @>=@: SDL
-    -- may append fields. Union members get it because the union's own
-    -- exact sizeof is the backstop.
+  | -- | Offsets and alignment stay @==@ but sizeof is asserted @>=@ (@==@
+    -- under the @abi-assertions-exact@ flag): SDL may append fields. Union
+    -- members get it because the union's own exact sizeof is the backstop.
     LayoutPrefix
   deriving stock (Eq, Generic, Show)
 
@@ -341,7 +342,7 @@ renderAbiAssertions sdlVersion includes decls macroConsts =
         [ ( c.since
           , sassert
               ("(" <> c.name <> ") == (" <> show c.value <> "ull)")
-              (c.name <> ": baked value " <> show c.value <> divergence)
+              (quoted (c.name <> ": baked value " <> show c.value <> divergence))
           )
         | c <- toList family
         ]
@@ -358,6 +359,8 @@ renderAbiAssertions sdlVersion includes decls macroConsts =
     , " * read inside a named union (SDL_Event, SDL_HapticEffect) or one the"
     , " * registry marks layout: prefix. SDL may append fields to it; its known"
     , " * fields stay pinned by offset and the union's own size stays exact."
+    , " * Building with the cabal flag abi-assertions-exact makes every sizeof"
+    , " * exact again, for checking a newer SDL."
     , " *"
     , " * #if guards mirror each declaration's documented @since — corrected"
     , " * and refined to member granularity by the empirical availability"
@@ -370,6 +373,14 @@ renderAbiAssertions sdlVersion includes decls macroConsts =
         <> " https://github.com/jtnuttall/lithon/issues with your SDL version and platform,"
         <> " and if you are comfortable, open a PR updating the SDL version the bindings"
         <> " are generated from.\""
+    , "#ifdef LITHON_ABI_EXACT"
+    , "#define LITHON_ABI_PREFIX_OP =="
+    , "#define LITHON_ABI_PREFIX_MSG \"differs from your SDL3 headers (exact mode)\""
+    , "#else"
+    , "#define LITHON_ABI_PREFIX_OP >="
+    , "#define LITHON_ABI_PREFIX_MSG \"exceeds your SDL3 headers"
+        <> " (growth is accepted, shrinking is not)\""
+    , "#endif"
     , "#include <stddef.h>"
     , ""
     , "#define SDL_MAIN_HANDLED"
@@ -401,24 +412,17 @@ renderAbiAssertions sdlVersion includes decls macroConsts =
               <> ["#endif"]
       _atOrBelowOuter -> layoutAsserts "baked" d.sizeof d.alignment
     layoutAsserts prov sizeof alignment =
-      [ sassert ("sizeof(" <> d.cTypeName <> ") " <> sizeOp <> " " <> show sizeof) (sizeMsg prov sizeof)
+      [ sassert
+          ("sizeof(" <> d.cTypeName <> ") " <> sizeOp <> " " <> show sizeof)
+          (sizeMsg (d.cTypeName <> ": " <> prov <> " sizeof " <> show sizeof))
       , sassert
           ("_Alignof(" <> d.cTypeName <> ") == " <> show alignment)
-          (d.cTypeName <> ": " <> prov <> " alignment " <> show alignment <> divergence)
+          (quoted (d.cTypeName <> ": " <> prov <> " alignment " <> show alignment <> divergence))
       ]
     (sizeOp, sizeMsg) = case layoutOf d of
-      LayoutExact ->
-        ("==", \prov n -> d.cTypeName <> ": " <> prov <> " sizeof " <> show n <> divergence)
+      LayoutExact -> ("==", \msg -> quoted (msg <> divergence))
       LayoutPrefix ->
-        ( ">="
-        , \prov n ->
-            d.cTypeName
-              <> ": sizeof shrank below the "
-              <> prov
-              <> " "
-              <> show n
-              <> " in your SDL3 headers (growth is accepted)"
-        )
+        ("LITHON_ABI_PREFIX_OP", \msg -> quoted (msg <> " ") <> " LITHON_ABI_PREFIX_MSG")
     -- Members introduced (or resized/revalued) after the decl's own
     -- guard get nested guards; consecutive same-version members share
     -- one block.
@@ -426,14 +430,14 @@ renderAbiAssertions sdlVersion includes decls macroConsts =
       [ ( f.since
         , sassert
             ("offsetof(" <> d.cTypeName <> ", " <> f.name <> ") == " <> show f.byteOffset)
-            (d.cTypeName <> "." <> f.name <> ": baked offset " <> show f.byteOffset <> divergence)
+            (quoted (d.cTypeName <> "." <> f.name <> ": baked offset " <> show f.byteOffset <> divergence))
         )
       | f <- d.fields
       ]
         <> [ ( c.since
              , sassert
                  ("(" <> c.name <> ") == (" <> show c.value <> ")")
-                 (c.name <> ": baked value " <> show c.value <> divergence)
+                 (quoted (c.name <> ": baked value " <> show c.value <> divergence))
              )
            | c <- d.constants
            ]
@@ -464,6 +468,6 @@ renderAbiAssertions sdlVersion includes decls macroConsts =
       <> show v.patch
       <> ")"
 
-  sassert cond msg = "_Static_assert(" <> cond <> ", \"" <> msg <> "\" LITHON_ABI_HELP);"
+  sassert cond msg = "_Static_assert(" <> cond <> ", " <> msg <> " LITHON_ABI_HELP);"
 
   divergence = " differs from your SDL3 headers"

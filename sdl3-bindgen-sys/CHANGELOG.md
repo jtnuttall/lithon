@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Added
+
+- Cabal flag `abi-assertions-exact` (default off): asserts every `sizeof`
+  exactly, including the union-member structs the default checks as a
+  prefix. For maintainers checking the bindings against a newer SDL;
+  consumers should leave it off.
+
 ### Fixed
 
 - Builds against SDL >= 3.4.16, where `SDL_PenProximityEvent` gained a

@@ -85,13 +85,18 @@ unit_prefixDerivesAcrossHeaders :: IO ()
 unit_prefixDerivesAcrossHeaders = do
   tu <-
     either (assertFailure . toString) pure
-      $ renderAbiAssertions "3.9.0" ["SDL_a.h", "SDL_b.h"] [holder, member] []
-  filter ("sizeof(struct SDL_B)" `T.isInfixOf`) (lines tu)
-    @?= [ "_Static_assert(sizeof(struct SDL_B) >= 16, \"struct SDL_B: sizeof shrank below the baked 16 in your SDL3 headers (growth is accepted)\" LITHON_ABI_HELP);"
+      $ renderAbiAssertions "3.9.0" ["SDL_a.h", "SDL_b.h"] [holder, member, other] []
+  let sizeofLine ty = filter (("sizeof(" <> ty <> ")") `T.isInfixOf`) (lines tu)
+  sizeofLine "struct SDL_B"
+    @?= [ "_Static_assert(sizeof(struct SDL_B) LITHON_ABI_PREFIX_OP 16, \"struct SDL_B: baked sizeof 16 \" LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);"
+        ]
+  sizeofLine "struct SDL_C"
+    @?= [ "_Static_assert(sizeof(struct SDL_C) == 16, \"struct SDL_C: baked sizeof 16 differs from your SDL3 headers\" LITHON_ABI_HELP);"
         ]
  where
   holder = (bare "union SDL_A" "SDL_a.h" AbiUnion){memberTypes = ["struct SDL_B"]}
   member = bare "struct SDL_B" "SDL_b.h" AbiStruct
+  other = bare "struct SDL_C" "SDL_b.h" AbiStruct
   bare cTypeName headerName kind =
     AbiDecl
       { cTypeName
