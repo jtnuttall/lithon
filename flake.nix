@@ -166,6 +166,7 @@
 
                 # workflow dependencies
                 ast-grep
+                dprint
                 git
                 gawk
                 fd
