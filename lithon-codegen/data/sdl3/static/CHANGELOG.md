@@ -1,5 +1,21 @@
 # Changelog — sdl3-bindgen-sys
 
+## Unreleased
+
+### Changed
+
+- README: correct the function-like macro caveat. hs-bindgen translates
+  macro bodies to Haskell functions on a best-effort basis; 31 of SDL's
+  function-like macros already ship in the raw `SDL3.Sys.Bindgen.*`
+  layer (the curated layer does not alias them yet, and pending
+  hs-bindgen#2184 they take C integer types rather than SDL newtypes),
+  and the rest are unbound rather than unbindable.
+- README: attribute the variadic gap to Haskell's FFI rather than to
+  hs-bindgen.
+
+Thanks to the hs-bindgen team for the correction on [r/haskell](https://www.reddit.com/r/haskell/comments/1v960p9/ann_sdl3bindgensys_machinegenerated_lowlevel/)
+and for their [survey of SDL's macros](https://github.com/dschrempf/hs-bindgen-sdl-survey).
+
 ## 0.0.0.2 - 2026-07-26
 
 Documentation-only patch.
