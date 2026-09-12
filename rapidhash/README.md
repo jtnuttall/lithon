@@ -69,13 +69,17 @@ string — for example, `rhv3:0123456789abcdef`. This reduces the likelihood
 that stored digests get confused with the output of other hash algorithms,
 or of future rapidhash versions.
 
+The rapidhashMicro variant, `RapidHashMicro`, carries its own prefix
+(`rhmv3:`) and its own `Binary` tag. The two variants agree only up to 80
+bytes of input, so their digests are not interchangeable.
+
 The convention applies to every mechanism that produces string output:
 `Show`/`Read`, the `Text`/`ByteString` renderers and parsers, and the
 `text-builder-linear` builder. (`Binary` instead uses a compact tagged
 9-byte encoding.)
 
-The `RapidHash` constructor is exported wholesale; if the tagging doesn't
-fit your needs, rewrap the underlying `Word64` however you like.
+All hash newtype constructors are exported wholesale; if the tagging doesn't fit
+your needs, rewrap the underlying `Word64` however you like.
 
 ### Aeson
 

@@ -2,7 +2,8 @@
  * Known-answer vector generator for the rapidhash Haskell binding.
  *
  * Compiled against the vendored upstream header (cbits/rapidhash.h) and the
- * local shim (cbits/rapidhash_ext.h), it prints reference digests to stdout.
+ * local shim (cbits/rapidhash_ext.h), it prints reference digests for both the
+ * rapidhash and rapidhashMicro variants to stdout.
  * The committed golden file (test/pin/rapidhash-v3-pin.txt) is this program's
  * output; the Haskell test suite recomputes every line through the binding's
  * ByteString entrypoint (and the sliced Vector path for the offset shim).
@@ -61,6 +62,24 @@ int main(void) {
                offset_lengths[li], offset_seeds[si],
                rapidhash_offset_withSeed(buf, offsets[oi], offset_lengths[li],
                                          offset_seeds[si]));
+
+  for (size_t li = 0; li < COUNT(lengths); li++)
+    printf("micro %zu %016" PRIx64 "\n", lengths[li],
+           rapidhashMicro(buf, lengths[li]));
+
+  for (size_t li = 0; li < COUNT(lengths); li++)
+    for (size_t si = 0; si < COUNT(seeds); si++)
+      printf("microWithSeed %zu %016" PRIx64 " %016" PRIx64 "\n", lengths[li],
+             seeds[si], rapidhashMicro_withSeed(buf, lengths[li], seeds[si]));
+
+  for (size_t oi = 0; oi < COUNT(offsets); oi++)
+    for (size_t li = 0; li < COUNT(offset_lengths); li++)
+      for (size_t si = 0; si < COUNT(offset_seeds); si++)
+        printf("microOffset %zu %zu %016" PRIx64 " %016" PRIx64 "\n",
+               offsets[oi], offset_lengths[li], offset_seeds[si],
+               rapidhashMicro_offset_withSeed(buf, offsets[oi],
+                                              offset_lengths[li],
+                                              offset_seeds[si]));
 
   free(buf);
   return 0;

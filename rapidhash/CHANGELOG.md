@@ -2,8 +2,14 @@
 
 ## Unreleased
 
+### Added
+
+- `rapidhashMicro` is now bound
+
 ### Changed
 
+- **Breaking**: `RapidHashable` gains a required `rapidhashMicroWithSeed` method.
+  Hand-written instances must add it.
 - Small README reword
 
 ## 0.1.1.0 - 2026-07-26
