@@ -75,9 +75,11 @@ class RapidHashable a where
 
   -- | Run rapidhashMicro with the given seed.
   --
-  -- rapidhashMicro is specialized for known-small keys. It has identical results
-  -- to 'rapidhashWithSeed' for inputs of 80 bytes or fewer; from 81 bytes on
-  -- results diverge and quality degrades.
+  -- rapidhashMicro is tuned for small keys: upstream reports it faster than
+  -- rapidhash for inputs up to 512 bytes, and 15-20% slower above 1kb.
+  --
+  -- It has identical results to 'rapidhashWithSeed' for inputs of 80 bytes or
+  -- fewer; from 81 bytes on results diverge.
   rapidhashMicroWithSeed :: RapidSeed -> a -> RapidHashMicro
 
 -- | This instance is stable across platforms.

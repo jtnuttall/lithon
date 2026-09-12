@@ -238,13 +238,13 @@ showsRapidHash (RapidHash h) = showsHash RAPIDHASH_V3_PREFIX_ADDR h
 -- Right rhv3:deadbeefdeadbeef
 --
 -- >>> parseRapidHashText "rhv3:abracadabratoomany"
--- Left "rapidhash hashes should have a length of exactly 16, but found length 18"
+-- Left "rapidhash hashes should have an exact, constant length per variant. Expected 16, but found length 18"
 --
 -- >>> parseRapidHashText "rhv3:nothexnothexnoth"
 -- Left "input does not start with a hexadecimal digit"
 --
 -- >>> parseRapidHashText "rhv3:tooshort"
--- Left "rapidhash hashes should have a length of exactly 16, but found length 8"
+-- Left "rapidhash hashes should have an exact, constant length per variant. Expected 16, but found length 8"
 --
 -- >>> parseRapidHashText "noprefix"
 -- Left "missing required prefix \"rhv3:\": \"noprefix\""
@@ -267,13 +267,13 @@ parseRapidHashText t = RapidHash <$> parseHashText RAPIDHASH_V3_PREFIX t
 -- Right rhv3:deadbeefdeadbeef
 --
 -- >>> parseRapidHashBS "rhv3:abracadabratoomany"
--- Left "rapidhash hashes should have a length of exactly 16, but found length 18"
+-- Left "rapidhash hashes should have an exact, constant length per variant. Expected 16, but found length 18"
 --
 -- >>> parseRapidHashBS "rhv3:nothexnothexnoth"
 -- Left "Could not parse hexadecimal from \"nothexnothexnoth\""
 --
 -- >>> parseRapidHashBS "rhv3:tooshort"
--- Left "rapidhash hashes should have a length of exactly 16, but found length 8"
+-- Left "rapidhash hashes should have an exact, constant length per variant. Expected 16, but found length 8"
 --
 -- >>> parseRapidHashBS "noprefix"
 -- Left "missing required prefix \"rhv3:\": \"noprefix\""
@@ -305,9 +305,9 @@ readsRapidHash s = map (first RapidHash) $ readsHash RAPIDHASH_V3_PREFIX s
 
 -- | A rapidhashMicro v3 digest.
 --
--- rapidhashMicro is designed for speed on known-small keys. Results are identical to
--- 'RapidHash' for inputs of 80 bytes or fewer; from 81 bytes on they diverge, and
--- quality degrades.
+-- rapidhashMicro is tuned for small keys: upstream reports it faster than rapidhash
+-- for inputs up to 512 bytes, and 15-20% slower above 1kb. Results are identical to
+-- 'RapidHash' for inputs of 80 bytes or fewer; from 81 bytes on they diverge.
 --
 -- The textual form is @rhmv3:@ followed by exactly 16 hex digits, always
 -- rendered lowercase. Parsing accepts either case, but rejects any other prefix,
@@ -421,13 +421,13 @@ showsRapidHashMicro (RapidHashMicro h) = showsHash RAPIDHASH_MICRO_V3_PREFIX_ADD
 -- Right rhmv3:deadbeefdeadbeef
 --
 -- >>> parseRapidHashMicroText "rhmv3:abracadabratoomany"
--- Left "rapidhash hashes should have a length of exactly 16, but found length 18"
+-- Left "rapidhash hashes should have an exact, constant length per variant. Expected 16, but found length 18"
 --
 -- >>> parseRapidHashMicroText "rhmv3:nothexnothexnoth"
 -- Left "input does not start with a hexadecimal digit"
 --
 -- >>> parseRapidHashMicroText "rhmv3:tooshort"
--- Left "rapidhash hashes should have a length of exactly 16, but found length 8"
+-- Left "rapidhash hashes should have an exact, constant length per variant. Expected 16, but found length 8"
 --
 -- >>> parseRapidHashMicroText "noprefix"
 -- Left "missing required prefix \"rhmv3:\": \"noprefix\""
@@ -450,13 +450,13 @@ parseRapidHashMicroText t = RapidHashMicro <$> parseHashText RAPIDHASH_MICRO_V3_
 -- Right rhmv3:deadbeefdeadbeef
 --
 -- >>> parseRapidHashMicroBS "rhmv3:abracadabratoomany"
--- Left "rapidhash hashes should have a length of exactly 16, but found length 18"
+-- Left "rapidhash hashes should have an exact, constant length per variant. Expected 16, but found length 18"
 --
 -- >>> parseRapidHashMicroBS "rhmv3:nothexnothexnoth"
 -- Left "Could not parse hexadecimal from \"nothexnothexnoth\""
 --
 -- >>> parseRapidHashMicroBS "rhmv3:tooshort"
--- Left "rapidhash hashes should have a length of exactly 16, but found length 8"
+-- Left "rapidhash hashes should have an exact, constant length per variant. Expected 16, but found length 8"
 --
 -- >>> parseRapidHashMicroBS "noprefix"
 -- Left "missing required prefix \"rhmv3:\": \"noprefix\""
@@ -592,7 +592,7 @@ guardLength len
   | otherwise = Left badLength
  where
   badLength =
-    "rapidhash hashes should have a length of exactly "
+    "rapidhash hashes should have an exact, constant length per variant. Expected "
       <> show @Int RAPIDHASH_V3_HEX_LENGTH
       <> ", but found length "
       <> show len

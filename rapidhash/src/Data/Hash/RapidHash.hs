@@ -64,7 +64,8 @@ module Data.Hash.RapidHash (
   -- |
   -- These are simply useful helpers for hashing a file, assuming you don't need
   -- to do anything else with the contents. Beware large files. These helpers
-  -- use strict 'Data.ByteString.ByteString' and will pause the capability.
+  -- use strict 'Data.ByteString.ByteString' and will pause the capability and
+  -- garbage collector.
   rapidhashFileWithSeed,
   rapidhashFile,
 
@@ -76,10 +77,13 @@ module Data.Hash.RapidHash (
   --
 
   -- |
-  -- A specialized variant of rapidhash, for known-small keys (80 bytes or fewer).
+  -- A variant of rapidhash tuned for small keys, aimed at workloads where cache
+  -- misses dominate. Upstream reports it faster than rapidhash for inputs up to
+  -- 512 bytes, and 15-20% slower above 1kb.
   --
-  -- Given the size constraints, no file helpers are exported to reduce risk of accidental
-  -- misuse.
+  -- Digests are identical to 'rapidhash' for inputs of 80 bytes or fewer and
+  -- diverge from 81 bytes on, so the two are not interchangeable in storage.
+  -- Hence the separate type and tag.
   rapidhashMicro,
   RapidHashMicro (..),
 
