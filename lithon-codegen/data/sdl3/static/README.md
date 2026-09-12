@@ -24,8 +24,8 @@ This library aims to be:
   and notes from the code generator's curation layer.
 - **ABI-verified:** A generated translation unit of C `_Static_assert`s
   verifies the library's baked layouts against _your_ SDL at every
-  build — divergence is a compile error naming the declaration, not
-  memory corruption.
+  build. Divergence is a compile error naming the declaration, not
+  memory corruption. See [ABI verification](#abi-verification) for more.
 
 ## Quick start
 
@@ -126,6 +126,23 @@ extra-deps:
   - sdl3-bindgen-sys-0.0.0.3 # hash may be here if you copy from stack build
 msys-environment: UCRT64 # important: build will not work without this
 ```
+
+##### Direct cabal build using an MSYS2 Bash session (e.g., Git Bash)
+
+This can additionally be used with Git bash. You can point `cabal` at the
+UCRT64 toolchain and your ghcup GHC:
+
+```sh
+export PKG_CONFIG_PATH="/c/msys64/ucrt64/lib/pkgconfig"
+export PATH="/c/msys64/ucrt64/bin:$PATH"
+cabal build \
+  --with-compiler=/c/ghcup/ghc/9.12.2/bin/ghc.exe \
+  --extra-lib-dirs=/c/msys64/ucrt64/lib \
+  --extra-include-dirs=/c/msys64/ucrt64/include
+```
+
+Adjust the GHC path to match your install. This provides a simple way to build
+and run the examples.
 
 ## Library structure
 
@@ -255,6 +272,40 @@ Two semantic deltas to know when running against a 3.2-series SDL:
 - Below SDL 3.2.12, `SDL_MouseWheelEvent.integer_x`/`integer_y` read
   bytes SDL never wrote — memory-safe (`SDL_Event` is 128 bytes), but
   meaningless.
+
+## ABI verification
+
+The cabal flag `abi-assertions` (default) turns on ABI verification,
+which guards against unexpected layout divergence between SDL3 header
+versions and varying operating systems.
+
+When ABI assertions are on, `cbits/abi_assertions.c` statically checks
+every layout the Haskell side expects against your SDL headers.
+
+### Layouts
+
+- Most structs are asserted at their exact size. A future SDL that expects
+  a bigger allocation for the struct would be an out-of-bounds memory write.
+- Structs the bindings associated _solely_ with a union (like the event structs),
+  are asserted as a prefix. The union's size provides the exact ceiling, so
+  upstream can and will add fields in minors.
+
+### What to do when you get "static assertion failed"
+
+1. Check your SDL: `pkg-config --modversion sdl3`. SDL >= 3.2.0 is
+   required
+2. Make sure you are on a supported architecture. 32-bit targets are not
+   presently supported (see [Platform support](#platform-support)).
+3. Report it at the [issue tracker](https://github.com/jtnuttall/lithon/issues)
+   with the failing lines, your SDL version, and your platform.
+4. If you are comfortable doing so, open a PR regenerating the bindings
+   from the newer SDL. The
+   [`lithon-codegen` README](https://github.com/jtnuttall/lithon/tree/main/lithon-codegen#sdl3)
+   describes the pipeline.
+
+Building with `-f-abi-assertions` turns off the check, not the
+mismatch: the bindings would then read and write the baked layout
+against headers that disagree with it.
 
 ## Known documentation issues
 
