@@ -15,9 +15,10 @@
 -- those corrections, exactly like @aliases.json@ records flavor
 -- decisions.
 --
--- The orphan 'HasCodec' 'AbiSince' instance is deliberate: 'AbiSince' is
--- emitter vocabulary ("Lithon.Codegen.Sdl3.Abi") and must not know about
--- serialization; this module owns the registry format.
+-- The orphan 'HasCodec' instances for 'AbiSince', 'AbiLayout' and
+-- 'AbiLayoutBefore' are deliberate: they are emitter vocabulary
+-- ("Lithon.Codegen.Sdl3.Abi") and must not know about serialization;
+-- this module owns the registry format.
 module Lithon.Codegen.Sdl3.Versions (
   VersionsRegistry (..),
   Versioned (..),
@@ -36,9 +37,13 @@ import Data.Text qualified as T
 import Lithon.Prelude
 
 import Lithon.Codegen.Sdl3.Abi (
+  AbiGrowth (..),
+  AbiLayout (..),
+  AbiLayoutBefore (..),
   AbiOverrides (..),
   AbiSince (..),
   StructOverrides (..),
+  renderSince,
  )
 
 -- | One versioned entry: the empirically established availability, plus
@@ -49,11 +54,16 @@ data Versioned = Versioned
   }
   deriving stock (Eq, Generic, Show)
 
--- | Per-struct member gates. @sizeof-since@ gates the sizeof\/alignment
--- asserts separately from the struct's existence (set when a member
--- addition changed the size).
+-- | Per-struct member gates and layout policy. @sizeof-since@ gates the
+-- sizeof\/alignment asserts separately from the struct's existence (set
+-- when a member addition changed the size) and must come with @before@,
+-- the pre-growth layout asserted below the gate; growth is assumed
+-- appended, since the earlier members' offsets stay asserted unguarded.
+-- @layout@ overrides the emitter's derived policy.
 data StructEntry = StructEntry
   { sizeofSince :: Maybe AbiSince
+  , before :: Maybe AbiLayoutBefore
+  , layout :: Maybe AbiLayout
   , note :: Maybe Text
   , members :: Map Text AbiSince
   }
@@ -114,7 +124,11 @@ abiOverrides reg =
     , macros = (.since) <$> reg.macroConstants
     , structs =
         reg.structs <&> \e ->
-          StructOverrides{sizeofSince = e.sizeofSince, members = e.members}
+          StructOverrides
+            { growth = AbiGrowth <$> e.sizeofSince <*> e.before
+            , layout = e.layout
+            , members = e.members
+            }
     }
 
 instance HasCodec AbiSince where
@@ -124,8 +138,6 @@ instance HasCodec AbiSince where
     parseSince t = case traverse (readMaybe . toString) (T.splitOn "." t) of
       Just [major, minor, patch] -> Right AbiSince{major, minor, patch}
       _malformed -> Left ("expected a MAJOR.MINOR.PATCH version, got: " <> toString t)
-
-    renderSince v = T.intercalate "." (map show [v.major, v.minor, v.patch])
 
 instance HasCodec Versioned where
   codec =
@@ -138,14 +150,35 @@ instance HasCodec Versioned where
 
 instance HasCodec StructEntry where
   codec =
-    object "StructEntry"
+    bimapCodec growthPaired id
+      $ object "StructEntry"
       $ StructEntry
       <$> optionalField "sizeof-since" "gate for the sizeof/alignment asserts"
       .= (.sizeofSince)
+      <*> optionalField "before" "pre-growth sizeof/alignment, asserted below sizeof-since"
+      .= (.before)
+      <*> optionalField "layout" "exact (default) or prefix (sizeof asserted >=)"
+      .= (.layout)
       <*> optionalField "note" "the evidence, for reviewers"
       .= (.note)
       <*> optionalFieldWithDefault "members" Map.empty "member name -> availability"
       .= (.members)
+   where
+    growthPaired e
+      | isJust e.sizeofSince == isJust e.before = Right e
+      | otherwise = Left "sizeof-since and before must be given together"
+
+instance HasCodec AbiLayout where
+  codec = stringConstCodec ((LayoutExact, "exact") :| [(LayoutPrefix, "prefix")])
+
+instance HasCodec AbiLayoutBefore where
+  codec =
+    object "AbiLayoutBefore"
+      $ AbiLayoutBefore
+      <$> requiredField "sizeof" "sizeof below the gate"
+      .= (.sizeof)
+      <*> requiredField "alignment" "alignment below the gate"
+      .= (.alignment)
 
 instance HasCodec TypedefShape where
   codec =
@@ -183,7 +216,7 @@ instance HasCodec VersionsRegistry where
       .= (.valueGates)
       <*> optionalFieldWithDefault "macro-constants" Map.empty "typed-constant macros added post-baseline"
       .= (.macroConstants)
-      <*> optionalFieldWithDefault "structs" Map.empty "per-struct member/size gates"
+      <*> optionalFieldWithDefault "structs" Map.empty "per-struct member/size gates and layout policy"
       .= (.structs)
       <*> optionalFieldWithDefault "prologue-typedefs" Map.empty "wrapper-prologue stand-in declarations"
       .= (.prologueTypedefs)

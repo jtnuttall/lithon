@@ -45,7 +45,8 @@
   "structs": {
     "SDL_MouseWheelEvent": {
       "sizeof-since": "3.2.12",
-      "note": "integer_x/integer_y added in 3.2.12; sizeof 48 -> 56, so the size/alignment asserts carry the same gate.",
+      "before": { "sizeof": 48, "alignment": 8 },
+      "note": "integer_x/integer_y added in 3.2.12; sizeof 48 -> 56, so the size/alignment asserts branch on the gate: 56/8 at or above it, 48/8 below.",
       "members": { "integer_x": "3.2.12", "integer_y": "3.2.12" }
     },
     "SDL_GPUMultisampleState": {

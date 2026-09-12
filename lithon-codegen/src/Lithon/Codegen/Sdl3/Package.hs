@@ -91,12 +91,13 @@ instance Display Sdl3PackagingError where
 -- @SDL3.Sys.*@ alias layer, runtime copies, hs-bindgen facades, and
 -- metadata — and assemble it through the shared backend.
 assembleSdl3Package
-  :: [(Text, Text)]
+  :: Text
+  -> [(Text, Text)]
   -> [AbiMacroConst]
   -- ^ Probed typed-constant values (curated layer), re-asserted in the TU.
   -> [HeaderResult Sdl3Payload]
   -> Either Sdl3PackagingError FileTree
-assembleSdl3Package aliasModules macroConsts results = do
+assembleSdl3Package sdlVersion aliasModules macroConsts results = do
   generated <- for (concatMap (.modules) results) \m -> do
     meta <- metaFor "generated modules" (HB.moduleNameSegments m)
     pure (meta, m.hsModule.text)
@@ -111,7 +112,8 @@ assembleSdl3Package aliasModules macroConsts results = do
     meta <- metaFor "hs-bindgen facades" (T.splitOn "." name)
     pure (meta, contents)
   abiAssertions <-
-    first AbiAssertionsInvalid $ renderAbiAssertions mainIncludes (concatMap (.payload.abi) results) macroConsts
+    first AbiAssertionsInvalid
+      $ renderAbiAssertions sdlVersion mainIncludes (concatMap (.payload.abi) results) macroConsts
 
   first Assembly
     $ assemblePackage

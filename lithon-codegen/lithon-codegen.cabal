@@ -345,6 +345,7 @@ test-suite lithon-codegen-test
       Sdl3.AliasRenderTest
       Sdl3.CensusTest
       Sdl3.PlatformShimTest
+      Sdl3.VersionsTest
       Vulkan.Curate.ClosureTest
       Vulkan.CurateTest
       Vulkan.Generate.AbiTest

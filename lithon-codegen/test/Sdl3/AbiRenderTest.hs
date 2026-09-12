@@ -8,16 +8,20 @@
 -- Pins, in one artifact: the skip set (bitfields, the anonymous union
 -- decl behind a named member, the opaque forward decl), byte offsets for
 -- plain\/array\/anon-union-typed members, negative enum constant values,
--- the \@since extraction (absent \/ at-baseline \/ post-baseline), and
--- the @SDL_VERSION_ATLEAST@ guard appearing exactly for the
--- post-baseline declaration.
+-- the \@since extraction (absent \/ at-baseline \/ post-baseline), the
+-- @SDL_VERSION_ATLEAST@ guard appearing exactly for the post-baseline
+-- declaration, the layout policy (prefix derived from union membership,
+-- overridden in either direction), and the pre-growth @#else@ branch of
+-- a growth gate.
 module Sdl3.AbiRenderTest (
   unit_toyDistillPins,
+  unit_prefixDerivesAcrossHeaders,
   test_abiRenderGolden,
 ) where
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.Map.Strict qualified as Map
+import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 import Data.Text.IO qualified as TIO
 import Lithon.HsBindgen qualified as HB
@@ -32,6 +36,10 @@ import Lithon.Codegen.Sdl3.Abi (
   AbiDecl (..),
   AbiEnumConst (..),
   AbiField (..),
+  AbiGrowth (..),
+  AbiKind (..),
+  AbiLayout (..),
+  AbiLayoutBefore (..),
   AbiMacroConst (..),
   AbiOverrides (..),
   AbiSince (..),
@@ -47,13 +55,16 @@ unit_toyDistillPins = do
   map (.cTypeName) abi
     @?= [ "struct SDL_ToyMix"
         , "struct SDL_ToyHolder"
+        , "struct SDL_ToyBody"
+        , "struct SDL_ToyPinned"
+        , "struct SDL_ToyOut"
         , "union SDL_ToyPayload"
         , "enum SDL_ToyStatus"
         ]
   -- Bitfield members are skipped; plain, array, and anon-union-typed
   -- members are assertable.
   [(f.name, f.byteOffset) | d <- abi, d.cTypeName == "struct SDL_ToyMix", f <- d.fields]
-    @?= [("plain", 0), ("wide", 8), ("tag", 16)]
+    @?= [("plain", 0), ("tag", 5), ("wide", 16)]
   [(f.name, f.byteOffset) | d <- abi, d.cTypeName == "struct SDL_ToyHolder", f <- d.fields]
     @?= [("kind", 0), ("payload", 4)]
   [(c.name, c.value) | d <- abi, d.cTypeName == "enum SDL_ToyStatus", c <- d.constants]
@@ -61,9 +72,40 @@ unit_toyDistillPins = do
   map (.since) abi
     @?= [ Just AbiSince{major = 3, minor = 2, patch = 0}
         , Just AbiSince{major = 3, minor = 4, patch = 0}
+        , Just AbiSince{major = 3, minor = 2, patch = 0}
+        , Just AbiSince{major = 3, minor = 2, patch = 0}
+        , Just AbiSince{major = 3, minor = 2, patch = 0}
         , Nothing
         , Just AbiSince{major = 3, minor = 2, patch = 0}
         ]
+  concat [d.memberTypes | d <- abi, d.cTypeName == "union SDL_ToyPayload"]
+    @?= ["struct SDL_ToyMix", "struct SDL_ToyBody", "struct SDL_ToyPinned"]
+
+unit_prefixDerivesAcrossHeaders :: IO ()
+unit_prefixDerivesAcrossHeaders = do
+  tu <-
+    either (assertFailure . toString) pure
+      $ renderAbiAssertions "3.9.0" ["SDL_a.h", "SDL_b.h"] [holder, member] []
+  filter ("sizeof(struct SDL_B)" `T.isInfixOf`) (lines tu)
+    @?= [ "_Static_assert(sizeof(struct SDL_B) >= 16, \"struct SDL_B: sizeof shrank below the baked 16 in your SDL3 headers (growth is accepted)\" LITHON_ABI_HELP);"
+        ]
+ where
+  holder = (bare "union SDL_A" "SDL_a.h" AbiUnion){memberTypes = ["struct SDL_B"]}
+  member = bare "struct SDL_B" "SDL_b.h" AbiStruct
+  bare cTypeName headerName kind =
+    AbiDecl
+      { cTypeName
+      , headerName
+      , kind
+      , sizeof = 16
+      , alignment = 8
+      , fields = []
+      , constants = []
+      , since = Nothing
+      , growth = Nothing
+      , layout = Nothing
+      , memberTypes = []
+      }
 
 test_abiRenderGolden :: TestTree
 test_abiRenderGolden =
@@ -77,13 +119,16 @@ test_abiRenderGolden =
         either
           (assertFailure . toString)
           pure
-          (renderAbiAssertions ["SDL_toy_abi.h"] abi toyMacroConsts)
+          (renderAbiAssertions "3.9.0" ["SDL_toy_abi.h"] abi toyMacroConsts)
       pure (LBS.fromStrict (TE.encodeUtf8 tu))
  where
   -- Every override mechanism, pinned in one golden: a decl-level
   -- correction on a decl with no \since of its own (ToyPayload), a
-  -- sizeof gate + member gate on a baseline struct (ToyMix grew at
-  -- "3.2.12"), and a value gate on a baseline enum constant (TOY_BIG).
+  -- growth gate + member gate on an appended member — on a derived-prefix
+  -- union member (ToyMix grew at "3.2.12") and on an exact struct (ToyOut
+  -- grew at "3.2.8") — a layout override in each direction (ToyPinned
+  -- exact despite union membership, ToyHolder prefix without it), and a
+  -- value gate on a baseline enum constant (TOY_BIG).
   toyOverrides =
     AbiOverrides
       { decls = Map.fromList [("SDL_ToyPayload", AbiSince{major = 3, minor = 4, patch = 0})]
@@ -94,9 +139,36 @@ test_abiRenderGolden =
             [
               ( "SDL_ToyMix"
               , StructOverrides
-                  { sizeofSince = Just AbiSince{major = 3, minor = 2, patch = 12}
+                  { growth =
+                      Just
+                        AbiGrowth
+                          { since = AbiSince{major = 3, minor = 2, patch = 12}
+                          , before = AbiLayoutBefore{sizeof = 12, alignment = 4}
+                          }
+                  , layout = Nothing
                   , members = Map.fromList [("wide", AbiSince{major = 3, minor = 2, patch = 12})]
                   }
+              )
+            ,
+              ( "SDL_ToyOut"
+              , StructOverrides
+                  { growth =
+                      Just
+                        AbiGrowth
+                          { since = AbiSince{major = 3, minor = 2, patch = 8}
+                          , before = AbiLayoutBefore{sizeof = 8, alignment = 4}
+                          }
+                  , layout = Nothing
+                  , members = Map.fromList [("scale", AbiSince{major = 3, minor = 2, patch = 8})]
+                  }
+              )
+            ,
+              ( "SDL_ToyPinned"
+              , StructOverrides{growth = Nothing, layout = Just LayoutExact, members = mempty}
+              )
+            ,
+              ( "SDL_ToyHolder"
+              , StructOverrides{growth = Nothing, layout = Just LayoutPrefix, members = mempty}
               )
             ]
       }
@@ -159,8 +231,8 @@ toyHeader =
     , "  int plain;"
     , "  unsigned bits_lo:3;"
     , "  unsigned bits_hi:5;"
-    , "  double wide;"
     , "  char tag[4];"
+    , "  double wide;"
     , "} SDL_ToyMix;"
     , ""
     , "/**"
@@ -177,12 +249,47 @@ toyHeader =
     , "} SDL_ToyHolder;"
     , ""
     , "/**"
+    , " * A union member with a plain layout."
+    , " *"
+    , " * \\since This struct is available since SDL 3.2.0."
+    , " */"
+    , "typedef struct SDL_ToyBody {"
+    , "  unsigned type;"
+    , "  float x;"
+    , "} SDL_ToyBody;"
+    , ""
+    , "/**"
+    , " * A union member the registry pins exact."
+    , " *"
+    , " * \\since This struct is available since SDL 3.2.0."
+    , " */"
+    , "typedef struct SDL_ToyPinned {"
+    , "  unsigned type;"
+    , "  double v;"
+    , "} SDL_ToyPinned;"
+    , ""
+    , "/**"
+    , " * A caller-allocated out-struct the union reaches by pointer only."
+    , " *"
+    , " * \\since This struct is available since SDL 3.2.0."
+    , " */"
+    , "typedef struct SDL_ToyOut {"
+    , "  int w;"
+    , "  int h;"
+    , "  double scale;"
+    , "} SDL_ToyOut;"
+    , ""
+    , "/**"
     , " * A tagged union; deliberately no since line."
     , " */"
     , "typedef union SDL_ToyPayload {"
     , "  int i;"
     , "  double d;"
     , "  unsigned char raw[16];"
+    , "  SDL_ToyMix mix;"
+    , "  SDL_ToyBody body;"
+    , "  SDL_ToyPinned pinned;"
+    , "  SDL_ToyOut *out;"
     , "} SDL_ToyPayload;"
     , ""
     , "/**"

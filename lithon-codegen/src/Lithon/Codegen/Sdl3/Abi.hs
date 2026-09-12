@@ -34,6 +34,16 @@
 -- version macros — header truth, independent of any cabal flag. At the
 -- current @sdl3 >= 3.4@ floor every guard is trivially true; they become
 -- load-bearing when the version-gating work drops the floor to 3.2.
+--
+-- Sizes are asserted @==@ by default: SDL fills most structs into memory
+-- the bindings allocate at the baked size. A struct read only inside a
+-- named union is asserted as a layout prefix instead ('LayoutPrefix':
+-- offsets and alignment exact, sizeof @>=@) — derived from union
+-- membership across every header, overridable either way by the
+-- registry. A registry growth gate ('AbiGrowth') keeps the assertion on
+-- both sides, each under the struct's layout policy: the baked layout at
+-- or above the gate, the recorded pre-growth layout in an @#else@ branch
+-- below it.
 module Lithon.Codegen.Sdl3.Abi (
   AbiDecl (..),
   AbiKind (..),
@@ -41,10 +51,14 @@ module Lithon.Codegen.Sdl3.Abi (
   AbiEnumConst (..),
   AbiMacroConst (..),
   AbiSince (..),
+  AbiLayout (..),
+  AbiLayoutBefore (..),
+  AbiGrowth (..),
   AbiOverrides (..),
   StructOverrides (..),
   emptyAbiOverrides,
   sdlBaseline,
+  renderSince,
   declSince,
   distillAbi,
   renderAbiAssertions,
@@ -53,6 +67,7 @@ module Lithon.Codegen.Sdl3.Abi (
 import Data.Char (isDigit)
 import Data.List.NonEmpty qualified as NE
 import Data.Map.Strict qualified as Map
+import Data.Set qualified as Set
 import Data.Text qualified as T
 import Doxygen.Parser.Types qualified as Doxy
 import Lithon.HsBindgen.C qualified as C
@@ -110,6 +125,29 @@ data AbiSince = AbiSince
 sdlBaseline :: AbiSince
 sdlBaseline = AbiSince{major = 3, minor = 2, patch = 0}
 
+data AbiLayout
+  = LayoutExact
+  | -- | Offsets and alignment stay @==@ but sizeof is asserted @>=@: SDL
+    -- may append fields. Union members get it because the union's own
+    -- exact sizeof is the backstop.
+    LayoutPrefix
+  deriving stock (Eq, Generic, Show)
+
+data AbiLayoutBefore = AbiLayoutBefore
+  { sizeof :: Int
+  , alignment :: Int
+  }
+  deriving stock (Eq, Generic, Show)
+
+data AbiGrowth = AbiGrowth
+  { since :: AbiSince
+  , before :: AbiLayoutBefore
+  }
+  deriving stock (Eq, Generic, Show)
+
+renderSince :: AbiSince -> Text
+renderSince v = T.intercalate "." (map show [v.major, v.minor, v.patch])
+
 -- | The layout ground truth of one non-opaque, named C type declaration.
 data AbiDecl = AbiDecl
   { cTypeName :: Text
@@ -127,10 +165,13 @@ data AbiDecl = AbiDecl
   -- ^ The decl's doxygen @\@since@, corrected by the override map
   -- (SDL's annotations lie in both directions); 'Nothing' emits
   -- unguarded asserts.
-  , sizeSince :: Maybe AbiSince
-  -- ^ When set (override map), the sizeof\/alignment asserts are gated
-  -- separately from the decl's existence: the type predates this
-  -- version but grew (e.g. @SDL_MouseWheelEvent@ 48 -> 56 at 3.2.12).
+  , growth :: Maybe AbiGrowth
+  -- ^ When set (override map), the type predates its own guard but grew
+  -- at the end at this version (e.g. @SDL_MouseWheelEvent@ 48 -> 56 at
+  -- 3.2.12): the sizeof\/alignment asserts branch on it, the baked
+  -- layout at or above and the recorded pre-growth layout below.
+  , layout :: Maybe AbiLayout
+  , memberTypes :: [Text]
   }
   deriving stock (Eq, Generic, Show)
 
@@ -148,12 +189,13 @@ data AbiOverrides = AbiOverrides
   , macros :: Map Text AbiSince
   -- ^ Typed-constant macros.
   , structs :: Map Text StructOverrides
-  -- ^ Per-struct member/size gates.
+  -- ^ Per-struct member/size gates and layout policy.
   }
   deriving stock (Eq, Generic, Show)
 
 data StructOverrides = StructOverrides
-  { sizeofSince :: Maybe AbiSince
+  { growth :: Maybe AbiGrowth
+  , layout :: Maybe AbiLayout
   , members :: Map Text AbiSince
   }
   deriving stock (Eq, Generic, Show)
@@ -176,7 +218,7 @@ distillAbi headerName ov = sequenceA . mapMaybe abiDeclOf
       | named ->
           -- Member offsets in a union are all zero; size/alignment is the
           -- whole layout story (SDL_Event's 128/8 included).
-          Just (Right (base AbiUnion u.sizeof u.alignment))
+          Just (Right (base AbiUnion u.sizeof u.alignment){memberTypes = memberTypesOf u.fields})
     C.DeclEnum e
       | named ->
           Just
@@ -204,7 +246,9 @@ distillAbi headerName ov = sequenceA . mapMaybe abiDeclOf
         , -- The override map wins over the header's own annotation: SDL's
           -- @\since@ lies in both directions (see sdl3/versions.json).
           since = Map.lookup bareName ov.decls <|> declSince decl.info
-        , sizeSince = structOv >>= (.sizeofSince)
+        , growth = structOv >>= (.growth)
+        , layout = structOv >>= (.layout)
+        , memberTypes = []
         }
 
 assertableFields :: Text -> Map Text AbiSince -> [C.Field C.Final] -> Either Text [AbiField]
@@ -232,6 +276,13 @@ constsOf constSinces cs =
   [ AbiEnumConst{name = cname, value = c.value, since = Map.lookup cname constSinces}
   | c <- cs
   , let cname = c.info.name.cName.text
+  ]
+
+memberTypesOf :: [C.Field C.Final] -> [Text]
+memberTypesOf fs =
+  [ C.renderDeclNameC ref.cName.name
+  | f <- fs
+  , C.TypeRef ref <- [C.getCanonicalType f.typ]
   ]
 
 -- | The declaration's @\@since@ version, mirroring the vendored haddock
@@ -268,8 +319,8 @@ declSince info = do
 -- | Render the assertion TU. 'Left' if two headers ever produced the
 -- same C type (the chain's selection predicate should make that
 -- impossible; a duplicate means double-baked layouts worth a hard stop).
-renderAbiAssertions :: [FilePath] -> [AbiDecl] -> [AbiMacroConst] -> Either Text Text
-renderAbiAssertions includes decls macroConsts =
+renderAbiAssertions :: Text -> [FilePath] -> [AbiDecl] -> [AbiMacroConst] -> Either Text Text
+renderAbiAssertions sdlVersion includes decls macroConsts =
   case toList (duplicates (map (.cTypeName) decls)) of
     [] -> Right rendered
     dups -> Left ("abi: type declared by more than one header: " <> T.intercalate ", " dups)
@@ -303,12 +354,22 @@ renderAbiAssertions includes decls macroConsts =
     , " * package is compiled with. A failing line means the bindings would"
     , " * corrupt memory under this platform/SDL — the build stops instead."
     , " * See the package README, section \"ABI verification\"."
+    , " * A sizeof asserted with >= belongs to a struct the bindings only ever"
+    , " * read inside a named union (SDL_Event, SDL_HapticEffect) or one the"
+    , " * registry marks layout: prefix. SDL may append fields to it; its known"
+    , " * fields stay pinned by offset and the union's own size stays exact."
     , " *"
     , " * #if guards mirror each declaration's documented @since — corrected"
     , " * and refined to member granularity by the empirical availability"
     , " * registry (lithon-codegen sdl3/versions.json) — on SDL's own version"
     , " * macros."
     , " */"
+    , "#define LITHON_ABI_HELP \". sdl3-bindgen-sys was generated from SDL "
+        <> sdlVersion
+        <> "; see the README section ABI verification. Please report this at"
+        <> " https://github.com/jtnuttall/lithon/issues with your SDL version and platform,"
+        <> " and if you are comfortable, open a PR updating the SDL version the bindings"
+        <> " are generated from.\""
     , "#include <stddef.h>"
     , ""
     , "#define SDL_MAIN_HANDLED"
@@ -319,33 +380,56 @@ renderAbiAssertions includes decls macroConsts =
     ["", "/* ---- " <> toText (head family).headerName <> " ---- */"]
       <> concatMap declLines (toList family)
 
-  declLines d = versionGuard d.since (guardRuns outer entries)
+  unionMemberTypes = Set.fromList (concatMap (.memberTypes) decls)
+
+  layoutOf d = fromMaybe derived d.layout
+   where
+    derived
+      | d.cTypeName `Set.member` unionMemberTypes = LayoutPrefix
+      | otherwise = LayoutExact
+
+  declLines d = versionGuard d.since (layoutLines <> guardRuns outer entries)
    where
     outer = fromMaybe sdlBaseline d.since
+    layoutLines = case d.growth of
+      Just g
+        | g.since > outer ->
+            [atleastLine g.since]
+              <> layoutAsserts "baked" d.sizeof d.alignment
+              <> ["#else"]
+              <> layoutAsserts ("pre-" <> renderSince g.since) g.before.sizeof g.before.alignment
+              <> ["#endif"]
+      _atOrBelowOuter -> layoutAsserts "baked" d.sizeof d.alignment
+    layoutAsserts prov sizeof alignment =
+      [ sassert ("sizeof(" <> d.cTypeName <> ") " <> sizeOp <> " " <> show sizeof) (sizeMsg prov sizeof)
+      , sassert
+          ("_Alignof(" <> d.cTypeName <> ") == " <> show alignment)
+          (d.cTypeName <> ": " <> prov <> " alignment " <> show alignment <> divergence)
+      ]
+    (sizeOp, sizeMsg) = case layoutOf d of
+      LayoutExact ->
+        ("==", \prov n -> d.cTypeName <> ": " <> prov <> " sizeof " <> show n <> divergence)
+      LayoutPrefix ->
+        ( ">="
+        , \prov n ->
+            d.cTypeName
+              <> ": sizeof shrank below the "
+              <> prov
+              <> " "
+              <> show n
+              <> " in your SDL3 headers (growth is accepted)"
+        )
     -- Members introduced (or resized/revalued) after the decl's own
     -- guard get nested guards; consecutive same-version members share
     -- one block.
     entries =
-      [
-        ( d.sizeSince
+      [ ( f.since
         , sassert
-            ("sizeof(" <> d.cTypeName <> ") == " <> show d.sizeof)
-            (d.cTypeName <> ": baked sizeof " <> show d.sizeof <> divergence)
+            ("offsetof(" <> d.cTypeName <> ", " <> f.name <> ") == " <> show f.byteOffset)
+            (d.cTypeName <> "." <> f.name <> ": baked offset " <> show f.byteOffset <> divergence)
         )
-      ,
-        ( d.sizeSince
-        , sassert
-            ("_Alignof(" <> d.cTypeName <> ") == " <> show d.alignment)
-            (d.cTypeName <> ": baked alignment " <> show d.alignment <> divergence)
-        )
+      | f <- d.fields
       ]
-        <> [ ( f.since
-             , sassert
-                 ("offsetof(" <> d.cTypeName <> ", " <> f.name <> ") == " <> show f.byteOffset)
-                 (d.cTypeName <> "." <> f.name <> ": baked offset " <> show f.byteOffset <> divergence)
-             )
-           | f <- d.fields
-           ]
         <> [ ( c.since
              , sassert
                  ("(" <> c.name <> ") == (" <> show c.value <> ")")
@@ -380,6 +464,6 @@ renderAbiAssertions includes decls macroConsts =
       <> show v.patch
       <> ")"
 
-  sassert cond msg = "_Static_assert(" <> cond <> ", \"" <> msg <> "\");"
+  sassert cond msg = "_Static_assert(" <> cond <> ", \"" <> msg <> "\" LITHON_ABI_HELP);"
 
-  divergence = " differs from your SDL3 headers (sdl3-bindgen-sys README: ABI verification)"
+  divergence = " differs from your SDL3 headers"

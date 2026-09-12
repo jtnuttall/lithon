@@ -253,7 +253,9 @@ runSdl3 root cmd = runErrorFrom @SdlResolutionError $ runSdl3Gen do
       (aliasFiles, macroConsts, aliasMeta) <-
         planAliases registry results
       tree <-
-        liftEither . first PackagingError $ assembleSdl3Package aliasFiles macroConsts results
+        liftEither
+          . first PackagingError
+          $ assembleSdl3Package env.sdlVersion aliasFiles macroConsts results
       manifestMeta <- chainMeta results
       runErrorFrom @EmitError @Sdl3Error
         $ emitHaskellPackage root opts.out (manifestMeta <> aliasMeta) tree

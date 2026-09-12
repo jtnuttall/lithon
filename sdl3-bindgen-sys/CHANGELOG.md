@@ -2,8 +2,28 @@
 
 ## Unreleased
 
+### Fixed
+
+- Builds against SDL >= 3.4.16, where `SDL_PenProximityEvent` gained a
+  `pen_state` member: the ABI assertions no longer pin event structs to
+  their exact size.
+
 ### Changed
 
+- ABI assertions: structs that are read only inside a named union
+  (e.g. `SDL_Event` or `SDL_HapticEffect`) are now checked as a prefix
+  of the total layout instead of an exact check. Field offsets and
+  alignments are enforced, but `sizeof` is allowed to increase. The union's
+  size renders this safe, since Haskell must allocate enough room for the whole
+  union, and we still enforce that it is sized equivalently.
+- ABI assertions: below SDL 3.2.12, `SDL_MouseWheelEvent`'s pre-growth
+  layout (48 bytes, 8-aligned) is asserted instead of nothing.
+- ABI assertion messages state the SDL version the bindings were
+  generated from and how to report or fix a mismatch.
+- README: `ABI verification` section (every assertion message pointed
+  at it; it did not exist).
+- README: a native Windows `cabal` recipe (Git Bash against MSYS2
+  UCRT64) next to the Stack one, as reported working by a user.
 - README: correct the function-like macro caveat. hs-bindgen translates
   macro bodies to Haskell functions on a best-effort basis; 31 of SDL's
   function-like macros already ship in the raw `SDL3.Sys.Bindgen.*`

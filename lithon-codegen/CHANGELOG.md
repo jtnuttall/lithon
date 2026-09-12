@@ -1,5 +1,23 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- SDL3 ABI assertions: a per-struct layout policy (`exact` | `prefix`).
+  `prefix` keeps every field offset and the alignment exact and asserts
+  `sizeof >=`; it is derived for every member type of a named union and
+  overridable either way from `versions.json` (`structs.<name>.layout`).
+- `versions.json`: `before: { sizeof, alignment }` is required alongside
+  `sizeof-since`; the emitter asserts the baked layout at or above the gate
+  and the pre-growth layout in an `#else` branch below it.
+- The assertion TU defines `LITHON_ABI_HELP` (generation SDL version, README
+  pointer, issue tracker, PR suggestion), appended to every message by
+  literal concatenation.
+- Tests: `Sdl3.VersionsTest` (registry codec) and an extended
+  `abi-toy-assertions` golden covering both policies, both override
+  directions, and the pre-growth branch.
+
 ## 0.1.1.0 - 2026-07-30
 
 ### Changed

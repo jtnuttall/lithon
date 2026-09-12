@@ -1,12 +1,12 @@
 {
   "files": {
-    "CHANGELOG.md": "rhv3:7e1ce5ce0e35b69a",
+    "CHANGELOG.md": "rhv3:69ed31d68d9a4966",
     "LICENSE": "rhv3:e95315cef45a1f9f",
     "LICENSE_SDL": "rhv3:3505fb0514288c9e",
     "LICENSE_c-expr-runtime": "rhv3:5134b2c7a1f80df7",
     "LICENSE_hs-bindgen-runtime": "rhv3:5134b2c7a1f80df7",
-    "README.md": "rhv3:5786c683dfef935a",
-    "cbits/abi_assertions.c": "rhv3:e4b848d254265279",
+    "README.md": "rhv3:8def1b383fe86379",
+    "cbits/abi_assertions.c": "rhv3:c894e4415fc8aedf",
     "package.yaml": "rhv3:878638a639867df7",
     "runtime-cexpr/C/Expr/HostPlatform.hs": "rhv3:e094390014d60e82",
     "runtime-cexpr/C/Expr/Posix32.hs": "rhv3:9913248712ad5f23",
