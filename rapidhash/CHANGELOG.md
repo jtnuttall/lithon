@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.2.0.0 - 2026-09-12
+
 ### Added
 
 - `rapidhashMicro` is now bound
