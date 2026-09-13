@@ -73,7 +73,7 @@ import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 sDL_ASSERT_LEVEL :: BG.CInt
 sDL_ASSERT_LEVEL = (2 :: BG.CInt)
 
--- | [C declaration]: @macro SDL_NULL_WHILE_LOOP_CONDITION@, defined at @SDL3\/SDL_assert.h 273:9@
+-- | [C declaration]: @macro SDL_NULL_WHILE_LOOP_CONDITION@, defined at @SDL3\/SDL_assert.h 281:9@
 sDL_NULL_WHILE_LOOP_CONDITION :: BG.CInt
 sDL_NULL_WHILE_LOOP_CONDITION = (0 :: BG.CInt)
 
@@ -85,7 +85,7 @@ sDL_NULL_WHILE_LOOP_CONDITION = (0 :: BG.CInt)
 --
 --     @since 3.2.0
 --
---     [C declaration]: @enum SDL_AssertState@, defined at @SDL3\/SDL_assert.h 306:14@
+--     [C declaration]: @enum SDL_AssertState@, defined at @SDL3\/SDL_assert.h 314:14@
 newtype SDL_AssertState = SDL_AssertState
   { unwrap :: BG.CUInt
   }
@@ -181,31 +181,31 @@ instance HasCField.HasCField SDL_AssertState "unwrap" where
 
 -- | Retry the assert immediately.
 --
---     [C declaration]: @SDL_ASSERTION_RETRY@, defined at @SDL3\/SDL_assert.h 308:5@
+--     [C declaration]: @SDL_ASSERTION_RETRY@, defined at @SDL3\/SDL_assert.h 316:5@
 pattern SDL_ASSERTION_RETRY :: SDL_AssertState
 pattern SDL_ASSERTION_RETRY = SDL_AssertState 0
 
 -- | Make the debugger trigger a breakpoint.
 --
---     [C declaration]: @SDL_ASSERTION_BREAK@, defined at @SDL3\/SDL_assert.h 309:5@
+--     [C declaration]: @SDL_ASSERTION_BREAK@, defined at @SDL3\/SDL_assert.h 317:5@
 pattern SDL_ASSERTION_BREAK :: SDL_AssertState
 pattern SDL_ASSERTION_BREAK = SDL_AssertState 1
 
 -- | Terminate the program.
 --
---     [C declaration]: @SDL_ASSERTION_ABORT@, defined at @SDL3\/SDL_assert.h 310:5@
+--     [C declaration]: @SDL_ASSERTION_ABORT@, defined at @SDL3\/SDL_assert.h 318:5@
 pattern SDL_ASSERTION_ABORT :: SDL_AssertState
 pattern SDL_ASSERTION_ABORT = SDL_AssertState 2
 
 -- | Ignore the assert.
 --
---     [C declaration]: @SDL_ASSERTION_IGNORE@, defined at @SDL3\/SDL_assert.h 311:5@
+--     [C declaration]: @SDL_ASSERTION_IGNORE@, defined at @SDL3\/SDL_assert.h 319:5@
 pattern SDL_ASSERTION_IGNORE :: SDL_AssertState
 pattern SDL_ASSERTION_IGNORE = SDL_AssertState 3
 
 -- | Ignore the assert from now on.
 --
---     [C declaration]: @SDL_ASSERTION_ALWAYS_IGNORE@, defined at @SDL3\/SDL_assert.h 312:5@
+--     [C declaration]: @SDL_ASSERTION_ALWAYS_IGNORE@, defined at @SDL3\/SDL_assert.h 320:5@
 pattern SDL_ASSERTION_ALWAYS_IGNORE :: SDL_AssertState
 pattern SDL_ASSERTION_ALWAYS_IGNORE = SDL_AssertState 4
 
@@ -215,36 +215,36 @@ pattern SDL_ASSERTION_ALWAYS_IGNORE = SDL_AssertState 4
 --
 --     @since 3.2.0
 --
---     [C declaration]: @struct SDL_AssertData@, defined at @SDL3\/SDL_assert.h 324:16@
+--     [C declaration]: @struct SDL_AssertData@, defined at @SDL3\/SDL_assert.h 332:16@
 data SDL_AssertData = SDL_AssertData
   { always_ignore :: BG.CBool
   -- ^ true if app should always continue when assertion is triggered.
   --
-  --          [C declaration]: @always_ignore@, defined at @SDL3\/SDL_assert.h 326:10@
+  --          [C declaration]: @always_ignore@, defined at @SDL3\/SDL_assert.h 334:10@
   , trigger_count :: BG.CUInt
   -- ^ Number of times this assertion has been triggered.
   --
-  --          [C declaration]: @trigger_count@, defined at @SDL3\/SDL_assert.h 327:18@
+  --          [C declaration]: @trigger_count@, defined at @SDL3\/SDL_assert.h 335:18@
   , condition :: PtrConst.PtrConst BG.CChar
   -- ^ A string of this assert\'s test code.
   --
-  --          [C declaration]: @condition@, defined at @SDL3\/SDL_assert.h 328:17@
+  --          [C declaration]: @condition@, defined at @SDL3\/SDL_assert.h 336:17@
   , filename :: PtrConst.PtrConst BG.CChar
   -- ^ The source file where this assert lives.
   --
-  --          [C declaration]: @filename@, defined at @SDL3\/SDL_assert.h 329:17@
+  --          [C declaration]: @filename@, defined at @SDL3\/SDL_assert.h 337:17@
   , linenum :: BG.CInt
   -- ^ The line in @filename@ where this assert lives.
   --
-  --          [C declaration]: @linenum@, defined at @SDL3\/SDL_assert.h 330:9@
+  --          [C declaration]: @linenum@, defined at @SDL3\/SDL_assert.h 338:9@
   , function :: PtrConst.PtrConst BG.CChar
   -- ^ The name of the function where this assert lives.
   --
-  --          [C declaration]: @function@, defined at @SDL3\/SDL_assert.h 331:17@
+  --          [C declaration]: @function@, defined at @SDL3\/SDL_assert.h 339:17@
   , next :: PtrConst.PtrConst SDL_AssertData
   -- ^ next item in the linked list.
   --
-  --          [C declaration]: @next@, defined at @SDL3\/SDL_assert.h 332:34@
+  --          [C declaration]: @next@, defined at @SDL3\/SDL_assert.h 340:34@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -514,7 +514,7 @@ instance HasCField.HasCField SDL_AssertData "next" where
 
 -- | Auxiliary type used by 'SDL_AssertionHandler'
 --
---     [C declaration]: @SDL_AssertionHandler@, defined at @SDL3\/SDL_assert.h 565:35@
+--     [C declaration]: @SDL_AssertionHandler@, defined at @SDL3\/SDL_assert.h 573:35@
 newtype SDL_AssertionHandler_Aux = SDL_AssertionHandler_Aux
   { unwrap :: PtrConst.PtrConst SDL_AssertData -> BG.Ptr BG.Void -> IO SDL_AssertState
   }
@@ -593,7 +593,7 @@ instance HasCField.HasCField SDL_AssertionHandler_Aux "unwrap" where
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_AssertionHandler@, defined at @SDL3\/SDL_assert.h 565:35@
+--     [C declaration]: @SDL_AssertionHandler@, defined at @SDL3\/SDL_assert.h 573:35@
 newtype SDL_AssertionHandler = SDL_AssertionHandler
   { unwrap :: BG.FunPtr SDL_AssertionHandler_Aux
   }

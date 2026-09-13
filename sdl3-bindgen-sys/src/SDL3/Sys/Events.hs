@@ -95,7 +95,7 @@ import SDL3.Sys.Bindgen.Video qualified
 --                   The safe flavor is 'pumpEventsSafe'
 --                   : may re-enter registered watchers\/filters\/hit tests.
 --
---     [C declaration]: @SDL_PumpEvents@, defined at @SDL3\/SDL_events.h 1100:34@
+--     [C declaration]: @SDL_PumpEvents@, defined at @SDL3\/SDL_events.h 1101:34@
 pumpEvents :: IO ()
 pumpEvents = Unsafe.sDL_PumpEvents
 
@@ -117,7 +117,7 @@ pumpEvents = Unsafe.sDL_PumpEvents
 --                   The unsafe flavor is 'pumpEvents'
 --                   : may re-enter registered watchers\/filters\/hit tests.
 --
---     [C declaration]: @SDL_PumpEvents@, defined at @SDL3\/SDL_events.h 1100:34@
+--     [C declaration]: @SDL_PumpEvents@, defined at @SDL3\/SDL_events.h 1101:34@
 pumpEventsSafe :: IO ()
 pumpEventsSafe = Safe.sDL_PumpEvents
 
@@ -150,7 +150,7 @@ pumpEventsSafe = Safe.sDL_PumpEvents
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_PeepEvents@, defined at @SDL3\/SDL_events.h 1158:33@
+--     [C declaration]: @SDL_PeepEvents@, defined at @SDL3\/SDL_events.h 1159:33@
 peepEvents
   :: BG.Ptr SDL_Event
   -- ^
@@ -212,7 +212,7 @@ peepEvents =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_PeepEvents@, defined at @SDL3\/SDL_events.h 1158:33@
+--     [C declaration]: @SDL_PeepEvents@, defined at @SDL3\/SDL_events.h 1159:33@
 peepEventsSafe
   :: BG.Ptr SDL_Event
   -- ^
@@ -266,7 +266,7 @@ peepEventsSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_HasEvent@, defined at @SDL3\/SDL_events.h 1177:34@
+--     [C declaration]: @SDL_HasEvent@, defined at @SDL3\/SDL_events.h 1178:34@
 hasEvent
   :: BG.Word32
   -- ^
@@ -298,7 +298,7 @@ hasEvent =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_HasEvent@, defined at @SDL3\/SDL_events.h 1177:34@
+--     [C declaration]: @SDL_HasEvent@, defined at @SDL3\/SDL_events.h 1178:34@
 hasEventSafe
   :: BG.Word32
   -- ^
@@ -330,7 +330,7 @@ hasEventSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_HasEvents@, defined at @SDL3\/SDL_events.h 1198:34@
+--     [C declaration]: @SDL_HasEvents@, defined at @SDL3\/SDL_events.h 1199:34@
 hasEvents
   :: BG.Word32
   -- ^
@@ -367,7 +367,7 @@ hasEvents =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_HasEvents@, defined at @SDL3\/SDL_events.h 1198:34@
+--     [C declaration]: @SDL_HasEvents@, defined at @SDL3\/SDL_events.h 1199:34@
 hasEventsSafe
   :: BG.Word32
   -- ^
@@ -408,7 +408,7 @@ hasEventsSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_FlushEvent@, defined at @SDL3\/SDL_events.h 1226:34@
+--     [C declaration]: @SDL_FlushEvent@, defined at @SDL3\/SDL_events.h 1227:34@
 flushEvent
   :: BG.Word32
   -- ^
@@ -443,7 +443,7 @@ flushEvent =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_FlushEvent@, defined at @SDL3\/SDL_events.h 1226:34@
+--     [C declaration]: @SDL_FlushEvent@, defined at @SDL3\/SDL_events.h 1227:34@
 flushEventSafe
   :: BG.Word32
   -- ^
@@ -476,7 +476,7 @@ flushEventSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_FlushEvents@, defined at @SDL3\/SDL_events.h 1253:34@
+--     [C declaration]: @SDL_FlushEvents@, defined at @SDL3\/SDL_events.h 1254:34@
 flushEvents
   :: BG.Word32
   -- ^
@@ -515,7 +515,7 @@ flushEvents =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_FlushEvents@, defined at @SDL3\/SDL_events.h 1253:34@
+--     [C declaration]: @SDL_FlushEvents@, defined at @SDL3\/SDL_events.h 1254:34@
 flushEventsSafe
   :: BG.Word32
   -- ^
@@ -575,7 +575,7 @@ flushEventsSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_PollEvent@, defined at @SDL3\/SDL_events.h 1304:34@
+--     [C declaration]: @SDL_PollEvent@, defined at @SDL3\/SDL_events.h 1305:34@
 pollEvent
   :: BG.Ptr SDL_Event
   -- ^
@@ -629,7 +629,7 @@ pollEvent =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_PollEvent@, defined at @SDL3\/SDL_events.h 1304:34@
+--     [C declaration]: @SDL_PollEvent@, defined at @SDL3\/SDL_events.h 1305:34@
 pollEventSafe
   :: BG.Ptr SDL_Event
   -- ^
@@ -662,7 +662,7 @@ pollEventSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitEvent@, defined at @SDL3\/SDL_events.h 1328:34@
+--     [C declaration]: @SDL_WaitEvent@, defined at @SDL3\/SDL_events.h 1329:34@
 waitEvent
   :: BG.Ptr SDL_Event
   -- ^
@@ -695,7 +695,7 @@ waitEvent =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitEvent@, defined at @SDL3\/SDL_events.h 1328:34@
+--     [C declaration]: @SDL_WaitEvent@, defined at @SDL3\/SDL_events.h 1329:34@
 waitEventSafe
   :: BG.Ptr SDL_Event
   -- ^
@@ -730,7 +730,7 @@ waitEventSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitEventTimeout@, defined at @SDL3\/SDL_events.h 1358:34@
+--     [C declaration]: @SDL_WaitEventTimeout@, defined at @SDL3\/SDL_events.h 1359:34@
 waitEventTimeout
   :: BG.Ptr SDL_Event
   -- ^
@@ -771,7 +771,7 @@ waitEventTimeout =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitEventTimeout@, defined at @SDL3\/SDL_events.h 1358:34@
+--     [C declaration]: @SDL_WaitEventTimeout@, defined at @SDL3\/SDL_events.h 1359:34@
 waitEventTimeoutSafe
   :: BG.Ptr SDL_Event
   -- ^
@@ -814,7 +814,7 @@ waitEventTimeoutSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_PushEvent@, defined at @SDL3\/SDL_events.h 1392:34@
+--     [C declaration]: @SDL_PushEvent@, defined at @SDL3\/SDL_events.h 1393:34@
 pushEvent
   :: BG.Ptr SDL_Event
   -- ^
@@ -851,7 +851,7 @@ pushEvent =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_PushEvent@, defined at @SDL3\/SDL_events.h 1392:34@
+--     [C declaration]: @SDL_PushEvent@, defined at @SDL3\/SDL_events.h 1393:34@
 pushEventSafe
   :: BG.Ptr SDL_Event
   -- ^
@@ -887,7 +887,7 @@ pushEventSafe =
 --                   The safe flavor is 'setEventFilterSafe'
 --                   : registration; the filter runs from later event calls.
 --
---     [C declaration]: @SDL_SetEventFilter@, defined at @SDL3\/SDL_events.h 1457:34@
+--     [C declaration]: @SDL_SetEventFilter@, defined at @SDL3\/SDL_events.h 1458:34@
 setEventFilter
   :: SDL_EventFilter
   -- ^
@@ -926,7 +926,7 @@ setEventFilter = Unsafe.sDL_SetEventFilter
 --                   The unsafe flavor is 'setEventFilter'
 --                   : registration; the filter runs from later event calls.
 --
---     [C declaration]: @SDL_SetEventFilter@, defined at @SDL3\/SDL_events.h 1457:34@
+--     [C declaration]: @SDL_SetEventFilter@, defined at @SDL3\/SDL_events.h 1458:34@
 setEventFilterSafe
   :: SDL_EventFilter
   -- ^
@@ -960,7 +960,7 @@ setEventFilterSafe = Safe.sDL_SetEventFilter
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetEventFilter@, defined at @SDL3\/SDL_events.h 1476:34@
+--     [C declaration]: @SDL_GetEventFilter@, defined at @SDL3\/SDL_events.h 1477:34@
 getEventFilter
   :: BG.Ptr SDL_EventFilter
   -- ^
@@ -997,7 +997,7 @@ getEventFilter =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetEventFilter@, defined at @SDL3\/SDL_events.h 1476:34@
+--     [C declaration]: @SDL_GetEventFilter@, defined at @SDL3\/SDL_events.h 1477:34@
 getEventFilterSafe
   :: BG.Ptr SDL_EventFilter
   -- ^
@@ -1040,7 +1040,7 @@ getEventFilterSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddEventWatch@, defined at @SDL3\/SDL_events.h 1508:34@
+--     [C declaration]: @SDL_AddEventWatch@, defined at @SDL3\/SDL_events.h 1509:34@
 addEventWatch
   :: SDL_EventFilter
   -- ^
@@ -1083,7 +1083,7 @@ addEventWatch =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddEventWatch@, defined at @SDL3\/SDL_events.h 1508:34@
+--     [C declaration]: @SDL_AddEventWatch@, defined at @SDL3\/SDL_events.h 1509:34@
 addEventWatchSafe
   :: SDL_EventFilter
   -- ^
@@ -1115,7 +1115,7 @@ addEventWatchSafe =
 --                   The safe flavor is 'removeEventWatchSafe'
 --                   : deregistration only.
 --
---     [C declaration]: @SDL_RemoveEventWatch@, defined at @SDL3\/SDL_events.h 1525:34@
+--     [C declaration]: @SDL_RemoveEventWatch@, defined at @SDL3\/SDL_events.h 1526:34@
 removeEventWatch
   :: SDL_EventFilter
   -- ^
@@ -1144,7 +1144,7 @@ removeEventWatch = Unsafe.sDL_RemoveEventWatch
 --                   The unsafe flavor is 'removeEventWatch'
 --                   : deregistration only.
 --
---     [C declaration]: @SDL_RemoveEventWatch@, defined at @SDL3\/SDL_events.h 1525:34@
+--     [C declaration]: @SDL_RemoveEventWatch@, defined at @SDL3\/SDL_events.h 1526:34@
 removeEventWatchSafe
   :: SDL_EventFilter
   -- ^
@@ -1175,7 +1175,7 @@ removeEventWatchSafe = Safe.sDL_RemoveEventWatch
 --                   If your callback is a non-Haskell function pointer that never
 -- re-enters the Haskell runtime, the unsafe import remains available as @SDL3.Sys.Bindgen.Events.Unsafe.sDL_FilterEvents@.
 --
---     [C declaration]: @SDL_FilterEvents@, defined at @SDL3\/SDL_events.h 1545:34@
+--     [C declaration]: @SDL_FilterEvents@, defined at @SDL3\/SDL_events.h 1546:34@
 filterEventsSafe
   :: SDL_EventFilter
   -- ^
@@ -1205,7 +1205,7 @@ filterEventsSafe = Safe.sDL_FilterEvents
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetEventEnabled@, defined at @SDL3\/SDL_events.h 1559:34@
+--     [C declaration]: @SDL_SetEventEnabled@, defined at @SDL3\/SDL_events.h 1560:34@
 setEventEnabled
   :: BG.Word32
   -- ^
@@ -1238,7 +1238,7 @@ setEventEnabled =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetEventEnabled@, defined at @SDL3\/SDL_events.h 1559:34@
+--     [C declaration]: @SDL_SetEventEnabled@, defined at @SDL3\/SDL_events.h 1560:34@
 setEventEnabledSafe
   :: BG.Word32
   -- ^
@@ -1273,7 +1273,7 @@ setEventEnabledSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_EventEnabled@, defined at @SDL3\/SDL_events.h 1573:34@
+--     [C declaration]: @SDL_EventEnabled@, defined at @SDL3\/SDL_events.h 1574:34@
 eventEnabled
   :: BG.Word32
   -- ^
@@ -1303,7 +1303,7 @@ eventEnabled =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_EventEnabled@, defined at @SDL3\/SDL_events.h 1573:34@
+--     [C declaration]: @SDL_EventEnabled@, defined at @SDL3\/SDL_events.h 1574:34@
 eventEnabledSafe
   :: BG.Word32
   -- ^
@@ -1333,7 +1333,7 @@ eventEnabledSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RegisterEvents@, defined at @SDL3\/SDL_events.h 1589:36@
+--     [C declaration]: @SDL_RegisterEvents@, defined at @SDL3\/SDL_events.h 1590:36@
 registerEvents
   :: BG.Int32
   -- ^
@@ -1363,7 +1363,7 @@ registerEvents =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RegisterEvents@, defined at @SDL3\/SDL_events.h 1589:36@
+--     [C declaration]: @SDL_RegisterEvents@, defined at @SDL3\/SDL_events.h 1590:36@
 registerEventsSafe
   :: BG.Int32
   -- ^
@@ -1390,7 +1390,7 @@ registerEventsSafe =
 --                   The safe flavor is 'getWindowFromEventSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetWindowFromEvent@, defined at @SDL3\/SDL_events.h 1605:42@
+--     [C declaration]: @SDL_GetWindowFromEvent@, defined at @SDL3\/SDL_events.h 1606:42@
 getWindowFromEvent
   :: PtrConst.PtrConst SDL_Event
   -- ^
@@ -1415,7 +1415,7 @@ getWindowFromEvent = Unsafe.sDL_GetWindowFromEvent
 --                   The unsafe flavor is 'getWindowFromEvent'
 --                   .
 --
---     [C declaration]: @SDL_GetWindowFromEvent@, defined at @SDL3\/SDL_events.h 1605:42@
+--     [C declaration]: @SDL_GetWindowFromEvent@, defined at @SDL3\/SDL_events.h 1606:42@
 getWindowFromEventSafe
   :: PtrConst.PtrConst SDL_Event
   -- ^
@@ -1451,7 +1451,7 @@ getWindowFromEventSafe = Safe.sDL_GetWindowFromEvent
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetEventDescription@, defined at @SDL3\/SDL_events.h 1637:33@
+--     [C declaration]: @SDL_GetEventDescription@, defined at @SDL3\/SDL_events.h 1638:33@
 getEventDescription
   :: PtrConst.PtrConst SDL_Event
   -- ^
@@ -1499,7 +1499,7 @@ getEventDescription =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetEventDescription@, defined at @SDL3\/SDL_events.h 1637:33@
+--     [C declaration]: @SDL_GetEventDescription@, defined at @SDL3\/SDL_events.h 1638:33@
 getEventDescriptionSafe
   :: PtrConst.PtrConst SDL_Event
   -- ^

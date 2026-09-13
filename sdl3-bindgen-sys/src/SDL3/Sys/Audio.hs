@@ -3724,7 +3724,7 @@ unlockAudioStreamSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetAudioStreamGetCallback@, defined at @SDL3\/SDL_audio.h 1922:34@
+--     [C declaration]: @SDL_SetAudioStreamGetCallback@, defined at @SDL3\/SDL_audio.h 1924:34@
 setAudioStreamGetCallback
   :: BG.Ptr SDL_AudioStream
   -- ^
@@ -3778,7 +3778,7 @@ setAudioStreamGetCallback =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetAudioStreamGetCallback@, defined at @SDL3\/SDL_audio.h 1922:34@
+--     [C declaration]: @SDL_SetAudioStreamGetCallback@, defined at @SDL3\/SDL_audio.h 1924:34@
 setAudioStreamGetCallbackSafe
   :: BG.Ptr SDL_AudioStream
   -- ^
@@ -3834,7 +3834,7 @@ setAudioStreamGetCallbackSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetAudioStreamPutCallback@, defined at @SDL3\/SDL_audio.h 1971:34@
+--     [C declaration]: @SDL_SetAudioStreamPutCallback@, defined at @SDL3\/SDL_audio.h 1973:34@
 setAudioStreamPutCallback
   :: BG.Ptr SDL_AudioStream
   -- ^
@@ -3890,7 +3890,7 @@ setAudioStreamPutCallback =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetAudioStreamPutCallback@, defined at @SDL3\/SDL_audio.h 1971:34@
+--     [C declaration]: @SDL_SetAudioStreamPutCallback@, defined at @SDL3\/SDL_audio.h 1973:34@
 setAudioStreamPutCallbackSafe
   :: BG.Ptr SDL_AudioStream
   -- ^
@@ -3929,7 +3929,7 @@ setAudioStreamPutCallbackSafe =
 --                   The safe flavor is 'destroyAudioStreamSafe'
 --                   : may invoke a pending data-complete callback synchronously.
 --
---     [C declaration]: @SDL_DestroyAudioStream@, defined at @SDL3\/SDL_audio.h 1993:34@
+--     [C declaration]: @SDL_DestroyAudioStream@, defined at @SDL3\/SDL_audio.h 1995:34@
 destroyAudioStream
   :: BG.Ptr SDL_AudioStream
   -- ^
@@ -3956,7 +3956,7 @@ destroyAudioStream = Unsafe.sDL_DestroyAudioStream
 --                   The unsafe flavor is 'destroyAudioStream'
 --                   : may invoke a pending data-complete callback synchronously.
 --
---     [C declaration]: @SDL_DestroyAudioStream@, defined at @SDL3\/SDL_audio.h 1993:34@
+--     [C declaration]: @SDL_DestroyAudioStream@, defined at @SDL3\/SDL_audio.h 1995:34@
 destroyAudioStreamSafe
   :: BG.Ptr SDL_AudioStream
   -- ^
@@ -3999,7 +3999,7 @@ destroyAudioStreamSafe = Safe.sDL_DestroyAudioStream
 --                   The safe flavor is 'openAudioDeviceStreamSafe'
 --                   : callback is optional (NULL bypass) and fires on the audio thread.
 --
---     [C declaration]: @SDL_OpenAudioDeviceStream@, defined at @SDL3\/SDL_audio.h 2056:47@
+--     [C declaration]: @SDL_OpenAudioDeviceStream@, defined at @SDL3\/SDL_audio.h 2058:47@
 openAudioDeviceStream
   :: SDL_AudioDeviceID
   -- ^
@@ -4055,7 +4055,7 @@ openAudioDeviceStream =
 --                   The unsafe flavor is 'openAudioDeviceStream'
 --                   : callback is optional (NULL bypass) and fires on the audio thread.
 --
---     [C declaration]: @SDL_OpenAudioDeviceStream@, defined at @SDL3\/SDL_audio.h 2056:47@
+--     [C declaration]: @SDL_OpenAudioDeviceStream@, defined at @SDL3\/SDL_audio.h 2058:47@
 openAudioDeviceStreamSafe
   :: SDL_AudioDeviceID
   -- ^
@@ -4112,7 +4112,7 @@ openAudioDeviceStreamSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetAudioPostmixCallback@, defined at @SDL3\/SDL_audio.h 2147:34@
+--     [C declaration]: @SDL_SetAudioPostmixCallback@, defined at @SDL3\/SDL_audio.h 2149:34@
 setAudioPostmixCallback
   :: SDL_AudioDeviceID
   -- ^
@@ -4168,7 +4168,7 @@ setAudioPostmixCallback =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetAudioPostmixCallback@, defined at @SDL3\/SDL_audio.h 2147:34@
+--     [C declaration]: @SDL_SetAudioPostmixCallback@, defined at @SDL3\/SDL_audio.h 2149:34@
 setAudioPostmixCallbackSafe
   :: SDL_AudioDeviceID
   -- ^
@@ -4238,7 +4238,7 @@ setAudioPostmixCallbackSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_LoadWAV_IO@, defined at @SDL3\/SDL_audio.h 2228:34@
+--     [C declaration]: @SDL_LoadWAV_IO@, defined at @SDL3\/SDL_audio.h 2230:34@
 loadWAVIO
   :: BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream
   -- ^
@@ -4318,7 +4318,7 @@ loadWAVIO =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_LoadWAV_IO@, defined at @SDL3\/SDL_audio.h 2228:34@
+--     [C declaration]: @SDL_LoadWAV_IO@, defined at @SDL3\/SDL_audio.h 2230:34@
 loadWAVIOSafe
   :: BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream
   -- ^
@@ -4378,7 +4378,7 @@ loadWAVIOSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_LoadWAV@, defined at @SDL3\/SDL_audio.h 2264:34@
+--     [C declaration]: @SDL_LoadWAV@, defined at @SDL3\/SDL_audio.h 2266:34@
 loadWAV
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4433,7 +4433,7 @@ loadWAV =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_LoadWAV@, defined at @SDL3\/SDL_audio.h 2264:34@
+--     [C declaration]: @SDL_LoadWAV@, defined at @SDL3\/SDL_audio.h 2266:34@
 loadWAVSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4484,7 +4484,7 @@ loadWAVSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_MixAudio@, defined at @SDL3\/SDL_audio.h 2300:34@
+--     [C declaration]: @SDL_MixAudio@, defined at @SDL3\/SDL_audio.h 2302:34@
 mixAudio
   :: BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint8
   -- ^
@@ -4540,7 +4540,7 @@ mixAudio =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_MixAudio@, defined at @SDL3\/SDL_audio.h 2300:34@
+--     [C declaration]: @SDL_MixAudio@, defined at @SDL3\/SDL_audio.h 2302:34@
 mixAudioSafe
   :: BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint8
   -- ^
@@ -4592,7 +4592,7 @@ mixAudioSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ConvertAudioSamples@, defined at @SDL3\/SDL_audio.h 2330:34@
+--     [C declaration]: @SDL_ConvertAudioSamples@, defined at @SDL3\/SDL_audio.h 2332:34@
 convertAudioSamples
   :: PtrConst.PtrConst SDL_AudioSpec
   -- ^
@@ -4649,7 +4649,7 @@ convertAudioSamples =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ConvertAudioSamples@, defined at @SDL3\/SDL_audio.h 2330:34@
+--     [C declaration]: @SDL_ConvertAudioSamples@, defined at @SDL3\/SDL_audio.h 2332:34@
 convertAudioSamplesSafe
   :: PtrConst.PtrConst SDL_AudioSpec
   -- ^
@@ -4699,7 +4699,7 @@ convertAudioSamplesSafe =
 --                   The safe flavor is 'getAudioFormatNameSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetAudioFormatName@, defined at @SDL3\/SDL_audio.h 2343:42@
+--     [C declaration]: @SDL_GetAudioFormatName@, defined at @SDL3\/SDL_audio.h 2345:42@
 getAudioFormatName
   :: SDL_AudioFormat
   -- ^
@@ -4722,7 +4722,7 @@ getAudioFormatName = Unsafe.sDL_GetAudioFormatName
 --                   The unsafe flavor is 'getAudioFormatName'
 --                   .
 --
---     [C declaration]: @SDL_GetAudioFormatName@, defined at @SDL3\/SDL_audio.h 2343:42@
+--     [C declaration]: @SDL_GetAudioFormatName@, defined at @SDL3\/SDL_audio.h 2345:42@
 getAudioFormatNameSafe
   :: SDL_AudioFormat
   -- ^
@@ -4750,7 +4750,7 @@ getAudioFormatNameSafe = Safe.sDL_GetAudioFormatName
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetSilenceValueForFormat@, defined at @SDL3\/SDL_audio.h 2359:33@
+--     [C declaration]: @SDL_GetSilenceValueForFormat@, defined at @SDL3\/SDL_audio.h 2361:33@
 getSilenceValueForFormat
   :: SDL_AudioFormat
   -- ^
@@ -4780,7 +4780,7 @@ getSilenceValueForFormat =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetSilenceValueForFormat@, defined at @SDL3\/SDL_audio.h 2359:33@
+--     [C declaration]: @SDL_GetSilenceValueForFormat@, defined at @SDL3\/SDL_audio.h 2361:33@
 getSilenceValueForFormatSafe
   :: SDL_AudioFormat
   -- ^

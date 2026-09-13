@@ -87,7 +87,7 @@ hs_bindgen_1ac37dfe626398fd =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_ReportAssertion@, defined at @SDL3\/SDL_assert.h 350:45@
+--     [C declaration]: @SDL_ReportAssertion@, defined at @SDL3\/SDL_assert.h 358:45@
 sDL_ReportAssertion
   :: BG.Ptr SDL_AssertData
   -- ^
@@ -137,7 +137,7 @@ hs_bindgen_29fb2e1c47c9de9d =
 --
 --     [See also]: 'sDL_GetAssertionHandler'
 --
---     [C declaration]: @SDL_SetAssertionHandler@, defined at @SDL3\/SDL_assert.h 591:34@
+--     [C declaration]: @SDL_SetAssertionHandler@, defined at @SDL3\/SDL_assert.h 599:34@
 sDL_SetAssertionHandler
   :: SDL_AssertionHandler
   -- ^
@@ -172,7 +172,7 @@ hs_bindgen_95e7fb7c037fc4ae =
 --
 --     [See also]: 'sDL_GetAssertionHandler'
 --
---     [C declaration]: @SDL_GetDefaultAssertionHandler@, defined at @SDL3\/SDL_assert.h 612:50@
+--     [C declaration]: @SDL_GetDefaultAssertionHandler@, defined at @SDL3\/SDL_assert.h 620:50@
 sDL_GetDefaultAssertionHandler :: IO SDL_AssertionHandler
 sDL_GetDefaultAssertionHandler =
   hs_bindgen_95e7fb7c037fc4ae
@@ -204,7 +204,7 @@ hs_bindgen_b7b44249a97e8ea4 =
 --
 --     [See also]: 'sDL_SetAssertionHandler'
 --
---     [C declaration]: @SDL_GetAssertionHandler@, defined at @SDL3\/SDL_assert.h 637:50@
+--     [C declaration]: @SDL_GetAssertionHandler@, defined at @SDL3\/SDL_assert.h 645:50@
 sDL_GetAssertionHandler
   :: BG.Ptr (BG.Ptr BG.Void)
   -- ^
@@ -248,7 +248,7 @@ hs_bindgen_3b5bb811b27af0d4 =
 --
 --     [See also]: 'sDL_ResetAssertionReport'
 --
---     [C declaration]: @SDL_GetAssertionReport@, defined at @SDL3\/SDL_assert.h 671:52@
+--     [C declaration]: @SDL_GetAssertionReport@, defined at @SDL3\/SDL_assert.h 679:52@
 sDL_GetAssertionReport :: IO (PtrConst.PtrConst SDL_AssertData)
 sDL_GetAssertionReport = hs_bindgen_3b5bb811b27af0d4
 
@@ -272,7 +272,7 @@ hs_bindgen_b5d43ee02d99641a =
 --
 --     [See also]: 'sDL_GetAssertionReport'
 --
---     [C declaration]: @SDL_ResetAssertionReport@, defined at @SDL3\/SDL_assert.h 689:34@
+--     [C declaration]: @SDL_ResetAssertionReport@, defined at @SDL3\/SDL_assert.h 697:34@
 sDL_ResetAssertionReport :: IO ()
 sDL_ResetAssertionReport =
   hs_bindgen_b5d43ee02d99641a

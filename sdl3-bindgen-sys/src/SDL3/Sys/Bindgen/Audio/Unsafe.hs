@@ -2484,7 +2484,7 @@ hs_bindgen_dc2f74eae1a93c31 =
 --
 --     [See also]: 'sDL_SetAudioStreamPutCallback'
 --
---     [C declaration]: @SDL_SetAudioStreamGetCallback@, defined at @SDL3\/SDL_audio.h 1922:34@
+--     [C declaration]: @SDL_SetAudioStreamGetCallback@, defined at @SDL3\/SDL_audio.h 1924:34@
 sDL_SetAudioStreamGetCallback
   :: BG.Ptr SDL_AudioStream
   -- ^
@@ -2545,7 +2545,7 @@ hs_bindgen_146f387abf38d92a =
 --
 --     [See also]: 'sDL_SetAudioStreamGetCallback'
 --
---     [C declaration]: @SDL_SetAudioStreamPutCallback@, defined at @SDL3\/SDL_audio.h 1971:34@
+--     [C declaration]: @SDL_SetAudioStreamPutCallback@, defined at @SDL3\/SDL_audio.h 1973:34@
 sDL_SetAudioStreamPutCallback
   :: BG.Ptr SDL_AudioStream
   -- ^
@@ -2588,7 +2588,7 @@ hs_bindgen_49f1ea9de2669438 =
 --
 --     [See also]: 'sDL_CreateAudioStream'
 --
---     [C declaration]: @SDL_DestroyAudioStream@, defined at @SDL3\/SDL_audio.h 1993:34@
+--     [C declaration]: @SDL_DestroyAudioStream@, defined at @SDL3\/SDL_audio.h 1995:34@
 sDL_DestroyAudioStream
   :: BG.Ptr SDL_AudioStream
   -- ^
@@ -2644,7 +2644,7 @@ hs_bindgen_c626b93042e17a97 =
 --
 --     [See also]: 'sDL_GetAudioStreamDevice', 'sDL_ResumeAudioStreamDevice'
 --
---     [C declaration]: @SDL_OpenAudioDeviceStream@, defined at @SDL3\/SDL_audio.h 2056:47@
+--     [C declaration]: @SDL_OpenAudioDeviceStream@, defined at @SDL3\/SDL_audio.h 2058:47@
 sDL_OpenAudioDeviceStream
   :: SDL_AudioDeviceID
   -- ^
@@ -2709,7 +2709,7 @@ hs_bindgen_2207c9d46d721c22 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_SetAudioPostmixCallback@, defined at @SDL3\/SDL_audio.h 2147:34@
+--     [C declaration]: @SDL_SetAudioPostmixCallback@, defined at @SDL3\/SDL_audio.h 2149:34@
 sDL_SetAudioPostmixCallback
   :: SDL_AudioDeviceID
   -- ^
@@ -2788,7 +2788,7 @@ hs_bindgen_7d7f4ec89c051bd9 =
 --
 --     [See also]: SDL_free, 'sDL_LoadWAV'
 --
---     [C declaration]: @SDL_LoadWAV_IO@, defined at @SDL3\/SDL_audio.h 2228:34@
+--     [C declaration]: @SDL_LoadWAV_IO@, defined at @SDL3\/SDL_audio.h 2230:34@
 sDL_LoadWAV_IO
   :: BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream
   -- ^
@@ -2852,7 +2852,7 @@ hs_bindgen_618ebcf6bf6e8650 =
 --
 --     [See also]: SDL_free, 'sDL_LoadWAV_IO'
 --
---     [C declaration]: @SDL_LoadWAV@, defined at @SDL3\/SDL_audio.h 2264:34@
+--     [C declaration]: @SDL_LoadWAV@, defined at @SDL3\/SDL_audio.h 2266:34@
 sDL_LoadWAV
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -2910,7 +2910,7 @@ hs_bindgen_da6d00b62c3fdd0b =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_MixAudio@, defined at @SDL3\/SDL_audio.h 2300:34@
+--     [C declaration]: @SDL_MixAudio@, defined at @SDL3\/SDL_audio.h 2302:34@
 sDL_MixAudio
   :: BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint8
   -- ^
@@ -2970,7 +2970,7 @@ hs_bindgen_a6d61748227d6f0b =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_ConvertAudioSamples@, defined at @SDL3\/SDL_audio.h 2330:34@
+--     [C declaration]: @SDL_ConvertAudioSamples@, defined at @SDL3\/SDL_audio.h 2332:34@
 sDL_ConvertAudioSamples
   :: PtrConst.PtrConst SDL_AudioSpec
   -- ^
@@ -3020,7 +3020,7 @@ hs_bindgen_43b528b55cc775cf =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetAudioFormatName@, defined at @SDL3\/SDL_audio.h 2343:42@
+--     [C declaration]: @SDL_GetAudioFormatName@, defined at @SDL3\/SDL_audio.h 2345:42@
 sDL_GetAudioFormatName
   :: SDL_AudioFormat
   -- ^
@@ -3052,7 +3052,7 @@ hs_bindgen_0154acf0cb371eab =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetSilenceValueForFormat@, defined at @SDL3\/SDL_audio.h 2359:33@
+--     [C declaration]: @SDL_GetSilenceValueForFormat@, defined at @SDL3\/SDL_audio.h 2361:33@
 sDL_GetSilenceValueForFormat
   :: SDL_AudioFormat
   -- ^

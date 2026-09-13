@@ -71,7 +71,7 @@ import SDL3.Sys.Bindgen.Hints.Unsafe qualified as Unsafe
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetHintWithPriority@, defined at @SDL3\/SDL_hints.h 4823:34@
+--     [C declaration]: @SDL_SetHintWithPriority@, defined at @SDL3\/SDL_hints.h 4870:34@
 setHintWithPriority
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -113,7 +113,7 @@ setHintWithPriority =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetHintWithPriority@, defined at @SDL3\/SDL_hints.h 4823:34@
+--     [C declaration]: @SDL_SetHintWithPriority@, defined at @SDL3\/SDL_hints.h 4870:34@
 setHintWithPrioritySafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -155,7 +155,7 @@ setHintWithPrioritySafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetHint@, defined at @SDL3\/SDL_hints.h 4845:34@
+--     [C declaration]: @SDL_SetHint@, defined at @SDL3\/SDL_hints.h 4892:34@
 setHint
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -192,7 +192,7 @@ setHint =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetHint@, defined at @SDL3\/SDL_hints.h 4845:34@
+--     [C declaration]: @SDL_SetHint@, defined at @SDL3\/SDL_hints.h 4892:34@
 setHintSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -228,7 +228,7 @@ setHintSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ResetHint@, defined at @SDL3\/SDL_hints.h 4865:34@
+--     [C declaration]: @SDL_ResetHint@, defined at @SDL3\/SDL_hints.h 4912:34@
 resetHint
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -259,7 +259,7 @@ resetHint =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ResetHint@, defined at @SDL3\/SDL_hints.h 4865:34@
+--     [C declaration]: @SDL_ResetHint@, defined at @SDL3\/SDL_hints.h 4912:34@
 resetHintSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -285,7 +285,7 @@ resetHintSafe =
 --                   The safe flavor is 'resetHintsSafe'
 --                   : runs registered hint callbacks synchronously.
 --
---     [C declaration]: @SDL_ResetHints@, defined at @SDL3\/SDL_hints.h 4880:34@
+--     [C declaration]: @SDL_ResetHints@, defined at @SDL3\/SDL_hints.h 4927:34@
 resetHints :: IO ()
 resetHints = Unsafe.sDL_ResetHints
 
@@ -305,7 +305,7 @@ resetHints = Unsafe.sDL_ResetHints
 --                   The unsafe flavor is 'resetHints'
 --                   : runs registered hint callbacks synchronously.
 --
---     [C declaration]: @SDL_ResetHints@, defined at @SDL3\/SDL_hints.h 4880:34@
+--     [C declaration]: @SDL_ResetHints@, defined at @SDL3\/SDL_hints.h 4927:34@
 resetHintsSafe :: IO ()
 resetHintsSafe = Safe.sDL_ResetHints
 
@@ -325,7 +325,7 @@ resetHintsSafe = Safe.sDL_ResetHints
 --                   The safe flavor is 'getHintSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetHint@, defined at @SDL3\/SDL_hints.h 4895:41@
+--     [C declaration]: @SDL_GetHint@, defined at @SDL3\/SDL_hints.h 4942:41@
 getHint
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -350,7 +350,7 @@ getHint = Unsafe.sDL_GetHint
 --                   The unsafe flavor is 'getHint'
 --                   .
 --
---     [C declaration]: @SDL_GetHint@, defined at @SDL3\/SDL_hints.h 4895:41@
+--     [C declaration]: @SDL_GetHint@, defined at @SDL3\/SDL_hints.h 4942:41@
 getHintSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -378,7 +378,7 @@ getHintSafe = Safe.sDL_GetHint
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetHintBoolean@, defined at @SDL3\/SDL_hints.h 4912:34@
+--     [C declaration]: @SDL_GetHintBoolean@, defined at @SDL3\/SDL_hints.h 4959:34@
 getHintBoolean
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -413,7 +413,7 @@ getHintBoolean =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetHintBoolean@, defined at @SDL3\/SDL_hints.h 4912:34@
+--     [C declaration]: @SDL_GetHintBoolean@, defined at @SDL3\/SDL_hints.h 4959:34@
 getHintBooleanSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -452,7 +452,7 @@ getHintBooleanSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddHintCallback@, defined at @SDL3\/SDL_hints.h 4955:34@
+--     [C declaration]: @SDL_AddHintCallback@, defined at @SDL3\/SDL_hints.h 5002:34@
 addHintCallbackSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -487,7 +487,7 @@ addHintCallbackSafe =
 --                   The safe flavor is 'removeHintCallbackSafe'
 --                   : deregistration only.
 --
---     [C declaration]: @SDL_RemoveHintCallback@, defined at @SDL3\/SDL_hints.h 4971:34@
+--     [C declaration]: @SDL_RemoveHintCallback@, defined at @SDL3\/SDL_hints.h 5018:34@
 removeHintCallback
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -518,7 +518,7 @@ removeHintCallback = Unsafe.sDL_RemoveHintCallback
 --                   The unsafe flavor is 'removeHintCallback'
 --                   : deregistration only.
 --
---     [C declaration]: @SDL_RemoveHintCallback@, defined at @SDL3\/SDL_hints.h 4971:34@
+--     [C declaration]: @SDL_RemoveHintCallback@, defined at @SDL3\/SDL_hints.h 5018:34@
 removeHintCallbackSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^

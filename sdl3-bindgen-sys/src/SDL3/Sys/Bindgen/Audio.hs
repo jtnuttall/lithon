@@ -870,7 +870,7 @@ instance HasCField.HasCField SDL_AudioStreamDataCompleteCallback "unwrap" where
 
 -- | Auxiliary type used by 'SDL_AudioStreamCallback'
 --
---     [C declaration]: @SDL_AudioStreamCallback@, defined at @SDL3\/SDL_audio.h 1876:24@
+--     [C declaration]: @SDL_AudioStreamCallback@, defined at @SDL3\/SDL_audio.h 1878:24@
 newtype SDL_AudioStreamCallback_Aux = SDL_AudioStreamCallback_Aux
   { unwrap :: BG.Ptr BG.Void -> BG.Ptr SDL_AudioStream -> BG.CInt -> BG.CInt -> IO ()
   }
@@ -949,6 +949,8 @@ instance HasCField.HasCField SDL_AudioStreamCallback_Aux "unwrap" where
 --
 --     This callback is not required to do anything. Generally this is useful for adding\/reading data on demand, and the app will often put\/get data as appropriate, but the system goes on with the data currently available to it if this callback does nothing.
 --
+--     Do not call @SDL_DestroyAudioStream()@ on @stream@ during this callback.
+--
 --     [@stream@]: the SDL audio stream associated with this callback.
 --
 --     [@additional_amount@]: the amount of data, in bytes, that is needed right now.
@@ -963,7 +965,7 @@ instance HasCField.HasCField SDL_AudioStreamCallback_Aux "unwrap" where
 --
 --     [See also]: 'sDL_SetAudioStreamGetCallback', 'sDL_SetAudioStreamPutCallback'
 --
---     [C declaration]: @SDL_AudioStreamCallback@, defined at @SDL3\/SDL_audio.h 1876:24@
+--     [C declaration]: @SDL_AudioStreamCallback@, defined at @SDL3\/SDL_audio.h 1878:24@
 newtype SDL_AudioStreamCallback = SDL_AudioStreamCallback
   { unwrap :: BG.FunPtr SDL_AudioStreamCallback_Aux
   }
@@ -1002,7 +1004,7 @@ instance HasCField.HasCField SDL_AudioStreamCallback "unwrap" where
 
 -- | Auxiliary type used by 'SDL_AudioPostmixCallback'
 --
---     [C declaration]: @SDL_AudioPostmixCallback@, defined at @SDL3\/SDL_audio.h 2093:24@
+--     [C declaration]: @SDL_AudioPostmixCallback@, defined at @SDL3\/SDL_audio.h 2095:24@
 newtype SDL_AudioPostmixCallback_Aux = SDL_AudioPostmixCallback_Aux
   { unwrap :: BG.Ptr BG.Void -> PtrConst.PtrConst SDL_AudioSpec -> BG.Ptr BG.CFloat -> BG.CInt -> IO ()
   }
@@ -1095,7 +1097,7 @@ instance HasCField.HasCField SDL_AudioPostmixCallback_Aux "unwrap" where
 --
 --     [See also]: 'sDL_SetAudioPostmixCallback'
 --
---     [C declaration]: @SDL_AudioPostmixCallback@, defined at @SDL3\/SDL_audio.h 2093:24@
+--     [C declaration]: @SDL_AudioPostmixCallback@, defined at @SDL3\/SDL_audio.h 2095:24@
 newtype SDL_AudioPostmixCallback = SDL_AudioPostmixCallback
   { unwrap :: BG.FunPtr SDL_AudioPostmixCallback_Aux
   }

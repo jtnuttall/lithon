@@ -130,7 +130,7 @@ hs_bindgen_a1124b908df29b8d =
 --
 --     [See also]: 'sDL_GetHint', 'sDL_ResetHint', 'sDL_SetHint'
 --
---     [C declaration]: @SDL_SetHintWithPriority@, defined at @SDL3\/SDL_hints.h 4823:34@
+--     [C declaration]: @SDL_SetHintWithPriority@, defined at @SDL3\/SDL_hints.h 4870:34@
 sDL_SetHintWithPriority
   :: BG.FunPtr
        (PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> SDL_HintPriority -> IO BG.CBool)
@@ -166,7 +166,7 @@ hs_bindgen_67e0f6aa5619e9be =
 --
 --     [See also]: 'sDL_GetHint', 'sDL_ResetHint', 'sDL_SetHintWithPriority'
 --
---     [C declaration]: @SDL_SetHint@, defined at @SDL3\/SDL_hints.h 4845:34@
+--     [C declaration]: @SDL_SetHint@, defined at @SDL3\/SDL_hints.h 4892:34@
 sDL_SetHint :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> IO BG.CBool)
 sDL_SetHint =
   BG.unsafePerformIO hs_bindgen_67e0f6aa5619e9be
@@ -197,7 +197,7 @@ hs_bindgen_978a3ef046005881 =
 --
 --     [See also]: 'sDL_SetHint', 'sDL_ResetHints'
 --
---     [C declaration]: @SDL_ResetHint@, defined at @SDL3\/SDL_hints.h 4865:34@
+--     [C declaration]: @SDL_ResetHint@, defined at @SDL3\/SDL_hints.h 4912:34@
 sDL_ResetHint :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO BG.CBool)
 sDL_ResetHint =
   BG.unsafePerformIO hs_bindgen_978a3ef046005881
@@ -224,7 +224,7 @@ hs_bindgen_55759cca20a8fc7a =
 --
 --     [See also]: 'sDL_ResetHint'
 --
---     [C declaration]: @SDL_ResetHints@, defined at @SDL3\/SDL_hints.h 4880:34@
+--     [C declaration]: @SDL_ResetHints@, defined at @SDL3\/SDL_hints.h 4927:34@
 sDL_ResetHints :: BG.FunPtr (IO ())
 sDL_ResetHints =
   BG.unsafePerformIO hs_bindgen_55759cca20a8fc7a
@@ -254,7 +254,7 @@ hs_bindgen_76a1a86d4bb7fe80 =
 --
 --     [See also]: 'sDL_SetHint', 'sDL_SetHintWithPriority'
 --
---     [C declaration]: @SDL_GetHint@, defined at @SDL3\/SDL_hints.h 4895:41@
+--     [C declaration]: @SDL_GetHint@, defined at @SDL3\/SDL_hints.h 4942:41@
 sDL_GetHint :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO (PtrConst.PtrConst BG.CChar))
 sDL_GetHint =
   BG.unsafePerformIO hs_bindgen_76a1a86d4bb7fe80
@@ -286,7 +286,7 @@ hs_bindgen_31d7e0760df235bb =
 --
 --     [See also]: 'sDL_GetHint', 'sDL_SetHint'
 --
---     [C declaration]: @SDL_GetHintBoolean@, defined at @SDL3\/SDL_hints.h 4912:34@
+--     [C declaration]: @SDL_GetHintBoolean@, defined at @SDL3\/SDL_hints.h 4959:34@
 sDL_GetHintBoolean :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> BG.CBool -> IO BG.CBool)
 sDL_GetHintBoolean =
   BG.unsafePerformIO hs_bindgen_31d7e0760df235bb
@@ -322,7 +322,7 @@ hs_bindgen_e8ea72aae64e3056 =
 --
 --     [See also]: 'sDL_RemoveHintCallback'
 --
---     [C declaration]: @SDL_AddHintCallback@, defined at @SDL3\/SDL_hints.h 4955:34@
+--     [C declaration]: @SDL_AddHintCallback@, defined at @SDL3\/SDL_hints.h 5002:34@
 sDL_AddHintCallback
   :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> SDL_HintCallback -> BG.Ptr BG.Void -> IO BG.CBool)
 sDL_AddHintCallback =
@@ -355,7 +355,7 @@ hs_bindgen_266d8b3206b888d9 =
 --
 --     [See also]: 'sDL_AddHintCallback'
 --
---     [C declaration]: @SDL_RemoveHintCallback@, defined at @SDL3\/SDL_hints.h 4971:34@
+--     [C declaration]: @SDL_RemoveHintCallback@, defined at @SDL3\/SDL_hints.h 5018:34@
 sDL_RemoveHintCallback
   :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> SDL_HintCallback -> BG.Ptr BG.Void -> IO ())
 sDL_RemoveHintCallback =

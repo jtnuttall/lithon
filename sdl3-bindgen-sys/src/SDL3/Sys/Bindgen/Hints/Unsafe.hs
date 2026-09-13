@@ -109,7 +109,7 @@ hs_bindgen_cb82b52002f46100 =
 --
 --     [See also]: 'sDL_GetHint', 'sDL_ResetHint', 'sDL_SetHint'
 --
---     [C declaration]: @SDL_SetHintWithPriority@, defined at @SDL3\/SDL_hints.h 4823:34@
+--     [C declaration]: @SDL_SetHintWithPriority@, defined at @SDL3\/SDL_hints.h 4870:34@
 sDL_SetHintWithPriority
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -153,7 +153,7 @@ hs_bindgen_3f922ee38b008540 =
 --
 --     [See also]: 'sDL_GetHint', 'sDL_ResetHint', 'sDL_SetHintWithPriority'
 --
---     [C declaration]: @SDL_SetHint@, defined at @SDL3\/SDL_hints.h 4845:34@
+--     [C declaration]: @SDL_SetHint@, defined at @SDL3\/SDL_hints.h 4892:34@
 sDL_SetHint
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -191,7 +191,7 @@ hs_bindgen_3d1b9b2531cc28fe =
 --
 --     [See also]: 'sDL_SetHint', 'sDL_ResetHints'
 --
---     [C declaration]: @SDL_ResetHint@, defined at @SDL3\/SDL_hints.h 4865:34@
+--     [C declaration]: @SDL_ResetHint@, defined at @SDL3\/SDL_hints.h 4912:34@
 sDL_ResetHint
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -220,7 +220,7 @@ hs_bindgen_55d0a8bf7baacba4 =
 --
 --     [See also]: 'sDL_ResetHint'
 --
---     [C declaration]: @SDL_ResetHints@, defined at @SDL3\/SDL_hints.h 4880:34@
+--     [C declaration]: @SDL_ResetHints@, defined at @SDL3\/SDL_hints.h 4927:34@
 sDL_ResetHints :: IO ()
 sDL_ResetHints = hs_bindgen_55d0a8bf7baacba4
 
@@ -247,7 +247,7 @@ hs_bindgen_637ba7b5c2a54073 =
 --
 --     [See also]: 'sDL_SetHint', 'sDL_SetHintWithPriority'
 --
---     [C declaration]: @SDL_GetHint@, defined at @SDL3\/SDL_hints.h 4895:41@
+--     [C declaration]: @SDL_GetHint@, defined at @SDL3\/SDL_hints.h 4942:41@
 sDL_GetHint
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -281,7 +281,7 @@ hs_bindgen_df016d033ceb7b47 =
 --
 --     [See also]: 'sDL_GetHint', 'sDL_SetHint'
 --
---     [C declaration]: @SDL_GetHintBoolean@, defined at @SDL3\/SDL_hints.h 4912:34@
+--     [C declaration]: @SDL_GetHintBoolean@, defined at @SDL3\/SDL_hints.h 4959:34@
 sDL_GetHintBoolean
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -323,7 +323,7 @@ hs_bindgen_5d061e74b3f3440a =
 --
 --     [See also]: 'sDL_RemoveHintCallback'
 --
---     [C declaration]: @SDL_AddHintCallback@, defined at @SDL3\/SDL_hints.h 4955:34@
+--     [C declaration]: @SDL_AddHintCallback@, defined at @SDL3\/SDL_hints.h 5002:34@
 sDL_AddHintCallback
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -365,7 +365,7 @@ hs_bindgen_7b0a9c503e7af491 =
 --
 --     [See also]: 'sDL_AddHintCallback'
 --
---     [C declaration]: @SDL_RemoveHintCallback@, defined at @SDL3\/SDL_hints.h 4971:34@
+--     [C declaration]: @SDL_RemoveHintCallback@, defined at @SDL3\/SDL_hints.h 5018:34@
 sDL_RemoveHintCallback
   :: PtrConst.PtrConst BG.CChar
   -- ^

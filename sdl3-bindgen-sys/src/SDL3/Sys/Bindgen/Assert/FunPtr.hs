@@ -109,7 +109,7 @@ hs_bindgen_3242a9f392e3cbbb =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_ReportAssertion@, defined at @SDL3\/SDL_assert.h 350:45@
+--     [C declaration]: @SDL_ReportAssertion@, defined at @SDL3\/SDL_assert.h 358:45@
 sDL_ReportAssertion
   :: BG.FunPtr
        ( BG.Ptr SDL_AssertData
@@ -151,7 +151,7 @@ hs_bindgen_d3c978a8cd9d0fb4 =
 --
 --     [See also]: 'sDL_GetAssertionHandler'
 --
---     [C declaration]: @SDL_SetAssertionHandler@, defined at @SDL3\/SDL_assert.h 591:34@
+--     [C declaration]: @SDL_SetAssertionHandler@, defined at @SDL3\/SDL_assert.h 599:34@
 sDL_SetAssertionHandler :: BG.FunPtr (SDL_AssertionHandler -> BG.Ptr BG.Void -> IO ())
 sDL_SetAssertionHandler =
   BG.unsafePerformIO hs_bindgen_d3c978a8cd9d0fb4
@@ -180,7 +180,7 @@ hs_bindgen_9ee5171cfc759fff =
 --
 --     [See also]: 'sDL_GetAssertionHandler'
 --
---     [C declaration]: @SDL_GetDefaultAssertionHandler@, defined at @SDL3\/SDL_assert.h 612:50@
+--     [C declaration]: @SDL_GetDefaultAssertionHandler@, defined at @SDL3\/SDL_assert.h 620:50@
 sDL_GetDefaultAssertionHandler :: BG.FunPtr (IO SDL_AssertionHandler)
 sDL_GetDefaultAssertionHandler =
   BG.unsafePerformIO hs_bindgen_9ee5171cfc759fff
@@ -213,7 +213,7 @@ hs_bindgen_d86a645db34b2ab2 =
 --
 --     [See also]: 'sDL_SetAssertionHandler'
 --
---     [C declaration]: @SDL_GetAssertionHandler@, defined at @SDL3\/SDL_assert.h 637:50@
+--     [C declaration]: @SDL_GetAssertionHandler@, defined at @SDL3\/SDL_assert.h 645:50@
 sDL_GetAssertionHandler :: BG.FunPtr (BG.Ptr (BG.Ptr BG.Void) -> IO SDL_AssertionHandler)
 sDL_GetAssertionHandler =
   BG.unsafePerformIO hs_bindgen_d86a645db34b2ab2
@@ -255,7 +255,7 @@ hs_bindgen_81f7661412c040b9 =
 --
 --     [See also]: 'sDL_ResetAssertionReport'
 --
---     [C declaration]: @SDL_GetAssertionReport@, defined at @SDL3\/SDL_assert.h 671:52@
+--     [C declaration]: @SDL_GetAssertionReport@, defined at @SDL3\/SDL_assert.h 679:52@
 sDL_GetAssertionReport :: BG.FunPtr (IO (PtrConst.PtrConst SDL_AssertData))
 sDL_GetAssertionReport =
   BG.unsafePerformIO hs_bindgen_81f7661412c040b9
@@ -282,7 +282,7 @@ hs_bindgen_d418f82b830fadaf =
 --
 --     [See also]: 'sDL_GetAssertionReport'
 --
---     [C declaration]: @SDL_ResetAssertionReport@, defined at @SDL3\/SDL_assert.h 689:34@
+--     [C declaration]: @SDL_ResetAssertionReport@, defined at @SDL3\/SDL_assert.h 697:34@
 sDL_ResetAssertionReport :: BG.FunPtr (IO ())
 sDL_ResetAssertionReport =
   BG.unsafePerformIO hs_bindgen_d418f82b830fadaf

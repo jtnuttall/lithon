@@ -4402,11 +4402,11 @@ sDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_RENDERER_VSYNC_DISABLED@, defined at @SDL3\/SDL_render.h 2780:9@
+-- | [C declaration]: @macro SDL_RENDERER_VSYNC_DISABLED@, defined at @SDL3\/SDL_render.h 2786:9@
 sDL_RENDERER_VSYNC_DISABLED :: BG.CInt
 sDL_RENDERER_VSYNC_DISABLED = (0 :: BG.CInt)
 
--- | [C declaration]: @macro SDL_RENDERER_VSYNC_ADAPTIVE@, defined at @SDL3\/SDL_render.h 2781:9@
+-- | [C declaration]: @macro SDL_RENDERER_VSYNC_ADAPTIVE@, defined at @SDL3\/SDL_render.h 2787:9@
 sDL_RENDERER_VSYNC_ADAPTIVE :: BG.CInt
 sDL_RENDERER_VSYNC_ADAPTIVE =
   C.Expr.HostPlatform.negate (1 :: BG.CInt)
@@ -4419,7 +4419,7 @@ sDL_RENDERER_VSYNC_ADAPTIVE =
 --
 --     [See also]: 'sDL_RenderDebugText'
 --
---     [C declaration]: @macro SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE@, defined at @SDL3\/SDL_render.h 2809:9@
+--     [C declaration]: @macro SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE@, defined at @SDL3\/SDL_render.h 2815:9@
 sDL_DEBUG_TEXT_FONT_CHARACTER_SIZE :: BG.CInt
 sDL_DEBUG_TEXT_FONT_CHARACTER_SIZE = (8 :: BG.CInt)
 
@@ -4429,40 +4429,40 @@ sDL_DEBUG_TEXT_FONT_CHARACTER_SIZE = (8 :: BG.CInt)
 --
 --     [See also]: 'sDL_CreateGPURenderState'
 --
---     [C declaration]: @struct SDL_GPURenderStateCreateInfo@, defined at @SDL3\/SDL_render.h 2923:16@
+--     [C declaration]: @struct SDL_GPURenderStateCreateInfo@, defined at @SDL3\/SDL_render.h 2929:16@
 data SDL_GPURenderStateCreateInfo = SDL_GPURenderStateCreateInfo
   { fragment_shader :: BG.Ptr SDL3.Sys.Bindgen.Gpu.SDL_GPUShader
   -- ^ The fragment shader to use when this render state is active
   --
-  --          [C declaration]: @fragment_shader@, defined at @SDL3\/SDL_render.h 2925:20@
+  --          [C declaration]: @fragment_shader@, defined at @SDL3\/SDL_render.h 2931:20@
   , num_sampler_bindings :: SDL3.Sys.Bindgen.Stdinc.Sint32
   -- ^ The number of additional fragment samplers to bind when this render state is active
   --
-  --          [C declaration]: @num_sampler_bindings@, defined at @SDL3\/SDL_render.h 2927:12@
+  --          [C declaration]: @num_sampler_bindings@, defined at @SDL3\/SDL_render.h 2933:12@
   , sampler_bindings :: PtrConst.PtrConst SDL3.Sys.Bindgen.Gpu.SDL_GPUTextureSamplerBinding
   -- ^ Additional fragment samplers to bind when this render state is active
   --
-  --          [C declaration]: @sampler_bindings@, defined at @SDL3\/SDL_render.h 2928:41@
+  --          [C declaration]: @sampler_bindings@, defined at @SDL3\/SDL_render.h 2934:41@
   , num_storage_textures :: SDL3.Sys.Bindgen.Stdinc.Sint32
   -- ^ The number of storage textures to bind when this render state is active
   --
-  --          [C declaration]: @num_storage_textures@, defined at @SDL3\/SDL_render.h 2930:12@
+  --          [C declaration]: @num_storage_textures@, defined at @SDL3\/SDL_render.h 2936:12@
   , storage_textures :: PtrConst.PtrConst (BG.Ptr SDL3.Sys.Bindgen.Gpu.SDL_GPUTexture)
   -- ^ Storage textures to bind when this render state is active
   --
-  --          [C declaration]: @storage_textures@, defined at @SDL3\/SDL_render.h 2931:28@
+  --          [C declaration]: @storage_textures@, defined at @SDL3\/SDL_render.h 2937:28@
   , num_storage_buffers :: SDL3.Sys.Bindgen.Stdinc.Sint32
   -- ^ The number of storage buffers to bind when this render state is active
   --
-  --          [C declaration]: @num_storage_buffers@, defined at @SDL3\/SDL_render.h 2933:12@
+  --          [C declaration]: @num_storage_buffers@, defined at @SDL3\/SDL_render.h 2939:12@
   , storage_buffers :: PtrConst.PtrConst (BG.Ptr SDL3.Sys.Bindgen.Gpu.SDL_GPUBuffer)
   -- ^ Storage buffers to bind when this render state is active
   --
-  --          [C declaration]: @storage_buffers@, defined at @SDL3\/SDL_render.h 2934:27@
+  --          [C declaration]: @storage_buffers@, defined at @SDL3\/SDL_render.h 2940:27@
   , props :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -- ^ A properties ID for extensions. Should be 0 if no extensions are needed.
   --
-  --          [C declaration]: @props@, defined at @SDL3\/SDL_render.h 2936:22@
+  --          [C declaration]: @props@, defined at @SDL3\/SDL_render.h 2942:22@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -4789,5 +4789,5 @@ instance HasCField.HasCField SDL_GPURenderStateCreateInfo "props" where
 --
 --     [See also]: 'sDL_CreateGPURenderState', 'sDL_SetGPURenderStateFragmentUniforms', 'sDL_SetGPURenderState', 'sDL_DestroyGPURenderState'
 --
---     [C declaration]: @struct SDL_GPURenderState@, defined at @SDL3\/SDL_render.h 2949:16@
+--     [C declaration]: @struct SDL_GPURenderState@, defined at @SDL3\/SDL_render.h 2955:16@
 data SDL_GPURenderState
