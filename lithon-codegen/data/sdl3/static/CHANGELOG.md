@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.0.0.3 - 2026-09-13
+
 ### Added
 
 - Cabal flag `abi-assertions-exact` (default off): asserts every `sizeof`
