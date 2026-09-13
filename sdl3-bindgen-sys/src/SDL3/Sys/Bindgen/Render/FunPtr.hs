@@ -1585,7 +1585,7 @@ hs_bindgen_89305e9fc1bdb81a =
 
 -- | Create a 2D software rendering context for a surface.
 --
---     Two other API which can be used to create 'SDL_Renderer': @SDL_CreateRenderer()@ and @SDL_CreateWindowAndRenderer()@. These can /also/ create a software renderer, but they are intended to be used with an SDL_Window as the final destination and not an SDL_Surface.
+--     Two other APIs which can be used to create 'SDL_Renderer': @SDL_CreateRenderer()@ and @SDL_CreateWindowAndRenderer()@. These can /also/ create a software renderer, but they are intended to be used with an SDL_Window as the final destination and not an SDL_Surface.
 --
 --     [@surface@]: the SDL_Surface structure representing the surface where rendering is done.
 --
@@ -2029,8 +2029,6 @@ hs_bindgen_36ee6a46f451b373 =
 --
 --     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER'@: the GLuint texture associated with the texture, if you want to wrap an existing texture.
 --
---     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER'@: the GLuint texture associated with the texture, if you want to wrap an existing texture.
---
 --     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER'@: the GLuint texture associated with the UV plane of an NV12 texture, if you want to wrap an existing texture.
 --
 --     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER'@: the GLuint texture associated with the U plane of a YUV texture, if you want to wrap an existing texture.
@@ -2065,7 +2063,7 @@ hs_bindgen_36ee6a46f451b373 =
 --
 --     [See also]: SDL_CreateProperties, 'sDL_CreateTexture', 'sDL_CreateTextureFromSurface', 'sDL_DestroyTexture', 'sDL_GetTextureSize', 'sDL_UpdateTexture'
 --
---     [C declaration]: @SDL_CreateTextureWithProperties@, defined at @SDL3\/SDL_render.h 806:43@
+--     [C declaration]: @SDL_CreateTextureWithProperties@, defined at @SDL3\/SDL_render.h 804:43@
 sDL_CreateTextureWithProperties
   :: BG.FunPtr
        (BG.Ptr SDL_Renderer -> SDL3.Sys.Bindgen.Properties.SDL_PropertiesID -> IO (BG.Ptr SDL_Texture))
@@ -2169,7 +2167,7 @@ hs_bindgen_becfaa2a4bff800b =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetTextureProperties@, defined at @SDL3\/SDL_render.h 935:46@
+--     [C declaration]: @SDL_GetTextureProperties@, defined at @SDL3\/SDL_render.h 933:46@
 sDL_GetTextureProperties
   :: BG.FunPtr (BG.Ptr SDL_Texture -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID)
 sDL_GetTextureProperties =
@@ -2197,7 +2195,7 @@ hs_bindgen_49dcd52c4c1d2b81 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetRendererFromTexture@, defined at @SDL3\/SDL_render.h 979:44@
+--     [C declaration]: @SDL_GetRendererFromTexture@, defined at @SDL3\/SDL_render.h 977:44@
 sDL_GetRendererFromTexture :: BG.FunPtr (BG.Ptr SDL_Texture -> IO (BG.Ptr SDL_Renderer))
 sDL_GetRendererFromTexture =
   BG.unsafePerformIO hs_bindgen_49dcd52c4c1d2b81
@@ -2229,7 +2227,7 @@ hs_bindgen_41cc657b23107c65 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetTextureSize@, defined at @SDL3\/SDL_render.h 996:34@
+--     [C declaration]: @SDL_GetTextureSize@, defined at @SDL3\/SDL_render.h 994:34@
 sDL_GetTextureSize
   :: BG.FunPtr (BG.Ptr SDL_Texture -> BG.Ptr BG.CFloat -> BG.Ptr BG.CFloat -> IO BG.CBool)
 sDL_GetTextureSize =
@@ -2266,7 +2264,7 @@ hs_bindgen_2681f128241fbe43 =
 --
 --     [See also]: SDL_CreatePalette, 'sDL_GetTexturePalette'
 --
---     [C declaration]: @SDL_SetTexturePalette@, defined at @SDL3\/SDL_render.h 1018:34@
+--     [C declaration]: @SDL_SetTexturePalette@, defined at @SDL3\/SDL_render.h 1016:34@
 sDL_SetTexturePalette
   :: BG.FunPtr (BG.Ptr SDL_Texture -> BG.Ptr SDL3.Sys.Bindgen.Pixels.SDL_Palette -> IO BG.CBool)
 sDL_SetTexturePalette =
@@ -2297,7 +2295,7 @@ hs_bindgen_5b5998bf3bb63e26 =
 --
 --     [See also]: 'sDL_SetTexturePalette'
 --
---     [C declaration]: @SDL_GetTexturePalette@, defined at @SDL3\/SDL_render.h 1033:43@
+--     [C declaration]: @SDL_GetTexturePalette@, defined at @SDL3\/SDL_render.h 1031:43@
 sDL_GetTexturePalette
   :: BG.FunPtr (BG.Ptr SDL_Texture -> IO (BG.Ptr SDL3.Sys.Bindgen.Pixels.SDL_Palette))
 sDL_GetTexturePalette =
@@ -2348,7 +2346,7 @@ hs_bindgen_12df54216376e2f6 =
 --
 --     [See also]: 'sDL_GetTextureColorMod', 'sDL_SetTextureAlphaMod', 'sDL_SetTextureColorModFloat'
 --
---     [C declaration]: @SDL_SetTextureColorMod@, defined at @SDL3\/SDL_render.h 1062:34@
+--     [C declaration]: @SDL_SetTextureColorMod@, defined at @SDL3\/SDL_render.h 1060:34@
 sDL_SetTextureColorMod
   :: BG.FunPtr
        ( BG.Ptr SDL_Texture
@@ -2397,7 +2395,7 @@ hs_bindgen_c199819113902151 =
 --
 --     [See also]: 'sDL_GetTextureColorModFloat', 'sDL_SetTextureAlphaModFloat', 'sDL_SetTextureColorMod'
 --
---     [C declaration]: @SDL_SetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1092:34@
+--     [C declaration]: @SDL_SetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1090:34@
 sDL_SetTextureColorModFloat
   :: BG.FunPtr (BG.Ptr SDL_Texture -> BG.CFloat -> BG.CFloat -> BG.CFloat -> IO BG.CBool)
 sDL_SetTextureColorModFloat =
@@ -2442,7 +2440,7 @@ hs_bindgen_42ffa79ca220e7c4 =
 --
 --     [See also]: 'sDL_GetTextureAlphaMod', 'sDL_GetTextureColorModFloat', 'sDL_SetTextureColorMod'
 --
---     [C declaration]: @SDL_GetTextureColorMod@, defined at @SDL3\/SDL_render.h 1113:34@
+--     [C declaration]: @SDL_GetTextureColorMod@, defined at @SDL3\/SDL_render.h 1111:34@
 sDL_GetTextureColorMod
   :: BG.FunPtr
        ( BG.Ptr SDL_Texture
@@ -2488,7 +2486,7 @@ hs_bindgen_c18cd7bc6e616874 =
 --
 --     [See also]: 'sDL_GetTextureAlphaModFloat', 'sDL_GetTextureColorMod', 'sDL_SetTextureColorModFloat'
 --
---     [C declaration]: @SDL_GetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1133:34@
+--     [C declaration]: @SDL_GetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1131:34@
 sDL_GetTextureColorModFloat
   :: BG.FunPtr
        (BG.Ptr SDL_Texture -> BG.Ptr BG.CFloat -> BG.Ptr BG.CFloat -> BG.Ptr BG.CFloat -> IO BG.CBool)
@@ -2528,7 +2526,7 @@ hs_bindgen_206ed15266a6abc6 =
 --
 --     [See also]: 'sDL_GetTextureAlphaMod', 'sDL_SetTextureAlphaModFloat', 'sDL_SetTextureColorMod'
 --
---     [C declaration]: @SDL_SetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1159:34@
+--     [C declaration]: @SDL_SetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1157:34@
 sDL_SetTextureAlphaMod
   :: BG.FunPtr (BG.Ptr SDL_Texture -> SDL3.Sys.Bindgen.Stdinc.Uint8 -> IO BG.CBool)
 sDL_SetTextureAlphaMod =
@@ -2566,7 +2564,7 @@ hs_bindgen_497b70cfcdb285b3 =
 --
 --     [See also]: 'sDL_GetTextureAlphaModFloat', 'sDL_SetTextureAlphaMod', 'sDL_SetTextureColorModFloat'
 --
---     [C declaration]: @SDL_SetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1185:34@
+--     [C declaration]: @SDL_SetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1183:34@
 sDL_SetTextureAlphaModFloat :: BG.FunPtr (BG.Ptr SDL_Texture -> BG.CFloat -> IO BG.CBool)
 sDL_SetTextureAlphaModFloat =
   BG.unsafePerformIO hs_bindgen_497b70cfcdb285b3
@@ -2598,7 +2596,7 @@ hs_bindgen_328f278f9cc361c9 =
 --
 --     [See also]: 'sDL_GetTextureAlphaModFloat', 'sDL_GetTextureColorMod', 'sDL_SetTextureAlphaMod'
 --
---     [C declaration]: @SDL_GetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1203:34@
+--     [C declaration]: @SDL_GetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1201:34@
 sDL_GetTextureAlphaMod
   :: BG.FunPtr (BG.Ptr SDL_Texture -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint8 -> IO BG.CBool)
 sDL_GetTextureAlphaMod =
@@ -2631,7 +2629,7 @@ hs_bindgen_00ee88c364b7b54b =
 --
 --     [See also]: 'sDL_GetTextureAlphaMod', 'sDL_GetTextureColorModFloat', 'sDL_SetTextureAlphaModFloat'
 --
---     [C declaration]: @SDL_GetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1221:34@
+--     [C declaration]: @SDL_GetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1219:34@
 sDL_GetTextureAlphaModFloat :: BG.FunPtr (BG.Ptr SDL_Texture -> BG.Ptr BG.CFloat -> IO BG.CBool)
 sDL_GetTextureAlphaModFloat =
   BG.unsafePerformIO hs_bindgen_00ee88c364b7b54b
@@ -2651,6 +2649,8 @@ hs_bindgen_8b3403b14f9cc34f =
 
 -- | Set the blend mode for a texture, used by @SDL_RenderTexture()@.
 --
+--     This blend mode is used for any drawing that involves this texture.
+--
 --     If the blend mode is not supported, the closest supported mode is chosen and this function returns false.
 --
 --     [@texture@]: the texture to update.
@@ -2663,9 +2663,9 @@ hs_bindgen_8b3403b14f9cc34f =
 --
 --     @since 3.2.0
 --
---     [See also]: 'sDL_GetTextureBlendMode'
+--     [See also]: 'sDL_GetTextureBlendMode', 'sDL_SetRenderDrawBlendMode'
 --
---     [C declaration]: @SDL_SetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1240:34@
+--     [C declaration]: @SDL_SetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1241:34@
 sDL_SetTextureBlendMode
   :: BG.FunPtr (BG.Ptr SDL_Texture -> SDL3.Sys.Bindgen.Blendmode.SDL_BlendMode -> IO BG.CBool)
 sDL_SetTextureBlendMode =
@@ -2699,7 +2699,7 @@ hs_bindgen_e63bcb75e534a9b1 =
 --
 --     [See also]: 'sDL_SetTextureBlendMode'
 --
---     [C declaration]: @SDL_GetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1256:34@
+--     [C declaration]: @SDL_GetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1257:34@
 sDL_GetTextureBlendMode
   :: BG.FunPtr (BG.Ptr SDL_Texture -> BG.Ptr SDL3.Sys.Bindgen.Blendmode.SDL_BlendMode -> IO BG.CBool)
 sDL_GetTextureBlendMode =
@@ -2736,7 +2736,7 @@ hs_bindgen_b562cc4d76d8ed23 =
 --
 --     [See also]: 'sDL_GetTextureScaleMode'
 --
---     [C declaration]: @SDL_SetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1276:34@
+--     [C declaration]: @SDL_SetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1277:34@
 sDL_SetTextureScaleMode
   :: BG.FunPtr (BG.Ptr SDL_Texture -> SDL3.Sys.Bindgen.Surface.SDL_ScaleMode -> IO BG.CBool)
 sDL_SetTextureScaleMode =
@@ -2769,7 +2769,7 @@ hs_bindgen_01d80174738edcf8 =
 --
 --     [See also]: 'sDL_SetTextureScaleMode'
 --
---     [C declaration]: @SDL_GetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1292:34@
+--     [C declaration]: @SDL_GetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1293:34@
 sDL_GetTextureScaleMode
   :: BG.FunPtr (BG.Ptr SDL_Texture -> BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_ScaleMode -> IO BG.CBool)
 sDL_GetTextureScaleMode =
@@ -2820,7 +2820,7 @@ hs_bindgen_ed82660a3a2952a3 =
 --
 --     [See also]: 'sDL_LockTexture', 'sDL_UnlockTexture', 'sDL_UpdateNVTexture', 'sDL_UpdateYUVTexture'
 --
---     [C declaration]: @SDL_UpdateTexture@, defined at @SDL3\/SDL_render.h 1326:34@
+--     [C declaration]: @SDL_UpdateTexture@, defined at @SDL3\/SDL_render.h 1327:34@
 sDL_UpdateTexture
   :: BG.FunPtr
        ( BG.Ptr SDL_Texture
@@ -2885,7 +2885,7 @@ hs_bindgen_ccf06645aeb6e433 =
 --
 --     [See also]: 'sDL_UpdateNVTexture', 'sDL_UpdateTexture'
 --
---     [C declaration]: @SDL_UpdateYUVTexture@, defined at @SDL3\/SDL_render.h 1358:34@
+--     [C declaration]: @SDL_UpdateYUVTexture@, defined at @SDL3\/SDL_render.h 1359:34@
 sDL_UpdateYUVTexture
   :: BG.FunPtr
        ( BG.Ptr SDL_Texture
@@ -2948,7 +2948,7 @@ hs_bindgen_25fc8b2ffc040564 =
 --
 --     [See also]: 'sDL_UpdateTexture', 'sDL_UpdateYUVTexture'
 --
---     [C declaration]: @SDL_UpdateNVTexture@, defined at @SDL3\/SDL_render.h 1390:34@
+--     [C declaration]: @SDL_UpdateNVTexture@, defined at @SDL3\/SDL_render.h 1391:34@
 sDL_UpdateNVTexture
   :: BG.FunPtr
        ( BG.Ptr SDL_Texture
@@ -3005,7 +3005,7 @@ hs_bindgen_b2515cb3b400f701 =
 --
 --     [See also]: 'sDL_LockTextureToSurface', 'sDL_UnlockTexture'
 --
---     [C declaration]: @SDL_LockTexture@, defined at @SDL3\/SDL_render.h 1425:34@
+--     [C declaration]: @SDL_LockTexture@, defined at @SDL3\/SDL_render.h 1426:34@
 sDL_LockTexture
   :: BG.FunPtr
        ( BG.Ptr SDL_Texture
@@ -3061,7 +3061,7 @@ hs_bindgen_232feaed95772158 =
 --
 --     [See also]: 'sDL_LockTexture', 'sDL_UnlockTexture'
 --
---     [C declaration]: @SDL_LockTextureToSurface@, defined at @SDL3\/SDL_render.h 1463:34@
+--     [C declaration]: @SDL_LockTextureToSurface@, defined at @SDL3\/SDL_render.h 1464:34@
 sDL_LockTextureToSurface
   :: BG.FunPtr
        ( BG.Ptr SDL_Texture
@@ -3098,7 +3098,7 @@ hs_bindgen_13908e9a60424294 =
 --
 --     [See also]: 'sDL_LockTexture'
 --
---     [C declaration]: @SDL_UnlockTexture@, defined at @SDL3\/SDL_render.h 1484:34@
+--     [C declaration]: @SDL_UnlockTexture@, defined at @SDL3\/SDL_render.h 1485:34@
 sDL_UnlockTexture :: BG.FunPtr (BG.Ptr SDL_Texture -> IO ())
 sDL_UnlockTexture =
   BG.unsafePerformIO hs_bindgen_13908e9a60424294
@@ -3134,7 +3134,7 @@ hs_bindgen_bf0b26dd5575e7f4 =
 --
 --     [See also]: 'sDL_GetRenderTarget'
 --
---     [C declaration]: @SDL_SetRenderTarget@, defined at @SDL3\/SDL_render.h 1511:34@
+--     [C declaration]: @SDL_SetRenderTarget@, defined at @SDL3\/SDL_render.h 1512:34@
 sDL_SetRenderTarget :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.Ptr SDL_Texture -> IO BG.CBool)
 sDL_SetRenderTarget =
   BG.unsafePerformIO hs_bindgen_bf0b26dd5575e7f4
@@ -3165,7 +3165,7 @@ hs_bindgen_1e8b9f67ad2f60e0 =
 --
 --     [See also]: 'sDL_SetRenderTarget'
 --
---     [C declaration]: @SDL_GetRenderTarget@, defined at @SDL3\/SDL_render.h 1528:43@
+--     [C declaration]: @SDL_GetRenderTarget@, defined at @SDL3\/SDL_render.h 1529:43@
 sDL_GetRenderTarget :: BG.FunPtr (BG.Ptr SDL_Renderer -> IO (BG.Ptr SDL_Texture))
 sDL_GetRenderTarget =
   BG.unsafePerformIO hs_bindgen_1e8b9f67ad2f60e0
@@ -3214,7 +3214,7 @@ hs_bindgen_1034cb11879afccd =
 --
 --     [See also]: 'sDL_ConvertEventToRenderCoordinates', 'sDL_GetRenderLogicalPresentation', 'sDL_GetRenderLogicalPresentationRect'
 --
---     [C declaration]: @SDL_SetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1575:34@
+--     [C declaration]: @SDL_SetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1576:34@
 sDL_SetRenderLogicalPresentation
   :: BG.FunPtr
        (BG.Ptr SDL_Renderer -> BG.CInt -> BG.CInt -> SDL_RendererLogicalPresentation -> IO BG.CBool)
@@ -3264,7 +3264,7 @@ hs_bindgen_d91c953c563a7c79 =
 --
 --     [See also]: 'sDL_SetRenderLogicalPresentation'
 --
---     [C declaration]: @SDL_GetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1600:34@
+--     [C declaration]: @SDL_GetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1601:34@
 sDL_GetRenderLogicalPresentation
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -3307,7 +3307,7 @@ hs_bindgen_79882ebc0cf55c2f =
 --
 --     [See also]: 'sDL_SetRenderLogicalPresentation'
 --
---     [C declaration]: @SDL_GetRenderLogicalPresentationRect@, defined at @SDL3\/SDL_render.h 1625:34@
+--     [C declaration]: @SDL_GetRenderLogicalPresentationRect@, defined at @SDL3\/SDL_render.h 1626:34@
 sDL_GetRenderLogicalPresentationRect
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.Ptr SDL3.Sys.Bindgen.Rect.SDL_FRect -> IO BG.CBool)
 sDL_GetRenderLogicalPresentationRect =
@@ -3359,7 +3359,7 @@ hs_bindgen_fb7241e246ca7baf =
 --
 --     [See also]: 'sDL_SetRenderLogicalPresentation', 'sDL_SetRenderScale'
 --
---     [C declaration]: @SDL_RenderCoordinatesFromWindow@, defined at @SDL3\/SDL_render.h 1652:34@
+--     [C declaration]: @SDL_RenderCoordinatesFromWindow@, defined at @SDL3\/SDL_render.h 1653:34@
 sDL_RenderCoordinatesFromWindow
   :: BG.FunPtr
        (BG.Ptr SDL_Renderer -> BG.CFloat -> BG.CFloat -> BG.Ptr BG.CFloat -> BG.Ptr BG.CFloat -> IO BG.CBool)
@@ -3412,7 +3412,7 @@ hs_bindgen_c7cc17f4dc614c4c =
 --
 --     [See also]: 'sDL_SetRenderLogicalPresentation', 'sDL_SetRenderScale', 'sDL_SetRenderViewport'
 --
---     [C declaration]: @SDL_RenderCoordinatesToWindow@, defined at @SDL3\/SDL_render.h 1682:34@
+--     [C declaration]: @SDL_RenderCoordinatesToWindow@, defined at @SDL3\/SDL_render.h 1683:34@
 sDL_RenderCoordinatesToWindow
   :: BG.FunPtr
        (BG.Ptr SDL_Renderer -> BG.CFloat -> BG.CFloat -> BG.Ptr BG.CFloat -> BG.Ptr BG.CFloat -> IO BG.CBool)
@@ -3464,7 +3464,7 @@ hs_bindgen_e37a0e30c32b51de =
 --
 --     [See also]: 'sDL_RenderCoordinatesFromWindow'
 --
---     [C declaration]: @SDL_ConvertEventToRenderCoordinates@, defined at @SDL3\/SDL_render.h 1718:34@
+--     [C declaration]: @SDL_ConvertEventToRenderCoordinates@, defined at @SDL3\/SDL_render.h 1719:34@
 sDL_ConvertEventToRenderCoordinates
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.Ptr SDL3.Sys.Bindgen.Events.SDL_Event -> IO BG.CBool)
 sDL_ConvertEventToRenderCoordinates =
@@ -3504,7 +3504,7 @@ hs_bindgen_787c931cd9718282 =
 --
 --     [See also]: 'sDL_GetRenderViewport', 'sDL_RenderViewportSet'
 --
---     [C declaration]: @SDL_SetRenderViewport@, defined at @SDL3\/SDL_render.h 1745:34@
+--     [C declaration]: @SDL_SetRenderViewport@, defined at @SDL3\/SDL_render.h 1746:34@
 sDL_SetRenderViewport
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect -> IO BG.CBool)
 sDL_SetRenderViewport =
@@ -3539,7 +3539,7 @@ hs_bindgen_6aa5d786da4df5f2 =
 --
 --     [See also]: 'sDL_RenderViewportSet', 'sDL_SetRenderViewport'
 --
---     [C declaration]: @SDL_GetRenderViewport@, defined at @SDL3\/SDL_render.h 1765:34@
+--     [C declaration]: @SDL_GetRenderViewport@, defined at @SDL3\/SDL_render.h 1766:34@
 sDL_GetRenderViewport
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.Ptr SDL3.Sys.Bindgen.Rect.SDL_Rect -> IO BG.CBool)
 sDL_GetRenderViewport =
@@ -3573,7 +3573,7 @@ hs_bindgen_9ea268631b7b5e5b =
 --
 --     [See also]: 'sDL_GetRenderViewport', 'sDL_SetRenderViewport'
 --
---     [C declaration]: @SDL_RenderViewportSet@, defined at @SDL3\/SDL_render.h 1787:34@
+--     [C declaration]: @SDL_RenderViewportSet@, defined at @SDL3\/SDL_render.h 1788:34@
 sDL_RenderViewportSet :: BG.FunPtr (BG.Ptr SDL_Renderer -> IO BG.CBool)
 sDL_RenderViewportSet =
   BG.unsafePerformIO hs_bindgen_9ea268631b7b5e5b
@@ -3605,7 +3605,7 @@ hs_bindgen_892008c6b673220b =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetRenderSafeArea@, defined at @SDL3\/SDL_render.h 1809:34@
+--     [C declaration]: @SDL_GetRenderSafeArea@, defined at @SDL3\/SDL_render.h 1810:34@
 sDL_GetRenderSafeArea
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.Ptr SDL3.Sys.Bindgen.Rect.SDL_Rect -> IO BG.CBool)
 sDL_GetRenderSafeArea =
@@ -3641,7 +3641,7 @@ hs_bindgen_3aa3a1e497542ee8 =
 --
 --     [See also]: 'sDL_GetRenderClipRect', 'sDL_RenderClipEnabled'
 --
---     [C declaration]: @SDL_SetRenderClipRect@, defined at @SDL3\/SDL_render.h 1830:34@
+--     [C declaration]: @SDL_SetRenderClipRect@, defined at @SDL3\/SDL_render.h 1831:34@
 sDL_SetRenderClipRect
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect -> IO BG.CBool)
 sDL_SetRenderClipRect =
@@ -3676,7 +3676,7 @@ hs_bindgen_bec026baef17d1f2 =
 --
 --     [See also]: 'sDL_RenderClipEnabled', 'sDL_SetRenderClipRect'
 --
---     [C declaration]: @SDL_GetRenderClipRect@, defined at @SDL3\/SDL_render.h 1851:34@
+--     [C declaration]: @SDL_GetRenderClipRect@, defined at @SDL3\/SDL_render.h 1852:34@
 sDL_GetRenderClipRect
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.Ptr SDL3.Sys.Bindgen.Rect.SDL_Rect -> IO BG.CBool)
 sDL_GetRenderClipRect =
@@ -3708,7 +3708,7 @@ hs_bindgen_b0a5efaab13d3303 =
 --
 --     [See also]: 'sDL_GetRenderClipRect', 'sDL_SetRenderClipRect'
 --
---     [C declaration]: @SDL_RenderClipEnabled@, defined at @SDL3\/SDL_render.h 1870:34@
+--     [C declaration]: @SDL_RenderClipEnabled@, defined at @SDL3\/SDL_render.h 1871:34@
 sDL_RenderClipEnabled :: BG.FunPtr (BG.Ptr SDL_Renderer -> IO BG.CBool)
 sDL_RenderClipEnabled =
   BG.unsafePerformIO hs_bindgen_b0a5efaab13d3303
@@ -3748,7 +3748,7 @@ hs_bindgen_938869c5ff233e71 =
 --
 --     [See also]: 'sDL_GetRenderScale'
 --
---     [C declaration]: @SDL_SetRenderScale@, defined at @SDL3\/SDL_render.h 1898:34@
+--     [C declaration]: @SDL_SetRenderScale@, defined at @SDL3\/SDL_render.h 1899:34@
 sDL_SetRenderScale :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.CFloat -> BG.CFloat -> IO BG.CBool)
 sDL_SetRenderScale =
   BG.unsafePerformIO hs_bindgen_938869c5ff233e71
@@ -3784,7 +3784,7 @@ hs_bindgen_fa6a48d0e427bd48 =
 --
 --     [See also]: 'sDL_SetRenderScale'
 --
---     [C declaration]: @SDL_GetRenderScale@, defined at @SDL3\/SDL_render.h 1918:34@
+--     [C declaration]: @SDL_GetRenderScale@, defined at @SDL3\/SDL_render.h 1919:34@
 sDL_GetRenderScale
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.Ptr BG.CFloat -> BG.Ptr BG.CFloat -> IO BG.CBool)
 sDL_GetRenderScale =
@@ -3834,7 +3834,7 @@ hs_bindgen_cfcf753e753a9e88 =
 --
 --     [See also]: 'sDL_GetRenderDrawColor', 'sDL_SetRenderDrawColorFloat'
 --
---     [C declaration]: @SDL_SetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1943:34@
+--     [C declaration]: @SDL_SetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1944:34@
 sDL_SetRenderDrawColor
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -3883,7 +3883,7 @@ hs_bindgen_99e499f38f3c9dc7 =
 --
 --     [See also]: 'sDL_GetRenderDrawColorFloat', 'sDL_SetRenderDrawColor'
 --
---     [C declaration]: @SDL_SetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 1968:34@
+--     [C declaration]: @SDL_SetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 1969:34@
 sDL_SetRenderDrawColorFloat
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.CFloat -> BG.CFloat -> BG.CFloat -> BG.CFloat -> IO BG.CBool)
 sDL_SetRenderDrawColorFloat =
@@ -3931,7 +3931,7 @@ hs_bindgen_c88d83e47700901b =
 --
 --     [See also]: 'sDL_GetRenderDrawColorFloat', 'sDL_SetRenderDrawColor'
 --
---     [C declaration]: @SDL_GetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1992:34@
+--     [C declaration]: @SDL_GetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1993:34@
 sDL_GetRenderDrawColor
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -3986,7 +3986,7 @@ hs_bindgen_d1473916ef27e20f =
 --
 --     [See also]: 'sDL_SetRenderDrawColorFloat', 'sDL_GetRenderDrawColor'
 --
---     [C declaration]: @SDL_GetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 2016:34@
+--     [C declaration]: @SDL_GetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 2017:34@
 sDL_GetRenderDrawColorFloat
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -4029,7 +4029,7 @@ hs_bindgen_35d6252a1c594c7c =
 --
 --     [See also]: 'sDL_GetRenderColorScale'
 --
---     [C declaration]: @SDL_SetRenderColorScale@, defined at @SDL3\/SDL_render.h 2040:34@
+--     [C declaration]: @SDL_SetRenderColorScale@, defined at @SDL3\/SDL_render.h 2041:34@
 sDL_SetRenderColorScale :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.CFloat -> IO BG.CBool)
 sDL_SetRenderColorScale =
   BG.unsafePerformIO hs_bindgen_35d6252a1c594c7c
@@ -4061,7 +4061,7 @@ hs_bindgen_77d1cf7afcbd4164 =
 --
 --     [See also]: 'sDL_SetRenderColorScale'
 --
---     [C declaration]: @SDL_GetRenderColorScale@, defined at @SDL3\/SDL_render.h 2056:34@
+--     [C declaration]: @SDL_GetRenderColorScale@, defined at @SDL3\/SDL_render.h 2057:34@
 sDL_GetRenderColorScale :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.Ptr BG.CFloat -> IO BG.CBool)
 sDL_GetRenderColorScale =
   BG.unsafePerformIO hs_bindgen_77d1cf7afcbd4164
@@ -4079,7 +4079,9 @@ hs_bindgen_820f982c1cc61a34 =
 
 {-# NOINLINE sDL_SetRenderDrawBlendMode #-}
 
--- | Set the blend mode used for drawing operations (Fill and Line).
+-- | Set the blend mode used for drawing operations.
+--
+--     This blend mode is used for any drawing that doesn\'t involve textures.
 --
 --     If the blend mode is not supported, the closest supported mode is chosen.
 --
@@ -4093,9 +4095,9 @@ hs_bindgen_820f982c1cc61a34 =
 --
 --     @since 3.2.0
 --
---     [See also]: 'sDL_GetRenderDrawBlendMode'
+--     [See also]: 'sDL_GetRenderDrawBlendMode', 'sDL_SetTextureBlendMode'
 --
---     [C declaration]: @SDL_SetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2074:34@
+--     [C declaration]: @SDL_SetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2078:34@
 sDL_SetRenderDrawBlendMode
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> SDL3.Sys.Bindgen.Blendmode.SDL_BlendMode -> IO BG.CBool)
 sDL_SetRenderDrawBlendMode =
@@ -4129,7 +4131,7 @@ hs_bindgen_1409781aca259b0a =
 --
 --     [See also]: 'sDL_SetRenderDrawBlendMode'
 --
---     [C declaration]: @SDL_GetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2090:34@
+--     [C declaration]: @SDL_GetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2094:34@
 sDL_GetRenderDrawBlendMode
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.Ptr SDL3.Sys.Bindgen.Blendmode.SDL_BlendMode -> IO BG.CBool)
 sDL_GetRenderDrawBlendMode =
@@ -4161,7 +4163,7 @@ hs_bindgen_9a11c0e709a2af5e =
 --
 --     [See also]: 'sDL_SetRenderDrawColor'
 --
---     [C declaration]: @SDL_RenderClear@, defined at @SDL3\/SDL_render.h 2110:34@
+--     [C declaration]: @SDL_RenderClear@, defined at @SDL3\/SDL_render.h 2114:34@
 sDL_RenderClear :: BG.FunPtr (BG.Ptr SDL_Renderer -> IO BG.CBool)
 sDL_RenderClear =
   BG.unsafePerformIO hs_bindgen_9a11c0e709a2af5e
@@ -4195,7 +4197,7 @@ hs_bindgen_429122691f4ce0fc =
 --
 --     [See also]: 'sDL_RenderPoints'
 --
---     [C declaration]: @SDL_RenderPoint@, defined at @SDL3\/SDL_render.h 2127:34@
+--     [C declaration]: @SDL_RenderPoint@, defined at @SDL3\/SDL_render.h 2131:34@
 sDL_RenderPoint :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.CFloat -> BG.CFloat -> IO BG.CBool)
 sDL_RenderPoint =
   BG.unsafePerformIO hs_bindgen_429122691f4ce0fc
@@ -4232,7 +4234,7 @@ hs_bindgen_b884f579966e5db6 =
 --
 --     [See also]: 'sDL_RenderPoint'
 --
---     [C declaration]: @SDL_RenderPoints@, defined at @SDL3\/SDL_render.h 2144:34@
+--     [C declaration]: @SDL_RenderPoints@, defined at @SDL3\/SDL_render.h 2148:34@
 sDL_RenderPoints
   :: BG.FunPtr
        (BG.Ptr SDL_Renderer -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_FPoint -> BG.CInt -> IO BG.CBool)
@@ -4273,7 +4275,7 @@ hs_bindgen_ce6fb863b8b65fe2 =
 --
 --     [See also]: 'sDL_RenderLines'
 --
---     [C declaration]: @SDL_RenderLine@, defined at @SDL3\/SDL_render.h 2163:34@
+--     [C declaration]: @SDL_RenderLine@, defined at @SDL3\/SDL_render.h 2167:34@
 sDL_RenderLine
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.CFloat -> BG.CFloat -> BG.CFloat -> BG.CFloat -> IO BG.CBool)
 sDL_RenderLine =
@@ -4311,7 +4313,7 @@ hs_bindgen_f3578aa8a36fe364 =
 --
 --     [See also]: 'sDL_RenderLine'
 --
---     [C declaration]: @SDL_RenderLines@, defined at @SDL3\/SDL_render.h 2181:34@
+--     [C declaration]: @SDL_RenderLines@, defined at @SDL3\/SDL_render.h 2185:34@
 sDL_RenderLines
   :: BG.FunPtr
        (BG.Ptr SDL_Renderer -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_FPoint -> BG.CInt -> IO BG.CBool)
@@ -4346,7 +4348,7 @@ hs_bindgen_dc6b0741f1d79bee =
 --
 --     [See also]: 'sDL_RenderRects'
 --
---     [C declaration]: @SDL_RenderRect@, defined at @SDL3\/SDL_render.h 2198:34@
+--     [C declaration]: @SDL_RenderRect@, defined at @SDL3\/SDL_render.h 2202:34@
 sDL_RenderRect
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_FRect -> IO BG.CBool)
 sDL_RenderRect =
@@ -4384,7 +4386,7 @@ hs_bindgen_d697f94bacf56e0d =
 --
 --     [See also]: 'sDL_RenderRect'
 --
---     [C declaration]: @SDL_RenderRects@, defined at @SDL3\/SDL_render.h 2216:34@
+--     [C declaration]: @SDL_RenderRects@, defined at @SDL3\/SDL_render.h 2220:34@
 sDL_RenderRects
   :: BG.FunPtr
        (BG.Ptr SDL_Renderer -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_FRect -> BG.CInt -> IO BG.CBool)
@@ -4419,7 +4421,7 @@ hs_bindgen_a730fe81c75d4472 =
 --
 --     [See also]: 'sDL_RenderFillRects'
 --
---     [C declaration]: @SDL_RenderFillRect@, defined at @SDL3\/SDL_render.h 2234:34@
+--     [C declaration]: @SDL_RenderFillRect@, defined at @SDL3\/SDL_render.h 2238:34@
 sDL_RenderFillRect
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_FRect -> IO BG.CBool)
 sDL_RenderFillRect =
@@ -4457,7 +4459,7 @@ hs_bindgen_4cd330b36839141b =
 --
 --     [See also]: 'sDL_RenderFillRect'
 --
---     [C declaration]: @SDL_RenderFillRects@, defined at @SDL3\/SDL_render.h 2252:34@
+--     [C declaration]: @SDL_RenderFillRects@, defined at @SDL3\/SDL_render.h 2256:34@
 sDL_RenderFillRects
   :: BG.FunPtr
        (BG.Ptr SDL_Renderer -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_FRect -> BG.CInt -> IO BG.CBool)
@@ -4503,7 +4505,7 @@ hs_bindgen_1f27c13075574257 =
 --
 --     [See also]: 'sDL_RenderTextureRotated', 'sDL_RenderTextureTiled'
 --
---     [C declaration]: @SDL_RenderTexture@, defined at @SDL3\/SDL_render.h 2274:34@
+--     [C declaration]: @SDL_RenderTexture@, defined at @SDL3\/SDL_render.h 2278:34@
 sDL_RenderTexture
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -4563,7 +4565,7 @@ hs_bindgen_3424943af047de83 =
 --
 --     [See also]: 'sDL_RenderTexture'
 --
---     [C declaration]: @SDL_RenderTextureRotated@, defined at @SDL3\/SDL_render.h 2302:34@
+--     [C declaration]: @SDL_RenderTextureRotated@, defined at @SDL3\/SDL_render.h 2306:34@
 sDL_RenderTextureRotated
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -4623,7 +4625,7 @@ hs_bindgen_dd59e212bf7d116f =
 --
 --     [See also]: 'sDL_RenderTexture'
 --
---     [C declaration]: @SDL_RenderTextureAffine@, defined at @SDL3\/SDL_render.h 2333:34@
+--     [C declaration]: @SDL_RenderTextureAffine@, defined at @SDL3\/SDL_render.h 2337:34@
 sDL_RenderTextureAffine
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -4681,7 +4683,7 @@ hs_bindgen_6cf4fce9a372af75 =
 --
 --     [See also]: 'sDL_RenderTexture'
 --
---     [C declaration]: @SDL_RenderTextureTiled@, defined at @SDL3\/SDL_render.h 2362:34@
+--     [C declaration]: @SDL_RenderTextureTiled@, defined at @SDL3\/SDL_render.h 2366:34@
 sDL_RenderTextureTiled
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -4750,7 +4752,7 @@ hs_bindgen_78cecf599cdec7c5 =
 --
 --     [See also]: 'sDL_RenderTexture', 'sDL_RenderTexture9GridTiled'
 --
---     [C declaration]: @SDL_RenderTexture9Grid@, defined at @SDL3\/SDL_render.h 2397:34@
+--     [C declaration]: @SDL_RenderTexture9Grid@, defined at @SDL3\/SDL_render.h 2401:34@
 sDL_RenderTexture9Grid
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -4826,7 +4828,7 @@ hs_bindgen_1b23a5c925e888fb =
 --
 --     [See also]: 'sDL_RenderTexture', 'sDL_RenderTexture9Grid'
 --
---     [C declaration]: @SDL_RenderTexture9GridTiled@, defined at @SDL3\/SDL_render.h 2435:34@
+--     [C declaration]: @SDL_RenderTexture9GridTiled@, defined at @SDL3\/SDL_render.h 2439:34@
 sDL_RenderTexture9GridTiled
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -4889,7 +4891,7 @@ hs_bindgen_dc26aec86b6b43fe =
 --
 --     [See also]: 'sDL_RenderGeometryRaw', 'sDL_SetRenderTextureAddressMode'
 --
---     [C declaration]: @SDL_RenderGeometry@, defined at @SDL3\/SDL_render.h 2460:34@
+--     [C declaration]: @SDL_RenderGeometry@, defined at @SDL3\/SDL_render.h 2464:34@
 sDL_RenderGeometry
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -4966,7 +4968,7 @@ hs_bindgen_1e06910d8288533e =
 --
 --     [See also]: 'sDL_RenderGeometry', 'sDL_SetRenderTextureAddressMode'
 --
---     [C declaration]: @SDL_RenderGeometryRaw@, defined at @SDL3\/SDL_render.h 2493:34@
+--     [C declaration]: @SDL_RenderGeometryRaw@, defined at @SDL3\/SDL_render.h 2497:34@
 sDL_RenderGeometryRaw
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -5016,7 +5018,7 @@ hs_bindgen_35802c1bb0921c28 =
 --
 --     [See also]: 'sDL_RenderGeometry', 'sDL_RenderGeometryRaw', 'sDL_GetRenderTextureAddressMode'
 --
---     [C declaration]: @SDL_SetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2520:34@
+--     [C declaration]: @SDL_SetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2524:34@
 sDL_SetRenderTextureAddressMode
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> SDL_TextureAddressMode -> SDL_TextureAddressMode -> IO BG.CBool)
 sDL_SetRenderTextureAddressMode =
@@ -5054,7 +5056,7 @@ hs_bindgen_649128c959cdb236 =
 --
 --     [See also]: 'sDL_SetRenderTextureAddressMode'
 --
---     [C declaration]: @SDL_GetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2541:34@
+--     [C declaration]: @SDL_GetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2545:34@
 sDL_GetRenderTextureAddressMode
   :: BG.FunPtr
        (BG.Ptr SDL_Renderer -> BG.Ptr SDL_TextureAddressMode -> BG.Ptr SDL_TextureAddressMode -> IO BG.CBool)
@@ -5098,7 +5100,7 @@ hs_bindgen_b087b184be493118 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_RenderReadPixels@, defined at @SDL3\/SDL_render.h 2568:43@
+--     [C declaration]: @SDL_RenderReadPixels@, defined at @SDL3\/SDL_render.h 2572:43@
 sDL_RenderReadPixels
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -5140,7 +5142,7 @@ hs_bindgen_2bafff2cb8bebc00 =
 --
 --     [See also]: 'sDL_CreateRenderer', 'sDL_RenderClear', 'sDL_RenderFillRect', 'sDL_RenderFillRects', 'sDL_RenderLine', 'sDL_RenderLines', 'sDL_RenderPoint', 'sDL_RenderPoints', 'sDL_RenderRect', 'sDL_RenderRects', 'sDL_SetRenderDrawBlendMode', 'sDL_SetRenderDrawColor'
 --
---     [C declaration]: @SDL_RenderPresent@, defined at @SDL3\/SDL_render.h 2617:34@
+--     [C declaration]: @SDL_RenderPresent@, defined at @SDL3\/SDL_render.h 2621:34@
 sDL_RenderPresent :: BG.FunPtr (BG.Ptr SDL_Renderer -> IO BG.CBool)
 sDL_RenderPresent =
   BG.unsafePerformIO hs_bindgen_2bafff2cb8bebc00
@@ -5169,7 +5171,7 @@ hs_bindgen_4497bf4e9bdd42b9 =
 --
 --     [See also]: 'sDL_CreateTexture', 'sDL_CreateTextureFromSurface'
 --
---     [C declaration]: @SDL_DestroyTexture@, defined at @SDL3\/SDL_render.h 2634:34@
+--     [C declaration]: @SDL_DestroyTexture@, defined at @SDL3\/SDL_render.h 2638:34@
 sDL_DestroyTexture :: BG.FunPtr (BG.Ptr SDL_Texture -> IO ())
 sDL_DestroyTexture =
   BG.unsafePerformIO hs_bindgen_4497bf4e9bdd42b9
@@ -5198,7 +5200,7 @@ hs_bindgen_011b10f177cafc47 =
 --
 --     [See also]: 'sDL_CreateRenderer'
 --
---     [C declaration]: @SDL_DestroyRenderer@, defined at @SDL3\/SDL_render.h 2650:34@
+--     [C declaration]: @SDL_DestroyRenderer@, defined at @SDL3\/SDL_render.h 2654:34@
 sDL_DestroyRenderer :: BG.FunPtr (BG.Ptr SDL_Renderer -> IO ())
 sDL_DestroyRenderer =
   BG.unsafePerformIO hs_bindgen_011b10f177cafc47
@@ -5235,7 +5237,7 @@ hs_bindgen_0ee776d39090d2fd =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_FlushRenderer@, defined at @SDL3\/SDL_render.h 2683:34@
+--     [C declaration]: @SDL_FlushRenderer@, defined at @SDL3\/SDL_render.h 2687:34@
 sDL_FlushRenderer :: BG.FunPtr (BG.Ptr SDL_Renderer -> IO BG.CBool)
 sDL_FlushRenderer =
   BG.unsafePerformIO hs_bindgen_0ee776d39090d2fd
@@ -5266,7 +5268,7 @@ hs_bindgen_f52f9cb5238155f3 =
 --
 --     [See also]: 'sDL_GetRenderMetalCommandEncoder'
 --
---     [C declaration]: @SDL_GetRenderMetalLayer@, defined at @SDL3\/SDL_render.h 2701:36@
+--     [C declaration]: @SDL_GetRenderMetalLayer@, defined at @SDL3\/SDL_render.h 2705:36@
 sDL_GetRenderMetalLayer :: BG.FunPtr (BG.Ptr SDL_Renderer -> IO (BG.Ptr BG.Void))
 sDL_GetRenderMetalLayer =
   BG.unsafePerformIO hs_bindgen_f52f9cb5238155f3
@@ -5299,7 +5301,7 @@ hs_bindgen_0e330f87af225f8b =
 --
 --     [See also]: 'sDL_GetRenderMetalLayer'
 --
---     [C declaration]: @SDL_GetRenderMetalCommandEncoder@, defined at @SDL3\/SDL_render.h 2724:36@
+--     [C declaration]: @SDL_GetRenderMetalCommandEncoder@, defined at @SDL3\/SDL_render.h 2728:36@
 sDL_GetRenderMetalCommandEncoder :: BG.FunPtr (BG.Ptr SDL_Renderer -> IO (BG.Ptr BG.Void))
 sDL_GetRenderMetalCommandEncoder =
   BG.unsafePerformIO hs_bindgen_0e330f87af225f8b
@@ -5345,7 +5347,7 @@ hs_bindgen_3aaeda31b2a532b0 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_AddVulkanRenderSemaphores@, defined at @SDL3\/SDL_render.h 2755:34@
+--     [C declaration]: @SDL_AddVulkanRenderSemaphores@, defined at @SDL3\/SDL_render.h 2759:34@
 sDL_AddVulkanRenderSemaphores
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -5387,7 +5389,7 @@ hs_bindgen_964c717567cbb3b7 =
 --
 --     [See also]: 'sDL_GetRenderVSync'
 --
---     [C declaration]: @SDL_SetRenderVSync@, defined at @SDL3\/SDL_render.h 2780:34@
+--     [C declaration]: @SDL_SetRenderVSync@, defined at @SDL3\/SDL_render.h 2784:34@
 sDL_SetRenderVSync :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.CInt -> IO BG.CBool)
 sDL_SetRenderVSync =
   BG.unsafePerformIO hs_bindgen_964c717567cbb3b7
@@ -5418,7 +5420,7 @@ hs_bindgen_ea48e8e1fe227495 =
 --
 --     [See also]: 'sDL_SetRenderVSync'
 --
---     [C declaration]: @SDL_GetRenderVSync@, defined at @SDL3\/SDL_render.h 2800:34@
+--     [C declaration]: @SDL_GetRenderVSync@, defined at @SDL3\/SDL_render.h 2804:34@
 sDL_GetRenderVSync :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.Ptr BG.CInt -> IO BG.CBool)
 sDL_GetRenderVSync =
   BG.unsafePerformIO hs_bindgen_ea48e8e1fe227495
@@ -5475,7 +5477,7 @@ hs_bindgen_30bc1d75e73ca06a =
 --
 --     [See also]: @SDL_RenderDebugTextFormat@, 'sDL_DEBUG_TEXT_FONT_CHARACTER_SIZE'
 --
---     [C declaration]: @SDL_RenderDebugText@, defined at @SDL3\/SDL_render.h 2852:34@
+--     [C declaration]: @SDL_RenderDebugText@, defined at @SDL3\/SDL_render.h 2856:34@
 sDL_RenderDebugText
   :: BG.FunPtr
        (BG.Ptr SDL_Renderer -> BG.CFloat -> BG.CFloat -> PtrConst.PtrConst BG.CChar -> IO BG.CBool)
@@ -5511,7 +5513,7 @@ hs_bindgen_7118410bfe83a316 =
 --
 --     [See also]: 'sDL_GetDefaultTextureScaleMode'
 --
---     [C declaration]: @SDL_SetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2898:34@
+--     [C declaration]: @SDL_SetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2902:34@
 sDL_SetDefaultTextureScaleMode
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> SDL3.Sys.Bindgen.Surface.SDL_ScaleMode -> IO BG.CBool)
 sDL_SetDefaultTextureScaleMode =
@@ -5544,7 +5546,7 @@ hs_bindgen_51156f5e8dd42d03 =
 --
 --     [See also]: 'sDL_SetDefaultTextureScaleMode'
 --
---     [C declaration]: @SDL_GetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2916:34@
+--     [C declaration]: @SDL_GetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2920:34@
 sDL_GetDefaultTextureScaleMode
   :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_ScaleMode -> IO BG.CBool)
 sDL_GetDefaultTextureScaleMode =
@@ -5583,7 +5585,7 @@ hs_bindgen_c77515a1f877dab2 =
 --
 --     [See also]: 'sDL_SetGPURenderStateFragmentUniforms', 'sDL_SetGPURenderState', 'sDL_DestroyGPURenderState'
 --
---     [C declaration]: @SDL_CreateGPURenderState@, defined at @SDL3\/SDL_render.h 2970:50@
+--     [C declaration]: @SDL_CreateGPURenderState@, defined at @SDL3\/SDL_render.h 2974:50@
 sDL_CreateGPURenderState
   :: BG.FunPtr
        ( BG.Ptr SDL_Renderer
@@ -5632,7 +5634,7 @@ hs_bindgen_65c1c07e7c4876a6 =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @SDL_SetGPURenderStateFragmentUniforms@, defined at @SDL3\/SDL_render.h 2990:34@
+--     [C declaration]: @SDL_SetGPURenderStateFragmentUniforms@, defined at @SDL3\/SDL_render.h 2994:34@
 sDL_SetGPURenderStateFragmentUniforms
   :: BG.FunPtr
        ( BG.Ptr SDL_GPURenderState
@@ -5671,7 +5673,7 @@ hs_bindgen_440f7dac948d9e3d =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @SDL_SetGPURenderState@, defined at @SDL3\/SDL_render.h 3008:34@
+--     [C declaration]: @SDL_SetGPURenderState@, defined at @SDL3\/SDL_render.h 3012:34@
 sDL_SetGPURenderState :: BG.FunPtr (BG.Ptr SDL_Renderer -> BG.Ptr SDL_GPURenderState -> IO BG.CBool)
 sDL_SetGPURenderState =
   BG.unsafePerformIO hs_bindgen_440f7dac948d9e3d
@@ -5698,7 +5700,7 @@ hs_bindgen_dc4da5de025a8ba9 =
 --
 --     [See also]: 'sDL_CreateGPURenderState'
 --
---     [C declaration]: @SDL_DestroyGPURenderState@, defined at @SDL3\/SDL_render.h 3022:34@
+--     [C declaration]: @SDL_DestroyGPURenderState@, defined at @SDL3\/SDL_render.h 3026:34@
 sDL_DestroyGPURenderState :: BG.FunPtr (BG.Ptr SDL_GPURenderState -> IO ())
 sDL_DestroyGPURenderState =
   BG.unsafePerformIO hs_bindgen_dc4da5de025a8ba9

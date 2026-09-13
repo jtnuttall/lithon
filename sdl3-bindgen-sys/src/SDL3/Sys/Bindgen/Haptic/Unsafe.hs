@@ -1151,7 +1151,7 @@ hs_bindgen_10f2c8457cada0f1 =
 --
 --     @since 3.2.0
 --
---     [See also]: 'sDL_RunHapticEffect', 'sDL_StopHapticEffects'
+--     [See also]: 'sDL_RunHapticEffect', 'sDL_StopHapticEffect'
 --
 --     [C declaration]: @SDL_StopHapticEffects@, defined at @SDL3\/SDL_haptic.h 1397:34@
 sDL_StopHapticEffects

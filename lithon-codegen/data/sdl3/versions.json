@@ -45,7 +45,8 @@
   "structs": {
     "SDL_MouseWheelEvent": {
       "sizeof-since": "3.2.12",
-      "note": "integer_x/integer_y added in 3.2.12; sizeof 48 -> 56, so the size/alignment asserts carry the same gate.",
+      "before": { "sizeof": 48, "alignment": 8 },
+      "note": "integer_x/integer_y added in 3.2.12",
       "members": { "integer_x": "3.2.12", "integer_y": "3.2.12" }
     },
     "SDL_GPUMultisampleState": {
@@ -55,6 +56,12 @@
     "SDL_GPUDepthStencilTargetInfo": {
       "note": "Members slotted into existing padding; sizeof unchanged.",
       "members": { "mip_level": "3.4.0", "layer": "3.4.0" }
+    },
+    "SDL_PenProximityEvent": {
+      "sizeof-since": "3.4.16",
+      "before": { "sizeof": 24, "alignment": 8 },
+      "note": "pen_state appended in 3.4.16",
+      "members": { "pen_state": "3.4.16" }
     }
   },
   "prologue-typedefs": {

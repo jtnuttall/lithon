@@ -239,7 +239,7 @@ import SDL3.Sys.Bindgen.Stdinc.Unsafe qualified as Unsafe
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_malloc@, defined at @SDL3\/SDL_stdinc.h 1341:47@
+--     [C declaration]: @SDL_malloc@, defined at @SDL3\/SDL_stdinc.h 1342:47@
 malloc
   :: BG.Word64
   -- ^
@@ -274,7 +274,7 @@ malloc =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_malloc@, defined at @SDL3\/SDL_stdinc.h 1341:47@
+--     [C declaration]: @SDL_malloc@, defined at @SDL3\/SDL_stdinc.h 1342:47@
 mallocSafe
   :: BG.Word64
   -- ^
@@ -295,7 +295,7 @@ mallocSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_calloc@, defined at @SDL3\/SDL_stdinc.h 1366:69@
+--     [C declaration]: @SDL_calloc@, defined at @SDL3\/SDL_stdinc.h 1367:69@
 calloc
   :: BG.Word64
   -- ^ [C declaration]: @nmemb@
@@ -318,7 +318,7 @@ calloc =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_calloc@, defined at @SDL3\/SDL_stdinc.h 1366:69@
+--     [C declaration]: @SDL_calloc@, defined at @SDL3\/SDL_stdinc.h 1367:69@
 callocSafe
   :: BG.Word64
   -- ^ [C declaration]: @nmemb@
@@ -341,7 +341,7 @@ callocSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_realloc@, defined at @SDL3\/SDL_stdinc.h 1406:54@
+--     [C declaration]: @SDL_realloc@, defined at @SDL3\/SDL_stdinc.h 1407:54@
 realloc
   :: BG.Ptr BG.Void
   -- ^ [C declaration]: @mem@
@@ -363,7 +363,7 @@ realloc =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_realloc@, defined at @SDL3\/SDL_stdinc.h 1406:54@
+--     [C declaration]: @SDL_realloc@, defined at @SDL3\/SDL_stdinc.h 1407:54@
 reallocSafe
   :: BG.Ptr BG.Void
   -- ^ [C declaration]: @mem@
@@ -392,7 +392,7 @@ reallocSafe =
 --                   The safe flavor is 'freeSafe'
 --                   .
 --
---     [C declaration]: @SDL_free@, defined at @SDL3\/SDL_stdinc.h 1426:34@
+--     [C declaration]: @SDL_free@, defined at @SDL3\/SDL_stdinc.h 1427:34@
 free
   :: BG.Ptr BG.Void
   -- ^
@@ -419,7 +419,7 @@ free = Unsafe.sDL_free
 --                   The unsafe flavor is 'free'
 --                   .
 --
---     [C declaration]: @SDL_free@, defined at @SDL3\/SDL_stdinc.h 1426:34@
+--     [C declaration]: @SDL_free@, defined at @SDL3\/SDL_stdinc.h 1427:34@
 freeSafe
   :: BG.Ptr BG.Void
   -- ^
@@ -442,7 +442,7 @@ freeSafe = Safe.sDL_free
 --                   The safe flavor is 'getOriginalMemoryFunctionsSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetOriginalMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1524:34@
+--     [C declaration]: @SDL_GetOriginalMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1525:34@
 getOriginalMemoryFunctions
   :: BG.Ptr SDL_malloc_func
   -- ^
@@ -478,7 +478,7 @@ getOriginalMemoryFunctions =
 --                   The unsafe flavor is 'getOriginalMemoryFunctions'
 --                   .
 --
---     [C declaration]: @SDL_GetOriginalMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1524:34@
+--     [C declaration]: @SDL_GetOriginalMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1525:34@
 getOriginalMemoryFunctionsSafe
   :: BG.Ptr SDL_malloc_func
   -- ^
@@ -514,7 +514,7 @@ getOriginalMemoryFunctionsSafe =
 --                   The safe flavor is 'getMemoryFunctionsSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1546:34@
+--     [C declaration]: @SDL_GetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1547:34@
 getMemoryFunctions
   :: BG.Ptr SDL_malloc_func
   -- ^
@@ -549,7 +549,7 @@ getMemoryFunctions = Unsafe.sDL_GetMemoryFunctions
 --                   The unsafe flavor is 'getMemoryFunctions'
 --                   .
 --
---     [C declaration]: @SDL_GetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1546:34@
+--     [C declaration]: @SDL_GetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1547:34@
 getMemoryFunctionsSafe
   :: BG.Ptr SDL_malloc_func
   -- ^
@@ -593,7 +593,7 @@ getMemoryFunctionsSafe = Safe.sDL_GetMemoryFunctions
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1577:34@
+--     [C declaration]: @SDL_SetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1578:34@
 setMemoryFunctions
   :: SDL_malloc_func
   -- ^
@@ -642,7 +642,7 @@ setMemoryFunctions =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1577:34@
+--     [C declaration]: @SDL_SetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1578:34@
 setMemoryFunctionsSafe
   :: SDL_malloc_func
   -- ^
@@ -693,7 +693,7 @@ setMemoryFunctionsSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_aligned_alloc@, defined at @SDL3\/SDL_stdinc.h 1604:47@
+--     [C declaration]: @SDL_aligned_alloc@, defined at @SDL3\/SDL_stdinc.h 1605:47@
 alignedAlloc
   :: BG.Word64
   -- ^
@@ -734,7 +734,7 @@ alignedAlloc =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_aligned_alloc@, defined at @SDL3\/SDL_stdinc.h 1604:47@
+--     [C declaration]: @SDL_aligned_alloc@, defined at @SDL3\/SDL_stdinc.h 1605:47@
 alignedAllocSafe
   :: BG.Word64
   -- ^
@@ -768,7 +768,7 @@ alignedAllocSafe =
 --                   The safe flavor is 'alignedFreeSafe'
 --                   .
 --
---     [C declaration]: @SDL_aligned_free@, defined at @SDL3\/SDL_stdinc.h 1622:34@
+--     [C declaration]: @SDL_aligned_free@, defined at @SDL3\/SDL_stdinc.h 1623:34@
 alignedFree
   :: BG.Ptr BG.Void
   -- ^
@@ -795,7 +795,7 @@ alignedFree = Unsafe.sDL_aligned_free
 --                   The unsafe flavor is 'alignedFree'
 --                   .
 --
---     [C declaration]: @SDL_aligned_free@, defined at @SDL3\/SDL_stdinc.h 1622:34@
+--     [C declaration]: @SDL_aligned_free@, defined at @SDL3\/SDL_stdinc.h 1623:34@
 alignedFreeSafe
   :: BG.Ptr BG.Void
   -- ^
@@ -821,7 +821,7 @@ alignedFreeSafe = Safe.sDL_aligned_free
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetNumAllocations@, defined at @SDL3\/SDL_stdinc.h 1634:33@
+--     [C declaration]: @SDL_GetNumAllocations@, defined at @SDL3\/SDL_stdinc.h 1635:33@
 getNumAllocations :: IO BG.Int32
 getNumAllocations =
   fmap Coerce.coerce Unsafe.sDL_GetNumAllocations
@@ -843,7 +843,7 @@ getNumAllocations =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetNumAllocations@, defined at @SDL3\/SDL_stdinc.h 1634:33@
+--     [C declaration]: @SDL_GetNumAllocations@, defined at @SDL3\/SDL_stdinc.h 1635:33@
 getNumAllocationsSafe :: IO BG.Int32
 getNumAllocationsSafe =
   fmap Coerce.coerce Safe.sDL_GetNumAllocations
@@ -866,7 +866,7 @@ getNumAllocationsSafe =
 --                   The safe flavor is 'getEnvironmentSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetEnvironment@, defined at @SDL3\/SDL_stdinc.h 1672:47@
+--     [C declaration]: @SDL_GetEnvironment@, defined at @SDL3\/SDL_stdinc.h 1673:47@
 getEnvironment :: IO (BG.Ptr SDL_Environment)
 getEnvironment = Unsafe.sDL_GetEnvironment
 
@@ -888,7 +888,7 @@ getEnvironment = Unsafe.sDL_GetEnvironment
 --                   The unsafe flavor is 'getEnvironment'
 --                   .
 --
---     [C declaration]: @SDL_GetEnvironment@, defined at @SDL3\/SDL_stdinc.h 1672:47@
+--     [C declaration]: @SDL_GetEnvironment@, defined at @SDL3\/SDL_stdinc.h 1673:47@
 getEnvironmentSafe :: IO (BG.Ptr SDL_Environment)
 getEnvironmentSafe = Safe.sDL_GetEnvironment
 
@@ -911,7 +911,7 @@ getEnvironmentSafe = Safe.sDL_GetEnvironment
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CreateEnvironment@, defined at @SDL3\/SDL_stdinc.h 1694:47@
+--     [C declaration]: @SDL_CreateEnvironment@, defined at @SDL3\/SDL_stdinc.h 1695:47@
 createEnvironment
   :: Bool
   -- ^
@@ -941,7 +941,7 @@ createEnvironment =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CreateEnvironment@, defined at @SDL3\/SDL_stdinc.h 1694:47@
+--     [C declaration]: @SDL_CreateEnvironment@, defined at @SDL3\/SDL_stdinc.h 1695:47@
 createEnvironmentSafe
   :: Bool
   -- ^
@@ -968,7 +968,7 @@ createEnvironmentSafe =
 --                   The safe flavor is 'getEnvironmentVariableSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1714:42@
+--     [C declaration]: @SDL_GetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1715:42@
 getEnvironmentVariable
   :: BG.Ptr SDL_Environment
   -- ^
@@ -998,7 +998,7 @@ getEnvironmentVariable =
 --                   The unsafe flavor is 'getEnvironmentVariable'
 --                   .
 --
---     [C declaration]: @SDL_GetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1714:42@
+--     [C declaration]: @SDL_GetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1715:42@
 getEnvironmentVariableSafe
   :: BG.Ptr SDL_Environment
   -- ^
@@ -1028,7 +1028,7 @@ getEnvironmentVariableSafe =
 --                   The safe flavor is 'getEnvironmentVariablesSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetEnvironmentVariables@, defined at @SDL3\/SDL_stdinc.h 1735:37@
+--     [C declaration]: @SDL_GetEnvironmentVariables@, defined at @SDL3\/SDL_stdinc.h 1736:37@
 getEnvironmentVariables
   :: BG.Ptr SDL_Environment
   -- ^
@@ -1054,7 +1054,7 @@ getEnvironmentVariables =
 --                   The unsafe flavor is 'getEnvironmentVariables'
 --                   .
 --
---     [C declaration]: @SDL_GetEnvironmentVariables@, defined at @SDL3\/SDL_stdinc.h 1735:37@
+--     [C declaration]: @SDL_GetEnvironmentVariables@, defined at @SDL3\/SDL_stdinc.h 1736:37@
 getEnvironmentVariablesSafe
   :: BG.Ptr SDL_Environment
   -- ^
@@ -1083,7 +1083,7 @@ getEnvironmentVariablesSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1759:34@
+--     [C declaration]: @SDL_SetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1760:34@
 setEnvironmentVariable
   :: BG.Ptr SDL_Environment
   -- ^
@@ -1128,7 +1128,7 @@ setEnvironmentVariable =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1759:34@
+--     [C declaration]: @SDL_SetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1760:34@
 setEnvironmentVariableSafe
   :: BG.Ptr SDL_Environment
   -- ^
@@ -1173,7 +1173,7 @@ setEnvironmentVariableSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_UnsetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1780:34@
+--     [C declaration]: @SDL_UnsetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1781:34@
 unsetEnvironmentVariable
   :: BG.Ptr SDL_Environment
   -- ^
@@ -1208,7 +1208,7 @@ unsetEnvironmentVariable =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_UnsetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1780:34@
+--     [C declaration]: @SDL_UnsetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1781:34@
 unsetEnvironmentVariableSafe
   :: BG.Ptr SDL_Environment
   -- ^
@@ -1238,7 +1238,7 @@ unsetEnvironmentVariableSafe =
 --                   The safe flavor is 'destroyEnvironmentSafe'
 --                   .
 --
---     [C declaration]: @SDL_DestroyEnvironment@, defined at @SDL3\/SDL_stdinc.h 1794:34@
+--     [C declaration]: @SDL_DestroyEnvironment@, defined at @SDL3\/SDL_stdinc.h 1795:34@
 destroyEnvironment
   :: BG.Ptr SDL_Environment
   -- ^
@@ -1261,7 +1261,7 @@ destroyEnvironment = Unsafe.sDL_DestroyEnvironment
 --                   The unsafe flavor is 'destroyEnvironment'
 --                   .
 --
---     [C declaration]: @SDL_DestroyEnvironment@, defined at @SDL3\/SDL_stdinc.h 1794:34@
+--     [C declaration]: @SDL_DestroyEnvironment@, defined at @SDL3\/SDL_stdinc.h 1795:34@
 destroyEnvironmentSafe
   :: BG.Ptr SDL_Environment
   -- ^
@@ -1271,6 +1271,8 @@ destroyEnvironmentSafe
 destroyEnvironmentSafe = Safe.sDL_DestroyEnvironment
 
 -- | Get the value of a variable in the environment.
+--
+--     The name of the variable is case sensitive on all platforms.
 --
 --     This function uses SDL\'s cached copy of the environment and is thread-safe.
 --
@@ -1286,7 +1288,7 @@ destroyEnvironmentSafe = Safe.sDL_DestroyEnvironment
 --                   The safe flavor is 'getenvSafe'
 --                   .
 --
---     [C declaration]: @SDL_getenv@, defined at @SDL3\/SDL_stdinc.h 1809:42@
+--     [C declaration]: @SDL_getenv@, defined at @SDL3\/SDL_stdinc.h 1812:42@
 getenv
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -1296,6 +1298,8 @@ getenv
 getenv = Unsafe.sDL_getenv
 
 -- | Get the value of a variable in the environment.
+--
+--     The name of the variable is case sensitive on all platforms.
 --
 --     This function uses SDL\'s cached copy of the environment and is thread-safe.
 --
@@ -1311,7 +1315,7 @@ getenv = Unsafe.sDL_getenv
 --                   The unsafe flavor is 'getenv'
 --                   .
 --
---     [C declaration]: @SDL_getenv@, defined at @SDL3\/SDL_stdinc.h 1809:42@
+--     [C declaration]: @SDL_getenv@, defined at @SDL3\/SDL_stdinc.h 1812:42@
 getenvSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -1323,6 +1327,8 @@ getenvSafe = Safe.sDL_getenv
 -- | Get the value of a variable in the environment.
 --
 --     This function bypasses SDL\'s cached copy of the environment and is not thread-safe.
+--
+--     On some platforms, this may make case-insensitive matches, while other platforms are case-sensitive. It is best to be precise with strings used for queries through this interface. 'getenv' is always case-sensitive, however.
 --
 --     [Returns]: a pointer to the value of the variable or NULL if it can\'t be found.
 --
@@ -1338,7 +1344,7 @@ getenvSafe = Safe.sDL_getenv
 --                   The safe flavor is 'getenvUnsafeSafe'
 --                   .
 --
---     [C declaration]: @SDL_getenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1828:42@
+--     [C declaration]: @SDL_getenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1836:42@
 getenvUnsafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -1350,6 +1356,8 @@ getenvUnsafe = Unsafe.sDL_getenv_unsafe
 -- | Get the value of a variable in the environment.
 --
 --     This function bypasses SDL\'s cached copy of the environment and is not thread-safe.
+--
+--     On some platforms, this may make case-insensitive matches, while other platforms are case-sensitive. It is best to be precise with strings used for queries through this interface. 'getenv' is always case-sensitive, however.
 --
 --     [Returns]: a pointer to the value of the variable or NULL if it can\'t be found.
 --
@@ -1365,7 +1373,7 @@ getenvUnsafe = Unsafe.sDL_getenv_unsafe
 --                   The unsafe flavor is 'getenvUnsafe'
 --                   .
 --
---     [C declaration]: @SDL_getenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1828:42@
+--     [C declaration]: @SDL_getenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1836:42@
 getenvUnsafeSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -1393,7 +1401,7 @@ getenvUnsafeSafe = Safe.sDL_getenv_unsafe
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_setenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1846:33@
+--     [C declaration]: @SDL_setenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1854:33@
 setenvUnsafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -1433,7 +1441,7 @@ setenvUnsafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_setenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1846:33@
+--     [C declaration]: @SDL_setenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1854:33@
 setenvUnsafeSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -1473,7 +1481,7 @@ setenvUnsafeSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_unsetenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1861:33@
+--     [C declaration]: @SDL_unsetenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1869:33@
 unsetenvUnsafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -1503,7 +1511,7 @@ unsetenvUnsafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_unsetenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1861:33@
+--     [C declaration]: @SDL_unsetenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1869:33@
 unsetenvUnsafeSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -1562,7 +1570,7 @@ unsetenvUnsafeSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_qsort@, defined at @SDL3\/SDL_stdinc.h 1923:34@
+--     [C declaration]: @SDL_qsort@, defined at @SDL3\/SDL_stdinc.h 1931:34@
 qsortSafe
   :: BG.Ptr BG.Void
   -- ^
@@ -1639,7 +1647,7 @@ qsortSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_bsearch@, defined at @SDL3\/SDL_stdinc.h 1973:36@
+--     [C declaration]: @SDL_bsearch@, defined at @SDL3\/SDL_stdinc.h 1981:36@
 bsearchSafe
   :: PtrConst.PtrConst BG.Void
   -- ^
@@ -1724,7 +1732,7 @@ bsearchSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_qsort_r@, defined at @SDL3\/SDL_stdinc.h 2043:34@
+--     [C declaration]: @SDL_qsort_r@, defined at @SDL3\/SDL_stdinc.h 2051:34@
 qsortRSafe
   :: BG.Ptr BG.Void
   -- ^
@@ -1812,7 +1820,7 @@ qsortRSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_bsearch_r@, defined at @SDL3\/SDL_stdinc.h 2101:36@
+--     [C declaration]: @SDL_bsearch_r@, defined at @SDL3\/SDL_stdinc.h 2109:36@
 bsearchRSafe
   :: PtrConst.PtrConst BG.Void
   -- ^
@@ -1865,7 +1873,7 @@ bsearchRSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_abs@, defined at @SDL3\/SDL_stdinc.h 2113:33@
+--     [C declaration]: @SDL_abs@, defined at @SDL3\/SDL_stdinc.h 2121:33@
 abs
   :: BG.Int32
   -- ^
@@ -1895,7 +1903,7 @@ abs =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_isalpha@, defined at @SDL3\/SDL_stdinc.h 2188:33@
+--     [C declaration]: @SDL_isalpha@, defined at @SDL3\/SDL_stdinc.h 2196:33@
 isalpha
   :: BG.Int32
   -- ^
@@ -1925,7 +1933,7 @@ isalpha =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_isalnum@, defined at @SDL3\/SDL_stdinc.h 2203:33@
+--     [C declaration]: @SDL_isalnum@, defined at @SDL3\/SDL_stdinc.h 2211:33@
 isalnum
   :: BG.Int32
   -- ^
@@ -1955,7 +1963,7 @@ isalnum =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_isblank@, defined at @SDL3\/SDL_stdinc.h 2218:33@
+--     [C declaration]: @SDL_isblank@, defined at @SDL3\/SDL_stdinc.h 2226:33@
 isblank
   :: BG.Int32
   -- ^
@@ -1985,7 +1993,7 @@ isblank =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_iscntrl@, defined at @SDL3\/SDL_stdinc.h 2233:33@
+--     [C declaration]: @SDL_iscntrl@, defined at @SDL3\/SDL_stdinc.h 2241:33@
 iscntrl
   :: BG.Int32
   -- ^
@@ -2015,7 +2023,7 @@ iscntrl =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_isdigit@, defined at @SDL3\/SDL_stdinc.h 2248:33@
+--     [C declaration]: @SDL_isdigit@, defined at @SDL3\/SDL_stdinc.h 2256:33@
 isdigit
   :: BG.Int32
   -- ^
@@ -2045,7 +2053,7 @@ isdigit =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_isxdigit@, defined at @SDL3\/SDL_stdinc.h 2263:33@
+--     [C declaration]: @SDL_isxdigit@, defined at @SDL3\/SDL_stdinc.h 2271:33@
 isxdigit
   :: BG.Int32
   -- ^
@@ -2077,7 +2085,7 @@ isxdigit =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ispunct@, defined at @SDL3\/SDL_stdinc.h 2281:33@
+--     [C declaration]: @SDL_ispunct@, defined at @SDL3\/SDL_stdinc.h 2289:33@
 ispunct
   :: BG.Int32
   -- ^
@@ -2119,7 +2127,7 @@ ispunct =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_isspace@, defined at @SDL3\/SDL_stdinc.h 2303:33@
+--     [C declaration]: @SDL_isspace@, defined at @SDL3\/SDL_stdinc.h 2311:33@
 isspace
   :: BG.Int32
   -- ^
@@ -2149,7 +2157,7 @@ isspace =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_isupper@, defined at @SDL3\/SDL_stdinc.h 2318:33@
+--     [C declaration]: @SDL_isupper@, defined at @SDL3\/SDL_stdinc.h 2326:33@
 isupper
   :: BG.Int32
   -- ^
@@ -2179,7 +2187,7 @@ isupper =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_islower@, defined at @SDL3\/SDL_stdinc.h 2333:33@
+--     [C declaration]: @SDL_islower@, defined at @SDL3\/SDL_stdinc.h 2341:33@
 islower
   :: BG.Int32
   -- ^
@@ -2211,7 +2219,7 @@ islower =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_isprint@, defined at @SDL3\/SDL_stdinc.h 2352:33@
+--     [C declaration]: @SDL_isprint@, defined at @SDL3\/SDL_stdinc.h 2360:33@
 isprint
   :: BG.Int32
   -- ^
@@ -2245,7 +2253,7 @@ isprint =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_isgraph@, defined at @SDL3\/SDL_stdinc.h 2373:33@
+--     [C declaration]: @SDL_isgraph@, defined at @SDL3\/SDL_stdinc.h 2381:33@
 isgraph
   :: BG.Int32
   -- ^
@@ -2277,7 +2285,7 @@ isgraph =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_toupper@, defined at @SDL3\/SDL_stdinc.h 2391:33@
+--     [C declaration]: @SDL_toupper@, defined at @SDL3\/SDL_stdinc.h 2399:33@
 toupper
   :: BG.Int32
   -- ^
@@ -2309,7 +2317,7 @@ toupper =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_tolower@, defined at @SDL3\/SDL_stdinc.h 2409:33@
+--     [C declaration]: @SDL_tolower@, defined at @SDL3\/SDL_stdinc.h 2417:33@
 tolower
   :: BG.Int32
   -- ^
@@ -2341,7 +2349,7 @@ tolower =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_crc16@, defined at @SDL3\/SDL_stdinc.h 2430:36@
+--     [C declaration]: @SDL_crc16@, defined at @SDL3\/SDL_stdinc.h 2438:36@
 crc16
   :: BG.Word16
   -- ^
@@ -2383,7 +2391,7 @@ crc16 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_crc16@, defined at @SDL3\/SDL_stdinc.h 2430:36@
+--     [C declaration]: @SDL_crc16@, defined at @SDL3\/SDL_stdinc.h 2438:36@
 crc16Safe
   :: BG.Word16
   -- ^
@@ -2425,7 +2433,7 @@ crc16Safe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_crc32@, defined at @SDL3\/SDL_stdinc.h 2451:36@
+--     [C declaration]: @SDL_crc32@, defined at @SDL3\/SDL_stdinc.h 2459:36@
 crc32
   :: BG.Word32
   -- ^
@@ -2467,7 +2475,7 @@ crc32 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_crc32@, defined at @SDL3\/SDL_stdinc.h 2451:36@
+--     [C declaration]: @SDL_crc32@, defined at @SDL3\/SDL_stdinc.h 2459:36@
 crc32Safe
   :: BG.Word32
   -- ^
@@ -2511,7 +2519,7 @@ crc32Safe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_murmur3_32@, defined at @SDL3\/SDL_stdinc.h 2477:36@
+--     [C declaration]: @SDL_murmur3_32@, defined at @SDL3\/SDL_stdinc.h 2485:36@
 murmur3_32
   :: PtrConst.PtrConst BG.Void
   -- ^
@@ -2555,7 +2563,7 @@ murmur3_32 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_murmur3_32@, defined at @SDL3\/SDL_stdinc.h 2477:36@
+--     [C declaration]: @SDL_murmur3_32@, defined at @SDL3\/SDL_stdinc.h 2485:36@
 murmur3_32Safe
   :: PtrConst.PtrConst BG.Void
   -- ^
@@ -2597,7 +2605,7 @@ murmur3_32Safe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_memset4@, defined at @SDL3\/SDL_stdinc.h 2601:36@
+--     [C declaration]: @SDL_memset4@, defined at @SDL3\/SDL_stdinc.h 2609:36@
 memset4
   :: BG.Ptr BG.Void
   -- ^
@@ -2639,7 +2647,7 @@ memset4 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_memset4@, defined at @SDL3\/SDL_stdinc.h 2601:36@
+--     [C declaration]: @SDL_memset4@, defined at @SDL3\/SDL_stdinc.h 2609:36@
 memset4Safe
   :: BG.Ptr BG.Void
   -- ^
@@ -2677,7 +2685,7 @@ memset4Safe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_memcmp@, defined at @SDL3\/SDL_stdinc.h 2683:33@
+--     [C declaration]: @SDL_memcmp@, defined at @SDL3\/SDL_stdinc.h 2691:33@
 memcmp
   :: PtrConst.PtrConst BG.Void
   -- ^
@@ -2715,7 +2723,7 @@ memcmp =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_memcmp@, defined at @SDL3\/SDL_stdinc.h 2683:33@
+--     [C declaration]: @SDL_memcmp@, defined at @SDL3\/SDL_stdinc.h 2691:33@
 memcmpSafe
   :: PtrConst.PtrConst BG.Void
   -- ^
@@ -2761,7 +2769,7 @@ memcmpSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_wcslen@, defined at @SDL3\/SDL_stdinc.h 2710:36@
+--     [C declaration]: @SDL_wcslen@, defined at @SDL3\/SDL_stdinc.h 2718:36@
 wcslen
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -2798,7 +2806,7 @@ wcslen =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_wcsnlen@, defined at @SDL3\/SDL_stdinc.h 2741:36@
+--     [C declaration]: @SDL_wcsnlen@, defined at @SDL3\/SDL_stdinc.h 2749:36@
 wcsnlen
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -2839,7 +2847,7 @@ wcsnlen =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_wcslcpy@, defined at @SDL3\/SDL_stdinc.h 2768:36@
+--     [C declaration]: @SDL_wcslcpy@, defined at @SDL3\/SDL_stdinc.h 2776:36@
 wcslcpy
   :: BG.Ptr HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -2885,7 +2893,7 @@ wcslcpy =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_wcslcat@, defined at @SDL3\/SDL_stdinc.h 2797:36@
+--     [C declaration]: @SDL_wcslcat@, defined at @SDL3\/SDL_stdinc.h 2805:36@
 wcslcat
   :: BG.Ptr HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -2924,7 +2932,7 @@ wcslcat =
 --                   The safe flavor is 'wcsdupSafe'
 --                   .
 --
---     [C declaration]: @SDL_wcsdup@, defined at @SDL3\/SDL_stdinc.h 2815:39@
+--     [C declaration]: @SDL_wcsdup@, defined at @SDL3\/SDL_stdinc.h 2823:39@
 wcsdup
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -2951,7 +2959,7 @@ wcsdup = Unsafe.sDL_wcsdup
 --                   The unsafe flavor is 'wcsdup'
 --                   .
 --
---     [C declaration]: @SDL_wcsdup@, defined at @SDL3\/SDL_stdinc.h 2815:39@
+--     [C declaration]: @SDL_wcsdup@, defined at @SDL3\/SDL_stdinc.h 2823:39@
 wcsdupSafe
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -2978,7 +2986,7 @@ wcsdupSafe = Safe.sDL_wcsdup
 --                   The safe import is not exported
 --                   : string computation over caller memory with no allocation; cannot block, lock, or call back.
 --
---     [C declaration]: @SDL_wcsstr@, defined at @SDL3\/SDL_stdinc.h 2835:39@
+--     [C declaration]: @SDL_wcsstr@, defined at @SDL3\/SDL_stdinc.h 2843:39@
 wcsstr
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3012,7 +3020,7 @@ wcsstr = Unsafe.sDL_wcsstr
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_wcsnstr@, defined at @SDL3\/SDL_stdinc.h 2860:39@
+--     [C declaration]: @SDL_wcsnstr@, defined at @SDL3\/SDL_stdinc.h 2868:39@
 wcsnstr
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3052,7 +3060,7 @@ wcsnstr =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_wcscmp@, defined at @SDL3\/SDL_stdinc.h 2879:33@
+--     [C declaration]: @SDL_wcscmp@, defined at @SDL3\/SDL_stdinc.h 2887:33@
 wcscmp
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3091,7 +3099,7 @@ wcscmp =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_wcsncmp@, defined at @SDL3\/SDL_stdinc.h 2910:33@
+--     [C declaration]: @SDL_wcsncmp@, defined at @SDL3\/SDL_stdinc.h 2918:33@
 wcsncmp
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3133,7 +3141,7 @@ wcsncmp =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_wcscasecmp@, defined at @SDL3\/SDL_stdinc.h 2940:33@
+--     [C declaration]: @SDL_wcscasecmp@, defined at @SDL3\/SDL_stdinc.h 2948:33@
 wcscasecmp
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3174,7 +3182,7 @@ wcscasecmp =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_wcsncasecmp@, defined at @SDL3\/SDL_stdinc.h 2982:33@
+--     [C declaration]: @SDL_wcsncasecmp@, defined at @SDL3\/SDL_stdinc.h 2990:33@
 wcsncasecmp
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3218,7 +3226,7 @@ wcsncasecmp =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strlen@, defined at @SDL3\/SDL_stdinc.h 3029:36@
+--     [C declaration]: @SDL_strlen@, defined at @SDL3\/SDL_stdinc.h 3037:36@
 strlen
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3251,7 +3259,7 @@ strlen =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strnlen@, defined at @SDL3\/SDL_stdinc.h 3053:36@
+--     [C declaration]: @SDL_strnlen@, defined at @SDL3\/SDL_stdinc.h 3061:36@
 strnlen
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3292,7 +3300,7 @@ strnlen =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strlcpy@, defined at @SDL3\/SDL_stdinc.h 3082:36@
+--     [C declaration]: @SDL_strlcpy@, defined at @SDL3\/SDL_stdinc.h 3090:36@
 strlcpy
   :: BG.Ptr BG.CChar
   -- ^
@@ -3338,7 +3346,7 @@ strlcpy =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_utf8strlcpy@, defined at @SDL3\/SDL_stdinc.h 3110:36@
+--     [C declaration]: @SDL_utf8strlcpy@, defined at @SDL3\/SDL_stdinc.h 3118:36@
 utf8strlcpy
   :: BG.Ptr BG.CChar
   -- ^
@@ -3384,7 +3392,7 @@ utf8strlcpy =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strlcat@, defined at @SDL3\/SDL_stdinc.h 3138:36@
+--     [C declaration]: @SDL_strlcat@, defined at @SDL3\/SDL_stdinc.h 3146:36@
 strlcat
   :: BG.Ptr BG.CChar
   -- ^
@@ -3423,7 +3431,7 @@ strlcat =
 --                   The safe flavor is 'strdupSafe'
 --                   .
 --
---     [C declaration]: @SDL_strdup@, defined at @SDL3\/SDL_stdinc.h 3156:47@
+--     [C declaration]: @SDL_strdup@, defined at @SDL3\/SDL_stdinc.h 3164:47@
 strdup
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3450,7 +3458,7 @@ strdup = Unsafe.sDL_strdup
 --                   The unsafe flavor is 'strdup'
 --                   .
 --
---     [C declaration]: @SDL_strdup@, defined at @SDL3\/SDL_stdinc.h 3156:47@
+--     [C declaration]: @SDL_strdup@, defined at @SDL3\/SDL_stdinc.h 3164:47@
 strdupSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3482,7 +3490,7 @@ strdupSafe = Safe.sDL_strdup
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strndup@, defined at @SDL3\/SDL_stdinc.h 3181:47@
+--     [C declaration]: @SDL_strndup@, defined at @SDL3\/SDL_stdinc.h 3189:47@
 strndup
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3520,7 +3528,7 @@ strndup =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strndup@, defined at @SDL3\/SDL_stdinc.h 3181:47@
+--     [C declaration]: @SDL_strndup@, defined at @SDL3\/SDL_stdinc.h 3189:47@
 strndupSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3553,7 +3561,7 @@ strndupSafe =
 --                   The safe import is not exported
 --                   : string computation over caller memory with no allocation; cannot block, lock, or call back.
 --
---     [C declaration]: @SDL_strrev@, defined at @SDL3\/SDL_stdinc.h 3202:36@
+--     [C declaration]: @SDL_strrev@, defined at @SDL3\/SDL_stdinc.h 3210:36@
 strrev
   :: BG.Ptr BG.CChar
   -- ^
@@ -3582,7 +3590,7 @@ strrev = Unsafe.sDL_strrev
 --                   The safe import is not exported
 --                   : string computation over caller memory with no allocation; cannot block, lock, or call back.
 --
---     [C declaration]: @SDL_strupr@, defined at @SDL3\/SDL_stdinc.h 3223:36@
+--     [C declaration]: @SDL_strupr@, defined at @SDL3\/SDL_stdinc.h 3231:36@
 strupr
   :: BG.Ptr BG.CChar
   -- ^
@@ -3611,7 +3619,7 @@ strupr = Unsafe.sDL_strupr
 --                   The safe import is not exported
 --                   : string computation over caller memory with no allocation; cannot block, lock, or call back.
 --
---     [C declaration]: @SDL_strlwr@, defined at @SDL3\/SDL_stdinc.h 3244:36@
+--     [C declaration]: @SDL_strlwr@, defined at @SDL3\/SDL_stdinc.h 3252:36@
 strlwr
   :: BG.Ptr BG.CChar
   -- ^
@@ -3641,7 +3649,7 @@ strlwr = Unsafe.sDL_strlwr
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strchr@, defined at @SDL3\/SDL_stdinc.h 3264:36@
+--     [C declaration]: @SDL_strchr@, defined at @SDL3\/SDL_stdinc.h 3272:36@
 strchr
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3677,7 +3685,7 @@ strchr =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strrchr@, defined at @SDL3\/SDL_stdinc.h 3283:36@
+--     [C declaration]: @SDL_strrchr@, defined at @SDL3\/SDL_stdinc.h 3291:36@
 strrchr
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3710,7 +3718,7 @@ strrchr =
 --                   The safe import is not exported
 --                   : string computation over caller memory with no allocation; cannot block, lock, or call back.
 --
---     [C declaration]: @SDL_strstr@, defined at @SDL3\/SDL_stdinc.h 3303:36@
+--     [C declaration]: @SDL_strstr@, defined at @SDL3\/SDL_stdinc.h 3311:36@
 strstr
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3744,7 +3752,7 @@ strstr = Unsafe.sDL_strstr
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strnstr@, defined at @SDL3\/SDL_stdinc.h 3326:36@
+--     [C declaration]: @SDL_strnstr@, defined at @SDL3\/SDL_stdinc.h 3334:36@
 strnstr
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3783,7 +3791,7 @@ strnstr =
 --                   The safe import is not exported
 --                   : string computation over caller memory with no allocation; cannot block, lock, or call back.
 --
---     [C declaration]: @SDL_strcasestr@, defined at @SDL3\/SDL_stdinc.h 3354:36@
+--     [C declaration]: @SDL_strcasestr@, defined at @SDL3\/SDL_stdinc.h 3362:36@
 strcasestr
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3818,7 +3826,7 @@ strcasestr = Unsafe.sDL_strcasestr
 --                   The safe import is not exported
 --                   : string computation over caller memory with no allocation; cannot block, lock, or call back.
 --
---     [C declaration]: @SDL_strtok_r@, defined at @SDL3\/SDL_stdinc.h 3383:36@
+--     [C declaration]: @SDL_strtok_r@, defined at @SDL3\/SDL_stdinc.h 3391:36@
 strtokR
   :: BG.Ptr BG.CChar
   -- ^
@@ -3860,7 +3868,7 @@ strtokR = Unsafe.sDL_strtok_r
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_utf8strlen@, defined at @SDL3\/SDL_stdinc.h 3411:36@
+--     [C declaration]: @SDL_utf8strlen@, defined at @SDL3\/SDL_stdinc.h 3419:36@
 utf8strlen
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3898,7 +3906,7 @@ utf8strlen =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_utf8strnlen@, defined at @SDL3\/SDL_stdinc.h 3444:36@
+--     [C declaration]: @SDL_utf8strnlen@, defined at @SDL3\/SDL_stdinc.h 3452:36@
 utf8strnlen
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3937,7 +3945,7 @@ utf8strnlen =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_itoa@, defined at @SDL3\/SDL_stdinc.h 3472:36@
+--     [C declaration]: @SDL_itoa@, defined at @SDL3\/SDL_stdinc.h 3480:36@
 itoa
   :: BG.Int32
   -- ^
@@ -3981,7 +3989,7 @@ itoa =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_uitoa@, defined at @SDL3\/SDL_stdinc.h 3500:36@
+--     [C declaration]: @SDL_uitoa@, defined at @SDL3\/SDL_stdinc.h 3508:36@
 uitoa
   :: BG.Word32
   -- ^
@@ -4025,7 +4033,7 @@ uitoa =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_lltoa@, defined at @SDL3\/SDL_stdinc.h 3586:36@
+--     [C declaration]: @SDL_lltoa@, defined at @SDL3\/SDL_stdinc.h 3594:36@
 lltoa
   :: BG.Int64
   -- ^
@@ -4069,7 +4077,7 @@ lltoa =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ulltoa@, defined at @SDL3\/SDL_stdinc.h 3614:36@
+--     [C declaration]: @SDL_ulltoa@, defined at @SDL3\/SDL_stdinc.h 3622:36@
 ulltoa
   :: BG.Word64
   -- ^
@@ -4111,7 +4119,7 @@ ulltoa =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_atoi@, defined at @SDL3\/SDL_stdinc.h 3638:33@
+--     [C declaration]: @SDL_atoi@, defined at @SDL3\/SDL_stdinc.h 3646:33@
 atoi
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4142,7 +4150,7 @@ atoi =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_atof@, defined at @SDL3\/SDL_stdinc.h 3660:36@
+--     [C declaration]: @SDL_atof@, defined at @SDL3\/SDL_stdinc.h 3668:36@
 atof
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4175,7 +4183,7 @@ atof =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strtoll@, defined at @SDL3\/SDL_stdinc.h 3762:39@
+--     [C declaration]: @SDL_strtoll@, defined at @SDL3\/SDL_stdinc.h 3770:39@
 strtoll
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4219,7 +4227,7 @@ strtoll =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strtoull@, defined at @SDL3\/SDL_stdinc.h 3796:48@
+--     [C declaration]: @SDL_strtoull@, defined at @SDL3\/SDL_stdinc.h 3804:48@
 strtoull
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4267,7 +4275,7 @@ strtoull =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strtod@, defined at @SDL3\/SDL_stdinc.h 3826:36@
+--     [C declaration]: @SDL_strtod@, defined at @SDL3\/SDL_stdinc.h 3834:36@
 strtod
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4302,7 +4310,7 @@ strtod =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strcmp@, defined at @SDL3\/SDL_stdinc.h 3846:33@
+--     [C declaration]: @SDL_strcmp@, defined at @SDL3\/SDL_stdinc.h 3854:33@
 strcmp
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4341,7 +4349,7 @@ strcmp =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strncmp@, defined at @SDL3\/SDL_stdinc.h 3876:33@
+--     [C declaration]: @SDL_strncmp@, defined at @SDL3\/SDL_stdinc.h 3884:33@
 strncmp
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4383,7 +4391,7 @@ strncmp =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strcasecmp@, defined at @SDL3\/SDL_stdinc.h 3904:33@
+--     [C declaration]: @SDL_strcasecmp@, defined at @SDL3\/SDL_stdinc.h 3912:33@
 strcasecmp
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4424,7 +4432,7 @@ strcasecmp =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_strncasecmp@, defined at @SDL3\/SDL_stdinc.h 3944:33@
+--     [C declaration]: @SDL_strncasecmp@, defined at @SDL3\/SDL_stdinc.h 3952:33@
 strncasecmp
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4459,7 +4467,7 @@ strncasecmp =
 --                   The safe import is not exported
 --                   : string computation over caller memory with no allocation; cannot block, lock, or call back.
 --
---     [C declaration]: @SDL_strpbrk@, defined at @SDL3\/SDL_stdinc.h 3962:36@
+--     [C declaration]: @SDL_strpbrk@, defined at @SDL3\/SDL_stdinc.h 3970:36@
 strpbrk
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4505,7 +4513,7 @@ strpbrk = Unsafe.sDL_strpbrk
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_StepUTF8@, defined at @SDL3\/SDL_stdinc.h 4022:36@
+--     [C declaration]: @SDL_StepUTF8@, defined at @SDL3\/SDL_stdinc.h 4030:36@
 stepUTF8
   :: BG.Ptr (PtrConst.PtrConst BG.CChar)
   -- ^
@@ -4548,7 +4556,7 @@ stepUTF8 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_StepBackUTF8@, defined at @SDL3\/SDL_stdinc.h 4053:36@
+--     [C declaration]: @SDL_StepBackUTF8@, defined at @SDL3\/SDL_stdinc.h 4061:36@
 stepBackUTF8
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4589,7 +4597,7 @@ stepBackUTF8 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_UCS4ToUTF8@, defined at @SDL3\/SDL_stdinc.h 4082:36@
+--     [C declaration]: @SDL_UCS4ToUTF8@, defined at @SDL3\/SDL_stdinc.h 4090:36@
 ucs4ToUTF8
   :: BG.Word32
   -- ^
@@ -4623,7 +4631,7 @@ ucs4ToUTF8 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_srand@, defined at @SDL3\/SDL_stdinc.h 4294:34@
+--     [C declaration]: @SDL_srand@, defined at @SDL3\/SDL_stdinc.h 4302:34@
 srand
   :: BG.Word64
   -- ^
@@ -4651,7 +4659,7 @@ srand = \x00 -> Unsafe.sDL_srand (Coerce.coerce x00)
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_srand@, defined at @SDL3\/SDL_stdinc.h 4294:34@
+--     [C declaration]: @SDL_srand@, defined at @SDL3\/SDL_stdinc.h 4302:34@
 srandSafe
   :: BG.Word64
   -- ^
@@ -4690,7 +4698,7 @@ srandSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_rand@, defined at @SDL3\/SDL_stdinc.h 4328:36@
+--     [C declaration]: @SDL_rand@, defined at @SDL3\/SDL_stdinc.h 4336:36@
 rand
   :: BG.Int32
   -- ^
@@ -4730,7 +4738,7 @@ rand =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_rand@, defined at @SDL3\/SDL_stdinc.h 4328:36@
+--     [C declaration]: @SDL_rand@, defined at @SDL3\/SDL_stdinc.h 4336:36@
 randSafe
   :: BG.Int32
   -- ^
@@ -4764,7 +4772,7 @@ randSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_randf@, defined at @SDL3\/SDL_stdinc.h 4351:35@
+--     [C declaration]: @SDL_randf@, defined at @SDL3\/SDL_stdinc.h 4359:35@
 randf :: IO Float
 randf = fmap Coerce.coerce Unsafe.sDL_randf
 
@@ -4791,7 +4799,7 @@ randf = fmap Coerce.coerce Unsafe.sDL_randf
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_randf@, defined at @SDL3\/SDL_stdinc.h 4351:35@
+--     [C declaration]: @SDL_randf@, defined at @SDL3\/SDL_stdinc.h 4359:35@
 randfSafe :: IO Float
 randfSafe = fmap Coerce.coerce Safe.sDL_randf
 
@@ -4818,7 +4826,7 @@ randfSafe = fmap Coerce.coerce Safe.sDL_randf
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_rand_bits@, defined at @SDL3\/SDL_stdinc.h 4374:36@
+--     [C declaration]: @SDL_rand_bits@, defined at @SDL3\/SDL_stdinc.h 4382:36@
 randBits :: IO BG.Word32
 randBits = fmap Coerce.coerce Unsafe.sDL_rand_bits
 
@@ -4845,7 +4853,7 @@ randBits = fmap Coerce.coerce Unsafe.sDL_rand_bits
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_rand_bits@, defined at @SDL3\/SDL_stdinc.h 4374:36@
+--     [C declaration]: @SDL_rand_bits@, defined at @SDL3\/SDL_stdinc.h 4382:36@
 randBitsSafe :: IO BG.Word32
 randBitsSafe = fmap Coerce.coerce Safe.sDL_rand_bits
 
@@ -4876,7 +4884,7 @@ randBitsSafe = fmap Coerce.coerce Safe.sDL_rand_bits
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_rand_r@, defined at @SDL3\/SDL_stdinc.h 4409:36@
+--     [C declaration]: @SDL_rand_r@, defined at @SDL3\/SDL_stdinc.h 4417:36@
 randR
   :: BG.Ptr Uint64
   -- ^
@@ -4919,7 +4927,7 @@ randR =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_rand_r@, defined at @SDL3\/SDL_stdinc.h 4409:36@
+--     [C declaration]: @SDL_rand_r@, defined at @SDL3\/SDL_stdinc.h 4417:36@
 randRSafe
   :: BG.Ptr Uint64
   -- ^
@@ -4958,7 +4966,7 @@ randRSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_randf_r@, defined at @SDL3\/SDL_stdinc.h 4436:35@
+--     [C declaration]: @SDL_randf_r@, defined at @SDL3\/SDL_stdinc.h 4444:35@
 randfR
   :: BG.Ptr Uint64
   -- ^
@@ -4991,7 +4999,7 @@ randfR =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_randf_r@, defined at @SDL3\/SDL_stdinc.h 4436:35@
+--     [C declaration]: @SDL_randf_r@, defined at @SDL3\/SDL_stdinc.h 4444:35@
 randfRSafe
   :: BG.Ptr Uint64
   -- ^
@@ -5024,7 +5032,7 @@ randfRSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_rand_bits_r@, defined at @SDL3\/SDL_stdinc.h 4461:36@
+--     [C declaration]: @SDL_rand_bits_r@, defined at @SDL3\/SDL_stdinc.h 4469:36@
 randBitsR
   :: BG.Ptr Uint64
   -- ^
@@ -5058,7 +5066,7 @@ randBitsR =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_rand_bits_r@, defined at @SDL3\/SDL_stdinc.h 4461:36@
+--     [C declaration]: @SDL_rand_bits_r@, defined at @SDL3\/SDL_stdinc.h 4469:36@
 randBitsRSafe
   :: BG.Ptr Uint64
   -- ^
@@ -5097,7 +5105,7 @@ randBitsRSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_acos@, defined at @SDL3\/SDL_stdinc.h 4515:36@
+--     [C declaration]: @SDL_acos@, defined at @SDL3\/SDL_stdinc.h 4523:36@
 acos
   :: Double
   -- ^
@@ -5137,7 +5145,7 @@ acos =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_acosf@, defined at @SDL3\/SDL_stdinc.h 4545:35@
+--     [C declaration]: @SDL_acosf@, defined at @SDL3\/SDL_stdinc.h 4553:35@
 acosf
   :: Float
   -- ^
@@ -5177,7 +5185,7 @@ acosf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_asin@, defined at @SDL3\/SDL_stdinc.h 4575:36@
+--     [C declaration]: @SDL_asin@, defined at @SDL3\/SDL_stdinc.h 4583:36@
 asin
   :: Double
   -- ^
@@ -5217,7 +5225,7 @@ asin =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_asinf@, defined at @SDL3\/SDL_stdinc.h 4605:35@
+--     [C declaration]: @SDL_asinf@, defined at @SDL3\/SDL_stdinc.h 4613:35@
 asinf
   :: Float
   -- ^
@@ -5259,7 +5267,7 @@ asinf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_atan@, defined at @SDL3\/SDL_stdinc.h 4637:36@
+--     [C declaration]: @SDL_atan@, defined at @SDL3\/SDL_stdinc.h 4645:36@
 atan
   :: Double
   -- ^
@@ -5301,7 +5309,7 @@ atan =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_atanf@, defined at @SDL3\/SDL_stdinc.h 4669:35@
+--     [C declaration]: @SDL_atanf@, defined at @SDL3\/SDL_stdinc.h 4677:35@
 atanf
   :: Float
   -- ^
@@ -5343,7 +5351,7 @@ atanf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_atan2@, defined at @SDL3\/SDL_stdinc.h 4705:36@
+--     [C declaration]: @SDL_atan2@, defined at @SDL3\/SDL_stdinc.h 4713:36@
 atan2
   :: Double
   -- ^
@@ -5390,7 +5398,7 @@ atan2 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_atan2f@, defined at @SDL3\/SDL_stdinc.h 4741:35@
+--     [C declaration]: @SDL_atan2f@, defined at @SDL3\/SDL_stdinc.h 4749:35@
 atan2f
   :: Float
   -- ^
@@ -5433,7 +5441,7 @@ atan2f =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ceil@, defined at @SDL3\/SDL_stdinc.h 4769:36@
+--     [C declaration]: @SDL_ceil@, defined at @SDL3\/SDL_stdinc.h 4777:36@
 ceil
   :: Double
   -- ^
@@ -5471,7 +5479,7 @@ ceil =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ceilf@, defined at @SDL3\/SDL_stdinc.h 4797:35@
+--     [C declaration]: @SDL_ceilf@, defined at @SDL3\/SDL_stdinc.h 4805:35@
 ceilf
   :: Float
   -- ^
@@ -5509,7 +5517,7 @@ ceilf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_copysign@, defined at @SDL3\/SDL_stdinc.h 4823:36@
+--     [C declaration]: @SDL_copysign@, defined at @SDL3\/SDL_stdinc.h 4831:36@
 copysign
   :: Double
   -- ^
@@ -5552,7 +5560,7 @@ copysign =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_copysignf@, defined at @SDL3\/SDL_stdinc.h 4849:35@
+--     [C declaration]: @SDL_copysignf@, defined at @SDL3\/SDL_stdinc.h 4857:35@
 copysignf
   :: Float
   -- ^
@@ -5595,7 +5603,7 @@ copysignf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_cos@, defined at @SDL3\/SDL_stdinc.h 4877:36@
+--     [C declaration]: @SDL_cos@, defined at @SDL3\/SDL_stdinc.h 4885:36@
 cos
   :: Double
   -- ^
@@ -5633,7 +5641,7 @@ cos =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_cosf@, defined at @SDL3\/SDL_stdinc.h 4905:35@
+--     [C declaration]: @SDL_cosf@, defined at @SDL3\/SDL_stdinc.h 4913:35@
 cosf
   :: Float
   -- ^
@@ -5675,7 +5683,7 @@ cosf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_exp@, defined at @SDL3\/SDL_stdinc.h 4937:36@
+--     [C declaration]: @SDL_exp@, defined at @SDL3\/SDL_stdinc.h 4945:36@
 exp
   :: Double
   -- ^
@@ -5717,7 +5725,7 @@ exp =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_expf@, defined at @SDL3\/SDL_stdinc.h 4969:35@
+--     [C declaration]: @SDL_expf@, defined at @SDL3\/SDL_stdinc.h 4977:35@
 expf
   :: Float
   -- ^
@@ -5753,7 +5761,7 @@ expf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_fabs@, defined at @SDL3\/SDL_stdinc.h 4990:36@
+--     [C declaration]: @SDL_fabs@, defined at @SDL3\/SDL_stdinc.h 4998:36@
 fabs
   :: Double
   -- ^
@@ -5789,7 +5797,7 @@ fabs =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_fabsf@, defined at @SDL3\/SDL_stdinc.h 5011:35@
+--     [C declaration]: @SDL_fabsf@, defined at @SDL3\/SDL_stdinc.h 5019:35@
 fabsf
   :: Float
   -- ^
@@ -5827,7 +5835,7 @@ fabsf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_floor@, defined at @SDL3\/SDL_stdinc.h 5039:36@
+--     [C declaration]: @SDL_floor@, defined at @SDL3\/SDL_stdinc.h 5047:36@
 floor
   :: Double
   -- ^
@@ -5865,7 +5873,7 @@ floor =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_floorf@, defined at @SDL3\/SDL_stdinc.h 5067:35@
+--     [C declaration]: @SDL_floorf@, defined at @SDL3\/SDL_stdinc.h 5075:35@
 floorf
   :: Float
   -- ^
@@ -5903,7 +5911,7 @@ floorf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_trunc@, defined at @SDL3\/SDL_stdinc.h 5096:36@
+--     [C declaration]: @SDL_trunc@, defined at @SDL3\/SDL_stdinc.h 5104:36@
 trunc
   :: Double
   -- ^
@@ -5941,7 +5949,7 @@ trunc =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_truncf@, defined at @SDL3\/SDL_stdinc.h 5125:35@
+--     [C declaration]: @SDL_truncf@, defined at @SDL3\/SDL_stdinc.h 5133:35@
 truncf
   :: Float
   -- ^
@@ -5979,7 +5987,7 @@ truncf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_fmod@, defined at @SDL3\/SDL_stdinc.h 5155:36@
+--     [C declaration]: @SDL_fmod@, defined at @SDL3\/SDL_stdinc.h 5163:36@
 fmod
   :: Double
   -- ^
@@ -6022,7 +6030,7 @@ fmod =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_fmodf@, defined at @SDL3\/SDL_stdinc.h 5185:35@
+--     [C declaration]: @SDL_fmodf@, defined at @SDL3\/SDL_stdinc.h 5193:35@
 fmodf
   :: Float
   -- ^
@@ -6057,7 +6065,7 @@ fmodf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_isinf@, defined at @SDL3\/SDL_stdinc.h 5199:33@
+--     [C declaration]: @SDL_isinf@, defined at @SDL3\/SDL_stdinc.h 5207:33@
 isinf
   :: Double
   -- ^
@@ -6087,7 +6095,7 @@ isinf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_isinff@, defined at @SDL3\/SDL_stdinc.h 5213:33@
+--     [C declaration]: @SDL_isinff@, defined at @SDL3\/SDL_stdinc.h 5221:33@
 isinff
   :: Float
   -- ^
@@ -6117,7 +6125,7 @@ isinff =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_isnan@, defined at @SDL3\/SDL_stdinc.h 5227:33@
+--     [C declaration]: @SDL_isnan@, defined at @SDL3\/SDL_stdinc.h 5235:33@
 isnan
   :: Double
   -- ^
@@ -6147,7 +6155,7 @@ isnan =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_isnanf@, defined at @SDL3\/SDL_stdinc.h 5241:33@
+--     [C declaration]: @SDL_isnanf@, defined at @SDL3\/SDL_stdinc.h 5249:33@
 isnanf
   :: Float
   -- ^
@@ -6187,7 +6195,7 @@ isnanf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_log@, defined at @SDL3\/SDL_stdinc.h 5271:36@
+--     [C declaration]: @SDL_log@, defined at @SDL3\/SDL_stdinc.h 5279:36@
 log
   :: Double
   -- ^
@@ -6227,7 +6235,7 @@ log =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_logf@, defined at @SDL3\/SDL_stdinc.h 5300:35@
+--     [C declaration]: @SDL_logf@, defined at @SDL3\/SDL_stdinc.h 5308:35@
 logf
   :: Float
   -- ^
@@ -6267,7 +6275,7 @@ logf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_log10@, defined at @SDL3\/SDL_stdinc.h 5330:36@
+--     [C declaration]: @SDL_log10@, defined at @SDL3\/SDL_stdinc.h 5338:36@
 log10
   :: Double
   -- ^
@@ -6307,7 +6315,7 @@ log10 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_log10f@, defined at @SDL3\/SDL_stdinc.h 5360:35@
+--     [C declaration]: @SDL_log10f@, defined at @SDL3\/SDL_stdinc.h 5368:35@
 log10f
   :: Float
   -- ^
@@ -6339,7 +6347,7 @@ log10f =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_modf@, defined at @SDL3\/SDL_stdinc.h 5380:36@
+--     [C declaration]: @SDL_modf@, defined at @SDL3\/SDL_stdinc.h 5388:36@
 modf
   :: Double
   -- ^
@@ -6376,7 +6384,7 @@ modf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_modff@, defined at @SDL3\/SDL_stdinc.h 5400:35@
+--     [C declaration]: @SDL_modff@, defined at @SDL3\/SDL_stdinc.h 5408:35@
 modff
   :: Float
   -- ^
@@ -6421,7 +6429,7 @@ modff =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_pow@, defined at @SDL3\/SDL_stdinc.h 5432:36@
+--     [C declaration]: @SDL_pow@, defined at @SDL3\/SDL_stdinc.h 5440:36@
 pow
   :: Double
   -- ^
@@ -6466,7 +6474,7 @@ pow =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_powf@, defined at @SDL3\/SDL_stdinc.h 5464:35@
+--     [C declaration]: @SDL_powf@, defined at @SDL3\/SDL_stdinc.h 5472:35@
 powf
   :: Float
   -- ^
@@ -6509,7 +6517,7 @@ powf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_round@, defined at @SDL3\/SDL_stdinc.h 5493:36@
+--     [C declaration]: @SDL_round@, defined at @SDL3\/SDL_stdinc.h 5501:36@
 round
   :: Double
   -- ^
@@ -6547,7 +6555,7 @@ round =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_roundf@, defined at @SDL3\/SDL_stdinc.h 5522:35@
+--     [C declaration]: @SDL_roundf@, defined at @SDL3\/SDL_stdinc.h 5530:35@
 roundf
   :: Float
   -- ^
@@ -6585,7 +6593,7 @@ roundf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_scalbn@, defined at @SDL3\/SDL_stdinc.h 5605:36@
+--     [C declaration]: @SDL_scalbn@, defined at @SDL3\/SDL_stdinc.h 5613:36@
 scalbn
   :: Double
   -- ^
@@ -6628,7 +6636,7 @@ scalbn =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_scalbnf@, defined at @SDL3\/SDL_stdinc.h 5630:35@
+--     [C declaration]: @SDL_scalbnf@, defined at @SDL3\/SDL_stdinc.h 5638:35@
 scalbnf
   :: Float
   -- ^
@@ -6671,7 +6679,7 @@ scalbnf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_sin@, defined at @SDL3\/SDL_stdinc.h 5658:36@
+--     [C declaration]: @SDL_sin@, defined at @SDL3\/SDL_stdinc.h 5666:36@
 sin
   :: Double
   -- ^
@@ -6709,7 +6717,7 @@ sin =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_sinf@, defined at @SDL3\/SDL_stdinc.h 5686:35@
+--     [C declaration]: @SDL_sinf@, defined at @SDL3\/SDL_stdinc.h 5694:35@
 sinf
   :: Float
   -- ^
@@ -6747,7 +6755,7 @@ sinf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_sqrt@, defined at @SDL3\/SDL_stdinc.h 5712:36@
+--     [C declaration]: @SDL_sqrt@, defined at @SDL3\/SDL_stdinc.h 5720:36@
 sqrt
   :: Double
   -- ^
@@ -6785,7 +6793,7 @@ sqrt =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_sqrtf@, defined at @SDL3\/SDL_stdinc.h 5738:35@
+--     [C declaration]: @SDL_sqrtf@, defined at @SDL3\/SDL_stdinc.h 5746:35@
 sqrtf
   :: Float
   -- ^
@@ -6823,7 +6831,7 @@ sqrtf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_tan@, defined at @SDL3\/SDL_stdinc.h 5768:36@
+--     [C declaration]: @SDL_tan@, defined at @SDL3\/SDL_stdinc.h 5776:36@
 tan
   :: Double
   -- ^
@@ -6861,7 +6869,7 @@ tan =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_tanf@, defined at @SDL3\/SDL_stdinc.h 5798:35@
+--     [C declaration]: @SDL_tanf@, defined at @SDL3\/SDL_stdinc.h 5806:35@
 tanf
   :: Float
   -- ^
@@ -6888,7 +6896,7 @@ tanf =
 --                   The safe flavor is 'iconvOpenSafe'
 --                   .
 --
---     [C declaration]: @SDL_iconv_open@, defined at @SDL3\/SDL_stdinc.h 5826:41@
+--     [C declaration]: @SDL_iconv_open@, defined at @SDL3\/SDL_stdinc.h 5834:41@
 iconvOpen
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -6917,7 +6925,7 @@ iconvOpen = Unsafe.sDL_iconv_open
 --                   The unsafe flavor is 'iconvOpen'
 --                   .
 --
---     [C declaration]: @SDL_iconv_open@, defined at @SDL3\/SDL_stdinc.h 5826:41@
+--     [C declaration]: @SDL_iconv_open@, defined at @SDL3\/SDL_stdinc.h 5834:41@
 iconvOpenSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -6949,7 +6957,7 @@ iconvOpenSafe = Safe.sDL_iconv_open
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_iconv_close@, defined at @SDL3\/SDL_stdinc.h 5843:33@
+--     [C declaration]: @SDL_iconv_close@, defined at @SDL3\/SDL_stdinc.h 5851:33@
 iconvClose
   :: SDL_iconv_t
   -- ^
@@ -6979,7 +6987,7 @@ iconvClose =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_iconv_close@, defined at @SDL3\/SDL_stdinc.h 5843:33@
+--     [C declaration]: @SDL_iconv_close@, defined at @SDL3\/SDL_stdinc.h 5851:33@
 iconvCloseSafe
   :: SDL_iconv_t
   -- ^
@@ -7020,7 +7028,7 @@ iconvCloseSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_iconv@, defined at @SDL3\/SDL_stdinc.h 5883:36@
+--     [C declaration]: @SDL_iconv@, defined at @SDL3\/SDL_stdinc.h 5891:36@
 iconv
   :: SDL_iconv_t
   -- ^
@@ -7082,7 +7090,7 @@ iconv =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_iconv@, defined at @SDL3\/SDL_stdinc.h 5883:36@
+--     [C declaration]: @SDL_iconv@, defined at @SDL3\/SDL_stdinc.h 5891:36@
 iconvSafe
   :: SDL_iconv_t
   -- ^
@@ -7138,7 +7146,7 @@ iconvSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_iconv_string@, defined at @SDL3\/SDL_stdinc.h 5920:36@
+--     [C declaration]: @SDL_iconv_string@, defined at @SDL3\/SDL_stdinc.h 5928:36@
 iconvString
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -7189,7 +7197,7 @@ iconvString =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_iconv_string@, defined at @SDL3\/SDL_stdinc.h 5920:36@
+--     [C declaration]: @SDL_iconv_string@, defined at @SDL3\/SDL_stdinc.h 5928:36@
 iconvStringSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -7226,7 +7234,7 @@ iconvStringSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_size_mul_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6101:23@
+--     [C declaration]: @SDL_size_mul_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6109:23@
 sizeMulCheckOverflowBuiltin
   :: BG.Word64
   -- ^ [C declaration]: @a@
@@ -7254,7 +7262,7 @@ sizeMulCheckOverflowBuiltin =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_size_mul_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6101:23@
+--     [C declaration]: @SDL_size_mul_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6109:23@
 sizeMulCheckOverflowBuiltinSafe
   :: BG.Word64
   -- ^ [C declaration]: @a@
@@ -7282,7 +7290,7 @@ sizeMulCheckOverflowBuiltinSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_size_add_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6139:23@
+--     [C declaration]: @SDL_size_add_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6147:23@
 sizeAddCheckOverflowBuiltin
   :: BG.Word64
   -- ^ [C declaration]: @a@
@@ -7310,7 +7318,7 @@ sizeAddCheckOverflowBuiltin =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_size_add_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6139:23@
+--     [C declaration]: @SDL_size_add_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6147:23@
 sizeAddCheckOverflowBuiltinSafe
   :: BG.Word64
   -- ^ [C declaration]: @a@

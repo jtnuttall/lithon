@@ -4,28 +4,30 @@
   inputs = {
     haskellNix.url = "github:input-output-hk/haskell.nix";
     nixpkgs.follows = "haskellNix/nixpkgs-unstable";
-    hackage = {
-      url = "github:input-output-hk/hackage.nix";
-      flake = false;
-    };
-    haskellNix.inputs.hackage.follows = "hackage";
+    nixpkgs-sdl3.url = "github:NixOS/nixpkgs/26afbda9e6ffd7d1d91812d0688d734d3ab32b22"; # 3.4.16
 
     flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs = {
     nixpkgs,
+    nixpkgs-sdl3,
     haskellNix,
     flake-utils,
     ...
   }:
-    flake-utils.lib.eachDefaultSystem (
+    flake-utils.lib.eachSystem
+    (builtins.filter (system: system != "x86_64-darwin") flake-utils.lib.defaultSystems)
+    (
       system: let
         pkgs = import nixpkgs {
           inherit system;
           inherit (haskellNix) config;
           overlays = [
             haskellNix.overlay
+            (final: prev: {
+              sdl3 = prev.callPackage "${nixpkgs-sdl3}/pkgs/by-name/sd/sdl3/package.nix" {};
+            })
             (final: prev: {
               haskell-nix =
                 prev.haskell-nix
@@ -87,24 +89,6 @@
                     preBuild = ''
                       ${sdl3Hook}
                     '';
-                    # Emit Hackage-format haddock via the .doc derivation, whose
-                    # --read-interface wiring to dependency docs actually works
-                    # (unlike `cabal haddock` off the docless dependency .conf).
-                    # Built + uploaded via `packages."sdl3-bindgen-sys-docs"`.
-                    components.library.setupHaddockFlags = [
-                      "--hyperlinked-source"
-                      "--quickjump"
-                    ];
-                  };
-                  rapidhash = {
-                    components.library.setupHaddockFlags = [
-                      "--hyperlinked-source"
-                      "--quickjump"
-                    ];
-                  };
-                  text-builder-linear = {
-                    doHaddock = true;
-                    doHyperlinkSource = true;
                   };
                 };
               }
@@ -231,10 +215,10 @@
 
   nixConfig = {
     extra-substituters = [
-      "https://cache.iog.io"
+      "https://cache.zw3rk.com"
     ];
     extra-trusted-public-keys = [
-      "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+      "loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk="
     ];
   };
 }

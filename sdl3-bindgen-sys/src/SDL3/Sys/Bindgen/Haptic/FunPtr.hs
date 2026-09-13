@@ -1119,7 +1119,7 @@ hs_bindgen_5cc314419a9f2703 =
 --
 --     @since 3.2.0
 --
---     [See also]: 'sDL_RunHapticEffect', 'sDL_StopHapticEffects'
+--     [See also]: 'sDL_RunHapticEffect', 'sDL_StopHapticEffect'
 --
 --     [C declaration]: @SDL_StopHapticEffects@, defined at @SDL3\/SDL_haptic.h 1397:34@
 sDL_StopHapticEffects :: BG.FunPtr (BG.Ptr SDL_Haptic -> IO BG.CBool)

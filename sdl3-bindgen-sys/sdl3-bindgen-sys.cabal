@@ -4,7 +4,7 @@ cabal-version: 2.2
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: "<+\160j\184\146\239\137\190\SYN\163+\SYN\DEL*VIj\201\r\136J\200\140\EOTh\211\222X\251}t"
+-- hash: "X\240\179\139\175\224\139\FS\230\&6\158\CAN\n\183\137\239\SI\133b~\t\226\ng\228u\210\209\245\"Bw"
 
 name:           sdl3-bindgen-sys
 version:        0.0.0.3
@@ -50,6 +50,13 @@ flag abi-assertions
                via generated C static assertions (disable only to diagnose)
   manual: True
   default: True
+
+flag abi-assertions-exact
+  description: Assert every sizeof exactly, including the union-member structs the default
+               lets SDL append to. For maintainers checking a newer SDL; consumers should
+               leave it off. Only has an effect together with abi-assertions.
+  manual: True
+  default: False
 
 flag optimize
   description: Build with -O2. Package ghc-options win over cabal's optimization setting, so use
@@ -391,6 +398,8 @@ library
   if flag(abi-assertions)
     c-sources:
         cbits/abi_assertions.c
+  if flag(abi-assertions-exact)
+    cc-options: -DLITHON_ABI_EXACT
   if flag(strict-data)
     default-extensions:
         StrictData

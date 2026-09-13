@@ -201,7 +201,7 @@ hs_bindgen_1f67d12e30b7c737 =
 --
 --     [See also]: 'sDL_PollEvent', 'sDL_WaitEvent'
 --
---     [C declaration]: @SDL_PumpEvents@, defined at @SDL3\/SDL_events.h 1100:34@
+--     [C declaration]: @SDL_PumpEvents@, defined at @SDL3\/SDL_events.h 1101:34@
 sDL_PumpEvents :: IO ()
 sDL_PumpEvents = hs_bindgen_1f67d12e30b7c737
 
@@ -246,7 +246,7 @@ hs_bindgen_955ad135478289d8 =
 --
 --     [See also]: 'sDL_PollEvent', 'sDL_PumpEvents', 'sDL_PushEvent'
 --
---     [C declaration]: @SDL_PeepEvents@, defined at @SDL3\/SDL_events.h 1158:33@
+--     [C declaration]: @SDL_PeepEvents@, defined at @SDL3\/SDL_events.h 1159:33@
 sDL_PeepEvents
   :: BG.Ptr SDL_Event
   -- ^
@@ -259,7 +259,7 @@ sDL_PeepEvents
   -> SDL_EventAction
   -- ^
   --
-  --           [@action@]: action to take; see Remarks for details.
+  --           [@action@]: action to take; see RemarksRemarks for details.
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^
   --
@@ -296,7 +296,7 @@ hs_bindgen_97c2d6376377c17b =
 --
 --     [See also]: 'sDL_HasEvents'
 --
---     [C declaration]: @SDL_HasEvent@, defined at @SDL3\/SDL_events.h 1177:34@
+--     [C declaration]: @SDL_HasEvent@, defined at @SDL3\/SDL_events.h 1178:34@
 sDL_HasEvent
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^
@@ -332,7 +332,7 @@ hs_bindgen_313622652a8473b1 =
 --
 --     [See also]: 'sDL_HasEvents'
 --
---     [C declaration]: @SDL_HasEvents@, defined at @SDL3\/SDL_events.h 1198:34@
+--     [C declaration]: @SDL_HasEvents@, defined at @SDL3\/SDL_events.h 1199:34@
 sDL_HasEvents
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^
@@ -374,7 +374,7 @@ hs_bindgen_2d03a2b249bf7669 =
 --
 --     [See also]: 'sDL_FlushEvents'
 --
---     [C declaration]: @SDL_FlushEvent@, defined at @SDL3\/SDL_events.h 1226:34@
+--     [C declaration]: @SDL_FlushEvent@, defined at @SDL3\/SDL_events.h 1227:34@
 sDL_FlushEvent
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^
@@ -412,7 +412,7 @@ hs_bindgen_445ea0272a2d7d08 =
 --
 --     [See also]: 'sDL_FlushEvent'
 --
---     [C declaration]: @SDL_FlushEvents@, defined at @SDL3\/SDL_events.h 1253:34@
+--     [C declaration]: @SDL_FlushEvents@, defined at @SDL3\/SDL_events.h 1254:34@
 sDL_FlushEvents
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^
@@ -473,7 +473,7 @@ hs_bindgen_ceef91a4b9f5e02b =
 --
 --     [See also]: 'sDL_PushEvent', 'sDL_WaitEvent', 'sDL_WaitEventTimeout'
 --
---     [C declaration]: @SDL_PollEvent@, defined at @SDL3\/SDL_events.h 1304:34@
+--     [C declaration]: @SDL_PollEvent@, defined at @SDL3\/SDL_events.h 1305:34@
 sDL_PollEvent
   :: BG.Ptr SDL_Event
   -- ^
@@ -509,7 +509,7 @@ hs_bindgen_23e78ed0fb51a6da =
 --
 --     [See also]: 'sDL_PollEvent', 'sDL_PushEvent', 'sDL_WaitEventTimeout'
 --
---     [C declaration]: @SDL_WaitEvent@, defined at @SDL3\/SDL_events.h 1328:34@
+--     [C declaration]: @SDL_WaitEvent@, defined at @SDL3\/SDL_events.h 1329:34@
 sDL_WaitEvent
   :: BG.Ptr SDL_Event
   -- ^
@@ -549,7 +549,7 @@ hs_bindgen_556eff19f5f71f6a =
 --
 --     [See also]: 'sDL_PollEvent', 'sDL_PushEvent', 'sDL_WaitEvent'
 --
---     [C declaration]: @SDL_WaitEventTimeout@, defined at @SDL3\/SDL_events.h 1358:34@
+--     [C declaration]: @SDL_WaitEventTimeout@, defined at @SDL3\/SDL_events.h 1359:34@
 sDL_WaitEventTimeout
   :: BG.Ptr SDL_Event
   -- ^
@@ -593,7 +593,7 @@ hs_bindgen_b43b72b75f8fc0a4 =
 --
 --     [See also]: 'sDL_PeepEvents', 'sDL_PollEvent', 'sDL_RegisterEvents'
 --
---     [C declaration]: @SDL_PushEvent@, defined at @SDL3\/SDL_events.h 1392:34@
+--     [C declaration]: @SDL_PushEvent@, defined at @SDL3\/SDL_events.h 1393:34@
 sDL_PushEvent
   :: BG.Ptr SDL_Event
   -- ^
@@ -637,7 +637,7 @@ hs_bindgen_2af28699d7398805 =
 --
 --     [See also]: 'sDL_AddEventWatch', 'sDL_SetEventEnabled', 'sDL_GetEventFilter', 'sDL_PeepEvents', 'sDL_PushEvent'
 --
---     [C declaration]: @SDL_SetEventFilter@, defined at @SDL3\/SDL_events.h 1457:34@
+--     [C declaration]: @SDL_SetEventFilter@, defined at @SDL3\/SDL_events.h 1458:34@
 sDL_SetEventFilter
   :: SDL_EventFilter
   -- ^
@@ -677,7 +677,7 @@ hs_bindgen_be8f273c9471fe63 =
 --
 --     [See also]: 'sDL_SetEventFilter'
 --
---     [C declaration]: @SDL_GetEventFilter@, defined at @SDL3\/SDL_events.h 1476:34@
+--     [C declaration]: @SDL_GetEventFilter@, defined at @SDL3\/SDL_events.h 1477:34@
 sDL_GetEventFilter
   :: BG.Ptr SDL_EventFilter
   -- ^
@@ -723,7 +723,7 @@ hs_bindgen_1032b9b1e1b3559e =
 --
 --     [See also]: 'sDL_RemoveEventWatch', 'sDL_SetEventFilter'
 --
---     [C declaration]: @SDL_AddEventWatch@, defined at @SDL3\/SDL_events.h 1508:34@
+--     [C declaration]: @SDL_AddEventWatch@, defined at @SDL3\/SDL_events.h 1509:34@
 sDL_AddEventWatch
   :: SDL_EventFilter
   -- ^
@@ -761,7 +761,7 @@ hs_bindgen_3dfeb3d0c0d67825 =
 --
 --     [See also]: 'sDL_AddEventWatch'
 --
---     [C declaration]: @SDL_RemoveEventWatch@, defined at @SDL3\/SDL_events.h 1525:34@
+--     [C declaration]: @SDL_RemoveEventWatch@, defined at @SDL3\/SDL_events.h 1526:34@
 sDL_RemoveEventWatch
   :: SDL_EventFilter
   -- ^
@@ -799,7 +799,7 @@ hs_bindgen_6c8e2afc32ccc02a =
 --
 --     [See also]: 'sDL_GetEventFilter', 'sDL_SetEventFilter'
 --
---     [C declaration]: @SDL_FilterEvents@, defined at @SDL3\/SDL_events.h 1545:34@
+--     [C declaration]: @SDL_FilterEvents@, defined at @SDL3\/SDL_events.h 1546:34@
 sDL_FilterEvents
   :: SDL_EventFilter
   -- ^
@@ -835,7 +835,7 @@ hs_bindgen_980b7ed1ad20c98e =
 --
 --     [See also]: 'sDL_EventEnabled'
 --
---     [C declaration]: @SDL_SetEventEnabled@, defined at @SDL3\/SDL_events.h 1559:34@
+--     [C declaration]: @SDL_SetEventEnabled@, defined at @SDL3\/SDL_events.h 1560:34@
 sDL_SetEventEnabled
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^
@@ -871,7 +871,7 @@ hs_bindgen_581f5ed4b389f9ad =
 --
 --     [See also]: 'sDL_SetEventEnabled'
 --
---     [C declaration]: @SDL_EventEnabled@, defined at @SDL3\/SDL_events.h 1573:34@
+--     [C declaration]: @SDL_EventEnabled@, defined at @SDL3\/SDL_events.h 1574:34@
 sDL_EventEnabled
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^
@@ -903,7 +903,7 @@ hs_bindgen_68df500d3720ae65 =
 --
 --     [See also]: 'sDL_PushEvent'
 --
---     [C declaration]: @SDL_RegisterEvents@, defined at @SDL3\/SDL_events.h 1589:36@
+--     [C declaration]: @SDL_RegisterEvents@, defined at @SDL3\/SDL_events.h 1590:36@
 sDL_RegisterEvents
   :: BG.CInt
   -- ^
@@ -935,7 +935,7 @@ hs_bindgen_bf32d25772bf7533 =
 --
 --     [See also]: 'sDL_PollEvent', 'sDL_WaitEvent', 'sDL_WaitEventTimeout'
 --
---     [C declaration]: @SDL_GetWindowFromEvent@, defined at @SDL3\/SDL_events.h 1605:42@
+--     [C declaration]: @SDL_GetWindowFromEvent@, defined at @SDL3\/SDL_events.h 1606:42@
 sDL_GetWindowFromEvent
   :: PtrConst.PtrConst SDL_Event
   -- ^
@@ -979,7 +979,7 @@ hs_bindgen_791dc84efb7c9255 =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @SDL_GetEventDescription@, defined at @SDL3\/SDL_events.h 1637:33@
+--     [C declaration]: @SDL_GetEventDescription@, defined at @SDL3\/SDL_events.h 1638:33@
 sDL_GetEventDescription
   :: PtrConst.PtrConst SDL_Event
   -- ^

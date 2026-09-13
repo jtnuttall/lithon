@@ -28,7 +28,7 @@ import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 
 -- | Auxiliary type used by 'SDL_main_func'
 --
---     [C declaration]: @SDL_main_func@, defined at @SDL3\/SDL_main.h 498:23@
+--     [C declaration]: @SDL_main_func@, defined at @SDL3\/SDL_main.h 499:23@
 newtype SDL_main_func_Aux = SDL_main_func_Aux
   { unwrap :: BG.CInt -> BG.Ptr (IsA.Elem (IA.IncompleteArray (BG.Ptr BG.CChar))) -> IO BG.CInt
   }
@@ -105,7 +105,7 @@ instance HasCField.HasCField SDL_main_func_Aux "unwrap" where
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_main_func@, defined at @SDL3\/SDL_main.h 498:23@
+--     [C declaration]: @SDL_main_func@, defined at @SDL3\/SDL_main.h 499:23@
 newtype SDL_main_func = SDL_main_func
   { unwrap :: BG.FunPtr SDL_main_func_Aux
   }

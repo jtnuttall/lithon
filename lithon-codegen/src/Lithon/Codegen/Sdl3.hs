@@ -59,7 +59,19 @@ import Lithon.Codegen.Backend.Package.Emit (
   guardCtx,
   packageOutP,
  )
+import Lithon.Codegen.Bindgen (
+  Bindgen,
+  BindgenError,
+  HeaderResult (..),
+  HeaderUnit (..),
+  chainHeaders,
+  getScratchDirectory,
+  planHeaders,
+  preflightGraph,
+  runBindgen,
+ )
 import Lithon.Codegen.Sdl3.Abi (AbiMacroConst (..))
+import Lithon.Codegen.Sdl3.Abi.Validate (AbiProblem, validateAbi)
 import Lithon.Codegen.Sdl3.Alias (
   AliasModule (..),
   FamilyDecls (..),
@@ -90,17 +102,6 @@ import Lithon.Codegen.Sdl3.Alias.Constants (
   scanObjectMacros,
  )
 import Lithon.Codegen.Sdl3.Alias.Names (AliasError)
-import Lithon.Codegen.Bindgen (
-  Bindgen,
-  BindgenError,
-  HeaderResult (..),
-  HeaderUnit (..),
-  chainHeaders,
-  getScratchDirectory,
-  planHeaders,
-  preflightGraph,
-  runBindgen,
- )
 import Lithon.Codegen.Sdl3.Bindgen (
   Sdl3Payload (..),
   sdl3BindgenOpts,
@@ -136,7 +137,11 @@ data Sdl3Error
   | BindgenError BindgenError
   | EmitError EmitError
   | PackagingError Sdl3PackagingError
+  | AbiValidationFailed (Errors AbiProblem)
   deriving stock (Show)
+
+instance From (Errors AbiProblem) Sdl3Error where
+  from = AbiValidationFailed
 
 instance From (Errors AliasError) Sdl3Error where
   from = AliasesError
@@ -183,6 +188,10 @@ instance Display Sdl3Error where
     BindgenError err -> "Failed while invoking hs-bindgen: " <> from err
     EmitError err -> "Failed to emit library: " <> from err
     PackagingError err -> "Failed to emit library package: " <> from err
+    AbiValidationFailed errs ->
+      "ABI validation failed; nothing was written. Record the availability in"
+        <> " lithon-codegen/data/sdl3/versions.json and rerun:\n\n"
+        <> intercalateTB "\n\n" (map displayBuilder (toList errs))
 
 data Sdl3Cmd
   = CmdSpec SpecOpts
@@ -243,20 +252,38 @@ runSdl3 root cmd = runErrorFrom @SdlResolutionError $ runSdl3Gen do
     CmdSpec opts -> do
       registry <- loadVersionsRegistry
       results <- runChain registry
+      validateChain results
       syncSpecs (guardCtx root opts.assumeYes) opts.emitEffect results
     CmdGenerate opts -> do
       registry <- loadVersionsRegistry
       results <- runChain registry
+      validateChain results
       -- Specs and package come from the same chain run, so they can never
       -- skew; both emits respect --check.
       syncSpecs (guardCtx root opts.out.assumeYes) opts.out.emitEffect results
       (aliasFiles, macroConsts, aliasMeta) <-
         planAliases registry results
       tree <-
-        liftEither . first PackagingError $ assembleSdl3Package aliasFiles macroConsts results
+        liftEither
+          . first PackagingError
+          $ assembleSdl3Package env.sdlVersion aliasFiles macroConsts results
       manifestMeta <- chainMeta results
       runErrorFrom @EmitError @Sdl3Error
         $ emitHaskellPackage root opts.out (manifestMeta <> aliasMeta) tree
+
+-- | Refuse to write (or @--check@) a layout whose growth story is
+-- incomplete: every struct is checked so one run reports them all, and
+-- it runs before 'syncSpecs' so a failing regeneration leaves the
+-- committed spec artifacts untouched.
+validateChain
+  :: (Sdl3Gen :> es, Error Sdl3Error :> es)
+  => [HeaderResult Sdl3Payload] -> Eff es ()
+validateChain results = do
+  env <- getSdl3Env
+  liftEither
+    . first from
+    . validationToEither
+    $ validateAbi env.sdlVersion (concatMap (.payload.abi) results)
 
 -- | Load, validate, plan, and render the curated @SDL3.Sys.*@ layer.
 --

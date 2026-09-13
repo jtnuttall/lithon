@@ -264,11 +264,11 @@ showsWrappedUndeclared constructorName _ p x =
 readPrecDeclaredValue :: forall proxy a. (CEnum a) => proxy a -> ReadPrec a
 readPrecDeclaredValue proxy = Read.parens $ ReadPrec.prec appPrec1 $ do
   declaredValue <-
-    ReadPrec.lift $
-      ReadP.choice $
-        map ReadP.string $
-          declaredValuesList $
-            declaredValues proxy
+    ReadPrec.lift
+      $ ReadP.choice
+      $ map ReadP.string
+      $ declaredValuesList
+      $ declaredValues proxy
   pure $ toCEnum $ (declaredValueToIntegral $ declaredValues proxy) Map.! declaredValue
 
 -- | Helper function for defining 'readPrecUndeclared'

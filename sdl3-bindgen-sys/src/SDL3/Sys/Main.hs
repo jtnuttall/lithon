@@ -45,7 +45,7 @@ import SDL3.Sys.Bindgen.Main.Unsafe qualified as Unsafe
 --                   The safe flavor is 'setMainReadySafe'
 --                   .
 --
---     [C declaration]: @SDL_SetMainReady@, defined at @SDL3\/SDL_main.h 548:34@
+--     [C declaration]: @SDL_SetMainReady@, defined at @SDL3\/SDL_main.h 549:34@
 setMainReady :: IO ()
 setMainReady = Unsafe.sDL_SetMainReady
 
@@ -65,7 +65,7 @@ setMainReady = Unsafe.sDL_SetMainReady
 --                   The unsafe flavor is 'setMainReady'
 --                   .
 --
---     [C declaration]: @SDL_SetMainReady@, defined at @SDL3\/SDL_main.h 548:34@
+--     [C declaration]: @SDL_SetMainReady@, defined at @SDL3\/SDL_main.h 549:34@
 setMainReadySafe :: IO ()
 setMainReadySafe = Safe.sDL_SetMainReady
 
@@ -92,7 +92,7 @@ setMainReadySafe = Safe.sDL_SetMainReady
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RunApp@, defined at @SDL3\/SDL_main.h 581:33@
+--     [C declaration]: @SDL_RunApp@, defined at @SDL3\/SDL_main.h 582:33@
 runAppSafe
   :: BG.Int32
   -- ^
@@ -141,7 +141,7 @@ runAppSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_EnterAppMainCallbacks@, defined at @SDL3\/SDL_main.h 608:33@
+--     [C declaration]: @SDL_EnterAppMainCallbacks@, defined at @SDL3\/SDL_main.h 609:33@
 enterAppMainCallbacksSafe
   :: BG.Int32
   -- ^
@@ -179,11 +179,21 @@ enterAppMainCallbacksSafe =
 
 -- | Callback from the application to let the suspend continue.
 --
+--     This should be called from an event watch in response to an @SDL_EVENT_DID_ENTER_BACKGROUND@ event.
+--
+--     When using SDL_Render, your event watch should be added /after/ creating the @SDL_Renderer@; this allows the timing of the D3D12 command queue suspension to execute in the correct order.
+--
+--     When using SDL_GPU, this should be called after calling SDL_GDKSuspendGPU.
+--
+--     If you\'re writing your own D3D12 renderer, this should be called after calling @ID3D12CommandQueue::SuspendX@.
+--
 --     This function is only needed for Xbox GDK support; all other platforms will do nothing and set an \"unsupported\" error message.
 --
 --     [Thread safety]: This function is not thread safe.
 --
 --     @since 3.2.0
+--
+--     [See also]: 'SDL3.Sys.Events.addEventWatch'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -191,11 +201,19 @@ enterAppMainCallbacksSafe =
 --                   The safe flavor is 'gdkSuspendCompleteSafe'
 --                   .
 --
---     [C declaration]: @SDL_GDKSuspendComplete@, defined at @SDL3\/SDL_main.h 673:34@
+--     [C declaration]: @SDL_GDKSuspendComplete@, defined at @SDL3\/SDL_main.h 688:34@
 gdkSuspendComplete :: IO ()
 gdkSuspendComplete = Unsafe.sDL_GDKSuspendComplete
 
 -- | Callback from the application to let the suspend continue.
+--
+--     This should be called from an event watch in response to an @SDL_EVENT_DID_ENTER_BACKGROUND@ event.
+--
+--     When using SDL_Render, your event watch should be added /after/ creating the @SDL_Renderer@; this allows the timing of the D3D12 command queue suspension to execute in the correct order.
+--
+--     When using SDL_GPU, this should be called after calling SDL_GDKSuspendGPU.
+--
+--     If you\'re writing your own D3D12 renderer, this should be called after calling @ID3D12CommandQueue::SuspendX@.
 --
 --     This function is only needed for Xbox GDK support; all other platforms will do nothing and set an \"unsupported\" error message.
 --
@@ -203,12 +221,14 @@ gdkSuspendComplete = Unsafe.sDL_GDKSuspendComplete
 --
 --     @since 3.2.0
 --
+--     [See also]: 'SDL3.Sys.Events.addEventWatch'
+--
 --     === __@sdl3-bindgen-sys@ notes__
 --
 --     [FFI safety]: __Safe__ foreign import of @SDL_GDKSuspendComplete@.
 --                   The unsafe flavor is 'gdkSuspendComplete'
 --                   .
 --
---     [C declaration]: @SDL_GDKSuspendComplete@, defined at @SDL3\/SDL_main.h 673:34@
+--     [C declaration]: @SDL_GDKSuspendComplete@, defined at @SDL3\/SDL_main.h 688:34@
 gdkSuspendCompleteSafe :: IO ()
 gdkSuspendCompleteSafe = Safe.sDL_GDKSuspendComplete

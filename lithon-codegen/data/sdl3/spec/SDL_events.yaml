@@ -1011,6 +1011,7 @@ hstypes:
           - timestamp
           - windowID
           - which
+          - pen_state
     instances:
       - Eq
       - Generic

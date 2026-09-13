@@ -151,9 +151,22 @@ the curated `SDL3.Sys.*` alias layer, the ABI-assertion translation unit, and th
 static README/CHANGELOG/package.yaml under `data/sdl3/static/`. Curation
 decisions — FFI flavors, typed-constant membership, documentation overrides —
 live in the checked-in registries (`data/sdl3/aliases.json`,
-`data/sdl3/constants.json`, `data/sdl3/overrides.yaml`); the binding-spec
-artifacts sync into `data/sdl3/spec/`, resolved through the tool's data
-directory rather than a flag.
+`data/sdl3/constants.json`, `data/sdl3/versions.json`,
+`data/sdl3/overrides.yaml`); the binding-spec artifacts sync into
+`data/sdl3/spec/`, resolved through the tool's data directory rather than a
+flag.
+
+`data/sdl3/versions.json` tracks per-SDL-version availability, including:
+
+- Corrections for `\since` declarations that SDL seems to document wrongly,
+- Member and constant existence/value conditions (the binding needs a
+  higher granularity than SDL seems to provide). The `(added in X.Y.Z)` line
+  in the member's comment serves as a the default floor, although the registry
+  can override it.
+
+The SDL version the bindings are generated from is the devshell's
+`pkg-config --modversion sdl3`; it is recorded in the package manifest and
+in ABI assertion messages.
 
 ```
 $ lithon-codegen sdl3 --help

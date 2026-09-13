@@ -2013,7 +2013,7 @@ pattern SDL_GPU_TEXTUREFORMAT_ASTC_12x12_FLOAT = SDL_GPUTextureFormat 104
 
 -- | Specifies how a texture is intended to be used by the client.
 --
---     A texture must have at least one usage flag. Note that some usage flag combinations are invalid.
+--     A texture must have at least one usage flag. Note that combining SAMPLER with STORAGE_READ flags is invalid.
 --
 --     With regards to compute storage usage, READ | WRITE means that you can have shader A that only writes into the texture and shader B that only reads from the texture and bind the same texture to either shader respectively. SIMULTANEOUS means that you can do reads and writes within the same shader or compute pass. It also implies that atomic ops can be used, since those are read-modify-write operations. If you use SIMULTANEOUS, you are responsible for avoiding data races, as there is no data synchronization within a compute pass. Note that SIMULTANEOUS usage is only supported by a limited number of texture formats.
 --
@@ -2505,7 +2505,9 @@ pattern SDL_GPU_CUBEMAPFACE_NEGATIVEZ = SDL_GPUCubeMapFace 5
 
 -- | Specifies how a buffer is intended to be used by the client.
 --
---     A buffer must have at least one usage flag. Note that some usage flag combinations are invalid.
+--     A buffer must have at least one usage flag.
+--
+--     If a buffer has multiple read usages, this may lead to a performance penalty due to more conservative memory barriers, but it also may not necessarily affect the performance.
 --
 --     Unlike textures, READ | WRITE can be used for simultaneous read-write usage. The same data synchronization concerns as textures apply.
 --
@@ -2515,7 +2517,7 @@ pattern SDL_GPU_CUBEMAPFACE_NEGATIVEZ = SDL_GPUCubeMapFace 5
 --
 --     [See also]: 'sDL_CreateGPUBuffer'
 --
---     [C declaration]: @SDL_GPUBufferUsageFlags@, defined at @SDL3\/SDL_gpu.h 984:16@
+--     [C declaration]: @SDL_GPUBufferUsageFlags@, defined at @SDL3\/SDL_gpu.h 986:16@
 newtype SDL_GPUBufferUsageFlags = SDL_GPUBufferUsageFlags
   { unwrap :: SDL3.Sys.Bindgen.Stdinc.Uint32
   }
@@ -2564,42 +2566,42 @@ instance HasCField.HasCField SDL_GPUBufferUsageFlags "unwrap" where
 
 -- | Buffer is a vertex buffer.
 --
---     [C declaration]: @macro SDL_GPU_BUFFERUSAGE_VERTEX@, defined at @SDL3\/SDL_gpu.h 986:9@
+--     [C declaration]: @macro SDL_GPU_BUFFERUSAGE_VERTEX@, defined at @SDL3\/SDL_gpu.h 988:9@
 sDL_GPU_BUFFERUSAGE_VERTEX :: BG.CUInt
 sDL_GPU_BUFFERUSAGE_VERTEX =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (0 :: BG.CInt)
 
 -- | Buffer is an index buffer.
 --
---     [C declaration]: @macro SDL_GPU_BUFFERUSAGE_INDEX@, defined at @SDL3\/SDL_gpu.h 987:9@
+--     [C declaration]: @macro SDL_GPU_BUFFERUSAGE_INDEX@, defined at @SDL3\/SDL_gpu.h 989:9@
 sDL_GPU_BUFFERUSAGE_INDEX :: BG.CUInt
 sDL_GPU_BUFFERUSAGE_INDEX =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (1 :: BG.CInt)
 
 -- | Buffer is an indirect buffer.
 --
---     [C declaration]: @macro SDL_GPU_BUFFERUSAGE_INDIRECT@, defined at @SDL3\/SDL_gpu.h 988:9@
+--     [C declaration]: @macro SDL_GPU_BUFFERUSAGE_INDIRECT@, defined at @SDL3\/SDL_gpu.h 990:9@
 sDL_GPU_BUFFERUSAGE_INDIRECT :: BG.CUInt
 sDL_GPU_BUFFERUSAGE_INDIRECT =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (2 :: BG.CInt)
 
 -- | Buffer supports storage reads in graphics stages.
 --
---     [C declaration]: @macro SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ@, defined at @SDL3\/SDL_gpu.h 989:9@
+--     [C declaration]: @macro SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ@, defined at @SDL3\/SDL_gpu.h 991:9@
 sDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ :: BG.CUInt
 sDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (3 :: BG.CInt)
 
 -- | Buffer supports storage reads in the compute stage.
 --
---     [C declaration]: @macro SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ@, defined at @SDL3\/SDL_gpu.h 990:9@
+--     [C declaration]: @macro SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ@, defined at @SDL3\/SDL_gpu.h 992:9@
 sDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ :: BG.CUInt
 sDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (4 :: BG.CInt)
 
 -- | Buffer supports storage writes in the compute stage.
 --
---     [C declaration]: @macro SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE@, defined at @SDL3\/SDL_gpu.h 991:9@
+--     [C declaration]: @macro SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE@, defined at @SDL3\/SDL_gpu.h 993:9@
 sDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE :: BG.CUInt
 sDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (5 :: BG.CInt)
@@ -2612,7 +2614,7 @@ sDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE =
 --
 --     [See also]: 'sDL_CreateGPUTransferBuffer'
 --
---     [C declaration]: @enum SDL_GPUTransferBufferUsage@, defined at @SDL3\/SDL_gpu.h 1003:14@
+--     [C declaration]: @enum SDL_GPUTransferBufferUsage@, defined at @SDL3\/SDL_gpu.h 1005:14@
 newtype SDL_GPUTransferBufferUsage = SDL_GPUTransferBufferUsage
   { unwrap :: BG.CUInt
   }
@@ -2709,11 +2711,11 @@ instance HasCField.HasCField SDL_GPUTransferBufferUsage "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD@, defined at @SDL3\/SDL_gpu.h 1005:5@
+-- | [C declaration]: @SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD@, defined at @SDL3\/SDL_gpu.h 1007:5@
 pattern SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD :: SDL_GPUTransferBufferUsage
 pattern SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD = SDL_GPUTransferBufferUsage 0
 
--- | [C declaration]: @SDL_GPU_TRANSFERBUFFERUSAGE_DOWNLOAD@, defined at @SDL3\/SDL_gpu.h 1006:5@
+-- | [C declaration]: @SDL_GPU_TRANSFERBUFFERUSAGE_DOWNLOAD@, defined at @SDL3\/SDL_gpu.h 1008:5@
 pattern SDL_GPU_TRANSFERBUFFERUSAGE_DOWNLOAD :: SDL_GPUTransferBufferUsage
 pattern SDL_GPU_TRANSFERBUFFERUSAGE_DOWNLOAD = SDL_GPUTransferBufferUsage 1
 
@@ -2723,7 +2725,7 @@ pattern SDL_GPU_TRANSFERBUFFERUSAGE_DOWNLOAD = SDL_GPUTransferBufferUsage 1
 --
 --     [See also]: 'sDL_CreateGPUShader'
 --
---     [C declaration]: @enum SDL_GPUShaderStage@, defined at @SDL3\/SDL_gpu.h 1016:14@
+--     [C declaration]: @enum SDL_GPUShaderStage@, defined at @SDL3\/SDL_gpu.h 1018:14@
 newtype SDL_GPUShaderStage = SDL_GPUShaderStage
   { unwrap :: BG.CUInt
   }
@@ -2816,11 +2818,11 @@ instance HasCField.HasCField SDL_GPUShaderStage "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_GPU_SHADERSTAGE_VERTEX@, defined at @SDL3\/SDL_gpu.h 1018:5@
+-- | [C declaration]: @SDL_GPU_SHADERSTAGE_VERTEX@, defined at @SDL3\/SDL_gpu.h 1020:5@
 pattern SDL_GPU_SHADERSTAGE_VERTEX :: SDL_GPUShaderStage
 pattern SDL_GPU_SHADERSTAGE_VERTEX = SDL_GPUShaderStage 0
 
--- | [C declaration]: @SDL_GPU_SHADERSTAGE_FRAGMENT@, defined at @SDL3\/SDL_gpu.h 1019:5@
+-- | [C declaration]: @SDL_GPU_SHADERSTAGE_FRAGMENT@, defined at @SDL3\/SDL_gpu.h 1021:5@
 pattern SDL_GPU_SHADERSTAGE_FRAGMENT :: SDL_GPUShaderStage
 pattern SDL_GPU_SHADERSTAGE_FRAGMENT = SDL_GPUShaderStage 1
 
@@ -2832,7 +2834,7 @@ pattern SDL_GPU_SHADERSTAGE_FRAGMENT = SDL_GPUShaderStage 1
 --
 --     [See also]: 'sDL_CreateGPUShader'
 --
---     [C declaration]: @SDL_GPUShaderFormat@, defined at @SDL3\/SDL_gpu.h 1031:16@
+--     [C declaration]: @SDL_GPUShaderFormat@, defined at @SDL3\/SDL_gpu.h 1033:16@
 newtype SDL_GPUShaderFormat = SDL_GPUShaderFormat
   { unwrap :: SDL3.Sys.Bindgen.Stdinc.Uint32
   }
@@ -2879,48 +2881,48 @@ instance HasCField.HasCField SDL_GPUShaderFormat "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @macro SDL_GPU_SHADERFORMAT_INVALID@, defined at @SDL3\/SDL_gpu.h 1033:9@
+-- | [C declaration]: @macro SDL_GPU_SHADERFORMAT_INVALID@, defined at @SDL3\/SDL_gpu.h 1035:9@
 sDL_GPU_SHADERFORMAT_INVALID :: BG.CInt
 sDL_GPU_SHADERFORMAT_INVALID = (0 :: BG.CInt)
 
 -- | Shaders for NDA\'d platforms.
 --
---     [C declaration]: @macro SDL_GPU_SHADERFORMAT_PRIVATE@, defined at @SDL3\/SDL_gpu.h 1034:9@
+--     [C declaration]: @macro SDL_GPU_SHADERFORMAT_PRIVATE@, defined at @SDL3\/SDL_gpu.h 1036:9@
 sDL_GPU_SHADERFORMAT_PRIVATE :: BG.CUInt
 sDL_GPU_SHADERFORMAT_PRIVATE =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (0 :: BG.CInt)
 
 -- | SPIR-V shaders for Vulkan.
 --
---     [C declaration]: @macro SDL_GPU_SHADERFORMAT_SPIRV@, defined at @SDL3\/SDL_gpu.h 1035:9@
+--     [C declaration]: @macro SDL_GPU_SHADERFORMAT_SPIRV@, defined at @SDL3\/SDL_gpu.h 1037:9@
 sDL_GPU_SHADERFORMAT_SPIRV :: BG.CUInt
 sDL_GPU_SHADERFORMAT_SPIRV =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (1 :: BG.CInt)
 
 -- | DXBC SM5_1 shaders for D3D12.
 --
---     [C declaration]: @macro SDL_GPU_SHADERFORMAT_DXBC@, defined at @SDL3\/SDL_gpu.h 1036:9@
+--     [C declaration]: @macro SDL_GPU_SHADERFORMAT_DXBC@, defined at @SDL3\/SDL_gpu.h 1038:9@
 sDL_GPU_SHADERFORMAT_DXBC :: BG.CUInt
 sDL_GPU_SHADERFORMAT_DXBC =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (2 :: BG.CInt)
 
 -- | DXIL SM6_0 shaders for D3D12.
 --
---     [C declaration]: @macro SDL_GPU_SHADERFORMAT_DXIL@, defined at @SDL3\/SDL_gpu.h 1037:9@
+--     [C declaration]: @macro SDL_GPU_SHADERFORMAT_DXIL@, defined at @SDL3\/SDL_gpu.h 1039:9@
 sDL_GPU_SHADERFORMAT_DXIL :: BG.CUInt
 sDL_GPU_SHADERFORMAT_DXIL =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (3 :: BG.CInt)
 
 -- | MSL shaders for Metal.
 --
---     [C declaration]: @macro SDL_GPU_SHADERFORMAT_MSL@, defined at @SDL3\/SDL_gpu.h 1038:9@
+--     [C declaration]: @macro SDL_GPU_SHADERFORMAT_MSL@, defined at @SDL3\/SDL_gpu.h 1040:9@
 sDL_GPU_SHADERFORMAT_MSL :: BG.CUInt
 sDL_GPU_SHADERFORMAT_MSL =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (4 :: BG.CInt)
 
 -- | Precompiled metallib shaders for Metal.
 --
---     [C declaration]: @macro SDL_GPU_SHADERFORMAT_METALLIB@, defined at @SDL3\/SDL_gpu.h 1039:9@
+--     [C declaration]: @macro SDL_GPU_SHADERFORMAT_METALLIB@, defined at @SDL3\/SDL_gpu.h 1041:9@
 sDL_GPU_SHADERFORMAT_METALLIB :: BG.CUInt
 sDL_GPU_SHADERFORMAT_METALLIB =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (5 :: BG.CInt)
@@ -2931,7 +2933,7 @@ sDL_GPU_SHADERFORMAT_METALLIB =
 --
 --     [See also]: 'sDL_CreateGPUGraphicsPipeline'
 --
---     [C declaration]: @enum SDL_GPUVertexElementFormat@, defined at @SDL3\/SDL_gpu.h 1048:14@
+--     [C declaration]: @enum SDL_GPUVertexElementFormat@, defined at @SDL3\/SDL_gpu.h 1050:14@
 newtype SDL_GPUVertexElementFormat = SDL_GPUVertexElementFormat
   { unwrap :: BG.CUInt
   }
@@ -3057,127 +3059,127 @@ instance HasCField.HasCField SDL_GPUVertexElementFormat "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_INVALID@, defined at @SDL3\/SDL_gpu.h 1050:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_INVALID@, defined at @SDL3\/SDL_gpu.h 1052:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_INVALID :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_INVALID = SDL_GPUVertexElementFormat 0
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_INT@, defined at @SDL3\/SDL_gpu.h 1053:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_INT@, defined at @SDL3\/SDL_gpu.h 1055:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_INT :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_INT = SDL_GPUVertexElementFormat 1
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_INT2@, defined at @SDL3\/SDL_gpu.h 1054:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_INT2@, defined at @SDL3\/SDL_gpu.h 1056:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_INT2 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_INT2 = SDL_GPUVertexElementFormat 2
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_INT3@, defined at @SDL3\/SDL_gpu.h 1055:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_INT3@, defined at @SDL3\/SDL_gpu.h 1057:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_INT3 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_INT3 = SDL_GPUVertexElementFormat 3
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_INT4@, defined at @SDL3\/SDL_gpu.h 1056:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_INT4@, defined at @SDL3\/SDL_gpu.h 1058:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_INT4 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_INT4 = SDL_GPUVertexElementFormat 4
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UINT@, defined at @SDL3\/SDL_gpu.h 1059:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UINT@, defined at @SDL3\/SDL_gpu.h 1061:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UINT :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UINT = SDL_GPUVertexElementFormat 5
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UINT2@, defined at @SDL3\/SDL_gpu.h 1060:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UINT2@, defined at @SDL3\/SDL_gpu.h 1062:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UINT2 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UINT2 = SDL_GPUVertexElementFormat 6
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UINT3@, defined at @SDL3\/SDL_gpu.h 1061:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UINT3@, defined at @SDL3\/SDL_gpu.h 1063:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UINT3 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UINT3 = SDL_GPUVertexElementFormat 7
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UINT4@, defined at @SDL3\/SDL_gpu.h 1062:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UINT4@, defined at @SDL3\/SDL_gpu.h 1064:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UINT4 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UINT4 = SDL_GPUVertexElementFormat 8
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_FLOAT@, defined at @SDL3\/SDL_gpu.h 1065:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_FLOAT@, defined at @SDL3\/SDL_gpu.h 1067:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_FLOAT :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_FLOAT = SDL_GPUVertexElementFormat 9
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2@, defined at @SDL3\/SDL_gpu.h 1066:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2@, defined at @SDL3\/SDL_gpu.h 1068:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2 = SDL_GPUVertexElementFormat 10
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3@, defined at @SDL3\/SDL_gpu.h 1067:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3@, defined at @SDL3\/SDL_gpu.h 1069:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3 = SDL_GPUVertexElementFormat 11
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4@, defined at @SDL3\/SDL_gpu.h 1068:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4@, defined at @SDL3\/SDL_gpu.h 1070:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4 = SDL_GPUVertexElementFormat 12
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_BYTE2@, defined at @SDL3\/SDL_gpu.h 1071:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_BYTE2@, defined at @SDL3\/SDL_gpu.h 1073:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_BYTE2 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_BYTE2 = SDL_GPUVertexElementFormat 13
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_BYTE4@, defined at @SDL3\/SDL_gpu.h 1072:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_BYTE4@, defined at @SDL3\/SDL_gpu.h 1074:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_BYTE4 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_BYTE4 = SDL_GPUVertexElementFormat 14
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UBYTE2@, defined at @SDL3\/SDL_gpu.h 1075:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UBYTE2@, defined at @SDL3\/SDL_gpu.h 1077:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UBYTE2 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UBYTE2 = SDL_GPUVertexElementFormat 15
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UBYTE4@, defined at @SDL3\/SDL_gpu.h 1076:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UBYTE4@, defined at @SDL3\/SDL_gpu.h 1078:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UBYTE4 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UBYTE4 = SDL_GPUVertexElementFormat 16
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_BYTE2_NORM@, defined at @SDL3\/SDL_gpu.h 1079:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_BYTE2_NORM@, defined at @SDL3\/SDL_gpu.h 1081:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_BYTE2_NORM :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_BYTE2_NORM = SDL_GPUVertexElementFormat 17
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_BYTE4_NORM@, defined at @SDL3\/SDL_gpu.h 1080:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_BYTE4_NORM@, defined at @SDL3\/SDL_gpu.h 1082:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_BYTE4_NORM :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_BYTE4_NORM = SDL_GPUVertexElementFormat 18
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UBYTE2_NORM@, defined at @SDL3\/SDL_gpu.h 1083:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UBYTE2_NORM@, defined at @SDL3\/SDL_gpu.h 1085:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UBYTE2_NORM :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UBYTE2_NORM = SDL_GPUVertexElementFormat 19
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UBYTE4_NORM@, defined at @SDL3\/SDL_gpu.h 1084:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_UBYTE4_NORM@, defined at @SDL3\/SDL_gpu.h 1086:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UBYTE4_NORM :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_UBYTE4_NORM = SDL_GPUVertexElementFormat 20
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_SHORT2@, defined at @SDL3\/SDL_gpu.h 1087:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_SHORT2@, defined at @SDL3\/SDL_gpu.h 1089:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_SHORT2 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_SHORT2 = SDL_GPUVertexElementFormat 21
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_SHORT4@, defined at @SDL3\/SDL_gpu.h 1088:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_SHORT4@, defined at @SDL3\/SDL_gpu.h 1090:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_SHORT4 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_SHORT4 = SDL_GPUVertexElementFormat 22
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_USHORT2@, defined at @SDL3\/SDL_gpu.h 1091:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_USHORT2@, defined at @SDL3\/SDL_gpu.h 1093:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_USHORT2 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_USHORT2 = SDL_GPUVertexElementFormat 23
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_USHORT4@, defined at @SDL3\/SDL_gpu.h 1092:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_USHORT4@, defined at @SDL3\/SDL_gpu.h 1094:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_USHORT4 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_USHORT4 = SDL_GPUVertexElementFormat 24
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_SHORT2_NORM@, defined at @SDL3\/SDL_gpu.h 1095:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_SHORT2_NORM@, defined at @SDL3\/SDL_gpu.h 1097:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_SHORT2_NORM :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_SHORT2_NORM = SDL_GPUVertexElementFormat 25
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_SHORT4_NORM@, defined at @SDL3\/SDL_gpu.h 1096:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_SHORT4_NORM@, defined at @SDL3\/SDL_gpu.h 1098:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_SHORT4_NORM :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_SHORT4_NORM = SDL_GPUVertexElementFormat 26
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_USHORT2_NORM@, defined at @SDL3\/SDL_gpu.h 1099:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_USHORT2_NORM@, defined at @SDL3\/SDL_gpu.h 1101:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_USHORT2_NORM :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_USHORT2_NORM = SDL_GPUVertexElementFormat 27
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_USHORT4_NORM@, defined at @SDL3\/SDL_gpu.h 1100:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_USHORT4_NORM@, defined at @SDL3\/SDL_gpu.h 1102:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_USHORT4_NORM :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_USHORT4_NORM = SDL_GPUVertexElementFormat 28
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_HALF2@, defined at @SDL3\/SDL_gpu.h 1103:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_HALF2@, defined at @SDL3\/SDL_gpu.h 1105:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_HALF2 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_HALF2 = SDL_GPUVertexElementFormat 29
 
--- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_HALF4@, defined at @SDL3\/SDL_gpu.h 1104:5@
+-- | [C declaration]: @SDL_GPU_VERTEXELEMENTFORMAT_HALF4@, defined at @SDL3\/SDL_gpu.h 1106:5@
 pattern SDL_GPU_VERTEXELEMENTFORMAT_HALF4 :: SDL_GPUVertexElementFormat
 pattern SDL_GPU_VERTEXELEMENTFORMAT_HALF4 = SDL_GPUVertexElementFormat 30
 
@@ -3187,7 +3189,7 @@ pattern SDL_GPU_VERTEXELEMENTFORMAT_HALF4 = SDL_GPUVertexElementFormat 30
 --
 --     [See also]: 'sDL_CreateGPUGraphicsPipeline'
 --
---     [C declaration]: @enum SDL_GPUVertexInputRate@, defined at @SDL3\/SDL_gpu.h 1114:14@
+--     [C declaration]: @enum SDL_GPUVertexInputRate@, defined at @SDL3\/SDL_gpu.h 1116:14@
 newtype SDL_GPUVertexInputRate = SDL_GPUVertexInputRate
   { unwrap :: BG.CUInt
   }
@@ -3285,13 +3287,13 @@ instance HasCField.HasCField SDL_GPUVertexInputRate "unwrap" where
 
 -- | Attribute addressing is a function of the vertex index.
 --
---     [C declaration]: @SDL_GPU_VERTEXINPUTRATE_VERTEX@, defined at @SDL3\/SDL_gpu.h 1116:5@
+--     [C declaration]: @SDL_GPU_VERTEXINPUTRATE_VERTEX@, defined at @SDL3\/SDL_gpu.h 1118:5@
 pattern SDL_GPU_VERTEXINPUTRATE_VERTEX :: SDL_GPUVertexInputRate
 pattern SDL_GPU_VERTEXINPUTRATE_VERTEX = SDL_GPUVertexInputRate 0
 
 -- | Attribute addressing is a function of the instance index.
 --
---     [C declaration]: @SDL_GPU_VERTEXINPUTRATE_INSTANCE@, defined at @SDL3\/SDL_gpu.h 1117:5@
+--     [C declaration]: @SDL_GPU_VERTEXINPUTRATE_INSTANCE@, defined at @SDL3\/SDL_gpu.h 1119:5@
 pattern SDL_GPU_VERTEXINPUTRATE_INSTANCE :: SDL_GPUVertexInputRate
 pattern SDL_GPU_VERTEXINPUTRATE_INSTANCE = SDL_GPUVertexInputRate 1
 
@@ -3301,7 +3303,7 @@ pattern SDL_GPU_VERTEXINPUTRATE_INSTANCE = SDL_GPUVertexInputRate 1
 --
 --     [See also]: 'sDL_CreateGPUGraphicsPipeline'
 --
---     [C declaration]: @enum SDL_GPUFillMode@, defined at @SDL3\/SDL_gpu.h 1127:14@
+--     [C declaration]: @enum SDL_GPUFillMode@, defined at @SDL3\/SDL_gpu.h 1129:14@
 newtype SDL_GPUFillMode = SDL_GPUFillMode
   { unwrap :: BG.CUInt
   }
@@ -3394,13 +3396,13 @@ instance HasCField.HasCField SDL_GPUFillMode "unwrap" where
 
 -- | Polygons will be rendered via rasterization.
 --
---     [C declaration]: @SDL_GPU_FILLMODE_FILL@, defined at @SDL3\/SDL_gpu.h 1129:5@
+--     [C declaration]: @SDL_GPU_FILLMODE_FILL@, defined at @SDL3\/SDL_gpu.h 1131:5@
 pattern SDL_GPU_FILLMODE_FILL :: SDL_GPUFillMode
 pattern SDL_GPU_FILLMODE_FILL = SDL_GPUFillMode 0
 
 -- | Polygon edges will be drawn as line segments.
 --
---     [C declaration]: @SDL_GPU_FILLMODE_LINE@, defined at @SDL3\/SDL_gpu.h 1130:5@
+--     [C declaration]: @SDL_GPU_FILLMODE_LINE@, defined at @SDL3\/SDL_gpu.h 1132:5@
 pattern SDL_GPU_FILLMODE_LINE :: SDL_GPUFillMode
 pattern SDL_GPU_FILLMODE_LINE = SDL_GPUFillMode 1
 
@@ -3410,7 +3412,7 @@ pattern SDL_GPU_FILLMODE_LINE = SDL_GPUFillMode 1
 --
 --     [See also]: 'sDL_CreateGPUGraphicsPipeline'
 --
---     [C declaration]: @enum SDL_GPUCullMode@, defined at @SDL3\/SDL_gpu.h 1140:14@
+--     [C declaration]: @enum SDL_GPUCullMode@, defined at @SDL3\/SDL_gpu.h 1142:14@
 newtype SDL_GPUCullMode = SDL_GPUCullMode
   { unwrap :: BG.CUInt
   }
@@ -3504,19 +3506,19 @@ instance HasCField.HasCField SDL_GPUCullMode "unwrap" where
 
 -- | No triangles are culled.
 --
---     [C declaration]: @SDL_GPU_CULLMODE_NONE@, defined at @SDL3\/SDL_gpu.h 1142:5@
+--     [C declaration]: @SDL_GPU_CULLMODE_NONE@, defined at @SDL3\/SDL_gpu.h 1144:5@
 pattern SDL_GPU_CULLMODE_NONE :: SDL_GPUCullMode
 pattern SDL_GPU_CULLMODE_NONE = SDL_GPUCullMode 0
 
 -- | Front-facing triangles are culled.
 --
---     [C declaration]: @SDL_GPU_CULLMODE_FRONT@, defined at @SDL3\/SDL_gpu.h 1143:5@
+--     [C declaration]: @SDL_GPU_CULLMODE_FRONT@, defined at @SDL3\/SDL_gpu.h 1145:5@
 pattern SDL_GPU_CULLMODE_FRONT :: SDL_GPUCullMode
 pattern SDL_GPU_CULLMODE_FRONT = SDL_GPUCullMode 1
 
 -- | Back-facing triangles are culled.
 --
---     [C declaration]: @SDL_GPU_CULLMODE_BACK@, defined at @SDL3\/SDL_gpu.h 1144:5@
+--     [C declaration]: @SDL_GPU_CULLMODE_BACK@, defined at @SDL3\/SDL_gpu.h 1146:5@
 pattern SDL_GPU_CULLMODE_BACK :: SDL_GPUCullMode
 pattern SDL_GPU_CULLMODE_BACK = SDL_GPUCullMode 2
 
@@ -3526,7 +3528,7 @@ pattern SDL_GPU_CULLMODE_BACK = SDL_GPUCullMode 2
 --
 --     [See also]: 'sDL_CreateGPUGraphicsPipeline'
 --
---     [C declaration]: @enum SDL_GPUFrontFace@, defined at @SDL3\/SDL_gpu.h 1155:14@
+--     [C declaration]: @enum SDL_GPUFrontFace@, defined at @SDL3\/SDL_gpu.h 1157:14@
 newtype SDL_GPUFrontFace = SDL_GPUFrontFace
   { unwrap :: BG.CUInt
   }
@@ -3620,13 +3622,13 @@ instance HasCField.HasCField SDL_GPUFrontFace "unwrap" where
 
 -- | A triangle with counter-clockwise vertex winding will be considered front-facing.
 --
---     [C declaration]: @SDL_GPU_FRONTFACE_COUNTER_CLOCKWISE@, defined at @SDL3\/SDL_gpu.h 1157:5@
+--     [C declaration]: @SDL_GPU_FRONTFACE_COUNTER_CLOCKWISE@, defined at @SDL3\/SDL_gpu.h 1159:5@
 pattern SDL_GPU_FRONTFACE_COUNTER_CLOCKWISE :: SDL_GPUFrontFace
 pattern SDL_GPU_FRONTFACE_COUNTER_CLOCKWISE = SDL_GPUFrontFace 0
 
 -- | A triangle with clockwise vertex winding will be considered front-facing.
 --
---     [C declaration]: @SDL_GPU_FRONTFACE_CLOCKWISE@, defined at @SDL3\/SDL_gpu.h 1158:5@
+--     [C declaration]: @SDL_GPU_FRONTFACE_CLOCKWISE@, defined at @SDL3\/SDL_gpu.h 1160:5@
 pattern SDL_GPU_FRONTFACE_CLOCKWISE :: SDL_GPUFrontFace
 pattern SDL_GPU_FRONTFACE_CLOCKWISE = SDL_GPUFrontFace 1
 
@@ -3636,7 +3638,7 @@ pattern SDL_GPU_FRONTFACE_CLOCKWISE = SDL_GPUFrontFace 1
 --
 --     [See also]: 'sDL_CreateGPUGraphicsPipeline'
 --
---     [C declaration]: @enum SDL_GPUCompareOp@, defined at @SDL3\/SDL_gpu.h 1168:14@
+--     [C declaration]: @enum SDL_GPUCompareOp@, defined at @SDL3\/SDL_gpu.h 1170:14@
 newtype SDL_GPUCompareOp = SDL_GPUCompareOp
   { unwrap :: BG.CUInt
   }
@@ -3734,55 +3736,55 @@ instance HasCField.HasCField SDL_GPUCompareOp "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_GPU_COMPAREOP_INVALID@, defined at @SDL3\/SDL_gpu.h 1170:5@
+-- | [C declaration]: @SDL_GPU_COMPAREOP_INVALID@, defined at @SDL3\/SDL_gpu.h 1172:5@
 pattern SDL_GPU_COMPAREOP_INVALID :: SDL_GPUCompareOp
 pattern SDL_GPU_COMPAREOP_INVALID = SDL_GPUCompareOp 0
 
 -- | The comparison always evaluates false.
 --
---     [C declaration]: @SDL_GPU_COMPAREOP_NEVER@, defined at @SDL3\/SDL_gpu.h 1171:5@
+--     [C declaration]: @SDL_GPU_COMPAREOP_NEVER@, defined at @SDL3\/SDL_gpu.h 1173:5@
 pattern SDL_GPU_COMPAREOP_NEVER :: SDL_GPUCompareOp
 pattern SDL_GPU_COMPAREOP_NEVER = SDL_GPUCompareOp 1
 
 -- | The comparison evaluates reference \< test.
 --
---     [C declaration]: @SDL_GPU_COMPAREOP_LESS@, defined at @SDL3\/SDL_gpu.h 1172:5@
+--     [C declaration]: @SDL_GPU_COMPAREOP_LESS@, defined at @SDL3\/SDL_gpu.h 1174:5@
 pattern SDL_GPU_COMPAREOP_LESS :: SDL_GPUCompareOp
 pattern SDL_GPU_COMPAREOP_LESS = SDL_GPUCompareOp 2
 
 -- | The comparison evaluates reference == test.
 --
---     [C declaration]: @SDL_GPU_COMPAREOP_EQUAL@, defined at @SDL3\/SDL_gpu.h 1173:5@
+--     [C declaration]: @SDL_GPU_COMPAREOP_EQUAL@, defined at @SDL3\/SDL_gpu.h 1175:5@
 pattern SDL_GPU_COMPAREOP_EQUAL :: SDL_GPUCompareOp
 pattern SDL_GPU_COMPAREOP_EQUAL = SDL_GPUCompareOp 3
 
 -- | The comparison evaluates reference \<= test.
 --
---     [C declaration]: @SDL_GPU_COMPAREOP_LESS_OR_EQUAL@, defined at @SDL3\/SDL_gpu.h 1174:5@
+--     [C declaration]: @SDL_GPU_COMPAREOP_LESS_OR_EQUAL@, defined at @SDL3\/SDL_gpu.h 1176:5@
 pattern SDL_GPU_COMPAREOP_LESS_OR_EQUAL :: SDL_GPUCompareOp
 pattern SDL_GPU_COMPAREOP_LESS_OR_EQUAL = SDL_GPUCompareOp 4
 
 -- | The comparison evaluates reference > test.
 --
---     [C declaration]: @SDL_GPU_COMPAREOP_GREATER@, defined at @SDL3\/SDL_gpu.h 1175:5@
+--     [C declaration]: @SDL_GPU_COMPAREOP_GREATER@, defined at @SDL3\/SDL_gpu.h 1177:5@
 pattern SDL_GPU_COMPAREOP_GREATER :: SDL_GPUCompareOp
 pattern SDL_GPU_COMPAREOP_GREATER = SDL_GPUCompareOp 5
 
 -- | The comparison evaluates reference != test.
 --
---     [C declaration]: @SDL_GPU_COMPAREOP_NOT_EQUAL@, defined at @SDL3\/SDL_gpu.h 1176:5@
+--     [C declaration]: @SDL_GPU_COMPAREOP_NOT_EQUAL@, defined at @SDL3\/SDL_gpu.h 1178:5@
 pattern SDL_GPU_COMPAREOP_NOT_EQUAL :: SDL_GPUCompareOp
 pattern SDL_GPU_COMPAREOP_NOT_EQUAL = SDL_GPUCompareOp 6
 
 -- | The comparison evaluates reference >= test.
 --
---     [C declaration]: @SDL_GPU_COMPAREOP_GREATER_OR_EQUAL@, defined at @SDL3\/SDL_gpu.h 1177:5@
+--     [C declaration]: @SDL_GPU_COMPAREOP_GREATER_OR_EQUAL@, defined at @SDL3\/SDL_gpu.h 1179:5@
 pattern SDL_GPU_COMPAREOP_GREATER_OR_EQUAL :: SDL_GPUCompareOp
 pattern SDL_GPU_COMPAREOP_GREATER_OR_EQUAL = SDL_GPUCompareOp 7
 
 -- | The comparison always evaluates true.
 --
---     [C declaration]: @SDL_GPU_COMPAREOP_ALWAYS@, defined at @SDL3\/SDL_gpu.h 1178:5@
+--     [C declaration]: @SDL_GPU_COMPAREOP_ALWAYS@, defined at @SDL3\/SDL_gpu.h 1180:5@
 pattern SDL_GPU_COMPAREOP_ALWAYS :: SDL_GPUCompareOp
 pattern SDL_GPU_COMPAREOP_ALWAYS = SDL_GPUCompareOp 8
 
@@ -3792,7 +3794,7 @@ pattern SDL_GPU_COMPAREOP_ALWAYS = SDL_GPUCompareOp 8
 --
 --     [See also]: 'sDL_CreateGPUGraphicsPipeline'
 --
---     [C declaration]: @enum SDL_GPUStencilOp@, defined at @SDL3\/SDL_gpu.h 1189:14@
+--     [C declaration]: @enum SDL_GPUStencilOp@, defined at @SDL3\/SDL_gpu.h 1191:14@
 newtype SDL_GPUStencilOp = SDL_GPUStencilOp
   { unwrap :: BG.CUInt
   }
@@ -3891,55 +3893,55 @@ instance HasCField.HasCField SDL_GPUStencilOp "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_GPU_STENCILOP_INVALID@, defined at @SDL3\/SDL_gpu.h 1191:5@
+-- | [C declaration]: @SDL_GPU_STENCILOP_INVALID@, defined at @SDL3\/SDL_gpu.h 1193:5@
 pattern SDL_GPU_STENCILOP_INVALID :: SDL_GPUStencilOp
 pattern SDL_GPU_STENCILOP_INVALID = SDL_GPUStencilOp 0
 
 -- | Keeps the current value.
 --
---     [C declaration]: @SDL_GPU_STENCILOP_KEEP@, defined at @SDL3\/SDL_gpu.h 1192:5@
+--     [C declaration]: @SDL_GPU_STENCILOP_KEEP@, defined at @SDL3\/SDL_gpu.h 1194:5@
 pattern SDL_GPU_STENCILOP_KEEP :: SDL_GPUStencilOp
 pattern SDL_GPU_STENCILOP_KEEP = SDL_GPUStencilOp 1
 
 -- | Sets the value to 0.
 --
---     [C declaration]: @SDL_GPU_STENCILOP_ZERO@, defined at @SDL3\/SDL_gpu.h 1193:5@
+--     [C declaration]: @SDL_GPU_STENCILOP_ZERO@, defined at @SDL3\/SDL_gpu.h 1195:5@
 pattern SDL_GPU_STENCILOP_ZERO :: SDL_GPUStencilOp
 pattern SDL_GPU_STENCILOP_ZERO = SDL_GPUStencilOp 2
 
 -- | Sets the value to reference.
 --
---     [C declaration]: @SDL_GPU_STENCILOP_REPLACE@, defined at @SDL3\/SDL_gpu.h 1194:5@
+--     [C declaration]: @SDL_GPU_STENCILOP_REPLACE@, defined at @SDL3\/SDL_gpu.h 1196:5@
 pattern SDL_GPU_STENCILOP_REPLACE :: SDL_GPUStencilOp
 pattern SDL_GPU_STENCILOP_REPLACE = SDL_GPUStencilOp 3
 
 -- | Increments the current value and clamps to the maximum value.
 --
---     [C declaration]: @SDL_GPU_STENCILOP_INCREMENT_AND_CLAMP@, defined at @SDL3\/SDL_gpu.h 1195:5@
+--     [C declaration]: @SDL_GPU_STENCILOP_INCREMENT_AND_CLAMP@, defined at @SDL3\/SDL_gpu.h 1197:5@
 pattern SDL_GPU_STENCILOP_INCREMENT_AND_CLAMP :: SDL_GPUStencilOp
 pattern SDL_GPU_STENCILOP_INCREMENT_AND_CLAMP = SDL_GPUStencilOp 4
 
 -- | Decrements the current value and clamps to 0.
 --
---     [C declaration]: @SDL_GPU_STENCILOP_DECREMENT_AND_CLAMP@, defined at @SDL3\/SDL_gpu.h 1196:5@
+--     [C declaration]: @SDL_GPU_STENCILOP_DECREMENT_AND_CLAMP@, defined at @SDL3\/SDL_gpu.h 1198:5@
 pattern SDL_GPU_STENCILOP_DECREMENT_AND_CLAMP :: SDL_GPUStencilOp
 pattern SDL_GPU_STENCILOP_DECREMENT_AND_CLAMP = SDL_GPUStencilOp 5
 
 -- | Bitwise-inverts the current value.
 --
---     [C declaration]: @SDL_GPU_STENCILOP_INVERT@, defined at @SDL3\/SDL_gpu.h 1197:5@
+--     [C declaration]: @SDL_GPU_STENCILOP_INVERT@, defined at @SDL3\/SDL_gpu.h 1199:5@
 pattern SDL_GPU_STENCILOP_INVERT :: SDL_GPUStencilOp
 pattern SDL_GPU_STENCILOP_INVERT = SDL_GPUStencilOp 6
 
 -- | Increments the current value and wraps back to 0.
 --
---     [C declaration]: @SDL_GPU_STENCILOP_INCREMENT_AND_WRAP@, defined at @SDL3\/SDL_gpu.h 1198:5@
+--     [C declaration]: @SDL_GPU_STENCILOP_INCREMENT_AND_WRAP@, defined at @SDL3\/SDL_gpu.h 1200:5@
 pattern SDL_GPU_STENCILOP_INCREMENT_AND_WRAP :: SDL_GPUStencilOp
 pattern SDL_GPU_STENCILOP_INCREMENT_AND_WRAP = SDL_GPUStencilOp 7
 
 -- | Decrements the current value and wraps to the maximum value.
 --
---     [C declaration]: @SDL_GPU_STENCILOP_DECREMENT_AND_WRAP@, defined at @SDL3\/SDL_gpu.h 1199:5@
+--     [C declaration]: @SDL_GPU_STENCILOP_DECREMENT_AND_WRAP@, defined at @SDL3\/SDL_gpu.h 1201:5@
 pattern SDL_GPU_STENCILOP_DECREMENT_AND_WRAP :: SDL_GPUStencilOp
 pattern SDL_GPU_STENCILOP_DECREMENT_AND_WRAP = SDL_GPUStencilOp 8
 
@@ -3951,7 +3953,7 @@ pattern SDL_GPU_STENCILOP_DECREMENT_AND_WRAP = SDL_GPUStencilOp 8
 --
 --     [See also]: 'sDL_CreateGPUGraphicsPipeline'
 --
---     [C declaration]: @enum SDL_GPUBlendOp@, defined at @SDL3\/SDL_gpu.h 1213:14@
+--     [C declaration]: @enum SDL_GPUBlendOp@, defined at @SDL3\/SDL_gpu.h 1215:14@
 newtype SDL_GPUBlendOp = SDL_GPUBlendOp
   { unwrap :: BG.CUInt
   }
@@ -4046,37 +4048,37 @@ instance HasCField.HasCField SDL_GPUBlendOp "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_GPU_BLENDOP_INVALID@, defined at @SDL3\/SDL_gpu.h 1215:5@
+-- | [C declaration]: @SDL_GPU_BLENDOP_INVALID@, defined at @SDL3\/SDL_gpu.h 1217:5@
 pattern SDL_GPU_BLENDOP_INVALID :: SDL_GPUBlendOp
 pattern SDL_GPU_BLENDOP_INVALID = SDL_GPUBlendOp 0
 
 -- | (source * source_factor) + (destination * destination_factor)
 --
---     [C declaration]: @SDL_GPU_BLENDOP_ADD@, defined at @SDL3\/SDL_gpu.h 1216:5@
+--     [C declaration]: @SDL_GPU_BLENDOP_ADD@, defined at @SDL3\/SDL_gpu.h 1218:5@
 pattern SDL_GPU_BLENDOP_ADD :: SDL_GPUBlendOp
 pattern SDL_GPU_BLENDOP_ADD = SDL_GPUBlendOp 1
 
 -- | (source * source_factor) - (destination * destination_factor)
 --
---     [C declaration]: @SDL_GPU_BLENDOP_SUBTRACT@, defined at @SDL3\/SDL_gpu.h 1217:5@
+--     [C declaration]: @SDL_GPU_BLENDOP_SUBTRACT@, defined at @SDL3\/SDL_gpu.h 1219:5@
 pattern SDL_GPU_BLENDOP_SUBTRACT :: SDL_GPUBlendOp
 pattern SDL_GPU_BLENDOP_SUBTRACT = SDL_GPUBlendOp 2
 
 -- | (destination * destination_factor) - (source * source_factor)
 --
---     [C declaration]: @SDL_GPU_BLENDOP_REVERSE_SUBTRACT@, defined at @SDL3\/SDL_gpu.h 1218:5@
+--     [C declaration]: @SDL_GPU_BLENDOP_REVERSE_SUBTRACT@, defined at @SDL3\/SDL_gpu.h 1220:5@
 pattern SDL_GPU_BLENDOP_REVERSE_SUBTRACT :: SDL_GPUBlendOp
 pattern SDL_GPU_BLENDOP_REVERSE_SUBTRACT = SDL_GPUBlendOp 3
 
 -- | min(source, destination)
 --
---     [C declaration]: @SDL_GPU_BLENDOP_MIN@, defined at @SDL3\/SDL_gpu.h 1219:5@
+--     [C declaration]: @SDL_GPU_BLENDOP_MIN@, defined at @SDL3\/SDL_gpu.h 1221:5@
 pattern SDL_GPU_BLENDOP_MIN :: SDL_GPUBlendOp
 pattern SDL_GPU_BLENDOP_MIN = SDL_GPUBlendOp 4
 
 -- | max(source, destination)
 --
---     [C declaration]: @SDL_GPU_BLENDOP_MAX@, defined at @SDL3\/SDL_gpu.h 1220:5@
+--     [C declaration]: @SDL_GPU_BLENDOP_MAX@, defined at @SDL3\/SDL_gpu.h 1222:5@
 pattern SDL_GPU_BLENDOP_MAX :: SDL_GPUBlendOp
 pattern SDL_GPU_BLENDOP_MAX = SDL_GPUBlendOp 5
 
@@ -4088,7 +4090,7 @@ pattern SDL_GPU_BLENDOP_MAX = SDL_GPUBlendOp 5
 --
 --     [See also]: 'sDL_CreateGPUGraphicsPipeline'
 --
---     [C declaration]: @enum SDL_GPUBlendFactor@, defined at @SDL3\/SDL_gpu.h 1234:14@
+--     [C declaration]: @enum SDL_GPUBlendFactor@, defined at @SDL3\/SDL_gpu.h 1236:14@
 newtype SDL_GPUBlendFactor = SDL_GPUBlendFactor
   { unwrap :: BG.CUInt
   }
@@ -4194,85 +4196,85 @@ instance HasCField.HasCField SDL_GPUBlendFactor "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_GPU_BLENDFACTOR_INVALID@, defined at @SDL3\/SDL_gpu.h 1236:5@
+-- | [C declaration]: @SDL_GPU_BLENDFACTOR_INVALID@, defined at @SDL3\/SDL_gpu.h 1238:5@
 pattern SDL_GPU_BLENDFACTOR_INVALID :: SDL_GPUBlendFactor
 pattern SDL_GPU_BLENDFACTOR_INVALID = SDL_GPUBlendFactor 0
 
 -- | 0
 --
---     [C declaration]: @SDL_GPU_BLENDFACTOR_ZERO@, defined at @SDL3\/SDL_gpu.h 1237:5@
+--     [C declaration]: @SDL_GPU_BLENDFACTOR_ZERO@, defined at @SDL3\/SDL_gpu.h 1239:5@
 pattern SDL_GPU_BLENDFACTOR_ZERO :: SDL_GPUBlendFactor
 pattern SDL_GPU_BLENDFACTOR_ZERO = SDL_GPUBlendFactor 1
 
 -- | 1
 --
---     [C declaration]: @SDL_GPU_BLENDFACTOR_ONE@, defined at @SDL3\/SDL_gpu.h 1238:5@
+--     [C declaration]: @SDL_GPU_BLENDFACTOR_ONE@, defined at @SDL3\/SDL_gpu.h 1240:5@
 pattern SDL_GPU_BLENDFACTOR_ONE :: SDL_GPUBlendFactor
 pattern SDL_GPU_BLENDFACTOR_ONE = SDL_GPUBlendFactor 2
 
 -- | source color
 --
---     [C declaration]: @SDL_GPU_BLENDFACTOR_SRC_COLOR@, defined at @SDL3\/SDL_gpu.h 1239:5@
+--     [C declaration]: @SDL_GPU_BLENDFACTOR_SRC_COLOR@, defined at @SDL3\/SDL_gpu.h 1241:5@
 pattern SDL_GPU_BLENDFACTOR_SRC_COLOR :: SDL_GPUBlendFactor
 pattern SDL_GPU_BLENDFACTOR_SRC_COLOR = SDL_GPUBlendFactor 3
 
 -- | 1 - source color
 --
---     [C declaration]: @SDL_GPU_BLENDFACTOR_ONE_MINUS_SRC_COLOR@, defined at @SDL3\/SDL_gpu.h 1240:5@
+--     [C declaration]: @SDL_GPU_BLENDFACTOR_ONE_MINUS_SRC_COLOR@, defined at @SDL3\/SDL_gpu.h 1242:5@
 pattern SDL_GPU_BLENDFACTOR_ONE_MINUS_SRC_COLOR :: SDL_GPUBlendFactor
 pattern SDL_GPU_BLENDFACTOR_ONE_MINUS_SRC_COLOR = SDL_GPUBlendFactor 4
 
 -- | destination color
 --
---     [C declaration]: @SDL_GPU_BLENDFACTOR_DST_COLOR@, defined at @SDL3\/SDL_gpu.h 1241:5@
+--     [C declaration]: @SDL_GPU_BLENDFACTOR_DST_COLOR@, defined at @SDL3\/SDL_gpu.h 1243:5@
 pattern SDL_GPU_BLENDFACTOR_DST_COLOR :: SDL_GPUBlendFactor
 pattern SDL_GPU_BLENDFACTOR_DST_COLOR = SDL_GPUBlendFactor 5
 
 -- | 1 - destination color
 --
---     [C declaration]: @SDL_GPU_BLENDFACTOR_ONE_MINUS_DST_COLOR@, defined at @SDL3\/SDL_gpu.h 1242:5@
+--     [C declaration]: @SDL_GPU_BLENDFACTOR_ONE_MINUS_DST_COLOR@, defined at @SDL3\/SDL_gpu.h 1244:5@
 pattern SDL_GPU_BLENDFACTOR_ONE_MINUS_DST_COLOR :: SDL_GPUBlendFactor
 pattern SDL_GPU_BLENDFACTOR_ONE_MINUS_DST_COLOR = SDL_GPUBlendFactor 6
 
 -- | source alpha
 --
---     [C declaration]: @SDL_GPU_BLENDFACTOR_SRC_ALPHA@, defined at @SDL3\/SDL_gpu.h 1243:5@
+--     [C declaration]: @SDL_GPU_BLENDFACTOR_SRC_ALPHA@, defined at @SDL3\/SDL_gpu.h 1245:5@
 pattern SDL_GPU_BLENDFACTOR_SRC_ALPHA :: SDL_GPUBlendFactor
 pattern SDL_GPU_BLENDFACTOR_SRC_ALPHA = SDL_GPUBlendFactor 7
 
 -- | 1 - source alpha
 --
---     [C declaration]: @SDL_GPU_BLENDFACTOR_ONE_MINUS_SRC_ALPHA@, defined at @SDL3\/SDL_gpu.h 1244:5@
+--     [C declaration]: @SDL_GPU_BLENDFACTOR_ONE_MINUS_SRC_ALPHA@, defined at @SDL3\/SDL_gpu.h 1246:5@
 pattern SDL_GPU_BLENDFACTOR_ONE_MINUS_SRC_ALPHA :: SDL_GPUBlendFactor
 pattern SDL_GPU_BLENDFACTOR_ONE_MINUS_SRC_ALPHA = SDL_GPUBlendFactor 8
 
 -- | destination alpha
 --
---     [C declaration]: @SDL_GPU_BLENDFACTOR_DST_ALPHA@, defined at @SDL3\/SDL_gpu.h 1245:5@
+--     [C declaration]: @SDL_GPU_BLENDFACTOR_DST_ALPHA@, defined at @SDL3\/SDL_gpu.h 1247:5@
 pattern SDL_GPU_BLENDFACTOR_DST_ALPHA :: SDL_GPUBlendFactor
 pattern SDL_GPU_BLENDFACTOR_DST_ALPHA = SDL_GPUBlendFactor 9
 
 -- | 1 - destination alpha
 --
---     [C declaration]: @SDL_GPU_BLENDFACTOR_ONE_MINUS_DST_ALPHA@, defined at @SDL3\/SDL_gpu.h 1246:5@
+--     [C declaration]: @SDL_GPU_BLENDFACTOR_ONE_MINUS_DST_ALPHA@, defined at @SDL3\/SDL_gpu.h 1248:5@
 pattern SDL_GPU_BLENDFACTOR_ONE_MINUS_DST_ALPHA :: SDL_GPUBlendFactor
 pattern SDL_GPU_BLENDFACTOR_ONE_MINUS_DST_ALPHA = SDL_GPUBlendFactor 10
 
 -- | blend constant
 --
---     [C declaration]: @SDL_GPU_BLENDFACTOR_CONSTANT_COLOR@, defined at @SDL3\/SDL_gpu.h 1247:5@
+--     [C declaration]: @SDL_GPU_BLENDFACTOR_CONSTANT_COLOR@, defined at @SDL3\/SDL_gpu.h 1249:5@
 pattern SDL_GPU_BLENDFACTOR_CONSTANT_COLOR :: SDL_GPUBlendFactor
 pattern SDL_GPU_BLENDFACTOR_CONSTANT_COLOR = SDL_GPUBlendFactor 11
 
 -- | 1 - blend constant
 --
---     [C declaration]: @SDL_GPU_BLENDFACTOR_ONE_MINUS_CONSTANT_COLOR@, defined at @SDL3\/SDL_gpu.h 1248:5@
+--     [C declaration]: @SDL_GPU_BLENDFACTOR_ONE_MINUS_CONSTANT_COLOR@, defined at @SDL3\/SDL_gpu.h 1250:5@
 pattern SDL_GPU_BLENDFACTOR_ONE_MINUS_CONSTANT_COLOR :: SDL_GPUBlendFactor
 pattern SDL_GPU_BLENDFACTOR_ONE_MINUS_CONSTANT_COLOR = SDL_GPUBlendFactor 12
 
 -- | min(source alpha, 1 - destination alpha)
 --
---     [C declaration]: @SDL_GPU_BLENDFACTOR_SRC_ALPHA_SATURATE@, defined at @SDL3\/SDL_gpu.h 1249:5@
+--     [C declaration]: @SDL_GPU_BLENDFACTOR_SRC_ALPHA_SATURATE@, defined at @SDL3\/SDL_gpu.h 1251:5@
 pattern SDL_GPU_BLENDFACTOR_SRC_ALPHA_SATURATE :: SDL_GPUBlendFactor
 pattern SDL_GPU_BLENDFACTOR_SRC_ALPHA_SATURATE = SDL_GPUBlendFactor 13
 
@@ -4282,7 +4284,7 @@ pattern SDL_GPU_BLENDFACTOR_SRC_ALPHA_SATURATE = SDL_GPUBlendFactor 13
 --
 --     [See also]: 'sDL_CreateGPUGraphicsPipeline'
 --
---     [C declaration]: @SDL_GPUColorComponentFlags@, defined at @SDL3\/SDL_gpu.h 1259:15@
+--     [C declaration]: @SDL_GPUColorComponentFlags@, defined at @SDL3\/SDL_gpu.h 1261:15@
 newtype SDL_GPUColorComponentFlags = SDL_GPUColorComponentFlags
   { unwrap :: SDL3.Sys.Bindgen.Stdinc.Uint8
   }
@@ -4331,28 +4333,28 @@ instance HasCField.HasCField SDL_GPUColorComponentFlags "unwrap" where
 
 -- | the red component
 --
---     [C declaration]: @macro SDL_GPU_COLORCOMPONENT_R@, defined at @SDL3\/SDL_gpu.h 1261:9@
+--     [C declaration]: @macro SDL_GPU_COLORCOMPONENT_R@, defined at @SDL3\/SDL_gpu.h 1263:9@
 sDL_GPU_COLORCOMPONENT_R :: BG.CUInt
 sDL_GPU_COLORCOMPONENT_R =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (0 :: BG.CInt)
 
 -- | the green component
 --
---     [C declaration]: @macro SDL_GPU_COLORCOMPONENT_G@, defined at @SDL3\/SDL_gpu.h 1262:9@
+--     [C declaration]: @macro SDL_GPU_COLORCOMPONENT_G@, defined at @SDL3\/SDL_gpu.h 1264:9@
 sDL_GPU_COLORCOMPONENT_G :: BG.CUInt
 sDL_GPU_COLORCOMPONENT_G =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (1 :: BG.CInt)
 
 -- | the blue component
 --
---     [C declaration]: @macro SDL_GPU_COLORCOMPONENT_B@, defined at @SDL3\/SDL_gpu.h 1263:9@
+--     [C declaration]: @macro SDL_GPU_COLORCOMPONENT_B@, defined at @SDL3\/SDL_gpu.h 1265:9@
 sDL_GPU_COLORCOMPONENT_B :: BG.CUInt
 sDL_GPU_COLORCOMPONENT_B =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (2 :: BG.CInt)
 
 -- | the alpha component
 --
---     [C declaration]: @macro SDL_GPU_COLORCOMPONENT_A@, defined at @SDL3\/SDL_gpu.h 1264:9@
+--     [C declaration]: @macro SDL_GPU_COLORCOMPONENT_A@, defined at @SDL3\/SDL_gpu.h 1266:9@
 sDL_GPU_COLORCOMPONENT_A :: BG.CUInt
 sDL_GPU_COLORCOMPONENT_A =
   (C.Expr.HostPlatform.<<) (1 :: BG.CUInt) (3 :: BG.CInt)
@@ -4363,7 +4365,7 @@ sDL_GPU_COLORCOMPONENT_A =
 --
 --     [See also]: 'sDL_CreateGPUSampler'
 --
---     [C declaration]: @enum SDL_GPUFilter@, defined at @SDL3\/SDL_gpu.h 1273:14@
+--     [C declaration]: @enum SDL_GPUFilter@, defined at @SDL3\/SDL_gpu.h 1275:14@
 newtype SDL_GPUFilter = SDL_GPUFilter
   { unwrap :: BG.CUInt
   }
@@ -4456,13 +4458,13 @@ instance HasCField.HasCField SDL_GPUFilter "unwrap" where
 
 -- | Point filtering.
 --
---     [C declaration]: @SDL_GPU_FILTER_NEAREST@, defined at @SDL3\/SDL_gpu.h 1275:5@
+--     [C declaration]: @SDL_GPU_FILTER_NEAREST@, defined at @SDL3\/SDL_gpu.h 1277:5@
 pattern SDL_GPU_FILTER_NEAREST :: SDL_GPUFilter
 pattern SDL_GPU_FILTER_NEAREST = SDL_GPUFilter 0
 
 -- | Linear filtering.
 --
---     [C declaration]: @SDL_GPU_FILTER_LINEAR@, defined at @SDL3\/SDL_gpu.h 1276:5@
+--     [C declaration]: @SDL_GPU_FILTER_LINEAR@, defined at @SDL3\/SDL_gpu.h 1278:5@
 pattern SDL_GPU_FILTER_LINEAR :: SDL_GPUFilter
 pattern SDL_GPU_FILTER_LINEAR = SDL_GPUFilter 1
 
@@ -4472,7 +4474,7 @@ pattern SDL_GPU_FILTER_LINEAR = SDL_GPUFilter 1
 --
 --     [See also]: 'sDL_CreateGPUSampler'
 --
---     [C declaration]: @enum SDL_GPUSamplerMipmapMode@, defined at @SDL3\/SDL_gpu.h 1286:14@
+--     [C declaration]: @enum SDL_GPUSamplerMipmapMode@, defined at @SDL3\/SDL_gpu.h 1288:14@
 newtype SDL_GPUSamplerMipmapMode = SDL_GPUSamplerMipmapMode
   { unwrap :: BG.CUInt
   }
@@ -4570,13 +4572,13 @@ instance HasCField.HasCField SDL_GPUSamplerMipmapMode "unwrap" where
 
 -- | Point filtering.
 --
---     [C declaration]: @SDL_GPU_SAMPLERMIPMAPMODE_NEAREST@, defined at @SDL3\/SDL_gpu.h 1288:5@
+--     [C declaration]: @SDL_GPU_SAMPLERMIPMAPMODE_NEAREST@, defined at @SDL3\/SDL_gpu.h 1290:5@
 pattern SDL_GPU_SAMPLERMIPMAPMODE_NEAREST :: SDL_GPUSamplerMipmapMode
 pattern SDL_GPU_SAMPLERMIPMAPMODE_NEAREST = SDL_GPUSamplerMipmapMode 0
 
 -- | Linear filtering.
 --
---     [C declaration]: @SDL_GPU_SAMPLERMIPMAPMODE_LINEAR@, defined at @SDL3\/SDL_gpu.h 1289:5@
+--     [C declaration]: @SDL_GPU_SAMPLERMIPMAPMODE_LINEAR@, defined at @SDL3\/SDL_gpu.h 1291:5@
 pattern SDL_GPU_SAMPLERMIPMAPMODE_LINEAR :: SDL_GPUSamplerMipmapMode
 pattern SDL_GPU_SAMPLERMIPMAPMODE_LINEAR = SDL_GPUSamplerMipmapMode 1
 
@@ -4586,7 +4588,7 @@ pattern SDL_GPU_SAMPLERMIPMAPMODE_LINEAR = SDL_GPUSamplerMipmapMode 1
 --
 --     [See also]: 'sDL_CreateGPUSampler'
 --
---     [C declaration]: @enum SDL_GPUSamplerAddressMode@, defined at @SDL3\/SDL_gpu.h 1300:14@
+--     [C declaration]: @enum SDL_GPUSamplerAddressMode@, defined at @SDL3\/SDL_gpu.h 1302:14@
 newtype SDL_GPUSamplerAddressMode = SDL_GPUSamplerAddressMode
   { unwrap :: BG.CUInt
   }
@@ -4686,19 +4688,19 @@ instance HasCField.HasCField SDL_GPUSamplerAddressMode "unwrap" where
 
 -- | Specifies that the coordinates will wrap around.
 --
---     [C declaration]: @SDL_GPU_SAMPLERADDRESSMODE_REPEAT@, defined at @SDL3\/SDL_gpu.h 1302:5@
+--     [C declaration]: @SDL_GPU_SAMPLERADDRESSMODE_REPEAT@, defined at @SDL3\/SDL_gpu.h 1304:5@
 pattern SDL_GPU_SAMPLERADDRESSMODE_REPEAT :: SDL_GPUSamplerAddressMode
 pattern SDL_GPU_SAMPLERADDRESSMODE_REPEAT = SDL_GPUSamplerAddressMode 0
 
 -- | Specifies that the coordinates will wrap around mirrored.
 --
---     [C declaration]: @SDL_GPU_SAMPLERADDRESSMODE_MIRRORED_REPEAT@, defined at @SDL3\/SDL_gpu.h 1303:5@
+--     [C declaration]: @SDL_GPU_SAMPLERADDRESSMODE_MIRRORED_REPEAT@, defined at @SDL3\/SDL_gpu.h 1305:5@
 pattern SDL_GPU_SAMPLERADDRESSMODE_MIRRORED_REPEAT :: SDL_GPUSamplerAddressMode
 pattern SDL_GPU_SAMPLERADDRESSMODE_MIRRORED_REPEAT = SDL_GPUSamplerAddressMode 1
 
 -- | Specifies that the coordinates will clamp to the 0-1 range.
 --
---     [C declaration]: @SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE@, defined at @SDL3\/SDL_gpu.h 1304:5@
+--     [C declaration]: @SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE@, defined at @SDL3\/SDL_gpu.h 1306:5@
 pattern SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE :: SDL_GPUSamplerAddressMode
 pattern SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE = SDL_GPUSamplerAddressMode 2
 
@@ -4718,7 +4720,7 @@ pattern SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE = SDL_GPUSamplerAddressMode 2
 --
 --     [See also]: 'sDL_SetGPUSwapchainParameters', 'sDL_WindowSupportsGPUPresentMode', 'sDL_WaitAndAcquireGPUSwapchainTexture'
 --
---     [C declaration]: @enum SDL_GPUPresentMode@, defined at @SDL3\/SDL_gpu.h 1332:14@
+--     [C declaration]: @enum SDL_GPUPresentMode@, defined at @SDL3\/SDL_gpu.h 1334:14@
 newtype SDL_GPUPresentMode = SDL_GPUPresentMode
   { unwrap :: BG.CUInt
   }
@@ -4812,15 +4814,15 @@ instance HasCField.HasCField SDL_GPUPresentMode "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_GPU_PRESENTMODE_VSYNC@, defined at @SDL3\/SDL_gpu.h 1334:5@
+-- | [C declaration]: @SDL_GPU_PRESENTMODE_VSYNC@, defined at @SDL3\/SDL_gpu.h 1336:5@
 pattern SDL_GPU_PRESENTMODE_VSYNC :: SDL_GPUPresentMode
 pattern SDL_GPU_PRESENTMODE_VSYNC = SDL_GPUPresentMode 0
 
--- | [C declaration]: @SDL_GPU_PRESENTMODE_IMMEDIATE@, defined at @SDL3\/SDL_gpu.h 1335:5@
+-- | [C declaration]: @SDL_GPU_PRESENTMODE_IMMEDIATE@, defined at @SDL3\/SDL_gpu.h 1337:5@
 pattern SDL_GPU_PRESENTMODE_IMMEDIATE :: SDL_GPUPresentMode
 pattern SDL_GPU_PRESENTMODE_IMMEDIATE = SDL_GPUPresentMode 1
 
--- | [C declaration]: @SDL_GPU_PRESENTMODE_MAILBOX@, defined at @SDL3\/SDL_gpu.h 1336:5@
+-- | [C declaration]: @SDL_GPU_PRESENTMODE_MAILBOX@, defined at @SDL3\/SDL_gpu.h 1338:5@
 pattern SDL_GPU_PRESENTMODE_MAILBOX :: SDL_GPUPresentMode
 pattern SDL_GPU_PRESENTMODE_MAILBOX = SDL_GPUPresentMode 2
 
@@ -4842,7 +4844,7 @@ pattern SDL_GPU_PRESENTMODE_MAILBOX = SDL_GPUPresentMode 2
 --
 --     [See also]: 'sDL_SetGPUSwapchainParameters', 'sDL_WindowSupportsGPUSwapchainComposition', 'sDL_WaitAndAcquireGPUSwapchainTexture'
 --
---     [C declaration]: @enum SDL_GPUSwapchainComposition@, defined at @SDL3\/SDL_gpu.h 1365:14@
+--     [C declaration]: @enum SDL_GPUSwapchainComposition@, defined at @SDL3\/SDL_gpu.h 1367:14@
 newtype SDL_GPUSwapchainComposition = SDL_GPUSwapchainComposition
   { unwrap :: BG.CUInt
   }
@@ -4941,19 +4943,19 @@ instance HasCField.HasCField SDL_GPUSwapchainComposition "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_GPU_SWAPCHAINCOMPOSITION_SDR@, defined at @SDL3\/SDL_gpu.h 1367:5@
+-- | [C declaration]: @SDL_GPU_SWAPCHAINCOMPOSITION_SDR@, defined at @SDL3\/SDL_gpu.h 1369:5@
 pattern SDL_GPU_SWAPCHAINCOMPOSITION_SDR :: SDL_GPUSwapchainComposition
 pattern SDL_GPU_SWAPCHAINCOMPOSITION_SDR = SDL_GPUSwapchainComposition 0
 
--- | [C declaration]: @SDL_GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR@, defined at @SDL3\/SDL_gpu.h 1368:5@
+-- | [C declaration]: @SDL_GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR@, defined at @SDL3\/SDL_gpu.h 1370:5@
 pattern SDL_GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR :: SDL_GPUSwapchainComposition
 pattern SDL_GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR = SDL_GPUSwapchainComposition 1
 
--- | [C declaration]: @SDL_GPU_SWAPCHAINCOMPOSITION_HDR_EXTENDED_LINEAR@, defined at @SDL3\/SDL_gpu.h 1369:5@
+-- | [C declaration]: @SDL_GPU_SWAPCHAINCOMPOSITION_HDR_EXTENDED_LINEAR@, defined at @SDL3\/SDL_gpu.h 1371:5@
 pattern SDL_GPU_SWAPCHAINCOMPOSITION_HDR_EXTENDED_LINEAR :: SDL_GPUSwapchainComposition
 pattern SDL_GPU_SWAPCHAINCOMPOSITION_HDR_EXTENDED_LINEAR = SDL_GPUSwapchainComposition 2
 
--- | [C declaration]: @SDL_GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084@, defined at @SDL3\/SDL_gpu.h 1370:5@
+-- | [C declaration]: @SDL_GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084@, defined at @SDL3\/SDL_gpu.h 1372:5@
 pattern SDL_GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084 :: SDL_GPUSwapchainComposition
 pattern SDL_GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084 = SDL_GPUSwapchainComposition 3
 
@@ -4963,32 +4965,32 @@ pattern SDL_GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084 = SDL_GPUSwapchainComposition 
 --
 --     [See also]: 'sDL_SetGPUViewport'
 --
---     [C declaration]: @struct SDL_GPUViewport@, defined at @SDL3\/SDL_gpu.h 1382:16@
+--     [C declaration]: @struct SDL_GPUViewport@, defined at @SDL3\/SDL_gpu.h 1384:16@
 data SDL_GPUViewport = SDL_GPUViewport
   { x :: BG.CFloat
   -- ^ The left offset of the viewport.
   --
-  --          [C declaration]: @x@, defined at @SDL3\/SDL_gpu.h 1384:11@
+  --          [C declaration]: @x@, defined at @SDL3\/SDL_gpu.h 1386:11@
   , y :: BG.CFloat
   -- ^ The top offset of the viewport.
   --
-  --          [C declaration]: @y@, defined at @SDL3\/SDL_gpu.h 1385:11@
+  --          [C declaration]: @y@, defined at @SDL3\/SDL_gpu.h 1387:11@
   , w :: BG.CFloat
   -- ^ The width of the viewport.
   --
-  --          [C declaration]: @w@, defined at @SDL3\/SDL_gpu.h 1386:11@
+  --          [C declaration]: @w@, defined at @SDL3\/SDL_gpu.h 1388:11@
   , h :: BG.CFloat
   -- ^ The height of the viewport.
   --
-  --          [C declaration]: @h@, defined at @SDL3\/SDL_gpu.h 1387:11@
+  --          [C declaration]: @h@, defined at @SDL3\/SDL_gpu.h 1389:11@
   , min_depth :: BG.CFloat
   -- ^ The minimum depth of the viewport.
   --
-  --          [C declaration]: @min_depth@, defined at @SDL3\/SDL_gpu.h 1388:11@
+  --          [C declaration]: @min_depth@, defined at @SDL3\/SDL_gpu.h 1390:11@
   , max_depth :: BG.CFloat
   -- ^ The maximum depth of the viewport.
   --
-  --          [C declaration]: @max_depth@, defined at @SDL3\/SDL_gpu.h 1389:11@
+  --          [C declaration]: @max_depth@, defined at @SDL3\/SDL_gpu.h 1391:11@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -5209,26 +5211,26 @@ instance HasCField.HasCField SDL_GPUViewport "max_depth" where
 --
 --     @since 3.2.0
 --
---     [See also]: 'sDL_UploadToGPUTexture', 'sDL_DownloadFromGPUTexture'
+--     [See also]: 'sDL_UploadToGPUTexture', 'sDL_DownloadFromGPUTexture', 'SDL_GPUTransferBuffer'
 --
---     [C declaration]: @struct SDL_GPUTextureTransferInfo@, defined at @SDL3\/SDL_gpu.h 1413:16@
+--     [C declaration]: @struct SDL_GPUTextureTransferInfo@, defined at @SDL3\/SDL_gpu.h 1416:16@
 data SDL_GPUTextureTransferInfo = SDL_GPUTextureTransferInfo
   { transfer_buffer :: BG.Ptr SDL_GPUTransferBuffer
   -- ^ The transfer buffer used in the transfer operation.
   --
-  --          [C declaration]: @transfer_buffer@, defined at @SDL3\/SDL_gpu.h 1415:28@
+  --          [C declaration]: @transfer_buffer@, defined at @SDL3\/SDL_gpu.h 1418:28@
   , offset :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The starting byte of the image data in the transfer buffer.
   --
-  --          [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1416:12@
+  --          [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1419:12@
   , pixels_per_row :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of pixels from one row to the next.
   --
-  --          [C declaration]: @pixels_per_row@, defined at @SDL3\/SDL_gpu.h 1417:12@
+  --          [C declaration]: @pixels_per_row@, defined at @SDL3\/SDL_gpu.h 1420:12@
   , rows_per_layer :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of rows from one layer\/depth-slice to the next.
   --
-  --          [C declaration]: @rows_per_layer@, defined at @SDL3\/SDL_gpu.h 1418:12@
+  --          [C declaration]: @rows_per_layer@, defined at @SDL3\/SDL_gpu.h 1421:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -5391,18 +5393,18 @@ instance HasCField.HasCField SDL_GPUTextureTransferInfo "rows_per_layer" where
 --
 --     @since 3.2.0
 --
---     [See also]: 'sDL_UploadToGPUBuffer', 'sDL_DownloadFromGPUBuffer'
+--     [See also]: 'sDL_UploadToGPUBuffer', 'sDL_DownloadFromGPUBuffer', 'SDL_GPUTransferBuffer'
 --
---     [C declaration]: @struct SDL_GPUTransferBufferLocation@, defined at @SDL3\/SDL_gpu.h 1431:16@
+--     [C declaration]: @struct SDL_GPUTransferBufferLocation@, defined at @SDL3\/SDL_gpu.h 1435:16@
 data SDL_GPUTransferBufferLocation = SDL_GPUTransferBufferLocation
   { transfer_buffer :: BG.Ptr SDL_GPUTransferBuffer
   -- ^ The transfer buffer used in the transfer operation.
   --
-  --          [C declaration]: @transfer_buffer@, defined at @SDL3\/SDL_gpu.h 1433:28@
+  --          [C declaration]: @transfer_buffer@, defined at @SDL3\/SDL_gpu.h 1437:28@
   , offset :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The starting byte of the buffer data in the transfer buffer.
   --
-  --          [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1434:12@
+  --          [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1438:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -5487,34 +5489,34 @@ instance HasCField.HasCField SDL_GPUTransferBufferLocation "offset" where
 --
 --     @since 3.2.0
 --
---     [See also]: 'sDL_CopyGPUTextureToTexture'
+--     [See also]: 'sDL_CopyGPUTextureToTexture', 'SDL_GPUTexture'
 --
---     [C declaration]: @struct SDL_GPUTextureLocation@, defined at @SDL3\/SDL_gpu.h 1446:16@
+--     [C declaration]: @struct SDL_GPUTextureLocation@, defined at @SDL3\/SDL_gpu.h 1451:16@
 data SDL_GPUTextureLocation = SDL_GPUTextureLocation
   { texture :: BG.Ptr SDL_GPUTexture
   -- ^ The texture used in the copy operation.
   --
-  --          [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 1448:21@
+  --          [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 1453:21@
   , mip_level :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The mip level index of the location.
   --
-  --          [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 1449:12@
+  --          [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 1454:12@
   , layer :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The layer index of the location.
   --
-  --          [C declaration]: @layer@, defined at @SDL3\/SDL_gpu.h 1450:12@
+  --          [C declaration]: @layer@, defined at @SDL3\/SDL_gpu.h 1455:12@
   , x :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The left offset of the location.
   --
-  --          [C declaration]: @x@, defined at @SDL3\/SDL_gpu.h 1451:12@
+  --          [C declaration]: @x@, defined at @SDL3\/SDL_gpu.h 1456:12@
   , y :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The top offset of the location.
   --
-  --          [C declaration]: @y@, defined at @SDL3\/SDL_gpu.h 1452:12@
+  --          [C declaration]: @y@, defined at @SDL3\/SDL_gpu.h 1457:12@
   , z :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The front offset of the location.
   --
-  --          [C declaration]: @z@, defined at @SDL3\/SDL_gpu.h 1453:12@
+  --          [C declaration]: @z@, defined at @SDL3\/SDL_gpu.h 1458:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -5744,46 +5746,46 @@ instance HasCField.HasCField SDL_GPUTextureLocation "z" where
 --
 --     @since 3.2.0
 --
---     [See also]: 'sDL_UploadToGPUTexture', 'sDL_DownloadFromGPUTexture', 'sDL_CreateGPUTexture'
+--     [See also]: 'sDL_UploadToGPUTexture', 'sDL_DownloadFromGPUTexture', 'sDL_CreateGPUTexture', 'SDL_GPUTexture'
 --
---     [C declaration]: @struct SDL_GPUTextureRegion@, defined at @SDL3\/SDL_gpu.h 1467:16@
+--     [C declaration]: @struct SDL_GPUTextureRegion@, defined at @SDL3\/SDL_gpu.h 1473:16@
 data SDL_GPUTextureRegion = SDL_GPUTextureRegion
   { texture :: BG.Ptr SDL_GPUTexture
   -- ^ The texture used in the copy operation.
   --
-  --          [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 1469:21@
+  --          [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 1475:21@
   , mip_level :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The mip level index to transfer.
   --
-  --          [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 1470:12@
+  --          [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 1476:12@
   , layer :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The layer index to transfer.
   --
-  --          [C declaration]: @layer@, defined at @SDL3\/SDL_gpu.h 1471:12@
+  --          [C declaration]: @layer@, defined at @SDL3\/SDL_gpu.h 1477:12@
   , x :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The left offset of the region.
   --
-  --          [C declaration]: @x@, defined at @SDL3\/SDL_gpu.h 1472:12@
+  --          [C declaration]: @x@, defined at @SDL3\/SDL_gpu.h 1478:12@
   , y :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The top offset of the region.
   --
-  --          [C declaration]: @y@, defined at @SDL3\/SDL_gpu.h 1473:12@
+  --          [C declaration]: @y@, defined at @SDL3\/SDL_gpu.h 1479:12@
   , z :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The front offset of the region.
   --
-  --          [C declaration]: @z@, defined at @SDL3\/SDL_gpu.h 1474:12@
+  --          [C declaration]: @z@, defined at @SDL3\/SDL_gpu.h 1480:12@
   , w :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The width of the region.
   --
-  --          [C declaration]: @w@, defined at @SDL3\/SDL_gpu.h 1475:12@
+  --          [C declaration]: @w@, defined at @SDL3\/SDL_gpu.h 1481:12@
   , h :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The height of the region.
   --
-  --          [C declaration]: @h@, defined at @SDL3\/SDL_gpu.h 1476:12@
+  --          [C declaration]: @h@, defined at @SDL3\/SDL_gpu.h 1482:12@
   , d :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The depth of the region.
   --
-  --          [C declaration]: @d@, defined at @SDL3\/SDL_gpu.h 1477:12@
+  --          [C declaration]: @d@, defined at @SDL3\/SDL_gpu.h 1483:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -6134,38 +6136,38 @@ instance HasCField.HasCField SDL_GPUTextureRegion "d" where
 --
 --     @since 3.2.0
 --
---     [See also]: 'sDL_BlitGPUTexture'
+--     [See also]: 'sDL_BlitGPUTexture', 'SDL_GPUTexture'
 --
---     [C declaration]: @struct SDL_GPUBlitRegion@, defined at @SDL3\/SDL_gpu.h 1487:16@
+--     [C declaration]: @struct SDL_GPUBlitRegion@, defined at @SDL3\/SDL_gpu.h 1494:16@
 data SDL_GPUBlitRegion = SDL_GPUBlitRegion
   { texture :: BG.Ptr SDL_GPUTexture
   -- ^ The texture.
   --
-  --          [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 1489:21@
+  --          [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 1496:21@
   , mip_level :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The mip level index of the region.
   --
-  --          [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 1490:12@
+  --          [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 1497:12@
   , layer_or_depth_plane :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The layer index or depth plane of the region. This value is treated as a layer index on 2D array and cube textures, and as a depth plane on 3D textures.
   --
-  --          [C declaration]: @layer_or_depth_plane@, defined at @SDL3\/SDL_gpu.h 1491:12@
+  --          [C declaration]: @layer_or_depth_plane@, defined at @SDL3\/SDL_gpu.h 1498:12@
   , x :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The left offset of the region.
   --
-  --          [C declaration]: @x@, defined at @SDL3\/SDL_gpu.h 1492:12@
+  --          [C declaration]: @x@, defined at @SDL3\/SDL_gpu.h 1499:12@
   , y :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The top offset of the region.
   --
-  --          [C declaration]: @y@, defined at @SDL3\/SDL_gpu.h 1493:12@
+  --          [C declaration]: @y@, defined at @SDL3\/SDL_gpu.h 1500:12@
   , w :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The width of the region.
   --
-  --          [C declaration]: @w@, defined at @SDL3\/SDL_gpu.h 1494:12@
+  --          [C declaration]: @w@, defined at @SDL3\/SDL_gpu.h 1501:12@
   , h :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The height of the region.
   --
-  --          [C declaration]: @h@, defined at @SDL3\/SDL_gpu.h 1495:12@
+  --          [C declaration]: @h@, defined at @SDL3\/SDL_gpu.h 1502:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -6435,16 +6437,16 @@ instance HasCField.HasCField SDL_GPUBlitRegion "h" where
 --
 --     [See also]: 'sDL_CopyGPUBufferToBuffer'
 --
---     [C declaration]: @struct SDL_GPUBufferLocation@, defined at @SDL3\/SDL_gpu.h 1507:16@
+--     [C declaration]: @struct SDL_GPUBufferLocation@, defined at @SDL3\/SDL_gpu.h 1514:16@
 data SDL_GPUBufferLocation = SDL_GPUBufferLocation
   { buffer :: BG.Ptr SDL_GPUBuffer
   -- ^ The buffer.
   --
-  --          [C declaration]: @buffer@, defined at @SDL3\/SDL_gpu.h 1509:20@
+  --          [C declaration]: @buffer@, defined at @SDL3\/SDL_gpu.h 1516:20@
   , offset :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The starting byte within the buffer.
   --
-  --          [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1510:12@
+  --          [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1517:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -6527,20 +6529,20 @@ instance HasCField.HasCField SDL_GPUBufferLocation "offset" where
 --
 --     [See also]: 'sDL_UploadToGPUBuffer', 'sDL_DownloadFromGPUBuffer'
 --
---     [C declaration]: @struct SDL_GPUBufferRegion@, defined at @SDL3\/SDL_gpu.h 1523:16@
+--     [C declaration]: @struct SDL_GPUBufferRegion@, defined at @SDL3\/SDL_gpu.h 1530:16@
 data SDL_GPUBufferRegion = SDL_GPUBufferRegion
   { buffer :: BG.Ptr SDL_GPUBuffer
   -- ^ The buffer.
   --
-  --          [C declaration]: @buffer@, defined at @SDL3\/SDL_gpu.h 1525:20@
+  --          [C declaration]: @buffer@, defined at @SDL3\/SDL_gpu.h 1532:20@
   , offset :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The starting byte within the buffer.
   --
-  --          [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1526:12@
+  --          [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1533:12@
   , size :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The size in bytes of the region.
   --
-  --          [C declaration]: @size@, defined at @SDL3\/SDL_gpu.h 1527:12@
+  --          [C declaration]: @size@, defined at @SDL3\/SDL_gpu.h 1534:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -6653,24 +6655,24 @@ instance HasCField.HasCField SDL_GPUBufferRegion "size" where
 --
 --     [See also]: 'sDL_DrawGPUPrimitivesIndirect'
 --
---     [C declaration]: @struct SDL_GPUIndirectDrawCommand@, defined at @SDL3\/SDL_gpu.h 1544:16@
+--     [C declaration]: @struct SDL_GPUIndirectDrawCommand@, defined at @SDL3\/SDL_gpu.h 1551:16@
 data SDL_GPUIndirectDrawCommand = SDL_GPUIndirectDrawCommand
   { num_vertices :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of vertices to draw.
   --
-  --          [C declaration]: @num_vertices@, defined at @SDL3\/SDL_gpu.h 1546:12@
+  --          [C declaration]: @num_vertices@, defined at @SDL3\/SDL_gpu.h 1553:12@
   , num_instances :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of instances to draw.
   --
-  --          [C declaration]: @num_instances@, defined at @SDL3\/SDL_gpu.h 1547:12@
+  --          [C declaration]: @num_instances@, defined at @SDL3\/SDL_gpu.h 1554:12@
   , first_vertex :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The index of the first vertex to draw.
   --
-  --          [C declaration]: @first_vertex@, defined at @SDL3\/SDL_gpu.h 1548:12@
+  --          [C declaration]: @first_vertex@, defined at @SDL3\/SDL_gpu.h 1555:12@
   , first_instance :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The ID of the first instance to draw.
   --
-  --          [C declaration]: @first_instance@, defined at @SDL3\/SDL_gpu.h 1549:12@
+  --          [C declaration]: @first_instance@, defined at @SDL3\/SDL_gpu.h 1556:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -6836,28 +6838,28 @@ instance HasCField.HasCField SDL_GPUIndirectDrawCommand "first_instance" where
 --
 --     [See also]: 'sDL_DrawGPUIndexedPrimitivesIndirect'
 --
---     [C declaration]: @struct SDL_GPUIndexedIndirectDrawCommand@, defined at @SDL3\/SDL_gpu.h 1566:16@
+--     [C declaration]: @struct SDL_GPUIndexedIndirectDrawCommand@, defined at @SDL3\/SDL_gpu.h 1573:16@
 data SDL_GPUIndexedIndirectDrawCommand = SDL_GPUIndexedIndirectDrawCommand
   { num_indices :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of indices to draw per instance.
   --
-  --          [C declaration]: @num_indices@, defined at @SDL3\/SDL_gpu.h 1568:12@
+  --          [C declaration]: @num_indices@, defined at @SDL3\/SDL_gpu.h 1575:12@
   , num_instances :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of instances to draw.
   --
-  --          [C declaration]: @num_instances@, defined at @SDL3\/SDL_gpu.h 1569:12@
+  --          [C declaration]: @num_instances@, defined at @SDL3\/SDL_gpu.h 1576:12@
   , first_index :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The base index within the index buffer.
   --
-  --          [C declaration]: @first_index@, defined at @SDL3\/SDL_gpu.h 1570:12@
+  --          [C declaration]: @first_index@, defined at @SDL3\/SDL_gpu.h 1577:12@
   , vertex_offset :: SDL3.Sys.Bindgen.Stdinc.Sint32
   -- ^ The value added to the vertex index before indexing into the vertex buffer.
   --
-  --          [C declaration]: @vertex_offset@, defined at @SDL3\/SDL_gpu.h 1571:12@
+  --          [C declaration]: @vertex_offset@, defined at @SDL3\/SDL_gpu.h 1578:12@
   , first_instance :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The ID of the first instance to draw.
   --
-  --          [C declaration]: @first_instance@, defined at @SDL3\/SDL_gpu.h 1572:12@
+  --          [C declaration]: @first_instance@, defined at @SDL3\/SDL_gpu.h 1579:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -7059,20 +7061,20 @@ instance HasCField.HasCField SDL_GPUIndexedIndirectDrawCommand "first_instance" 
 --
 --     [See also]: 'sDL_DispatchGPUComputeIndirect'
 --
---     [C declaration]: @struct SDL_GPUIndirectDispatchCommand@, defined at @SDL3\/SDL_gpu.h 1582:16@
+--     [C declaration]: @struct SDL_GPUIndirectDispatchCommand@, defined at @SDL3\/SDL_gpu.h 1589:16@
 data SDL_GPUIndirectDispatchCommand = SDL_GPUIndirectDispatchCommand
   { groupcount_x :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of local workgroups to dispatch in the X dimension.
   --
-  --          [C declaration]: @groupcount_x@, defined at @SDL3\/SDL_gpu.h 1584:12@
+  --          [C declaration]: @groupcount_x@, defined at @SDL3\/SDL_gpu.h 1591:12@
   , groupcount_y :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of local workgroups to dispatch in the Y dimension.
   --
-  --          [C declaration]: @groupcount_y@, defined at @SDL3\/SDL_gpu.h 1585:12@
+  --          [C declaration]: @groupcount_y@, defined at @SDL3\/SDL_gpu.h 1592:12@
   , groupcount_z :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of local workgroups to dispatch in the Z dimension.
   --
-  --          [C declaration]: @groupcount_z@, defined at @SDL3\/SDL_gpu.h 1586:12@
+  --          [C declaration]: @groupcount_z@, defined at @SDL3\/SDL_gpu.h 1593:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -7199,68 +7201,68 @@ instance HasCField.HasCField SDL_GPUIndirectDispatchCommand "groupcount_z" where
 --
 --     [See also]: 'sDL_CreateGPUSampler', 'SDL_GPUFilter', 'SDL_GPUSamplerMipmapMode', 'SDL_GPUSamplerAddressMode', 'SDL_GPUCompareOp'
 --
---     [C declaration]: @struct SDL_GPUSamplerCreateInfo@, defined at @SDL3\/SDL_gpu.h 1605:16@
+--     [C declaration]: @struct SDL_GPUSamplerCreateInfo@, defined at @SDL3\/SDL_gpu.h 1612:16@
 data SDL_GPUSamplerCreateInfo = SDL_GPUSamplerCreateInfo
   { min_filter :: SDL_GPUFilter
   -- ^ The minification filter to apply to lookups.
   --
-  --          [C declaration]: @min_filter@, defined at @SDL3\/SDL_gpu.h 1607:19@
+  --          [C declaration]: @min_filter@, defined at @SDL3\/SDL_gpu.h 1614:19@
   , mag_filter :: SDL_GPUFilter
   -- ^ The magnification filter to apply to lookups.
   --
-  --          [C declaration]: @mag_filter@, defined at @SDL3\/SDL_gpu.h 1608:19@
+  --          [C declaration]: @mag_filter@, defined at @SDL3\/SDL_gpu.h 1615:19@
   , mipmap_mode :: SDL_GPUSamplerMipmapMode
   -- ^ The mipmap filter to apply to lookups.
   --
-  --          [C declaration]: @mipmap_mode@, defined at @SDL3\/SDL_gpu.h 1609:30@
+  --          [C declaration]: @mipmap_mode@, defined at @SDL3\/SDL_gpu.h 1616:30@
   , address_mode_u :: SDL_GPUSamplerAddressMode
   -- ^ The addressing mode for U coordinates outside [0, 1).
   --
-  --          [C declaration]: @address_mode_u@, defined at @SDL3\/SDL_gpu.h 1610:31@
+  --          [C declaration]: @address_mode_u@, defined at @SDL3\/SDL_gpu.h 1617:31@
   , address_mode_v :: SDL_GPUSamplerAddressMode
   -- ^ The addressing mode for V coordinates outside [0, 1).
   --
-  --          [C declaration]: @address_mode_v@, defined at @SDL3\/SDL_gpu.h 1611:31@
+  --          [C declaration]: @address_mode_v@, defined at @SDL3\/SDL_gpu.h 1618:31@
   , address_mode_w :: SDL_GPUSamplerAddressMode
   -- ^ The addressing mode for W coordinates outside [0, 1).
   --
-  --          [C declaration]: @address_mode_w@, defined at @SDL3\/SDL_gpu.h 1612:31@
+  --          [C declaration]: @address_mode_w@, defined at @SDL3\/SDL_gpu.h 1619:31@
   , mip_lod_bias :: BG.CFloat
   -- ^ The bias to be added to mipmap LOD calculation.
   --
-  --          [C declaration]: @mip_lod_bias@, defined at @SDL3\/SDL_gpu.h 1613:11@
+  --          [C declaration]: @mip_lod_bias@, defined at @SDL3\/SDL_gpu.h 1620:11@
   , max_anisotropy :: BG.CFloat
   -- ^ The anisotropy value clamp used by the sampler. If enable_anisotropy is false, this is ignored.
   --
-  --          [C declaration]: @max_anisotropy@, defined at @SDL3\/SDL_gpu.h 1614:11@
+  --          [C declaration]: @max_anisotropy@, defined at @SDL3\/SDL_gpu.h 1621:11@
   , compare_op :: SDL_GPUCompareOp
   -- ^ The comparison operator to apply to fetched data before filtering.
   --
-  --          [C declaration]: @compare_op@, defined at @SDL3\/SDL_gpu.h 1615:22@
+  --          [C declaration]: @compare_op@, defined at @SDL3\/SDL_gpu.h 1622:22@
   , min_lod :: BG.CFloat
   -- ^ Clamps the minimum of the computed LOD value.
   --
-  --          [C declaration]: @min_lod@, defined at @SDL3\/SDL_gpu.h 1616:11@
+  --          [C declaration]: @min_lod@, defined at @SDL3\/SDL_gpu.h 1623:11@
   , max_lod :: BG.CFloat
   -- ^ Clamps the maximum of the computed LOD value.
   --
-  --          [C declaration]: @max_lod@, defined at @SDL3\/SDL_gpu.h 1617:11@
+  --          [C declaration]: @max_lod@, defined at @SDL3\/SDL_gpu.h 1624:11@
   , enable_anisotropy :: BG.CBool
   -- ^ true to enable anisotropic filtering.
   --
-  --          [C declaration]: @enable_anisotropy@, defined at @SDL3\/SDL_gpu.h 1618:10@
+  --          [C declaration]: @enable_anisotropy@, defined at @SDL3\/SDL_gpu.h 1625:10@
   , enable_compare :: BG.CBool
   -- ^ true to enable comparison against a reference value during lookups.
   --
-  --          [C declaration]: @enable_compare@, defined at @SDL3\/SDL_gpu.h 1619:10@
+  --          [C declaration]: @enable_compare@, defined at @SDL3\/SDL_gpu.h 1626:10@
   , padding1 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1620:11@
+  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1627:11@
   , padding2 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1621:11@
+  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1628:11@
   , props :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -- ^ A properties ID for extensions. Should be 0 if no extensions are needed.
   --
-  --          [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1623:22@
+  --          [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1630:22@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -8008,24 +8010,24 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "props" where
 --
 --     [See also]: 'SDL_GPUVertexAttribute', 'SDL_GPUVertexInputRate'
 --
---     [C declaration]: @struct SDL_GPUVertexBufferDescription@, defined at @SDL3\/SDL_gpu.h 1644:16@
+--     [C declaration]: @struct SDL_GPUVertexBufferDescription@, defined at @SDL3\/SDL_gpu.h 1651:16@
 data SDL_GPUVertexBufferDescription = SDL_GPUVertexBufferDescription
   { slot :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The binding slot of the vertex buffer.
   --
-  --          [C declaration]: @slot@, defined at @SDL3\/SDL_gpu.h 1646:12@
+  --          [C declaration]: @slot@, defined at @SDL3\/SDL_gpu.h 1653:12@
   , pitch :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The size of a single element + the offset between elements.
   --
-  --          [C declaration]: @pitch@, defined at @SDL3\/SDL_gpu.h 1647:12@
+  --          [C declaration]: @pitch@, defined at @SDL3\/SDL_gpu.h 1654:12@
   , input_rate :: SDL_GPUVertexInputRate
   -- ^ Whether attribute addressing is a function of the vertex index or instance index.
   --
-  --          [C declaration]: @input_rate@, defined at @SDL3\/SDL_gpu.h 1648:28@
+  --          [C declaration]: @input_rate@, defined at @SDL3\/SDL_gpu.h 1655:28@
   , instance_step_rate :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ Reserved for future use. Must be set to 0.
   --
-  --          [C declaration]: @instance_step_rate@, defined at @SDL3\/SDL_gpu.h 1649:12@
+  --          [C declaration]: @instance_step_rate@, defined at @SDL3\/SDL_gpu.h 1656:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -8184,24 +8186,24 @@ instance HasCField.HasCField SDL_GPUVertexBufferDescription "instance_step_rate"
 --
 --     [See also]: 'SDL_GPUVertexBufferDescription', 'SDL_GPUVertexInputState', 'SDL_GPUVertexElementFormat'
 --
---     [C declaration]: @struct SDL_GPUVertexAttribute@, defined at @SDL3\/SDL_gpu.h 1664:16@
+--     [C declaration]: @struct SDL_GPUVertexAttribute@, defined at @SDL3\/SDL_gpu.h 1671:16@
 data SDL_GPUVertexAttribute = SDL_GPUVertexAttribute
   { location :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The shader input location index.
   --
-  --          [C declaration]: @location@, defined at @SDL3\/SDL_gpu.h 1666:12@
+  --          [C declaration]: @location@, defined at @SDL3\/SDL_gpu.h 1673:12@
   , buffer_slot :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The binding slot of the associated vertex buffer.
   --
-  --          [C declaration]: @buffer_slot@, defined at @SDL3\/SDL_gpu.h 1667:12@
+  --          [C declaration]: @buffer_slot@, defined at @SDL3\/SDL_gpu.h 1674:12@
   , format :: SDL_GPUVertexElementFormat
   -- ^ The size and type of the attribute data.
   --
-  --          [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1668:32@
+  --          [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1675:32@
   , offset :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The byte offset of this attribute relative to the start of the vertex element.
   --
-  --          [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1669:12@
+  --          [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1676:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -8358,24 +8360,24 @@ instance HasCField.HasCField SDL_GPUVertexAttribute "offset" where
 --
 --     [See also]: 'SDL_GPUGraphicsPipelineCreateInfo', 'SDL_GPUVertexBufferDescription', 'SDL_GPUVertexAttribute'
 --
---     [C declaration]: @struct SDL_GPUVertexInputState@, defined at @SDL3\/SDL_gpu.h 1682:16@
+--     [C declaration]: @struct SDL_GPUVertexInputState@, defined at @SDL3\/SDL_gpu.h 1689:16@
 data SDL_GPUVertexInputState = SDL_GPUVertexInputState
   { vertex_buffer_descriptions :: PtrConst.PtrConst SDL_GPUVertexBufferDescription
   -- ^ A pointer to an array of vertex buffer descriptions.
   --
-  --          [C declaration]: @vertex_buffer_descriptions@, defined at @SDL3\/SDL_gpu.h 1684:43@
+  --          [C declaration]: @vertex_buffer_descriptions@, defined at @SDL3\/SDL_gpu.h 1691:43@
   , num_vertex_buffers :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of vertex buffer descriptions in the above array.
   --
-  --          [C declaration]: @num_vertex_buffers@, defined at @SDL3\/SDL_gpu.h 1685:12@
+  --          [C declaration]: @num_vertex_buffers@, defined at @SDL3\/SDL_gpu.h 1692:12@
   , vertex_attributes :: PtrConst.PtrConst SDL_GPUVertexAttribute
   -- ^ A pointer to an array of vertex attribute descriptions.
   --
-  --          [C declaration]: @vertex_attributes@, defined at @SDL3\/SDL_gpu.h 1686:35@
+  --          [C declaration]: @vertex_attributes@, defined at @SDL3\/SDL_gpu.h 1693:35@
   , num_vertex_attributes :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of vertex attribute descriptions in the above array.
   --
-  --          [C declaration]: @num_vertex_attributes@, defined at @SDL3\/SDL_gpu.h 1687:12@
+  --          [C declaration]: @num_vertex_attributes@, defined at @SDL3\/SDL_gpu.h 1694:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -8539,24 +8541,24 @@ instance HasCField.HasCField SDL_GPUVertexInputState "num_vertex_attributes" whe
 --
 --     [See also]: 'SDL_GPUDepthStencilState'
 --
---     [C declaration]: @struct SDL_GPUStencilOpState@, defined at @SDL3\/SDL_gpu.h 1697:16@
+--     [C declaration]: @struct SDL_GPUStencilOpState@, defined at @SDL3\/SDL_gpu.h 1704:16@
 data SDL_GPUStencilOpState = SDL_GPUStencilOpState
   { fail_op :: SDL_GPUStencilOp
   -- ^ The action performed on samples that fail the stencil test.
   --
-  --          [C declaration]: @fail_op@, defined at @SDL3\/SDL_gpu.h 1699:22@
+  --          [C declaration]: @fail_op@, defined at @SDL3\/SDL_gpu.h 1706:22@
   , pass_op :: SDL_GPUStencilOp
   -- ^ The action performed on samples that pass the depth and stencil tests.
   --
-  --          [C declaration]: @pass_op@, defined at @SDL3\/SDL_gpu.h 1700:22@
+  --          [C declaration]: @pass_op@, defined at @SDL3\/SDL_gpu.h 1707:22@
   , depth_fail_op :: SDL_GPUStencilOp
   -- ^ The action performed on samples that pass the stencil test and fail the depth test.
   --
-  --          [C declaration]: @depth_fail_op@, defined at @SDL3\/SDL_gpu.h 1701:22@
+  --          [C declaration]: @depth_fail_op@, defined at @SDL3\/SDL_gpu.h 1708:22@
   , compare_op :: SDL_GPUCompareOp
   -- ^ The comparison operator used in the stencil test.
   --
-  --          [C declaration]: @compare_op@, defined at @SDL3\/SDL_gpu.h 1702:22@
+  --          [C declaration]: @compare_op@, defined at @SDL3\/SDL_gpu.h 1709:22@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -8708,50 +8710,50 @@ instance HasCField.HasCField SDL_GPUStencilOpState "compare_op" where
 --
 --     @since 3.2.0
 --
---     [See also]: 'SDL_GPUColorTargetDescription', 'SDL_GPUBlendFactor', 'SDL_GPUBlendOp', 'SDL_GPUColorComponentFlags'
+--     [See also]: 'sDL_SetGPUBlendConstants', 'SDL_GPUColorTargetDescription', 'SDL_GPUBlendFactor', 'SDL_GPUBlendOp', 'SDL_GPUColorComponentFlags'
 --
---     [C declaration]: @struct SDL_GPUColorTargetBlendState@, defined at @SDL3\/SDL_gpu.h 1715:16@
+--     [C declaration]: @struct SDL_GPUColorTargetBlendState@, defined at @SDL3\/SDL_gpu.h 1723:16@
 data SDL_GPUColorTargetBlendState = SDL_GPUColorTargetBlendState
   { src_color_blendfactor :: SDL_GPUBlendFactor
   -- ^ The value to be multiplied by the source RGB value.
   --
-  --          [C declaration]: @src_color_blendfactor@, defined at @SDL3\/SDL_gpu.h 1717:24@
+  --          [C declaration]: @src_color_blendfactor@, defined at @SDL3\/SDL_gpu.h 1725:24@
   , dst_color_blendfactor :: SDL_GPUBlendFactor
   -- ^ The value to be multiplied by the destination RGB value.
   --
-  --          [C declaration]: @dst_color_blendfactor@, defined at @SDL3\/SDL_gpu.h 1718:24@
+  --          [C declaration]: @dst_color_blendfactor@, defined at @SDL3\/SDL_gpu.h 1726:24@
   , color_blend_op :: SDL_GPUBlendOp
   -- ^ The blend operation for the RGB components.
   --
-  --          [C declaration]: @color_blend_op@, defined at @SDL3\/SDL_gpu.h 1719:20@
+  --          [C declaration]: @color_blend_op@, defined at @SDL3\/SDL_gpu.h 1727:20@
   , src_alpha_blendfactor :: SDL_GPUBlendFactor
   -- ^ The value to be multiplied by the source alpha.
   --
-  --          [C declaration]: @src_alpha_blendfactor@, defined at @SDL3\/SDL_gpu.h 1720:24@
+  --          [C declaration]: @src_alpha_blendfactor@, defined at @SDL3\/SDL_gpu.h 1728:24@
   , dst_alpha_blendfactor :: SDL_GPUBlendFactor
   -- ^ The value to be multiplied by the destination alpha.
   --
-  --          [C declaration]: @dst_alpha_blendfactor@, defined at @SDL3\/SDL_gpu.h 1721:24@
+  --          [C declaration]: @dst_alpha_blendfactor@, defined at @SDL3\/SDL_gpu.h 1729:24@
   , alpha_blend_op :: SDL_GPUBlendOp
   -- ^ The blend operation for the alpha component.
   --
-  --          [C declaration]: @alpha_blend_op@, defined at @SDL3\/SDL_gpu.h 1722:20@
+  --          [C declaration]: @alpha_blend_op@, defined at @SDL3\/SDL_gpu.h 1730:20@
   , color_write_mask :: SDL_GPUColorComponentFlags
   -- ^ A bitmask specifying which of the RGBA components are enabled for writing. Writes to all channels if enable_color_write_mask is false.
   --
-  --          [C declaration]: @color_write_mask@, defined at @SDL3\/SDL_gpu.h 1723:32@
+  --          [C declaration]: @color_write_mask@, defined at @SDL3\/SDL_gpu.h 1731:32@
   , enable_blend :: BG.CBool
   -- ^ Whether blending is enabled for the color target.
   --
-  --          [C declaration]: @enable_blend@, defined at @SDL3\/SDL_gpu.h 1724:10@
+  --          [C declaration]: @enable_blend@, defined at @SDL3\/SDL_gpu.h 1732:10@
   , enable_color_write_mask :: BG.CBool
   -- ^ Whether the color write mask is enabled.
   --
-  --          [C declaration]: @enable_color_write_mask@, defined at @SDL3\/SDL_gpu.h 1725:10@
+  --          [C declaration]: @enable_color_write_mask@, defined at @SDL3\/SDL_gpu.h 1733:10@
   , padding1 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1726:11@
+  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1734:11@
   , padding2 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1727:11@
+  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1735:11@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -9221,48 +9223,48 @@ instance HasCField.HasCField SDL_GPUColorTargetBlendState "padding2" where
 --
 --     [See also]: 'sDL_CreateGPUShader', 'SDL_GPUShaderFormat', 'SDL_GPUShaderStage'
 --
---     [C declaration]: @struct SDL_GPUShaderCreateInfo@, defined at @SDL3\/SDL_gpu.h 1740:16@
+--     [C declaration]: @struct SDL_GPUShaderCreateInfo@, defined at @SDL3\/SDL_gpu.h 1748:16@
 data SDL_GPUShaderCreateInfo = SDL_GPUShaderCreateInfo
   { code_size :: HsBindgen.Runtime.LibC.CSize
   -- ^ The size in bytes of the code pointed to.
   --
-  --          [C declaration]: @code_size@, defined at @SDL3\/SDL_gpu.h 1742:12@
+  --          [C declaration]: @code_size@, defined at @SDL3\/SDL_gpu.h 1750:12@
   , code :: PtrConst.PtrConst SDL3.Sys.Bindgen.Stdinc.Uint8
   -- ^ A pointer to shader code.
   --
-  --          [C declaration]: @code@, defined at @SDL3\/SDL_gpu.h 1743:18@
+  --          [C declaration]: @code@, defined at @SDL3\/SDL_gpu.h 1751:18@
   , entrypoint :: PtrConst.PtrConst BG.CChar
   -- ^ A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader.
   --
-  --          [C declaration]: @entrypoint@, defined at @SDL3\/SDL_gpu.h 1744:17@
+  --          [C declaration]: @entrypoint@, defined at @SDL3\/SDL_gpu.h 1752:17@
   , format :: SDL_GPUShaderFormat
   -- ^ The format of the shader code.
   --
-  --          [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1745:25@
+  --          [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1753:25@
   , stage :: SDL_GPUShaderStage
   -- ^ The stage the shader program corresponds to.
   --
-  --          [C declaration]: @stage@, defined at @SDL3\/SDL_gpu.h 1746:24@
+  --          [C declaration]: @stage@, defined at @SDL3\/SDL_gpu.h 1754:24@
   , num_samplers :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of samplers defined in the shader.
   --
-  --          [C declaration]: @num_samplers@, defined at @SDL3\/SDL_gpu.h 1747:12@
+  --          [C declaration]: @num_samplers@, defined at @SDL3\/SDL_gpu.h 1755:12@
   , num_storage_textures :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of storage textures defined in the shader.
   --
-  --          [C declaration]: @num_storage_textures@, defined at @SDL3\/SDL_gpu.h 1748:12@
+  --          [C declaration]: @num_storage_textures@, defined at @SDL3\/SDL_gpu.h 1756:12@
   , num_storage_buffers :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of storage buffers defined in the shader.
   --
-  --          [C declaration]: @num_storage_buffers@, defined at @SDL3\/SDL_gpu.h 1749:12@
+  --          [C declaration]: @num_storage_buffers@, defined at @SDL3\/SDL_gpu.h 1757:12@
   , num_uniform_buffers :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of uniform buffers defined in the shader.
   --
-  --          [C declaration]: @num_uniform_buffers@, defined at @SDL3\/SDL_gpu.h 1750:12@
+  --          [C declaration]: @num_uniform_buffers@, defined at @SDL3\/SDL_gpu.h 1758:12@
   , props :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -- ^ A properties ID for extensions. Should be 0 if no extensions are needed.
   --
-  --          [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1752:22@
+  --          [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1760:22@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -9680,44 +9682,44 @@ instance HasCField.HasCField SDL_GPUShaderCreateInfo "props" where
 --
 --     [See also]: 'sDL_CreateGPUTexture', 'SDL_GPUTextureType', 'SDL_GPUTextureFormat', 'SDL_GPUTextureUsageFlags', 'SDL_GPUSampleCount'
 --
---     [C declaration]: @struct SDL_GPUTextureCreateInfo@, defined at @SDL3\/SDL_gpu.h 1770:16@
+--     [C declaration]: @struct SDL_GPUTextureCreateInfo@, defined at @SDL3\/SDL_gpu.h 1778:16@
 data SDL_GPUTextureCreateInfo = SDL_GPUTextureCreateInfo
   { type' :: SDL_GPUTextureType
   -- ^ The base dimensionality of the texture.
   --
-  --          [C declaration]: @type@, defined at @SDL3\/SDL_gpu.h 1772:24@
+  --          [C declaration]: @type@, defined at @SDL3\/SDL_gpu.h 1780:24@
   , format :: SDL_GPUTextureFormat
   -- ^ The pixel format of the texture.
   --
-  --          [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1773:26@
+  --          [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1781:26@
   , usage :: SDL_GPUTextureUsageFlags
   -- ^ How the texture is intended to be used by the client.
   --
-  --          [C declaration]: @usage@, defined at @SDL3\/SDL_gpu.h 1774:30@
+  --          [C declaration]: @usage@, defined at @SDL3\/SDL_gpu.h 1782:30@
   , width :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The width of the texture.
   --
-  --          [C declaration]: @width@, defined at @SDL3\/SDL_gpu.h 1775:12@
+  --          [C declaration]: @width@, defined at @SDL3\/SDL_gpu.h 1783:12@
   , height :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The height of the texture.
   --
-  --          [C declaration]: @height@, defined at @SDL3\/SDL_gpu.h 1776:12@
+  --          [C declaration]: @height@, defined at @SDL3\/SDL_gpu.h 1784:12@
   , layer_count_or_depth :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The layer count or depth of the texture. This value is treated as a layer count on 2D array textures, and as a depth value on 3D textures.
   --
-  --          [C declaration]: @layer_count_or_depth@, defined at @SDL3\/SDL_gpu.h 1777:12@
+  --          [C declaration]: @layer_count_or_depth@, defined at @SDL3\/SDL_gpu.h 1785:12@
   , num_levels :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of mip levels in the texture.
   --
-  --          [C declaration]: @num_levels@, defined at @SDL3\/SDL_gpu.h 1778:12@
+  --          [C declaration]: @num_levels@, defined at @SDL3\/SDL_gpu.h 1786:12@
   , sample_count :: SDL_GPUSampleCount
   -- ^ The number of samples per texel. Only applies if the texture is used as a render target.
   --
-  --          [C declaration]: @sample_count@, defined at @SDL3\/SDL_gpu.h 1779:24@
+  --          [C declaration]: @sample_count@, defined at @SDL3\/SDL_gpu.h 1787:24@
   , props :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -- ^ A properties ID for extensions. Should be 0 if no extensions are needed.
   --
-  --          [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1781:22@
+  --          [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1789:22@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -10086,20 +10088,20 @@ instance HasCField.HasCField SDL_GPUTextureCreateInfo "props" where
 --
 --     [See also]: 'sDL_CreateGPUBuffer', 'SDL_GPUBufferUsageFlags'
 --
---     [C declaration]: @struct SDL_GPUBufferCreateInfo@, defined at @SDL3\/SDL_gpu.h 1795:16@
+--     [C declaration]: @struct SDL_GPUBufferCreateInfo@, defined at @SDL3\/SDL_gpu.h 1803:16@
 data SDL_GPUBufferCreateInfo = SDL_GPUBufferCreateInfo
   { usage :: SDL_GPUBufferUsageFlags
   -- ^ How the buffer is intended to be used by the client.
   --
-  --          [C declaration]: @usage@, defined at @SDL3\/SDL_gpu.h 1797:29@
+  --          [C declaration]: @usage@, defined at @SDL3\/SDL_gpu.h 1805:29@
   , size :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The size in bytes of the buffer.
   --
-  --          [C declaration]: @size@, defined at @SDL3\/SDL_gpu.h 1798:12@
+  --          [C declaration]: @size@, defined at @SDL3\/SDL_gpu.h 1806:12@
   , props :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -- ^ A properties ID for extensions. Should be 0 if no extensions are needed.
   --
-  --          [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1800:22@
+  --          [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1808:22@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -10213,20 +10215,20 @@ instance HasCField.HasCField SDL_GPUBufferCreateInfo "props" where
 --
 --     [See also]: 'sDL_CreateGPUTransferBuffer'
 --
---     [C declaration]: @struct SDL_GPUTransferBufferCreateInfo@, defined at @SDL3\/SDL_gpu.h 1810:16@
+--     [C declaration]: @struct SDL_GPUTransferBufferCreateInfo@, defined at @SDL3\/SDL_gpu.h 1818:16@
 data SDL_GPUTransferBufferCreateInfo = SDL_GPUTransferBufferCreateInfo
   { usage :: SDL_GPUTransferBufferUsage
   -- ^ How the transfer buffer is intended to be used by the client.
   --
-  --          [C declaration]: @usage@, defined at @SDL3\/SDL_gpu.h 1812:32@
+  --          [C declaration]: @usage@, defined at @SDL3\/SDL_gpu.h 1820:32@
   , size :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The size in bytes of the transfer buffer.
   --
-  --          [C declaration]: @size@, defined at @SDL3\/SDL_gpu.h 1813:12@
+  --          [C declaration]: @size@, defined at @SDL3\/SDL_gpu.h 1821:12@
   , props :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -- ^ A properties ID for extensions. Should be 0 if no extensions are needed.
   --
-  --          [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1815:22@
+  --          [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1823:22@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -10352,44 +10354,44 @@ instance HasCField.HasCField SDL_GPUTransferBufferCreateInfo "props" where
 --
 --     [See also]: 'SDL_GPUGraphicsPipelineCreateInfo'
 --
---     [C declaration]: @struct SDL_GPURasterizerState@, defined at @SDL3\/SDL_gpu.h 1836:16@
+--     [C declaration]: @struct SDL_GPURasterizerState@, defined at @SDL3\/SDL_gpu.h 1844:16@
 data SDL_GPURasterizerState = SDL_GPURasterizerState
   { fill_mode :: SDL_GPUFillMode
   -- ^ Whether polygons will be filled in or drawn as lines.
   --
-  --          [C declaration]: @fill_mode@, defined at @SDL3\/SDL_gpu.h 1838:21@
+  --          [C declaration]: @fill_mode@, defined at @SDL3\/SDL_gpu.h 1846:21@
   , cull_mode :: SDL_GPUCullMode
   -- ^ The facing direction in which triangles will be culled.
   --
-  --          [C declaration]: @cull_mode@, defined at @SDL3\/SDL_gpu.h 1839:21@
+  --          [C declaration]: @cull_mode@, defined at @SDL3\/SDL_gpu.h 1847:21@
   , front_face :: SDL_GPUFrontFace
   -- ^ The vertex winding that will cause a triangle to be determined as front-facing.
   --
-  --          [C declaration]: @front_face@, defined at @SDL3\/SDL_gpu.h 1840:22@
+  --          [C declaration]: @front_face@, defined at @SDL3\/SDL_gpu.h 1848:22@
   , depth_bias_constant_factor :: BG.CFloat
   -- ^ A scalar factor controlling the depth value added to each fragment.
   --
-  --          [C declaration]: @depth_bias_constant_factor@, defined at @SDL3\/SDL_gpu.h 1841:11@
+  --          [C declaration]: @depth_bias_constant_factor@, defined at @SDL3\/SDL_gpu.h 1849:11@
   , depth_bias_clamp :: BG.CFloat
   -- ^ The maximum depth bias of a fragment.
   --
-  --          [C declaration]: @depth_bias_clamp@, defined at @SDL3\/SDL_gpu.h 1842:11@
+  --          [C declaration]: @depth_bias_clamp@, defined at @SDL3\/SDL_gpu.h 1850:11@
   , depth_bias_slope_factor :: BG.CFloat
   -- ^ A scalar factor applied to a fragment\'s slope in depth calculations.
   --
-  --          [C declaration]: @depth_bias_slope_factor@, defined at @SDL3\/SDL_gpu.h 1843:11@
+  --          [C declaration]: @depth_bias_slope_factor@, defined at @SDL3\/SDL_gpu.h 1851:11@
   , enable_depth_bias :: BG.CBool
   -- ^ true to bias fragment depth values.
   --
-  --          [C declaration]: @enable_depth_bias@, defined at @SDL3\/SDL_gpu.h 1844:10@
+  --          [C declaration]: @enable_depth_bias@, defined at @SDL3\/SDL_gpu.h 1852:10@
   , enable_depth_clip :: BG.CBool
   -- ^ true to enable depth clip, false to enable depth clamp.
   --
-  --          [C declaration]: @enable_depth_clip@, defined at @SDL3\/SDL_gpu.h 1845:10@
+  --          [C declaration]: @enable_depth_clip@, defined at @SDL3\/SDL_gpu.h 1853:10@
   , padding1 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1846:11@
+  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1854:11@
   , padding2 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1847:11@
+  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1855:11@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -10806,28 +10808,28 @@ instance HasCField.HasCField SDL_GPURasterizerState "padding2" where
 --
 --     [See also]: 'SDL_GPUGraphicsPipelineCreateInfo'
 --
---     [C declaration]: @struct SDL_GPUMultisampleState@, defined at @SDL3\/SDL_gpu.h 1858:16@
+--     [C declaration]: @struct SDL_GPUMultisampleState@, defined at @SDL3\/SDL_gpu.h 1866:16@
 data SDL_GPUMultisampleState = SDL_GPUMultisampleState
   { sample_count :: SDL_GPUSampleCount
   -- ^ The number of samples to be used in rasterization.
   --
-  --          [C declaration]: @sample_count@, defined at @SDL3\/SDL_gpu.h 1860:24@
+  --          [C declaration]: @sample_count@, defined at @SDL3\/SDL_gpu.h 1868:24@
   , sample_mask :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ Reserved for future use. Must be set to 0.
   --
-  --          [C declaration]: @sample_mask@, defined at @SDL3\/SDL_gpu.h 1861:12@
+  --          [C declaration]: @sample_mask@, defined at @SDL3\/SDL_gpu.h 1869:12@
   , enable_mask :: BG.CBool
   -- ^ Reserved for future use. Must be set to false.
   --
-  --          [C declaration]: @enable_mask@, defined at @SDL3\/SDL_gpu.h 1862:10@
+  --          [C declaration]: @enable_mask@, defined at @SDL3\/SDL_gpu.h 1870:10@
   , enable_alpha_to_coverage :: BG.CBool
   -- ^ true enables the alpha-to-coverage feature.
   --
-  --          [C declaration]: @enable_alpha_to_coverage@, defined at @SDL3\/SDL_gpu.h 1863:10@
+  --          [C declaration]: @enable_alpha_to_coverage@, defined at @SDL3\/SDL_gpu.h 1871:10@
   , padding2 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1864:11@
+  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1872:11@
   , padding3 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 1865:11@
+  -- ^ [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 1873:11@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -11067,46 +11069,46 @@ instance HasCField.HasCField SDL_GPUMultisampleState "padding3" where
 --
 --     [See also]: 'SDL_GPUGraphicsPipelineCreateInfo'
 --
---     [C declaration]: @struct SDL_GPUDepthStencilState@, defined at @SDL3\/SDL_gpu.h 1876:16@
+--     [C declaration]: @struct SDL_GPUDepthStencilState@, defined at @SDL3\/SDL_gpu.h 1884:16@
 data SDL_GPUDepthStencilState = SDL_GPUDepthStencilState
   { compare_op :: SDL_GPUCompareOp
   -- ^ The comparison operator used for depth testing.
   --
-  --          [C declaration]: @compare_op@, defined at @SDL3\/SDL_gpu.h 1878:22@
+  --          [C declaration]: @compare_op@, defined at @SDL3\/SDL_gpu.h 1886:22@
   , back_stencil_state :: SDL_GPUStencilOpState
   -- ^ The stencil op state for back-facing triangles.
   --
-  --          [C declaration]: @back_stencil_state@, defined at @SDL3\/SDL_gpu.h 1879:27@
+  --          [C declaration]: @back_stencil_state@, defined at @SDL3\/SDL_gpu.h 1887:27@
   , front_stencil_state :: SDL_GPUStencilOpState
   -- ^ The stencil op state for front-facing triangles.
   --
-  --          [C declaration]: @front_stencil_state@, defined at @SDL3\/SDL_gpu.h 1880:27@
+  --          [C declaration]: @front_stencil_state@, defined at @SDL3\/SDL_gpu.h 1888:27@
   , compare_mask :: SDL3.Sys.Bindgen.Stdinc.Uint8
   -- ^ Selects the bits of the stencil values participating in the stencil test.
   --
-  --          [C declaration]: @compare_mask@, defined at @SDL3\/SDL_gpu.h 1881:11@
+  --          [C declaration]: @compare_mask@, defined at @SDL3\/SDL_gpu.h 1889:11@
   , write_mask :: SDL3.Sys.Bindgen.Stdinc.Uint8
   -- ^ Selects the bits of the stencil values updated by the stencil test.
   --
-  --          [C declaration]: @write_mask@, defined at @SDL3\/SDL_gpu.h 1882:11@
+  --          [C declaration]: @write_mask@, defined at @SDL3\/SDL_gpu.h 1890:11@
   , enable_depth_test :: BG.CBool
   -- ^ true enables the depth test.
   --
-  --          [C declaration]: @enable_depth_test@, defined at @SDL3\/SDL_gpu.h 1883:10@
+  --          [C declaration]: @enable_depth_test@, defined at @SDL3\/SDL_gpu.h 1891:10@
   , enable_depth_write :: BG.CBool
   -- ^ true enables depth writes. Depth writes are always disabled when enable_depth_test is false.
   --
-  --          [C declaration]: @enable_depth_write@, defined at @SDL3\/SDL_gpu.h 1884:10@
+  --          [C declaration]: @enable_depth_write@, defined at @SDL3\/SDL_gpu.h 1892:10@
   , enable_stencil_test :: BG.CBool
   -- ^ true enables the stencil test.
   --
-  --          [C declaration]: @enable_stencil_test@, defined at @SDL3\/SDL_gpu.h 1885:10@
+  --          [C declaration]: @enable_stencil_test@, defined at @SDL3\/SDL_gpu.h 1893:10@
   , padding1 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1886:11@
+  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1894:11@
   , padding2 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1887:11@
+  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1895:11@
   , padding3 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 1888:11@
+  -- ^ [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 1896:11@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -11573,16 +11575,16 @@ instance HasCField.HasCField SDL_GPUDepthStencilState "padding3" where
 --
 --     [See also]: 'SDL_GPUGraphicsPipelineTargetInfo'
 --
---     [C declaration]: @struct SDL_GPUColorTargetDescription@, defined at @SDL3\/SDL_gpu.h 1899:16@
+--     [C declaration]: @struct SDL_GPUColorTargetDescription@, defined at @SDL3\/SDL_gpu.h 1907:16@
 data SDL_GPUColorTargetDescription = SDL_GPUColorTargetDescription
   { format :: SDL_GPUTextureFormat
   -- ^ The pixel format of the texture to be used as a color target.
   --
-  --          [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1901:26@
+  --          [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1909:26@
   , blend_state :: SDL_GPUColorTargetBlendState
   -- ^ The blend state to be used for the color target.
   --
-  --          [C declaration]: @blend_state@, defined at @SDL3\/SDL_gpu.h 1902:34@
+  --          [C declaration]: @blend_state@, defined at @SDL3\/SDL_gpu.h 1910:34@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -11667,30 +11669,30 @@ instance HasCField.HasCField SDL_GPUColorTargetDescription "blend_state" where
 --
 --     [See also]: 'SDL_GPUGraphicsPipelineCreateInfo', 'SDL_GPUColorTargetDescription', 'SDL_GPUTextureFormat'
 --
---     [C declaration]: @struct SDL_GPUGraphicsPipelineTargetInfo@, defined at @SDL3\/SDL_gpu.h 1915:16@
+--     [C declaration]: @struct SDL_GPUGraphicsPipelineTargetInfo@, defined at @SDL3\/SDL_gpu.h 1923:16@
 data SDL_GPUGraphicsPipelineTargetInfo = SDL_GPUGraphicsPipelineTargetInfo
   { color_target_descriptions :: PtrConst.PtrConst SDL_GPUColorTargetDescription
   -- ^ A pointer to an array of color target descriptions.
   --
-  --          [C declaration]: @color_target_descriptions@, defined at @SDL3\/SDL_gpu.h 1917:42@
+  --          [C declaration]: @color_target_descriptions@, defined at @SDL3\/SDL_gpu.h 1925:42@
   , num_color_targets :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of color target descriptions in the above array.
   --
-  --          [C declaration]: @num_color_targets@, defined at @SDL3\/SDL_gpu.h 1918:12@
+  --          [C declaration]: @num_color_targets@, defined at @SDL3\/SDL_gpu.h 1926:12@
   , depth_stencil_format :: SDL_GPUTextureFormat
   -- ^ The pixel format of the depth-stencil target. Ignored if has_depth_stencil_target is false.
   --
-  --          [C declaration]: @depth_stencil_format@, defined at @SDL3\/SDL_gpu.h 1919:26@
+  --          [C declaration]: @depth_stencil_format@, defined at @SDL3\/SDL_gpu.h 1927:26@
   , has_depth_stencil_target :: BG.CBool
   -- ^ true specifies that the pipeline uses a depth-stencil target.
   --
-  --          [C declaration]: @has_depth_stencil_target@, defined at @SDL3\/SDL_gpu.h 1920:10@
+  --          [C declaration]: @has_depth_stencil_target@, defined at @SDL3\/SDL_gpu.h 1928:10@
   , padding1 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1921:11@
+  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1929:11@
   , padding2 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1922:11@
+  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1930:11@
   , padding3 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 1923:11@
+  -- ^ [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 1931:11@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -11971,44 +11973,44 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineTargetInfo "padding3" where
 --
 --     [See also]: 'sDL_CreateGPUGraphicsPipeline', 'SDL_GPUShader', 'SDL_GPUVertexInputState', 'SDL_GPUPrimitiveType', 'SDL_GPURasterizerState', 'SDL_GPUMultisampleState', 'SDL_GPUDepthStencilState', 'SDL_GPUGraphicsPipelineTargetInfo'
 --
---     [C declaration]: @struct SDL_GPUGraphicsPipelineCreateInfo@, defined at @SDL3\/SDL_gpu.h 1940:16@
+--     [C declaration]: @struct SDL_GPUGraphicsPipelineCreateInfo@, defined at @SDL3\/SDL_gpu.h 1948:16@
 data SDL_GPUGraphicsPipelineCreateInfo = SDL_GPUGraphicsPipelineCreateInfo
   { vertex_shader :: BG.Ptr SDL_GPUShader
   -- ^ The vertex shader used by the graphics pipeline.
   --
-  --          [C declaration]: @vertex_shader@, defined at @SDL3\/SDL_gpu.h 1942:20@
+  --          [C declaration]: @vertex_shader@, defined at @SDL3\/SDL_gpu.h 1950:20@
   , fragment_shader :: BG.Ptr SDL_GPUShader
   -- ^ The fragment shader used by the graphics pipeline.
   --
-  --          [C declaration]: @fragment_shader@, defined at @SDL3\/SDL_gpu.h 1943:20@
+  --          [C declaration]: @fragment_shader@, defined at @SDL3\/SDL_gpu.h 1951:20@
   , vertex_input_state :: SDL_GPUVertexInputState
   -- ^ The vertex layout of the graphics pipeline.
   --
-  --          [C declaration]: @vertex_input_state@, defined at @SDL3\/SDL_gpu.h 1944:29@
+  --          [C declaration]: @vertex_input_state@, defined at @SDL3\/SDL_gpu.h 1952:29@
   , primitive_type :: SDL_GPUPrimitiveType
   -- ^ The primitive topology of the graphics pipeline.
   --
-  --          [C declaration]: @primitive_type@, defined at @SDL3\/SDL_gpu.h 1945:26@
+  --          [C declaration]: @primitive_type@, defined at @SDL3\/SDL_gpu.h 1953:26@
   , rasterizer_state :: SDL_GPURasterizerState
   -- ^ The rasterizer state of the graphics pipeline.
   --
-  --          [C declaration]: @rasterizer_state@, defined at @SDL3\/SDL_gpu.h 1946:28@
+  --          [C declaration]: @rasterizer_state@, defined at @SDL3\/SDL_gpu.h 1954:28@
   , multisample_state :: SDL_GPUMultisampleState
   -- ^ The multisample state of the graphics pipeline.
   --
-  --          [C declaration]: @multisample_state@, defined at @SDL3\/SDL_gpu.h 1947:29@
+  --          [C declaration]: @multisample_state@, defined at @SDL3\/SDL_gpu.h 1955:29@
   , depth_stencil_state :: SDL_GPUDepthStencilState
   -- ^ The depth-stencil state of the graphics pipeline.
   --
-  --          [C declaration]: @depth_stencil_state@, defined at @SDL3\/SDL_gpu.h 1948:30@
+  --          [C declaration]: @depth_stencil_state@, defined at @SDL3\/SDL_gpu.h 1956:30@
   , target_info :: SDL_GPUGraphicsPipelineTargetInfo
   -- ^ Formats and blend modes for the render targets of the graphics pipeline.
   --
-  --          [C declaration]: @target_info@, defined at @SDL3\/SDL_gpu.h 1949:39@
+  --          [C declaration]: @target_info@, defined at @SDL3\/SDL_gpu.h 1957:39@
   , props :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -- ^ A properties ID for extensions. Should be 0 if no extensions are needed.
   --
-  --          [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1951:22@
+  --          [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1959:22@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -12381,64 +12383,64 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineCreateInfo "props" where
 --
 --     [See also]: 'sDL_CreateGPUComputePipeline', 'SDL_GPUShaderFormat'
 --
---     [C declaration]: @struct SDL_GPUComputePipelineCreateInfo@, defined at @SDL3\/SDL_gpu.h 1962:16@
+--     [C declaration]: @struct SDL_GPUComputePipelineCreateInfo@, defined at @SDL3\/SDL_gpu.h 1970:16@
 data SDL_GPUComputePipelineCreateInfo = SDL_GPUComputePipelineCreateInfo
   { code_size :: HsBindgen.Runtime.LibC.CSize
   -- ^ The size in bytes of the compute shader code pointed to.
   --
-  --          [C declaration]: @code_size@, defined at @SDL3\/SDL_gpu.h 1964:12@
+  --          [C declaration]: @code_size@, defined at @SDL3\/SDL_gpu.h 1972:12@
   , code :: PtrConst.PtrConst SDL3.Sys.Bindgen.Stdinc.Uint8
   -- ^ A pointer to compute shader code.
   --
-  --          [C declaration]: @code@, defined at @SDL3\/SDL_gpu.h 1965:18@
+  --          [C declaration]: @code@, defined at @SDL3\/SDL_gpu.h 1973:18@
   , entrypoint :: PtrConst.PtrConst BG.CChar
   -- ^ A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader.
   --
-  --          [C declaration]: @entrypoint@, defined at @SDL3\/SDL_gpu.h 1966:17@
+  --          [C declaration]: @entrypoint@, defined at @SDL3\/SDL_gpu.h 1974:17@
   , format :: SDL_GPUShaderFormat
   -- ^ The format of the compute shader code.
   --
-  --          [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1967:25@
+  --          [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1975:25@
   , num_samplers :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of samplers defined in the shader.
   --
-  --          [C declaration]: @num_samplers@, defined at @SDL3\/SDL_gpu.h 1968:12@
+  --          [C declaration]: @num_samplers@, defined at @SDL3\/SDL_gpu.h 1976:12@
   , num_readonly_storage_textures :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of readonly storage textures defined in the shader.
   --
-  --          [C declaration]: @num_readonly_storage_textures@, defined at @SDL3\/SDL_gpu.h 1969:12@
+  --          [C declaration]: @num_readonly_storage_textures@, defined at @SDL3\/SDL_gpu.h 1977:12@
   , num_readonly_storage_buffers :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of readonly storage buffers defined in the shader.
   --
-  --          [C declaration]: @num_readonly_storage_buffers@, defined at @SDL3\/SDL_gpu.h 1970:12@
+  --          [C declaration]: @num_readonly_storage_buffers@, defined at @SDL3\/SDL_gpu.h 1978:12@
   , num_readwrite_storage_textures :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of read-write storage textures defined in the shader.
   --
-  --          [C declaration]: @num_readwrite_storage_textures@, defined at @SDL3\/SDL_gpu.h 1971:12@
+  --          [C declaration]: @num_readwrite_storage_textures@, defined at @SDL3\/SDL_gpu.h 1979:12@
   , num_readwrite_storage_buffers :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of read-write storage buffers defined in the shader.
   --
-  --          [C declaration]: @num_readwrite_storage_buffers@, defined at @SDL3\/SDL_gpu.h 1972:12@
+  --          [C declaration]: @num_readwrite_storage_buffers@, defined at @SDL3\/SDL_gpu.h 1980:12@
   , num_uniform_buffers :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of uniform buffers defined in the shader.
   --
-  --          [C declaration]: @num_uniform_buffers@, defined at @SDL3\/SDL_gpu.h 1973:12@
+  --          [C declaration]: @num_uniform_buffers@, defined at @SDL3\/SDL_gpu.h 1981:12@
   , threadcount_x :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of threads in the X dimension. This should match the value in the shader.
   --
-  --          [C declaration]: @threadcount_x@, defined at @SDL3\/SDL_gpu.h 1974:12@
+  --          [C declaration]: @threadcount_x@, defined at @SDL3\/SDL_gpu.h 1982:12@
   , threadcount_y :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of threads in the Y dimension. This should match the value in the shader.
   --
-  --          [C declaration]: @threadcount_y@, defined at @SDL3\/SDL_gpu.h 1975:12@
+  --          [C declaration]: @threadcount_y@, defined at @SDL3\/SDL_gpu.h 1983:12@
   , threadcount_z :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The number of threads in the Z dimension. This should match the value in the shader.
   --
-  --          [C declaration]: @threadcount_z@, defined at @SDL3\/SDL_gpu.h 1976:12@
+  --          [C declaration]: @threadcount_z@, defined at @SDL3\/SDL_gpu.h 1984:12@
   , props :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -- ^ A properties ID for extensions. Should be 0 if no extensions are needed.
   --
-  --          [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1978:22@
+  --          [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1986:22@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -13085,56 +13087,56 @@ instance HasCField.HasCField SDL_GPUComputePipelineCreateInfo "props" where
 --
 --     [See also]: 'sDL_BeginGPURenderPass', SDL_FColor
 --
---     [C declaration]: @struct SDL_GPUColorTargetInfo@, defined at @SDL3\/SDL_gpu.h 2017:16@
+--     [C declaration]: @struct SDL_GPUColorTargetInfo@, defined at @SDL3\/SDL_gpu.h 2025:16@
 data SDL_GPUColorTargetInfo = SDL_GPUColorTargetInfo
   { texture :: BG.Ptr SDL_GPUTexture
   -- ^ The texture that will be used as a color target by a render pass.
   --
-  --          [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 2019:21@
+  --          [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 2027:21@
   , mip_level :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The mip level to use as a color target.
   --
-  --          [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 2020:12@
+  --          [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 2028:12@
   , layer_or_depth_plane :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The layer index or depth plane to use as a color target. This value is treated as a layer index on 2D array and cube textures, and as a depth plane on 3D textures.
   --
-  --          [C declaration]: @layer_or_depth_plane@, defined at @SDL3\/SDL_gpu.h 2021:12@
+  --          [C declaration]: @layer_or_depth_plane@, defined at @SDL3\/SDL_gpu.h 2029:12@
   , clear_color :: SDL3.Sys.Bindgen.Pixels.SDL_FColor
   -- ^ The color to clear the color target to at the start of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used.
   --
-  --          [C declaration]: @clear_color@, defined at @SDL3\/SDL_gpu.h 2022:16@
+  --          [C declaration]: @clear_color@, defined at @SDL3\/SDL_gpu.h 2030:16@
   , load_op :: SDL_GPULoadOp
   -- ^ What is done with the contents of the color target at the beginning of the render pass.
   --
-  --          [C declaration]: @load_op@, defined at @SDL3\/SDL_gpu.h 2023:19@
+  --          [C declaration]: @load_op@, defined at @SDL3\/SDL_gpu.h 2031:19@
   , store_op :: SDL_GPUStoreOp
   -- ^ What is done with the results of the render pass.
   --
-  --          [C declaration]: @store_op@, defined at @SDL3\/SDL_gpu.h 2024:20@
+  --          [C declaration]: @store_op@, defined at @SDL3\/SDL_gpu.h 2032:20@
   , resolve_texture :: BG.Ptr SDL_GPUTexture
   -- ^ The texture that will receive the results of a multisample resolve operation. Ignored if a RESOLVE* store_op is not used.
   --
-  --          [C declaration]: @resolve_texture@, defined at @SDL3\/SDL_gpu.h 2025:21@
+  --          [C declaration]: @resolve_texture@, defined at @SDL3\/SDL_gpu.h 2033:21@
   , resolve_mip_level :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The mip level of the resolve texture to use for the resolve operation. Ignored if a RESOLVE* store_op is not used.
   --
-  --          [C declaration]: @resolve_mip_level@, defined at @SDL3\/SDL_gpu.h 2026:12@
+  --          [C declaration]: @resolve_mip_level@, defined at @SDL3\/SDL_gpu.h 2034:12@
   , resolve_layer :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The layer index of the resolve texture to use for the resolve operation. Ignored if a RESOLVE* store_op is not used.
   --
-  --          [C declaration]: @resolve_layer@, defined at @SDL3\/SDL_gpu.h 2027:12@
+  --          [C declaration]: @resolve_layer@, defined at @SDL3\/SDL_gpu.h 2035:12@
   , cycle :: BG.CBool
   -- ^ true cycles the texture if the texture is bound and load_op is not LOAD
   --
-  --          [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2028:10@
+  --          [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2036:10@
   , cycle_resolve_texture :: BG.CBool
   -- ^ true cycles the resolve texture if the resolve texture is bound. Ignored if a RESOLVE* store_op is not used.
   --
-  --          [C declaration]: @cycle_resolve_texture@, defined at @SDL3\/SDL_gpu.h 2029:10@
+  --          [C declaration]: @cycle_resolve_texture@, defined at @SDL3\/SDL_gpu.h 2037:10@
   , padding1 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 2030:11@
+  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 2038:11@
   , padding2 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 2031:11@
+  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 2039:11@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -13737,48 +13739,48 @@ instance HasCField.HasCField SDL_GPUColorTargetInfo "padding2" where
 --
 --     [See also]: 'sDL_BeginGPURenderPass'
 --
---     [C declaration]: @struct SDL_GPUDepthStencilTargetInfo@, defined at @SDL3\/SDL_gpu.h 2081:16@
+--     [C declaration]: @struct SDL_GPUDepthStencilTargetInfo@, defined at @SDL3\/SDL_gpu.h 2089:16@
 data SDL_GPUDepthStencilTargetInfo = SDL_GPUDepthStencilTargetInfo
   { texture :: BG.Ptr SDL_GPUTexture
   -- ^ The texture that will be used as the depth stencil target by the render pass.
   --
-  --          [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 2083:21@
+  --          [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 2091:21@
   , clear_depth :: BG.CFloat
   -- ^ The value to clear the depth component to at the beginning of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used.
   --
-  --          [C declaration]: @clear_depth@, defined at @SDL3\/SDL_gpu.h 2084:11@
+  --          [C declaration]: @clear_depth@, defined at @SDL3\/SDL_gpu.h 2092:11@
   , load_op :: SDL_GPULoadOp
   -- ^ What is done with the depth contents at the beginning of the render pass.
   --
-  --          [C declaration]: @load_op@, defined at @SDL3\/SDL_gpu.h 2085:19@
+  --          [C declaration]: @load_op@, defined at @SDL3\/SDL_gpu.h 2093:19@
   , store_op :: SDL_GPUStoreOp
   -- ^ What is done with the depth results of the render pass.
   --
-  --          [C declaration]: @store_op@, defined at @SDL3\/SDL_gpu.h 2086:20@
+  --          [C declaration]: @store_op@, defined at @SDL3\/SDL_gpu.h 2094:20@
   , stencil_load_op :: SDL_GPULoadOp
   -- ^ What is done with the stencil contents at the beginning of the render pass.
   --
-  --          [C declaration]: @stencil_load_op@, defined at @SDL3\/SDL_gpu.h 2087:19@
+  --          [C declaration]: @stencil_load_op@, defined at @SDL3\/SDL_gpu.h 2095:19@
   , stencil_store_op :: SDL_GPUStoreOp
   -- ^ What is done with the stencil results of the render pass.
   --
-  --          [C declaration]: @stencil_store_op@, defined at @SDL3\/SDL_gpu.h 2088:20@
+  --          [C declaration]: @stencil_store_op@, defined at @SDL3\/SDL_gpu.h 2096:20@
   , cycle :: BG.CBool
   -- ^ true cycles the texture if the texture is bound and any load ops are not LOAD
   --
-  --          [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2089:10@
+  --          [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2097:10@
   , clear_stencil :: SDL3.Sys.Bindgen.Stdinc.Uint8
   -- ^ The value to clear the stencil component to at the beginning of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used.
   --
-  --          [C declaration]: @clear_stencil@, defined at @SDL3\/SDL_gpu.h 2090:11@
+  --          [C declaration]: @clear_stencil@, defined at @SDL3\/SDL_gpu.h 2098:11@
   , mip_level :: SDL3.Sys.Bindgen.Stdinc.Uint8
   -- ^ The mip level to use as the depth stencil target.
   --
-  --          [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 2091:11@
+  --          [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 2099:11@
   , layer :: SDL3.Sys.Bindgen.Stdinc.Uint8
   -- ^ The layer index to use as the depth stencil target.
   --
-  --          [C declaration]: @layer@, defined at @SDL3\/SDL_gpu.h 2092:11@
+  --          [C declaration]: @layer@, defined at @SDL3\/SDL_gpu.h 2100:11@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -14192,44 +14194,44 @@ instance HasCField.HasCField SDL_GPUDepthStencilTargetInfo "layer" where
 --
 --     @since 3.2.0
 --
---     [See also]: 'sDL_BlitGPUTexture'
+--     [See also]: 'sDL_BlitGPUTexture', 'SDL_GPUBlitRegion', 'SDL_GPULoadOp', SDL_FColor, SDL_FlipMode, 'SDL_GPUFilter'
 --
---     [C declaration]: @struct SDL_GPUBlitInfo@, defined at @SDL3\/SDL_gpu.h 2102:16@
+--     [C declaration]: @struct SDL_GPUBlitInfo@, defined at @SDL3\/SDL_gpu.h 2115:16@
 data SDL_GPUBlitInfo = SDL_GPUBlitInfo
   { source :: SDL_GPUBlitRegion
   -- ^ The source region for the blit.
   --
-  --          [C declaration]: @source@, defined at @SDL3\/SDL_gpu.h 2103:23@
+  --          [C declaration]: @source@, defined at @SDL3\/SDL_gpu.h 2116:23@
   , destination :: SDL_GPUBlitRegion
   -- ^ The destination region for the blit.
   --
-  --          [C declaration]: @destination@, defined at @SDL3\/SDL_gpu.h 2104:23@
+  --          [C declaration]: @destination@, defined at @SDL3\/SDL_gpu.h 2117:23@
   , load_op :: SDL_GPULoadOp
   -- ^ What is done with the contents of the destination before the blit.
   --
-  --          [C declaration]: @load_op@, defined at @SDL3\/SDL_gpu.h 2105:19@
+  --          [C declaration]: @load_op@, defined at @SDL3\/SDL_gpu.h 2118:19@
   , clear_color :: SDL3.Sys.Bindgen.Pixels.SDL_FColor
   -- ^ The color to clear the destination region to before the blit. Ignored if load_op is not SDL_GPU_LOADOP_CLEAR.
   --
-  --          [C declaration]: @clear_color@, defined at @SDL3\/SDL_gpu.h 2106:16@
+  --          [C declaration]: @clear_color@, defined at @SDL3\/SDL_gpu.h 2119:16@
   , flip_mode :: SDL3.Sys.Bindgen.Surface.SDL_FlipMode
   -- ^ The flip mode for the source region.
   --
-  --          [C declaration]: @flip_mode@, defined at @SDL3\/SDL_gpu.h 2107:18@
+  --          [C declaration]: @flip_mode@, defined at @SDL3\/SDL_gpu.h 2120:18@
   , filter :: SDL_GPUFilter
   -- ^ The filter mode used when blitting.
   --
-  --          [C declaration]: @filter@, defined at @SDL3\/SDL_gpu.h 2108:19@
+  --          [C declaration]: @filter@, defined at @SDL3\/SDL_gpu.h 2121:19@
   , cycle :: BG.CBool
   -- ^ true cycles the destination texture if it is already bound.
   --
-  --          [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2109:10@
+  --          [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2122:10@
   , padding1 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 2110:11@
+  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 2123:11@
   , padding2 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 2111:11@
+  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 2124:11@
   , padding3 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 2112:11@
+  -- ^ [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 2125:11@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -14638,16 +14640,16 @@ instance HasCField.HasCField SDL_GPUBlitInfo "padding3" where
 --
 --     [See also]: 'sDL_BindGPUVertexBuffers', 'sDL_BindGPUIndexBuffer'
 --
---     [C declaration]: @struct SDL_GPUBufferBinding@, defined at @SDL3\/SDL_gpu.h 2125:16@
+--     [C declaration]: @struct SDL_GPUBufferBinding@, defined at @SDL3\/SDL_gpu.h 2138:16@
 data SDL_GPUBufferBinding = SDL_GPUBufferBinding
   { buffer :: BG.Ptr SDL_GPUBuffer
   -- ^ The buffer to bind. Must have been created with SDL_GPU_BUFFERUSAGE_VERTEX for SDL_BindGPUVertexBuffers, or SDL_GPU_BUFFERUSAGE_INDEX for SDL_BindGPUIndexBuffer.
   --
-  --          [C declaration]: @buffer@, defined at @SDL3\/SDL_gpu.h 2127:20@
+  --          [C declaration]: @buffer@, defined at @SDL3\/SDL_gpu.h 2140:20@
   , offset :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The starting byte of the data to bind in the buffer.
   --
-  --          [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 2128:12@
+  --          [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 2141:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -14728,16 +14730,16 @@ instance HasCField.HasCField SDL_GPUBufferBinding "offset" where
 --
 --     [See also]: 'sDL_BindGPUVertexSamplers', 'sDL_BindGPUFragmentSamplers', 'SDL_GPUTexture', 'SDL_GPUSampler'
 --
---     [C declaration]: @struct SDL_GPUTextureSamplerBinding@, defined at @SDL3\/SDL_gpu.h 2141:16@
+--     [C declaration]: @struct SDL_GPUTextureSamplerBinding@, defined at @SDL3\/SDL_gpu.h 2154:16@
 data SDL_GPUTextureSamplerBinding = SDL_GPUTextureSamplerBinding
   { texture :: BG.Ptr SDL_GPUTexture
   -- ^ The texture to bind. Must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
   --
-  --          [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 2143:21@
+  --          [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 2156:21@
   , sampler :: BG.Ptr SDL_GPUSampler
   -- ^ The sampler to bind.
   --
-  --          [C declaration]: @sampler@, defined at @SDL3\/SDL_gpu.h 2144:21@
+  --          [C declaration]: @sampler@, defined at @SDL3\/SDL_gpu.h 2157:21@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -14821,22 +14823,22 @@ instance HasCField.HasCField SDL_GPUTextureSamplerBinding "sampler" where
 --
 --     [See also]: 'sDL_BeginGPUComputePass'
 --
---     [C declaration]: @struct SDL_GPUStorageBufferReadWriteBinding@, defined at @SDL3\/SDL_gpu.h 2155:16@
+--     [C declaration]: @struct SDL_GPUStorageBufferReadWriteBinding@, defined at @SDL3\/SDL_gpu.h 2168:16@
 data SDL_GPUStorageBufferReadWriteBinding = SDL_GPUStorageBufferReadWriteBinding
   { buffer :: BG.Ptr SDL_GPUBuffer
   -- ^ The buffer to bind. Must have been created with SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE.
   --
-  --          [C declaration]: @buffer@, defined at @SDL3\/SDL_gpu.h 2157:20@
+  --          [C declaration]: @buffer@, defined at @SDL3\/SDL_gpu.h 2170:20@
   , cycle :: BG.CBool
   -- ^ true cycles the buffer if it is already bound.
   --
-  --          [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2158:10@
+  --          [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2171:10@
   , padding1 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 2159:11@
+  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 2172:11@
   , padding2 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 2160:11@
+  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 2173:11@
   , padding3 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 2161:11@
+  -- ^ [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 2174:11@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -15033,30 +15035,30 @@ instance HasCField.HasCField SDL_GPUStorageBufferReadWriteBinding "padding3" whe
 --
 --     [See also]: 'sDL_BeginGPUComputePass'
 --
---     [C declaration]: @struct SDL_GPUStorageTextureReadWriteBinding@, defined at @SDL3\/SDL_gpu.h 2172:16@
+--     [C declaration]: @struct SDL_GPUStorageTextureReadWriteBinding@, defined at @SDL3\/SDL_gpu.h 2185:16@
 data SDL_GPUStorageTextureReadWriteBinding = SDL_GPUStorageTextureReadWriteBinding
   { texture :: BG.Ptr SDL_GPUTexture
   -- ^ The texture to bind. Must have been created with SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE or SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE.
   --
-  --          [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 2174:21@
+  --          [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 2187:21@
   , mip_level :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The mip level index to bind.
   --
-  --          [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 2175:12@
+  --          [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 2188:12@
   , layer :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The layer index to bind.
   --
-  --          [C declaration]: @layer@, defined at @SDL3\/SDL_gpu.h 2176:12@
+  --          [C declaration]: @layer@, defined at @SDL3\/SDL_gpu.h 2189:12@
   , cycle :: BG.CBool
   -- ^ true cycles the texture if it is already bound.
   --
-  --          [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2177:10@
+  --          [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2190:10@
   , padding1 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 2178:11@
+  -- ^ [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 2191:11@
   , padding2 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 2179:11@
+  -- ^ [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 2192:11@
   , padding3 :: SDL3.Sys.Bindgen.Stdinc.Uint8
-  -- ^ [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 2180:11@
+  -- ^ [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 2193:11@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -15327,7 +15329,7 @@ instance HasCField.HasCField SDL_GPUStorageTextureReadWriteBinding "padding3" wh
 
   offset# = \_ -> \_ -> 19
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN@, literal @\"SDL.gpu.device.create.debugmode\"@, defined at @SDL3\/SDL_gpu.h 2363:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN@, literal @\"SDL.gpu.device.create.debugmode\"@, defined at @SDL3\/SDL_gpu.h 2376:9@
 sDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN =
   BG.pack
@@ -15364,7 +15366,7 @@ sDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN@, literal @\"SDL.gpu.device.create.preferlowpower\"@, defined at @SDL3\/SDL_gpu.h 2364:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN@, literal @\"SDL.gpu.device.create.preferlowpower\"@, defined at @SDL3\/SDL_gpu.h 2377:9@
 sDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN =
   BG.pack
@@ -15406,7 +15408,7 @@ sDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN =
     , 0x72
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN@, literal @\"SDL.gpu.device.create.verbose\"@, defined at @SDL3\/SDL_gpu.h 2365:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN@, literal @\"SDL.gpu.device.create.verbose\"@, defined at @SDL3\/SDL_gpu.h 2378:9@
 sDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN =
   BG.pack
@@ -15441,7 +15443,7 @@ sDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING@, literal @\"SDL.gpu.device.create.name\"@, defined at @SDL3\/SDL_gpu.h 2366:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING@, literal @\"SDL.gpu.device.create.name\"@, defined at @SDL3\/SDL_gpu.h 2379:9@
 sDL_PROP_GPU_DEVICE_CREATE_NAME_STRING :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_NAME_STRING =
   BG.pack
@@ -15473,7 +15475,7 @@ sDL_PROP_GPU_DEVICE_CREATE_NAME_STRING =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN@, literal @\"SDL.gpu.device.create.feature.clip_distance\"@, defined at @SDL3\/SDL_gpu.h 2367:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN@, literal @\"SDL.gpu.device.create.feature.clip_distance\"@, defined at @SDL3\/SDL_gpu.h 2380:9@
 sDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN =
   BG.pack
@@ -15522,7 +15524,7 @@ sDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN@, literal @\"SDL.gpu.device.create.feature.depth_clamping\"@, defined at @SDL3\/SDL_gpu.h 2368:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN@, literal @\"SDL.gpu.device.create.feature.depth_clamping\"@, defined at @SDL3\/SDL_gpu.h 2381:9@
 sDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN =
   BG.pack
@@ -15572,7 +15574,7 @@ sDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN =
     , 0x67
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN@, literal @\"SDL.gpu.device.create.feature.indirect_draw_first_instance\"@, defined at @SDL3\/SDL_gpu.h 2369:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN@, literal @\"SDL.gpu.device.create.feature.indirect_draw_first_instance\"@, defined at @SDL3\/SDL_gpu.h 2382:9@
 sDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN =
   BG.pack
@@ -15636,7 +15638,7 @@ sDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN@, literal @\"SDL.gpu.device.create.feature.anisotropy\"@, defined at @SDL3\/SDL_gpu.h 2370:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN@, literal @\"SDL.gpu.device.create.feature.anisotropy\"@, defined at @SDL3\/SDL_gpu.h 2383:9@
 sDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN =
   BG.pack
@@ -15682,7 +15684,7 @@ sDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN =
     , 0x79
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN@, literal @\"SDL.gpu.device.create.shaders.private\"@, defined at @SDL3\/SDL_gpu.h 2371:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN@, literal @\"SDL.gpu.device.create.shaders.private\"@, defined at @SDL3\/SDL_gpu.h 2384:9@
 sDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN =
   BG.pack
@@ -15725,7 +15727,7 @@ sDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN@, literal @\"SDL.gpu.device.create.shaders.spirv\"@, defined at @SDL3\/SDL_gpu.h 2372:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN@, literal @\"SDL.gpu.device.create.shaders.spirv\"@, defined at @SDL3\/SDL_gpu.h 2385:9@
 sDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN =
   BG.pack
@@ -15766,7 +15768,7 @@ sDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN@, literal @\"SDL.gpu.device.create.shaders.dxbc\"@, defined at @SDL3\/SDL_gpu.h 2373:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN@, literal @\"SDL.gpu.device.create.shaders.dxbc\"@, defined at @SDL3\/SDL_gpu.h 2386:9@
 sDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN =
   BG.pack
@@ -15806,7 +15808,7 @@ sDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN =
     , 0x63
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN@, literal @\"SDL.gpu.device.create.shaders.dxil\"@, defined at @SDL3\/SDL_gpu.h 2374:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN@, literal @\"SDL.gpu.device.create.shaders.dxil\"@, defined at @SDL3\/SDL_gpu.h 2387:9@
 sDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN =
   BG.pack
@@ -15846,7 +15848,7 @@ sDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN =
     , 0x6C
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN@, literal @\"SDL.gpu.device.create.shaders.msl\"@, defined at @SDL3\/SDL_gpu.h 2375:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN@, literal @\"SDL.gpu.device.create.shaders.msl\"@, defined at @SDL3\/SDL_gpu.h 2388:9@
 sDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN =
   BG.pack
@@ -15885,7 +15887,7 @@ sDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN =
     , 0x6C
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN@, literal @\"SDL.gpu.device.create.shaders.metallib\"@, defined at @SDL3\/SDL_gpu.h 2376:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN@, literal @\"SDL.gpu.device.create.shaders.metallib\"@, defined at @SDL3\/SDL_gpu.h 2389:9@
 sDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN =
   BG.pack
@@ -15929,7 +15931,7 @@ sDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN =
     , 0x62
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN@, literal @\"SDL.gpu.device.create.d3d12.allowtier1resourcebinding\"@, defined at @SDL3\/SDL_gpu.h 2377:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN@, literal @\"SDL.gpu.device.create.d3d12.allowtier1resourcebinding\"@, defined at @SDL3\/SDL_gpu.h 2390:9@
 sDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN =
   BG.pack
@@ -15988,7 +15990,7 @@ sDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN =
     , 0x67
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING@, literal @\"SDL.gpu.device.create.d3d12.semantic\"@, defined at @SDL3\/SDL_gpu.h 2378:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING@, literal @\"SDL.gpu.device.create.d3d12.semantic\"@, defined at @SDL3\/SDL_gpu.h 2391:9@
 sDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING =
   BG.pack
@@ -16030,7 +16032,7 @@ sDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING =
     , 0x63
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER@, literal @\"SDL.gpu.device.create.d3d12.agility_sdk_version\"@, defined at @SDL3\/SDL_gpu.h 2379:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER@, literal @\"SDL.gpu.device.create.d3d12.agility_sdk_version\"@, defined at @SDL3\/SDL_gpu.h 2392:9@
 sDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER =
   BG.pack
@@ -16083,7 +16085,7 @@ sDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER =
     , 0x6E
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING@, literal @\"SDL.gpu.device.create.d3d12.agility_sdk_path\"@, defined at @SDL3\/SDL_gpu.h 2380:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING@, literal @\"SDL.gpu.device.create.d3d12.agility_sdk_path\"@, defined at @SDL3\/SDL_gpu.h 2393:9@
 sDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING =
   BG.pack
@@ -16133,7 +16135,7 @@ sDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING =
     , 0x68
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN@, literal @\"SDL.gpu.device.create.vulkan.requirehardwareacceleration\"@, defined at @SDL3\/SDL_gpu.h 2381:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN@, literal @\"SDL.gpu.device.create.vulkan.requirehardwareacceleration\"@, defined at @SDL3\/SDL_gpu.h 2394:9@
 sDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
   BG.pack
@@ -16195,7 +16197,7 @@ sDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
     , 0x6E
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER@, literal @\"SDL.gpu.device.create.vulkan.options\"@, defined at @SDL3\/SDL_gpu.h 2382:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER@, literal @\"SDL.gpu.device.create.vulkan.options\"@, defined at @SDL3\/SDL_gpu.h 2395:9@
 sDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER =
   BG.pack
@@ -16237,7 +16239,7 @@ sDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER =
     , 0x73
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN@, literal @\"SDL.gpu.device.create.metal.allowmacfamily1\"@, defined at @SDL3\/SDL_gpu.h 2383:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN@, literal @\"SDL.gpu.device.create.metal.allowmacfamily1\"@, defined at @SDL3\/SDL_gpu.h 2396:9@
 sDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN :: BG.ByteString
 sDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN =
   BG.pack
@@ -16292,36 +16294,36 @@ sDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @struct SDL_GPUVulkanOptions@, defined at @SDL3\/SDL_gpu.h 2402:16@
+--     [C declaration]: @struct SDL_GPUVulkanOptions@, defined at @SDL3\/SDL_gpu.h 2415:16@
 data SDL_GPUVulkanOptions = SDL_GPUVulkanOptions
   { vulkan_api_version :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ The Vulkan API version to request for the instance. Use Vulkan\'s VK_MAKE_VERSION or VK_MAKE_API_VERSION.
   --
-  --          [C declaration]: @vulkan_api_version@, defined at @SDL3\/SDL_gpu.h 2404:12@
+  --          [C declaration]: @vulkan_api_version@, defined at @SDL3\/SDL_gpu.h 2417:12@
   , feature_list :: BG.Ptr BG.Void
   -- ^ Pointer to the first element of a chain of Vulkan feature structs. (Requires API version 1.1 or higher.)
   --
-  --          [C declaration]: @feature_list@, defined at @SDL3\/SDL_gpu.h 2405:11@
+  --          [C declaration]: @feature_list@, defined at @SDL3\/SDL_gpu.h 2418:11@
   , vulkan_10_physical_device_features :: BG.Ptr BG.Void
   -- ^ Pointer to a VkPhysicalDeviceFeatures struct to enable additional Vulkan 1.0 features.
   --
-  --          [C declaration]: @vulkan_10_physical_device_features@, defined at @SDL3\/SDL_gpu.h 2406:8@
+  --          [C declaration]: @vulkan_10_physical_device_features@, defined at @SDL3\/SDL_gpu.h 2419:8@
   , device_extension_count :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ Number of additional device extensions to require.
   --
-  --          [C declaration]: @device_extension_count@, defined at @SDL3\/SDL_gpu.h 2407:9@
+  --          [C declaration]: @device_extension_count@, defined at @SDL3\/SDL_gpu.h 2420:9@
   , device_extension_names :: BG.Ptr (PtrConst.PtrConst BG.CChar)
   -- ^ Pointer to a list of additional device extensions to require.
   --
-  --          [C declaration]: @device_extension_names@, defined at @SDL3\/SDL_gpu.h 2408:15@
+  --          [C declaration]: @device_extension_names@, defined at @SDL3\/SDL_gpu.h 2421:15@
   , instance_extension_count :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ Number of additional instance extensions to require.
   --
-  --          [C declaration]: @instance_extension_count@, defined at @SDL3\/SDL_gpu.h 2409:9@
+  --          [C declaration]: @instance_extension_count@, defined at @SDL3\/SDL_gpu.h 2422:9@
   , instance_extension_names :: BG.Ptr (PtrConst.PtrConst BG.CChar)
   -- ^ Pointer to a list of additional instance extensions to require.
   --
-  --          [C declaration]: @instance_extension_names@, defined at @SDL3\/SDL_gpu.h 2410:15@
+  --          [C declaration]: @instance_extension_names@, defined at @SDL3\/SDL_gpu.h 2423:15@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -16599,7 +16601,7 @@ instance HasCField.HasCField SDL_GPUVulkanOptions "instance_extension_names" whe
 
   offset# = \_ -> \_ -> 48
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_NAME_STRING@, literal @\"SDL.gpu.device.name\"@, defined at @SDL3\/SDL_gpu.h 2579:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_NAME_STRING@, literal @\"SDL.gpu.device.name\"@, defined at @SDL3\/SDL_gpu.h 2592:9@
 sDL_PROP_GPU_DEVICE_NAME_STRING :: BG.ByteString
 sDL_PROP_GPU_DEVICE_NAME_STRING =
   BG.pack
@@ -16624,7 +16626,7 @@ sDL_PROP_GPU_DEVICE_NAME_STRING =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING@, literal @\"SDL.gpu.device.driver_name\"@, defined at @SDL3\/SDL_gpu.h 2580:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING@, literal @\"SDL.gpu.device.driver_name\"@, defined at @SDL3\/SDL_gpu.h 2593:9@
 sDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING :: BG.ByteString
 sDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING =
   BG.pack
@@ -16656,7 +16658,7 @@ sDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING@, literal @\"SDL.gpu.device.driver_version\"@, defined at @SDL3\/SDL_gpu.h 2581:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING@, literal @\"SDL.gpu.device.driver_version\"@, defined at @SDL3\/SDL_gpu.h 2594:9@
 sDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING :: BG.ByteString
 sDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING =
   BG.pack
@@ -16691,7 +16693,7 @@ sDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING =
     , 0x6E
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING@, literal @\"SDL.gpu.device.driver_info\"@, defined at @SDL3\/SDL_gpu.h 2582:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING@, literal @\"SDL.gpu.device.driver_info\"@, defined at @SDL3\/SDL_gpu.h 2595:9@
 sDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING :: BG.ByteString
 sDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING =
   BG.pack
@@ -16723,7 +16725,7 @@ sDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING =
     , 0x6F
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING@, literal @\"SDL.gpu.computepipeline.create.name\"@, defined at @SDL3\/SDL_gpu.h 2636:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING@, literal @\"SDL.gpu.computepipeline.create.name\"@, defined at @SDL3\/SDL_gpu.h 2649:9@
 sDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING :: BG.ByteString
 sDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING =
   BG.pack
@@ -16764,7 +16766,7 @@ sDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING@, literal @\"SDL.gpu.graphicspipeline.create.name\"@, defined at @SDL3\/SDL_gpu.h 2663:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING@, literal @\"SDL.gpu.graphicspipeline.create.name\"@, defined at @SDL3\/SDL_gpu.h 2676:9@
 sDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING :: BG.ByteString
 sDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING =
   BG.pack
@@ -16806,7 +16808,7 @@ sDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING@, literal @\"SDL.gpu.sampler.create.name\"@, defined at @SDL3\/SDL_gpu.h 2690:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING@, literal @\"SDL.gpu.sampler.create.name\"@, defined at @SDL3\/SDL_gpu.h 2703:9@
 sDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING :: BG.ByteString
 sDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING =
   BG.pack
@@ -16839,7 +16841,7 @@ sDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_SHADER_CREATE_NAME_STRING@, literal @\"SDL.gpu.shader.create.name\"@, defined at @SDL3\/SDL_gpu.h 2769:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_SHADER_CREATE_NAME_STRING@, literal @\"SDL.gpu.shader.create.name\"@, defined at @SDL3\/SDL_gpu.h 2782:9@
 sDL_PROP_GPU_SHADER_CREATE_NAME_STRING :: BG.ByteString
 sDL_PROP_GPU_SHADER_CREATE_NAME_STRING =
   BG.pack
@@ -16871,7 +16873,7 @@ sDL_PROP_GPU_SHADER_CREATE_NAME_STRING =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT@, literal @\"SDL.gpu.texture.create.d3d12.clear.r\"@, defined at @SDL3\/SDL_gpu.h 2833:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT@, literal @\"SDL.gpu.texture.create.d3d12.clear.r\"@, defined at @SDL3\/SDL_gpu.h 2846:9@
 sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT :: BG.ByteString
 sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT =
   BG.pack
@@ -16913,7 +16915,7 @@ sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT =
     , 0x72
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT@, literal @\"SDL.gpu.texture.create.d3d12.clear.g\"@, defined at @SDL3\/SDL_gpu.h 2834:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT@, literal @\"SDL.gpu.texture.create.d3d12.clear.g\"@, defined at @SDL3\/SDL_gpu.h 2847:9@
 sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT :: BG.ByteString
 sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT =
   BG.pack
@@ -16955,7 +16957,7 @@ sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT =
     , 0x67
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT@, literal @\"SDL.gpu.texture.create.d3d12.clear.b\"@, defined at @SDL3\/SDL_gpu.h 2835:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT@, literal @\"SDL.gpu.texture.create.d3d12.clear.b\"@, defined at @SDL3\/SDL_gpu.h 2848:9@
 sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT :: BG.ByteString
 sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT =
   BG.pack
@@ -16997,7 +16999,7 @@ sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT =
     , 0x62
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT@, literal @\"SDL.gpu.texture.create.d3d12.clear.a\"@, defined at @SDL3\/SDL_gpu.h 2836:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT@, literal @\"SDL.gpu.texture.create.d3d12.clear.a\"@, defined at @SDL3\/SDL_gpu.h 2849:9@
 sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT :: BG.ByteString
 sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT =
   BG.pack
@@ -17039,7 +17041,7 @@ sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT =
     , 0x61
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT@, literal @\"SDL.gpu.texture.create.d3d12.clear.depth\"@, defined at @SDL3\/SDL_gpu.h 2837:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT@, literal @\"SDL.gpu.texture.create.d3d12.clear.depth\"@, defined at @SDL3\/SDL_gpu.h 2850:9@
 sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT :: BG.ByteString
 sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT =
   BG.pack
@@ -17085,7 +17087,7 @@ sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT =
     , 0x68
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER@, literal @\"SDL.gpu.texture.create.d3d12.clear.stencil\"@, defined at @SDL3\/SDL_gpu.h 2838:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER@, literal @\"SDL.gpu.texture.create.d3d12.clear.stencil\"@, defined at @SDL3\/SDL_gpu.h 2851:9@
 sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER :: BG.ByteString
 sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER =
   BG.pack
@@ -17133,7 +17135,7 @@ sDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER =
     , 0x6C
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING@, literal @\"SDL.gpu.texture.create.name\"@, defined at @SDL3\/SDL_gpu.h 2839:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING@, literal @\"SDL.gpu.texture.create.name\"@, defined at @SDL3\/SDL_gpu.h 2852:9@
 sDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING :: BG.ByteString
 sDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING =
   BG.pack
@@ -17166,7 +17168,7 @@ sDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING@, literal @\"SDL.gpu.buffer.create.name\"@, defined at @SDL3\/SDL_gpu.h 2889:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING@, literal @\"SDL.gpu.buffer.create.name\"@, defined at @SDL3\/SDL_gpu.h 2902:9@
 sDL_PROP_GPU_BUFFER_CREATE_NAME_STRING :: BG.ByteString
 sDL_PROP_GPU_BUFFER_CREATE_NAME_STRING =
   BG.pack
@@ -17198,7 +17200,7 @@ sDL_PROP_GPU_BUFFER_CREATE_NAME_STRING =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING@, literal @\"SDL.gpu.transferbuffer.create.name\"@, defined at @SDL3\/SDL_gpu.h 2922:9@
+-- | [C declaration]: @macro SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING@, literal @\"SDL.gpu.transferbuffer.create.name\"@, defined at @SDL3\/SDL_gpu.h 2935:9@
 sDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING :: BG.ByteString
 sDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING =
   BG.pack

@@ -882,7 +882,7 @@ hs_bindgen_aae5cc9f6839b5cc =
 --
 --     [See also]: 'sDL_CreateGPUDevice'
 --
---     [C declaration]: @SDL_GPUSupportsShaderFormats@, defined at @SDL3\/SDL_gpu.h 2200:34@
+--     [C declaration]: @SDL_GPUSupportsShaderFormats@, defined at @SDL3\/SDL_gpu.h 2213:34@
 sDL_GPUSupportsShaderFormats
   :: SDL_GPUShaderFormat
   -- ^
@@ -917,7 +917,7 @@ hs_bindgen_eafef00f426d07de =
 --
 --     [See also]: 'sDL_CreateGPUDeviceWithProperties'
 --
---     [C declaration]: @SDL_GPUSupportsProperties@, defined at @SDL3\/SDL_gpu.h 2214:34@
+--     [C declaration]: @SDL_GPUSupportsProperties@, defined at @SDL3\/SDL_gpu.h 2227:34@
 sDL_GPUSupportsProperties
   :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -- ^
@@ -962,7 +962,7 @@ hs_bindgen_e18d5500edbbd7b5 =
 --
 --     [See also]: 'sDL_CreateGPUDeviceWithProperties', 'sDL_GetGPUShaderFormats', 'sDL_GetGPUDeviceDriver', 'sDL_DestroyGPUDevice', 'sDL_GPUSupportsShaderFormats'
 --
---     [C declaration]: @SDL_CreateGPUDevice@, defined at @SDL3\/SDL_gpu.h 2243:45@
+--     [C declaration]: @SDL_CreateGPUDevice@, defined at @SDL3\/SDL_gpu.h 2256:45@
 sDL_CreateGPUDevice
   :: SDL_GPUShaderFormat
   -- ^
@@ -1050,7 +1050,7 @@ hs_bindgen_79aa6b683079a4aa =
 --
 --     [See also]: 'sDL_GetGPUShaderFormats', 'sDL_GetGPUDeviceDriver', 'sDL_DestroyGPUDevice', 'sDL_GPUSupportsProperties'
 --
---     [C declaration]: @SDL_CreateGPUDeviceWithProperties@, defined at @SDL3\/SDL_gpu.h 2360:45@
+--     [C declaration]: @SDL_CreateGPUDeviceWithProperties@, defined at @SDL3\/SDL_gpu.h 2373:45@
 sDL_CreateGPUDeviceWithProperties
   :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -- ^
@@ -1079,7 +1079,7 @@ hs_bindgen_8880394a1e594bb0 =
 --
 --     [See also]: 'sDL_CreateGPUDevice'
 --
---     [C declaration]: @SDL_DestroyGPUDevice@, defined at @SDL3\/SDL_gpu.h 2422:34@
+--     [C declaration]: @SDL_DestroyGPUDevice@, defined at @SDL3\/SDL_gpu.h 2435:34@
 sDL_DestroyGPUDevice
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1106,7 +1106,7 @@ hs_bindgen_53d9edb0d1616675 =
 --
 --     [See also]: 'sDL_GetGPUDriver'
 --
---     [C declaration]: @SDL_GetNumGPUDrivers@, defined at @SDL3\/SDL_gpu.h 2433:33@
+--     [C declaration]: @SDL_GetNumGPUDrivers@, defined at @SDL3\/SDL_gpu.h 2446:33@
 sDL_GetNumGPUDrivers :: IO BG.CInt
 sDL_GetNumGPUDrivers = hs_bindgen_53d9edb0d1616675
 
@@ -1135,7 +1135,7 @@ hs_bindgen_bde1ec04c28e032c =
 --
 --     [See also]: 'sDL_GetNumGPUDrivers'
 --
---     [C declaration]: @SDL_GetGPUDriver@, defined at @SDL3\/SDL_gpu.h 2452:42@
+--     [C declaration]: @SDL_GetGPUDriver@, defined at @SDL3\/SDL_gpu.h 2465:42@
 sDL_GetGPUDriver
   :: BG.CInt
   -- ^
@@ -1163,7 +1163,7 @@ hs_bindgen_2e09f9d54b7e174c =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGPUDeviceDriver@, defined at @SDL3\/SDL_gpu.h 2462:42@
+--     [C declaration]: @SDL_GetGPUDeviceDriver@, defined at @SDL3\/SDL_gpu.h 2475:42@
 sDL_GetGPUDeviceDriver
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1191,7 +1191,7 @@ hs_bindgen_0ac23e15856207d2 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGPUShaderFormats@, defined at @SDL3\/SDL_gpu.h 2473:49@
+--     [C declaration]: @SDL_GetGPUShaderFormats@, defined at @SDL3\/SDL_gpu.h 2486:49@
 sDL_GetGPUShaderFormats
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1314,7 +1314,7 @@ hs_bindgen_24ec481b90601a40 =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @SDL_GetGPUDeviceProperties@, defined at @SDL3\/SDL_gpu.h 2577:46@
+--     [C declaration]: @SDL_GetGPUDeviceProperties@, defined at @SDL3\/SDL_gpu.h 2590:46@
 sDL_GetGPUDeviceProperties
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1375,7 +1375,7 @@ hs_bindgen_be9942ef43a30dbb =
 --
 --     [See also]: 'sDL_BindGPUComputePipeline', 'sDL_ReleaseGPUComputePipeline'
 --
---     [C declaration]: @SDL_CreateGPUComputePipeline@, defined at @SDL3\/SDL_gpu.h 2632:54@
+--     [C declaration]: @SDL_CreateGPUComputePipeline@, defined at @SDL3\/SDL_gpu.h 2645:54@
 sDL_CreateGPUComputePipeline
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1416,7 +1416,7 @@ hs_bindgen_3a818324fc7c3f58 =
 --
 --     [See also]: 'sDL_CreateGPUShader', 'sDL_BindGPUGraphicsPipeline', 'sDL_ReleaseGPUGraphicsPipeline'
 --
---     [C declaration]: @SDL_CreateGPUGraphicsPipeline@, defined at @SDL3\/SDL_gpu.h 2659:55@
+--     [C declaration]: @SDL_CreateGPUGraphicsPipeline@, defined at @SDL3\/SDL_gpu.h 2672:55@
 sDL_CreateGPUGraphicsPipeline
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1457,7 +1457,7 @@ hs_bindgen_604bbac908c436aa =
 --
 --     [See also]: 'sDL_BindGPUVertexSamplers', 'sDL_BindGPUFragmentSamplers', 'sDL_ReleaseGPUSampler'
 --
---     [C declaration]: @SDL_CreateGPUSampler@, defined at @SDL3\/SDL_gpu.h 2686:46@
+--     [C declaration]: @SDL_CreateGPUSampler@, defined at @SDL3\/SDL_gpu.h 2699:46@
 sDL_CreateGPUSampler
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1541,7 +1541,7 @@ hs_bindgen_3b5c95e61238095a =
 --
 --     [See also]: 'sDL_CreateGPUGraphicsPipeline', 'sDL_ReleaseGPUShader'
 --
---     [C declaration]: @SDL_CreateGPUShader@, defined at @SDL3\/SDL_gpu.h 2765:45@
+--     [C declaration]: @SDL_CreateGPUShader@, defined at @SDL3\/SDL_gpu.h 2778:45@
 sDL_CreateGPUShader
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1599,7 +1599,7 @@ hs_bindgen_c6685129d00ec509 =
 --
 --     [See also]: 'sDL_UploadToGPUTexture', 'sDL_DownloadFromGPUTexture', 'sDL_BeginGPURenderPass', 'sDL_BeginGPUComputePass', 'sDL_BindGPUVertexSamplers', 'sDL_BindGPUVertexStorageTextures', 'sDL_BindGPUFragmentSamplers', 'sDL_BindGPUFragmentStorageTextures', 'sDL_BindGPUComputeStorageTextures', 'sDL_BlitGPUTexture', 'sDL_ReleaseGPUTexture', 'sDL_GPUTextureSupportsFormat'
 --
---     [C declaration]: @SDL_CreateGPUTexture@, defined at @SDL3\/SDL_gpu.h 2829:46@
+--     [C declaration]: @SDL_CreateGPUTexture@, defined at @SDL3\/SDL_gpu.h 2842:46@
 sDL_CreateGPUTexture
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1645,7 +1645,7 @@ hs_bindgen_5eca6d3125b183e7 =
 --
 --     [See also]: 'sDL_UploadToGPUBuffer', 'sDL_DownloadFromGPUBuffer', 'sDL_CopyGPUBufferToBuffer', 'sDL_BindGPUVertexBuffers', 'sDL_BindGPUIndexBuffer', 'sDL_BindGPUVertexStorageBuffers', 'sDL_BindGPUFragmentStorageBuffers', 'sDL_DrawGPUPrimitivesIndirect', 'sDL_DrawGPUIndexedPrimitivesIndirect', 'sDL_BindGPUComputeStorageBuffers', 'sDL_DispatchGPUComputeIndirect', 'sDL_ReleaseGPUBuffer'
 --
---     [C declaration]: @SDL_CreateGPUBuffer@, defined at @SDL3\/SDL_gpu.h 2885:45@
+--     [C declaration]: @SDL_CreateGPUBuffer@, defined at @SDL3\/SDL_gpu.h 2898:45@
 sDL_CreateGPUBuffer
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1687,7 +1687,7 @@ hs_bindgen_646007cc8d60e8f1 =
 --
 --     [See also]: 'sDL_UploadToGPUBuffer', 'sDL_DownloadFromGPUBuffer', 'sDL_UploadToGPUTexture', 'sDL_DownloadFromGPUTexture', 'sDL_ReleaseGPUTransferBuffer'
 --
---     [C declaration]: @SDL_CreateGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 2918:53@
+--     [C declaration]: @SDL_CreateGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 2931:53@
 sDL_CreateGPUTransferBuffer
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1728,7 +1728,7 @@ hs_bindgen_35249b94fcee0ae6 =
 --
 --     [See also]: 'sDL_CreateGPUBuffer'
 --
---     [C declaration]: @SDL_SetGPUBufferName@, defined at @SDL3\/SDL_gpu.h 2943:34@
+--     [C declaration]: @SDL_SetGPUBufferName@, defined at @SDL3\/SDL_gpu.h 2956:34@
 sDL_SetGPUBufferName
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1772,7 +1772,7 @@ hs_bindgen_21f5dad8cd3caba0 =
 --
 --     [See also]: 'sDL_CreateGPUTexture'
 --
---     [C declaration]: @SDL_SetGPUTextureName@, defined at @SDL3\/SDL_gpu.h 2966:34@
+--     [C declaration]: @SDL_SetGPUTextureName@, defined at @SDL3\/SDL_gpu.h 2979:34@
 sDL_SetGPUTextureName
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1812,7 +1812,7 @@ hs_bindgen_e540ee9c7b74b716 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_InsertGPUDebugLabel@, defined at @SDL3\/SDL_gpu.h 2987:34@
+--     [C declaration]: @SDL_InsertGPUDebugLabel@, defined at @SDL3\/SDL_gpu.h 3000:34@
 sDL_InsertGPUDebugLabel
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -1854,7 +1854,7 @@ hs_bindgen_6cf1d5f7ad48ca4b =
 --
 --     [See also]: 'sDL_PopGPUDebugGroup'
 --
---     [C declaration]: @SDL_PushGPUDebugGroup@, defined at @SDL3\/SDL_gpu.h 3017:34@
+--     [C declaration]: @SDL_PushGPUDebugGroup@, defined at @SDL3\/SDL_gpu.h 3030:34@
 sDL_PushGPUDebugGroup
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -1888,7 +1888,7 @@ hs_bindgen_c82fe0d95b63b068 =
 --
 --     [See also]: 'sDL_PushGPUDebugGroup'
 --
---     [C declaration]: @SDL_PopGPUDebugGroup@, defined at @SDL3\/SDL_gpu.h 3035:34@
+--     [C declaration]: @SDL_PopGPUDebugGroup@, defined at @SDL3\/SDL_gpu.h 3048:34@
 sDL_PopGPUDebugGroup
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -1918,7 +1918,7 @@ hs_bindgen_367c147bedca1380 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_ReleaseGPUTexture@, defined at @SDL3\/SDL_gpu.h 3050:34@
+--     [C declaration]: @SDL_ReleaseGPUTexture@, defined at @SDL3\/SDL_gpu.h 3063:34@
 sDL_ReleaseGPUTexture
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1952,7 +1952,7 @@ hs_bindgen_9d27e7a735191637 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_ReleaseGPUSampler@, defined at @SDL3\/SDL_gpu.h 3064:34@
+--     [C declaration]: @SDL_ReleaseGPUSampler@, defined at @SDL3\/SDL_gpu.h 3077:34@
 sDL_ReleaseGPUSampler
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -1986,7 +1986,7 @@ hs_bindgen_bc73e63cd04b292b =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_ReleaseGPUBuffer@, defined at @SDL3\/SDL_gpu.h 3078:34@
+--     [C declaration]: @SDL_ReleaseGPUBuffer@, defined at @SDL3\/SDL_gpu.h 3091:34@
 sDL_ReleaseGPUBuffer
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -2020,7 +2020,7 @@ hs_bindgen_8e038ae5b291e93f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_ReleaseGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 3092:34@
+--     [C declaration]: @SDL_ReleaseGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 3105:34@
 sDL_ReleaseGPUTransferBuffer
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -2055,7 +2055,7 @@ hs_bindgen_2ebc397e9dad3697 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_ReleaseGPUComputePipeline@, defined at @SDL3\/SDL_gpu.h 3106:34@
+--     [C declaration]: @SDL_ReleaseGPUComputePipeline@, defined at @SDL3\/SDL_gpu.h 3119:34@
 sDL_ReleaseGPUComputePipeline
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -2090,7 +2090,7 @@ hs_bindgen_be87d6210d892952 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_ReleaseGPUShader@, defined at @SDL3\/SDL_gpu.h 3120:34@
+--     [C declaration]: @SDL_ReleaseGPUShader@, defined at @SDL3\/SDL_gpu.h 3133:34@
 sDL_ReleaseGPUShader
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -2124,7 +2124,7 @@ hs_bindgen_c2a4e9cdd147b21b =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_ReleaseGPUGraphicsPipeline@, defined at @SDL3\/SDL_gpu.h 3134:34@
+--     [C declaration]: @SDL_ReleaseGPUGraphicsPipeline@, defined at @SDL3\/SDL_gpu.h 3147:34@
 sDL_ReleaseGPUGraphicsPipeline
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -2163,7 +2163,7 @@ hs_bindgen_92149d0718fb8464 =
 --
 --     [See also]: 'sDL_SubmitGPUCommandBuffer', 'sDL_SubmitGPUCommandBufferAndAcquireFence'
 --
---     [C declaration]: @SDL_AcquireGPUCommandBuffer@, defined at @SDL3\/SDL_gpu.h 3162:52@
+--     [C declaration]: @SDL_AcquireGPUCommandBuffer@, defined at @SDL3\/SDL_gpu.h 3175:52@
 sDL_AcquireGPUCommandBuffer
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -2202,7 +2202,7 @@ hs_bindgen_af2096650fa2d8d0 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_PushGPUVertexUniformData@, defined at @SDL3\/SDL_gpu.h 3186:34@
+--     [C declaration]: @SDL_PushGPUVertexUniformData@, defined at @SDL3\/SDL_gpu.h 3199:34@
 sDL_PushGPUVertexUniformData
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -2251,7 +2251,7 @@ hs_bindgen_d777c2d66931c0d7 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_PushGPUFragmentUniformData@, defined at @SDL3\/SDL_gpu.h 3208:34@
+--     [C declaration]: @SDL_PushGPUFragmentUniformData@, defined at @SDL3\/SDL_gpu.h 3221:34@
 sDL_PushGPUFragmentUniformData
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -2300,7 +2300,7 @@ hs_bindgen_c40f02ecbf0d1f10 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_PushGPUComputeUniformData@, defined at @SDL3\/SDL_gpu.h 3230:34@
+--     [C declaration]: @SDL_PushGPUComputeUniformData@, defined at @SDL3\/SDL_gpu.h 3243:34@
 sDL_PushGPUComputeUniformData
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -2353,7 +2353,7 @@ hs_bindgen_5d064478a0820b2c =
 --
 --     [See also]: 'sDL_EndGPURenderPass'
 --
---     [C declaration]: @SDL_BeginGPURenderPass@, defined at @SDL3\/SDL_gpu.h 3271:49@
+--     [C declaration]: @SDL_BeginGPURenderPass@, defined at @SDL3\/SDL_gpu.h 3284:49@
 sDL_BeginGPURenderPass
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -2395,7 +2395,7 @@ hs_bindgen_43b6f6578491ba7f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_BindGPUGraphicsPipeline@, defined at @SDL3\/SDL_gpu.h 3287:34@
+--     [C declaration]: @SDL_BindGPUGraphicsPipeline@, defined at @SDL3\/SDL_gpu.h 3300:34@
 sDL_BindGPUGraphicsPipeline
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -2428,7 +2428,7 @@ hs_bindgen_710986e3fd99ba6a =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_SetGPUViewport@, defined at @SDL3\/SDL_gpu.h 3299:34@
+--     [C declaration]: @SDL_SetGPUViewport@, defined at @SDL3\/SDL_gpu.h 3312:34@
 sDL_SetGPUViewport
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -2460,7 +2460,7 @@ hs_bindgen_8e81e30e4f1e1924 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_SetGPUScissor@, defined at @SDL3\/SDL_gpu.h 3311:34@
+--     [C declaration]: @SDL_SetGPUScissor@, defined at @SDL3\/SDL_gpu.h 3324:34@
 sDL_SetGPUScissor
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -2494,7 +2494,7 @@ hs_bindgen_f727bad8e8b1ff3e =
 --
 --     [See also]: @SDL_GPU_BLENDFACTOR_CONSTANT_COLOR@, @SDL_GPU_BLENDFACTOR_ONE_MINUS_CONSTANT_COLOR@
 --
---     [C declaration]: @SDL_SetGPUBlendConstants@, defined at @SDL3\/SDL_gpu.h 3326:34@
+--     [C declaration]: @SDL_SetGPUBlendConstants@, defined at @SDL3\/SDL_gpu.h 3339:34@
 sDL_SetGPUBlendConstants
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -2533,7 +2533,7 @@ hs_bindgen_4a62370048ec360b =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_SetGPUStencilReference@, defined at @SDL3\/SDL_gpu.h 3338:34@
+--     [C declaration]: @SDL_SetGPUStencilReference@, defined at @SDL3\/SDL_gpu.h 3351:34@
 sDL_SetGPUStencilReference
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -2570,7 +2570,7 @@ hs_bindgen_6471bc849523bb14 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_BindGPUVertexBuffers@, defined at @SDL3\/SDL_gpu.h 3354:34@
+--     [C declaration]: @SDL_BindGPUVertexBuffers@, defined at @SDL3\/SDL_gpu.h 3367:34@
 sDL_BindGPUVertexBuffers
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -2613,7 +2613,7 @@ hs_bindgen_084b99eea9396d40 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_BindGPUIndexBuffer@, defined at @SDL3\/SDL_gpu.h 3371:34@
+--     [C declaration]: @SDL_BindGPUIndexBuffer@, defined at @SDL3\/SDL_gpu.h 3384:34@
 sDL_BindGPUIndexBuffer
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -2659,7 +2659,7 @@ hs_bindgen_d275601b49dec50a =
 --
 --     [See also]: 'sDL_CreateGPUShader'
 --
---     [C declaration]: @SDL_BindGPUVertexSamplers@, defined at @SDL3\/SDL_gpu.h 3395:34@
+--     [C declaration]: @SDL_BindGPUVertexSamplers@, defined at @SDL3\/SDL_gpu.h 3408:34@
 sDL_BindGPUVertexSamplers
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -2710,7 +2710,7 @@ hs_bindgen_66cc372794c2ef55 =
 --
 --     [See also]: 'sDL_CreateGPUShader'
 --
---     [C declaration]: @SDL_BindGPUVertexStorageTextures@, defined at @SDL3\/SDL_gpu.h 3419:34@
+--     [C declaration]: @SDL_BindGPUVertexStorageTextures@, defined at @SDL3\/SDL_gpu.h 3432:34@
 sDL_BindGPUVertexStorageTextures
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -2761,7 +2761,7 @@ hs_bindgen_d7725fcd1492d52d =
 --
 --     [See also]: 'sDL_CreateGPUShader'
 --
---     [C declaration]: @SDL_BindGPUVertexStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3443:34@
+--     [C declaration]: @SDL_BindGPUVertexStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3456:34@
 sDL_BindGPUVertexStorageBuffers
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -2812,7 +2812,7 @@ hs_bindgen_1a2c72585c211590 =
 --
 --     [See also]: 'sDL_CreateGPUShader'
 --
---     [C declaration]: @SDL_BindGPUFragmentSamplers@, defined at @SDL3\/SDL_gpu.h 3468:34@
+--     [C declaration]: @SDL_BindGPUFragmentSamplers@, defined at @SDL3\/SDL_gpu.h 3481:34@
 sDL_BindGPUFragmentSamplers
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -2863,7 +2863,7 @@ hs_bindgen_0714ec46b44519f0 =
 --
 --     [See also]: 'sDL_CreateGPUShader'
 --
---     [C declaration]: @SDL_BindGPUFragmentStorageTextures@, defined at @SDL3\/SDL_gpu.h 3492:34@
+--     [C declaration]: @SDL_BindGPUFragmentStorageTextures@, defined at @SDL3\/SDL_gpu.h 3505:34@
 sDL_BindGPUFragmentStorageTextures
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -2914,7 +2914,7 @@ hs_bindgen_2afe5342dbcdb8ac =
 --
 --     [See also]: 'sDL_CreateGPUShader'
 --
---     [C declaration]: @SDL_BindGPUFragmentStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3516:34@
+--     [C declaration]: @SDL_BindGPUFragmentStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3529:34@
 sDL_BindGPUFragmentStorageBuffers
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -2967,7 +2967,7 @@ hs_bindgen_954941bccb6ac959 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_DrawGPUIndexedPrimitives@, defined at @SDL3\/SDL_gpu.h 3547:34@
+--     [C declaration]: @SDL_DrawGPUIndexedPrimitives@, defined at @SDL3\/SDL_gpu.h 3560:34@
 sDL_DrawGPUIndexedPrimitives
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3026,7 +3026,7 @@ hs_bindgen_7e1d85570a924ed1 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_DrawGPUPrimitives@, defined at @SDL3\/SDL_gpu.h 3575:34@
+--     [C declaration]: @SDL_DrawGPUPrimitives@, defined at @SDL3\/SDL_gpu.h 3588:34@
 sDL_DrawGPUPrimitives
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3076,7 +3076,7 @@ hs_bindgen_999f4bafc18ca643 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_DrawGPUPrimitivesIndirect@, defined at @SDL3\/SDL_gpu.h 3598:34@
+--     [C declaration]: @SDL_DrawGPUPrimitivesIndirect@, defined at @SDL3\/SDL_gpu.h 3611:34@
 sDL_DrawGPUPrimitivesIndirect
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3123,7 +3123,7 @@ hs_bindgen_2564f3889af73a8f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_DrawGPUIndexedPrimitivesIndirect@, defined at @SDL3\/SDL_gpu.h 3620:34@
+--     [C declaration]: @SDL_DrawGPUIndexedPrimitivesIndirect@, defined at @SDL3\/SDL_gpu.h 3633:34@
 sDL_DrawGPUIndexedPrimitivesIndirect
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3164,7 +3164,7 @@ hs_bindgen_d2de9afaf4e7a298 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_EndGPURenderPass@, defined at @SDL3\/SDL_gpu.h 3636:34@
+--     [C declaration]: @SDL_EndGPURenderPass@, defined at @SDL3\/SDL_gpu.h 3649:34@
 sDL_EndGPURenderPass
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3206,7 +3206,7 @@ hs_bindgen_04814702f1c40b5f =
 --
 --     [See also]: 'sDL_EndGPUComputePass'
 --
---     [C declaration]: @SDL_BeginGPUComputePass@, defined at @SDL3\/SDL_gpu.h 3678:50@
+--     [C declaration]: @SDL_BeginGPUComputePass@, defined at @SDL3\/SDL_gpu.h 3691:50@
 sDL_BeginGPUComputePass
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -3250,7 +3250,7 @@ hs_bindgen_b04b2c08eaccdba1 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_BindGPUComputePipeline@, defined at @SDL3\/SDL_gpu.h 3693:34@
+--     [C declaration]: @SDL_BindGPUComputePipeline@, defined at @SDL3\/SDL_gpu.h 3706:34@
 sDL_BindGPUComputePipeline
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -3293,7 +3293,7 @@ hs_bindgen_94f4eed2a54840f8 =
 --
 --     [See also]: 'sDL_CreateGPUComputePipeline'
 --
---     [C declaration]: @SDL_BindGPUComputeSamplers@, defined at @SDL3\/SDL_gpu.h 3716:34@
+--     [C declaration]: @SDL_BindGPUComputeSamplers@, defined at @SDL3\/SDL_gpu.h 3729:34@
 sDL_BindGPUComputeSamplers
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -3344,7 +3344,7 @@ hs_bindgen_f7ee457bab9d199a =
 --
 --     [See also]: 'sDL_CreateGPUComputePipeline'
 --
---     [C declaration]: @SDL_BindGPUComputeStorageTextures@, defined at @SDL3\/SDL_gpu.h 3740:34@
+--     [C declaration]: @SDL_BindGPUComputeStorageTextures@, defined at @SDL3\/SDL_gpu.h 3753:34@
 sDL_BindGPUComputeStorageTextures
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -3395,7 +3395,7 @@ hs_bindgen_641e269a64317ba1 =
 --
 --     [See also]: 'sDL_CreateGPUComputePipeline'
 --
---     [C declaration]: @SDL_BindGPUComputeStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3764:34@
+--     [C declaration]: @SDL_BindGPUComputeStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3777:34@
 sDL_BindGPUComputeStorageBuffers
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -3444,7 +3444,7 @@ hs_bindgen_bf60fb94f2ea8730 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_DispatchGPUCompute@, defined at @SDL3\/SDL_gpu.h 3790:34@
+--     [C declaration]: @SDL_DispatchGPUCompute@, defined at @SDL3\/SDL_gpu.h 3803:34@
 sDL_DispatchGPUCompute
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -3490,7 +3490,7 @@ hs_bindgen_0f44002961b2beb1 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_DispatchGPUComputeIndirect@, defined at @SDL3\/SDL_gpu.h 3814:34@
+--     [C declaration]: @SDL_DispatchGPUComputeIndirect@, defined at @SDL3\/SDL_gpu.h 3827:34@
 sDL_DispatchGPUComputeIndirect
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -3527,7 +3527,7 @@ hs_bindgen_3dd5760089aac51a =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_EndGPUComputePass@, defined at @SDL3\/SDL_gpu.h 3829:34@
+--     [C declaration]: @SDL_EndGPUComputePass@, defined at @SDL3\/SDL_gpu.h 3842:34@
 sDL_EndGPUComputePass
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -3561,7 +3561,7 @@ hs_bindgen_4482f6067e6e107e =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_MapGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 3849:36@
+--     [C declaration]: @SDL_MapGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 3862:36@
 sDL_MapGPUTransferBuffer
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -3598,7 +3598,7 @@ hs_bindgen_231a5479716b178e =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_UnmapGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 3862:34@
+--     [C declaration]: @SDL_UnmapGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 3875:34@
 sDL_UnmapGPUTransferBuffer
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -3635,7 +3635,7 @@ hs_bindgen_e6f2bf9a9fc498cb =
 --
 --     [See also]: 'sDL_EndGPUCopyPass'
 --
---     [C declaration]: @SDL_BeginGPUCopyPass@, defined at @SDL3\/SDL_gpu.h 3882:47@
+--     [C declaration]: @SDL_BeginGPUCopyPass@, defined at @SDL3\/SDL_gpu.h 3895:47@
 sDL_BeginGPUCopyPass
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -3671,7 +3671,7 @@ hs_bindgen_01d377001aa72f60 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_UploadToGPUTexture@, defined at @SDL3\/SDL_gpu.h 3902:34@
+--     [C declaration]: @SDL_UploadToGPUTexture@, defined at @SDL3\/SDL_gpu.h 3915:34@
 sDL_UploadToGPUTexture
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -3717,7 +3717,7 @@ hs_bindgen_6e1f7474e78322ce =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_UploadToGPUBuffer@, defined at @SDL3\/SDL_gpu.h 3922:34@
+--     [C declaration]: @SDL_UploadToGPUBuffer@, defined at @SDL3\/SDL_gpu.h 3935:34@
 sDL_UploadToGPUBuffer
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -3771,7 +3771,7 @@ hs_bindgen_918f11a3023e9438 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_CopyGPUTextureToTexture@, defined at @SDL3\/SDL_gpu.h 3949:34@
+--     [C declaration]: @SDL_CopyGPUTextureToTexture@, defined at @SDL3\/SDL_gpu.h 3962:34@
 sDL_CopyGPUTextureToTexture
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -3832,7 +3832,7 @@ hs_bindgen_7075b4fcc48051e5 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_CopyGPUBufferToBuffer@, defined at @SDL3\/SDL_gpu.h 3973:34@
+--     [C declaration]: @SDL_CopyGPUBufferToBuffer@, defined at @SDL3\/SDL_gpu.h 3986:34@
 sDL_CopyGPUBufferToBuffer
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -3881,7 +3881,7 @@ hs_bindgen_26b4b49d8544fb8f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_DownloadFromGPUTexture@, defined at @SDL3\/SDL_gpu.h 3993:34@
+--     [C declaration]: @SDL_DownloadFromGPUTexture@, defined at @SDL3\/SDL_gpu.h 4006:34@
 sDL_DownloadFromGPUTexture
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -3922,7 +3922,7 @@ hs_bindgen_d9824eebc00631e9 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_DownloadFromGPUBuffer@, defined at @SDL3\/SDL_gpu.h 4010:34@
+--     [C declaration]: @SDL_DownloadFromGPUBuffer@, defined at @SDL3\/SDL_gpu.h 4023:34@
 sDL_DownloadFromGPUBuffer
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -3957,7 +3957,7 @@ hs_bindgen_bf4e18ec8641dd60 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_EndGPUCopyPass@, defined at @SDL3\/SDL_gpu.h 4022:34@
+--     [C declaration]: @SDL_EndGPUCopyPass@, defined at @SDL3\/SDL_gpu.h 4035:34@
 sDL_EndGPUCopyPass
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -3987,7 +3987,7 @@ hs_bindgen_fa347415d8ba2bab =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GenerateMipmapsForGPUTexture@, defined at @SDL3\/SDL_gpu.h 4035:34@
+--     [C declaration]: @SDL_GenerateMipmapsForGPUTexture@, defined at @SDL3\/SDL_gpu.h 4048:34@
 sDL_GenerateMipmapsForGPUTexture
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -4022,7 +4022,7 @@ hs_bindgen_2cf48971e4a0bb02 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_BlitGPUTexture@, defined at @SDL3\/SDL_gpu.h 4049:34@
+--     [C declaration]: @SDL_BlitGPUTexture@, defined at @SDL3\/SDL_gpu.h 4062:34@
 sDL_BlitGPUTexture
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -4062,7 +4062,7 @@ hs_bindgen_7f2a5f493596626a =
 --
 --     [See also]: 'sDL_ClaimWindowForGPUDevice'
 --
---     [C declaration]: @SDL_WindowSupportsGPUSwapchainComposition@, defined at @SDL3\/SDL_gpu.h 4069:34@
+--     [C declaration]: @SDL_WindowSupportsGPUSwapchainComposition@, defined at @SDL3\/SDL_gpu.h 4082:34@
 sDL_WindowSupportsGPUSwapchainComposition
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -4107,7 +4107,7 @@ hs_bindgen_832a19beda5bc034 =
 --
 --     [See also]: 'sDL_ClaimWindowForGPUDevice'
 --
---     [C declaration]: @SDL_WindowSupportsGPUPresentMode@, defined at @SDL3\/SDL_gpu.h 4088:34@
+--     [C declaration]: @SDL_WindowSupportsGPUPresentMode@, defined at @SDL3\/SDL_gpu.h 4101:34@
 sDL_WindowSupportsGPUPresentMode
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -4154,7 +4154,7 @@ hs_bindgen_5eeb91d45dc27764 =
 --
 --     [See also]: 'sDL_WaitAndAcquireGPUSwapchainTexture', 'sDL_ReleaseWindowFromGPUDevice', 'sDL_WindowSupportsGPUPresentMode', 'sDL_WindowSupportsGPUSwapchainComposition'
 --
---     [C declaration]: @SDL_ClaimWindowForGPUDevice@, defined at @SDL3\/SDL_gpu.h 4120:34@
+--     [C declaration]: @SDL_ClaimWindowForGPUDevice@, defined at @SDL3\/SDL_gpu.h 4133:34@
 sDL_ClaimWindowForGPUDevice
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -4189,7 +4189,7 @@ hs_bindgen_00fb11a8b5935e0f =
 --
 --     [See also]: 'sDL_ClaimWindowForGPUDevice'
 --
---     [C declaration]: @SDL_ReleaseWindowFromGPUDevice@, defined at @SDL3\/SDL_gpu.h 4134:34@
+--     [C declaration]: @SDL_ReleaseWindowFromGPUDevice@, defined at @SDL3\/SDL_gpu.h 4147:34@
 sDL_ReleaseWindowFromGPUDevice
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -4234,7 +4234,7 @@ hs_bindgen_caf081d6c5e2aa14 =
 --
 --     [See also]: 'sDL_WindowSupportsGPUPresentMode', 'sDL_WindowSupportsGPUSwapchainComposition'
 --
---     [C declaration]: @SDL_SetGPUSwapchainParameters@, defined at @SDL3\/SDL_gpu.h 4161:34@
+--     [C declaration]: @SDL_SetGPUSwapchainParameters@, defined at @SDL3\/SDL_gpu.h 4174:34@
 sDL_SetGPUSwapchainParameters
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -4285,7 +4285,7 @@ hs_bindgen_04ce0909a6c26d29 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_SetGPUAllowedFramesInFlight@, defined at @SDL3\/SDL_gpu.h 4192:34@
+--     [C declaration]: @SDL_SetGPUAllowedFramesInFlight@, defined at @SDL3\/SDL_gpu.h 4205:34@
 sDL_SetGPUAllowedFramesInFlight
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -4322,7 +4322,7 @@ hs_bindgen_6389b81fd8780e8b =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGPUSwapchainTextureFormat@, defined at @SDL3\/SDL_gpu.h 4207:50@
+--     [C declaration]: @SDL_GetGPUSwapchainTextureFormat@, defined at @SDL3\/SDL_gpu.h 4220:50@
 sDL_GetGPUSwapchainTextureFormat
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -4375,7 +4375,7 @@ hs_bindgen_92ebdfd004d30834 =
 --
 --     [See also]: 'sDL_ClaimWindowForGPUDevice', 'sDL_SubmitGPUCommandBuffer', 'sDL_SubmitGPUCommandBufferAndAcquireFence', 'sDL_CancelGPUCommandBuffer', SDL_GetWindowSizeInPixels, 'sDL_WaitForGPUSwapchain', 'sDL_WaitAndAcquireGPUSwapchainTexture', 'sDL_SetGPUAllowedFramesInFlight'
 --
---     [C declaration]: @SDL_AcquireGPUSwapchainTexture@, defined at @SDL3\/SDL_gpu.h 4259:34@
+--     [C declaration]: @SDL_AcquireGPUSwapchainTexture@, defined at @SDL3\/SDL_gpu.h 4272:34@
 sDL_AcquireGPUSwapchainTexture
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -4426,7 +4426,7 @@ hs_bindgen_819c0e296688c2c8 =
 --
 --     [See also]: 'sDL_AcquireGPUSwapchainTexture', 'sDL_WaitAndAcquireGPUSwapchainTexture', 'sDL_SetGPUAllowedFramesInFlight'
 --
---     [C declaration]: @SDL_WaitForGPUSwapchain@, defined at @SDL3\/SDL_gpu.h 4283:34@
+--     [C declaration]: @SDL_WaitForGPUSwapchain@, defined at @SDL3\/SDL_gpu.h 4296:34@
 sDL_WaitForGPUSwapchain
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -4478,7 +4478,7 @@ hs_bindgen_b7be4df3492ace1e =
 --
 --     [See also]: 'sDL_SubmitGPUCommandBuffer', 'sDL_SubmitGPUCommandBufferAndAcquireFence', 'sDL_AcquireGPUSwapchainTexture'
 --
---     [C declaration]: @SDL_WaitAndAcquireGPUSwapchainTexture@, defined at @SDL3\/SDL_gpu.h 4329:34@
+--     [C declaration]: @SDL_WaitAndAcquireGPUSwapchainTexture@, defined at @SDL3\/SDL_gpu.h 4342:34@
 sDL_WaitAndAcquireGPUSwapchainTexture
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -4531,7 +4531,7 @@ hs_bindgen_6f98a07dd7e96530 =
 --
 --     [See also]: 'sDL_AcquireGPUCommandBuffer', 'sDL_WaitAndAcquireGPUSwapchainTexture', 'sDL_AcquireGPUSwapchainTexture', 'sDL_SubmitGPUCommandBufferAndAcquireFence'
 --
---     [C declaration]: @SDL_SubmitGPUCommandBuffer@, defined at @SDL3\/SDL_gpu.h 4357:34@
+--     [C declaration]: @SDL_SubmitGPUCommandBuffer@, defined at @SDL3\/SDL_gpu.h 4370:34@
 sDL_SubmitGPUCommandBuffer
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -4568,7 +4568,7 @@ hs_bindgen_897578b42f3c05e8 =
 --
 --     [See also]: 'sDL_AcquireGPUCommandBuffer', 'sDL_WaitAndAcquireGPUSwapchainTexture', 'sDL_AcquireGPUSwapchainTexture', 'sDL_SubmitGPUCommandBuffer', 'sDL_ReleaseGPUFence'
 --
---     [C declaration]: @SDL_SubmitGPUCommandBufferAndAcquireFence@, defined at @SDL3\/SDL_gpu.h 4384:44@
+--     [C declaration]: @SDL_SubmitGPUCommandBufferAndAcquireFence@, defined at @SDL3\/SDL_gpu.h 4397:44@
 sDL_SubmitGPUCommandBufferAndAcquireFence
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -4607,7 +4607,7 @@ hs_bindgen_e7e00ea7d024e9e9 =
 --
 --     [See also]: 'sDL_WaitAndAcquireGPUSwapchainTexture', 'sDL_AcquireGPUCommandBuffer', 'sDL_AcquireGPUSwapchainTexture'
 --
---     [C declaration]: @SDL_CancelGPUCommandBuffer@, defined at @SDL3\/SDL_gpu.h 4409:34@
+--     [C declaration]: @SDL_CancelGPUCommandBuffer@, defined at @SDL3\/SDL_gpu.h 4422:34@
 sDL_CancelGPUCommandBuffer
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -4638,7 +4638,7 @@ hs_bindgen_afeaba8d92329a17 =
 --
 --     [See also]: 'sDL_WaitForGPUFences'
 --
---     [C declaration]: @SDL_WaitForGPUIdle@, defined at @SDL3\/SDL_gpu.h 4423:34@
+--     [C declaration]: @SDL_WaitForGPUIdle@, defined at @SDL3\/SDL_gpu.h 4436:34@
 sDL_WaitForGPUIdle
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -4674,7 +4674,7 @@ hs_bindgen_c1152a4254c2282b =
 --
 --     [See also]: 'sDL_SubmitGPUCommandBufferAndAcquireFence', 'sDL_WaitForGPUIdle'
 --
---     [C declaration]: @SDL_WaitForGPUFences@, defined at @SDL3\/SDL_gpu.h 4442:34@
+--     [C declaration]: @SDL_WaitForGPUFences@, defined at @SDL3\/SDL_gpu.h 4455:34@
 sDL_WaitForGPUFences
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -4718,7 +4718,7 @@ hs_bindgen_b6027b7729f79f17 =
 --
 --     [See also]: 'sDL_SubmitGPUCommandBufferAndAcquireFence'
 --
---     [C declaration]: @SDL_QueryGPUFence@, defined at @SDL3\/SDL_gpu.h 4459:34@
+--     [C declaration]: @SDL_QueryGPUFence@, defined at @SDL3\/SDL_gpu.h 4472:34@
 sDL_QueryGPUFence
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -4754,7 +4754,7 @@ hs_bindgen_60db26ce4b928463 =
 --
 --     [See also]: 'sDL_SubmitGPUCommandBufferAndAcquireFence'
 --
---     [C declaration]: @SDL_ReleaseGPUFence@, defined at @SDL3\/SDL_gpu.h 4475:34@
+--     [C declaration]: @SDL_ReleaseGPUFence@, defined at @SDL3\/SDL_gpu.h 4488:34@
 sDL_ReleaseGPUFence
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -4788,7 +4788,7 @@ hs_bindgen_10b178c2418e1b7a =
 --
 --     [See also]: 'sDL_UploadToGPUTexture'
 --
---     [C declaration]: @SDL_GPUTextureFormatTexelBlockSize@, defined at @SDL3\/SDL_gpu.h 4491:36@
+--     [C declaration]: @SDL_GPUTextureFormatTexelBlockSize@, defined at @SDL3\/SDL_gpu.h 4504:36@
 sDL_GPUTextureFormatTexelBlockSize
   :: SDL_GPUTextureFormat
   -- ^
@@ -4823,7 +4823,7 @@ hs_bindgen_e7f998463fccba5a =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GPUTextureSupportsFormat@, defined at @SDL3\/SDL_gpu.h 4506:34@
+--     [C declaration]: @SDL_GPUTextureSupportsFormat@, defined at @SDL3\/SDL_gpu.h 4519:34@
 sDL_GPUTextureSupportsFormat
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -4868,7 +4868,7 @@ hs_bindgen_de6deb1af3775431 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GPUTextureSupportsSampleCount@, defined at @SDL3\/SDL_gpu.h 4522:34@
+--     [C declaration]: @SDL_GPUTextureSupportsSampleCount@, defined at @SDL3\/SDL_gpu.h 4535:34@
 sDL_GPUTextureSupportsSampleCount
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -4911,7 +4911,7 @@ hs_bindgen_d9b37eb9aa5f44b5 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_CalculateGPUTextureFormatSize@, defined at @SDL3\/SDL_gpu.h 4538:36@
+--     [C declaration]: @SDL_CalculateGPUTextureFormatSize@, defined at @SDL3\/SDL_gpu.h 4551:36@
 sDL_CalculateGPUTextureFormatSize
   :: SDL_GPUTextureFormat
   -- ^
@@ -4952,7 +4952,7 @@ hs_bindgen_128db189d446a117 =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @SDL_GetPixelFormatFromGPUTextureFormat@, defined at @SDL3\/SDL_gpu.h 4553:45@
+--     [C declaration]: @SDL_GetPixelFormatFromGPUTextureFormat@, defined at @SDL3\/SDL_gpu.h 4566:45@
 sDL_GetPixelFormatFromGPUTextureFormat
   :: SDL_GPUTextureFormat
   -- ^
@@ -4981,7 +4981,7 @@ hs_bindgen_af0c7c8e2642605b =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @SDL_GetGPUTextureFormatFromPixelFormat@, defined at @SDL3\/SDL_gpu.h 4565:50@
+--     [C declaration]: @SDL_GetGPUTextureFormatFromPixelFormat@, defined at @SDL3\/SDL_gpu.h 4578:50@
 sDL_GetGPUTextureFormatFromPixelFormat
   :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
   -- ^

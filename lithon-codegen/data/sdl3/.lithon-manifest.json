@@ -13,7 +13,7 @@
     "spec/SDL_dlopennote.yaml": "rhv3:4c22a304995795ad",
     "spec/SDL_endian.yaml": "rhv3:03449c3589cf7e27",
     "spec/SDL_error.yaml": "rhv3:813297078e1d2194",
-    "spec/SDL_events.yaml": "rhv3:e04fe51e61130b9a",
+    "spec/SDL_events.yaml": "rhv3:770f75238a2d509f",
     "spec/SDL_filesystem.yaml": "rhv3:fa6b69468609b28a",
     "spec/SDL_gamepad.yaml": "rhv3:cfd70bc0935a90e9",
     "spec/SDL_gpu.yaml": "rhv3:d7ff92a197c6985b",
@@ -62,6 +62,6 @@
   "generatorVersion": "0.1.1.0",
   "meta": {
     "headers": 58,
-    "sdlVersion": "3.4.2"
+    "sdlVersion": "3.4.16"
   }
 }

@@ -45,7 +45,7 @@ sDL_MINOR_VERSION = (4 :: BG.CInt)
 --
 --     [C declaration]: @macro SDL_MICRO_VERSION@, defined at @SDL3\/SDL_version.h 65:9@
 sDL_MICRO_VERSION :: BG.CInt
-sDL_MICRO_VERSION = (2 :: BG.CInt)
+sDL_MICRO_VERSION = (16 :: BG.CInt)
 
 -- | This macro turns the version numbers into a numeric value.
 --

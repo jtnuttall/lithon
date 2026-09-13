@@ -52,6 +52,7 @@ library
       Lithon.Codegen.Cli
       Lithon.Codegen.Sdl3
       Lithon.Codegen.Sdl3.Abi
+      Lithon.Codegen.Sdl3.Abi.Validate
       Lithon.Codegen.Sdl3.Alias
       Lithon.Codegen.Sdl3.Alias.Config
       Lithon.Codegen.Sdl3.Alias.Constants
@@ -339,12 +340,14 @@ test-suite lithon-codegen-test
       Backend.PackageTest
       Bindgen.DriverTest
       Sdl3.AbiRenderTest
+      Sdl3.AbiValidateTest
       Sdl3.AdapterSmokeTest
       Sdl3.AliasConfigTest
       Sdl3.AliasNamesTest
       Sdl3.AliasRenderTest
       Sdl3.CensusTest
       Sdl3.PlatformShimTest
+      Sdl3.VersionsTest
       Vulkan.Curate.ClosureTest
       Vulkan.CurateTest
       Vulkan.Generate.AbiTest

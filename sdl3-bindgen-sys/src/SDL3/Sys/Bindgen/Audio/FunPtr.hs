@@ -639,7 +639,7 @@ hs_bindgen_70df3deb87a6a291 =
 --
 --     [See also]: 'sDL_GetAudioDriver'
 --
---     [C declaration]: @SDL_GetNumAudioDrivers@, defined at @SDL3\/SDL_audio.h 477:33@
+--     [C declaration]: @SDL_GetNumAudioDrivers@, defined at @SDL3\/SDL_audio.h 478:33@
 sDL_GetNumAudioDrivers :: BG.FunPtr (IO BG.CInt)
 sDL_GetNumAudioDrivers =
   BG.unsafePerformIO hs_bindgen_70df3deb87a6a291
@@ -672,7 +672,7 @@ hs_bindgen_96a59296db34206f =
 --
 --     [See also]: 'sDL_GetNumAudioDrivers'
 --
---     [C declaration]: @SDL_GetAudioDriver@, defined at @SDL3\/SDL_audio.h 501:42@
+--     [C declaration]: @SDL_GetAudioDriver@, defined at @SDL3\/SDL_audio.h 502:42@
 sDL_GetAudioDriver :: BG.FunPtr (BG.CInt -> IO (PtrConst.PtrConst BG.CChar))
 sDL_GetAudioDriver =
   BG.unsafePerformIO hs_bindgen_96a59296db34206f
@@ -699,7 +699,7 @@ hs_bindgen_3b5e65309af7eb52 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetCurrentAudioDriver@, defined at @SDL3\/SDL_audio.h 517:42@
+--     [C declaration]: @SDL_GetCurrentAudioDriver@, defined at @SDL3\/SDL_audio.h 518:42@
 sDL_GetCurrentAudioDriver :: BG.FunPtr (IO (PtrConst.PtrConst BG.CChar))
 sDL_GetCurrentAudioDriver =
   BG.unsafePerformIO hs_bindgen_3b5e65309af7eb52
@@ -734,7 +734,7 @@ hs_bindgen_0154df1db50254cb =
 --
 --     [See also]: 'sDL_OpenAudioDevice', 'sDL_GetAudioRecordingDevices'
 --
---     [C declaration]: @SDL_GetAudioPlaybackDevices@, defined at @SDL3\/SDL_audio.h 546:49@
+--     [C declaration]: @SDL_GetAudioPlaybackDevices@, defined at @SDL3\/SDL_audio.h 547:49@
 sDL_GetAudioPlaybackDevices :: BG.FunPtr (BG.Ptr BG.CInt -> IO (BG.Ptr SDL_AudioDeviceID))
 sDL_GetAudioPlaybackDevices =
   BG.unsafePerformIO hs_bindgen_0154df1db50254cb
@@ -769,7 +769,7 @@ hs_bindgen_b1e17652d75669ba =
 --
 --     [See also]: 'sDL_OpenAudioDevice', 'sDL_GetAudioPlaybackDevices'
 --
---     [C declaration]: @SDL_GetAudioRecordingDevices@, defined at @SDL3\/SDL_audio.h 575:49@
+--     [C declaration]: @SDL_GetAudioRecordingDevices@, defined at @SDL3\/SDL_audio.h 576:49@
 sDL_GetAudioRecordingDevices :: BG.FunPtr (BG.Ptr BG.CInt -> IO (BG.Ptr SDL_AudioDeviceID))
 sDL_GetAudioRecordingDevices =
   BG.unsafePerformIO hs_bindgen_b1e17652d75669ba
@@ -800,7 +800,7 @@ hs_bindgen_dcc642abb8604857 =
 --
 --     [See also]: 'sDL_GetAudioPlaybackDevices', 'sDL_GetAudioRecordingDevices'
 --
---     [C declaration]: @SDL_GetAudioDeviceName@, defined at @SDL3\/SDL_audio.h 600:42@
+--     [C declaration]: @SDL_GetAudioDeviceName@, defined at @SDL3\/SDL_audio.h 601:42@
 sDL_GetAudioDeviceName :: BG.FunPtr (SDL_AudioDeviceID -> IO (PtrConst.PtrConst BG.CChar))
 sDL_GetAudioDeviceName =
   BG.unsafePerformIO hs_bindgen_dcc642abb8604857
@@ -842,7 +842,7 @@ hs_bindgen_7ee63106dd01fabe =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetAudioDeviceFormat@, defined at @SDL3\/SDL_audio.h 635:34@
+--     [C declaration]: @SDL_GetAudioDeviceFormat@, defined at @SDL3\/SDL_audio.h 636:34@
 sDL_GetAudioDeviceFormat
   :: BG.FunPtr (SDL_AudioDeviceID -> BG.Ptr SDL_AudioSpec -> BG.Ptr BG.CInt -> IO BG.CBool)
 sDL_GetAudioDeviceFormat =
@@ -879,7 +879,7 @@ hs_bindgen_d8865ee45cf3f909 =
 --
 --     [See also]: 'sDL_SetAudioStreamInputChannelMap'
 --
---     [C declaration]: @SDL_GetAudioDeviceChannelMap@, defined at @SDL3\/SDL_audio.h 658:35@
+--     [C declaration]: @SDL_GetAudioDeviceChannelMap@, defined at @SDL3\/SDL_audio.h 659:35@
 sDL_GetAudioDeviceChannelMap
   :: BG.FunPtr (SDL_AudioDeviceID -> BG.Ptr BG.CInt -> IO (BG.Ptr BG.CInt))
 sDL_GetAudioDeviceChannelMap =
@@ -930,7 +930,7 @@ hs_bindgen_a61ac8f884503a96 =
 --
 --     [See also]: 'sDL_CloseAudioDevice', 'sDL_GetAudioDeviceFormat'
 --
---     [C declaration]: @SDL_OpenAudioDevice@, defined at @SDL3\/SDL_audio.h 734:47@
+--     [C declaration]: @SDL_OpenAudioDevice@, defined at @SDL3\/SDL_audio.h 735:47@
 sDL_OpenAudioDevice
   :: BG.FunPtr (SDL_AudioDeviceID -> PtrConst.PtrConst SDL_AudioSpec -> IO SDL_AudioDeviceID)
 sDL_OpenAudioDevice =
@@ -964,7 +964,7 @@ hs_bindgen_6499cfa703c6758f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_IsAudioDevicePhysical@, defined at @SDL3\/SDL_audio.h 759:34@
+--     [C declaration]: @SDL_IsAudioDevicePhysical@, defined at @SDL3\/SDL_audio.h 760:34@
 sDL_IsAudioDevicePhysical :: BG.FunPtr (SDL_AudioDeviceID -> IO BG.CBool)
 sDL_IsAudioDevicePhysical =
   BG.unsafePerformIO hs_bindgen_6499cfa703c6758f
@@ -993,7 +993,7 @@ hs_bindgen_a0086d8f92145768 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_IsAudioDevicePlayback@, defined at @SDL3\/SDL_audio.h 773:34@
+--     [C declaration]: @SDL_IsAudioDevicePlayback@, defined at @SDL3\/SDL_audio.h 774:34@
 sDL_IsAudioDevicePlayback :: BG.FunPtr (SDL_AudioDeviceID -> IO BG.CBool)
 sDL_IsAudioDevicePlayback =
   BG.unsafePerformIO hs_bindgen_a0086d8f92145768
@@ -1030,7 +1030,7 @@ hs_bindgen_1003717acae7ce8b =
 --
 --     [See also]: 'sDL_ResumeAudioDevice', 'sDL_AudioDevicePaused'
 --
---     [C declaration]: @SDL_PauseAudioDevice@, defined at @SDL3\/SDL_audio.h 804:34@
+--     [C declaration]: @SDL_PauseAudioDevice@, defined at @SDL3\/SDL_audio.h 805:34@
 sDL_PauseAudioDevice :: BG.FunPtr (SDL_AudioDeviceID -> IO BG.CBool)
 sDL_PauseAudioDevice =
   BG.unsafePerformIO hs_bindgen_1003717acae7ce8b
@@ -1065,7 +1065,7 @@ hs_bindgen_df9a550a09c18c65 =
 --
 --     [See also]: 'sDL_AudioDevicePaused', 'sDL_PauseAudioDevice'
 --
---     [C declaration]: @SDL_ResumeAudioDevice@, defined at @SDL3\/SDL_audio.h 832:34@
+--     [C declaration]: @SDL_ResumeAudioDevice@, defined at @SDL3\/SDL_audio.h 833:34@
 sDL_ResumeAudioDevice :: BG.FunPtr (SDL_AudioDeviceID -> IO BG.CBool)
 sDL_ResumeAudioDevice =
   BG.unsafePerformIO hs_bindgen_df9a550a09c18c65
@@ -1098,7 +1098,7 @@ hs_bindgen_4580e249e63ded2b =
 --
 --     [See also]: 'sDL_PauseAudioDevice', 'sDL_ResumeAudioDevice'
 --
---     [C declaration]: @SDL_AudioDevicePaused@, defined at @SDL3\/SDL_audio.h 854:34@
+--     [C declaration]: @SDL_AudioDevicePaused@, defined at @SDL3\/SDL_audio.h 855:34@
 sDL_AudioDevicePaused :: BG.FunPtr (SDL_AudioDeviceID -> IO BG.CBool)
 sDL_AudioDevicePaused =
   BG.unsafePerformIO hs_bindgen_4580e249e63ded2b
@@ -1133,7 +1133,7 @@ hs_bindgen_6f1b270afdab6bb6 =
 --
 --     [See also]: 'sDL_SetAudioDeviceGain'
 --
---     [C declaration]: @SDL_GetAudioDeviceGain@, defined at @SDL3\/SDL_audio.h 877:35@
+--     [C declaration]: @SDL_GetAudioDeviceGain@, defined at @SDL3\/SDL_audio.h 878:35@
 sDL_GetAudioDeviceGain :: BG.FunPtr (SDL_AudioDeviceID -> IO BG.CFloat)
 sDL_GetAudioDeviceGain =
   BG.unsafePerformIO hs_bindgen_6f1b270afdab6bb6
@@ -1172,7 +1172,7 @@ hs_bindgen_aa933d15c7bb8ed3 =
 --
 --     [See also]: 'sDL_GetAudioDeviceGain'
 --
---     [C declaration]: @SDL_SetAudioDeviceGain@, defined at @SDL3\/SDL_audio.h 912:34@
+--     [C declaration]: @SDL_SetAudioDeviceGain@, defined at @SDL3\/SDL_audio.h 913:34@
 sDL_SetAudioDeviceGain :: BG.FunPtr (SDL_AudioDeviceID -> BG.CFloat -> IO BG.CBool)
 sDL_SetAudioDeviceGain =
   BG.unsafePerformIO hs_bindgen_aa933d15c7bb8ed3
@@ -1203,7 +1203,7 @@ hs_bindgen_b303dd6fccc99188 =
 --
 --     [See also]: 'sDL_OpenAudioDevice'
 --
---     [C declaration]: @SDL_CloseAudioDevice@, defined at @SDL3\/SDL_audio.h 933:34@
+--     [C declaration]: @SDL_CloseAudioDevice@, defined at @SDL3\/SDL_audio.h 934:34@
 sDL_CloseAudioDevice :: BG.FunPtr (SDL_AudioDeviceID -> IO ())
 sDL_CloseAudioDevice =
   BG.unsafePerformIO hs_bindgen_b303dd6fccc99188
@@ -1248,7 +1248,7 @@ hs_bindgen_3e9d0d17f11c1de8 =
 --
 --     [See also]: 'sDL_BindAudioStreams', 'sDL_UnbindAudioStream', 'sDL_GetAudioStreamDevice'
 --
---     [C declaration]: @SDL_BindAudioStreams@, defined at @SDL3\/SDL_audio.h 973:34@
+--     [C declaration]: @SDL_BindAudioStreams@, defined at @SDL3\/SDL_audio.h 974:34@
 sDL_BindAudioStreams
   :: BG.FunPtr
        (SDL_AudioDeviceID -> PtrConst.PtrConst (BG.Ptr SDL_AudioStream) -> BG.CInt -> IO BG.CBool)
@@ -1284,7 +1284,7 @@ hs_bindgen_d6749d59b79ec0ff =
 --
 --     [See also]: 'sDL_BindAudioStreams', 'sDL_UnbindAudioStream', 'sDL_GetAudioStreamDevice'
 --
---     [C declaration]: @SDL_BindAudioStream@, defined at @SDL3\/SDL_audio.h 994:34@
+--     [C declaration]: @SDL_BindAudioStream@, defined at @SDL3\/SDL_audio.h 995:34@
 sDL_BindAudioStream :: BG.FunPtr (SDL_AudioDeviceID -> BG.Ptr SDL_AudioStream -> IO BG.CBool)
 sDL_BindAudioStream =
   BG.unsafePerformIO hs_bindgen_d6749d59b79ec0ff
@@ -1318,7 +1318,7 @@ hs_bindgen_d96a4f36c25b0021 =
 --
 --     [See also]: 'sDL_BindAudioStreams'
 --
---     [C declaration]: @SDL_UnbindAudioStreams@, defined at @SDL3\/SDL_audio.h 1015:34@
+--     [C declaration]: @SDL_UnbindAudioStreams@, defined at @SDL3\/SDL_audio.h 1016:34@
 sDL_UnbindAudioStreams :: BG.FunPtr (PtrConst.PtrConst (BG.Ptr SDL_AudioStream) -> BG.CInt -> IO ())
 sDL_UnbindAudioStreams =
   BG.unsafePerformIO hs_bindgen_d96a4f36c25b0021
@@ -1347,7 +1347,7 @@ hs_bindgen_8afc843a61a3bdb8 =
 --
 --     [See also]: 'sDL_BindAudioStream'
 --
---     [C declaration]: @SDL_UnbindAudioStream@, defined at @SDL3\/SDL_audio.h 1031:34@
+--     [C declaration]: @SDL_UnbindAudioStream@, defined at @SDL3\/SDL_audio.h 1032:34@
 sDL_UnbindAudioStream :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO ())
 sDL_UnbindAudioStream =
   BG.unsafePerformIO hs_bindgen_8afc843a61a3bdb8
@@ -1380,7 +1380,7 @@ hs_bindgen_218bd50ed6f98e9c =
 --
 --     [See also]: 'sDL_BindAudioStream', 'sDL_BindAudioStreams'
 --
---     [C declaration]: @SDL_GetAudioStreamDevice@, defined at @SDL3\/SDL_audio.h 1052:47@
+--     [C declaration]: @SDL_GetAudioStreamDevice@, defined at @SDL3\/SDL_audio.h 1053:47@
 sDL_GetAudioStreamDevice :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO SDL_AudioDeviceID)
 sDL_GetAudioStreamDevice =
   BG.unsafePerformIO hs_bindgen_218bd50ed6f98e9c
@@ -1403,9 +1403,11 @@ hs_bindgen_7305536d807d048c =
 
 -- | Create a new audio stream.
 --
---     [@src_spec@]: the format details of the input audio.
+--     Note that @src_spec@ or @dst_spec@ may be NULL, but any attempts to put or get data from an audio stream will fail until it has valid specs assigned to both ends of the stream. Specs can be assigned later through @SDL_SetAudioStreamFormat()@, or binding the stream to an audio device (which will set the format of only the input or output, depending on what kind of device the stream was bound to).
 --
---     [@dst_spec@]: the format details of the output audio.
+--     [@src_spec@]: the format details of the input audio. May be NULL.
+--
+--     [@dst_spec@]: the format details of the output audio. May be NULL.
 --
 --     [Returns]: a new audio stream on success or NULL on failure; call SDL_GetError() for more information.
 --
@@ -1415,7 +1417,7 @@ hs_bindgen_7305536d807d048c =
 --
 --     [See also]: 'sDL_PutAudioStreamData', 'sDL_GetAudioStreamData', 'sDL_GetAudioStreamAvailable', 'sDL_FlushAudioStream', 'sDL_ClearAudioStream', 'sDL_SetAudioStreamFormat', 'sDL_DestroyAudioStream'
 --
---     [C declaration]: @SDL_CreateAudioStream@, defined at @SDL3\/SDL_audio.h 1074:47@
+--     [C declaration]: @SDL_CreateAudioStream@, defined at @SDL3\/SDL_audio.h 1082:47@
 sDL_CreateAudioStream
   :: BG.FunPtr
        (PtrConst.PtrConst SDL_AudioSpec -> PtrConst.PtrConst SDL_AudioSpec -> IO (BG.Ptr SDL_AudioStream))
@@ -1449,7 +1451,7 @@ hs_bindgen_73d6922c8243e33c =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetAudioStreamProperties@, defined at @SDL3\/SDL_audio.h 1098:46@
+--     [C declaration]: @SDL_GetAudioStreamProperties@, defined at @SDL3\/SDL_audio.h 1106:46@
 sDL_GetAudioStreamProperties
   :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID)
 sDL_GetAudioStreamProperties =
@@ -1485,7 +1487,7 @@ hs_bindgen_eb3398e3b41382ce =
 --
 --     [See also]: 'sDL_SetAudioStreamFormat'
 --
---     [C declaration]: @SDL_GetAudioStreamFormat@, defined at @SDL3\/SDL_audio.h 1119:34@
+--     [C declaration]: @SDL_GetAudioStreamFormat@, defined at @SDL3\/SDL_audio.h 1127:34@
 sDL_GetAudioStreamFormat
   :: BG.FunPtr (BG.Ptr SDL_AudioStream -> BG.Ptr SDL_AudioSpec -> BG.Ptr SDL_AudioSpec -> IO BG.CBool)
 sDL_GetAudioStreamFormat =
@@ -1519,6 +1521,8 @@ hs_bindgen_53ea32f5417e7afe =
 --
 --     If a stream is bound to a device, then the format of the side of the stream bound to a device cannot be changed (src_spec for recording devices, dst_spec for playback devices). Attempts to make a change to this side will be ignored, but this will not report an error. The other side\'s format can be changed.
 --
+--     @src_spec@ and @dst_spec@ may each be NULL; a NULL spec signals not to change the current format for that side of the stream.
+--
 --     [@stream@]: the stream the format is being changed.
 --
 --     [@src_spec@]: the new format of the audio input; if NULL, it is not changed.
@@ -1533,7 +1537,7 @@ hs_bindgen_53ea32f5417e7afe =
 --
 --     [See also]: 'sDL_GetAudioStreamFormat', 'sDL_SetAudioStreamFrequencyRatio'
 --
---     [C declaration]: @SDL_SetAudioStreamFormat@, defined at @SDL3\/SDL_audio.h 1156:34@
+--     [C declaration]: @SDL_SetAudioStreamFormat@, defined at @SDL3\/SDL_audio.h 1167:34@
 sDL_SetAudioStreamFormat
   :: BG.FunPtr
        ( BG.Ptr SDL_AudioStream
@@ -1568,7 +1572,7 @@ hs_bindgen_b61bdb5d542753f6 =
 --
 --     [See also]: 'sDL_SetAudioStreamFrequencyRatio'
 --
---     [C declaration]: @SDL_GetAudioStreamFrequencyRatio@, defined at @SDL3\/SDL_audio.h 1172:35@
+--     [C declaration]: @SDL_GetAudioStreamFrequencyRatio@, defined at @SDL3\/SDL_audio.h 1183:35@
 sDL_GetAudioStreamFrequencyRatio :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CFloat)
 sDL_GetAudioStreamFrequencyRatio =
   BG.unsafePerformIO hs_bindgen_b61bdb5d542753f6
@@ -1603,7 +1607,7 @@ hs_bindgen_ce1524607d0065a9 =
 --
 --     [See also]: 'sDL_GetAudioStreamFrequencyRatio', 'sDL_SetAudioStreamFormat'
 --
---     [C declaration]: @SDL_SetAudioStreamFrequencyRatio@, defined at @SDL3\/SDL_audio.h 1200:34@
+--     [C declaration]: @SDL_SetAudioStreamFrequencyRatio@, defined at @SDL3\/SDL_audio.h 1211:34@
 sDL_SetAudioStreamFrequencyRatio :: BG.FunPtr (BG.Ptr SDL_AudioStream -> BG.CFloat -> IO BG.CBool)
 sDL_SetAudioStreamFrequencyRatio =
   BG.unsafePerformIO hs_bindgen_ce1524607d0065a9
@@ -1636,7 +1640,7 @@ hs_bindgen_a83ce7d2a5163b17 =
 --
 --     [See also]: 'sDL_SetAudioStreamGain'
 --
---     [C declaration]: @SDL_GetAudioStreamGain@, defined at @SDL3\/SDL_audio.h 1221:35@
+--     [C declaration]: @SDL_GetAudioStreamGain@, defined at @SDL3\/SDL_audio.h 1232:35@
 sDL_GetAudioStreamGain :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CFloat)
 sDL_GetAudioStreamGain =
   BG.unsafePerformIO hs_bindgen_a83ce7d2a5163b17
@@ -1673,7 +1677,7 @@ hs_bindgen_79a25e2eef272c3b =
 --
 --     [See also]: 'sDL_GetAudioStreamGain'
 --
---     [C declaration]: @SDL_SetAudioStreamGain@, defined at @SDL3\/SDL_audio.h 1246:34@
+--     [C declaration]: @SDL_SetAudioStreamGain@, defined at @SDL3\/SDL_audio.h 1257:34@
 sDL_SetAudioStreamGain :: BG.FunPtr (BG.Ptr SDL_AudioStream -> BG.CFloat -> IO BG.CBool)
 sDL_SetAudioStreamGain =
   BG.unsafePerformIO hs_bindgen_79a25e2eef272c3b
@@ -1709,7 +1713,7 @@ hs_bindgen_8335e23836f4112d =
 --
 --     [See also]: 'sDL_SetAudioStreamInputChannelMap'
 --
---     [C declaration]: @SDL_GetAudioStreamInputChannelMap@, defined at @SDL3\/SDL_audio.h 1270:35@
+--     [C declaration]: @SDL_GetAudioStreamInputChannelMap@, defined at @SDL3\/SDL_audio.h 1281:35@
 sDL_GetAudioStreamInputChannelMap
   :: BG.FunPtr (BG.Ptr SDL_AudioStream -> BG.Ptr BG.CInt -> IO (BG.Ptr BG.CInt))
 sDL_GetAudioStreamInputChannelMap =
@@ -1746,7 +1750,7 @@ hs_bindgen_fa8ad3c08cbd6973 =
 --
 --     [See also]: 'sDL_SetAudioStreamInputChannelMap'
 --
---     [C declaration]: @SDL_GetAudioStreamOutputChannelMap@, defined at @SDL3\/SDL_audio.h 1294:35@
+--     [C declaration]: @SDL_GetAudioStreamOutputChannelMap@, defined at @SDL3\/SDL_audio.h 1305:35@
 sDL_GetAudioStreamOutputChannelMap
   :: BG.FunPtr (BG.Ptr SDL_AudioStream -> BG.Ptr BG.CInt -> IO (BG.Ptr BG.CInt))
 sDL_GetAudioStreamOutputChannelMap =
@@ -1797,9 +1801,9 @@ hs_bindgen_779c5c09495318d9 =
 --
 --     @since 3.2.0
 --
---     [See also]: 'sDL_SetAudioStreamInputChannelMap'
+--     [See also]: 'sDL_SetAudioStreamOutputChannelMap'
 --
---     [C declaration]: @SDL_SetAudioStreamInputChannelMap@, defined at @SDL3\/SDL_audio.h 1354:34@
+--     [C declaration]: @SDL_SetAudioStreamInputChannelMap@, defined at @SDL3\/SDL_audio.h 1365:34@
 sDL_SetAudioStreamInputChannelMap
   :: BG.FunPtr (BG.Ptr SDL_AudioStream -> PtrConst.PtrConst BG.CInt -> BG.CInt -> IO BG.CBool)
 sDL_SetAudioStreamInputChannelMap =
@@ -1852,7 +1856,7 @@ hs_bindgen_aea000b7665d902d =
 --
 --     [See also]: 'sDL_SetAudioStreamInputChannelMap'
 --
---     [C declaration]: @SDL_SetAudioStreamOutputChannelMap@, defined at @SDL3\/SDL_audio.h 1412:34@
+--     [C declaration]: @SDL_SetAudioStreamOutputChannelMap@, defined at @SDL3\/SDL_audio.h 1423:34@
 sDL_SetAudioStreamOutputChannelMap
   :: BG.FunPtr (BG.Ptr SDL_AudioStream -> PtrConst.PtrConst BG.CInt -> BG.CInt -> IO BG.CBool)
 sDL_SetAudioStreamOutputChannelMap =
@@ -1891,7 +1895,7 @@ hs_bindgen_958cb85cef653993 =
 --
 --     [See also]: 'sDL_ClearAudioStream', 'sDL_FlushAudioStream', 'sDL_GetAudioStreamData', 'sDL_GetAudioStreamQueued'
 --
---     [C declaration]: @SDL_PutAudioStreamData@, defined at @SDL3\/SDL_audio.h 1442:34@
+--     [C declaration]: @SDL_PutAudioStreamData@, defined at @SDL3\/SDL_audio.h 1453:34@
 sDL_PutAudioStreamData
   :: BG.FunPtr (BG.Ptr SDL_AudioStream -> PtrConst.PtrConst BG.Void -> BG.CInt -> IO BG.CBool)
 sDL_PutAudioStreamData =
@@ -1947,7 +1951,7 @@ hs_bindgen_29041de46ea3d0a6 =
 --
 --     [See also]: 'sDL_ClearAudioStream', 'sDL_FlushAudioStream', 'sDL_GetAudioStreamData', 'sDL_GetAudioStreamQueued'
 --
---     [C declaration]: @SDL_PutAudioStreamDataNoCopy@, defined at @SDL3\/SDL_audio.h 1519:34@
+--     [C declaration]: @SDL_PutAudioStreamDataNoCopy@, defined at @SDL3\/SDL_audio.h 1530:34@
 sDL_PutAudioStreamDataNoCopy
   :: BG.FunPtr
        ( BG.Ptr SDL_AudioStream
@@ -2009,7 +2013,7 @@ hs_bindgen_8d42e0e8a50f7193 =
 --
 --     [See also]: 'sDL_ClearAudioStream', 'sDL_FlushAudioStream', 'sDL_GetAudioStreamData', 'sDL_GetAudioStreamQueued'
 --
---     [C declaration]: @SDL_PutAudioStreamPlanarData@, defined at @SDL3\/SDL_audio.h 1572:34@
+--     [C declaration]: @SDL_PutAudioStreamPlanarData@, defined at @SDL3\/SDL_audio.h 1583:34@
 sDL_PutAudioStreamPlanarData
   :: BG.FunPtr
        ( BG.Ptr SDL_AudioStream
@@ -2054,7 +2058,7 @@ hs_bindgen_c52b30082bdb58cd =
 --
 --     [See also]: 'sDL_ClearAudioStream', 'sDL_GetAudioStreamAvailable', 'sDL_PutAudioStreamData'
 --
---     [C declaration]: @SDL_GetAudioStreamData@, defined at @SDL3\/SDL_audio.h 1602:33@
+--     [C declaration]: @SDL_GetAudioStreamData@, defined at @SDL3\/SDL_audio.h 1613:33@
 sDL_GetAudioStreamData
   :: BG.FunPtr (BG.Ptr SDL_AudioStream -> BG.Ptr BG.Void -> BG.CInt -> IO BG.CInt)
 sDL_GetAudioStreamData =
@@ -2088,7 +2092,7 @@ hs_bindgen_887ee267fde7c9f0 =
 --
 --     [See also]: 'sDL_GetAudioStreamData', 'sDL_PutAudioStreamData'
 --
---     [C declaration]: @SDL_GetAudioStreamAvailable@, defined at @SDL3\/SDL_audio.h 1628:33@
+--     [C declaration]: @SDL_GetAudioStreamAvailable@, defined at @SDL3\/SDL_audio.h 1639:33@
 sDL_GetAudioStreamAvailable :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CInt)
 sDL_GetAudioStreamAvailable =
   BG.unsafePerformIO hs_bindgen_887ee267fde7c9f0
@@ -2125,7 +2129,7 @@ hs_bindgen_30f43c9a9503bb9c =
 --
 --     [See also]: 'sDL_PutAudioStreamData', 'sDL_ClearAudioStream'
 --
---     [C declaration]: @SDL_GetAudioStreamQueued@, defined at @SDL3\/SDL_audio.h 1667:33@
+--     [C declaration]: @SDL_GetAudioStreamQueued@, defined at @SDL3\/SDL_audio.h 1678:33@
 sDL_GetAudioStreamQueued :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CInt)
 sDL_GetAudioStreamQueued =
   BG.unsafePerformIO hs_bindgen_30f43c9a9503bb9c
@@ -2156,7 +2160,7 @@ hs_bindgen_b5a765a41b34efed =
 --
 --     [See also]: 'sDL_PutAudioStreamData'
 --
---     [C declaration]: @SDL_FlushAudioStream@, defined at @SDL3\/SDL_audio.h 1688:34@
+--     [C declaration]: @SDL_FlushAudioStream@, defined at @SDL3\/SDL_audio.h 1699:34@
 sDL_FlushAudioStream :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CBool)
 sDL_FlushAudioStream =
   BG.unsafePerformIO hs_bindgen_b5a765a41b34efed
@@ -2187,7 +2191,7 @@ hs_bindgen_66aa75f68cad1a60 =
 --
 --     [See also]: 'sDL_GetAudioStreamAvailable', 'sDL_GetAudioStreamData', 'sDL_GetAudioStreamQueued', 'sDL_PutAudioStreamData'
 --
---     [C declaration]: @SDL_ClearAudioStream@, defined at @SDL3\/SDL_audio.h 1709:34@
+--     [C declaration]: @SDL_ClearAudioStream@, defined at @SDL3\/SDL_audio.h 1720:34@
 sDL_ClearAudioStream :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CBool)
 sDL_ClearAudioStream =
   BG.unsafePerformIO hs_bindgen_66aa75f68cad1a60
@@ -2220,7 +2224,7 @@ hs_bindgen_65bad5f751085af2 =
 --
 --     [See also]: 'sDL_ResumeAudioStreamDevice'
 --
---     [C declaration]: @SDL_PauseAudioStreamDevice@, defined at @SDL3\/SDL_audio.h 1733:34@
+--     [C declaration]: @SDL_PauseAudioStreamDevice@, defined at @SDL3\/SDL_audio.h 1744:34@
 sDL_PauseAudioStreamDevice :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CBool)
 sDL_PauseAudioStreamDevice =
   BG.unsafePerformIO hs_bindgen_65bad5f751085af2
@@ -2253,7 +2257,7 @@ hs_bindgen_3422451103f73d83 =
 --
 --     [See also]: 'sDL_PauseAudioStreamDevice'
 --
---     [C declaration]: @SDL_ResumeAudioStreamDevice@, defined at @SDL3\/SDL_audio.h 1756:34@
+--     [C declaration]: @SDL_ResumeAudioStreamDevice@, defined at @SDL3\/SDL_audio.h 1767:34@
 sDL_ResumeAudioStreamDevice :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CBool)
 sDL_ResumeAudioStreamDevice =
   BG.unsafePerformIO hs_bindgen_3422451103f73d83
@@ -2284,7 +2288,7 @@ hs_bindgen_3e6ce96a7f944949 =
 --
 --     [See also]: 'sDL_PauseAudioStreamDevice', 'sDL_ResumeAudioStreamDevice'
 --
---     [C declaration]: @SDL_AudioStreamDevicePaused@, defined at @SDL3\/SDL_audio.h 1775:34@
+--     [C declaration]: @SDL_AudioStreamDevicePaused@, defined at @SDL3\/SDL_audio.h 1786:34@
 sDL_AudioStreamDevicePaused :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CBool)
 sDL_AudioStreamDevicePaused =
   BG.unsafePerformIO hs_bindgen_3e6ce96a7f944949
@@ -2319,7 +2323,7 @@ hs_bindgen_0d7bbaa2282f61af =
 --
 --     [See also]: 'sDL_UnlockAudioStream'
 --
---     [C declaration]: @SDL_LockAudioStream@, defined at @SDL3\/SDL_audio.h 1804:34@
+--     [C declaration]: @SDL_LockAudioStream@, defined at @SDL3\/SDL_audio.h 1815:34@
 sDL_LockAudioStream :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CBool)
 sDL_LockAudioStream =
   BG.unsafePerformIO hs_bindgen_0d7bbaa2282f61af
@@ -2350,7 +2354,7 @@ hs_bindgen_01197b6703408060 =
 --
 --     [See also]: 'sDL_LockAudioStream'
 --
---     [C declaration]: @SDL_UnlockAudioStream@, defined at @SDL3\/SDL_audio.h 1823:34@
+--     [C declaration]: @SDL_UnlockAudioStream@, defined at @SDL3\/SDL_audio.h 1834:34@
 sDL_UnlockAudioStream :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CBool)
 sDL_UnlockAudioStream =
   BG.unsafePerformIO hs_bindgen_01197b6703408060
@@ -2398,7 +2402,7 @@ hs_bindgen_c3613cf8e8649c19 =
 --
 --     [See also]: 'sDL_SetAudioStreamPutCallback'
 --
---     [C declaration]: @SDL_SetAudioStreamGetCallback@, defined at @SDL3\/SDL_audio.h 1911:34@
+--     [C declaration]: @SDL_SetAudioStreamGetCallback@, defined at @SDL3\/SDL_audio.h 1924:34@
 sDL_SetAudioStreamGetCallback
   :: BG.FunPtr (BG.Ptr SDL_AudioStream -> SDL_AudioStreamCallback -> BG.Ptr BG.Void -> IO BG.CBool)
 sDL_SetAudioStreamGetCallback =
@@ -2449,7 +2453,7 @@ hs_bindgen_94194526836dd7bc =
 --
 --     [See also]: 'sDL_SetAudioStreamGetCallback'
 --
---     [C declaration]: @SDL_SetAudioStreamPutCallback@, defined at @SDL3\/SDL_audio.h 1960:34@
+--     [C declaration]: @SDL_SetAudioStreamPutCallback@, defined at @SDL3\/SDL_audio.h 1973:34@
 sDL_SetAudioStreamPutCallback
   :: BG.FunPtr (BG.Ptr SDL_AudioStream -> SDL_AudioStreamCallback -> BG.Ptr BG.Void -> IO BG.CBool)
 sDL_SetAudioStreamPutCallback =
@@ -2481,7 +2485,7 @@ hs_bindgen_8414956b9aa941e0 =
 --
 --     [See also]: 'sDL_CreateAudioStream'
 --
---     [C declaration]: @SDL_DestroyAudioStream@, defined at @SDL3\/SDL_audio.h 1982:34@
+--     [C declaration]: @SDL_DestroyAudioStream@, defined at @SDL3\/SDL_audio.h 1995:34@
 sDL_DestroyAudioStream :: BG.FunPtr (BG.Ptr SDL_AudioStream -> IO ())
 sDL_DestroyAudioStream =
   BG.unsafePerformIO hs_bindgen_8414956b9aa941e0
@@ -2543,7 +2547,7 @@ hs_bindgen_e8ad9974dfab54c1 =
 --
 --     [See also]: 'sDL_GetAudioStreamDevice', 'sDL_ResumeAudioStreamDevice'
 --
---     [C declaration]: @SDL_OpenAudioDeviceStream@, defined at @SDL3\/SDL_audio.h 2045:47@
+--     [C declaration]: @SDL_OpenAudioDeviceStream@, defined at @SDL3\/SDL_audio.h 2058:47@
 sDL_OpenAudioDeviceStream
   :: BG.FunPtr
        ( SDL_AudioDeviceID
@@ -2600,7 +2604,7 @@ hs_bindgen_fb49ec8721a9eaae =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_SetAudioPostmixCallback@, defined at @SDL3\/SDL_audio.h 2136:34@
+--     [C declaration]: @SDL_SetAudioPostmixCallback@, defined at @SDL3\/SDL_audio.h 2149:34@
 sDL_SetAudioPostmixCallback
   :: BG.FunPtr (SDL_AudioDeviceID -> SDL_AudioPostmixCallback -> BG.Ptr BG.Void -> IO BG.CBool)
 sDL_SetAudioPostmixCallback =
@@ -2678,7 +2682,7 @@ hs_bindgen_aeaf62387043ab14 =
 --
 --     [See also]: SDL_free, 'sDL_LoadWAV'
 --
---     [C declaration]: @SDL_LoadWAV_IO@, defined at @SDL3\/SDL_audio.h 2217:34@
+--     [C declaration]: @SDL_LoadWAV_IO@, defined at @SDL3\/SDL_audio.h 2230:34@
 sDL_LoadWAV_IO
   :: BG.FunPtr
        ( BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream
@@ -2740,7 +2744,7 @@ hs_bindgen_23688fb6d15b1a20 =
 --
 --     [See also]: SDL_free, 'sDL_LoadWAV_IO'
 --
---     [C declaration]: @SDL_LoadWAV@, defined at @SDL3\/SDL_audio.h 2253:34@
+--     [C declaration]: @SDL_LoadWAV@, defined at @SDL3\/SDL_audio.h 2266:34@
 sDL_LoadWAV
   :: BG.FunPtr
        ( PtrConst.PtrConst BG.CChar
@@ -2800,7 +2804,7 @@ hs_bindgen_b67274f0c4cb98dd =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_MixAudio@, defined at @SDL3\/SDL_audio.h 2289:34@
+--     [C declaration]: @SDL_MixAudio@, defined at @SDL3\/SDL_audio.h 2302:34@
 sDL_MixAudio
   :: BG.FunPtr
        ( BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint8
@@ -2860,7 +2864,7 @@ hs_bindgen_94a0a8ff1b94e777 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_ConvertAudioSamples@, defined at @SDL3\/SDL_audio.h 2319:34@
+--     [C declaration]: @SDL_ConvertAudioSamples@, defined at @SDL3\/SDL_audio.h 2332:34@
 sDL_ConvertAudioSamples
   :: BG.FunPtr
        ( PtrConst.PtrConst SDL_AudioSpec
@@ -2896,7 +2900,7 @@ hs_bindgen_8a62dc82ce668b2b =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetAudioFormatName@, defined at @SDL3\/SDL_audio.h 2332:42@
+--     [C declaration]: @SDL_GetAudioFormatName@, defined at @SDL3\/SDL_audio.h 2345:42@
 sDL_GetAudioFormatName :: BG.FunPtr (SDL_AudioFormat -> IO (PtrConst.PtrConst BG.CChar))
 sDL_GetAudioFormatName =
   BG.unsafePerformIO hs_bindgen_8a62dc82ce668b2b
@@ -2925,7 +2929,7 @@ hs_bindgen_733e8e75537d52fb =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetSilenceValueForFormat@, defined at @SDL3\/SDL_audio.h 2348:33@
+--     [C declaration]: @SDL_GetSilenceValueForFormat@, defined at @SDL3\/SDL_audio.h 2361:33@
 sDL_GetSilenceValueForFormat :: BG.FunPtr (SDL_AudioFormat -> IO BG.CInt)
 sDL_GetSilenceValueForFormat =
   BG.unsafePerformIO hs_bindgen_733e8e75537d52fb

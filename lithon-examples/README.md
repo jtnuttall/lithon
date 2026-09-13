@@ -23,6 +23,22 @@ cabal run triangle-offscreen
 cabal run triangle-sdl        # needs SDL2; disable with -f -sdl elsewhere
 ```
 
+On Windows without Nix, the SDL3 examples build natively from Git Bash
+against MSYS2 UCRT64 (install `mingw-w64-ucrt-x86_64-sdl3` and
+`mingw-w64-ucrt-x86_64-pkgconf` as in the
+[sdl3-bindgen-sys README](../sdl3-bindgen-sys/README.md#windows-set-up)):
+
+```sh
+export PKG_CONFIG_PATH="/c/msys64/ucrt64/lib/pkgconfig"
+export PATH="/c/msys64/ucrt64/bin:$PATH"
+cabal run --with-compiler=/c/ghcup/ghc/9.12.2/bin/ghc.exe \
+  --extra-lib-dirs="/c/msys64/ucrt64/lib" \
+  --extra-include-dirs="/c/msys64/ucrt64/include" \
+  --constraint="lithon-examples -sdl" lithon-examples:exe:shmup
+```
+
+`-sdl` leaves out `triangle-sdl`, the one executable that needs SDL2.
+
 `sdl3-raw` and `shmup` run headless under `SDL_VIDEODRIVER=offscreen`,
 which is how `scripts/check.sh` probe-asserts their pixels; `triangle-sdl`
 does the same on lavapipe via `VK_EXT_headless_surface`.

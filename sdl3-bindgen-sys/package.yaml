@@ -43,6 +43,13 @@ flags:
       via generated C static assertions (disable only to diagnose)
     manual: true
     default: true
+  abi-assertions-exact:
+    description: |
+      Assert every sizeof exactly, including the union-member structs the default
+      lets SDL append to. For maintainers checking a newer SDL; consumers should
+      leave it off. Only has an effect together with abi-assertions.
+    manual: true
+    default: false
   strict-data:
     description: |
       Compile the generated modules with StrictData (strict fields on every generated
@@ -163,7 +170,7 @@ internal-libraries:
 library:
   source-dirs: src
   pkg-config-dependencies:
-    # Surface is generated from 3.4.2; everything newer than the consumer's
+    # Surface is generated from 3.4.16; everything newer than the consumer's
     # SDL is version-gated in the wrapper C (SDL_SetError stubs) and the
     # assert TU, on SDL's own version macros. Debian stable ships 3.2.x as
     # of writing.
@@ -185,6 +192,8 @@ library:
   when:
     - condition: flag(abi-assertions)
       c-sources: cbits/abi_assertions.c
+    - condition: flag(abi-assertions-exact)
+      cc-options: -DLITHON_ABI_EXACT
     - condition: flag(strict-data)
       default-extensions: StrictData
     - condition: flag(strict)

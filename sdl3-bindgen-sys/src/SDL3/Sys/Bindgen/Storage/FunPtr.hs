@@ -658,7 +658,7 @@ hs_bindgen_6e74dd5d268a0290 =
 --
 --     [@storage@]: a storage container.
 --
---     [@path@]: the path of the directory to enumerate.
+--     [@path@]: the path to remove from the filesystem.
 --
 --     [Returns]: true on success or false on failure; call SDL_GetError() for more information.
 --

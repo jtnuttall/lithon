@@ -73,7 +73,7 @@ hs_bindgen_1c56a59892e2463e =
 --
 --     [See also]: SDL_Init
 --
---     [C declaration]: @SDL_SetMainReady@, defined at @SDL3\/SDL_main.h 548:34@
+--     [C declaration]: @SDL_SetMainReady@, defined at @SDL3\/SDL_main.h 549:34@
 sDL_SetMainReady :: IO ()
 sDL_SetMainReady = hs_bindgen_1c56a59892e2463e
 
@@ -108,7 +108,7 @@ hs_bindgen_1b6974d956741083 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_RunApp@, defined at @SDL3\/SDL_main.h 581:33@
+--     [C declaration]: @SDL_RunApp@, defined at @SDL3\/SDL_main.h 582:33@
 sDL_RunApp
   :: BG.CInt
   -- ^
@@ -164,7 +164,7 @@ hs_bindgen_656ed4ab2c6b8347 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_EnterAppMainCallbacks@, defined at @SDL3\/SDL_main.h 608:33@
+--     [C declaration]: @SDL_EnterAppMainCallbacks@, defined at @SDL3\/SDL_main.h 609:33@
 sDL_EnterAppMainCallbacks
   :: BG.CInt
   -- ^
@@ -206,12 +206,22 @@ hs_bindgen_265bcc9d378e1bc4 =
 
 -- | Callback from the application to let the suspend continue.
 --
+--     This should be called from an event watch in response to an @SDL_EVENT_DID_ENTER_BACKGROUND@ event.
+--
+--     When using SDL_Render, your event watch should be added /after/ creating the @SDL_Renderer@; this allows the timing of the D3D12 command queue suspension to execute in the correct order.
+--
+--     When using SDL_GPU, this should be called after calling SDL_GDKSuspendGPU.
+--
+--     If you\'re writing your own D3D12 renderer, this should be called after calling @ID3D12CommandQueue::SuspendX@.
+--
 --     This function is only needed for Xbox GDK support; all other platforms will do nothing and set an \"unsupported\" error message.
 --
 --     [Thread safety]: This function is not thread safe.
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GDKSuspendComplete@, defined at @SDL3\/SDL_main.h 673:34@
+--     [See also]: SDL_AddEventWatch
+--
+--     [C declaration]: @SDL_GDKSuspendComplete@, defined at @SDL3\/SDL_main.h 688:34@
 sDL_GDKSuspendComplete :: IO ()
 sDL_GDKSuspendComplete = hs_bindgen_265bcc9d378e1bc4

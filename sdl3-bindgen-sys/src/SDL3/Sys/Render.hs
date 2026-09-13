@@ -802,7 +802,7 @@ getGPURendererDeviceSafe =
 
 -- | Create a 2D software rendering context for a surface.
 --
---     Two other API which can be used to create 'SDL_Renderer': @'createRenderer'@ and @'createWindowAndRenderer'@. These can /also/ create a software renderer, but they are intended to be used with an SDL_Window as the final destination and not an SDL_Surface.
+--     Two other APIs which can be used to create 'SDL_Renderer': @'createRenderer'@ and @'createWindowAndRenderer'@. These can /also/ create a software renderer, but they are intended to be used with an SDL_Window as the final destination and not an SDL_Surface.
 --
 --     [Returns]: a valid rendering context or NULL if there was an error; call 'SDL3.Sys.Error.getError' for more information.
 --
@@ -830,7 +830,7 @@ createSoftwareRenderer =
 
 -- | Create a 2D software rendering context for a surface.
 --
---     Two other API which can be used to create 'SDL_Renderer': @'createRenderer'@ and @'createWindowAndRenderer'@. These can /also/ create a software renderer, but they are intended to be used with an SDL_Window as the final destination and not an SDL_Surface.
+--     Two other APIs which can be used to create 'SDL_Renderer': @'createRenderer'@ and @'createWindowAndRenderer'@. These can /also/ create a software renderer, but they are intended to be used with an SDL_Window as the final destination and not an SDL_Surface.
 --
 --     [Returns]: a valid rendering context or NULL if there was an error; call 'SDL3.Sys.Error.getError' for more information.
 --
@@ -1576,8 +1576,6 @@ createTextureFromSurfaceSafe =
 --
 --     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER'@: the GLuint texture associated with the texture, if you want to wrap an existing texture.
 --
---     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER'@: the GLuint texture associated with the texture, if you want to wrap an existing texture.
---
 --     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER'@: the GLuint texture associated with the UV plane of an NV12 texture, if you want to wrap an existing texture.
 --
 --     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER'@: the GLuint texture associated with the U plane of a YUV texture, if you want to wrap an existing texture.
@@ -1614,7 +1612,7 @@ createTextureFromSurfaceSafe =
 --                   The safe flavor is 'createTextureWithPropertiesSafe'
 --                   .
 --
---     [C declaration]: @SDL_CreateTextureWithProperties@, defined at @SDL3\/SDL_render.h 806:43@
+--     [C declaration]: @SDL_CreateTextureWithProperties@, defined at @SDL3\/SDL_render.h 804:43@
 createTextureWithProperties
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -1682,8 +1680,6 @@ createTextureWithProperties =
 --
 --     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER'@: the GLuint texture associated with the texture, if you want to wrap an existing texture.
 --
---     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER'@: the GLuint texture associated with the texture, if you want to wrap an existing texture.
---
 --     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER'@: the GLuint texture associated with the UV plane of an NV12 texture, if you want to wrap an existing texture.
 --
 --     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER'@: the GLuint texture associated with the U plane of a YUV texture, if you want to wrap an existing texture.
@@ -1720,7 +1716,7 @@ createTextureWithProperties =
 --                   The unsafe flavor is 'createTextureWithProperties'
 --                   .
 --
---     [C declaration]: @SDL_CreateTextureWithProperties@, defined at @SDL3\/SDL_render.h 806:43@
+--     [C declaration]: @SDL_CreateTextureWithProperties@, defined at @SDL3\/SDL_render.h 804:43@
 createTextureWithPropertiesSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -1822,7 +1818,7 @@ createTextureWithPropertiesSafe =
 --                   The safe flavor is 'getTexturePropertiesSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetTextureProperties@, defined at @SDL3\/SDL_render.h 935:46@
+--     [C declaration]: @SDL_GetTextureProperties@, defined at @SDL3\/SDL_render.h 933:46@
 getTextureProperties
   :: BG.Ptr SDL_Texture
   -- ^
@@ -1920,7 +1916,7 @@ getTextureProperties =
 --                   The unsafe flavor is 'getTextureProperties'
 --                   .
 --
---     [C declaration]: @SDL_GetTextureProperties@, defined at @SDL3\/SDL_render.h 935:46@
+--     [C declaration]: @SDL_GetTextureProperties@, defined at @SDL3\/SDL_render.h 933:46@
 getTexturePropertiesSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -1944,7 +1940,7 @@ getTexturePropertiesSafe =
 --                   The safe flavor is 'getRendererFromTextureSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetRendererFromTexture@, defined at @SDL3\/SDL_render.h 979:44@
+--     [C declaration]: @SDL_GetRendererFromTexture@, defined at @SDL3\/SDL_render.h 977:44@
 getRendererFromTexture
   :: BG.Ptr SDL_Texture
   -- ^
@@ -1968,7 +1964,7 @@ getRendererFromTexture =
 --                   The unsafe flavor is 'getRendererFromTexture'
 --                   .
 --
---     [C declaration]: @SDL_GetRendererFromTexture@, defined at @SDL3\/SDL_render.h 979:44@
+--     [C declaration]: @SDL_GetRendererFromTexture@, defined at @SDL3\/SDL_render.h 977:44@
 getRendererFromTextureSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -1995,7 +1991,7 @@ getRendererFromTextureSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetTextureSize@, defined at @SDL3\/SDL_render.h 996:34@
+--     [C declaration]: @SDL_GetTextureSize@, defined at @SDL3\/SDL_render.h 994:34@
 getTextureSize
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2033,7 +2029,7 @@ getTextureSize =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetTextureSize@, defined at @SDL3\/SDL_render.h 996:34@
+--     [C declaration]: @SDL_GetTextureSize@, defined at @SDL3\/SDL_render.h 994:34@
 getTextureSizeSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2077,7 +2073,7 @@ getTextureSizeSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetTexturePalette@, defined at @SDL3\/SDL_render.h 1018:34@
+--     [C declaration]: @SDL_SetTexturePalette@, defined at @SDL3\/SDL_render.h 1016:34@
 setTexturePalette
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2116,7 +2112,7 @@ setTexturePalette =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetTexturePalette@, defined at @SDL3\/SDL_render.h 1018:34@
+--     [C declaration]: @SDL_SetTexturePalette@, defined at @SDL3\/SDL_render.h 1016:34@
 setTexturePaletteSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2148,7 +2144,7 @@ setTexturePaletteSafe =
 --                   The safe flavor is 'getTexturePaletteSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetTexturePalette@, defined at @SDL3\/SDL_render.h 1033:43@
+--     [C declaration]: @SDL_GetTexturePalette@, defined at @SDL3\/SDL_render.h 1031:43@
 getTexturePalette
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2173,7 +2169,7 @@ getTexturePalette = Unsafe.sDL_GetTexturePalette
 --                   The unsafe flavor is 'getTexturePalette'
 --                   .
 --
---     [C declaration]: @SDL_GetTexturePalette@, defined at @SDL3\/SDL_render.h 1033:43@
+--     [C declaration]: @SDL_GetTexturePalette@, defined at @SDL3\/SDL_render.h 1031:43@
 getTexturePaletteSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2207,7 +2203,7 @@ getTexturePaletteSafe = Safe.sDL_GetTexturePalette
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetTextureColorMod@, defined at @SDL3\/SDL_render.h 1062:34@
+--     [C declaration]: @SDL_SetTextureColorMod@, defined at @SDL3\/SDL_render.h 1060:34@
 setTextureColorMod
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2260,7 +2256,7 @@ setTextureColorMod =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetTextureColorMod@, defined at @SDL3\/SDL_render.h 1062:34@
+--     [C declaration]: @SDL_SetTextureColorMod@, defined at @SDL3\/SDL_render.h 1060:34@
 setTextureColorModSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2313,7 +2309,7 @@ setTextureColorModSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1092:34@
+--     [C declaration]: @SDL_SetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1090:34@
 setTextureColorModFloat
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2366,7 +2362,7 @@ setTextureColorModFloat =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1092:34@
+--     [C declaration]: @SDL_SetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1090:34@
 setTextureColorModFloatSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2413,7 +2409,7 @@ setTextureColorModFloatSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetTextureColorMod@, defined at @SDL3\/SDL_render.h 1113:34@
+--     [C declaration]: @SDL_GetTextureColorMod@, defined at @SDL3\/SDL_render.h 1111:34@
 getTextureColorMod
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2458,7 +2454,7 @@ getTextureColorMod =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetTextureColorMod@, defined at @SDL3\/SDL_render.h 1113:34@
+--     [C declaration]: @SDL_GetTextureColorMod@, defined at @SDL3\/SDL_render.h 1111:34@
 getTextureColorModSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2503,7 +2499,7 @@ getTextureColorModSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1133:34@
+--     [C declaration]: @SDL_GetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1131:34@
 getTextureColorModFloat
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2548,7 +2544,7 @@ getTextureColorModFloat =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1133:34@
+--     [C declaration]: @SDL_GetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1131:34@
 getTextureColorModFloatSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2599,7 +2595,7 @@ getTextureColorModFloatSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1159:34@
+--     [C declaration]: @SDL_SetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1157:34@
 setTextureAlphaMod
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2640,7 +2636,7 @@ setTextureAlphaMod =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1159:34@
+--     [C declaration]: @SDL_SetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1157:34@
 setTextureAlphaModSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2681,7 +2677,7 @@ setTextureAlphaModSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1185:34@
+--     [C declaration]: @SDL_SetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1183:34@
 setTextureAlphaModFloat
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2722,7 +2718,7 @@ setTextureAlphaModFloat =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1185:34@
+--     [C declaration]: @SDL_SetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1183:34@
 setTextureAlphaModFloatSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2757,7 +2753,7 @@ setTextureAlphaModFloatSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1203:34@
+--     [C declaration]: @SDL_GetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1201:34@
 getTextureAlphaMod
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2792,7 +2788,7 @@ getTextureAlphaMod =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1203:34@
+--     [C declaration]: @SDL_GetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1201:34@
 getTextureAlphaModSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2827,7 +2823,7 @@ getTextureAlphaModSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1221:34@
+--     [C declaration]: @SDL_GetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1219:34@
 getTextureAlphaModFloat
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2862,7 +2858,7 @@ getTextureAlphaModFloat =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1221:34@
+--     [C declaration]: @SDL_GetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1219:34@
 getTextureAlphaModFloatSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2880,6 +2876,8 @@ getTextureAlphaModFloatSafe =
 
 -- | Set the blend mode for a texture, used by @'renderTexture'@.
 --
+--     This blend mode is used for any drawing that involves this texture.
+--
 --     If the blend mode is not supported, the closest supported mode is chosen and this function returns false.
 --
 --     [Returns]: true on success or false on failure; call 'SDL3.Sys.Error.getError' for more information.
@@ -2888,7 +2886,7 @@ getTextureAlphaModFloatSafe =
 --
 --     @since 3.2.0
 --
---     [See also]: 'getTextureBlendMode'
+--     [See also]: 'getTextureBlendMode', 'setRenderDrawBlendMode'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -2899,7 +2897,7 @@ getTextureAlphaModFloatSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1240:34@
+--     [C declaration]: @SDL_SetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1241:34@
 setTextureBlendMode
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2917,6 +2915,8 @@ setTextureBlendMode =
 
 -- | Set the blend mode for a texture, used by @'renderTexture'@.
 --
+--     This blend mode is used for any drawing that involves this texture.
+--
 --     If the blend mode is not supported, the closest supported mode is chosen and this function returns false.
 --
 --     [Returns]: true on success or false on failure; call 'SDL3.Sys.Error.getError' for more information.
@@ -2925,7 +2925,7 @@ setTextureBlendMode =
 --
 --     @since 3.2.0
 --
---     [See also]: 'getTextureBlendMode'
+--     [See also]: 'getTextureBlendMode', 'setRenderDrawBlendMode'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -2936,7 +2936,7 @@ setTextureBlendMode =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1240:34@
+--     [C declaration]: @SDL_SetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1241:34@
 setTextureBlendModeSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2971,7 +2971,7 @@ setTextureBlendModeSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1256:34@
+--     [C declaration]: @SDL_GetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1257:34@
 getTextureBlendMode
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3006,7 +3006,7 @@ getTextureBlendMode =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1256:34@
+--     [C declaration]: @SDL_GetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1257:34@
 getTextureBlendModeSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3045,7 +3045,7 @@ getTextureBlendModeSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1276:34@
+--     [C declaration]: @SDL_SetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1277:34@
 setTextureScaleMode
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3084,7 +3084,7 @@ setTextureScaleMode =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1276:34@
+--     [C declaration]: @SDL_SetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1277:34@
 setTextureScaleModeSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3119,7 +3119,7 @@ setTextureScaleModeSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1292:34@
+--     [C declaration]: @SDL_GetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1293:34@
 getTextureScaleMode
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3154,7 +3154,7 @@ getTextureScaleMode =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1292:34@
+--     [C declaration]: @SDL_GetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1293:34@
 getTextureScaleModeSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3195,7 +3195,7 @@ getTextureScaleModeSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_UpdateTexture@, defined at @SDL3\/SDL_render.h 1326:34@
+--     [C declaration]: @SDL_UpdateTexture@, defined at @SDL3\/SDL_render.h 1327:34@
 updateTexture
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3246,7 +3246,7 @@ updateTexture =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_UpdateTexture@, defined at @SDL3\/SDL_render.h 1326:34@
+--     [C declaration]: @SDL_UpdateTexture@, defined at @SDL3\/SDL_render.h 1327:34@
 updateTextureSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3293,7 +3293,7 @@ updateTextureSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_UpdateYUVTexture@, defined at @SDL3\/SDL_render.h 1358:34@
+--     [C declaration]: @SDL_UpdateYUVTexture@, defined at @SDL3\/SDL_render.h 1359:34@
 updateYUVTexture
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3371,7 +3371,7 @@ updateYUVTexture =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_UpdateYUVTexture@, defined at @SDL3\/SDL_render.h 1358:34@
+--     [C declaration]: @SDL_UpdateYUVTexture@, defined at @SDL3\/SDL_render.h 1359:34@
 updateYUVTextureSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3449,7 +3449,7 @@ updateYUVTextureSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_UpdateNVTexture@, defined at @SDL3\/SDL_render.h 1390:34@
+--     [C declaration]: @SDL_UpdateNVTexture@, defined at @SDL3\/SDL_render.h 1391:34@
 updateNVTexture
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3508,7 +3508,7 @@ updateNVTexture =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_UpdateNVTexture@, defined at @SDL3\/SDL_render.h 1390:34@
+--     [C declaration]: @SDL_UpdateNVTexture@, defined at @SDL3\/SDL_render.h 1391:34@
 updateNVTextureSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3567,7 +3567,7 @@ updateNVTextureSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_LockTexture@, defined at @SDL3\/SDL_render.h 1425:34@
+--     [C declaration]: @SDL_LockTexture@, defined at @SDL3\/SDL_render.h 1426:34@
 lockTexture
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3616,7 +3616,7 @@ lockTexture =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_LockTexture@, defined at @SDL3\/SDL_render.h 1425:34@
+--     [C declaration]: @SDL_LockTexture@, defined at @SDL3\/SDL_render.h 1426:34@
 lockTextureSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3669,7 +3669,7 @@ lockTextureSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_LockTextureToSurface@, defined at @SDL3\/SDL_render.h 1463:34@
+--     [C declaration]: @SDL_LockTextureToSurface@, defined at @SDL3\/SDL_render.h 1464:34@
 lockTextureToSurface
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3717,7 +3717,7 @@ lockTextureToSurface =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_LockTextureToSurface@, defined at @SDL3\/SDL_render.h 1463:34@
+--     [C declaration]: @SDL_LockTextureToSurface@, defined at @SDL3\/SDL_render.h 1464:34@
 lockTextureToSurfaceSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3756,7 +3756,7 @@ lockTextureToSurfaceSafe =
 --                   The safe flavor is 'unlockTextureSafe'
 --                   .
 --
---     [C declaration]: @SDL_UnlockTexture@, defined at @SDL3\/SDL_render.h 1484:34@
+--     [C declaration]: @SDL_UnlockTexture@, defined at @SDL3\/SDL_render.h 1485:34@
 unlockTexture
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3783,7 +3783,7 @@ unlockTexture = Unsafe.sDL_UnlockTexture
 --                   The unsafe flavor is 'unlockTexture'
 --                   .
 --
---     [C declaration]: @SDL_UnlockTexture@, defined at @SDL3\/SDL_render.h 1484:34@
+--     [C declaration]: @SDL_UnlockTexture@, defined at @SDL3\/SDL_render.h 1485:34@
 unlockTextureSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3815,7 +3815,7 @@ unlockTextureSafe = Safe.sDL_UnlockTexture
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderTarget@, defined at @SDL3\/SDL_render.h 1511:34@
+--     [C declaration]: @SDL_SetRenderTarget@, defined at @SDL3\/SDL_render.h 1512:34@
 setRenderTarget
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3854,7 +3854,7 @@ setRenderTarget =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderTarget@, defined at @SDL3\/SDL_render.h 1511:34@
+--     [C declaration]: @SDL_SetRenderTarget@, defined at @SDL3\/SDL_render.h 1512:34@
 setRenderTargetSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3888,7 +3888,7 @@ setRenderTargetSafe =
 --                   The safe flavor is 'getRenderTargetSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetRenderTarget@, defined at @SDL3\/SDL_render.h 1528:43@
+--     [C declaration]: @SDL_GetRenderTarget@, defined at @SDL3\/SDL_render.h 1529:43@
 getRenderTarget
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3915,7 +3915,7 @@ getRenderTarget = Unsafe.sDL_GetRenderTarget
 --                   The unsafe flavor is 'getRenderTarget'
 --                   .
 --
---     [C declaration]: @SDL_GetRenderTarget@, defined at @SDL3\/SDL_render.h 1528:43@
+--     [C declaration]: @SDL_GetRenderTarget@, defined at @SDL3\/SDL_render.h 1529:43@
 getRenderTargetSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3953,7 +3953,7 @@ getRenderTargetSafe = Safe.sDL_GetRenderTarget
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1575:34@
+--     [C declaration]: @SDL_SetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1576:34@
 setRenderLogicalPresentation
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4010,7 +4010,7 @@ setRenderLogicalPresentation =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1575:34@
+--     [C declaration]: @SDL_SetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1576:34@
 setRenderLogicalPresentationSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4061,7 +4061,7 @@ setRenderLogicalPresentationSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1600:34@
+--     [C declaration]: @SDL_GetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1601:34@
 getRenderLogicalPresentation
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4110,7 +4110,7 @@ getRenderLogicalPresentation =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1600:34@
+--     [C declaration]: @SDL_GetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1601:34@
 getRenderLogicalPresentationSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4159,7 +4159,7 @@ getRenderLogicalPresentationSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderLogicalPresentationRect@, defined at @SDL3\/SDL_render.h 1625:34@
+--     [C declaration]: @SDL_GetRenderLogicalPresentationRect@, defined at @SDL3\/SDL_render.h 1626:34@
 getRenderLogicalPresentationRect
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4198,7 +4198,7 @@ getRenderLogicalPresentationRect =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderLogicalPresentationRect@, defined at @SDL3\/SDL_render.h 1625:34@
+--     [C declaration]: @SDL_GetRenderLogicalPresentationRect@, defined at @SDL3\/SDL_render.h 1626:34@
 getRenderLogicalPresentationRectSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4243,7 +4243,7 @@ getRenderLogicalPresentationRectSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderCoordinatesFromWindow@, defined at @SDL3\/SDL_render.h 1652:34@
+--     [C declaration]: @SDL_RenderCoordinatesFromWindow@, defined at @SDL3\/SDL_render.h 1653:34@
 renderCoordinatesFromWindow
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4305,7 +4305,7 @@ renderCoordinatesFromWindow =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderCoordinatesFromWindow@, defined at @SDL3\/SDL_render.h 1652:34@
+--     [C declaration]: @SDL_RenderCoordinatesFromWindow@, defined at @SDL3\/SDL_render.h 1653:34@
 renderCoordinatesFromWindowSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4367,7 +4367,7 @@ renderCoordinatesFromWindowSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderCoordinatesToWindow@, defined at @SDL3\/SDL_render.h 1682:34@
+--     [C declaration]: @SDL_RenderCoordinatesToWindow@, defined at @SDL3\/SDL_render.h 1683:34@
 renderCoordinatesToWindow
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4429,7 +4429,7 @@ renderCoordinatesToWindow =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderCoordinatesToWindow@, defined at @SDL3\/SDL_render.h 1682:34@
+--     [C declaration]: @SDL_RenderCoordinatesToWindow@, defined at @SDL3\/SDL_render.h 1683:34@
 renderCoordinatesToWindowSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4499,7 +4499,7 @@ renderCoordinatesToWindowSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ConvertEventToRenderCoordinates@, defined at @SDL3\/SDL_render.h 1718:34@
+--     [C declaration]: @SDL_ConvertEventToRenderCoordinates@, defined at @SDL3\/SDL_render.h 1719:34@
 convertEventToRenderCoordinates
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4552,7 +4552,7 @@ convertEventToRenderCoordinates =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ConvertEventToRenderCoordinates@, defined at @SDL3\/SDL_render.h 1718:34@
+--     [C declaration]: @SDL_ConvertEventToRenderCoordinates@, defined at @SDL3\/SDL_render.h 1719:34@
 convertEventToRenderCoordinatesSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4593,7 +4593,7 @@ convertEventToRenderCoordinatesSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderViewport@, defined at @SDL3\/SDL_render.h 1745:34@
+--     [C declaration]: @SDL_SetRenderViewport@, defined at @SDL3\/SDL_render.h 1746:34@
 setRenderViewport
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4634,7 +4634,7 @@ setRenderViewport =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderViewport@, defined at @SDL3\/SDL_render.h 1745:34@
+--     [C declaration]: @SDL_SetRenderViewport@, defined at @SDL3\/SDL_render.h 1746:34@
 setRenderViewportSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4671,7 +4671,7 @@ setRenderViewportSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderViewport@, defined at @SDL3\/SDL_render.h 1765:34@
+--     [C declaration]: @SDL_GetRenderViewport@, defined at @SDL3\/SDL_render.h 1766:34@
 getRenderViewport
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4708,7 +4708,7 @@ getRenderViewport =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderViewport@, defined at @SDL3\/SDL_render.h 1765:34@
+--     [C declaration]: @SDL_GetRenderViewport@, defined at @SDL3\/SDL_render.h 1766:34@
 getRenderViewportSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4747,7 +4747,7 @@ getRenderViewportSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderViewportSet@, defined at @SDL3\/SDL_render.h 1787:34@
+--     [C declaration]: @SDL_RenderViewportSet@, defined at @SDL3\/SDL_render.h 1788:34@
 renderViewportSet
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4781,7 +4781,7 @@ renderViewportSet =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderViewportSet@, defined at @SDL3\/SDL_render.h 1787:34@
+--     [C declaration]: @SDL_RenderViewportSet@, defined at @SDL3\/SDL_render.h 1788:34@
 renderViewportSetSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4811,7 +4811,7 @@ renderViewportSetSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderSafeArea@, defined at @SDL3\/SDL_render.h 1809:34@
+--     [C declaration]: @SDL_GetRenderSafeArea@, defined at @SDL3\/SDL_render.h 1810:34@
 getRenderSafeArea
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4846,7 +4846,7 @@ getRenderSafeArea =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderSafeArea@, defined at @SDL3\/SDL_render.h 1809:34@
+--     [C declaration]: @SDL_GetRenderSafeArea@, defined at @SDL3\/SDL_render.h 1810:34@
 getRenderSafeAreaSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4883,7 +4883,7 @@ getRenderSafeAreaSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderClipRect@, defined at @SDL3\/SDL_render.h 1830:34@
+--     [C declaration]: @SDL_SetRenderClipRect@, defined at @SDL3\/SDL_render.h 1831:34@
 setRenderClipRect
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4920,7 +4920,7 @@ setRenderClipRect =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderClipRect@, defined at @SDL3\/SDL_render.h 1830:34@
+--     [C declaration]: @SDL_SetRenderClipRect@, defined at @SDL3\/SDL_render.h 1831:34@
 setRenderClipRectSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4957,7 +4957,7 @@ setRenderClipRectSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderClipRect@, defined at @SDL3\/SDL_render.h 1851:34@
+--     [C declaration]: @SDL_GetRenderClipRect@, defined at @SDL3\/SDL_render.h 1852:34@
 getRenderClipRect
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4994,7 +4994,7 @@ getRenderClipRect =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderClipRect@, defined at @SDL3\/SDL_render.h 1851:34@
+--     [C declaration]: @SDL_GetRenderClipRect@, defined at @SDL3\/SDL_render.h 1852:34@
 getRenderClipRectSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5031,7 +5031,7 @@ getRenderClipRectSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderClipEnabled@, defined at @SDL3\/SDL_render.h 1870:34@
+--     [C declaration]: @SDL_RenderClipEnabled@, defined at @SDL3\/SDL_render.h 1871:34@
 renderClipEnabled
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5063,7 +5063,7 @@ renderClipEnabled =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderClipEnabled@, defined at @SDL3\/SDL_render.h 1870:34@
+--     [C declaration]: @SDL_RenderClipEnabled@, defined at @SDL3\/SDL_render.h 1871:34@
 renderClipEnabledSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5099,7 +5099,7 @@ renderClipEnabledSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderScale@, defined at @SDL3\/SDL_render.h 1898:34@
+--     [C declaration]: @SDL_SetRenderScale@, defined at @SDL3\/SDL_render.h 1899:34@
 setRenderScale
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5145,7 +5145,7 @@ setRenderScale =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderScale@, defined at @SDL3\/SDL_render.h 1898:34@
+--     [C declaration]: @SDL_SetRenderScale@, defined at @SDL3\/SDL_render.h 1899:34@
 setRenderScaleSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5187,7 +5187,7 @@ setRenderScaleSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderScale@, defined at @SDL3\/SDL_render.h 1918:34@
+--     [C declaration]: @SDL_GetRenderScale@, defined at @SDL3\/SDL_render.h 1919:34@
 getRenderScale
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5229,7 +5229,7 @@ getRenderScale =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderScale@, defined at @SDL3\/SDL_render.h 1918:34@
+--     [C declaration]: @SDL_GetRenderScale@, defined at @SDL3\/SDL_render.h 1919:34@
 getRenderScaleSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5271,7 +5271,7 @@ getRenderScaleSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1943:34@
+--     [C declaration]: @SDL_SetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1944:34@
 setRenderDrawColor
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5331,7 +5331,7 @@ setRenderDrawColor =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1943:34@
+--     [C declaration]: @SDL_SetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1944:34@
 setRenderDrawColorSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5391,7 +5391,7 @@ setRenderDrawColorSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 1968:34@
+--     [C declaration]: @SDL_SetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 1969:34@
 setRenderDrawColorFloat
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5451,7 +5451,7 @@ setRenderDrawColorFloat =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 1968:34@
+--     [C declaration]: @SDL_SetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 1969:34@
 setRenderDrawColorFloatSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5509,7 +5509,7 @@ setRenderDrawColorFloatSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1992:34@
+--     [C declaration]: @SDL_GetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1993:34@
 getRenderDrawColor
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5559,7 +5559,7 @@ getRenderDrawColor =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1992:34@
+--     [C declaration]: @SDL_GetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1993:34@
 getRenderDrawColorSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5609,7 +5609,7 @@ getRenderDrawColorSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 2016:34@
+--     [C declaration]: @SDL_GetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 2017:34@
 getRenderDrawColorFloat
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5659,7 +5659,7 @@ getRenderDrawColorFloat =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 2016:34@
+--     [C declaration]: @SDL_GetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 2017:34@
 getRenderDrawColorFloatSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5713,7 +5713,7 @@ getRenderDrawColorFloatSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderColorScale@, defined at @SDL3\/SDL_render.h 2040:34@
+--     [C declaration]: @SDL_SetRenderColorScale@, defined at @SDL3\/SDL_render.h 2041:34@
 setRenderColorScale
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5752,7 +5752,7 @@ setRenderColorScale =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderColorScale@, defined at @SDL3\/SDL_render.h 2040:34@
+--     [C declaration]: @SDL_SetRenderColorScale@, defined at @SDL3\/SDL_render.h 2041:34@
 setRenderColorScaleSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5787,7 +5787,7 @@ setRenderColorScaleSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderColorScale@, defined at @SDL3\/SDL_render.h 2056:34@
+--     [C declaration]: @SDL_GetRenderColorScale@, defined at @SDL3\/SDL_render.h 2057:34@
 getRenderColorScale
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5822,7 +5822,7 @@ getRenderColorScale =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderColorScale@, defined at @SDL3\/SDL_render.h 2056:34@
+--     [C declaration]: @SDL_GetRenderColorScale@, defined at @SDL3\/SDL_render.h 2057:34@
 getRenderColorScaleSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5838,7 +5838,9 @@ getRenderColorScaleSafe =
     \x11 ->
       fmap CBool.toBool (Safe.sDL_GetRenderColorScale x00 x11)
 
--- | Set the blend mode used for drawing operations (Fill and Line).
+-- | Set the blend mode used for drawing operations.
+--
+--     This blend mode is used for any drawing that doesn\'t involve textures.
 --
 --     If the blend mode is not supported, the closest supported mode is chosen.
 --
@@ -5848,7 +5850,7 @@ getRenderColorScaleSafe =
 --
 --     @since 3.2.0
 --
---     [See also]: 'getRenderDrawBlendMode'
+--     [See also]: 'getRenderDrawBlendMode', 'setTextureBlendMode'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -5859,7 +5861,7 @@ getRenderColorScaleSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2074:34@
+--     [C declaration]: @SDL_SetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2078:34@
 setRenderDrawBlendMode
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5875,7 +5877,9 @@ setRenderDrawBlendMode =
     \x11 ->
       fmap CBool.toBool (Unsafe.sDL_SetRenderDrawBlendMode x00 x11)
 
--- | Set the blend mode used for drawing operations (Fill and Line).
+-- | Set the blend mode used for drawing operations.
+--
+--     This blend mode is used for any drawing that doesn\'t involve textures.
 --
 --     If the blend mode is not supported, the closest supported mode is chosen.
 --
@@ -5885,7 +5889,7 @@ setRenderDrawBlendMode =
 --
 --     @since 3.2.0
 --
---     [See also]: 'getRenderDrawBlendMode'
+--     [See also]: 'getRenderDrawBlendMode', 'setTextureBlendMode'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -5896,7 +5900,7 @@ setRenderDrawBlendMode =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2074:34@
+--     [C declaration]: @SDL_SetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2078:34@
 setRenderDrawBlendModeSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5931,7 +5935,7 @@ setRenderDrawBlendModeSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2090:34@
+--     [C declaration]: @SDL_GetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2094:34@
 getRenderDrawBlendMode
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5966,7 +5970,7 @@ getRenderDrawBlendMode =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2090:34@
+--     [C declaration]: @SDL_GetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2094:34@
 getRenderDrawBlendModeSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6003,7 +6007,7 @@ getRenderDrawBlendModeSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderClear@, defined at @SDL3\/SDL_render.h 2110:34@
+--     [C declaration]: @SDL_RenderClear@, defined at @SDL3\/SDL_render.h 2114:34@
 renderClear
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6035,7 +6039,7 @@ renderClear =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderClear@, defined at @SDL3\/SDL_render.h 2110:34@
+--     [C declaration]: @SDL_RenderClear@, defined at @SDL3\/SDL_render.h 2114:34@
 renderClearSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6064,7 +6068,7 @@ renderClearSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderPoint@, defined at @SDL3\/SDL_render.h 2127:34@
+--     [C declaration]: @SDL_RenderPoint@, defined at @SDL3\/SDL_render.h 2131:34@
 renderPoint
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6104,7 +6108,7 @@ renderPoint =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderPoint@, defined at @SDL3\/SDL_render.h 2127:34@
+--     [C declaration]: @SDL_RenderPoint@, defined at @SDL3\/SDL_render.h 2131:34@
 renderPointSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6144,7 +6148,7 @@ renderPointSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderPoints@, defined at @SDL3\/SDL_render.h 2144:34@
+--     [C declaration]: @SDL_RenderPoints@, defined at @SDL3\/SDL_render.h 2148:34@
 renderPoints
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6184,7 +6188,7 @@ renderPoints =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderPoints@, defined at @SDL3\/SDL_render.h 2144:34@
+--     [C declaration]: @SDL_RenderPoints@, defined at @SDL3\/SDL_render.h 2148:34@
 renderPointsSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6224,7 +6228,7 @@ renderPointsSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderLine@, defined at @SDL3\/SDL_render.h 2163:34@
+--     [C declaration]: @SDL_RenderLine@, defined at @SDL3\/SDL_render.h 2167:34@
 renderLine
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6282,7 +6286,7 @@ renderLine =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderLine@, defined at @SDL3\/SDL_render.h 2163:34@
+--     [C declaration]: @SDL_RenderLine@, defined at @SDL3\/SDL_render.h 2167:34@
 renderLineSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6340,7 +6344,7 @@ renderLineSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderLines@, defined at @SDL3\/SDL_render.h 2181:34@
+--     [C declaration]: @SDL_RenderLines@, defined at @SDL3\/SDL_render.h 2185:34@
 renderLines
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6380,7 +6384,7 @@ renderLines =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderLines@, defined at @SDL3\/SDL_render.h 2181:34@
+--     [C declaration]: @SDL_RenderLines@, defined at @SDL3\/SDL_render.h 2185:34@
 renderLinesSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6420,7 +6424,7 @@ renderLinesSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderRect@, defined at @SDL3\/SDL_render.h 2198:34@
+--     [C declaration]: @SDL_RenderRect@, defined at @SDL3\/SDL_render.h 2202:34@
 renderRect
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6455,7 +6459,7 @@ renderRect =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderRect@, defined at @SDL3\/SDL_render.h 2198:34@
+--     [C declaration]: @SDL_RenderRect@, defined at @SDL3\/SDL_render.h 2202:34@
 renderRectSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6490,7 +6494,7 @@ renderRectSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderRects@, defined at @SDL3\/SDL_render.h 2216:34@
+--     [C declaration]: @SDL_RenderRects@, defined at @SDL3\/SDL_render.h 2220:34@
 renderRects
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6530,7 +6534,7 @@ renderRects =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderRects@, defined at @SDL3\/SDL_render.h 2216:34@
+--     [C declaration]: @SDL_RenderRects@, defined at @SDL3\/SDL_render.h 2220:34@
 renderRectsSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6570,7 +6574,7 @@ renderRectsSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderFillRect@, defined at @SDL3\/SDL_render.h 2234:34@
+--     [C declaration]: @SDL_RenderFillRect@, defined at @SDL3\/SDL_render.h 2238:34@
 renderFillRect
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6605,7 +6609,7 @@ renderFillRect =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderFillRect@, defined at @SDL3\/SDL_render.h 2234:34@
+--     [C declaration]: @SDL_RenderFillRect@, defined at @SDL3\/SDL_render.h 2238:34@
 renderFillRectSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6640,7 +6644,7 @@ renderFillRectSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderFillRects@, defined at @SDL3\/SDL_render.h 2252:34@
+--     [C declaration]: @SDL_RenderFillRects@, defined at @SDL3\/SDL_render.h 2256:34@
 renderFillRects
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6680,7 +6684,7 @@ renderFillRects =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderFillRects@, defined at @SDL3\/SDL_render.h 2252:34@
+--     [C declaration]: @SDL_RenderFillRects@, defined at @SDL3\/SDL_render.h 2256:34@
 renderFillRectsSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6720,7 +6724,7 @@ renderFillRectsSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderTexture@, defined at @SDL3\/SDL_render.h 2274:34@
+--     [C declaration]: @SDL_RenderTexture@, defined at @SDL3\/SDL_render.h 2278:34@
 renderTexture
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6765,7 +6769,7 @@ renderTexture =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderTexture@, defined at @SDL3\/SDL_render.h 2274:34@
+--     [C declaration]: @SDL_RenderTexture@, defined at @SDL3\/SDL_render.h 2278:34@
 renderTextureSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6810,7 +6814,7 @@ renderTextureSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderTextureRotated@, defined at @SDL3\/SDL_render.h 2302:34@
+--     [C declaration]: @SDL_RenderTextureRotated@, defined at @SDL3\/SDL_render.h 2306:34@
 renderTextureRotated
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6870,7 +6874,7 @@ renderTextureRotated =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderTextureRotated@, defined at @SDL3\/SDL_render.h 2302:34@
+--     [C declaration]: @SDL_RenderTextureRotated@, defined at @SDL3\/SDL_render.h 2306:34@
 renderTextureRotatedSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6930,7 +6934,7 @@ renderTextureRotatedSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderTextureAffine@, defined at @SDL3\/SDL_render.h 2333:34@
+--     [C declaration]: @SDL_RenderTextureAffine@, defined at @SDL3\/SDL_render.h 2337:34@
 renderTextureAffine
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -6985,7 +6989,7 @@ renderTextureAffine =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderTextureAffine@, defined at @SDL3\/SDL_render.h 2333:34@
+--     [C declaration]: @SDL_RenderTextureAffine@, defined at @SDL3\/SDL_render.h 2337:34@
 renderTextureAffineSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7042,7 +7046,7 @@ renderTextureAffineSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderTextureTiled@, defined at @SDL3\/SDL_render.h 2362:34@
+--     [C declaration]: @SDL_RenderTextureTiled@, defined at @SDL3\/SDL_render.h 2366:34@
 renderTextureTiled
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7094,7 +7098,7 @@ renderTextureTiled =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderTextureTiled@, defined at @SDL3\/SDL_render.h 2362:34@
+--     [C declaration]: @SDL_RenderTextureTiled@, defined at @SDL3\/SDL_render.h 2366:34@
 renderTextureTiledSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7146,7 +7150,7 @@ renderTextureTiledSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderTexture9Grid@, defined at @SDL3\/SDL_render.h 2397:34@
+--     [C declaration]: @SDL_RenderTexture9Grid@, defined at @SDL3\/SDL_render.h 2401:34@
 renderTexture9Grid
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7230,7 +7234,7 @@ renderTexture9Grid =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderTexture9Grid@, defined at @SDL3\/SDL_render.h 2397:34@
+--     [C declaration]: @SDL_RenderTexture9Grid@, defined at @SDL3\/SDL_render.h 2401:34@
 renderTexture9GridSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7314,7 +7318,7 @@ renderTexture9GridSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderTexture9GridTiled@, defined at @SDL3\/SDL_render.h 2435:34@
+--     [C declaration]: @SDL_RenderTexture9GridTiled@, defined at @SDL3\/SDL_render.h 2439:34@
 renderTexture9GridTiled
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7404,7 +7408,7 @@ renderTexture9GridTiled =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderTexture9GridTiled@, defined at @SDL3\/SDL_render.h 2435:34@
+--     [C declaration]: @SDL_RenderTexture9GridTiled@, defined at @SDL3\/SDL_render.h 2439:34@
 renderTexture9GridTiledSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7492,7 +7496,7 @@ renderTexture9GridTiledSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderGeometry@, defined at @SDL3\/SDL_render.h 2460:34@
+--     [C declaration]: @SDL_RenderGeometry@, defined at @SDL3\/SDL_render.h 2464:34@
 renderGeometry
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7549,7 +7553,7 @@ renderGeometry =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderGeometry@, defined at @SDL3\/SDL_render.h 2460:34@
+--     [C declaration]: @SDL_RenderGeometry@, defined at @SDL3\/SDL_render.h 2464:34@
 renderGeometrySafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7604,7 +7608,7 @@ renderGeometrySafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderGeometryRaw@, defined at @SDL3\/SDL_render.h 2493:34@
+--     [C declaration]: @SDL_RenderGeometryRaw@, defined at @SDL3\/SDL_render.h 2497:34@
 renderGeometryRaw
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7704,7 +7708,7 @@ renderGeometryRaw =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderGeometryRaw@, defined at @SDL3\/SDL_render.h 2493:34@
+--     [C declaration]: @SDL_RenderGeometryRaw@, defined at @SDL3\/SDL_render.h 2497:34@
 renderGeometryRawSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7804,7 +7808,7 @@ renderGeometryRawSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2520:34@
+--     [C declaration]: @SDL_SetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2524:34@
 setRenderTextureAddressMode
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7844,7 +7848,7 @@ setRenderTextureAddressMode =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2520:34@
+--     [C declaration]: @SDL_SetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2524:34@
 setRenderTextureAddressModeSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7884,7 +7888,7 @@ setRenderTextureAddressModeSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2541:34@
+--     [C declaration]: @SDL_GetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2545:34@
 getRenderTextureAddressMode
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7924,7 +7928,7 @@ getRenderTextureAddressMode =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2541:34@
+--     [C declaration]: @SDL_GetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2545:34@
 getRenderTextureAddressModeSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7965,7 +7969,7 @@ getRenderTextureAddressModeSafe =
 --                   The safe flavor is 'renderReadPixelsSafe'
 --                   : full GPU sync plus readback; a very slow operation.
 --
---     [C declaration]: @SDL_RenderReadPixels@, defined at @SDL3\/SDL_render.h 2568:43@
+--     [C declaration]: @SDL_RenderReadPixels@, defined at @SDL3\/SDL_render.h 2572:43@
 renderReadPixels
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -7998,7 +8002,7 @@ renderReadPixels = Unsafe.sDL_RenderReadPixels
 --                   The unsafe flavor is 'renderReadPixels'
 --                   : full GPU sync plus readback; a very slow operation.
 --
---     [C declaration]: @SDL_RenderReadPixels@, defined at @SDL3\/SDL_render.h 2568:43@
+--     [C declaration]: @SDL_RenderReadPixels@, defined at @SDL3\/SDL_render.h 2572:43@
 renderReadPixelsSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8038,7 +8042,7 @@ renderReadPixelsSafe = Safe.sDL_RenderReadPixels
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderPresent@, defined at @SDL3\/SDL_render.h 2617:34@
+--     [C declaration]: @SDL_RenderPresent@, defined at @SDL3\/SDL_render.h 2621:34@
 renderPresent
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8076,7 +8080,7 @@ renderPresent =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderPresent@, defined at @SDL3\/SDL_render.h 2617:34@
+--     [C declaration]: @SDL_RenderPresent@, defined at @SDL3\/SDL_render.h 2621:34@
 renderPresentSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8103,7 +8107,7 @@ renderPresentSafe =
 --                   The safe flavor is 'destroyTextureSafe'
 --                   .
 --
---     [C declaration]: @SDL_DestroyTexture@, defined at @SDL3\/SDL_render.h 2634:34@
+--     [C declaration]: @SDL_DestroyTexture@, defined at @SDL3\/SDL_render.h 2638:34@
 destroyTexture
   :: BG.Ptr SDL_Texture
   -- ^
@@ -8128,7 +8132,7 @@ destroyTexture = Unsafe.sDL_DestroyTexture
 --                   The unsafe flavor is 'destroyTexture'
 --                   .
 --
---     [C declaration]: @SDL_DestroyTexture@, defined at @SDL3\/SDL_render.h 2634:34@
+--     [C declaration]: @SDL_DestroyTexture@, defined at @SDL3\/SDL_render.h 2638:34@
 destroyTextureSafe
   :: BG.Ptr SDL_Texture
   -- ^
@@ -8153,7 +8157,7 @@ destroyTextureSafe = Safe.sDL_DestroyTexture
 --                   The safe flavor is 'destroyRendererSafe'
 --                   .
 --
---     [C declaration]: @SDL_DestroyRenderer@, defined at @SDL3\/SDL_render.h 2650:34@
+--     [C declaration]: @SDL_DestroyRenderer@, defined at @SDL3\/SDL_render.h 2654:34@
 destroyRenderer
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8178,7 +8182,7 @@ destroyRenderer = Unsafe.sDL_DestroyRenderer
 --                   The unsafe flavor is 'destroyRenderer'
 --                   .
 --
---     [C declaration]: @SDL_DestroyRenderer@, defined at @SDL3\/SDL_render.h 2650:34@
+--     [C declaration]: @SDL_DestroyRenderer@, defined at @SDL3\/SDL_render.h 2654:34@
 destroyRendererSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8214,7 +8218,7 @@ destroyRendererSafe = Safe.sDL_DestroyRenderer
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_FlushRenderer@, defined at @SDL3\/SDL_render.h 2683:34@
+--     [C declaration]: @SDL_FlushRenderer@, defined at @SDL3\/SDL_render.h 2687:34@
 flushRenderer
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8252,7 +8256,7 @@ flushRenderer =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_FlushRenderer@, defined at @SDL3\/SDL_render.h 2683:34@
+--     [C declaration]: @SDL_FlushRenderer@, defined at @SDL3\/SDL_render.h 2687:34@
 flushRendererSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8281,7 +8285,7 @@ flushRendererSafe =
 --                   The safe flavor is 'getRenderMetalLayerSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetRenderMetalLayer@, defined at @SDL3\/SDL_render.h 2701:36@
+--     [C declaration]: @SDL_GetRenderMetalLayer@, defined at @SDL3\/SDL_render.h 2705:36@
 getRenderMetalLayer
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8308,7 +8312,7 @@ getRenderMetalLayer = Unsafe.sDL_GetRenderMetalLayer
 --                   The unsafe flavor is 'getRenderMetalLayer'
 --                   .
 --
---     [C declaration]: @SDL_GetRenderMetalLayer@, defined at @SDL3\/SDL_render.h 2701:36@
+--     [C declaration]: @SDL_GetRenderMetalLayer@, defined at @SDL3\/SDL_render.h 2705:36@
 getRenderMetalLayerSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8338,7 +8342,7 @@ getRenderMetalLayerSafe =
 --                   The safe flavor is 'getRenderMetalCommandEncoderSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetRenderMetalCommandEncoder@, defined at @SDL3\/SDL_render.h 2724:36@
+--     [C declaration]: @SDL_GetRenderMetalCommandEncoder@, defined at @SDL3\/SDL_render.h 2728:36@
 getRenderMetalCommandEncoder
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8368,7 +8372,7 @@ getRenderMetalCommandEncoder =
 --                   The unsafe flavor is 'getRenderMetalCommandEncoder'
 --                   .
 --
---     [C declaration]: @SDL_GetRenderMetalCommandEncoder@, defined at @SDL3\/SDL_render.h 2724:36@
+--     [C declaration]: @SDL_GetRenderMetalCommandEncoder@, defined at @SDL3\/SDL_render.h 2728:36@
 getRenderMetalCommandEncoderSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8399,7 +8403,7 @@ getRenderMetalCommandEncoderSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddVulkanRenderSemaphores@, defined at @SDL3\/SDL_render.h 2755:34@
+--     [C declaration]: @SDL_AddVulkanRenderSemaphores@, defined at @SDL3\/SDL_render.h 2759:34@
 addVulkanRenderSemaphores
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8448,7 +8452,7 @@ addVulkanRenderSemaphores =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddVulkanRenderSemaphores@, defined at @SDL3\/SDL_render.h 2755:34@
+--     [C declaration]: @SDL_AddVulkanRenderSemaphores@, defined at @SDL3\/SDL_render.h 2759:34@
 addVulkanRenderSemaphoresSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8499,7 +8503,7 @@ addVulkanRenderSemaphoresSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderVSync@, defined at @SDL3\/SDL_render.h 2780:34@
+--     [C declaration]: @SDL_SetRenderVSync@, defined at @SDL3\/SDL_render.h 2784:34@
 setRenderVSync
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8538,7 +8542,7 @@ setRenderVSync =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetRenderVSync@, defined at @SDL3\/SDL_render.h 2780:34@
+--     [C declaration]: @SDL_SetRenderVSync@, defined at @SDL3\/SDL_render.h 2784:34@
 setRenderVSyncSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8573,7 +8577,7 @@ setRenderVSyncSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderVSync@, defined at @SDL3\/SDL_render.h 2800:34@
+--     [C declaration]: @SDL_GetRenderVSync@, defined at @SDL3\/SDL_render.h 2804:34@
 getRenderVSync
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8608,7 +8612,7 @@ getRenderVSync =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetRenderVSync@, defined at @SDL3\/SDL_render.h 2800:34@
+--     [C declaration]: @SDL_GetRenderVSync@, defined at @SDL3\/SDL_render.h 2804:34@
 getRenderVSyncSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8661,7 +8665,7 @@ getRenderVSyncSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderDebugText@, defined at @SDL3\/SDL_render.h 2852:34@
+--     [C declaration]: @SDL_RenderDebugText@, defined at @SDL3\/SDL_render.h 2856:34@
 renderDebugText
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8724,7 +8728,7 @@ renderDebugText =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RenderDebugText@, defined at @SDL3\/SDL_render.h 2852:34@
+--     [C declaration]: @SDL_RenderDebugText@, defined at @SDL3\/SDL_render.h 2856:34@
 renderDebugTextSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8771,7 +8775,7 @@ renderDebugTextSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2898:34@
+--     [C declaration]: @SDL_SetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2902:34@
 setDefaultTextureScaleMode
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8808,7 +8812,7 @@ setDefaultTextureScaleMode =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2898:34@
+--     [C declaration]: @SDL_SetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2902:34@
 setDefaultTextureScaleModeSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8843,7 +8847,7 @@ setDefaultTextureScaleModeSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2916:34@
+--     [C declaration]: @SDL_GetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2920:34@
 getDefaultTextureScaleMode
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8878,7 +8882,7 @@ getDefaultTextureScaleMode =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2916:34@
+--     [C declaration]: @SDL_GetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2920:34@
 getDefaultTextureScaleModeSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8910,7 +8914,7 @@ getDefaultTextureScaleModeSafe =
 --                   The safe flavor is 'createGPURenderStateSafe'
 --                   .
 --
---     [C declaration]: @SDL_CreateGPURenderState@, defined at @SDL3\/SDL_render.h 2970:50@
+--     [C declaration]: @SDL_CreateGPURenderState@, defined at @SDL3\/SDL_render.h 2974:50@
 createGPURenderState
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8940,7 +8944,7 @@ createGPURenderState =
 --                   The unsafe flavor is 'createGPURenderState'
 --                   .
 --
---     [C declaration]: @SDL_CreateGPURenderState@, defined at @SDL3\/SDL_render.h 2970:50@
+--     [C declaration]: @SDL_CreateGPURenderState@, defined at @SDL3\/SDL_render.h 2974:50@
 createGPURenderStateSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -8973,7 +8977,7 @@ createGPURenderStateSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGPURenderStateFragmentUniforms@, defined at @SDL3\/SDL_render.h 2990:34@
+--     [C declaration]: @SDL_SetGPURenderStateFragmentUniforms@, defined at @SDL3\/SDL_render.h 2994:34@
 setGPURenderStateFragmentUniforms
   :: BG.Ptr SDL_GPURenderState
   -- ^
@@ -9020,7 +9024,7 @@ setGPURenderStateFragmentUniforms =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGPURenderStateFragmentUniforms@, defined at @SDL3\/SDL_render.h 2990:34@
+--     [C declaration]: @SDL_SetGPURenderStateFragmentUniforms@, defined at @SDL3\/SDL_render.h 2994:34@
 setGPURenderStateFragmentUniformsSafe
   :: BG.Ptr SDL_GPURenderState
   -- ^
@@ -9067,7 +9071,7 @@ setGPURenderStateFragmentUniformsSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGPURenderState@, defined at @SDL3\/SDL_render.h 3008:34@
+--     [C declaration]: @SDL_SetGPURenderState@, defined at @SDL3\/SDL_render.h 3012:34@
 setGPURenderState
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -9102,7 +9106,7 @@ setGPURenderState =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGPURenderState@, defined at @SDL3\/SDL_render.h 3008:34@
+--     [C declaration]: @SDL_SetGPURenderState@, defined at @SDL3\/SDL_render.h 3012:34@
 setGPURenderStateSafe
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -9132,7 +9136,7 @@ setGPURenderStateSafe =
 --                   The safe flavor is 'destroyGPURenderStateSafe'
 --                   .
 --
---     [C declaration]: @SDL_DestroyGPURenderState@, defined at @SDL3\/SDL_render.h 3022:34@
+--     [C declaration]: @SDL_DestroyGPURenderState@, defined at @SDL3\/SDL_render.h 3026:34@
 destroyGPURenderState
   :: BG.Ptr SDL_GPURenderState
   -- ^
@@ -9156,7 +9160,7 @@ destroyGPURenderState =
 --                   The unsafe flavor is 'destroyGPURenderState'
 --                   .
 --
---     [C declaration]: @SDL_DestroyGPURenderState@, defined at @SDL3\/SDL_render.h 3022:34@
+--     [C declaration]: @SDL_DestroyGPURenderState@, defined at @SDL3\/SDL_render.h 3026:34@
 destroyGPURenderStateSafe
   :: BG.Ptr SDL_GPURenderState
   -- ^

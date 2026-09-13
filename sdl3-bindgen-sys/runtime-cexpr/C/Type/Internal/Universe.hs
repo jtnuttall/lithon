@@ -40,19 +40,19 @@ newtype OpaqueTy = OpaqueTy Int
 -- This is used for generating type family and class instances.
 enumerateTypeTuples :: forall n. (Fin.SNatI n) => [Vec n (Type OpaqueTy)]
 enumerateTypeTuples =
-  fmap fst $
-    unF $
-      Fin.induction
-        (F [(VNil, Nothing)])
-        ( \((F prev) :: F m) -> F $ do
-            (tys, mbLastUsedTyVarNumber) <- prev
-            let m = case mbLastUsedTyVarNumber of
-                  Nothing -> 1
-                  Just i -> i + 1
-            (ty, mbNextUsedTyVar) <- allTypes m
-            let mbUsedTv = maxMaybe mbLastUsedTyVarNumber mbNextUsedTyVar
-            return (Vec.snoc tys ty, mbUsedTv)
-        )
+  fmap fst
+    $ unF
+    $ Fin.induction
+      (F [(VNil, Nothing)])
+      ( \((F prev) :: F m) -> F $ do
+          (tys, mbLastUsedTyVarNumber) <- prev
+          let m = case mbLastUsedTyVarNumber of
+                Nothing -> 1
+                Just i -> i + 1
+          (ty, mbNextUsedTyVar) <- allTypes m
+          let mbUsedTv = maxMaybe mbLastUsedTyVarNumber mbNextUsedTyVar
+          return (Vec.snoc tys ty, mbUsedTv)
+      )
 
 maxMaybe :: (Ord i) => Maybe i -> Maybe i -> Maybe i
 maxMaybe (Just i) (Just j) = Just $ max i j

@@ -1387,7 +1387,7 @@ hs_bindgen_154eef5a69d9f0de =
 
 -- | Create a 2D software rendering context for a surface.
 --
---     Two other API which can be used to create 'SDL_Renderer': @SDL_CreateRenderer()@ and @SDL_CreateWindowAndRenderer()@. These can /also/ create a software renderer, but they are intended to be used with an SDL_Window as the final destination and not an SDL_Surface.
+--     Two other APIs which can be used to create 'SDL_Renderer': @SDL_CreateRenderer()@ and @SDL_CreateWindowAndRenderer()@. These can /also/ create a software renderer, but they are intended to be used with an SDL_Window as the final destination and not an SDL_Surface.
 --
 --     [Returns]: a valid rendering context or NULL if there was an error; call SDL_GetError() for more information.
 --
@@ -1861,8 +1861,6 @@ hs_bindgen_56364d1627b2f54e =
 --
 --     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER'@: the GLuint texture associated with the texture, if you want to wrap an existing texture.
 --
---     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER'@: the GLuint texture associated with the texture, if you want to wrap an existing texture.
---
 --     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER'@: the GLuint texture associated with the UV plane of an NV12 texture, if you want to wrap an existing texture.
 --
 --     * @'sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER'@: the GLuint texture associated with the U plane of a YUV texture, if you want to wrap an existing texture.
@@ -1893,7 +1891,7 @@ hs_bindgen_56364d1627b2f54e =
 --
 --     [See also]: SDL_CreateProperties, 'sDL_CreateTexture', 'sDL_CreateTextureFromSurface', 'sDL_DestroyTexture', 'sDL_GetTextureSize', 'sDL_UpdateTexture'
 --
---     [C declaration]: @SDL_CreateTextureWithProperties@, defined at @SDL3\/SDL_render.h 806:43@
+--     [C declaration]: @SDL_CreateTextureWithProperties@, defined at @SDL3\/SDL_render.h 804:43@
 sDL_CreateTextureWithProperties
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -2002,7 +2000,7 @@ hs_bindgen_5a086b7bc8bee33d =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetTextureProperties@, defined at @SDL3\/SDL_render.h 935:46@
+--     [C declaration]: @SDL_GetTextureProperties@, defined at @SDL3\/SDL_render.h 933:46@
 sDL_GetTextureProperties
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2033,7 +2031,7 @@ hs_bindgen_952d60b9be750f80 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetRendererFromTexture@, defined at @SDL3\/SDL_render.h 979:44@
+--     [C declaration]: @SDL_GetRendererFromTexture@, defined at @SDL3\/SDL_render.h 977:44@
 sDL_GetRendererFromTexture
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2068,7 +2066,7 @@ hs_bindgen_593080867d87a9cb =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetTextureSize@, defined at @SDL3\/SDL_render.h 996:34@
+--     [C declaration]: @SDL_GetTextureSize@, defined at @SDL3\/SDL_render.h 994:34@
 sDL_GetTextureSize
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2114,7 +2112,7 @@ hs_bindgen_c0c58495bafd931b =
 --
 --     [See also]: SDL_CreatePalette, 'sDL_GetTexturePalette'
 --
---     [C declaration]: @SDL_SetTexturePalette@, defined at @SDL3\/SDL_render.h 1018:34@
+--     [C declaration]: @SDL_SetTexturePalette@, defined at @SDL3\/SDL_render.h 1016:34@
 sDL_SetTexturePalette
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2150,7 +2148,7 @@ hs_bindgen_23b273d543966d78 =
 --
 --     [See also]: 'sDL_SetTexturePalette'
 --
---     [C declaration]: @SDL_GetTexturePalette@, defined at @SDL3\/SDL_render.h 1033:43@
+--     [C declaration]: @SDL_GetTexturePalette@, defined at @SDL3\/SDL_render.h 1031:43@
 sDL_GetTexturePalette
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2194,7 +2192,7 @@ hs_bindgen_823afe6398e7b8c5 =
 --
 --     [See also]: 'sDL_GetTextureColorMod', 'sDL_SetTextureAlphaMod', 'sDL_SetTextureColorModFloat'
 --
---     [C declaration]: @SDL_SetTextureColorMod@, defined at @SDL3\/SDL_render.h 1062:34@
+--     [C declaration]: @SDL_SetTextureColorMod@, defined at @SDL3\/SDL_render.h 1060:34@
 sDL_SetTextureColorMod
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2250,7 +2248,7 @@ hs_bindgen_7ad37bb707c0047a =
 --
 --     [See also]: 'sDL_GetTextureColorModFloat', 'sDL_SetTextureAlphaModFloat', 'sDL_SetTextureColorMod'
 --
---     [C declaration]: @SDL_SetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1092:34@
+--     [C declaration]: @SDL_SetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1090:34@
 sDL_SetTextureColorModFloat
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2301,7 +2299,7 @@ hs_bindgen_7a0ccf77a4fdfc3e =
 --
 --     [See also]: 'sDL_GetTextureAlphaMod', 'sDL_GetTextureColorModFloat', 'sDL_SetTextureColorMod'
 --
---     [C declaration]: @SDL_GetTextureColorMod@, defined at @SDL3\/SDL_render.h 1113:34@
+--     [C declaration]: @SDL_GetTextureColorMod@, defined at @SDL3\/SDL_render.h 1111:34@
 sDL_GetTextureColorMod
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2351,7 +2349,7 @@ hs_bindgen_842e59bbba82a5a3 =
 --
 --     [See also]: 'sDL_GetTextureAlphaModFloat', 'sDL_GetTextureColorMod', 'sDL_SetTextureColorModFloat'
 --
---     [C declaration]: @SDL_GetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1133:34@
+--     [C declaration]: @SDL_GetTextureColorModFloat@, defined at @SDL3\/SDL_render.h 1131:34@
 sDL_GetTextureColorModFloat
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2404,7 +2402,7 @@ hs_bindgen_cd0da7f365c5d74f =
 --
 --     [See also]: 'sDL_GetTextureAlphaMod', 'sDL_SetTextureAlphaModFloat', 'sDL_SetTextureColorMod'
 --
---     [C declaration]: @SDL_SetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1159:34@
+--     [C declaration]: @SDL_SetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1157:34@
 sDL_SetTextureAlphaMod
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2448,7 +2446,7 @@ hs_bindgen_3c8a499336e4d5a3 =
 --
 --     [See also]: 'sDL_GetTextureAlphaModFloat', 'sDL_SetTextureAlphaMod', 'sDL_SetTextureColorModFloat'
 --
---     [C declaration]: @SDL_SetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1185:34@
+--     [C declaration]: @SDL_SetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1183:34@
 sDL_SetTextureAlphaModFloat
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2487,7 +2485,7 @@ hs_bindgen_d0b8db7f236a27d6 =
 --
 --     [See also]: 'sDL_GetTextureAlphaModFloat', 'sDL_GetTextureColorMod', 'sDL_SetTextureAlphaMod'
 --
---     [C declaration]: @SDL_GetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1203:34@
+--     [C declaration]: @SDL_GetTextureAlphaMod@, defined at @SDL3\/SDL_render.h 1201:34@
 sDL_GetTextureAlphaMod
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2525,7 +2523,7 @@ hs_bindgen_10d5dcf405fda170 =
 --
 --     [See also]: 'sDL_GetTextureAlphaMod', 'sDL_GetTextureColorModFloat', 'sDL_SetTextureAlphaModFloat'
 --
---     [C declaration]: @SDL_GetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1221:34@
+--     [C declaration]: @SDL_GetTextureAlphaModFloat@, defined at @SDL3\/SDL_render.h 1219:34@
 sDL_GetTextureAlphaModFloat
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2556,6 +2554,8 @@ hs_bindgen_2881e5a760914ac5 =
 
 -- | Set the blend mode for a texture, used by @SDL_RenderTexture()@.
 --
+--     This blend mode is used for any drawing that involves this texture.
+--
 --     If the blend mode is not supported, the closest supported mode is chosen and this function returns false.
 --
 --     [Returns]: true on success or false on failure; call SDL_GetError() for more information.
@@ -2564,9 +2564,9 @@ hs_bindgen_2881e5a760914ac5 =
 --
 --     @since 3.2.0
 --
---     [See also]: 'sDL_GetTextureBlendMode'
+--     [See also]: 'sDL_GetTextureBlendMode', 'sDL_SetRenderDrawBlendMode'
 --
---     [C declaration]: @SDL_SetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1240:34@
+--     [C declaration]: @SDL_SetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1241:34@
 sDL_SetTextureBlendMode
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2604,7 +2604,7 @@ hs_bindgen_816bbcb1b4c3283a =
 --
 --     [See also]: 'sDL_SetTextureBlendMode'
 --
---     [C declaration]: @SDL_GetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1256:34@
+--     [C declaration]: @SDL_GetTextureBlendMode@, defined at @SDL3\/SDL_render.h 1257:34@
 sDL_GetTextureBlendMode
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2646,7 +2646,7 @@ hs_bindgen_f9ee16ea95e7fdf6 =
 --
 --     [See also]: 'sDL_GetTextureScaleMode'
 --
---     [C declaration]: @SDL_SetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1276:34@
+--     [C declaration]: @SDL_SetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1277:34@
 sDL_SetTextureScaleMode
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2684,7 +2684,7 @@ hs_bindgen_6de3c22a0ac3ed25 =
 --
 --     [See also]: 'sDL_SetTextureScaleMode'
 --
---     [C declaration]: @SDL_GetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1292:34@
+--     [C declaration]: @SDL_GetTextureScaleMode@, defined at @SDL3\/SDL_render.h 1293:34@
 sDL_GetTextureScaleMode
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2732,7 +2732,7 @@ hs_bindgen_34af457e8db29591 =
 --
 --     [See also]: 'sDL_LockTexture', 'sDL_UnlockTexture', 'sDL_UpdateNVTexture', 'sDL_UpdateYUVTexture'
 --
---     [C declaration]: @SDL_UpdateTexture@, defined at @SDL3\/SDL_render.h 1326:34@
+--     [C declaration]: @SDL_UpdateTexture@, defined at @SDL3\/SDL_render.h 1327:34@
 sDL_UpdateTexture
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2792,7 +2792,7 @@ hs_bindgen_a7b149fabb767cd5 =
 --
 --     [See also]: 'sDL_UpdateNVTexture', 'sDL_UpdateTexture'
 --
---     [C declaration]: @SDL_UpdateYUVTexture@, defined at @SDL3\/SDL_render.h 1358:34@
+--     [C declaration]: @SDL_UpdateYUVTexture@, defined at @SDL3\/SDL_render.h 1359:34@
 sDL_UpdateYUVTexture
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2864,7 +2864,7 @@ hs_bindgen_2d94f5e4965716c8 =
 --
 --     [See also]: 'sDL_UpdateTexture', 'sDL_UpdateYUVTexture'
 --
---     [C declaration]: @SDL_UpdateNVTexture@, defined at @SDL3\/SDL_render.h 1390:34@
+--     [C declaration]: @SDL_UpdateNVTexture@, defined at @SDL3\/SDL_render.h 1391:34@
 sDL_UpdateNVTexture
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2926,7 +2926,7 @@ hs_bindgen_b121055dd1158359 =
 --
 --     [See also]: 'sDL_LockTextureToSurface', 'sDL_UnlockTexture'
 --
---     [C declaration]: @SDL_LockTexture@, defined at @SDL3\/SDL_render.h 1425:34@
+--     [C declaration]: @SDL_LockTexture@, defined at @SDL3\/SDL_render.h 1426:34@
 sDL_LockTexture
   :: BG.Ptr SDL_Texture
   -- ^
@@ -2982,7 +2982,7 @@ hs_bindgen_1526f9100ed55b03 =
 --
 --     [See also]: 'sDL_LockTexture', 'sDL_UnlockTexture'
 --
---     [C declaration]: @SDL_LockTextureToSurface@, defined at @SDL3\/SDL_render.h 1463:34@
+--     [C declaration]: @SDL_LockTextureToSurface@, defined at @SDL3\/SDL_render.h 1464:34@
 sDL_LockTextureToSurface
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3025,7 +3025,7 @@ hs_bindgen_1159217b1f34f925 =
 --
 --     [See also]: 'sDL_LockTexture'
 --
---     [C declaration]: @SDL_UnlockTexture@, defined at @SDL3\/SDL_render.h 1484:34@
+--     [C declaration]: @SDL_UnlockTexture@, defined at @SDL3\/SDL_render.h 1485:34@
 sDL_UnlockTexture
   :: BG.Ptr SDL_Texture
   -- ^
@@ -3063,7 +3063,7 @@ hs_bindgen_4b272fad8dbaa9f4 =
 --
 --     [See also]: 'sDL_GetRenderTarget'
 --
---     [C declaration]: @SDL_SetRenderTarget@, defined at @SDL3\/SDL_render.h 1511:34@
+--     [C declaration]: @SDL_SetRenderTarget@, defined at @SDL3\/SDL_render.h 1512:34@
 sDL_SetRenderTarget
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3101,7 +3101,7 @@ hs_bindgen_0f2b08c2b3c8ddb1 =
 --
 --     [See also]: 'sDL_SetRenderTarget'
 --
---     [C declaration]: @SDL_GetRenderTarget@, defined at @SDL3\/SDL_render.h 1528:43@
+--     [C declaration]: @SDL_GetRenderTarget@, defined at @SDL3\/SDL_render.h 1529:43@
 sDL_GetRenderTarget
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3149,7 +3149,7 @@ hs_bindgen_c8bfb4ad8baf9874 =
 --
 --     [See also]: 'sDL_ConvertEventToRenderCoordinates', 'sDL_GetRenderLogicalPresentation', 'sDL_GetRenderLogicalPresentationRect'
 --
---     [C declaration]: @SDL_SetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1575:34@
+--     [C declaration]: @SDL_SetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1576:34@
 sDL_SetRenderLogicalPresentation
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3204,7 +3204,7 @@ hs_bindgen_88acfc55c8872d4d =
 --
 --     [See also]: 'sDL_SetRenderLogicalPresentation'
 --
---     [C declaration]: @SDL_GetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1600:34@
+--     [C declaration]: @SDL_GetRenderLogicalPresentation@, defined at @SDL3\/SDL_render.h 1601:34@
 sDL_GetRenderLogicalPresentation
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3255,7 +3255,7 @@ hs_bindgen_e6080eb5475f066e =
 --
 --     [See also]: 'sDL_SetRenderLogicalPresentation'
 --
---     [C declaration]: @SDL_GetRenderLogicalPresentationRect@, defined at @SDL3\/SDL_render.h 1625:34@
+--     [C declaration]: @SDL_GetRenderLogicalPresentationRect@, defined at @SDL3\/SDL_render.h 1626:34@
 sDL_GetRenderLogicalPresentationRect
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3310,7 +3310,7 @@ hs_bindgen_2ed6b3e16ff69faf =
 --
 --     [See also]: 'sDL_SetRenderLogicalPresentation', 'sDL_SetRenderScale'
 --
---     [C declaration]: @SDL_RenderCoordinatesFromWindow@, defined at @SDL3\/SDL_render.h 1652:34@
+--     [C declaration]: @SDL_RenderCoordinatesFromWindow@, defined at @SDL3\/SDL_render.h 1653:34@
 sDL_RenderCoordinatesFromWindow
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3377,7 +3377,7 @@ hs_bindgen_694297dc8b16c606 =
 --
 --     [See also]: 'sDL_SetRenderLogicalPresentation', 'sDL_SetRenderScale', 'sDL_SetRenderViewport'
 --
---     [C declaration]: @SDL_RenderCoordinatesToWindow@, defined at @SDL3\/SDL_render.h 1682:34@
+--     [C declaration]: @SDL_RenderCoordinatesToWindow@, defined at @SDL3\/SDL_render.h 1683:34@
 sDL_RenderCoordinatesToWindow
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3446,7 +3446,7 @@ hs_bindgen_4d63449cf75fd80c =
 --
 --     [See also]: 'sDL_RenderCoordinatesFromWindow'
 --
---     [C declaration]: @SDL_ConvertEventToRenderCoordinates@, defined at @SDL3\/SDL_render.h 1718:34@
+--     [C declaration]: @SDL_ConvertEventToRenderCoordinates@, defined at @SDL3\/SDL_render.h 1719:34@
 sDL_ConvertEventToRenderCoordinates
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3491,7 +3491,7 @@ hs_bindgen_6d15f83fef90049f =
 --
 --     [See also]: 'sDL_GetRenderViewport', 'sDL_RenderViewportSet'
 --
---     [C declaration]: @SDL_SetRenderViewport@, defined at @SDL3\/SDL_render.h 1745:34@
+--     [C declaration]: @SDL_SetRenderViewport@, defined at @SDL3\/SDL_render.h 1746:34@
 sDL_SetRenderViewport
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3531,7 +3531,7 @@ hs_bindgen_b94438b981f1f14c =
 --
 --     [See also]: 'sDL_RenderViewportSet', 'sDL_SetRenderViewport'
 --
---     [C declaration]: @SDL_GetRenderViewport@, defined at @SDL3\/SDL_render.h 1765:34@
+--     [C declaration]: @SDL_GetRenderViewport@, defined at @SDL3\/SDL_render.h 1766:34@
 sDL_GetRenderViewport
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3571,7 +3571,7 @@ hs_bindgen_a3207f3fc59e8dc9 =
 --
 --     [See also]: 'sDL_GetRenderViewport', 'sDL_SetRenderViewport'
 --
---     [C declaration]: @SDL_RenderViewportSet@, defined at @SDL3\/SDL_render.h 1787:34@
+--     [C declaration]: @SDL_RenderViewportSet@, defined at @SDL3\/SDL_render.h 1788:34@
 sDL_RenderViewportSet
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3605,7 +3605,7 @@ hs_bindgen_4eb48f61abc48f1f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetRenderSafeArea@, defined at @SDL3\/SDL_render.h 1809:34@
+--     [C declaration]: @SDL_GetRenderSafeArea@, defined at @SDL3\/SDL_render.h 1810:34@
 sDL_GetRenderSafeArea
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3645,7 +3645,7 @@ hs_bindgen_8baf3dc3de980190 =
 --
 --     [See also]: 'sDL_GetRenderClipRect', 'sDL_RenderClipEnabled'
 --
---     [C declaration]: @SDL_SetRenderClipRect@, defined at @SDL3\/SDL_render.h 1830:34@
+--     [C declaration]: @SDL_SetRenderClipRect@, defined at @SDL3\/SDL_render.h 1831:34@
 sDL_SetRenderClipRect
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3685,7 +3685,7 @@ hs_bindgen_5b7acae61b400f09 =
 --
 --     [See also]: 'sDL_RenderClipEnabled', 'sDL_SetRenderClipRect'
 --
---     [C declaration]: @SDL_GetRenderClipRect@, defined at @SDL3\/SDL_render.h 1851:34@
+--     [C declaration]: @SDL_GetRenderClipRect@, defined at @SDL3\/SDL_render.h 1852:34@
 sDL_GetRenderClipRect
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3723,7 +3723,7 @@ hs_bindgen_151563301b587559 =
 --
 --     [See also]: 'sDL_GetRenderClipRect', 'sDL_SetRenderClipRect'
 --
---     [C declaration]: @SDL_RenderClipEnabled@, defined at @SDL3\/SDL_render.h 1870:34@
+--     [C declaration]: @SDL_RenderClipEnabled@, defined at @SDL3\/SDL_render.h 1871:34@
 sDL_RenderClipEnabled
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3765,7 +3765,7 @@ hs_bindgen_edd164833dbcbd86 =
 --
 --     [See also]: 'sDL_GetRenderScale'
 --
---     [C declaration]: @SDL_SetRenderScale@, defined at @SDL3\/SDL_render.h 1898:34@
+--     [C declaration]: @SDL_SetRenderScale@, defined at @SDL3\/SDL_render.h 1899:34@
 sDL_SetRenderScale
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3811,7 +3811,7 @@ hs_bindgen_b47b8598441289bb =
 --
 --     [See also]: 'sDL_SetRenderScale'
 --
---     [C declaration]: @SDL_GetRenderScale@, defined at @SDL3\/SDL_render.h 1918:34@
+--     [C declaration]: @SDL_GetRenderScale@, defined at @SDL3\/SDL_render.h 1919:34@
 sDL_GetRenderScale
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3861,7 +3861,7 @@ hs_bindgen_2a1d5a5e6763970a =
 --
 --     [See also]: 'sDL_GetRenderDrawColor', 'sDL_SetRenderDrawColorFloat'
 --
---     [C declaration]: @SDL_SetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1943:34@
+--     [C declaration]: @SDL_SetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1944:34@
 sDL_SetRenderDrawColor
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3919,7 +3919,7 @@ hs_bindgen_deb567c32a3b304a =
 --
 --     [See also]: 'sDL_GetRenderDrawColorFloat', 'sDL_SetRenderDrawColor'
 --
---     [C declaration]: @SDL_SetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 1968:34@
+--     [C declaration]: @SDL_SetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 1969:34@
 sDL_SetRenderDrawColorFloat
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -3976,7 +3976,7 @@ hs_bindgen_4b8538e6f2e6330e =
 --
 --     [See also]: 'sDL_GetRenderDrawColorFloat', 'sDL_SetRenderDrawColor'
 --
---     [C declaration]: @SDL_GetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1992:34@
+--     [C declaration]: @SDL_GetRenderDrawColor@, defined at @SDL3\/SDL_render.h 1993:34@
 sDL_GetRenderDrawColor
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4032,7 +4032,7 @@ hs_bindgen_02be3e3dad551497 =
 --
 --     [See also]: 'sDL_SetRenderDrawColorFloat', 'sDL_GetRenderDrawColor'
 --
---     [C declaration]: @SDL_GetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 2016:34@
+--     [C declaration]: @SDL_GetRenderDrawColorFloat@, defined at @SDL3\/SDL_render.h 2017:34@
 sDL_GetRenderDrawColorFloat
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4087,7 +4087,7 @@ hs_bindgen_4b5898833d8f7966 =
 --
 --     [See also]: 'sDL_GetRenderColorScale'
 --
---     [C declaration]: @SDL_SetRenderColorScale@, defined at @SDL3\/SDL_render.h 2040:34@
+--     [C declaration]: @SDL_SetRenderColorScale@, defined at @SDL3\/SDL_render.h 2041:34@
 sDL_SetRenderColorScale
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4125,7 +4125,7 @@ hs_bindgen_107aa0fcfa767aa5 =
 --
 --     [See also]: 'sDL_SetRenderColorScale'
 --
---     [C declaration]: @SDL_GetRenderColorScale@, defined at @SDL3\/SDL_render.h 2056:34@
+--     [C declaration]: @SDL_GetRenderColorScale@, defined at @SDL3\/SDL_render.h 2057:34@
 sDL_GetRenderColorScale
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4153,7 +4153,9 @@ hs_bindgen_b9c067d52917b47d
 hs_bindgen_b9c067d52917b47d =
   BG.fromFFIType hs_bindgen_b9c067d52917b47d_base
 
--- | Set the blend mode used for drawing operations (Fill and Line).
+-- | Set the blend mode used for drawing operations.
+--
+--     This blend mode is used for any drawing that doesn\'t involve textures.
 --
 --     If the blend mode is not supported, the closest supported mode is chosen.
 --
@@ -4163,9 +4165,9 @@ hs_bindgen_b9c067d52917b47d =
 --
 --     @since 3.2.0
 --
---     [See also]: 'sDL_GetRenderDrawBlendMode'
+--     [See also]: 'sDL_GetRenderDrawBlendMode', 'sDL_SetTextureBlendMode'
 --
---     [C declaration]: @SDL_SetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2074:34@
+--     [C declaration]: @SDL_SetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2078:34@
 sDL_SetRenderDrawBlendMode
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4204,7 +4206,7 @@ hs_bindgen_167da6f1eb78062a =
 --
 --     [See also]: 'sDL_SetRenderDrawBlendMode'
 --
---     [C declaration]: @SDL_GetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2090:34@
+--     [C declaration]: @SDL_GetRenderDrawBlendMode@, defined at @SDL3\/SDL_render.h 2094:34@
 sDL_GetRenderDrawBlendMode
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4243,7 +4245,7 @@ hs_bindgen_cde099ce5b1cfc9d =
 --
 --     [See also]: 'sDL_SetRenderDrawColor'
 --
---     [C declaration]: @SDL_RenderClear@, defined at @SDL3\/SDL_render.h 2110:34@
+--     [C declaration]: @SDL_RenderClear@, defined at @SDL3\/SDL_render.h 2114:34@
 sDL_RenderClear
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4279,7 +4281,7 @@ hs_bindgen_9685ef9bec873fd9 =
 --
 --     [See also]: 'sDL_RenderPoints'
 --
---     [C declaration]: @SDL_RenderPoint@, defined at @SDL3\/SDL_render.h 2127:34@
+--     [C declaration]: @SDL_RenderPoint@, defined at @SDL3\/SDL_render.h 2131:34@
 sDL_RenderPoint
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4323,7 +4325,7 @@ hs_bindgen_a2f27901d75ff412 =
 --
 --     [See also]: 'sDL_RenderPoint'
 --
---     [C declaration]: @SDL_RenderPoints@, defined at @SDL3\/SDL_render.h 2144:34@
+--     [C declaration]: @SDL_RenderPoints@, defined at @SDL3\/SDL_render.h 2148:34@
 sDL_RenderPoints
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4371,7 +4373,7 @@ hs_bindgen_a22413e4506d153a =
 --
 --     [See also]: 'sDL_RenderLines'
 --
---     [C declaration]: @SDL_RenderLine@, defined at @SDL3\/SDL_render.h 2163:34@
+--     [C declaration]: @SDL_RenderLine@, defined at @SDL3\/SDL_render.h 2167:34@
 sDL_RenderLine
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4423,7 +4425,7 @@ hs_bindgen_139f9e9bbb114174 =
 --
 --     [See also]: 'sDL_RenderLine'
 --
---     [C declaration]: @SDL_RenderLines@, defined at @SDL3\/SDL_render.h 2181:34@
+--     [C declaration]: @SDL_RenderLines@, defined at @SDL3\/SDL_render.h 2185:34@
 sDL_RenderLines
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4465,7 +4467,7 @@ hs_bindgen_c336b07d3c7c70e0 =
 --
 --     [See also]: 'sDL_RenderRects'
 --
---     [C declaration]: @SDL_RenderRect@, defined at @SDL3\/SDL_render.h 2198:34@
+--     [C declaration]: @SDL_RenderRect@, defined at @SDL3\/SDL_render.h 2202:34@
 sDL_RenderRect
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4505,7 +4507,7 @@ hs_bindgen_4402e93d7e0ba929 =
 --
 --     [See also]: 'sDL_RenderRect'
 --
---     [C declaration]: @SDL_RenderRects@, defined at @SDL3\/SDL_render.h 2216:34@
+--     [C declaration]: @SDL_RenderRects@, defined at @SDL3\/SDL_render.h 2220:34@
 sDL_RenderRects
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4547,7 +4549,7 @@ hs_bindgen_2904f549c42ca454 =
 --
 --     [See also]: 'sDL_RenderFillRects'
 --
---     [C declaration]: @SDL_RenderFillRect@, defined at @SDL3\/SDL_render.h 2234:34@
+--     [C declaration]: @SDL_RenderFillRect@, defined at @SDL3\/SDL_render.h 2238:34@
 sDL_RenderFillRect
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4587,7 +4589,7 @@ hs_bindgen_8e1470eae177aaca =
 --
 --     [See also]: 'sDL_RenderFillRect'
 --
---     [C declaration]: @SDL_RenderFillRects@, defined at @SDL3\/SDL_render.h 2252:34@
+--     [C declaration]: @SDL_RenderFillRects@, defined at @SDL3\/SDL_render.h 2256:34@
 sDL_RenderFillRects
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4633,7 +4635,7 @@ hs_bindgen_25ce1a6520376b45 =
 --
 --     [See also]: 'sDL_RenderTextureRotated', 'sDL_RenderTextureTiled'
 --
---     [C declaration]: @SDL_RenderTexture@, defined at @SDL3\/SDL_render.h 2274:34@
+--     [C declaration]: @SDL_RenderTexture@, defined at @SDL3\/SDL_render.h 2278:34@
 sDL_RenderTexture
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4689,7 +4691,7 @@ hs_bindgen_7784d7195eaae275 =
 --
 --     [See also]: 'sDL_RenderTexture'
 --
---     [C declaration]: @SDL_RenderTextureRotated@, defined at @SDL3\/SDL_render.h 2302:34@
+--     [C declaration]: @SDL_RenderTextureRotated@, defined at @SDL3\/SDL_render.h 2306:34@
 sDL_RenderTextureRotated
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4756,7 +4758,7 @@ hs_bindgen_add42f94463f73c6 =
 --
 --     [See also]: 'sDL_RenderTexture'
 --
---     [C declaration]: @SDL_RenderTextureAffine@, defined at @SDL3\/SDL_render.h 2333:34@
+--     [C declaration]: @SDL_RenderTextureAffine@, defined at @SDL3\/SDL_render.h 2337:34@
 sDL_RenderTextureAffine
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4818,7 +4820,7 @@ hs_bindgen_74aa5a13c76159fa =
 --
 --     [See also]: 'sDL_RenderTexture'
 --
---     [C declaration]: @SDL_RenderTextureTiled@, defined at @SDL3\/SDL_render.h 2362:34@
+--     [C declaration]: @SDL_RenderTextureTiled@, defined at @SDL3\/SDL_render.h 2366:34@
 sDL_RenderTextureTiled
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4884,7 +4886,7 @@ hs_bindgen_6b75253c3413f458 =
 --
 --     [See also]: 'sDL_RenderTexture', 'sDL_RenderTexture9GridTiled'
 --
---     [C declaration]: @SDL_RenderTexture9Grid@, defined at @SDL3\/SDL_render.h 2397:34@
+--     [C declaration]: @SDL_RenderTexture9Grid@, defined at @SDL3\/SDL_render.h 2401:34@
 sDL_RenderTexture9Grid
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -4968,7 +4970,7 @@ hs_bindgen_2d9cf263c1277f5b =
 --
 --     [See also]: 'sDL_RenderTexture', 'sDL_RenderTexture9Grid'
 --
---     [C declaration]: @SDL_RenderTexture9GridTiled@, defined at @SDL3\/SDL_render.h 2435:34@
+--     [C declaration]: @SDL_RenderTexture9GridTiled@, defined at @SDL3\/SDL_render.h 2439:34@
 sDL_RenderTexture9GridTiled
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5047,7 +5049,7 @@ hs_bindgen_778c782602e7d6de =
 --
 --     [See also]: 'sDL_RenderGeometryRaw', 'sDL_SetRenderTextureAddressMode'
 --
---     [C declaration]: @SDL_RenderGeometry@, defined at @SDL3\/SDL_render.h 2460:34@
+--     [C declaration]: @SDL_RenderGeometry@, defined at @SDL3\/SDL_render.h 2464:34@
 sDL_RenderGeometry
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5121,7 +5123,7 @@ hs_bindgen_32080687747fa83c =
 --
 --     [See also]: 'sDL_RenderGeometry', 'sDL_SetRenderTextureAddressMode'
 --
---     [C declaration]: @SDL_RenderGeometryRaw@, defined at @SDL3\/SDL_render.h 2493:34@
+--     [C declaration]: @SDL_RenderGeometryRaw@, defined at @SDL3\/SDL_render.h 2497:34@
 sDL_RenderGeometryRaw
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5201,7 +5203,7 @@ hs_bindgen_56e605702d9776b5 =
 --
 --     [See also]: 'sDL_RenderGeometry', 'sDL_RenderGeometryRaw', 'sDL_GetRenderTextureAddressMode'
 --
---     [C declaration]: @SDL_SetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2520:34@
+--     [C declaration]: @SDL_SetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2524:34@
 sDL_SetRenderTextureAddressMode
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5246,7 +5248,7 @@ hs_bindgen_b63dbaffb6d53264 =
 --
 --     [See also]: 'sDL_SetRenderTextureAddressMode'
 --
---     [C declaration]: @SDL_GetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2541:34@
+--     [C declaration]: @SDL_GetRenderTextureAddressMode@, defined at @SDL3\/SDL_render.h 2545:34@
 sDL_GetRenderTextureAddressMode
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5293,7 +5295,7 @@ hs_bindgen_8e39bba88c8b590b =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_RenderReadPixels@, defined at @SDL3\/SDL_render.h 2568:43@
+--     [C declaration]: @SDL_RenderReadPixels@, defined at @SDL3\/SDL_render.h 2572:43@
 sDL_RenderReadPixels
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5337,7 +5339,7 @@ hs_bindgen_7c3d5531ae54aea4 =
 --
 --     [See also]: 'sDL_CreateRenderer', 'sDL_RenderClear', 'sDL_RenderFillRect', 'sDL_RenderFillRects', 'sDL_RenderLine', 'sDL_RenderLines', 'sDL_RenderPoint', 'sDL_RenderPoints', 'sDL_RenderRect', 'sDL_RenderRects', 'sDL_SetRenderDrawBlendMode', 'sDL_SetRenderDrawColor'
 --
---     [C declaration]: @SDL_RenderPresent@, defined at @SDL3\/SDL_render.h 2617:34@
+--     [C declaration]: @SDL_RenderPresent@, defined at @SDL3\/SDL_render.h 2621:34@
 sDL_RenderPresent
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5369,7 +5371,7 @@ hs_bindgen_8bed4d77b35c687f =
 --
 --     [See also]: 'sDL_CreateTexture', 'sDL_CreateTextureFromSurface'
 --
---     [C declaration]: @SDL_DestroyTexture@, defined at @SDL3\/SDL_render.h 2634:34@
+--     [C declaration]: @SDL_DestroyTexture@, defined at @SDL3\/SDL_render.h 2638:34@
 sDL_DestroyTexture
   :: BG.Ptr SDL_Texture
   -- ^
@@ -5401,7 +5403,7 @@ hs_bindgen_1d20db71cb8b3442 =
 --
 --     [See also]: 'sDL_CreateRenderer'
 --
---     [C declaration]: @SDL_DestroyRenderer@, defined at @SDL3\/SDL_render.h 2650:34@
+--     [C declaration]: @SDL_DestroyRenderer@, defined at @SDL3\/SDL_render.h 2654:34@
 sDL_DestroyRenderer
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5441,7 +5443,7 @@ hs_bindgen_541ef4edd41b43f3 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_FlushRenderer@, defined at @SDL3\/SDL_render.h 2683:34@
+--     [C declaration]: @SDL_FlushRenderer@, defined at @SDL3\/SDL_render.h 2687:34@
 sDL_FlushRenderer
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5475,7 +5477,7 @@ hs_bindgen_b665c5f20441fcd2 =
 --
 --     [See also]: 'sDL_GetRenderMetalCommandEncoder'
 --
---     [C declaration]: @SDL_GetRenderMetalLayer@, defined at @SDL3\/SDL_render.h 2701:36@
+--     [C declaration]: @SDL_GetRenderMetalLayer@, defined at @SDL3\/SDL_render.h 2705:36@
 sDL_GetRenderMetalLayer
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5511,7 +5513,7 @@ hs_bindgen_4cc0199f9267bab8 =
 --
 --     [See also]: 'sDL_GetRenderMetalLayer'
 --
---     [C declaration]: @SDL_GetRenderMetalCommandEncoder@, defined at @SDL3\/SDL_render.h 2724:36@
+--     [C declaration]: @SDL_GetRenderMetalCommandEncoder@, defined at @SDL3\/SDL_render.h 2728:36@
 sDL_GetRenderMetalCommandEncoder
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5552,7 +5554,7 @@ hs_bindgen_91025902db96959c =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_AddVulkanRenderSemaphores@, defined at @SDL3\/SDL_render.h 2755:34@
+--     [C declaration]: @SDL_AddVulkanRenderSemaphores@, defined at @SDL3\/SDL_render.h 2759:34@
 sDL_AddVulkanRenderSemaphores
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5603,7 +5605,7 @@ hs_bindgen_6f4a42b49f0de954 =
 --
 --     [See also]: 'sDL_GetRenderVSync'
 --
---     [C declaration]: @SDL_SetRenderVSync@, defined at @SDL3\/SDL_render.h 2780:34@
+--     [C declaration]: @SDL_SetRenderVSync@, defined at @SDL3\/SDL_render.h 2784:34@
 sDL_SetRenderVSync
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5641,7 +5643,7 @@ hs_bindgen_eb1ce0cdf3d11c86 =
 --
 --     [See also]: 'sDL_SetRenderVSync'
 --
---     [C declaration]: @SDL_GetRenderVSync@, defined at @SDL3\/SDL_render.h 2800:34@
+--     [C declaration]: @SDL_GetRenderVSync@, defined at @SDL3\/SDL_render.h 2804:34@
 sDL_GetRenderVSync
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5701,7 +5703,7 @@ hs_bindgen_54ec6a89b17b55b6 =
 --
 --     [See also]: @SDL_RenderDebugTextFormat@, 'sDL_DEBUG_TEXT_FONT_CHARACTER_SIZE'
 --
---     [C declaration]: @SDL_RenderDebugText@, defined at @SDL3\/SDL_render.h 2852:34@
+--     [C declaration]: @SDL_RenderDebugText@, defined at @SDL3\/SDL_render.h 2856:34@
 sDL_RenderDebugText
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5749,7 +5751,7 @@ hs_bindgen_3e694d41804c455e =
 --
 --     [See also]: 'sDL_GetDefaultTextureScaleMode'
 --
---     [C declaration]: @SDL_SetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2898:34@
+--     [C declaration]: @SDL_SetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2902:34@
 sDL_SetDefaultTextureScaleMode
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5788,7 +5790,7 @@ hs_bindgen_3782129e34172c40 =
 --
 --     [See also]: 'sDL_SetDefaultTextureScaleMode'
 --
---     [C declaration]: @SDL_GetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2916:34@
+--     [C declaration]: @SDL_GetDefaultTextureScaleMode@, defined at @SDL3\/SDL_render.h 2920:34@
 sDL_GetDefaultTextureScaleMode
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5827,7 +5829,7 @@ hs_bindgen_b6fd9bfda38a61c5 =
 --
 --     [See also]: 'sDL_SetGPURenderStateFragmentUniforms', 'sDL_SetGPURenderState', 'sDL_DestroyGPURenderState'
 --
---     [C declaration]: @SDL_CreateGPURenderState@, defined at @SDL3\/SDL_render.h 2970:50@
+--     [C declaration]: @SDL_CreateGPURenderState@, defined at @SDL3\/SDL_render.h 2974:50@
 sDL_CreateGPURenderState
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5870,7 +5872,7 @@ hs_bindgen_18aafc7283600d91 =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @SDL_SetGPURenderStateFragmentUniforms@, defined at @SDL3\/SDL_render.h 2990:34@
+--     [C declaration]: @SDL_SetGPURenderStateFragmentUniforms@, defined at @SDL3\/SDL_render.h 2994:34@
 sDL_SetGPURenderStateFragmentUniforms
   :: BG.Ptr SDL_GPURenderState
   -- ^
@@ -5917,7 +5919,7 @@ hs_bindgen_707dc041c39c56ad =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @SDL_SetGPURenderState@, defined at @SDL3\/SDL_render.h 3008:34@
+--     [C declaration]: @SDL_SetGPURenderState@, defined at @SDL3\/SDL_render.h 3012:34@
 sDL_SetGPURenderState
   :: BG.Ptr SDL_Renderer
   -- ^
@@ -5951,7 +5953,7 @@ hs_bindgen_ef5a4d7453634025 =
 --
 --     [See also]: 'sDL_CreateGPURenderState'
 --
---     [C declaration]: @SDL_DestroyGPURenderState@, defined at @SDL3\/SDL_render.h 3022:34@
+--     [C declaration]: @SDL_DestroyGPURenderState@, defined at @SDL3\/SDL_render.h 3026:34@
 sDL_DestroyGPURenderState
   :: BG.Ptr SDL_GPURenderState
   -- ^
