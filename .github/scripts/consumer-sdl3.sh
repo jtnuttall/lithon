@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -ueo pipefail
+
+if [ "$RUNNER_OS" = "Windows" ]; then
+  export PKG_CONFIG_PATH="/c/msys64/ucrt64/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+  export PATH="/c/msys64/ucrt64/bin:$PATH"
+elif [ "$RUNNER_OS" = "Linux" ]; then
+  export PKG_CONFIG_PATH="$HOME/sdl3/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+fi
+
+pkg-config --modversion sdl3
+
+mkdir -p "$RUNNER_TEMP/sdist"
+(cd sdl3-bindgen-sys && cabal sdist --ignore-project -o "$RUNNER_TEMP/sdist")
+cd "$RUNNER_TEMP/sdist"
+tar -xzf sdl3-bindgen-sys-*.tar.gz
+cd sdl3-bindgen-sys-*/
+
+BUILDOPTS=''
+if [ "$CHECK_ABI" = "true" ]; then
+  BUILDOPTS='--constraint="sdl3-bindgen-sys +abi-assertions-exact"'
+fi
+
+cabal update
+cabal build "${BUILDOPTS}"
+
+if [ "$RUNNER_OS" != "Windows" ]; then cabal haddock; fi
+if [ "$RUNNER_OS" = "Linux" ]; then cabal check; fi
