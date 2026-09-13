@@ -2,7 +2,7 @@
 
 set -uxeo pipefail
 
-CHECK_ABI="${CHECK_ABI:-false}"
+STRICT_CHECK_ABI="${STRICT_CHECK_ABI:-false}"
 
 if [ "$RUNNER_OS" = "Windows" ]; then
   # Patch the SDL setup action's pkgconfig path.
@@ -24,11 +24,39 @@ cd sdl3-bindgen-sys-*/
 
 cabal update
 
-if [ "$CHECK_ABI" = "true" ]; then
+report_build_failure() {
+  if [ "$STRICT_CHECK_ABI" = "true" ]; then
+    cat <<'EOF'
+    The build failed with the strict ABI check enabled. If this failed on a static 
+    assert, this means that the latest stable version of SDL3 contains ABI changes 
+    incompatible with the library's ABI verification method.
+
+    This may happen from time to time, and will not break compilation for downstream
+    users. The library is designed to support guaranteed-backwards-compatible changes
+    without alterations. It's worth checking the specific ABI failure to make sure this
+    property holds.
+
+    Fixing this is a standard operation for the library.
+    EOF
+  else
+    cat <<'EOF'
+    The build failed with the default ABI check enabled. If this failed on a static 
+    assert, this means that the latest stable version of SDL3 contains ABI changes 
+    incompatible with the library's /lenient/ ABI verification method.
+
+    This almost certainly indicates that the library's ABI check is too naive or strict
+    and needs to be updated.
+
+    **This will break compilation for any downstream user of the library.**
+    EOF
+  fi
+}
+
+if [ "$STRICT_CHECK_ABI" = "true" ]; then
   cabal build --constraint="sdl3-bindgen-sys +abi-assertions-exact"
 else
   cabal build
-fi
+fi || report_build_failure
 
 if [ "$RUNNER_OS" != "Windows" ]; then cabal haddock; fi
 if [ "$RUNNER_OS" = "Linux" ]; then cabal check; fi

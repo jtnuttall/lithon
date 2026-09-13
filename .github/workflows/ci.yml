@@ -69,13 +69,12 @@ jobs:
           cd "$RUNNER_TEMP/sdist"/sdl3-bindgen-sys-*/
           cabal build --flags="strict -optimize"
 
-  # Strict ABI check against latest. If this fails the library will need to be updated
-  # to accomodate the breaking change(s).
-  check-latest-sdl3-abi:
+  # If these fail the library will need to be updated to accomodate the new SDL header.
+  check-latest-sdl3:
     if: github.repository == 'jtnuttall/lithon'
     runs-on: ubuntu-latest
     env:
-      CHECK_ABI: 'true'
+      STRICT_CHECK_ABI: true
     steps:
       - uses: actions/checkout@v4
 
@@ -87,7 +86,7 @@ jobs:
 
       - uses: ./.github/actions/setup-haskell
         with:
-          ghc-version: ${{ env.GHC_VERSION }}
+          ghc-version: ${{ matrix.ghc }}
           cabal-version: ${{ env.CABAL_VERSION }}
           cabal-update: false
 
@@ -114,7 +113,7 @@ jobs:
       - name: C reference pin matches the committed vectors
         run: ./scripts/rapidhash-pin.sh
 
-      - name: Sdist carries the vendored headers and pin fixtures
+      - name: Sanity check sdist
         run: |
           mkdir -p "$RUNNER_TEMP/sdist"
           (cd rapidhash && cabal sdist --ignore-project -o "$RUNNER_TEMP/sdist")
@@ -144,7 +143,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        sdl: ["3.2.0", "3.4.10"]
+        sdl: ["3.2.0", "3.4.10", "3.4.16"]
     steps:
       - uses: actions/checkout@v4
 

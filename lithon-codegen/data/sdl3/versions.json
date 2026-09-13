@@ -46,7 +46,7 @@
     "SDL_MouseWheelEvent": {
       "sizeof-since": "3.2.12",
       "before": { "sizeof": 48, "alignment": 8 },
-      "note": "integer_x/integer_y added in 3.2.12; sizeof 48 -> 56, so the size/alignment asserts branch on the gate: 56/8 at or above it, 48/8 below.",
+      "note": "integer_x/integer_y added in 3.2.12",
       "members": { "integer_x": "3.2.12", "integer_y": "3.2.12" }
     },
     "SDL_GPUMultisampleState": {
@@ -60,7 +60,7 @@
     "SDL_PenProximityEvent": {
       "sizeof-since": "3.4.16",
       "before": { "sizeof": 24, "alignment": 8 },
-      "note": "pen_state appended in 3.4.16 (the header says '(added in 3.4.16)'); sizeof 24 -> 32. Absent from the 3.4.10 and 3.4.2 headers.",
+      "note": "pen_state appended in 3.4.16",
       "members": { "pen_state": "3.4.16" }
     }
   },

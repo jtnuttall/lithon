@@ -11,10 +11,9 @@
 
 ### Fixed
 
-- Builds against SDL 3.4.16, where `SDL_PenProximityEvent` gained a
-  `pen_state` member, and against every SDL back to 3.2.0: the member is
-  gated on SDL's version macros in the ABI assertions (below 3.4.16 it
-  reads bytes SDL never wrote; see the README's semantic deltas).
+- ABI check fixed for every SDL from 3.2.0 to 3.4.16. In 3.4.16,
+  `SDL_PenProximityEvent` gained a new `pen_state` member, which caused
+  the previous (stricter) ABI check to fail on the new version.
 
 ### Changed
 
