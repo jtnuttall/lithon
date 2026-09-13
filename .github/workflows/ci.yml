@@ -87,7 +87,7 @@ jobs:
 
       - uses: ./.github/actions/setup-haskell
         with:
-          ghc-version: ${{ matrix.ghc }}
+          ghc-version: ${{ env.GHC_VERSION }}
           cabal-version: ${{ env.CABAL_VERSION }}
           cabal-update: false
 
