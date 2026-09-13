@@ -41,6 +41,7 @@ jobs:
         if: runner.os == 'Windows'
         uses: msys2/setup-msys2@v2
         with:
+          release: false
           msystem: UCRT64
           install: mingw-w64-ucrt-x86_64-pkgconf
 
@@ -185,7 +186,7 @@ jobs:
           cabal update --project-file=cabal.project.shmup
           cabal build --project-file=cabal.project.shmup lithon-examples:exe:shmup
 
-      - name: Run shmup headless (pixel-probed)
+      - name: Run shmup headless
         run: |
           export PKG_CONFIG_PATH="$HOME/sdl3/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
           export LD_LIBRARY_PATH="$HOME/sdl3/lib:${LD_LIBRARY_PATH:-}"

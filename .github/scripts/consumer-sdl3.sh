@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ueo pipefail
+set -uxeo pipefail
 
 CHECK_ABI="${CHECK_ABI:-false}"
 
