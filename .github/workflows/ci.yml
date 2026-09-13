@@ -137,15 +137,22 @@ jobs:
           cd "$RUNNER_TEMP"/sdist/rapidhash-*/
           cabal build --flags="+aeson"
 
-  sdl-shmup-floor:
+  sdl3-shmup-smoke:
     if: github.repository == 'jtnuttall/lithon'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        sdl: ["3.2.0", "3.2.30"]
+        sdl: ["3.2.0", "3.4.10"]
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libvulkan-dev
 
       - uses: libsdl-org/setup-sdl@afd98199e97f9c2aa739474be7e0886d149a5e47
         id: sdl
