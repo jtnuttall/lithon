@@ -4,12 +4,14 @@
   inputs = {
     haskellNix.url = "github:input-output-hk/haskell.nix";
     nixpkgs.follows = "haskellNix/nixpkgs-unstable";
+    nixpkgs-sdl3.url = "github:NixOS/nixpkgs/26afbda9e6ffd7d1d91812d0688d734d3ab32b22"; # 3.4.16
 
     flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs = {
     nixpkgs,
+    nixpkgs-sdl3,
     haskellNix,
     flake-utils,
     ...
@@ -23,6 +25,9 @@
           inherit (haskellNix) config;
           overlays = [
             haskellNix.overlay
+            (final: prev: {
+              sdl3 = prev.callPackage "${nixpkgs-sdl3}/pkgs/by-name/sd/sdl3/package.nix" {};
+            })
             (final: prev: {
               haskell-nix =
                 prev.haskell-nix
