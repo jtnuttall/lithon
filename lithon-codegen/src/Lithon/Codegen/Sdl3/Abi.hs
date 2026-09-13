@@ -31,9 +31,10 @@
 --
 -- Declarations documented @\@since@ later than the SDL 3.2.0 baseline
 -- get their asserts wrapped in @#if SDL_VERSION_ATLEAST@ on SDL's own
--- version macros — header truth, independent of any cabal flag. At the
--- current @sdl3 >= 3.4@ floor every guard is trivially true; they become
--- load-bearing when the version-gating work drops the floor to 3.2.
+-- version macros — header truth, independent of any cabal flag. Members
+-- have no @\@since@ section; SDL's convention for a late member is a
+-- prose note in its own comment ("(added in 3.4.16)"), which
+-- 'fieldSince' reads the same way. The registry corrects both.
 --
 -- Sizes are asserted @==@ by default: SDL fills most structs into memory
 -- the bindings allocate at the baked size. A struct read only inside a
@@ -61,6 +62,10 @@ module Lithon.Codegen.Sdl3.Abi (
   sdlBaseline,
   renderSince,
   declSince,
+  fieldSince,
+  addedInSince,
+  versionToken,
+  parseSince,
   distillAbi,
   renderAbiAssertions,
 ) where
@@ -83,8 +88,12 @@ data AbiField = AbiField
   { name :: Text
   , byteOffset :: Int
   , since :: Maybe AbiSince
-  -- ^ Member-level availability (fields never carry @\\since@ upstream;
-  -- this comes from the empirical override map).
+  -- ^ Member-level availability: the registry's @members@ entry when
+  -- there is one, else 'commentSince'.
+  , commentSince :: Maybe AbiSince
+  -- ^ What the member's own doxygen comment says, via SDL's prose
+  -- convention for late members (\"(added in 3.4.16)\"); kept apart from
+  -- 'since' so a validation error can say where a floor came from.
   }
   deriving stock (Eq, Generic, Show)
 
@@ -178,9 +187,10 @@ data AbiDecl = AbiDecl
 
 -- | Empirical availability overrides for the @>= 3.2.0@ floor, loaded
 -- from @sdl3\/versions.json@ ("Lithon.Codegen.Sdl3.Versions"). SDL's
--- @\\since@ annotations are the default source but lie in both
--- directions and are absent at member granularity; every entry here was
--- established by compiling against the real SDL release-header matrix.
+-- @\\since@ annotations (and, for members, its \"(added in X.Y.Z)\"
+-- notes) are the default source but lie in both directions and are
+-- often simply absent; every entry here was established by compiling
+-- against the real SDL release-header matrix.
 -- Keys are bare C names (no @struct@\/@enum@ spelling).
 data AbiOverrides = AbiOverrides
   { decls :: Map Text AbiSince
@@ -265,11 +275,19 @@ assertableFields owner memberSinces fs =
               <> show bits
           )
       else
-        Right AbiField{name = fname, byteOffset = bits `div` 8, since = Map.lookup fname memberSinces}
+        Right
+          AbiField
+            { name = fname
+            , byteOffset = bits `div` 8
+            , -- The registry wins over the member's own note, as for decls.
+              since = Map.lookup fname memberSinces <|> commentSince
+            , commentSince
+            }
     | C.FieldExplicit ef <- fs
     , isNothing ef.width
     , let bits = ef.offset
           fname = ef.info.name.cName.text
+          commentSince = fieldSince ef.info
     ]
 
 constsOf :: Map Text AbiSince -> [C.EnumConstant C.Final] -> [AbiEnumConst]
@@ -294,28 +312,68 @@ memberTypesOf fs =
 declSince :: C.DeclInfo C.Final -> Maybe AbiSince
 declSince info = do
   comment <- info.comment
-  token <-
-    safeHead
-      [ tok
-      | Doxy.SimpleSect Doxy.SSSince inner <- comment.doxygen.detailed
-      , Just tok <- [versionToken (paraText inner)]
-      ]
-  parseSince token
+  safeHead
+    [ v
+    | Doxy.SimpleSect Doxy.SSSince inner <- comment.doxygen.detailed
+    , Just v <- [versionToken (blockText inner)]
+    ]
+
+-- | A member's availability from its own doxygen comment: SDL's prose
+-- convention for a late member is \"(added in 3.4.16)\" in the
+-- @\/**< ... *\/@ trailing its declaration (fields never carry a
+-- @\\since@ section). The registry wins over it ('assertableFields').
+fieldSince :: C.FieldInfo C.Final -> Maybe AbiSince
+fieldSince info = do
+  comment <- info.comment
+  addedInSince (inlineText comment.doxygen.brief <> " " <> blockText comment.doxygen.detailed)
+
+-- | The version named by the first \"added in\" phrase in prose,
+-- case-insensitive, an intervening \"SDL\" word tolerated.
+addedInSince :: Text -> Maybe AbiSince
+addedInSince prose = do
+  let (_, hit) = T.breakOn marker (T.toLower prose)
+  guard (not (T.null hit))
+  w <- safeHead (dropSdl (T.words (T.drop (T.length marker) hit)))
+  parseSince w
  where
-  paraText blocks =
-    T.strip (T.unwords [t | Doxy.Paragraph inlines <- blocks, Doxy.Text t <- inlines])
+  marker = "added in "
+  dropSdl = \case
+    ("sdl" : rest) -> rest
+    ws -> ws
 
-  versionToken t = safeHead (filter isVersion (map (T.dropWhileEnd (== '.')) (T.words t)))
-   where
-    isVersion w =
-      T.elem '.' w
-        && T.all (\c -> isDigit c || c == '.') w
-        && all (\g -> not (T.null g) && T.all isDigit g) (T.splitOn "." w)
+-- | The first version-shaped word in prose ("SDL 3.2.0." -> 3.2.0).
+versionToken :: Text -> Maybe AbiSince
+versionToken = safeHead . mapMaybe parseSince . T.words
 
-  parseSince v = case traverse (readMaybe . toString) (T.splitOn "." v) of
-    Just [major, minor] -> Just AbiSince{major, minor, patch = 0}
-    Just [major, minor, patch] -> Just AbiSince{major, minor, patch}
-    _malformed -> Nothing
+-- | One word as a version: two or three dot-separated digit groups, a
+-- trailing run of sentence punctuation tolerated ("3.4.16)." -> 3.4.16).
+-- Two groups mean patch 0.
+parseSince :: Text -> Maybe AbiSince
+parseSince w
+  | all (\g -> not (T.null g) && T.all isDigit g) groups =
+      case traverse (readMaybe . toString) groups of
+        Just [major, minor] -> Just AbiSince{major, minor, patch = 0}
+        Just [major, minor, patch] -> Just AbiSince{major, minor, patch}
+        _malformed -> Nothing
+  | otherwise = Nothing
+ where
+  groups = T.splitOn "." (T.dropWhileEnd (`elem` (".,;:)" :: String)) w)
+
+-- | The plain text of a doxygen paragraph list (paragraphs only).
+blockText :: [Doxy.Block r] -> Text
+blockText blocks = T.strip (T.unwords [inlineText inlines | Doxy.Paragraph inlines <- blocks])
+
+-- | The display text of doxygen inlines, markup flattened.
+inlineText :: [Doxy.Inline r] -> Text
+inlineText =
+  T.concat . map \case
+    Doxy.Text t -> t
+    Doxy.Bold is -> inlineText is
+    Doxy.Emph is -> inlineText is
+    Doxy.Mono is -> inlineText is
+    Doxy.Ref _ t -> t
+    Doxy.Anchor _ -> ""
+    Doxy.Link is _ -> inlineText is
 
 -- | Render the assertion TU. 'Left' if two headers ever produced the
 -- same C type (the chain's selection predicate should make that
@@ -362,10 +420,10 @@ renderAbiAssertions sdlVersion includes decls macroConsts =
     , " * Building with the cabal flag abi-assertions-exact makes every sizeof"
     , " * exact again, for checking a newer SDL."
     , " *"
-    , " * #if guards mirror each declaration's documented @since — corrected"
-    , " * and refined to member granularity by the empirical availability"
-    , " * registry (lithon-codegen sdl3/versions.json) — on SDL's own version"
-    , " * macros."
+    , " * #if guards mirror each declaration's documented @since and each"
+    , " * member's \"(added in X.Y.Z)\" note — corrected and refined by the"
+    , " * empirical availability registry (lithon-codegen sdl3/versions.json)"
+    , " * — on SDL's own version macros."
     , " */"
     , "#define LITHON_ABI_HELP \". sdl3-bindgen-sys was generated from SDL "
         <> sdlVersion

@@ -160,8 +160,12 @@ flag.
 
 - Corrections for `\since` declarations that SDL seems to document wrongly,
 - Member and constant existence/value conditions (the binding needs a
-  higher granularity than SDL seems to provide)
-- A per-struct ABI policy, which tracks struct layout.
+  higher granularity than SDL seems to provide). A member's own
+  `(added in X.Y.Z)` note is the default floor; the registry overrides it.
+- A per-struct ABI policy, which tracks struct layout. A struct whose
+  gated trailing members imply it grew must also record `sizeof-since`
+  and `before`; `generate`/`spec` refuse to run otherwise and print the
+  entry to add.
 
 The SDL version the bindings are generated from is the devshell's
 `pkg-config --modversion sdl3`; it is recorded in the package manifest and

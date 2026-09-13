@@ -170,7 +170,7 @@ internal-libraries:
 library:
   source-dirs: src
   pkg-config-dependencies:
-    # Surface is generated from 3.4.2; everything newer than the consumer's
+    # Surface is generated from 3.4.16; everything newer than the consumer's
     # SDL is version-gated in the wrapper C (SDL_SetError stubs) and the
     # assert TU, on SDL's own version macros. Debian stable ships 3.2.x as
     # of writing.

@@ -11,9 +11,10 @@
 
 ### Fixed
 
-- Builds against SDL >= 3.4.16, where `SDL_PenProximityEvent` gained a
-  `pen_state` member: the ABI assertions no longer pin event structs to
-  their exact size.
+- Builds against SDL 3.4.16, where `SDL_PenProximityEvent` gained a
+  `pen_state` member, and against every SDL back to 3.2.0: the member is
+  gated on SDL's version macros in the ABI assertions (below 3.4.16 it
+  reads bytes SDL never wrote; see the README's semantic deltas).
 
 ### Changed
 

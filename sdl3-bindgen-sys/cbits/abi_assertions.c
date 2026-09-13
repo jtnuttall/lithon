@@ -12,10 +12,10 @@
  * Building with the cabal flag abi-assertions-exact makes every sizeof
  * exact again, for checking a newer SDL.
  *
- * #if guards mirror each declaration's documented @since — corrected
- * and refined to member granularity by the empirical availability
- * registry (lithon-codegen sdl3/versions.json) — on SDL's own version
- * macros.
+ * #if guards mirror each declaration's documented @since and each
+ * member's "(added in X.Y.Z)" note — corrected and refined by the
+ * empirical availability registry (lithon-codegen sdl3/versions.json)
+ * — on SDL's own version macros.
  */
 #define LITHON_ABI_HELP ". sdl3-bindgen-sys was generated from SDL 3.4.16; see the README section ABI verification. Please report this at https://github.com/jtnuttall/lithon/issues with your SDL version and platform, and if you are comfortable, open a PR updating the SDL version the bindings are generated from."
 #ifdef LITHON_ABI_EXACT
@@ -1528,14 +1528,21 @@ _Static_assert(offsetof(struct SDL_PinchFingerEvent, timestamp) == 8, "struct SD
 _Static_assert(offsetof(struct SDL_PinchFingerEvent, scale) == 16, "struct SDL_PinchFingerEvent.scale: baked offset 16 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PinchFingerEvent, windowID) == 20, "struct SDL_PinchFingerEvent.windowID: baked offset 20 differs from your SDL3 headers" LITHON_ABI_HELP);
 #endif
+#if SDL_VERSION_ATLEAST(3, 4, 16)
 _Static_assert(sizeof(struct SDL_PenProximityEvent) LITHON_ABI_PREFIX_OP 32, "struct SDL_PenProximityEvent: baked sizeof 32 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
 _Static_assert(_Alignof(struct SDL_PenProximityEvent) == 8, "struct SDL_PenProximityEvent: baked alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
+#else
+_Static_assert(sizeof(struct SDL_PenProximityEvent) LITHON_ABI_PREFIX_OP 24, "struct SDL_PenProximityEvent: pre-3.4.16 sizeof 24 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
+_Static_assert(_Alignof(struct SDL_PenProximityEvent) == 8, "struct SDL_PenProximityEvent: pre-3.4.16 alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
 _Static_assert(offsetof(struct SDL_PenProximityEvent, type) == 0, "struct SDL_PenProximityEvent.type: baked offset 0 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenProximityEvent, reserved) == 4, "struct SDL_PenProximityEvent.reserved: baked offset 4 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenProximityEvent, timestamp) == 8, "struct SDL_PenProximityEvent.timestamp: baked offset 8 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenProximityEvent, windowID) == 16, "struct SDL_PenProximityEvent.windowID: baked offset 16 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenProximityEvent, which) == 20, "struct SDL_PenProximityEvent.which: baked offset 20 differs from your SDL3 headers" LITHON_ABI_HELP);
+#if SDL_VERSION_ATLEAST(3, 4, 16)
 _Static_assert(offsetof(struct SDL_PenProximityEvent, pen_state) == 24, "struct SDL_PenProximityEvent.pen_state: baked offset 24 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
 _Static_assert(sizeof(struct SDL_PenMotionEvent) LITHON_ABI_PREFIX_OP 40, "struct SDL_PenMotionEvent: baked sizeof 40 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
 _Static_assert(_Alignof(struct SDL_PenMotionEvent) == 8, "struct SDL_PenMotionEvent: baked alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenMotionEvent, type) == 0, "struct SDL_PenMotionEvent.type: baked offset 0 differs from your SDL3 headers" LITHON_ABI_HELP);

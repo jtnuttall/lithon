@@ -4,6 +4,13 @@
 
 ### Added
 
+- SDL3 ABI assertions: a member's availability defaults to the
+  `(added in X.Y.Z)` note in its own doxygen comment (SDL's convention for
+  late members); `versions.json` `structs.<name>.members` still wins.
+- `sdl3 generate`/`spec` validate the distilled layouts before writing:
+  a struct whose gated trailing members imply it grew, with no
+  `sizeof-since`/`before` recorded (or a recorded pair that contradicts the
+  offsets), is a hard error that prints the registry entry to add.
 - SDL3 ABI assertions: a per-struct layout policy (`exact` | `prefix`).
   `prefix` keeps every field offset and the alignment exact and asserts
   `sizeof >=`; it is derived for every member type of a named union and

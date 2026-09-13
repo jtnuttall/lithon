@@ -56,6 +56,12 @@
     "SDL_GPUDepthStencilTargetInfo": {
       "note": "Members slotted into existing padding; sizeof unchanged.",
       "members": { "mip_level": "3.4.0", "layer": "3.4.0" }
+    },
+    "SDL_PenProximityEvent": {
+      "sizeof-since": "3.4.16",
+      "before": { "sizeof": 24, "alignment": 8 },
+      "note": "pen_state appended in 3.4.16 (the header says '(added in 3.4.16)'); sizeof 24 -> 32. Absent from the 3.4.10 and 3.4.2 headers.",
+      "members": { "pen_state": "3.4.16" }
     }
   },
   "prologue-typedefs": {

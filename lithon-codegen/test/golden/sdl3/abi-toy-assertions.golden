@@ -12,10 +12,10 @@
  * Building with the cabal flag abi-assertions-exact makes every sizeof
  * exact again, for checking a newer SDL.
  *
- * #if guards mirror each declaration's documented @since — corrected
- * and refined to member granularity by the empirical availability
- * registry (lithon-codegen sdl3/versions.json) — on SDL's own version
- * macros.
+ * #if guards mirror each declaration's documented @since and each
+ * member's "(added in X.Y.Z)" note — corrected and refined by the
+ * empirical availability registry (lithon-codegen sdl3/versions.json)
+ * — on SDL's own version macros.
  */
 #define LITHON_ABI_HELP ". sdl3-bindgen-sys was generated from SDL 3.9.0; see the README section ABI verification. Please report this at https://github.com/jtnuttall/lithon/issues with your SDL version and platform, and if you are comfortable, open a PR updating the SDL version the bindings are generated from."
 #ifdef LITHON_ABI_EXACT
@@ -69,8 +69,30 @@ _Static_assert(offsetof(struct SDL_ToyOut, h) == 4, "struct SDL_ToyOut.h: baked 
 #if SDL_VERSION_ATLEAST(3, 2, 8)
 _Static_assert(offsetof(struct SDL_ToyOut, scale) == 8, "struct SDL_ToyOut.scale: baked offset 8 differs from your SDL3 headers" LITHON_ABI_HELP);
 #endif
+#if SDL_VERSION_ATLEAST(3, 2, 12)
+_Static_assert(sizeof(struct SDL_ToyGrown) LITHON_ABI_PREFIX_OP 32, "struct SDL_ToyGrown: baked sizeof 32 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
+_Static_assert(_Alignof(struct SDL_ToyGrown) == 8, "struct SDL_ToyGrown: baked alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
+#else
+_Static_assert(sizeof(struct SDL_ToyGrown) LITHON_ABI_PREFIX_OP 24, "struct SDL_ToyGrown: pre-3.2.12 sizeof 24 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
+_Static_assert(_Alignof(struct SDL_ToyGrown) == 8, "struct SDL_ToyGrown: pre-3.2.12 alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
+_Static_assert(offsetof(struct SDL_ToyGrown, type) == 0, "struct SDL_ToyGrown.type: baked offset 0 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert(offsetof(struct SDL_ToyGrown, reserved) == 4, "struct SDL_ToyGrown.reserved: baked offset 4 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert(offsetof(struct SDL_ToyGrown, timestamp) == 8, "struct SDL_ToyGrown.timestamp: baked offset 8 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert(offsetof(struct SDL_ToyGrown, windowID) == 16, "struct SDL_ToyGrown.windowID: baked offset 16 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert(offsetof(struct SDL_ToyGrown, which) == 20, "struct SDL_ToyGrown.which: baked offset 20 differs from your SDL3 headers" LITHON_ABI_HELP);
+#if SDL_VERSION_ATLEAST(3, 2, 12)
+_Static_assert(offsetof(struct SDL_ToyGrown, pen_state) == 24, "struct SDL_ToyGrown.pen_state: baked offset 24 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
+_Static_assert(sizeof(struct SDL_ToyPadded) == 16, "struct SDL_ToyPadded: baked sizeof 16 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert(_Alignof(struct SDL_ToyPadded) == 8, "struct SDL_ToyPadded: baked alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert(offsetof(struct SDL_ToyPadded, a) == 0, "struct SDL_ToyPadded.a: baked offset 0 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert(offsetof(struct SDL_ToyPadded, b) == 8, "struct SDL_ToyPadded.b: baked offset 8 differs from your SDL3 headers" LITHON_ABI_HELP);
+#if SDL_VERSION_ATLEAST(3, 2, 10)
+_Static_assert(offsetof(struct SDL_ToyPadded, c) == 12, "struct SDL_ToyPadded.c: baked offset 12 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
 #if SDL_VERSION_ATLEAST(3, 4, 0)
-_Static_assert(sizeof(union SDL_ToyPayload) == 24, "union SDL_ToyPayload: baked sizeof 24 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert(sizeof(union SDL_ToyPayload) == 32, "union SDL_ToyPayload: baked sizeof 32 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(_Alignof(union SDL_ToyPayload) == 8, "union SDL_ToyPayload: baked alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
 #endif
 _Static_assert(sizeof(enum SDL_ToyStatus) == 4, "enum SDL_ToyStatus: baked sizeof 4 differs from your SDL3 headers" LITHON_ABI_HELP);

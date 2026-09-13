@@ -41,9 +41,19 @@ unit_committedRegistryDecodes = do
   wheel.members @?= Map.fromList [("integer_x", wheelGate), ("integer_y", wheelGate)]
   fmap (.growth) (Map.lookup "SDL_MouseWheelEvent" (abiOverrides reg).structs)
     @?= Just (Just AbiGrowth{since = wheelGate, before = wheelBefore})
+  -- SDL 3.4.16 appended pen_state (24 -> 32); the entry the validation
+  -- layer demands for it.
+  pen <-
+    maybe (assertFailure "SDL_PenProximityEvent missing from structs") pure
+      $ Map.lookup "SDL_PenProximityEvent" reg.structs
+  pen.sizeofSince @?= Just penGate
+  pen.before @?= Just AbiLayoutBefore{sizeof = 24, alignment = 8}
+  pen.layout @?= Nothing
+  pen.members @?= Map.fromList [("pen_state", penGate)]
  where
   wheelGate = AbiSince{major = 3, minor = 2, patch = 12}
   wheelBefore = AbiLayoutBefore{sizeof = 48, alignment = 8}
+  penGate = AbiSince{major = 3, minor = 4, patch = 16}
 
 unit_structEntryDecodesLayoutAndBefore :: IO ()
 unit_structEntryDecodesLayoutAndBefore = do
