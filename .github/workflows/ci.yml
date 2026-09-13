@@ -144,7 +144,7 @@ jobs:
         id: sdl
         with:
           install-linux-dependencies: true
-          version: ${{ env.SDL_VERSION }}
+          version: ${{ matrix.sdl }}
 
       - uses: ./.github/actions/setup-haskell
         with:
