@@ -5,7 +5,10 @@ set -uxeo pipefail
 CHECK_ABI="${CHECK_ABI:-false}"
 
 if [ "$RUNNER_OS" = "Windows" ]; then
-  export PKG_CONFIG_PATH="/c/msys64/ucrt64/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+  # Patch the SDL setup action's pkgconfig path.
+  CLEAN_PKG_CONFIG_PATH=$(cygpath -u "${PKG_CONFIG_PATH:-}")
+
+  export PKG_CONFIG_PATH="/c/msys64/ucrt64/lib/pkgconfig:${CLEAN_PKG_CONFIG_PATH}"
   export PATH="/c/msys64/ucrt64/bin:$PATH"
 elif [ "$RUNNER_OS" = "Linux" ]; then
   export PKG_CONFIG_PATH="$HOME/sdl3/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
