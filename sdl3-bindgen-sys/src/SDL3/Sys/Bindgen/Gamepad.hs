@@ -486,31 +486,31 @@ pattern SDL_GAMEPAD_BUTTON_DPAD_LEFT = SDL_GamepadButton 13
 pattern SDL_GAMEPAD_BUTTON_DPAD_RIGHT :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_DPAD_RIGHT = SDL_GamepadButton 14
 
--- | Additional button (e.g. Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Amazon Luna microphone button, Google Stadia capture button)
+-- | Additional button (e.g. Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Steam Controller QAM button, Amazon Luna microphone button, Google Stadia capture button)
 --
 --     [C declaration]: @SDL_GAMEPAD_BUTTON_MISC1@, defined at @SDL3\/SDL_gamepad.h 170:5@
 pattern SDL_GAMEPAD_BUTTON_MISC1 :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_MISC1 = SDL_GamepadButton 15
 
--- | Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1, DualSense Edge RB button, Right Joy-Con SR button)
+-- | Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1, DualSense Edge RB button, Right Joy-Con SR button, Steam Controller R4 button)
 --
 --     [C declaration]: @SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1@, defined at @SDL3\/SDL_gamepad.h 171:5@
 pattern SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1 :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1 = SDL_GamepadButton 16
 
--- | Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3, DualSense Edge LB button, Left Joy-Con SL button)
+-- | Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3, DualSense Edge LB button, Left Joy-Con SL button, Steam Controller L4 button)
 --
 --     [C declaration]: @SDL_GAMEPAD_BUTTON_LEFT_PADDLE1@, defined at @SDL3\/SDL_gamepad.h 172:5@
 pattern SDL_GAMEPAD_BUTTON_LEFT_PADDLE1 :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_LEFT_PADDLE1 = SDL_GamepadButton 17
 
--- | Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2, DualSense Edge right Fn button, Right Joy-Con SL button)
+-- | Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2, DualSense Edge right Fn button, Right Joy-Con SL button, Steam Controller R5 button)
 --
 --     [C declaration]: @SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2@, defined at @SDL3\/SDL_gamepad.h 173:5@
 pattern SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2 :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2 = SDL_GamepadButton 18
 
--- | Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4, DualSense Edge left Fn button, Left Joy-Con SR button)
+-- | Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4, DualSense Edge left Fn button, Left Joy-Con SR button, Steam Controller L5 button)
 --
 --     [C declaration]: @SDL_GAMEPAD_BUTTON_LEFT_PADDLE2@, defined at @SDL3\/SDL_gamepad.h 174:5@
 pattern SDL_GAMEPAD_BUTTON_LEFT_PADDLE2 :: SDL_GamepadButton

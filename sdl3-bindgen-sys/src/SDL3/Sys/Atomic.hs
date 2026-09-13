@@ -262,7 +262,7 @@ unlockSpinlockSafe = Safe.sDL_UnlockSpinlock
 --                   The safe flavor is 'memoryBarrierReleaseFunctionSafe'
 --                   .
 --
---     [C declaration]: @SDL_MemoryBarrierReleaseFunction@, defined at @SDL3\/SDL_atomic.h 192:34@
+--     [C declaration]: @SDL_MemoryBarrierReleaseFunction@, defined at @SDL3\/SDL_atomic.h 195:34@
 memoryBarrierReleaseFunction :: IO ()
 memoryBarrierReleaseFunction =
   Unsafe.sDL_MemoryBarrierReleaseFunction
@@ -283,7 +283,7 @@ memoryBarrierReleaseFunction =
 --                   The unsafe flavor is 'memoryBarrierReleaseFunction'
 --                   .
 --
---     [C declaration]: @SDL_MemoryBarrierReleaseFunction@, defined at @SDL3\/SDL_atomic.h 192:34@
+--     [C declaration]: @SDL_MemoryBarrierReleaseFunction@, defined at @SDL3\/SDL_atomic.h 195:34@
 memoryBarrierReleaseFunctionSafe :: IO ()
 memoryBarrierReleaseFunctionSafe =
   Safe.sDL_MemoryBarrierReleaseFunction
@@ -304,7 +304,7 @@ memoryBarrierReleaseFunctionSafe =
 --                   The safe flavor is 'memoryBarrierAcquireFunctionSafe'
 --                   .
 --
---     [C declaration]: @SDL_MemoryBarrierAcquireFunction@, defined at @SDL3\/SDL_atomic.h 212:34@
+--     [C declaration]: @SDL_MemoryBarrierAcquireFunction@, defined at @SDL3\/SDL_atomic.h 215:34@
 memoryBarrierAcquireFunction :: IO ()
 memoryBarrierAcquireFunction =
   Unsafe.sDL_MemoryBarrierAcquireFunction
@@ -325,7 +325,7 @@ memoryBarrierAcquireFunction =
 --                   The unsafe flavor is 'memoryBarrierAcquireFunction'
 --                   .
 --
---     [C declaration]: @SDL_MemoryBarrierAcquireFunction@, defined at @SDL3\/SDL_atomic.h 212:34@
+--     [C declaration]: @SDL_MemoryBarrierAcquireFunction@, defined at @SDL3\/SDL_atomic.h 215:34@
 memoryBarrierAcquireFunctionSafe :: IO ()
 memoryBarrierAcquireFunctionSafe =
   Safe.sDL_MemoryBarrierAcquireFunction
@@ -351,7 +351,7 @@ memoryBarrierAcquireFunctionSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CompareAndSwapAtomicInt@, defined at @SDL3\/SDL_atomic.h 415:34@
+--     [C declaration]: @SDL_CompareAndSwapAtomicInt@, defined at @SDL3\/SDL_atomic.h 425:34@
 compareAndSwapAtomicInt
   :: BG.Ptr SDL_AtomicInt
   -- ^
@@ -393,7 +393,7 @@ compareAndSwapAtomicInt =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CompareAndSwapAtomicInt@, defined at @SDL3\/SDL_atomic.h 415:34@
+--     [C declaration]: @SDL_CompareAndSwapAtomicInt@, defined at @SDL3\/SDL_atomic.h 425:34@
 compareAndSwapAtomicIntSafe
   :: BG.Ptr SDL_AtomicInt
   -- ^
@@ -437,7 +437,7 @@ compareAndSwapAtomicIntSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetAtomicInt@, defined at @SDL3\/SDL_atomic.h 435:33@
+--     [C declaration]: @SDL_SetAtomicInt@, defined at @SDL3\/SDL_atomic.h 445:33@
 setAtomicInt
   :: BG.Ptr SDL_AtomicInt
   -- ^
@@ -476,7 +476,7 @@ setAtomicInt =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetAtomicInt@, defined at @SDL3\/SDL_atomic.h 435:33@
+--     [C declaration]: @SDL_SetAtomicInt@, defined at @SDL3\/SDL_atomic.h 445:33@
 setAtomicIntSafe
   :: BG.Ptr SDL_AtomicInt
   -- ^
@@ -513,7 +513,7 @@ setAtomicIntSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetAtomicInt@, defined at @SDL3\/SDL_atomic.h 452:33@
+--     [C declaration]: @SDL_GetAtomicInt@, defined at @SDL3\/SDL_atomic.h 462:33@
 getAtomicInt
   :: BG.Ptr SDL_AtomicInt
   -- ^
@@ -545,7 +545,7 @@ getAtomicInt =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetAtomicInt@, defined at @SDL3\/SDL_atomic.h 452:33@
+--     [C declaration]: @SDL_GetAtomicInt@, defined at @SDL3\/SDL_atomic.h 462:33@
 getAtomicIntSafe
   :: BG.Ptr SDL_AtomicInt
   -- ^
@@ -579,7 +579,7 @@ getAtomicIntSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddAtomicInt@, defined at @SDL3\/SDL_atomic.h 473:33@
+--     [C declaration]: @SDL_AddAtomicInt@, defined at @SDL3\/SDL_atomic.h 483:33@
 addAtomicInt
   :: BG.Ptr SDL_AtomicInt
   -- ^
@@ -618,7 +618,7 @@ addAtomicInt =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddAtomicInt@, defined at @SDL3\/SDL_atomic.h 473:33@
+--     [C declaration]: @SDL_AddAtomicInt@, defined at @SDL3\/SDL_atomic.h 483:33@
 addAtomicIntSafe
   :: BG.Ptr SDL_AtomicInt
   -- ^
@@ -655,7 +655,7 @@ addAtomicIntSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CompareAndSwapAtomicU32@, defined at @SDL3\/SDL_atomic.h 560:34@
+--     [C declaration]: @SDL_CompareAndSwapAtomicU32@, defined at @SDL3\/SDL_atomic.h 570:34@
 compareAndSwapAtomicU32
   :: BG.Ptr SDL_AtomicU32
   -- ^
@@ -697,7 +697,7 @@ compareAndSwapAtomicU32 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CompareAndSwapAtomicU32@, defined at @SDL3\/SDL_atomic.h 560:34@
+--     [C declaration]: @SDL_CompareAndSwapAtomicU32@, defined at @SDL3\/SDL_atomic.h 570:34@
 compareAndSwapAtomicU32Safe
   :: BG.Ptr SDL_AtomicU32
   -- ^
@@ -741,7 +741,7 @@ compareAndSwapAtomicU32Safe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetAtomicU32@, defined at @SDL3\/SDL_atomic.h 580:36@
+--     [C declaration]: @SDL_SetAtomicU32@, defined at @SDL3\/SDL_atomic.h 590:36@
 setAtomicU32
   :: BG.Ptr SDL_AtomicU32
   -- ^
@@ -780,7 +780,7 @@ setAtomicU32 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetAtomicU32@, defined at @SDL3\/SDL_atomic.h 580:36@
+--     [C declaration]: @SDL_SetAtomicU32@, defined at @SDL3\/SDL_atomic.h 590:36@
 setAtomicU32Safe
   :: BG.Ptr SDL_AtomicU32
   -- ^
@@ -817,7 +817,7 @@ setAtomicU32Safe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetAtomicU32@, defined at @SDL3\/SDL_atomic.h 597:36@
+--     [C declaration]: @SDL_GetAtomicU32@, defined at @SDL3\/SDL_atomic.h 607:36@
 getAtomicU32
   :: BG.Ptr SDL_AtomicU32
   -- ^
@@ -849,7 +849,7 @@ getAtomicU32 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetAtomicU32@, defined at @SDL3\/SDL_atomic.h 597:36@
+--     [C declaration]: @SDL_GetAtomicU32@, defined at @SDL3\/SDL_atomic.h 607:36@
 getAtomicU32Safe
   :: BG.Ptr SDL_AtomicU32
   -- ^
@@ -881,7 +881,7 @@ getAtomicU32Safe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddAtomicU32@, defined at @SDL3\/SDL_atomic.h 615:36@
+--     [C declaration]: @SDL_AddAtomicU32@, defined at @SDL3\/SDL_atomic.h 625:36@
 addAtomicU32
   :: BG.Ptr SDL_AtomicU32
   -- ^
@@ -918,7 +918,7 @@ addAtomicU32 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddAtomicU32@, defined at @SDL3\/SDL_atomic.h 615:36@
+--     [C declaration]: @SDL_AddAtomicU32@, defined at @SDL3\/SDL_atomic.h 625:36@
 addAtomicU32Safe
   :: BG.Ptr SDL_AtomicU32
   -- ^
@@ -955,7 +955,7 @@ addAtomicU32Safe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CompareAndSwapAtomicPointer@, defined at @SDL3\/SDL_atomic.h 636:34@
+--     [C declaration]: @SDL_CompareAndSwapAtomicPointer@, defined at @SDL3\/SDL_atomic.h 646:34@
 compareAndSwapAtomicPointer
   :: BG.Ptr (BG.Ptr BG.Void)
   -- ^
@@ -997,7 +997,7 @@ compareAndSwapAtomicPointer =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CompareAndSwapAtomicPointer@, defined at @SDL3\/SDL_atomic.h 636:34@
+--     [C declaration]: @SDL_CompareAndSwapAtomicPointer@, defined at @SDL3\/SDL_atomic.h 646:34@
 compareAndSwapAtomicPointerSafe
   :: BG.Ptr (BG.Ptr BG.Void)
   -- ^
@@ -1036,7 +1036,7 @@ compareAndSwapAtomicPointerSafe =
 --                   The safe flavor is 'setAtomicPointerSafe'
 --                   .
 --
---     [C declaration]: @SDL_SetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 655:36@
+--     [C declaration]: @SDL_SetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 665:36@
 setAtomicPointer
   :: BG.Ptr (BG.Ptr BG.Void)
   -- ^
@@ -1067,7 +1067,7 @@ setAtomicPointer = Unsafe.sDL_SetAtomicPointer
 --                   The unsafe flavor is 'setAtomicPointer'
 --                   .
 --
---     [C declaration]: @SDL_SetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 655:36@
+--     [C declaration]: @SDL_SetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 665:36@
 setAtomicPointerSafe
   :: BG.Ptr (BG.Ptr BG.Void)
   -- ^
@@ -1098,7 +1098,7 @@ setAtomicPointerSafe = Safe.sDL_SetAtomicPointer
 --                   The safe flavor is 'getAtomicPointerSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 673:36@
+--     [C declaration]: @SDL_GetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 683:36@
 getAtomicPointer
   :: BG.Ptr (BG.Ptr BG.Void)
   -- ^
@@ -1125,7 +1125,7 @@ getAtomicPointer = Unsafe.sDL_GetAtomicPointer
 --                   The unsafe flavor is 'getAtomicPointer'
 --                   .
 --
---     [C declaration]: @SDL_GetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 673:36@
+--     [C declaration]: @SDL_GetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 683:36@
 getAtomicPointerSafe
   :: BG.Ptr (BG.Ptr BG.Void)
   -- ^

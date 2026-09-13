@@ -398,7 +398,7 @@ setClipboardDataSafe
   -- ^
   --
   --           [@userdata@]: an opaque pointer that will be forwarded to the callbacks.
-  -> BG.Ptr (PtrConst.PtrConst BG.CChar)
+  -> PtrConst.PtrConst (PtrConst.PtrConst BG.CChar)
   -- ^
   --
   --           [@mime_types@]: a list of mime-types that are being offered. SDL copies the given list.

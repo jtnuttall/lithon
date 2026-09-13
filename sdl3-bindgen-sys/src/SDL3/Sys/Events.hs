@@ -163,7 +163,7 @@ peepEvents
   -> SDL_EventAction
   -- ^
   --
-  --           [@action@]: action to take; see Remarks for details.
+  --           [@action@]: action to take; see RemarksRemarks for details.
   -> BG.Word32
   -- ^
   --
@@ -225,7 +225,7 @@ peepEventsSafe
   -> SDL_EventAction
   -- ^
   --
-  --           [@action@]: action to take; see Remarks for details.
+  --           [@action@]: action to take; see RemarksRemarks for details.
   -> BG.Word32
   -- ^
   --

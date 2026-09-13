@@ -2349,7 +2349,7 @@ sDL_PROP_RENDERER_GPU_DEVICE_POINTER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER@, literal @\"SDL.texture.create.colorspace\"@, defined at @SDL3\/SDL_render.h 808:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER@, literal @\"SDL.texture.create.colorspace\"@, defined at @SDL3\/SDL_render.h 806:9@
 sDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER =
   BG.pack
@@ -2384,7 +2384,7 @@ sDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER@, literal @\"SDL.texture.create.format\"@, defined at @SDL3\/SDL_render.h 809:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER@, literal @\"SDL.texture.create.format\"@, defined at @SDL3\/SDL_render.h 807:9@
 sDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER =
   BG.pack
@@ -2415,7 +2415,7 @@ sDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER =
     , 0x74
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER@, literal @\"SDL.texture.create.access\"@, defined at @SDL3\/SDL_render.h 810:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER@, literal @\"SDL.texture.create.access\"@, defined at @SDL3\/SDL_render.h 808:9@
 sDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER =
   BG.pack
@@ -2446,7 +2446,7 @@ sDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER =
     , 0x73
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER@, literal @\"SDL.texture.create.width\"@, defined at @SDL3\/SDL_render.h 811:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER@, literal @\"SDL.texture.create.width\"@, defined at @SDL3\/SDL_render.h 809:9@
 sDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER =
   BG.pack
@@ -2476,7 +2476,7 @@ sDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER =
     , 0x68
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER@, literal @\"SDL.texture.create.height\"@, defined at @SDL3\/SDL_render.h 812:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER@, literal @\"SDL.texture.create.height\"@, defined at @SDL3\/SDL_render.h 810:9@
 sDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER =
   BG.pack
@@ -2507,7 +2507,7 @@ sDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER =
     , 0x74
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_PALETTE_POINTER@, literal @\"SDL.texture.create.palette\"@, defined at @SDL3\/SDL_render.h 813:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_PALETTE_POINTER@, literal @\"SDL.texture.create.palette\"@, defined at @SDL3\/SDL_render.h 811:9@
 sDL_PROP_TEXTURE_CREATE_PALETTE_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_PALETTE_POINTER =
   BG.pack
@@ -2539,7 +2539,7 @@ sDL_PROP_TEXTURE_CREATE_PALETTE_POINTER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT@, literal @\"SDL.texture.create.SDR_white_point\"@, defined at @SDL3\/SDL_render.h 814:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT@, literal @\"SDL.texture.create.SDR_white_point\"@, defined at @SDL3\/SDL_render.h 812:9@
 sDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT =
   BG.pack
@@ -2579,7 +2579,7 @@ sDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT =
     , 0x74
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT@, literal @\"SDL.texture.create.HDR_headroom\"@, defined at @SDL3\/SDL_render.h 815:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT@, literal @\"SDL.texture.create.HDR_headroom\"@, defined at @SDL3\/SDL_render.h 813:9@
 sDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT =
   BG.pack
@@ -2616,7 +2616,7 @@ sDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT =
     , 0x6D
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER@, literal @\"SDL.texture.create.d3d11.texture\"@, defined at @SDL3\/SDL_render.h 816:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER@, literal @\"SDL.texture.create.d3d11.texture\"@, defined at @SDL3\/SDL_render.h 814:9@
 sDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER =
   BG.pack
@@ -2654,7 +2654,7 @@ sDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER@, literal @\"SDL.texture.create.d3d11.texture_u\"@, defined at @SDL3\/SDL_render.h 817:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER@, literal @\"SDL.texture.create.d3d11.texture_u\"@, defined at @SDL3\/SDL_render.h 815:9@
 sDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER =
   BG.pack
@@ -2694,7 +2694,7 @@ sDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER =
     , 0x75
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER@, literal @\"SDL.texture.create.d3d11.texture_v\"@, defined at @SDL3\/SDL_render.h 818:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER@, literal @\"SDL.texture.create.d3d11.texture_v\"@, defined at @SDL3\/SDL_render.h 816:9@
 sDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER =
   BG.pack
@@ -2734,7 +2734,7 @@ sDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER@, literal @\"SDL.texture.create.d3d12.texture\"@, defined at @SDL3\/SDL_render.h 819:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER@, literal @\"SDL.texture.create.d3d12.texture\"@, defined at @SDL3\/SDL_render.h 817:9@
 sDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER =
   BG.pack
@@ -2772,7 +2772,7 @@ sDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER@, literal @\"SDL.texture.create.d3d12.texture_u\"@, defined at @SDL3\/SDL_render.h 820:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER@, literal @\"SDL.texture.create.d3d12.texture_u\"@, defined at @SDL3\/SDL_render.h 818:9@
 sDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER =
   BG.pack
@@ -2812,7 +2812,7 @@ sDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER =
     , 0x75
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER@, literal @\"SDL.texture.create.d3d12.texture_v\"@, defined at @SDL3\/SDL_render.h 821:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER@, literal @\"SDL.texture.create.d3d12.texture_v\"@, defined at @SDL3\/SDL_render.h 819:9@
 sDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER =
   BG.pack
@@ -2852,7 +2852,7 @@ sDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER@, literal @\"SDL.texture.create.metal.pixelbuffer\"@, defined at @SDL3\/SDL_render.h 822:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER@, literal @\"SDL.texture.create.metal.pixelbuffer\"@, defined at @SDL3\/SDL_render.h 820:9@
 sDL_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER =
   BG.pack
@@ -2894,7 +2894,7 @@ sDL_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER =
     , 0x72
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER@, literal @\"SDL.texture.create.opengl.texture\"@, defined at @SDL3\/SDL_render.h 823:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER@, literal @\"SDL.texture.create.opengl.texture\"@, defined at @SDL3\/SDL_render.h 821:9@
 sDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER =
   BG.pack
@@ -2933,7 +2933,7 @@ sDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER@, literal @\"SDL.texture.create.opengl.texture_uv\"@, defined at @SDL3\/SDL_render.h 824:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER@, literal @\"SDL.texture.create.opengl.texture_uv\"@, defined at @SDL3\/SDL_render.h 822:9@
 sDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER =
   BG.pack
@@ -2975,7 +2975,7 @@ sDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER@, literal @\"SDL.texture.create.opengl.texture_u\"@, defined at @SDL3\/SDL_render.h 825:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER@, literal @\"SDL.texture.create.opengl.texture_u\"@, defined at @SDL3\/SDL_render.h 823:9@
 sDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER =
   BG.pack
@@ -3016,7 +3016,7 @@ sDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER =
     , 0x75
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER@, literal @\"SDL.texture.create.opengl.texture_v\"@, defined at @SDL3\/SDL_render.h 826:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER@, literal @\"SDL.texture.create.opengl.texture_v\"@, defined at @SDL3\/SDL_render.h 824:9@
 sDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER =
   BG.pack
@@ -3057,7 +3057,7 @@ sDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER@, literal @\"SDL.texture.create.opengles2.texture\"@, defined at @SDL3\/SDL_render.h 827:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER@, literal @\"SDL.texture.create.opengles2.texture\"@, defined at @SDL3\/SDL_render.h 825:9@
 sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER =
   BG.pack
@@ -3099,7 +3099,7 @@ sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER@, literal @\"SDL.texture.create.opengles2.texture_uv\"@, defined at @SDL3\/SDL_render.h 828:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER@, literal @\"SDL.texture.create.opengles2.texture_uv\"@, defined at @SDL3\/SDL_render.h 826:9@
 sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER =
   BG.pack
@@ -3144,7 +3144,7 @@ sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER@, literal @\"SDL.texture.create.opengles2.texture_u\"@, defined at @SDL3\/SDL_render.h 829:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER@, literal @\"SDL.texture.create.opengles2.texture_u\"@, defined at @SDL3\/SDL_render.h 827:9@
 sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER =
   BG.pack
@@ -3188,7 +3188,7 @@ sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER =
     , 0x75
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER@, literal @\"SDL.texture.create.opengles2.texture_v\"@, defined at @SDL3\/SDL_render.h 830:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER@, literal @\"SDL.texture.create.opengles2.texture_v\"@, defined at @SDL3\/SDL_render.h 828:9@
 sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER =
   BG.pack
@@ -3232,7 +3232,7 @@ sDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER@, literal @\"SDL.texture.create.vulkan.texture\"@, defined at @SDL3\/SDL_render.h 831:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER@, literal @\"SDL.texture.create.vulkan.texture\"@, defined at @SDL3\/SDL_render.h 829:9@
 sDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER =
   BG.pack
@@ -3271,7 +3271,7 @@ sDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER@, literal @\"SDL.texture.create.vulkan.layout\"@, defined at @SDL3\/SDL_render.h 832:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER@, literal @\"SDL.texture.create.vulkan.layout\"@, defined at @SDL3\/SDL_render.h 830:9@
 sDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER =
   BG.pack
@@ -3309,7 +3309,7 @@ sDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER =
     , 0x74
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER@, literal @\"SDL.texture.create.gpu.texture\"@, defined at @SDL3\/SDL_render.h 833:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER@, literal @\"SDL.texture.create.gpu.texture\"@, defined at @SDL3\/SDL_render.h 831:9@
 sDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER =
   BG.pack
@@ -3345,7 +3345,7 @@ sDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_POINTER@, literal @\"SDL.texture.create.gpu.texture_uv\"@, defined at @SDL3\/SDL_render.h 834:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_POINTER@, literal @\"SDL.texture.create.gpu.texture_uv\"@, defined at @SDL3\/SDL_render.h 832:9@
 sDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_POINTER =
   BG.pack
@@ -3384,7 +3384,7 @@ sDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_POINTER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_POINTER@, literal @\"SDL.texture.create.gpu.texture_u\"@, defined at @SDL3\/SDL_render.h 835:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_POINTER@, literal @\"SDL.texture.create.gpu.texture_u\"@, defined at @SDL3\/SDL_render.h 833:9@
 sDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_POINTER =
   BG.pack
@@ -3422,7 +3422,7 @@ sDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_POINTER =
     , 0x75
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER@, literal @\"SDL.texture.create.gpu.texture_v\"@, defined at @SDL3\/SDL_render.h 836:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER@, literal @\"SDL.texture.create.gpu.texture_v\"@, defined at @SDL3\/SDL_render.h 834:9@
 sDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER =
   BG.pack
@@ -3460,7 +3460,7 @@ sDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_COLORSPACE_NUMBER@, literal @\"SDL.texture.colorspace\"@, defined at @SDL3\/SDL_render.h 937:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_COLORSPACE_NUMBER@, literal @\"SDL.texture.colorspace\"@, defined at @SDL3\/SDL_render.h 935:9@
 sDL_PROP_TEXTURE_COLORSPACE_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_COLORSPACE_NUMBER =
   BG.pack
@@ -3488,7 +3488,7 @@ sDL_PROP_TEXTURE_COLORSPACE_NUMBER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_FORMAT_NUMBER@, literal @\"SDL.texture.format\"@, defined at @SDL3\/SDL_render.h 938:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_FORMAT_NUMBER@, literal @\"SDL.texture.format\"@, defined at @SDL3\/SDL_render.h 936:9@
 sDL_PROP_TEXTURE_FORMAT_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_FORMAT_NUMBER =
   BG.pack
@@ -3512,7 +3512,7 @@ sDL_PROP_TEXTURE_FORMAT_NUMBER =
     , 0x74
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_ACCESS_NUMBER@, literal @\"SDL.texture.access\"@, defined at @SDL3\/SDL_render.h 939:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_ACCESS_NUMBER@, literal @\"SDL.texture.access\"@, defined at @SDL3\/SDL_render.h 937:9@
 sDL_PROP_TEXTURE_ACCESS_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_ACCESS_NUMBER =
   BG.pack
@@ -3536,7 +3536,7 @@ sDL_PROP_TEXTURE_ACCESS_NUMBER =
     , 0x73
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_WIDTH_NUMBER@, literal @\"SDL.texture.width\"@, defined at @SDL3\/SDL_render.h 940:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_WIDTH_NUMBER@, literal @\"SDL.texture.width\"@, defined at @SDL3\/SDL_render.h 938:9@
 sDL_PROP_TEXTURE_WIDTH_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_WIDTH_NUMBER =
   BG.pack
@@ -3559,7 +3559,7 @@ sDL_PROP_TEXTURE_WIDTH_NUMBER =
     , 0x68
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_HEIGHT_NUMBER@, literal @\"SDL.texture.height\"@, defined at @SDL3\/SDL_render.h 941:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_HEIGHT_NUMBER@, literal @\"SDL.texture.height\"@, defined at @SDL3\/SDL_render.h 939:9@
 sDL_PROP_TEXTURE_HEIGHT_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_HEIGHT_NUMBER =
   BG.pack
@@ -3583,7 +3583,7 @@ sDL_PROP_TEXTURE_HEIGHT_NUMBER =
     , 0x74
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_SDR_WHITE_POINT_FLOAT@, literal @\"SDL.texture.SDR_white_point\"@, defined at @SDL3\/SDL_render.h 942:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_SDR_WHITE_POINT_FLOAT@, literal @\"SDL.texture.SDR_white_point\"@, defined at @SDL3\/SDL_render.h 940:9@
 sDL_PROP_TEXTURE_SDR_WHITE_POINT_FLOAT :: BG.ByteString
 sDL_PROP_TEXTURE_SDR_WHITE_POINT_FLOAT =
   BG.pack
@@ -3616,7 +3616,7 @@ sDL_PROP_TEXTURE_SDR_WHITE_POINT_FLOAT =
     , 0x74
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_HDR_HEADROOM_FLOAT@, literal @\"SDL.texture.HDR_headroom\"@, defined at @SDL3\/SDL_render.h 943:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_HDR_HEADROOM_FLOAT@, literal @\"SDL.texture.HDR_headroom\"@, defined at @SDL3\/SDL_render.h 941:9@
 sDL_PROP_TEXTURE_HDR_HEADROOM_FLOAT :: BG.ByteString
 sDL_PROP_TEXTURE_HDR_HEADROOM_FLOAT =
   BG.pack
@@ -3646,7 +3646,7 @@ sDL_PROP_TEXTURE_HDR_HEADROOM_FLOAT =
     , 0x6D
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_D3D11_TEXTURE_POINTER@, literal @\"SDL.texture.d3d11.texture\"@, defined at @SDL3\/SDL_render.h 944:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_D3D11_TEXTURE_POINTER@, literal @\"SDL.texture.d3d11.texture\"@, defined at @SDL3\/SDL_render.h 942:9@
 sDL_PROP_TEXTURE_D3D11_TEXTURE_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_D3D11_TEXTURE_POINTER =
   BG.pack
@@ -3677,7 +3677,7 @@ sDL_PROP_TEXTURE_D3D11_TEXTURE_POINTER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_D3D11_TEXTURE_U_POINTER@, literal @\"SDL.texture.d3d11.texture_u\"@, defined at @SDL3\/SDL_render.h 945:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_D3D11_TEXTURE_U_POINTER@, literal @\"SDL.texture.d3d11.texture_u\"@, defined at @SDL3\/SDL_render.h 943:9@
 sDL_PROP_TEXTURE_D3D11_TEXTURE_U_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_D3D11_TEXTURE_U_POINTER =
   BG.pack
@@ -3710,7 +3710,7 @@ sDL_PROP_TEXTURE_D3D11_TEXTURE_U_POINTER =
     , 0x75
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_D3D11_TEXTURE_V_POINTER@, literal @\"SDL.texture.d3d11.texture_v\"@, defined at @SDL3\/SDL_render.h 946:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_D3D11_TEXTURE_V_POINTER@, literal @\"SDL.texture.d3d11.texture_v\"@, defined at @SDL3\/SDL_render.h 944:9@
 sDL_PROP_TEXTURE_D3D11_TEXTURE_V_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_D3D11_TEXTURE_V_POINTER =
   BG.pack
@@ -3743,7 +3743,7 @@ sDL_PROP_TEXTURE_D3D11_TEXTURE_V_POINTER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_D3D12_TEXTURE_POINTER@, literal @\"SDL.texture.d3d12.texture\"@, defined at @SDL3\/SDL_render.h 947:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_D3D12_TEXTURE_POINTER@, literal @\"SDL.texture.d3d12.texture\"@, defined at @SDL3\/SDL_render.h 945:9@
 sDL_PROP_TEXTURE_D3D12_TEXTURE_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_D3D12_TEXTURE_POINTER =
   BG.pack
@@ -3774,7 +3774,7 @@ sDL_PROP_TEXTURE_D3D12_TEXTURE_POINTER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_D3D12_TEXTURE_U_POINTER@, literal @\"SDL.texture.d3d12.texture_u\"@, defined at @SDL3\/SDL_render.h 948:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_D3D12_TEXTURE_U_POINTER@, literal @\"SDL.texture.d3d12.texture_u\"@, defined at @SDL3\/SDL_render.h 946:9@
 sDL_PROP_TEXTURE_D3D12_TEXTURE_U_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_D3D12_TEXTURE_U_POINTER =
   BG.pack
@@ -3807,7 +3807,7 @@ sDL_PROP_TEXTURE_D3D12_TEXTURE_U_POINTER =
     , 0x75
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_D3D12_TEXTURE_V_POINTER@, literal @\"SDL.texture.d3d12.texture_v\"@, defined at @SDL3\/SDL_render.h 949:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_D3D12_TEXTURE_V_POINTER@, literal @\"SDL.texture.d3d12.texture_v\"@, defined at @SDL3\/SDL_render.h 947:9@
 sDL_PROP_TEXTURE_D3D12_TEXTURE_V_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_D3D12_TEXTURE_V_POINTER =
   BG.pack
@@ -3840,7 +3840,7 @@ sDL_PROP_TEXTURE_D3D12_TEXTURE_V_POINTER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGL_TEXTURE_NUMBER@, literal @\"SDL.texture.opengl.texture\"@, defined at @SDL3\/SDL_render.h 950:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGL_TEXTURE_NUMBER@, literal @\"SDL.texture.opengl.texture\"@, defined at @SDL3\/SDL_render.h 948:9@
 sDL_PROP_TEXTURE_OPENGL_TEXTURE_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_OPENGL_TEXTURE_NUMBER =
   BG.pack
@@ -3872,7 +3872,7 @@ sDL_PROP_TEXTURE_OPENGL_TEXTURE_NUMBER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER@, literal @\"SDL.texture.opengl.texture_uv\"@, defined at @SDL3\/SDL_render.h 951:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER@, literal @\"SDL.texture.opengl.texture_uv\"@, defined at @SDL3\/SDL_render.h 949:9@
 sDL_PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER =
   BG.pack
@@ -3907,7 +3907,7 @@ sDL_PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER@, literal @\"SDL.texture.opengl.texture_u\"@, defined at @SDL3\/SDL_render.h 952:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER@, literal @\"SDL.texture.opengl.texture_u\"@, defined at @SDL3\/SDL_render.h 950:9@
 sDL_PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER =
   BG.pack
@@ -3941,7 +3941,7 @@ sDL_PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER =
     , 0x75
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER@, literal @\"SDL.texture.opengl.texture_v\"@, defined at @SDL3\/SDL_render.h 953:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER@, literal @\"SDL.texture.opengl.texture_v\"@, defined at @SDL3\/SDL_render.h 951:9@
 sDL_PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER =
   BG.pack
@@ -3975,7 +3975,7 @@ sDL_PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER@, literal @\"SDL.texture.opengl.target\"@, defined at @SDL3\/SDL_render.h 954:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER@, literal @\"SDL.texture.opengl.target\"@, defined at @SDL3\/SDL_render.h 952:9@
 sDL_PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER =
   BG.pack
@@ -4006,7 +4006,7 @@ sDL_PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER =
     , 0x74
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGL_TEX_W_FLOAT@, literal @\"SDL.texture.opengl.tex_w\"@, defined at @SDL3\/SDL_render.h 955:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGL_TEX_W_FLOAT@, literal @\"SDL.texture.opengl.tex_w\"@, defined at @SDL3\/SDL_render.h 953:9@
 sDL_PROP_TEXTURE_OPENGL_TEX_W_FLOAT :: BG.ByteString
 sDL_PROP_TEXTURE_OPENGL_TEX_W_FLOAT =
   BG.pack
@@ -4036,7 +4036,7 @@ sDL_PROP_TEXTURE_OPENGL_TEX_W_FLOAT =
     , 0x77
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGL_TEX_H_FLOAT@, literal @\"SDL.texture.opengl.tex_h\"@, defined at @SDL3\/SDL_render.h 956:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGL_TEX_H_FLOAT@, literal @\"SDL.texture.opengl.tex_h\"@, defined at @SDL3\/SDL_render.h 954:9@
 sDL_PROP_TEXTURE_OPENGL_TEX_H_FLOAT :: BG.ByteString
 sDL_PROP_TEXTURE_OPENGL_TEX_H_FLOAT =
   BG.pack
@@ -4066,7 +4066,7 @@ sDL_PROP_TEXTURE_OPENGL_TEX_H_FLOAT =
     , 0x68
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER@, literal @\"SDL.texture.opengles2.texture\"@, defined at @SDL3\/SDL_render.h 957:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER@, literal @\"SDL.texture.opengles2.texture\"@, defined at @SDL3\/SDL_render.h 955:9@
 sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER =
   BG.pack
@@ -4101,7 +4101,7 @@ sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER@, literal @\"SDL.texture.opengles2.texture_uv\"@, defined at @SDL3\/SDL_render.h 958:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER@, literal @\"SDL.texture.opengles2.texture_uv\"@, defined at @SDL3\/SDL_render.h 956:9@
 sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER =
   BG.pack
@@ -4139,7 +4139,7 @@ sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER@, literal @\"SDL.texture.opengles2.texture_u\"@, defined at @SDL3\/SDL_render.h 959:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER@, literal @\"SDL.texture.opengles2.texture_u\"@, defined at @SDL3\/SDL_render.h 957:9@
 sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER =
   BG.pack
@@ -4176,7 +4176,7 @@ sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER =
     , 0x75
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER@, literal @\"SDL.texture.opengles2.texture_v\"@, defined at @SDL3\/SDL_render.h 960:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER@, literal @\"SDL.texture.opengles2.texture_v\"@, defined at @SDL3\/SDL_render.h 958:9@
 sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER =
   BG.pack
@@ -4213,7 +4213,7 @@ sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER@, literal @\"SDL.texture.opengles2.target\"@, defined at @SDL3\/SDL_render.h 961:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER@, literal @\"SDL.texture.opengles2.target\"@, defined at @SDL3\/SDL_render.h 959:9@
 sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER =
   BG.pack
@@ -4247,7 +4247,7 @@ sDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER =
     , 0x74
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER@, literal @\"SDL.texture.vulkan.texture\"@, defined at @SDL3\/SDL_render.h 962:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER@, literal @\"SDL.texture.vulkan.texture\"@, defined at @SDL3\/SDL_render.h 960:9@
 sDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER :: BG.ByteString
 sDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER =
   BG.pack
@@ -4279,7 +4279,7 @@ sDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER@, literal @\"SDL.texture.gpu.texture\"@, defined at @SDL3\/SDL_render.h 963:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER@, literal @\"SDL.texture.gpu.texture\"@, defined at @SDL3\/SDL_render.h 961:9@
 sDL_PROP_TEXTURE_GPU_TEXTURE_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_GPU_TEXTURE_POINTER =
   BG.pack
@@ -4308,7 +4308,7 @@ sDL_PROP_TEXTURE_GPU_TEXTURE_POINTER =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_GPU_TEXTURE_UV_POINTER@, literal @\"SDL.texture.gpu.texture_uv\"@, defined at @SDL3\/SDL_render.h 964:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_GPU_TEXTURE_UV_POINTER@, literal @\"SDL.texture.gpu.texture_uv\"@, defined at @SDL3\/SDL_render.h 962:9@
 sDL_PROP_TEXTURE_GPU_TEXTURE_UV_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_GPU_TEXTURE_UV_POINTER =
   BG.pack
@@ -4340,7 +4340,7 @@ sDL_PROP_TEXTURE_GPU_TEXTURE_UV_POINTER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER@, literal @\"SDL.texture.gpu.texture_u\"@, defined at @SDL3\/SDL_render.h 965:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER@, literal @\"SDL.texture.gpu.texture_u\"@, defined at @SDL3\/SDL_render.h 963:9@
 sDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER =
   BG.pack
@@ -4371,7 +4371,7 @@ sDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER =
     , 0x75
     ]
 
--- | [C declaration]: @macro SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER@, literal @\"SDL.texture.gpu.texture_v\"@, defined at @SDL3\/SDL_render.h 966:9@
+-- | [C declaration]: @macro SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER@, literal @\"SDL.texture.gpu.texture_v\"@, defined at @SDL3\/SDL_render.h 964:9@
 sDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER :: BG.ByteString
 sDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER =
   BG.pack
@@ -4402,11 +4402,11 @@ sDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER =
     , 0x76
     ]
 
--- | [C declaration]: @macro SDL_RENDERER_VSYNC_DISABLED@, defined at @SDL3\/SDL_render.h 2782:9@
+-- | [C declaration]: @macro SDL_RENDERER_VSYNC_DISABLED@, defined at @SDL3\/SDL_render.h 2780:9@
 sDL_RENDERER_VSYNC_DISABLED :: BG.CInt
 sDL_RENDERER_VSYNC_DISABLED = (0 :: BG.CInt)
 
--- | [C declaration]: @macro SDL_RENDERER_VSYNC_ADAPTIVE@, defined at @SDL3\/SDL_render.h 2783:9@
+-- | [C declaration]: @macro SDL_RENDERER_VSYNC_ADAPTIVE@, defined at @SDL3\/SDL_render.h 2781:9@
 sDL_RENDERER_VSYNC_ADAPTIVE :: BG.CInt
 sDL_RENDERER_VSYNC_ADAPTIVE =
   C.Expr.HostPlatform.negate (1 :: BG.CInt)
@@ -4419,7 +4419,7 @@ sDL_RENDERER_VSYNC_ADAPTIVE =
 --
 --     [See also]: 'sDL_RenderDebugText'
 --
---     [C declaration]: @macro SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE@, defined at @SDL3\/SDL_render.h 2811:9@
+--     [C declaration]: @macro SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE@, defined at @SDL3\/SDL_render.h 2809:9@
 sDL_DEBUG_TEXT_FONT_CHARACTER_SIZE :: BG.CInt
 sDL_DEBUG_TEXT_FONT_CHARACTER_SIZE = (8 :: BG.CInt)
 
@@ -4429,40 +4429,40 @@ sDL_DEBUG_TEXT_FONT_CHARACTER_SIZE = (8 :: BG.CInt)
 --
 --     [See also]: 'sDL_CreateGPURenderState'
 --
---     [C declaration]: @struct SDL_GPURenderStateCreateInfo@, defined at @SDL3\/SDL_render.h 2925:16@
+--     [C declaration]: @struct SDL_GPURenderStateCreateInfo@, defined at @SDL3\/SDL_render.h 2923:16@
 data SDL_GPURenderStateCreateInfo = SDL_GPURenderStateCreateInfo
   { fragment_shader :: BG.Ptr SDL3.Sys.Bindgen.Gpu.SDL_GPUShader
   -- ^ The fragment shader to use when this render state is active
   --
-  --          [C declaration]: @fragment_shader@, defined at @SDL3\/SDL_render.h 2927:20@
+  --          [C declaration]: @fragment_shader@, defined at @SDL3\/SDL_render.h 2925:20@
   , num_sampler_bindings :: SDL3.Sys.Bindgen.Stdinc.Sint32
   -- ^ The number of additional fragment samplers to bind when this render state is active
   --
-  --          [C declaration]: @num_sampler_bindings@, defined at @SDL3\/SDL_render.h 2929:12@
+  --          [C declaration]: @num_sampler_bindings@, defined at @SDL3\/SDL_render.h 2927:12@
   , sampler_bindings :: PtrConst.PtrConst SDL3.Sys.Bindgen.Gpu.SDL_GPUTextureSamplerBinding
   -- ^ Additional fragment samplers to bind when this render state is active
   --
-  --          [C declaration]: @sampler_bindings@, defined at @SDL3\/SDL_render.h 2930:41@
+  --          [C declaration]: @sampler_bindings@, defined at @SDL3\/SDL_render.h 2928:41@
   , num_storage_textures :: SDL3.Sys.Bindgen.Stdinc.Sint32
   -- ^ The number of storage textures to bind when this render state is active
   --
-  --          [C declaration]: @num_storage_textures@, defined at @SDL3\/SDL_render.h 2932:12@
+  --          [C declaration]: @num_storage_textures@, defined at @SDL3\/SDL_render.h 2930:12@
   , storage_textures :: PtrConst.PtrConst (BG.Ptr SDL3.Sys.Bindgen.Gpu.SDL_GPUTexture)
   -- ^ Storage textures to bind when this render state is active
   --
-  --          [C declaration]: @storage_textures@, defined at @SDL3\/SDL_render.h 2933:28@
+  --          [C declaration]: @storage_textures@, defined at @SDL3\/SDL_render.h 2931:28@
   , num_storage_buffers :: SDL3.Sys.Bindgen.Stdinc.Sint32
   -- ^ The number of storage buffers to bind when this render state is active
   --
-  --          [C declaration]: @num_storage_buffers@, defined at @SDL3\/SDL_render.h 2935:12@
+  --          [C declaration]: @num_storage_buffers@, defined at @SDL3\/SDL_render.h 2933:12@
   , storage_buffers :: PtrConst.PtrConst (BG.Ptr SDL3.Sys.Bindgen.Gpu.SDL_GPUBuffer)
   -- ^ Storage buffers to bind when this render state is active
   --
-  --          [C declaration]: @storage_buffers@, defined at @SDL3\/SDL_render.h 2936:27@
+  --          [C declaration]: @storage_buffers@, defined at @SDL3\/SDL_render.h 2934:27@
   , props :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -- ^ A properties ID for extensions. Should be 0 if no extensions are needed.
   --
-  --          [C declaration]: @props@, defined at @SDL3\/SDL_render.h 2938:22@
+  --          [C declaration]: @props@, defined at @SDL3\/SDL_render.h 2936:22@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -4789,5 +4789,5 @@ instance HasCField.HasCField SDL_GPURenderStateCreateInfo "props" where
 --
 --     [See also]: 'sDL_CreateGPURenderState', 'sDL_SetGPURenderStateFragmentUniforms', 'sDL_SetGPURenderState', 'sDL_DestroyGPURenderState'
 --
---     [C declaration]: @struct SDL_GPURenderState@, defined at @SDL3\/SDL_render.h 2951:16@
+--     [C declaration]: @struct SDL_GPURenderState@, defined at @SDL3\/SDL_render.h 2949:16@
 data SDL_GPURenderState

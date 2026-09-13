@@ -1,6 +1,6 @@
 -- | Functions for fiddling with bits and bitmasks. Get the index of the most significant (set) bit in a 32-bit number.
 --
---     Result is undefined when called with 0. This operation can also be stated as \"count leading zeroes\" and \"log base 2\".
+--     This operation can also be stated as \"count leading zeroes\" and \"log base 2\".
 --
 --     Note that this is a forced-inline function in a header, and not a public API function available in the SDL library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside SDL itself).
 --
@@ -46,7 +46,7 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_MostSignificantBitIndex32@, defined at @SDL3\/SDL_bits.h 66:22@
+--     [C declaration]: @SDL_MostSignificantBitIndex32@, defined at @SDL3\/SDL_bits.h 65:22@
 mostSignificantBitIndex32
   :: BG.Word32
   -- ^ [C declaration]: @x@
@@ -66,7 +66,7 @@ mostSignificantBitIndex32 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_MostSignificantBitIndex32@, defined at @SDL3\/SDL_bits.h 66:22@
+--     [C declaration]: @SDL_MostSignificantBitIndex32@, defined at @SDL3\/SDL_bits.h 65:22@
 mostSignificantBitIndex32Safe
   :: BG.Word32
   -- ^ [C declaration]: @x@
@@ -96,7 +96,7 @@ mostSignificantBitIndex32Safe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_HasExactlyOneBitSet32@, defined at @SDL3\/SDL_bits.h 133:23@
+--     [C declaration]: @SDL_HasExactlyOneBitSet32@, defined at @SDL3\/SDL_bits.h 132:23@
 hasExactlyOneBitSet32
   :: BG.Word32
   -- ^
@@ -128,7 +128,7 @@ hasExactlyOneBitSet32 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_HasExactlyOneBitSet32@, defined at @SDL3\/SDL_bits.h 133:23@
+--     [C declaration]: @SDL_HasExactlyOneBitSet32@, defined at @SDL3\/SDL_bits.h 132:23@
 hasExactlyOneBitSet32Safe
   :: BG.Word32
   -- ^

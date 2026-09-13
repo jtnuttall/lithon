@@ -259,7 +259,7 @@ sDL_PeepEvents
   -> SDL_EventAction
   -- ^
   --
-  --           [@action@]: action to take; see Remarks for details.
+  --           [@action@]: action to take; see RemarksRemarks for details.
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^
   --

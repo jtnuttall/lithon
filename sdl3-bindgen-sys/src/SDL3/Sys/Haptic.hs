@@ -1704,7 +1704,7 @@ resumeHapticSafe =
 --
 --     @since 3.2.0
 --
---     [See also]: 'runHapticEffect', 'stopHapticEffects'
+--     [See also]: 'runHapticEffect', 'stopHapticEffect'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -1732,7 +1732,7 @@ stopHapticEffects =
 --
 --     @since 3.2.0
 --
---     [See also]: 'runHapticEffect', 'stopHapticEffects'
+--     [See also]: 'runHapticEffect', 'stopHapticEffect'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --

@@ -445,9 +445,9 @@ hs_bindgen_aaa3526a91b1159b =
 --
 --     It is safe to pass NULL to this function; it is a no-op.
 --
---     [Thread safety]: It is safe to call this function from any thread.
---
 --     [@thread@]: the 'SDL_Thread' pointer that was returned from the @SDL_CreateThread()@ call that started this thread.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
 --
 --     @since 3.2.0
 --

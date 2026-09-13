@@ -3633,7 +3633,7 @@ data SDL_MouseMotionEvent = SDL_MouseMotionEvent
   --
   --          [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 458:18@
   , which :: SDL3.Sys.Bindgen.Mouse.SDL_MouseID
-  -- ^ The mouse instance id in relative mode, SDL_TOUCH_MOUSEID for touch events, or 0
+  -- ^ The mouse instance id in relative mode, SDL_TOUCH_MOUSEID for touch events, SDL_PEN_MOUSEID for pen events, or 0
   --
   --          [C declaration]: @which@, defined at @SDL3\/SDL_events.h 459:17@
   , state :: SDL3.Sys.Bindgen.Mouse.SDL_MouseButtonFlags

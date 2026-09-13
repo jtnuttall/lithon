@@ -286,7 +286,7 @@ hs_bindgen_a86a903c6648c81b =
 --
 --     [@numevents@]: if action is SDL_ADDEVENT, the number of events to add back to the event queue; if action is SDL_PEEKEVENT or SDL_GETEVENT, the maximum number of events to retrieve.
 --
---     [@action@]: action to take; see Remarks for details.
+--     [@action@]: action to take; see RemarksRemarks for details.
 --
 --     [@minType@]: minimum value of the event type to be considered; SDL_EVENT_FIRST is a safe choice.
 --

@@ -44,7 +44,7 @@ hs_bindgen_456d262a9d645a2c
 hs_bindgen_456d262a9d645a2c =
   BG.fromFFIType hs_bindgen_456d262a9d645a2c_base
 
--- | [C declaration]: @SDL_MostSignificantBitIndex32@, defined at @SDL3\/SDL_bits.h 66:22@
+-- | [C declaration]: @SDL_MostSignificantBitIndex32@, defined at @SDL3\/SDL_bits.h 65:22@
 sDL_MostSignificantBitIndex32
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ [C declaration]: @x@
@@ -77,7 +77,7 @@ hs_bindgen_f02b1182f4d7fd03 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_HasExactlyOneBitSet32@, defined at @SDL3\/SDL_bits.h 133:23@
+--     [C declaration]: @SDL_HasExactlyOneBitSet32@, defined at @SDL3\/SDL_bits.h 132:23@
 sDL_HasExactlyOneBitSet32
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^

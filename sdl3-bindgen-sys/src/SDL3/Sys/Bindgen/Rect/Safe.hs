@@ -748,7 +748,7 @@ hs_bindgen_4ccee9871e6b2122 =
 --
 --     @since 3.2.0
 --
---     [See also]: 'sDL_GetRectIntersection'
+--     [See also]: 'sDL_GetRectIntersectionFloat'
 --
 --     [C declaration]: @SDL_HasRectIntersectionFloat@, defined at @SDL3\/SDL_rect.h 440:34@
 sDL_HasRectIntersectionFloat

@@ -358,7 +358,7 @@ setLogPriorityPrefixSafe =
 
 -- | Get the default log output function.
 --
---     [Returns]: the default log output callback.
+--     [Returns]: the default log output callback. It should be called with NULL for the userdata argument.
 --
 --     [Thread safety]: It is safe to call this function from any thread.
 --
@@ -372,14 +372,14 @@ setLogPriorityPrefixSafe =
 --                   The safe flavor is 'getDefaultLogOutputFunctionSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetDefaultLogOutputFunction@, defined at @SDL3\/SDL_log.h 499:51@
+--     [C declaration]: @SDL_GetDefaultLogOutputFunction@, defined at @SDL3\/SDL_log.h 500:51@
 getDefaultLogOutputFunction :: IO SDL_LogOutputFunction
 getDefaultLogOutputFunction =
   Unsafe.sDL_GetDefaultLogOutputFunction
 
 -- | Get the default log output function.
 --
---     [Returns]: the default log output callback.
+--     [Returns]: the default log output callback. It should be called with NULL for the userdata argument.
 --
 --     [Thread safety]: It is safe to call this function from any thread.
 --
@@ -393,7 +393,7 @@ getDefaultLogOutputFunction =
 --                   The unsafe flavor is 'getDefaultLogOutputFunction'
 --                   .
 --
---     [C declaration]: @SDL_GetDefaultLogOutputFunction@, defined at @SDL3\/SDL_log.h 499:51@
+--     [C declaration]: @SDL_GetDefaultLogOutputFunction@, defined at @SDL3\/SDL_log.h 500:51@
 getDefaultLogOutputFunctionSafe :: IO SDL_LogOutputFunction
 getDefaultLogOutputFunctionSafe =
   Safe.sDL_GetDefaultLogOutputFunction
@@ -412,7 +412,7 @@ getDefaultLogOutputFunctionSafe =
 --                   The safe flavor is 'getLogOutputFunctionSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetLogOutputFunction@, defined at @SDL3\/SDL_log.h 516:34@
+--     [C declaration]: @SDL_GetLogOutputFunction@, defined at @SDL3\/SDL_log.h 517:34@
 getLogOutputFunction
   :: BG.Ptr SDL_LogOutputFunction
   -- ^
@@ -440,7 +440,7 @@ getLogOutputFunction =
 --                   The unsafe flavor is 'getLogOutputFunction'
 --                   .
 --
---     [C declaration]: @SDL_GetLogOutputFunction@, defined at @SDL3\/SDL_log.h 516:34@
+--     [C declaration]: @SDL_GetLogOutputFunction@, defined at @SDL3\/SDL_log.h 517:34@
 getLogOutputFunctionSafe
   :: BG.Ptr SDL_LogOutputFunction
   -- ^
@@ -468,7 +468,7 @@ getLogOutputFunctionSafe =
 --                   The safe flavor is 'setLogOutputFunctionSafe'
 --                   : registration; the output function runs from later logging calls.
 --
---     [C declaration]: @SDL_SetLogOutputFunction@, defined at @SDL3\/SDL_log.h 531:34@
+--     [C declaration]: @SDL_SetLogOutputFunction@, defined at @SDL3\/SDL_log.h 532:34@
 setLogOutputFunction
   :: SDL_LogOutputFunction
   -- ^
@@ -496,7 +496,7 @@ setLogOutputFunction =
 --                   The unsafe flavor is 'setLogOutputFunction'
 --                   : registration; the output function runs from later logging calls.
 --
---     [C declaration]: @SDL_SetLogOutputFunction@, defined at @SDL3\/SDL_log.h 531:34@
+--     [C declaration]: @SDL_SetLogOutputFunction@, defined at @SDL3\/SDL_log.h 532:34@
 setLogOutputFunctionSafe
   :: SDL_LogOutputFunction
   -- ^

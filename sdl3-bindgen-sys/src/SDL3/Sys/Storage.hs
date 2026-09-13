@@ -973,7 +973,7 @@ removeStoragePath
   -> PtrConst.PtrConst BG.CChar
   -- ^
   --
-  --           [@path@]: the path of the directory to enumerate.
+  --           [@path@]: the path to remove from the filesystem.
   -> IO Bool
 removeStoragePath =
   \x00 ->
@@ -1006,7 +1006,7 @@ removeStoragePathSafe
   -> PtrConst.PtrConst BG.CChar
   -- ^
   --
-  --           [@path@]: the path of the directory to enumerate.
+  --           [@path@]: the path to remove from the filesystem.
   -> IO Bool
 removeStoragePathSafe =
   \x00 ->

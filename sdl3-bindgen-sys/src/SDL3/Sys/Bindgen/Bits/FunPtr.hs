@@ -47,7 +47,7 @@ hs_bindgen_ef0d609239e2f97c =
 
 {-# NOINLINE sDL_MostSignificantBitIndex32 #-}
 
--- | [C declaration]: @SDL_MostSignificantBitIndex32@, defined at @SDL3\/SDL_bits.h 66:22@
+-- | [C declaration]: @SDL_MostSignificantBitIndex32@, defined at @SDL3\/SDL_bits.h 65:22@
 sDL_MostSignificantBitIndex32 :: BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO BG.CInt)
 sDL_MostSignificantBitIndex32 =
   BG.unsafePerformIO hs_bindgen_ef0d609239e2f97c
@@ -78,7 +78,7 @@ hs_bindgen_424cf674227955df =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_HasExactlyOneBitSet32@, defined at @SDL3\/SDL_bits.h 133:23@
+--     [C declaration]: @SDL_HasExactlyOneBitSet32@, defined at @SDL3\/SDL_bits.h 132:23@
 sDL_HasExactlyOneBitSet32 :: BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO BG.CBool)
 sDL_HasExactlyOneBitSet32 =
   BG.unsafePerformIO hs_bindgen_424cf674227955df

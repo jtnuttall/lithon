@@ -276,7 +276,7 @@ tryLockMutexSafe =
 --                   The safe flavor is 'unlockMutexSafe'
 --                   .
 --
---     [C declaration]: @SDL_UnlockMutex@, defined at @SDL3\/SDL_mutex.h 390:34@
+--     [C declaration]: @SDL_UnlockMutex@, defined at @SDL3\/SDL_mutex.h 391:34@
 unlockMutex
   :: BG.Ptr SDL_Mutex
   -- ^
@@ -303,7 +303,7 @@ unlockMutex = Unsafe.sDL_UnlockMutex
 --                   The unsafe flavor is 'unlockMutex'
 --                   .
 --
---     [C declaration]: @SDL_UnlockMutex@, defined at @SDL3\/SDL_mutex.h 390:34@
+--     [C declaration]: @SDL_UnlockMutex@, defined at @SDL3\/SDL_mutex.h 391:34@
 unlockMutexSafe
   :: BG.Ptr SDL_Mutex
   -- ^
@@ -328,7 +328,7 @@ unlockMutexSafe = Safe.sDL_UnlockMutex
 --                   The safe flavor is 'destroyMutexSafe'
 --                   .
 --
---     [C declaration]: @SDL_DestroyMutex@, defined at @SDL3\/SDL_mutex.h 409:34@
+--     [C declaration]: @SDL_DestroyMutex@, defined at @SDL3\/SDL_mutex.h 410:34@
 destroyMutex
   :: BG.Ptr SDL_Mutex
   -- ^
@@ -353,7 +353,7 @@ destroyMutex = Unsafe.sDL_DestroyMutex
 --                   The unsafe flavor is 'destroyMutex'
 --                   .
 --
---     [C declaration]: @SDL_DestroyMutex@, defined at @SDL3\/SDL_mutex.h 409:34@
+--     [C declaration]: @SDL_DestroyMutex@, defined at @SDL3\/SDL_mutex.h 410:34@
 destroyMutexSafe
   :: BG.Ptr SDL_Mutex
   -- ^
@@ -388,7 +388,7 @@ destroyMutexSafe = Safe.sDL_DestroyMutex
 --                   The safe flavor is 'createRWLockSafe'
 --                   .
 --
---     [C declaration]: @SDL_CreateRWLock@, defined at @SDL3\/SDL_mutex.h 481:42@
+--     [C declaration]: @SDL_CreateRWLock@, defined at @SDL3\/SDL_mutex.h 482:42@
 createRWLock :: IO (BG.Ptr SDL_RWLock)
 createRWLock = Unsafe.sDL_CreateRWLock
 
@@ -418,7 +418,7 @@ createRWLock = Unsafe.sDL_CreateRWLock
 --                   The unsafe flavor is 'createRWLock'
 --                   .
 --
---     [C declaration]: @SDL_CreateRWLock@, defined at @SDL3\/SDL_mutex.h 481:42@
+--     [C declaration]: @SDL_CreateRWLock@, defined at @SDL3\/SDL_mutex.h 482:42@
 createRWLockSafe :: IO (BG.Ptr SDL_RWLock)
 createRWLockSafe = Safe.sDL_CreateRWLock
 
@@ -446,7 +446,7 @@ createRWLockSafe = Safe.sDL_CreateRWLock
 --                   The safe flavor is 'lockRWLockForReadingSafe'
 --                   : blocks on contention.
 --
---     [C declaration]: @SDL_LockRWLockForReading@, defined at @SDL3\/SDL_mutex.h 520:34@
+--     [C declaration]: @SDL_LockRWLockForReading@, defined at @SDL3\/SDL_mutex.h 521:34@
 lockRWLockForReading
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -480,7 +480,7 @@ lockRWLockForReading =
 --                   The unsafe flavor is 'lockRWLockForReading'
 --                   : blocks on contention.
 --
---     [C declaration]: @SDL_LockRWLockForReading@, defined at @SDL3\/SDL_mutex.h 520:34@
+--     [C declaration]: @SDL_LockRWLockForReading@, defined at @SDL3\/SDL_mutex.h 521:34@
 lockRWLockForReadingSafe
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -512,7 +512,7 @@ lockRWLockForReadingSafe =
 --                   The safe flavor is 'lockRWLockForWritingSafe'
 --                   : blocks on contention.
 --
---     [C declaration]: @SDL_LockRWLockForWriting@, defined at @SDL3\/SDL_mutex.h 553:34@
+--     [C declaration]: @SDL_LockRWLockForWriting@, defined at @SDL3\/SDL_mutex.h 554:34@
 lockRWLockForWriting
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -544,7 +544,7 @@ lockRWLockForWriting =
 --                   The unsafe flavor is 'lockRWLockForWriting'
 --                   : blocks on contention.
 --
---     [C declaration]: @SDL_LockRWLockForWriting@, defined at @SDL3\/SDL_mutex.h 553:34@
+--     [C declaration]: @SDL_LockRWLockForWriting@, defined at @SDL3\/SDL_mutex.h 554:34@
 lockRWLockForWritingSafe
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -581,7 +581,7 @@ lockRWLockForWritingSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_TryLockRWLockForReading@, defined at @SDL3\/SDL_mutex.h 580:34@
+--     [C declaration]: @SDL_TryLockRWLockForReading@, defined at @SDL3\/SDL_mutex.h 581:34@
 tryLockRWLockForReading
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -619,7 +619,7 @@ tryLockRWLockForReading =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_TryLockRWLockForReading@, defined at @SDL3\/SDL_mutex.h 580:34@
+--     [C declaration]: @SDL_TryLockRWLockForReading@, defined at @SDL3\/SDL_mutex.h 581:34@
 tryLockRWLockForReadingSafe
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -659,7 +659,7 @@ tryLockRWLockForReadingSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_TryLockRWLockForWriting@, defined at @SDL3\/SDL_mutex.h 612:34@
+--     [C declaration]: @SDL_TryLockRWLockForWriting@, defined at @SDL3\/SDL_mutex.h 613:34@
 tryLockRWLockForWriting
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -699,7 +699,7 @@ tryLockRWLockForWriting =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_TryLockRWLockForWriting@, defined at @SDL3\/SDL_mutex.h 612:34@
+--     [C declaration]: @SDL_TryLockRWLockForWriting@, defined at @SDL3\/SDL_mutex.h 613:34@
 tryLockRWLockForWritingSafe
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -730,7 +730,7 @@ tryLockRWLockForWritingSafe =
 --                   The safe flavor is 'unlockRWLockSafe'
 --                   .
 --
---     [C declaration]: @SDL_UnlockRWLock@, defined at @SDL3\/SDL_mutex.h 639:34@
+--     [C declaration]: @SDL_UnlockRWLock@, defined at @SDL3\/SDL_mutex.h 641:34@
 unlockRWLock
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -759,7 +759,7 @@ unlockRWLock = Unsafe.sDL_UnlockRWLock
 --                   The unsafe flavor is 'unlockRWLock'
 --                   .
 --
---     [C declaration]: @SDL_UnlockRWLock@, defined at @SDL3\/SDL_mutex.h 639:34@
+--     [C declaration]: @SDL_UnlockRWLock@, defined at @SDL3\/SDL_mutex.h 641:34@
 unlockRWLockSafe
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -784,7 +784,7 @@ unlockRWLockSafe = Safe.sDL_UnlockRWLock
 --                   The safe flavor is 'destroyRWLockSafe'
 --                   .
 --
---     [C declaration]: @SDL_DestroyRWLock@, defined at @SDL3\/SDL_mutex.h 658:34@
+--     [C declaration]: @SDL_DestroyRWLock@, defined at @SDL3\/SDL_mutex.h 660:34@
 destroyRWLock
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -809,7 +809,7 @@ destroyRWLock = Unsafe.sDL_DestroyRWLock
 --                   The unsafe flavor is 'destroyRWLock'
 --                   .
 --
---     [C declaration]: @SDL_DestroyRWLock@, defined at @SDL3\/SDL_mutex.h 658:34@
+--     [C declaration]: @SDL_DestroyRWLock@, defined at @SDL3\/SDL_mutex.h 660:34@
 destroyRWLockSafe
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -839,7 +839,7 @@ destroyRWLockSafe = Safe.sDL_DestroyRWLock
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CreateSemaphore@, defined at @SDL3\/SDL_mutex.h 708:45@
+--     [C declaration]: @SDL_CreateSemaphore@, defined at @SDL3\/SDL_mutex.h 710:45@
 createSemaphore
   :: BG.Word32
   -- ^
@@ -871,7 +871,7 @@ createSemaphore =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CreateSemaphore@, defined at @SDL3\/SDL_mutex.h 708:45@
+--     [C declaration]: @SDL_CreateSemaphore@, defined at @SDL3\/SDL_mutex.h 710:45@
 createSemaphoreSafe
   :: BG.Word32
   -- ^
@@ -897,7 +897,7 @@ createSemaphoreSafe =
 --                   The safe flavor is 'destroySemaphoreSafe'
 --                   .
 --
---     [C declaration]: @SDL_DestroySemaphore@, defined at @SDL3\/SDL_mutex.h 724:34@
+--     [C declaration]: @SDL_DestroySemaphore@, defined at @SDL3\/SDL_mutex.h 726:34@
 destroySemaphore
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -922,7 +922,7 @@ destroySemaphore = Unsafe.sDL_DestroySemaphore
 --                   The unsafe flavor is 'destroySemaphore'
 --                   .
 --
---     [C declaration]: @SDL_DestroySemaphore@, defined at @SDL3\/SDL_mutex.h 724:34@
+--     [C declaration]: @SDL_DestroySemaphore@, defined at @SDL3\/SDL_mutex.h 726:34@
 destroySemaphoreSafe
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -949,7 +949,7 @@ destroySemaphoreSafe = Safe.sDL_DestroySemaphore
 --                   The safe flavor is 'waitSemaphoreSafe'
 --                   : blocks indefinitely.
 --
---     [C declaration]: @SDL_WaitSemaphore@, defined at @SDL3\/SDL_mutex.h 746:34@
+--     [C declaration]: @SDL_WaitSemaphore@, defined at @SDL3\/SDL_mutex.h 748:34@
 waitSemaphore
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -976,7 +976,7 @@ waitSemaphore = Unsafe.sDL_WaitSemaphore
 --                   The unsafe flavor is 'waitSemaphore'
 --                   : blocks indefinitely.
 --
---     [C declaration]: @SDL_WaitSemaphore@, defined at @SDL3\/SDL_mutex.h 746:34@
+--     [C declaration]: @SDL_WaitSemaphore@, defined at @SDL3\/SDL_mutex.h 748:34@
 waitSemaphoreSafe
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -1006,7 +1006,7 @@ waitSemaphoreSafe = Safe.sDL_WaitSemaphore
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_TryWaitSemaphore@, defined at @SDL3\/SDL_mutex.h 767:34@
+--     [C declaration]: @SDL_TryWaitSemaphore@, defined at @SDL3\/SDL_mutex.h 769:34@
 tryWaitSemaphore
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -1038,7 +1038,7 @@ tryWaitSemaphore =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_TryWaitSemaphore@, defined at @SDL3\/SDL_mutex.h 767:34@
+--     [C declaration]: @SDL_TryWaitSemaphore@, defined at @SDL3\/SDL_mutex.h 769:34@
 tryWaitSemaphoreSafe
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -1070,7 +1070,7 @@ tryWaitSemaphoreSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitSemaphoreTimeout@, defined at @SDL3\/SDL_mutex.h 789:34@
+--     [C declaration]: @SDL_WaitSemaphoreTimeout@, defined at @SDL3\/SDL_mutex.h 791:34@
 waitSemaphoreTimeout
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -1107,7 +1107,7 @@ waitSemaphoreTimeout =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitSemaphoreTimeout@, defined at @SDL3\/SDL_mutex.h 789:34@
+--     [C declaration]: @SDL_WaitSemaphoreTimeout@, defined at @SDL3\/SDL_mutex.h 791:34@
 waitSemaphoreTimeoutSafe
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -1137,7 +1137,7 @@ waitSemaphoreTimeoutSafe =
 --                   The safe flavor is 'signalSemaphoreSafe'
 --                   .
 --
---     [C declaration]: @SDL_SignalSemaphore@, defined at @SDL3\/SDL_mutex.h 804:34@
+--     [C declaration]: @SDL_SignalSemaphore@, defined at @SDL3\/SDL_mutex.h 806:34@
 signalSemaphore
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -1160,7 +1160,7 @@ signalSemaphore = Unsafe.sDL_SignalSemaphore
 --                   The unsafe flavor is 'signalSemaphore'
 --                   .
 --
---     [C declaration]: @SDL_SignalSemaphore@, defined at @SDL3\/SDL_mutex.h 804:34@
+--     [C declaration]: @SDL_SignalSemaphore@, defined at @SDL3\/SDL_mutex.h 806:34@
 signalSemaphoreSafe
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -1186,7 +1186,7 @@ signalSemaphoreSafe = Safe.sDL_SignalSemaphore
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetSemaphoreValue@, defined at @SDL3\/SDL_mutex.h 816:36@
+--     [C declaration]: @SDL_GetSemaphoreValue@, defined at @SDL3\/SDL_mutex.h 818:36@
 getSemaphoreValue
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -1214,7 +1214,7 @@ getSemaphoreValue =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetSemaphoreValue@, defined at @SDL3\/SDL_mutex.h 816:36@
+--     [C declaration]: @SDL_GetSemaphoreValue@, defined at @SDL3\/SDL_mutex.h 818:36@
 getSemaphoreValueSafe
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -1241,7 +1241,7 @@ getSemaphoreValueSafe =
 --                   The safe flavor is 'createConditionSafe'
 --                   .
 --
---     [C declaration]: @SDL_CreateCondition@, defined at @SDL3\/SDL_mutex.h 857:45@
+--     [C declaration]: @SDL_CreateCondition@, defined at @SDL3\/SDL_mutex.h 859:45@
 createCondition :: IO (BG.Ptr SDL_Condition)
 createCondition = Unsafe.sDL_CreateCondition
 
@@ -1261,7 +1261,7 @@ createCondition = Unsafe.sDL_CreateCondition
 --                   The unsafe flavor is 'createCondition'
 --                   .
 --
---     [C declaration]: @SDL_CreateCondition@, defined at @SDL3\/SDL_mutex.h 857:45@
+--     [C declaration]: @SDL_CreateCondition@, defined at @SDL3\/SDL_mutex.h 859:45@
 createConditionSafe :: IO (BG.Ptr SDL_Condition)
 createConditionSafe = Safe.sDL_CreateCondition
 
@@ -1279,7 +1279,7 @@ createConditionSafe = Safe.sDL_CreateCondition
 --                   The safe flavor is 'destroyConditionSafe'
 --                   .
 --
---     [C declaration]: @SDL_DestroyCondition@, defined at @SDL3\/SDL_mutex.h 870:34@
+--     [C declaration]: @SDL_DestroyCondition@, defined at @SDL3\/SDL_mutex.h 872:34@
 destroyCondition
   :: BG.Ptr SDL_Condition
   -- ^
@@ -1302,7 +1302,7 @@ destroyCondition = Unsafe.sDL_DestroyCondition
 --                   The unsafe flavor is 'destroyCondition'
 --                   .
 --
---     [C declaration]: @SDL_DestroyCondition@, defined at @SDL3\/SDL_mutex.h 870:34@
+--     [C declaration]: @SDL_DestroyCondition@, defined at @SDL3\/SDL_mutex.h 872:34@
 destroyConditionSafe
   :: BG.Ptr SDL_Condition
   -- ^
@@ -1325,7 +1325,7 @@ destroyConditionSafe = Safe.sDL_DestroyCondition
 --                   The safe flavor is 'signalConditionSafe'
 --                   .
 --
---     [C declaration]: @SDL_SignalCondition@, defined at @SDL3\/SDL_mutex.h 885:34@
+--     [C declaration]: @SDL_SignalCondition@, defined at @SDL3\/SDL_mutex.h 887:34@
 signalCondition
   :: BG.Ptr SDL_Condition
   -- ^
@@ -1348,7 +1348,7 @@ signalCondition = Unsafe.sDL_SignalCondition
 --                   The unsafe flavor is 'signalCondition'
 --                   .
 --
---     [C declaration]: @SDL_SignalCondition@, defined at @SDL3\/SDL_mutex.h 885:34@
+--     [C declaration]: @SDL_SignalCondition@, defined at @SDL3\/SDL_mutex.h 887:34@
 signalConditionSafe
   :: BG.Ptr SDL_Condition
   -- ^
@@ -1371,7 +1371,7 @@ signalConditionSafe = Safe.sDL_SignalCondition
 --                   The safe flavor is 'broadcastConditionSafe'
 --                   .
 --
---     [C declaration]: @SDL_BroadcastCondition@, defined at @SDL3\/SDL_mutex.h 900:34@
+--     [C declaration]: @SDL_BroadcastCondition@, defined at @SDL3\/SDL_mutex.h 902:34@
 broadcastCondition
   :: BG.Ptr SDL_Condition
   -- ^
@@ -1394,7 +1394,7 @@ broadcastCondition = Unsafe.sDL_BroadcastCondition
 --                   The unsafe flavor is 'broadcastCondition'
 --                   .
 --
---     [C declaration]: @SDL_BroadcastCondition@, defined at @SDL3\/SDL_mutex.h 900:34@
+--     [C declaration]: @SDL_BroadcastCondition@, defined at @SDL3\/SDL_mutex.h 902:34@
 broadcastConditionSafe
   :: BG.Ptr SDL_Condition
   -- ^
@@ -1423,7 +1423,7 @@ broadcastConditionSafe = Safe.sDL_BroadcastCondition
 --                   The safe flavor is 'waitConditionSafe'
 --                   : blocks indefinitely.
 --
---     [C declaration]: @SDL_WaitCondition@, defined at @SDL3\/SDL_mutex.h 928:34@
+--     [C declaration]: @SDL_WaitCondition@, defined at @SDL3\/SDL_mutex.h 930:34@
 waitCondition
   :: BG.Ptr SDL_Condition
   -- ^
@@ -1456,7 +1456,7 @@ waitCondition = Unsafe.sDL_WaitCondition
 --                   The unsafe flavor is 'waitCondition'
 --                   : blocks indefinitely.
 --
---     [C declaration]: @SDL_WaitCondition@, defined at @SDL3\/SDL_mutex.h 928:34@
+--     [C declaration]: @SDL_WaitCondition@, defined at @SDL3\/SDL_mutex.h 930:34@
 waitConditionSafe
   :: BG.Ptr SDL_Condition
   -- ^
@@ -1492,7 +1492,7 @@ waitConditionSafe = Safe.sDL_WaitCondition
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitConditionTimeout@, defined at @SDL3\/SDL_mutex.h 958:34@
+--     [C declaration]: @SDL_WaitConditionTimeout@, defined at @SDL3\/SDL_mutex.h 960:34@
 waitConditionTimeout
   :: BG.Ptr SDL_Condition
   -- ^
@@ -1536,7 +1536,7 @@ waitConditionTimeout =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitConditionTimeout@, defined at @SDL3\/SDL_mutex.h 958:34@
+--     [C declaration]: @SDL_WaitConditionTimeout@, defined at @SDL3\/SDL_mutex.h 960:34@
 waitConditionTimeoutSafe
   :: BG.Ptr SDL_Condition
   -- ^
@@ -1580,7 +1580,7 @@ waitConditionTimeoutSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ShouldInit@, defined at @SDL3\/SDL_mutex.h 1065:34@
+--     [C declaration]: @SDL_ShouldInit@, defined at @SDL3\/SDL_mutex.h 1067:34@
 shouldInit
   :: BG.Ptr SDL_InitState
   -- ^
@@ -1613,7 +1613,7 @@ shouldInit =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ShouldInit@, defined at @SDL3\/SDL_mutex.h 1065:34@
+--     [C declaration]: @SDL_ShouldInit@, defined at @SDL3\/SDL_mutex.h 1067:34@
 shouldInitSafe
   :: BG.Ptr SDL_InitState
   -- ^
@@ -1646,7 +1646,7 @@ shouldInitSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ShouldQuit@, defined at @SDL3\/SDL_mutex.h 1086:34@
+--     [C declaration]: @SDL_ShouldQuit@, defined at @SDL3\/SDL_mutex.h 1088:34@
 shouldQuit
   :: BG.Ptr SDL_InitState
   -- ^
@@ -1679,7 +1679,7 @@ shouldQuit =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ShouldQuit@, defined at @SDL3\/SDL_mutex.h 1086:34@
+--     [C declaration]: @SDL_ShouldQuit@, defined at @SDL3\/SDL_mutex.h 1088:34@
 shouldQuitSafe
   :: BG.Ptr SDL_InitState
   -- ^
@@ -1708,7 +1708,7 @@ shouldQuitSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetInitialized@, defined at @SDL3\/SDL_mutex.h 1105:34@
+--     [C declaration]: @SDL_SetInitialized@, defined at @SDL3\/SDL_mutex.h 1107:34@
 setInitialized
   :: BG.Ptr SDL_InitState
   -- ^
@@ -1743,7 +1743,7 @@ setInitialized =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetInitialized@, defined at @SDL3\/SDL_mutex.h 1105:34@
+--     [C declaration]: @SDL_SetInitialized@, defined at @SDL3\/SDL_mutex.h 1107:34@
 setInitializedSafe
   :: BG.Ptr SDL_InitState
   -- ^

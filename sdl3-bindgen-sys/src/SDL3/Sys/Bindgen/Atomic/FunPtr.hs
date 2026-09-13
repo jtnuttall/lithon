@@ -288,7 +288,7 @@ hs_bindgen_4979d73c1ba41e39 =
 --
 --     [See also]: @SDL_MemoryBarrierRelease@
 --
---     [C declaration]: @SDL_MemoryBarrierReleaseFunction@, defined at @SDL3\/SDL_atomic.h 192:34@
+--     [C declaration]: @SDL_MemoryBarrierReleaseFunction@, defined at @SDL3\/SDL_atomic.h 195:34@
 sDL_MemoryBarrierReleaseFunction :: BG.FunPtr (IO ())
 sDL_MemoryBarrierReleaseFunction =
   BG.unsafePerformIO hs_bindgen_4979d73c1ba41e39
@@ -315,7 +315,7 @@ hs_bindgen_e6cbd7564a024d99 =
 --
 --     [See also]: @SDL_MemoryBarrierAcquire@
 --
---     [C declaration]: @SDL_MemoryBarrierAcquireFunction@, defined at @SDL3\/SDL_atomic.h 212:34@
+--     [C declaration]: @SDL_MemoryBarrierAcquireFunction@, defined at @SDL3\/SDL_atomic.h 215:34@
 sDL_MemoryBarrierAcquireFunction :: BG.FunPtr (IO ())
 sDL_MemoryBarrierAcquireFunction =
   BG.unsafePerformIO hs_bindgen_e6cbd7564a024d99
@@ -351,7 +351,7 @@ hs_bindgen_c535bda19feaf153 =
 --
 --     [See also]: 'sDL_GetAtomicInt', 'sDL_SetAtomicInt'
 --
---     [C declaration]: @SDL_CompareAndSwapAtomicInt@, defined at @SDL3\/SDL_atomic.h 415:34@
+--     [C declaration]: @SDL_CompareAndSwapAtomicInt@, defined at @SDL3\/SDL_atomic.h 425:34@
 sDL_CompareAndSwapAtomicInt :: BG.FunPtr (BG.Ptr SDL_AtomicInt -> BG.CInt -> BG.CInt -> IO BG.CBool)
 sDL_CompareAndSwapAtomicInt =
   BG.unsafePerformIO hs_bindgen_c535bda19feaf153
@@ -386,7 +386,7 @@ hs_bindgen_281a397e642c4489 =
 --
 --     [See also]: 'sDL_GetAtomicInt'
 --
---     [C declaration]: @SDL_SetAtomicInt@, defined at @SDL3\/SDL_atomic.h 435:33@
+--     [C declaration]: @SDL_SetAtomicInt@, defined at @SDL3\/SDL_atomic.h 445:33@
 sDL_SetAtomicInt :: BG.FunPtr (BG.Ptr SDL_AtomicInt -> BG.CInt -> IO BG.CInt)
 sDL_SetAtomicInt =
   BG.unsafePerformIO hs_bindgen_281a397e642c4489
@@ -417,7 +417,7 @@ hs_bindgen_db9688135888e49b =
 --
 --     [See also]: 'sDL_SetAtomicInt'
 --
---     [C declaration]: @SDL_GetAtomicInt@, defined at @SDL3\/SDL_atomic.h 452:33@
+--     [C declaration]: @SDL_GetAtomicInt@, defined at @SDL3\/SDL_atomic.h 462:33@
 sDL_GetAtomicInt :: BG.FunPtr (BG.Ptr SDL_AtomicInt -> IO BG.CInt)
 sDL_GetAtomicInt =
   BG.unsafePerformIO hs_bindgen_db9688135888e49b
@@ -452,7 +452,7 @@ hs_bindgen_3e37f598766ca408 =
 --
 --     [See also]: @SDL_AtomicDecRef@, @SDL_AtomicIncRef@
 --
---     [C declaration]: @SDL_AddAtomicInt@, defined at @SDL3\/SDL_atomic.h 473:33@
+--     [C declaration]: @SDL_AddAtomicInt@, defined at @SDL3\/SDL_atomic.h 483:33@
 sDL_AddAtomicInt :: BG.FunPtr (BG.Ptr SDL_AtomicInt -> BG.CInt -> IO BG.CInt)
 sDL_AddAtomicInt =
   BG.unsafePerformIO hs_bindgen_3e37f598766ca408
@@ -495,7 +495,7 @@ hs_bindgen_b4be57e876b926c0 =
 --
 --     [See also]: 'sDL_GetAtomicU32', 'sDL_SetAtomicU32'
 --
---     [C declaration]: @SDL_CompareAndSwapAtomicU32@, defined at @SDL3\/SDL_atomic.h 560:34@
+--     [C declaration]: @SDL_CompareAndSwapAtomicU32@, defined at @SDL3\/SDL_atomic.h 570:34@
 sDL_CompareAndSwapAtomicU32
   :: BG.FunPtr
        ( BG.Ptr SDL_AtomicU32
@@ -540,7 +540,7 @@ hs_bindgen_34e65bfeeaed8bb5 =
 --
 --     [See also]: 'sDL_GetAtomicU32'
 --
---     [C declaration]: @SDL_SetAtomicU32@, defined at @SDL3\/SDL_atomic.h 580:36@
+--     [C declaration]: @SDL_SetAtomicU32@, defined at @SDL3\/SDL_atomic.h 590:36@
 sDL_SetAtomicU32
   :: BG.FunPtr
        (BG.Ptr SDL_AtomicU32 -> SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO SDL3.Sys.Bindgen.Stdinc.Uint32)
@@ -574,7 +574,7 @@ hs_bindgen_89429d58246e8835 =
 --
 --     [See also]: 'sDL_SetAtomicU32'
 --
---     [C declaration]: @SDL_GetAtomicU32@, defined at @SDL3\/SDL_atomic.h 597:36@
+--     [C declaration]: @SDL_GetAtomicU32@, defined at @SDL3\/SDL_atomic.h 607:36@
 sDL_GetAtomicU32 :: BG.FunPtr (BG.Ptr SDL_AtomicU32 -> IO SDL3.Sys.Bindgen.Stdinc.Uint32)
 sDL_GetAtomicU32 =
   BG.unsafePerformIO hs_bindgen_89429d58246e8835
@@ -608,7 +608,7 @@ hs_bindgen_74ebd3ff8c83f38e =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @SDL_AddAtomicU32@, defined at @SDL3\/SDL_atomic.h 615:36@
+--     [C declaration]: @SDL_AddAtomicU32@, defined at @SDL3\/SDL_atomic.h 625:36@
 sDL_AddAtomicU32 :: BG.FunPtr (BG.Ptr SDL_AtomicU32 -> BG.CInt -> IO SDL3.Sys.Bindgen.Stdinc.Uint32)
 sDL_AddAtomicU32 =
   BG.unsafePerformIO hs_bindgen_74ebd3ff8c83f38e
@@ -644,7 +644,7 @@ hs_bindgen_6871c50a63bfd9f4 =
 --
 --     [See also]: 'sDL_CompareAndSwapAtomicInt', 'sDL_GetAtomicPointer', 'sDL_SetAtomicPointer'
 --
---     [C declaration]: @SDL_CompareAndSwapAtomicPointer@, defined at @SDL3\/SDL_atomic.h 636:34@
+--     [C declaration]: @SDL_CompareAndSwapAtomicPointer@, defined at @SDL3\/SDL_atomic.h 646:34@
 sDL_CompareAndSwapAtomicPointer
   :: BG.FunPtr (BG.Ptr (BG.Ptr BG.Void) -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CBool)
 sDL_CompareAndSwapAtomicPointer =
@@ -679,7 +679,7 @@ hs_bindgen_f4bd3696da14dba9 =
 --
 --     [See also]: 'sDL_CompareAndSwapAtomicPointer', 'sDL_GetAtomicPointer'
 --
---     [C declaration]: @SDL_SetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 655:36@
+--     [C declaration]: @SDL_SetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 665:36@
 sDL_SetAtomicPointer :: BG.FunPtr (BG.Ptr (BG.Ptr BG.Void) -> BG.Ptr BG.Void -> IO (BG.Ptr BG.Void))
 sDL_SetAtomicPointer =
   BG.unsafePerformIO hs_bindgen_f4bd3696da14dba9
@@ -710,7 +710,7 @@ hs_bindgen_dc36e65ef974254e =
 --
 --     [See also]: 'sDL_CompareAndSwapAtomicPointer', 'sDL_SetAtomicPointer'
 --
---     [C declaration]: @SDL_GetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 673:36@
+--     [C declaration]: @SDL_GetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 683:36@
 sDL_GetAtomicPointer :: BG.FunPtr (BG.Ptr (BG.Ptr BG.Void) -> IO (BG.Ptr BG.Void))
 sDL_GetAtomicPointer =
   BG.unsafePerformIO hs_bindgen_dc36e65ef974254e

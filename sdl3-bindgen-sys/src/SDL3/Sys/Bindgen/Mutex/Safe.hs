@@ -342,7 +342,7 @@ hs_bindgen_0080eb2473efd4c0 =
 --
 --     [See also]: 'sDL_LockMutex', 'sDL_TryLockMutex'
 --
---     [C declaration]: @SDL_UnlockMutex@, defined at @SDL3\/SDL_mutex.h 390:34@
+--     [C declaration]: @SDL_UnlockMutex@, defined at @SDL3\/SDL_mutex.h 391:34@
 sDL_UnlockMutex
   :: BG.Ptr SDL_Mutex
   -- ^
@@ -374,7 +374,7 @@ hs_bindgen_0848f2dbc2ab9299 =
 --
 --     [See also]: 'sDL_CreateMutex'
 --
---     [C declaration]: @SDL_DestroyMutex@, defined at @SDL3\/SDL_mutex.h 409:34@
+--     [C declaration]: @SDL_DestroyMutex@, defined at @SDL3\/SDL_mutex.h 410:34@
 sDL_DestroyMutex
   :: BG.Ptr SDL_Mutex
   -- ^
@@ -413,7 +413,7 @@ hs_bindgen_305069c9512cb61a =
 --
 --     [See also]: 'sDL_DestroyRWLock', 'sDL_LockRWLockForReading', 'sDL_LockRWLockForWriting', 'sDL_TryLockRWLockForReading', 'sDL_TryLockRWLockForWriting', 'sDL_UnlockRWLock'
 --
---     [C declaration]: @SDL_CreateRWLock@, defined at @SDL3\/SDL_mutex.h 481:42@
+--     [C declaration]: @SDL_CreateRWLock@, defined at @SDL3\/SDL_mutex.h 482:42@
 sDL_CreateRWLock :: IO (BG.Ptr SDL_RWLock)
 sDL_CreateRWLock = hs_bindgen_305069c9512cb61a
 
@@ -448,7 +448,7 @@ hs_bindgen_88156cb9c069d7ae =
 --
 --     [See also]: 'sDL_LockRWLockForWriting', 'sDL_TryLockRWLockForReading', 'sDL_UnlockRWLock'
 --
---     [C declaration]: @SDL_LockRWLockForReading@, defined at @SDL3\/SDL_mutex.h 520:34@
+--     [C declaration]: @SDL_LockRWLockForReading@, defined at @SDL3\/SDL_mutex.h 521:34@
 sDL_LockRWLockForReading
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -487,7 +487,7 @@ hs_bindgen_65b1a554927b8f99 =
 --
 --     [See also]: 'sDL_LockRWLockForReading', 'sDL_TryLockRWLockForWriting', 'sDL_UnlockRWLock'
 --
---     [C declaration]: @SDL_LockRWLockForWriting@, defined at @SDL3\/SDL_mutex.h 553:34@
+--     [C declaration]: @SDL_LockRWLockForWriting@, defined at @SDL3\/SDL_mutex.h 554:34@
 sDL_LockRWLockForWriting
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -528,7 +528,7 @@ hs_bindgen_287956a25f4fabba =
 --
 --     [See also]: 'sDL_LockRWLockForReading', 'sDL_TryLockRWLockForWriting', 'sDL_UnlockRWLock'
 --
---     [C declaration]: @SDL_TryLockRWLockForReading@, defined at @SDL3\/SDL_mutex.h 580:34@
+--     [C declaration]: @SDL_TryLockRWLockForReading@, defined at @SDL3\/SDL_mutex.h 581:34@
 sDL_TryLockRWLockForReading
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -571,7 +571,7 @@ hs_bindgen_99a3ed9a28ed75f7 =
 --
 --     [See also]: 'sDL_LockRWLockForWriting', 'sDL_TryLockRWLockForReading', 'sDL_UnlockRWLock'
 --
---     [C declaration]: @SDL_TryLockRWLockForWriting@, defined at @SDL3\/SDL_mutex.h 612:34@
+--     [C declaration]: @SDL_TryLockRWLockForWriting@, defined at @SDL3\/SDL_mutex.h 613:34@
 sDL_TryLockRWLockForWriting
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -608,7 +608,7 @@ hs_bindgen_c9284c30c938f332 =
 --
 --     [See also]: 'sDL_LockRWLockForReading', 'sDL_LockRWLockForWriting', 'sDL_TryLockRWLockForReading', 'sDL_TryLockRWLockForWriting'
 --
---     [C declaration]: @SDL_UnlockRWLock@, defined at @SDL3\/SDL_mutex.h 639:34@
+--     [C declaration]: @SDL_UnlockRWLock@, defined at @SDL3\/SDL_mutex.h 641:34@
 sDL_UnlockRWLock
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -640,7 +640,7 @@ hs_bindgen_743dbdcc7c185970 =
 --
 --     [See also]: 'sDL_CreateRWLock'
 --
---     [C declaration]: @SDL_DestroyRWLock@, defined at @SDL3\/SDL_mutex.h 658:34@
+--     [C declaration]: @SDL_DestroyRWLock@, defined at @SDL3\/SDL_mutex.h 660:34@
 sDL_DestroyRWLock
   :: BG.Ptr SDL_RWLock
   -- ^
@@ -674,7 +674,7 @@ hs_bindgen_d1200eed8ae4acf8 =
 --
 --     [See also]: 'sDL_DestroySemaphore', 'sDL_SignalSemaphore', 'sDL_TryWaitSemaphore', 'sDL_GetSemaphoreValue', 'sDL_WaitSemaphore', 'sDL_WaitSemaphoreTimeout'
 --
---     [C declaration]: @SDL_CreateSemaphore@, defined at @SDL3\/SDL_mutex.h 708:45@
+--     [C declaration]: @SDL_CreateSemaphore@, defined at @SDL3\/SDL_mutex.h 710:45@
 sDL_CreateSemaphore
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^
@@ -706,7 +706,7 @@ hs_bindgen_d167c0d86f5bfae4 =
 --
 --     [See also]: 'sDL_CreateSemaphore'
 --
---     [C declaration]: @SDL_DestroySemaphore@, defined at @SDL3\/SDL_mutex.h 724:34@
+--     [C declaration]: @SDL_DestroySemaphore@, defined at @SDL3\/SDL_mutex.h 726:34@
 sDL_DestroySemaphore
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -740,7 +740,7 @@ hs_bindgen_0c536dc844c53556 =
 --
 --     [See also]: 'sDL_SignalSemaphore', 'sDL_TryWaitSemaphore', 'sDL_WaitSemaphoreTimeout'
 --
---     [C declaration]: @SDL_WaitSemaphore@, defined at @SDL3\/SDL_mutex.h 746:34@
+--     [C declaration]: @SDL_WaitSemaphore@, defined at @SDL3\/SDL_mutex.h 748:34@
 sDL_WaitSemaphore
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -774,7 +774,7 @@ hs_bindgen_8460788ee6bb642a =
 --
 --     [See also]: 'sDL_SignalSemaphore', 'sDL_WaitSemaphore', 'sDL_WaitSemaphoreTimeout'
 --
---     [C declaration]: @SDL_TryWaitSemaphore@, defined at @SDL3\/SDL_mutex.h 767:34@
+--     [C declaration]: @SDL_TryWaitSemaphore@, defined at @SDL3\/SDL_mutex.h 769:34@
 sDL_TryWaitSemaphore
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -810,7 +810,7 @@ hs_bindgen_73158966e18c69df =
 --
 --     [See also]: 'sDL_SignalSemaphore', 'sDL_TryWaitSemaphore', 'sDL_WaitSemaphore'
 --
---     [C declaration]: @SDL_WaitSemaphoreTimeout@, defined at @SDL3\/SDL_mutex.h 789:34@
+--     [C declaration]: @SDL_WaitSemaphoreTimeout@, defined at @SDL3\/SDL_mutex.h 791:34@
 sDL_WaitSemaphoreTimeout
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -845,7 +845,7 @@ hs_bindgen_ad3ea5b998b9b02a =
 --
 --     [See also]: 'sDL_TryWaitSemaphore', 'sDL_WaitSemaphore', 'sDL_WaitSemaphoreTimeout'
 --
---     [C declaration]: @SDL_SignalSemaphore@, defined at @SDL3\/SDL_mutex.h 804:34@
+--     [C declaration]: @SDL_SignalSemaphore@, defined at @SDL3\/SDL_mutex.h 806:34@
 sDL_SignalSemaphore
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -875,7 +875,7 @@ hs_bindgen_d7d8abceae459dc4 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetSemaphoreValue@, defined at @SDL3\/SDL_mutex.h 816:36@
+--     [C declaration]: @SDL_GetSemaphoreValue@, defined at @SDL3\/SDL_mutex.h 818:36@
 sDL_GetSemaphoreValue
   :: BG.Ptr SDL_Semaphore
   -- ^
@@ -904,7 +904,7 @@ hs_bindgen_f051c9d83065c51e =
 --
 --     [See also]: 'sDL_BroadcastCondition', 'sDL_SignalCondition', 'sDL_WaitCondition', 'sDL_WaitConditionTimeout', 'sDL_DestroyCondition'
 --
---     [C declaration]: @SDL_CreateCondition@, defined at @SDL3\/SDL_mutex.h 857:45@
+--     [C declaration]: @SDL_CreateCondition@, defined at @SDL3\/SDL_mutex.h 859:45@
 sDL_CreateCondition :: IO (BG.Ptr SDL_Condition)
 sDL_CreateCondition = hs_bindgen_f051c9d83065c51e
 
@@ -929,7 +929,7 @@ hs_bindgen_284001adc7a8e944 =
 --
 --     [See also]: 'sDL_CreateCondition'
 --
---     [C declaration]: @SDL_DestroyCondition@, defined at @SDL3\/SDL_mutex.h 870:34@
+--     [C declaration]: @SDL_DestroyCondition@, defined at @SDL3\/SDL_mutex.h 872:34@
 sDL_DestroyCondition
   :: BG.Ptr SDL_Condition
   -- ^
@@ -959,7 +959,7 @@ hs_bindgen_8e6408554c791aa2 =
 --
 --     [See also]: 'sDL_BroadcastCondition', 'sDL_WaitCondition', 'sDL_WaitConditionTimeout'
 --
---     [C declaration]: @SDL_SignalCondition@, defined at @SDL3\/SDL_mutex.h 885:34@
+--     [C declaration]: @SDL_SignalCondition@, defined at @SDL3\/SDL_mutex.h 887:34@
 sDL_SignalCondition
   :: BG.Ptr SDL_Condition
   -- ^
@@ -989,7 +989,7 @@ hs_bindgen_1377f08bc73a7c85 =
 --
 --     [See also]: 'sDL_SignalCondition', 'sDL_WaitCondition', 'sDL_WaitConditionTimeout'
 --
---     [C declaration]: @SDL_BroadcastCondition@, defined at @SDL3\/SDL_mutex.h 900:34@
+--     [C declaration]: @SDL_BroadcastCondition@, defined at @SDL3\/SDL_mutex.h 902:34@
 sDL_BroadcastCondition
   :: BG.Ptr SDL_Condition
   -- ^
@@ -1027,7 +1027,7 @@ hs_bindgen_2c9c00769b6253d6 =
 --
 --     [See also]: 'sDL_BroadcastCondition', 'sDL_SignalCondition', 'sDL_WaitConditionTimeout'
 --
---     [C declaration]: @SDL_WaitCondition@, defined at @SDL3\/SDL_mutex.h 928:34@
+--     [C declaration]: @SDL_WaitCondition@, defined at @SDL3\/SDL_mutex.h 930:34@
 sDL_WaitCondition
   :: BG.Ptr SDL_Condition
   -- ^
@@ -1071,7 +1071,7 @@ hs_bindgen_158c5dc74b7f6a6d =
 --
 --     [See also]: 'sDL_BroadcastCondition', 'sDL_SignalCondition', 'sDL_WaitCondition'
 --
---     [C declaration]: @SDL_WaitConditionTimeout@, defined at @SDL3\/SDL_mutex.h 958:34@
+--     [C declaration]: @SDL_WaitConditionTimeout@, defined at @SDL3\/SDL_mutex.h 960:34@
 sDL_WaitConditionTimeout
   :: BG.Ptr SDL_Condition
   -- ^
@@ -1116,7 +1116,7 @@ hs_bindgen_c32bbe3119c28451 =
 --
 --     [See also]: 'sDL_SetInitialized', 'sDL_ShouldQuit'
 --
---     [C declaration]: @SDL_ShouldInit@, defined at @SDL3\/SDL_mutex.h 1065:34@
+--     [C declaration]: @SDL_ShouldInit@, defined at @SDL3\/SDL_mutex.h 1067:34@
 sDL_ShouldInit
   :: BG.Ptr SDL_InitState
   -- ^
@@ -1152,7 +1152,7 @@ hs_bindgen_edbe1140979f28da =
 --
 --     [See also]: 'sDL_SetInitialized', 'sDL_ShouldInit'
 --
---     [C declaration]: @SDL_ShouldQuit@, defined at @SDL3\/SDL_mutex.h 1086:34@
+--     [C declaration]: @SDL_ShouldQuit@, defined at @SDL3\/SDL_mutex.h 1088:34@
 sDL_ShouldQuit
   :: BG.Ptr SDL_InitState
   -- ^
@@ -1186,7 +1186,7 @@ hs_bindgen_5708550ac643317a =
 --
 --     [See also]: 'sDL_ShouldInit', 'sDL_ShouldQuit'
 --
---     [C declaration]: @SDL_SetInitialized@, defined at @SDL3\/SDL_mutex.h 1105:34@
+--     [C declaration]: @SDL_SetInitialized@, defined at @SDL3\/SDL_mutex.h 1107:34@
 sDL_SetInitialized
   :: BG.Ptr SDL_InitState
   -- ^

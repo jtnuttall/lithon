@@ -110,6 +110,7 @@ module SDL3.Sys.Bindgen.Hints (
   SDL3.Sys.Bindgen.Hints.sDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_JOYSTICK_GAMEINPUT,
+  SDL3.Sys.Bindgen.Hints.sDL_HINT_JOYSTICK_GAMEINPUT_RAW,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_JOYSTICK_GAMECUBE_DEVICES,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_JOYSTICK_HIDAPI,
@@ -254,6 +255,7 @@ module SDL3.Sys.Bindgen.Hints (
   SDL3.Sys.Bindgen.Hints.sDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_VIDEO_WIN_D3DCOMPILER,
+  SDL3.Sys.Bindgen.Hints.sDL_HINT_VIDEO_X11_ENABLE_XSYNC_EXT,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_VIDEO_X11_NET_WM_PING,
@@ -285,6 +287,7 @@ module SDL3.Sys.Bindgen.Hints (
   SDL3.Sys.Bindgen.Hints.sDL_HINT_WINDOWS_GAMEINPUT,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_WINDOWS_RAW_KEYBOARD,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS,
+  SDL3.Sys.Bindgen.Hints.sDL_HINT_WINDOWS_RAW_KEYBOARD_INPUTSINK,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_WINDOWS_INTRESOURCE_ICON,
   SDL3.Sys.Bindgen.Hints.sDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL,
@@ -1079,13 +1082,15 @@ sDL_HINT_AUDIO_DEVICE_STREAM_NAME =
 --
 --     * \"Media\" - Music or sound without dialog
 --
+--     Android\'s AAudio target supports this hint as of SDL 3.4.4. Android does not support the exact same options as WASAPI, but for portability, will attempt to map these same strings to the @aaudio_usage_t@ constants. For example, \"Movie\" and \"Media\" will both map to @AAUDIO_USAGE_MEDIA@, etc.
+--
 --     If your application applies its own echo cancellation, gain control, and noise reduction it should also set SDL_HINT_AUDIO_DEVICE_RAW_STREAM.
 --
 --     This hint should be set before an audio device is opened.
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_AUDIO_DEVICE_STREAM_ROLE@, literal @\"SDL_AUDIO_DEVICE_STREAM_ROLE\"@, defined at @SDL3\/SDL_hints.h 412:9@
+--     [C declaration]: @macro SDL_HINT_AUDIO_DEVICE_STREAM_ROLE@, literal @\"SDL_AUDIO_DEVICE_STREAM_ROLE\"@, defined at @SDL3\/SDL_hints.h 417:9@
 sDL_HINT_AUDIO_DEVICE_STREAM_ROLE :: BG.ByteString
 sDL_HINT_AUDIO_DEVICE_STREAM_ROLE =
   BG.pack
@@ -1135,7 +1140,7 @@ sDL_HINT_AUDIO_DEVICE_STREAM_ROLE =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_AUDIO_DEVICE_RAW_STREAM@, literal @\"SDL_AUDIO_DEVICE_RAW_STREAM\"@, defined at @SDL3\/SDL_hints.h 432:9@
+--     [C declaration]: @macro SDL_HINT_AUDIO_DEVICE_RAW_STREAM@, literal @\"SDL_AUDIO_DEVICE_RAW_STREAM\"@, defined at @SDL3\/SDL_hints.h 437:9@
 sDL_HINT_AUDIO_DEVICE_RAW_STREAM :: BG.ByteString
 sDL_HINT_AUDIO_DEVICE_RAW_STREAM =
   BG.pack
@@ -1176,7 +1181,7 @@ sDL_HINT_AUDIO_DEVICE_RAW_STREAM =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_AUDIO_DISK_INPUT_FILE@, literal @\"SDL_AUDIO_DISK_INPUT_FILE\"@, defined at @SDL3\/SDL_hints.h 443:9@
+--     [C declaration]: @macro SDL_HINT_AUDIO_DISK_INPUT_FILE@, literal @\"SDL_AUDIO_DISK_INPUT_FILE\"@, defined at @SDL3\/SDL_hints.h 448:9@
 sDL_HINT_AUDIO_DISK_INPUT_FILE :: BG.ByteString
 sDL_HINT_AUDIO_DISK_INPUT_FILE =
   BG.pack
@@ -1215,7 +1220,7 @@ sDL_HINT_AUDIO_DISK_INPUT_FILE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_AUDIO_DISK_OUTPUT_FILE@, literal @\"SDL_AUDIO_DISK_OUTPUT_FILE\"@, defined at @SDL3\/SDL_hints.h 454:9@
+--     [C declaration]: @macro SDL_HINT_AUDIO_DISK_OUTPUT_FILE@, literal @\"SDL_AUDIO_DISK_OUTPUT_FILE\"@, defined at @SDL3\/SDL_hints.h 459:9@
 sDL_HINT_AUDIO_DISK_OUTPUT_FILE :: BG.ByteString
 sDL_HINT_AUDIO_DISK_OUTPUT_FILE =
   BG.pack
@@ -1255,7 +1260,7 @@ sDL_HINT_AUDIO_DISK_OUTPUT_FILE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_AUDIO_DISK_TIMESCALE@, literal @\"SDL_AUDIO_DISK_TIMESCALE\"@, defined at @SDL3\/SDL_hints.h 467:9@
+--     [C declaration]: @macro SDL_HINT_AUDIO_DISK_TIMESCALE@, literal @\"SDL_AUDIO_DISK_TIMESCALE\"@, defined at @SDL3\/SDL_hints.h 472:9@
 sDL_HINT_AUDIO_DISK_TIMESCALE :: BG.ByteString
 sDL_HINT_AUDIO_DISK_TIMESCALE =
   BG.pack
@@ -1293,7 +1298,7 @@ sDL_HINT_AUDIO_DISK_TIMESCALE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_AUDIO_DRIVER@, literal @\"SDL_AUDIO_DRIVER\"@, defined at @SDL3\/SDL_hints.h 481:9@
+--     [C declaration]: @macro SDL_HINT_AUDIO_DRIVER@, literal @\"SDL_AUDIO_DRIVER\"@, defined at @SDL3\/SDL_hints.h 486:9@
 sDL_HINT_AUDIO_DRIVER :: BG.ByteString
 sDL_HINT_AUDIO_DRIVER =
   BG.pack
@@ -1307,7 +1312,7 @@ sDL_HINT_AUDIO_DRIVER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_AUDIO_DUMMY_TIMESCALE@, literal @\"SDL_AUDIO_DUMMY_TIMESCALE\"@, defined at @SDL3\/SDL_hints.h 494:9@
+--     [C declaration]: @macro SDL_HINT_AUDIO_DUMMY_TIMESCALE@, literal @\"SDL_AUDIO_DUMMY_TIMESCALE\"@, defined at @SDL3\/SDL_hints.h 499:9@
 sDL_HINT_AUDIO_DUMMY_TIMESCALE :: BG.ByteString
 sDL_HINT_AUDIO_DUMMY_TIMESCALE =
   BG.pack
@@ -1370,7 +1375,7 @@ sDL_HINT_AUDIO_DUMMY_TIMESCALE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_AUDIO_FORMAT@, literal @\"SDL_AUDIO_FORMAT\"@, defined at @SDL3\/SDL_hints.h 521:9@
+--     [C declaration]: @macro SDL_HINT_AUDIO_FORMAT@, literal @\"SDL_AUDIO_FORMAT\"@, defined at @SDL3\/SDL_hints.h 526:9@
 sDL_HINT_AUDIO_FORMAT :: BG.ByteString
 sDL_HINT_AUDIO_FORMAT =
   BG.pack
@@ -1384,7 +1389,7 @@ sDL_HINT_AUDIO_FORMAT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_AUDIO_FREQUENCY@, literal @\"SDL_AUDIO_FREQUENCY\"@, defined at @SDL3\/SDL_hints.h 534:9@
+--     [C declaration]: @macro SDL_HINT_AUDIO_FREQUENCY@, literal @\"SDL_AUDIO_FREQUENCY\"@, defined at @SDL3\/SDL_hints.h 539:9@
 sDL_HINT_AUDIO_FREQUENCY :: BG.ByteString
 sDL_HINT_AUDIO_FREQUENCY =
   BG.pack
@@ -1425,7 +1430,7 @@ sDL_HINT_AUDIO_FREQUENCY =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_AUDIO_INCLUDE_MONITORS@, literal @\"SDL_AUDIO_INCLUDE_MONITORS\"@, defined at @SDL3\/SDL_hints.h 557:9@
+--     [C declaration]: @macro SDL_HINT_AUDIO_INCLUDE_MONITORS@, literal @\"SDL_AUDIO_INCLUDE_MONITORS\"@, defined at @SDL3\/SDL_hints.h 562:9@
 sDL_HINT_AUDIO_INCLUDE_MONITORS :: BG.ByteString
 sDL_HINT_AUDIO_INCLUDE_MONITORS =
   BG.pack
@@ -1469,7 +1474,7 @@ sDL_HINT_AUDIO_INCLUDE_MONITORS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_AUTO_UPDATE_JOYSTICKS@, literal @\"SDL_AUTO_UPDATE_JOYSTICKS\"@, defined at @SDL3\/SDL_hints.h 572:9@
+--     [C declaration]: @macro SDL_HINT_AUTO_UPDATE_JOYSTICKS@, literal @\"SDL_AUTO_UPDATE_JOYSTICKS\"@, defined at @SDL3\/SDL_hints.h 577:9@
 sDL_HINT_AUTO_UPDATE_JOYSTICKS :: BG.ByteString
 sDL_HINT_AUTO_UPDATE_JOYSTICKS =
   BG.pack
@@ -1512,7 +1517,7 @@ sDL_HINT_AUTO_UPDATE_JOYSTICKS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_AUTO_UPDATE_SENSORS@, literal @\"SDL_AUTO_UPDATE_SENSORS\"@, defined at @SDL3\/SDL_hints.h 587:9@
+--     [C declaration]: @macro SDL_HINT_AUTO_UPDATE_SENSORS@, literal @\"SDL_AUTO_UPDATE_SENSORS\"@, defined at @SDL3\/SDL_hints.h 592:9@
 sDL_HINT_AUTO_UPDATE_SENSORS :: BG.ByteString
 sDL_HINT_AUTO_UPDATE_SENSORS =
   BG.pack
@@ -1555,7 +1560,7 @@ sDL_HINT_AUTO_UPDATE_SENSORS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_BMP_SAVE_LEGACY_FORMAT@, literal @\"SDL_BMP_SAVE_LEGACY_FORMAT\"@, defined at @SDL3\/SDL_hints.h 610:9@
+--     [C declaration]: @macro SDL_HINT_BMP_SAVE_LEGACY_FORMAT@, literal @\"SDL_BMP_SAVE_LEGACY_FORMAT\"@, defined at @SDL3\/SDL_hints.h 615:9@
 sDL_HINT_BMP_SAVE_LEGACY_FORMAT :: BG.ByteString
 sDL_HINT_BMP_SAVE_LEGACY_FORMAT =
   BG.pack
@@ -1595,7 +1600,7 @@ sDL_HINT_BMP_SAVE_LEGACY_FORMAT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_CAMERA_DRIVER@, literal @\"SDL_CAMERA_DRIVER\"@, defined at @SDL3\/SDL_hints.h 626:9@
+--     [C declaration]: @macro SDL_HINT_CAMERA_DRIVER@, literal @\"SDL_CAMERA_DRIVER\"@, defined at @SDL3\/SDL_hints.h 631:9@
 sDL_HINT_CAMERA_DRIVER :: BG.ByteString
 sDL_HINT_CAMERA_DRIVER =
   BG.pack
@@ -1658,7 +1663,7 @@ sDL_HINT_CAMERA_DRIVER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_CPU_FEATURE_MASK@, literal @\"SDL_CPU_FEATURE_MASK\"@, defined at @SDL3\/SDL_hints.h 659:9@
+--     [C declaration]: @macro SDL_HINT_CPU_FEATURE_MASK@, literal @\"SDL_CPU_FEATURE_MASK\"@, defined at @SDL3\/SDL_hints.h 664:9@
 sDL_HINT_CPU_FEATURE_MASK :: BG.ByteString
 sDL_HINT_CPU_FEATURE_MASK =
   BG.pack
@@ -1696,7 +1701,7 @@ sDL_HINT_CPU_FEATURE_MASK =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_DIRECTINPUT@, literal @\"SDL_JOYSTICK_DIRECTINPUT\"@, defined at @SDL3\/SDL_hints.h 673:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_DIRECTINPUT@, literal @\"SDL_JOYSTICK_DIRECTINPUT\"@, defined at @SDL3\/SDL_hints.h 678:9@
 sDL_HINT_JOYSTICK_DIRECTINPUT :: BG.ByteString
 sDL_HINT_JOYSTICK_DIRECTINPUT =
   BG.pack
@@ -1748,7 +1753,7 @@ sDL_HINT_JOYSTICK_DIRECTINPUT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_FILE_DIALOG_DRIVER@, literal @\"SDL_FILE_DIALOG_DRIVER\"@, defined at @SDL3\/SDL_hints.h 702:9@
+--     [C declaration]: @macro SDL_HINT_FILE_DIALOG_DRIVER@, literal @\"SDL_FILE_DIALOG_DRIVER\"@, defined at @SDL3\/SDL_hints.h 707:9@
 sDL_HINT_FILE_DIALOG_DRIVER :: BG.ByteString
 sDL_HINT_FILE_DIALOG_DRIVER =
   BG.pack
@@ -1786,7 +1791,7 @@ sDL_HINT_FILE_DIALOG_DRIVER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_DISPLAY_USABLE_BOUNDS@, literal @\"SDL_DISPLAY_USABLE_BOUNDS\"@, defined at @SDL3\/SDL_hints.h 720:9@
+--     [C declaration]: @macro SDL_HINT_DISPLAY_USABLE_BOUNDS@, literal @\"SDL_DISPLAY_USABLE_BOUNDS\"@, defined at @SDL3\/SDL_hints.h 725:9@
 sDL_HINT_DISPLAY_USABLE_BOUNDS :: BG.ByteString
 sDL_HINT_DISPLAY_USABLE_BOUNDS =
   BG.pack
@@ -1829,7 +1834,7 @@ sDL_HINT_DISPLAY_USABLE_BOUNDS =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_INVALID_PARAM_CHECKS@, literal @\"SDL_INVALID_PARAM_CHECKS\"@, defined at @SDL3\/SDL_hints.h 735:9@
+--     [C declaration]: @macro SDL_HINT_INVALID_PARAM_CHECKS@, literal @\"SDL_INVALID_PARAM_CHECKS\"@, defined at @SDL3\/SDL_hints.h 740:9@
 sDL_HINT_INVALID_PARAM_CHECKS :: BG.ByteString
 sDL_HINT_INVALID_PARAM_CHECKS =
   BG.pack
@@ -1875,7 +1880,7 @@ sDL_HINT_INVALID_PARAM_CHECKS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_EMSCRIPTEN_ASYNCIFY@, literal @\"SDL_EMSCRIPTEN_ASYNCIFY\"@, defined at @SDL3\/SDL_hints.h 756:9@
+--     [C declaration]: @macro SDL_HINT_EMSCRIPTEN_ASYNCIFY@, literal @\"SDL_EMSCRIPTEN_ASYNCIFY\"@, defined at @SDL3\/SDL_hints.h 761:9@
 sDL_HINT_EMSCRIPTEN_ASYNCIFY :: BG.ByteString
 sDL_HINT_EMSCRIPTEN_ASYNCIFY =
   BG.pack
@@ -1912,7 +1917,7 @@ sDL_HINT_EMSCRIPTEN_ASYNCIFY =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_EMSCRIPTEN_CANVAS_SELECTOR@, literal @\"SDL_EMSCRIPTEN_CANVAS_SELECTOR\"@, defined at @SDL3\/SDL_hints.h 767:9@
+--     [C declaration]: @macro SDL_HINT_EMSCRIPTEN_CANVAS_SELECTOR@, literal @\"SDL_EMSCRIPTEN_CANVAS_SELECTOR\"@, defined at @SDL3\/SDL_hints.h 772:9@
 sDL_HINT_EMSCRIPTEN_CANVAS_SELECTOR :: BG.ByteString
 sDL_HINT_EMSCRIPTEN_CANVAS_SELECTOR =
   BG.pack
@@ -1970,7 +1975,7 @@ sDL_HINT_EMSCRIPTEN_CANVAS_SELECTOR =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT@, literal @\"SDL_EMSCRIPTEN_KEYBOARD_ELEMENT\"@, defined at @SDL3\/SDL_hints.h 788:9@
+--     [C declaration]: @macro SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT@, literal @\"SDL_EMSCRIPTEN_KEYBOARD_ELEMENT\"@, defined at @SDL3\/SDL_hints.h 793:9@
 sDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT :: BG.ByteString
 sDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT =
   BG.pack
@@ -2021,7 +2026,7 @@ sDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_ENABLE_SCREEN_KEYBOARD@, literal @\"SDL_ENABLE_SCREEN_KEYBOARD\"@, defined at @SDL3\/SDL_hints.h 805:9@
+--     [C declaration]: @macro SDL_HINT_ENABLE_SCREEN_KEYBOARD@, literal @\"SDL_ENABLE_SCREEN_KEYBOARD\"@, defined at @SDL3\/SDL_hints.h 810:9@
 sDL_HINT_ENABLE_SCREEN_KEYBOARD :: BG.ByteString
 sDL_HINT_ENABLE_SCREEN_KEYBOARD =
   BG.pack
@@ -2065,7 +2070,7 @@ sDL_HINT_ENABLE_SCREEN_KEYBOARD =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_EVDEV_DEVICES@, literal @\"SDL_EVDEV_DEVICES\"@, defined at @SDL3\/SDL_hints.h 822:9@
+--     [C declaration]: @macro SDL_HINT_EVDEV_DEVICES@, literal @\"SDL_EVDEV_DEVICES\"@, defined at @SDL3\/SDL_hints.h 827:9@
 sDL_HINT_EVDEV_DEVICES :: BG.ByteString
 sDL_HINT_EVDEV_DEVICES =
   BG.pack
@@ -2104,7 +2109,7 @@ sDL_HINT_EVDEV_DEVICES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_EVENT_LOGGING@, literal @\"SDL_EVENT_LOGGING\"@, defined at @SDL3\/SDL_hints.h 846:9@
+--     [C declaration]: @macro SDL_HINT_EVENT_LOGGING@, literal @\"SDL_EVENT_LOGGING\"@, defined at @SDL3\/SDL_hints.h 851:9@
 sDL_HINT_EVENT_LOGGING :: BG.ByteString
 sDL_HINT_EVENT_LOGGING =
   BG.pack
@@ -2141,7 +2146,7 @@ sDL_HINT_EVENT_LOGGING =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_FORCE_RAISEWINDOW@, literal @\"SDL_FORCE_RAISEWINDOW\"@, defined at @SDL3\/SDL_hints.h 866:9@
+--     [C declaration]: @macro SDL_HINT_FORCE_RAISEWINDOW@, literal @\"SDL_FORCE_RAISEWINDOW\"@, defined at @SDL3\/SDL_hints.h 871:9@
 sDL_HINT_FORCE_RAISEWINDOW :: BG.ByteString
 sDL_HINT_FORCE_RAISEWINDOW =
   BG.pack
@@ -2184,7 +2189,7 @@ sDL_HINT_FORCE_RAISEWINDOW =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_FRAMEBUFFER_ACCELERATION@, literal @\"SDL_FRAMEBUFFER_ACCELERATION\"@, defined at @SDL3\/SDL_hints.h 887:9@
+--     [C declaration]: @macro SDL_HINT_FRAMEBUFFER_ACCELERATION@, literal @\"SDL_FRAMEBUFFER_ACCELERATION\"@, defined at @SDL3\/SDL_hints.h 892:9@
 sDL_HINT_FRAMEBUFFER_ACCELERATION :: BG.ByteString
 sDL_HINT_FRAMEBUFFER_ACCELERATION =
   BG.pack
@@ -2228,7 +2233,7 @@ sDL_HINT_FRAMEBUFFER_ACCELERATION =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_GAMECONTROLLERCONFIG@, literal @\"SDL_GAMECONTROLLERCONFIG\"@, defined at @SDL3\/SDL_hints.h 902:9@
+--     [C declaration]: @macro SDL_HINT_GAMECONTROLLERCONFIG@, literal @\"SDL_GAMECONTROLLERCONFIG\"@, defined at @SDL3\/SDL_hints.h 907:9@
 sDL_HINT_GAMECONTROLLERCONFIG :: BG.ByteString
 sDL_HINT_GAMECONTROLLERCONFIG =
   BG.pack
@@ -2268,7 +2273,7 @@ sDL_HINT_GAMECONTROLLERCONFIG =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_GAMECONTROLLERCONFIG_FILE@, literal @\"SDL_GAMECONTROLLERCONFIG_FILE\"@, defined at @SDL3\/SDL_hints.h 918:9@
+--     [C declaration]: @macro SDL_HINT_GAMECONTROLLERCONFIG_FILE@, literal @\"SDL_GAMECONTROLLERCONFIG_FILE\"@, defined at @SDL3\/SDL_hints.h 923:9@
 sDL_HINT_GAMECONTROLLERCONFIG_FILE :: BG.ByteString
 sDL_HINT_GAMECONTROLLERCONFIG_FILE =
   BG.pack
@@ -2329,7 +2334,7 @@ sDL_HINT_GAMECONTROLLERCONFIG_FILE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_GAMECONTROLLERTYPE@, literal @\"SDL_GAMECONTROLLERTYPE\"@, defined at @SDL3\/SDL_hints.h 942:9@
+--     [C declaration]: @macro SDL_HINT_GAMECONTROLLERTYPE@, literal @\"SDL_GAMECONTROLLERTYPE\"@, defined at @SDL3\/SDL_hints.h 947:9@
 sDL_HINT_GAMECONTROLLERTYPE :: BG.ByteString
 sDL_HINT_GAMECONTROLLERTYPE =
   BG.pack
@@ -2369,7 +2374,7 @@ sDL_HINT_GAMECONTROLLERTYPE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES@, literal @\"SDL_GAMECONTROLLER_IGNORE_DEVICES\"@, defined at @SDL3\/SDL_hints.h 960:9@
+--     [C declaration]: @macro SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES@, literal @\"SDL_GAMECONTROLLER_IGNORE_DEVICES\"@, defined at @SDL3\/SDL_hints.h 965:9@
 sDL_HINT_GAMECONTROLLER_IGNORE_DEVICES :: BG.ByteString
 sDL_HINT_GAMECONTROLLER_IGNORE_DEVICES =
   BG.pack
@@ -2420,7 +2425,7 @@ sDL_HINT_GAMECONTROLLER_IGNORE_DEVICES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT@, literal @\"SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT\"@, defined at @SDL3\/SDL_hints.h 978:9@
+--     [C declaration]: @macro SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT@, literal @\"SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT\"@, defined at @SDL3\/SDL_hints.h 983:9@
 sDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT :: BG.ByteString
 sDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT =
   BG.pack
@@ -2484,7 +2489,7 @@ sDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_GAMECONTROLLER_SENSOR_FUSION@, literal @\"SDL_GAMECONTROLLER_SENSOR_FUSION\"@, defined at @SDL3\/SDL_hints.h 1001:9@
+--     [C declaration]: @macro SDL_HINT_GAMECONTROLLER_SENSOR_FUSION@, literal @\"SDL_GAMECONTROLLER_SENSOR_FUSION\"@, defined at @SDL3\/SDL_hints.h 1006:9@
 sDL_HINT_GAMECONTROLLER_SENSOR_FUSION :: BG.ByteString
 sDL_HINT_GAMECONTROLLER_SENSOR_FUSION =
   BG.pack
@@ -2530,7 +2535,7 @@ sDL_HINT_GAMECONTROLLER_SENSOR_FUSION =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT@, literal @\"SDL_GDK_TEXTINPUT_DEFAULT_TEXT\"@, defined at @SDL3\/SDL_hints.h 1013:9@
+--     [C declaration]: @macro SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT@, literal @\"SDL_GDK_TEXTINPUT_DEFAULT_TEXT\"@, defined at @SDL3\/SDL_hints.h 1018:9@
 sDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT :: BG.ByteString
 sDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT =
   BG.pack
@@ -2574,7 +2579,7 @@ sDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_GDK_TEXTINPUT_DESCRIPTION@, literal @\"SDL_GDK_TEXTINPUT_DESCRIPTION\"@, defined at @SDL3\/SDL_hints.h 1025:9@
+--     [C declaration]: @macro SDL_HINT_GDK_TEXTINPUT_DESCRIPTION@, literal @\"SDL_GDK_TEXTINPUT_DESCRIPTION\"@, defined at @SDL3\/SDL_hints.h 1030:9@
 sDL_HINT_GDK_TEXTINPUT_DESCRIPTION :: BG.ByteString
 sDL_HINT_GDK_TEXTINPUT_DESCRIPTION =
   BG.pack
@@ -2619,7 +2624,7 @@ sDL_HINT_GDK_TEXTINPUT_DESCRIPTION =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH@, literal @\"SDL_GDK_TEXTINPUT_MAX_LENGTH\"@, defined at @SDL3\/SDL_hints.h 1040:9@
+--     [C declaration]: @macro SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH@, literal @\"SDL_GDK_TEXTINPUT_MAX_LENGTH\"@, defined at @SDL3\/SDL_hints.h 1045:9@
 sDL_HINT_GDK_TEXTINPUT_MAX_LENGTH :: BG.ByteString
 sDL_HINT_GDK_TEXTINPUT_MAX_LENGTH =
   BG.pack
@@ -2663,7 +2668,7 @@ sDL_HINT_GDK_TEXTINPUT_MAX_LENGTH =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_GDK_TEXTINPUT_SCOPE@, literal @\"SDL_GDK_TEXTINPUT_SCOPE\"@, defined at @SDL3\/SDL_hints.h 1056:9@
+--     [C declaration]: @macro SDL_HINT_GDK_TEXTINPUT_SCOPE@, literal @\"SDL_GDK_TEXTINPUT_SCOPE\"@, defined at @SDL3\/SDL_hints.h 1061:9@
 sDL_HINT_GDK_TEXTINPUT_SCOPE :: BG.ByteString
 sDL_HINT_GDK_TEXTINPUT_SCOPE =
   BG.pack
@@ -2700,7 +2705,7 @@ sDL_HINT_GDK_TEXTINPUT_SCOPE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_GDK_TEXTINPUT_TITLE@, literal @\"SDL_GDK_TEXTINPUT_TITLE\"@, defined at @SDL3\/SDL_hints.h 1067:9@
+--     [C declaration]: @macro SDL_HINT_GDK_TEXTINPUT_TITLE@, literal @\"SDL_GDK_TEXTINPUT_TITLE\"@, defined at @SDL3\/SDL_hints.h 1072:9@
 sDL_HINT_GDK_TEXTINPUT_TITLE :: BG.ByteString
 sDL_HINT_GDK_TEXTINPUT_TITLE =
   BG.pack
@@ -2743,7 +2748,7 @@ sDL_HINT_GDK_TEXTINPUT_TITLE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_HIDAPI_LIBUSB@, literal @\"SDL_HIDAPI_LIBUSB\"@, defined at @SDL3\/SDL_hints.h 1085:9@
+--     [C declaration]: @macro SDL_HINT_HIDAPI_LIBUSB@, literal @\"SDL_HIDAPI_LIBUSB\"@, defined at @SDL3\/SDL_hints.h 1090:9@
 sDL_HINT_HIDAPI_LIBUSB :: BG.ByteString
 sDL_HINT_HIDAPI_LIBUSB =
   BG.pack
@@ -2778,7 +2783,7 @@ sDL_HINT_HIDAPI_LIBUSB =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_HIDAPI_LIBUSB_GAMECUBE@, literal @\"SDL_HIDAPI_LIBUSB_GAMECUBE\"@, defined at @SDL3\/SDL_hints.h 1100:9@
+--     [C declaration]: @macro SDL_HINT_HIDAPI_LIBUSB_GAMECUBE@, literal @\"SDL_HIDAPI_LIBUSB_GAMECUBE\"@, defined at @SDL3\/SDL_hints.h 1105:9@
 sDL_HINT_HIDAPI_LIBUSB_GAMECUBE :: BG.ByteString
 sDL_HINT_HIDAPI_LIBUSB_GAMECUBE =
   BG.pack
@@ -2824,7 +2829,7 @@ sDL_HINT_HIDAPI_LIBUSB_GAMECUBE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_HIDAPI_LIBUSB_WHITELIST@, literal @\"SDL_HIDAPI_LIBUSB_WHITELIST\"@, defined at @SDL3\/SDL_hints.h 1118:9@
+--     [C declaration]: @macro SDL_HINT_HIDAPI_LIBUSB_WHITELIST@, literal @\"SDL_HIDAPI_LIBUSB_WHITELIST\"@, defined at @SDL3\/SDL_hints.h 1123:9@
 sDL_HINT_HIDAPI_LIBUSB_WHITELIST :: BG.ByteString
 sDL_HINT_HIDAPI_LIBUSB_WHITELIST =
   BG.pack
@@ -2869,7 +2874,7 @@ sDL_HINT_HIDAPI_LIBUSB_WHITELIST =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_HIDAPI_UDEV@, literal @\"SDL_HIDAPI_UDEV\"@, defined at @SDL3\/SDL_hints.h 1132:9@
+--     [C declaration]: @macro SDL_HINT_HIDAPI_UDEV@, literal @\"SDL_HIDAPI_UDEV\"@, defined at @SDL3\/SDL_hints.h 1137:9@
 sDL_HINT_HIDAPI_UDEV :: BG.ByteString
 sDL_HINT_HIDAPI_UDEV =
   BG.pack [0x53, 0x44, 0x4C, 0x5F, 0x48, 0x49, 0x44, 0x41, 0x50, 0x49, 0x5F, 0x55, 0x44, 0x45, 0x56]
@@ -2882,7 +2887,7 @@ sDL_HINT_HIDAPI_UDEV =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_GPU_DRIVER@, literal @\"SDL_GPU_DRIVER\"@, defined at @SDL3\/SDL_hints.h 1146:9@
+--     [C declaration]: @macro SDL_HINT_GPU_DRIVER@, literal @\"SDL_GPU_DRIVER\"@, defined at @SDL3\/SDL_hints.h 1151:9@
 sDL_HINT_GPU_DRIVER :: BG.ByteString
 sDL_HINT_GPU_DRIVER =
   BG.pack [0x53, 0x44, 0x4C, 0x5F, 0x47, 0x50, 0x55, 0x5F, 0x44, 0x52, 0x49, 0x56, 0x45, 0x52]
@@ -2901,7 +2906,7 @@ sDL_HINT_GPU_DRIVER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS@, literal @\"SDL_HIDAPI_ENUMERATE_ONLY_CONTROLLERS\"@, defined at @SDL3\/SDL_hints.h 1165:9@
+--     [C declaration]: @macro SDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS@, literal @\"SDL_HIDAPI_ENUMERATE_ONLY_CONTROLLERS\"@, defined at @SDL3\/SDL_hints.h 1170:9@
 sDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS :: BG.ByteString
 sDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS =
   BG.pack
@@ -2956,7 +2961,7 @@ sDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_HIDAPI_IGNORE_DEVICES@, literal @\"SDL_HIDAPI_IGNORE_DEVICES\"@, defined at @SDL3\/SDL_hints.h 1182:9@
+--     [C declaration]: @macro SDL_HINT_HIDAPI_IGNORE_DEVICES@, literal @\"SDL_HIDAPI_IGNORE_DEVICES\"@, defined at @SDL3\/SDL_hints.h 1187:9@
 sDL_HINT_HIDAPI_IGNORE_DEVICES :: BG.ByteString
 sDL_HINT_HIDAPI_IGNORE_DEVICES =
   BG.pack
@@ -3003,7 +3008,7 @@ sDL_HINT_HIDAPI_IGNORE_DEVICES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_IME_IMPLEMENTED_UI@, literal @\"SDL_IME_IMPLEMENTED_UI\"@, defined at @SDL3\/SDL_hints.h 1205:9@
+--     [C declaration]: @macro SDL_HINT_IME_IMPLEMENTED_UI@, literal @\"SDL_IME_IMPLEMENTED_UI\"@, defined at @SDL3\/SDL_hints.h 1210:9@
 sDL_HINT_IME_IMPLEMENTED_UI :: BG.ByteString
 sDL_HINT_IME_IMPLEMENTED_UI =
   BG.pack
@@ -3045,7 +3050,7 @@ sDL_HINT_IME_IMPLEMENTED_UI =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_IOS_HIDE_HOME_INDICATOR@, literal @\"SDL_IOS_HIDE_HOME_INDICATOR\"@, defined at @SDL3\/SDL_hints.h 1224:9@
+--     [C declaration]: @macro SDL_HINT_IOS_HIDE_HOME_INDICATOR@, literal @\"SDL_IOS_HIDE_HOME_INDICATOR\"@, defined at @SDL3\/SDL_hints.h 1229:9@
 sDL_HINT_IOS_HIDE_HOME_INDICATOR :: BG.ByteString
 sDL_HINT_IOS_HIDE_HOME_INDICATOR =
   BG.pack
@@ -3090,7 +3095,7 @@ sDL_HINT_IOS_HIDE_HOME_INDICATOR =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS@, literal @\"SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS\"@, defined at @SDL3\/SDL_hints.h 1241:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS@, literal @\"SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS\"@, defined at @SDL3\/SDL_hints.h 1246:9@
 sDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS :: BG.ByteString
 sDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS =
   BG.pack
@@ -3144,7 +3149,7 @@ sDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_ARCADESTICK_DEVICES@, literal @\"SDL_JOYSTICK_ARCADESTICK_DEVICES\"@, defined at @SDL3\/SDL_hints.h 1258:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_ARCADESTICK_DEVICES@, literal @\"SDL_JOYSTICK_ARCADESTICK_DEVICES\"@, defined at @SDL3\/SDL_hints.h 1263:9@
 sDL_HINT_JOYSTICK_ARCADESTICK_DEVICES :: BG.ByteString
 sDL_HINT_JOYSTICK_ARCADESTICK_DEVICES =
   BG.pack
@@ -3196,7 +3201,7 @@ sDL_HINT_JOYSTICK_ARCADESTICK_DEVICES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED@, literal @\"SDL_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED\"@, defined at @SDL3\/SDL_hints.h 1279:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED@, literal @\"SDL_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED\"@, defined at @SDL3\/SDL_hints.h 1284:9@
 sDL_HINT_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED :: BG.ByteString
 sDL_HINT_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED =
   BG.pack
@@ -3255,7 +3260,7 @@ sDL_HINT_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_BLACKLIST_DEVICES@, literal @\"SDL_JOYSTICK_BLACKLIST_DEVICES\"@, defined at @SDL3\/SDL_hints.h 1297:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_BLACKLIST_DEVICES@, literal @\"SDL_JOYSTICK_BLACKLIST_DEVICES\"@, defined at @SDL3\/SDL_hints.h 1302:9@
 sDL_HINT_JOYSTICK_BLACKLIST_DEVICES :: BG.ByteString
 sDL_HINT_JOYSTICK_BLACKLIST_DEVICES =
   BG.pack
@@ -3305,7 +3310,7 @@ sDL_HINT_JOYSTICK_BLACKLIST_DEVICES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED@, literal @\"SDL_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED\"@, defined at @SDL3\/SDL_hints.h 1318:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED@, literal @\"SDL_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED\"@, defined at @SDL3\/SDL_hints.h 1323:9@
 sDL_HINT_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED :: BG.ByteString
 sDL_HINT_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED =
   BG.pack
@@ -3356,7 +3361,7 @@ sDL_HINT_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_DEVICE@, literal @\"SDL_JOYSTICK_DEVICE\"@, defined at @SDL3\/SDL_hints.h 1328:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_DEVICE@, literal @\"SDL_JOYSTICK_DEVICE\"@, defined at @SDL3\/SDL_hints.h 1333:9@
 sDL_HINT_JOYSTICK_DEVICE :: BG.ByteString
 sDL_HINT_JOYSTICK_DEVICE =
   BG.pack
@@ -3399,7 +3404,7 @@ sDL_HINT_JOYSTICK_DEVICE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_ENHANCED_REPORTS@, literal @\"SDL_JOYSTICK_ENHANCED_REPORTS\"@, defined at @SDL3\/SDL_hints.h 1353:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_ENHANCED_REPORTS@, literal @\"SDL_JOYSTICK_ENHANCED_REPORTS\"@, defined at @SDL3\/SDL_hints.h 1358:9@
 sDL_HINT_JOYSTICK_ENHANCED_REPORTS :: BG.ByteString
 sDL_HINT_JOYSTICK_ENHANCED_REPORTS =
   BG.pack
@@ -3434,7 +3439,7 @@ sDL_HINT_JOYSTICK_ENHANCED_REPORTS =
     , 0x53
     ]
 
--- | [C declaration]: @macro SDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES@, literal @\"SDL_JOYSTICK_FLIGHTSTICK_DEVICES\"@, defined at @SDL3\/SDL_hints.h 1370:9@
+-- | [C declaration]: @macro SDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES@, literal @\"SDL_JOYSTICK_FLIGHTSTICK_DEVICES\"@, defined at @SDL3\/SDL_hints.h 1375:9@
 sDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES :: BG.ByteString
 sDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES =
   BG.pack
@@ -3486,7 +3491,7 @@ sDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED@, literal @\"SDL_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED\"@, defined at @SDL3\/SDL_hints.h 1391:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED@, literal @\"SDL_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED\"@, defined at @SDL3\/SDL_hints.h 1396:9@
 sDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED :: BG.ByteString
 sDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED =
   BG.pack
@@ -3547,7 +3552,7 @@ sDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_GAMEINPUT@, literal @\"SDL_JOYSTICK_GAMEINPUT\"@, defined at @SDL3\/SDL_hints.h 1408:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_GAMEINPUT@, literal @\"SDL_JOYSTICK_GAMEINPUT\"@, defined at @SDL3\/SDL_hints.h 1413:9@
 sDL_HINT_JOYSTICK_GAMEINPUT :: BG.ByteString
 sDL_HINT_JOYSTICK_GAMEINPUT =
   BG.pack
@@ -3575,6 +3580,54 @@ sDL_HINT_JOYSTICK_GAMEINPUT =
     , 0x54
     ]
 
+-- | A variable controlling whether GameInput should be used for handling GIP devices that require raw report processing, but aren\'t supported by HIDRAW, such as Xbox One Guitars.
+--
+--     Note that this is only supported with GameInput 3 or newer.
+--
+--     The variable can be set to the following values:
+--
+--     * \"0\": GameInput is not used to handle raw GIP devices.
+--
+--     * \"1\": GameInput is used.
+--
+--     The default is \"1\" when using GameInput 3 or newer, and is \"0\" otherwise.
+--
+--     This hint should be set before SDL is initialized.
+--
+--     @since 3.4.4
+--
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_GAMEINPUT_RAW@, literal @\"SDL_JOYSTICK_GAMEINPUT_RAW\"@, defined at @SDL3\/SDL_hints.h 1433:9@
+sDL_HINT_JOYSTICK_GAMEINPUT_RAW :: BG.ByteString
+sDL_HINT_JOYSTICK_GAMEINPUT_RAW =
+  BG.pack
+    [ 0x53
+    , 0x44
+    , 0x4C
+    , 0x5F
+    , 0x4A
+    , 0x4F
+    , 0x59
+    , 0x53
+    , 0x54
+    , 0x49
+    , 0x43
+    , 0x4B
+    , 0x5F
+    , 0x47
+    , 0x41
+    , 0x4D
+    , 0x45
+    , 0x49
+    , 0x4E
+    , 0x50
+    , 0x55
+    , 0x54
+    , 0x5F
+    , 0x52
+    , 0x41
+    , 0x57
+    ]
+
 -- | A variable containing a list of devices known to have a GameCube form factor.
 --
 --     The format of the string is a comma separated list of USB VID\/PID pairs in hexadecimal form, e.g.
@@ -3587,7 +3640,7 @@ sDL_HINT_JOYSTICK_GAMEINPUT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_GAMECUBE_DEVICES@, literal @\"SDL_JOYSTICK_GAMECUBE_DEVICES\"@, defined at @SDL3\/SDL_hints.h 1426:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_GAMECUBE_DEVICES@, literal @\"SDL_JOYSTICK_GAMECUBE_DEVICES\"@, defined at @SDL3\/SDL_hints.h 1451:9@
 sDL_HINT_JOYSTICK_GAMECUBE_DEVICES :: BG.ByteString
 sDL_HINT_JOYSTICK_GAMECUBE_DEVICES =
   BG.pack
@@ -3636,7 +3689,7 @@ sDL_HINT_JOYSTICK_GAMECUBE_DEVICES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED@, literal @\"SDL_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED\"@, defined at @SDL3\/SDL_hints.h 1447:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED@, literal @\"SDL_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED\"@, defined at @SDL3\/SDL_hints.h 1472:9@
 sDL_HINT_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED :: BG.ByteString
 sDL_HINT_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED =
   BG.pack
@@ -3694,7 +3747,7 @@ sDL_HINT_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI@, literal @\"SDL_JOYSTICK_HIDAPI\"@, defined at @SDL3\/SDL_hints.h 1464:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI@, literal @\"SDL_JOYSTICK_HIDAPI\"@, defined at @SDL3\/SDL_hints.h 1489:9@
 sDL_HINT_JOYSTICK_HIDAPI :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI =
   BG.pack
@@ -3731,7 +3784,7 @@ sDL_HINT_JOYSTICK_HIDAPI =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS@, literal @\"SDL_JOYSTICK_HIDAPI_COMBINE_JOY_CONS\"@, defined at @SDL3\/SDL_hints.h 1481:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS@, literal @\"SDL_JOYSTICK_HIDAPI_COMBINE_JOY_CONS\"@, defined at @SDL3\/SDL_hints.h 1506:9@
 sDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS =
   BG.pack
@@ -3787,7 +3840,7 @@ sDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE@, literal @\"SDL_JOYSTICK_HIDAPI_GAMECUBE\"@, defined at @SDL3\/SDL_hints.h 1498:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE@, literal @\"SDL_JOYSTICK_HIDAPI_GAMECUBE\"@, defined at @SDL3\/SDL_hints.h 1523:9@
 sDL_HINT_JOYSTICK_HIDAPI_GAMECUBE :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_GAMECUBE =
   BG.pack
@@ -3835,7 +3888,7 @@ sDL_HINT_JOYSTICK_HIDAPI_GAMECUBE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE@, literal @\"SDL_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE\"@, defined at @SDL3\/SDL_hints.h 1519:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE@, literal @\"SDL_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE\"@, defined at @SDL3\/SDL_hints.h 1544:9@
 sDL_HINT_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE =
   BG.pack
@@ -3896,7 +3949,7 @@ sDL_HINT_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS@, literal @\"SDL_JOYSTICK_HIDAPI_JOY_CONS\"@, defined at @SDL3\/SDL_hints.h 1536:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS@, literal @\"SDL_JOYSTICK_HIDAPI_JOY_CONS\"@, defined at @SDL3\/SDL_hints.h 1561:9@
 sDL_HINT_JOYSTICK_HIDAPI_JOY_CONS :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_JOY_CONS =
   BG.pack
@@ -3944,7 +3997,7 @@ sDL_HINT_JOYSTICK_HIDAPI_JOY_CONS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED@, literal @\"SDL_JOYSTICK_HIDAPI_JOYCON_HOME_LED\"@, defined at @SDL3\/SDL_hints.h 1555:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED@, literal @\"SDL_JOYSTICK_HIDAPI_JOYCON_HOME_LED\"@, defined at @SDL3\/SDL_hints.h 1580:9@
 sDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED =
   BG.pack
@@ -3999,7 +4052,7 @@ sDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_LUNA@, literal @\"SDL_JOYSTICK_HIDAPI_LUNA\"@, defined at @SDL3\/SDL_hints.h 1572:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_LUNA@, literal @\"SDL_JOYSTICK_HIDAPI_LUNA\"@, defined at @SDL3\/SDL_hints.h 1597:9@
 sDL_HINT_JOYSTICK_HIDAPI_LUNA :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_LUNA =
   BG.pack
@@ -4043,7 +4096,7 @@ sDL_HINT_JOYSTICK_HIDAPI_LUNA =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC@, literal @\"SDL_JOYSTICK_HIDAPI_NINTENDO_CLASSIC\"@, defined at @SDL3\/SDL_hints.h 1589:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC@, literal @\"SDL_JOYSTICK_HIDAPI_NINTENDO_CLASSIC\"@, defined at @SDL3\/SDL_hints.h 1614:9@
 sDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC =
   BG.pack
@@ -4101,7 +4154,7 @@ sDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_PS3@, literal @\"SDL_JOYSTICK_HIDAPI_PS3\"@, defined at @SDL3\/SDL_hints.h 1611:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_PS3@, literal @\"SDL_JOYSTICK_HIDAPI_PS3\"@, defined at @SDL3\/SDL_hints.h 1636:9@
 sDL_HINT_JOYSTICK_HIDAPI_PS3 :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_PS3 =
   BG.pack
@@ -4144,7 +4197,7 @@ sDL_HINT_JOYSTICK_HIDAPI_PS3 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER@, literal @\"SDL_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER\"@, defined at @SDL3\/SDL_hints.h 1628:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER@, literal @\"SDL_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER\"@, defined at @SDL3\/SDL_hints.h 1653:9@
 sDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER =
   BG.pack
@@ -4202,7 +4255,7 @@ sDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_PS4@, literal @\"SDL_JOYSTICK_HIDAPI_PS4\"@, defined at @SDL3\/SDL_hints.h 1645:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_PS4@, literal @\"SDL_JOYSTICK_HIDAPI_PS4\"@, defined at @SDL3\/SDL_hints.h 1670:9@
 sDL_HINT_JOYSTICK_HIDAPI_PS4 :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_PS4 =
   BG.pack
@@ -4239,7 +4292,7 @@ sDL_HINT_JOYSTICK_HIDAPI_PS4 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL@, literal @\"SDL_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL\"@, defined at @SDL3\/SDL_hints.h 1660:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL@, literal @\"SDL_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL\"@, defined at @SDL3\/SDL_hints.h 1685:9@
 sDL_HINT_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL =
   BG.pack
@@ -4298,7 +4351,7 @@ sDL_HINT_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_PS5@, literal @\"SDL_JOYSTICK_HIDAPI_PS5\"@, defined at @SDL3\/SDL_hints.h 1677:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_PS5@, literal @\"SDL_JOYSTICK_HIDAPI_PS5\"@, defined at @SDL3\/SDL_hints.h 1702:9@
 sDL_HINT_JOYSTICK_HIDAPI_PS5 :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_PS5 =
   BG.pack
@@ -4337,7 +4390,7 @@ sDL_HINT_JOYSTICK_HIDAPI_PS5 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED@, literal @\"SDL_JOYSTICK_HIDAPI_PS5_PLAYER_LED\"@, defined at @SDL3\/SDL_hints.h 1690:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED@, literal @\"SDL_JOYSTICK_HIDAPI_PS5_PLAYER_LED\"@, defined at @SDL3\/SDL_hints.h 1715:9@
 sDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED =
   BG.pack
@@ -4391,7 +4444,7 @@ sDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_SHIELD@, literal @\"SDL_JOYSTICK_HIDAPI_SHIELD\"@, defined at @SDL3\/SDL_hints.h 1707:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_SHIELD@, literal @\"SDL_JOYSTICK_HIDAPI_SHIELD\"@, defined at @SDL3\/SDL_hints.h 1732:9@
 sDL_HINT_JOYSTICK_HIDAPI_SHIELD :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_SHIELD =
   BG.pack
@@ -4435,7 +4488,7 @@ sDL_HINT_JOYSTICK_HIDAPI_SHIELD =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_STADIA@, literal @\"SDL_JOYSTICK_HIDAPI_STADIA\"@, defined at @SDL3\/SDL_hints.h 1722:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_STADIA@, literal @\"SDL_JOYSTICK_HIDAPI_STADIA\"@, defined at @SDL3\/SDL_hints.h 1747:9@
 sDL_HINT_JOYSTICK_HIDAPI_STADIA :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_STADIA =
   BG.pack
@@ -4479,7 +4532,7 @@ sDL_HINT_JOYSTICK_HIDAPI_STADIA =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_STEAM@, literal @\"SDL_JOYSTICK_HIDAPI_STEAM\"@, defined at @SDL3\/SDL_hints.h 1739:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_STEAM@, literal @\"SDL_JOYSTICK_HIDAPI_STEAM\"@, defined at @SDL3\/SDL_hints.h 1764:9@
 sDL_HINT_JOYSTICK_HIDAPI_STEAM :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_STEAM =
   BG.pack
@@ -4524,7 +4577,7 @@ sDL_HINT_JOYSTICK_HIDAPI_STEAM =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_STEAM_HOME_LED@, literal @\"SDL_JOYSTICK_HIDAPI_STEAM_HOME_LED\"@, defined at @SDL3\/SDL_hints.h 1758:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_STEAM_HOME_LED@, literal @\"SDL_JOYSTICK_HIDAPI_STEAM_HOME_LED\"@, defined at @SDL3\/SDL_hints.h 1783:9@
 sDL_HINT_JOYSTICK_HIDAPI_STEAM_HOME_LED :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_STEAM_HOME_LED =
   BG.pack
@@ -4578,7 +4631,7 @@ sDL_HINT_JOYSTICK_HIDAPI_STEAM_HOME_LED =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_STEAMDECK@, literal @\"SDL_JOYSTICK_HIDAPI_STEAMDECK\"@, defined at @SDL3\/SDL_hints.h 1775:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_STEAMDECK@, literal @\"SDL_JOYSTICK_HIDAPI_STEAMDECK\"@, defined at @SDL3\/SDL_hints.h 1800:9@
 sDL_HINT_JOYSTICK_HIDAPI_STEAMDECK :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_STEAMDECK =
   BG.pack
@@ -4627,7 +4680,7 @@ sDL_HINT_JOYSTICK_HIDAPI_STEAMDECK =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_STEAM_HORI@, literal @\"SDL_JOYSTICK_HIDAPI_STEAM_HORI\"@, defined at @SDL3\/SDL_hints.h 1792:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_STEAM_HORI@, literal @\"SDL_JOYSTICK_HIDAPI_STEAM_HORI\"@, defined at @SDL3\/SDL_hints.h 1817:9@
 sDL_HINT_JOYSTICK_HIDAPI_STEAM_HORI :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_STEAM_HORI =
   BG.pack
@@ -4677,7 +4730,7 @@ sDL_HINT_JOYSTICK_HIDAPI_STEAM_HORI =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_LG4FF@, literal @\"SDL_JOYSTICK_HIDAPI_LG4FF\"@, defined at @SDL3\/SDL_hints.h 1809:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_LG4FF@, literal @\"SDL_JOYSTICK_HIDAPI_LG4FF\"@, defined at @SDL3\/SDL_hints.h 1834:9@
 sDL_HINT_JOYSTICK_HIDAPI_LG4FF :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_LG4FF =
   BG.pack
@@ -4722,7 +4775,7 @@ sDL_HINT_JOYSTICK_HIDAPI_LG4FF =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_8BITDO@, literal @\"SDL_JOYSTICK_HIDAPI_8BITDO\"@, defined at @SDL3\/SDL_hints.h 1826:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_8BITDO@, literal @\"SDL_JOYSTICK_HIDAPI_8BITDO\"@, defined at @SDL3\/SDL_hints.h 1851:9@
 sDL_HINT_JOYSTICK_HIDAPI_8BITDO :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_8BITDO =
   BG.pack
@@ -4770,7 +4823,7 @@ sDL_HINT_JOYSTICK_HIDAPI_8BITDO =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_SINPUT@, literal @\"SDL_JOYSTICK_HIDAPI_SINPUT\"@, defined at @SDL3\/SDL_hints.h 1845:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_SINPUT@, literal @\"SDL_JOYSTICK_HIDAPI_SINPUT\"@, defined at @SDL3\/SDL_hints.h 1870:9@
 sDL_HINT_JOYSTICK_HIDAPI_SINPUT :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_SINPUT =
   BG.pack
@@ -4816,7 +4869,7 @@ sDL_HINT_JOYSTICK_HIDAPI_SINPUT =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_ZUIKI@, literal @\"SDL_JOYSTICK_HIDAPI_ZUIKI\"@, defined at @SDL3\/SDL_hints.h 1862:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_ZUIKI@, literal @\"SDL_JOYSTICK_HIDAPI_ZUIKI\"@, defined at @SDL3\/SDL_hints.h 1887:9@
 sDL_HINT_JOYSTICK_HIDAPI_ZUIKI :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_ZUIKI =
   BG.pack
@@ -4861,7 +4914,7 @@ sDL_HINT_JOYSTICK_HIDAPI_ZUIKI =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI@, literal @\"SDL_JOYSTICK_HIDAPI_FLYDIGI\"@, defined at @SDL3\/SDL_hints.h 1879:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI@, literal @\"SDL_JOYSTICK_HIDAPI_FLYDIGI\"@, defined at @SDL3\/SDL_hints.h 1904:9@
 sDL_HINT_JOYSTICK_HIDAPI_FLYDIGI :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_FLYDIGI =
   BG.pack
@@ -4908,7 +4961,7 @@ sDL_HINT_JOYSTICK_HIDAPI_FLYDIGI =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_SWITCH@, literal @\"SDL_JOYSTICK_HIDAPI_SWITCH\"@, defined at @SDL3\/SDL_hints.h 1896:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_SWITCH@, literal @\"SDL_JOYSTICK_HIDAPI_SWITCH\"@, defined at @SDL3\/SDL_hints.h 1921:9@
 sDL_HINT_JOYSTICK_HIDAPI_SWITCH :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_SWITCH =
   BG.pack
@@ -4954,7 +5007,7 @@ sDL_HINT_JOYSTICK_HIDAPI_SWITCH =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED@, literal @\"SDL_JOYSTICK_HIDAPI_SWITCH_HOME_LED\"@, defined at @SDL3\/SDL_hints.h 1915:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED@, literal @\"SDL_JOYSTICK_HIDAPI_SWITCH_HOME_LED\"@, defined at @SDL3\/SDL_hints.h 1940:9@
 sDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED =
   BG.pack
@@ -5007,7 +5060,7 @@ sDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED@, literal @\"SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED\"@, defined at @SDL3\/SDL_hints.h 1930:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED@, literal @\"SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED\"@, defined at @SDL3\/SDL_hints.h 1955:9@
 sDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED =
   BG.pack
@@ -5064,7 +5117,7 @@ sDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_SWITCH2@, literal @\"SDL_JOYSTICK_HIDAPI_SWITCH2\"@, defined at @SDL3\/SDL_hints.h 1947:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_SWITCH2@, literal @\"SDL_JOYSTICK_HIDAPI_SWITCH2\"@, defined at @SDL3\/SDL_hints.h 1972:9@
 sDL_HINT_JOYSTICK_HIDAPI_SWITCH2 :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_SWITCH2 =
   BG.pack
@@ -5109,7 +5162,7 @@ sDL_HINT_JOYSTICK_HIDAPI_SWITCH2 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS@, literal @\"SDL_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS\"@, defined at @SDL3\/SDL_hints.h 1963:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS@, literal @\"SDL_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS\"@, defined at @SDL3\/SDL_hints.h 1988:9@
 sDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS =
   BG.pack
@@ -5166,7 +5219,7 @@ sDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_WII@, literal @\"SDL_JOYSTICK_HIDAPI_WII\"@, defined at @SDL3\/SDL_hints.h 1981:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_WII@, literal @\"SDL_JOYSTICK_HIDAPI_WII\"@, defined at @SDL3\/SDL_hints.h 2006:9@
 sDL_HINT_JOYSTICK_HIDAPI_WII :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_WII =
   BG.pack
@@ -5207,7 +5260,7 @@ sDL_HINT_JOYSTICK_HIDAPI_WII =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED@, literal @\"SDL_JOYSTICK_HIDAPI_WII_PLAYER_LED\"@, defined at @SDL3\/SDL_hints.h 1996:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED@, literal @\"SDL_JOYSTICK_HIDAPI_WII_PLAYER_LED\"@, defined at @SDL3\/SDL_hints.h 2021:9@
 sDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED =
   BG.pack
@@ -5261,7 +5314,7 @@ sDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_XBOX@, literal @\"SDL_JOYSTICK_HIDAPI_XBOX\"@, defined at @SDL3\/SDL_hints.h 2014:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_XBOX@, literal @\"SDL_JOYSTICK_HIDAPI_XBOX\"@, defined at @SDL3\/SDL_hints.h 2039:9@
 sDL_HINT_JOYSTICK_HIDAPI_XBOX :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_XBOX =
   BG.pack
@@ -5305,7 +5358,7 @@ sDL_HINT_JOYSTICK_HIDAPI_XBOX =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_XBOX_360@, literal @\"SDL_JOYSTICK_HIDAPI_XBOX_360\"@, defined at @SDL3\/SDL_hints.h 2031:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_XBOX_360@, literal @\"SDL_JOYSTICK_HIDAPI_XBOX_360\"@, defined at @SDL3\/SDL_hints.h 2056:9@
 sDL_HINT_JOYSTICK_HIDAPI_XBOX_360 :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_XBOX_360 =
   BG.pack
@@ -5351,7 +5404,7 @@ sDL_HINT_JOYSTICK_HIDAPI_XBOX_360 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED@, literal @\"SDL_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED\"@, defined at @SDL3\/SDL_hints.h 2046:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED@, literal @\"SDL_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED\"@, defined at @SDL3\/SDL_hints.h 2071:9@
 sDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED =
   BG.pack
@@ -5410,7 +5463,7 @@ sDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS@, literal @\"SDL_JOYSTICK_HIDAPI_XBOX_360_WIRELESS\"@, defined at @SDL3\/SDL_hints.h 2063:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS@, literal @\"SDL_JOYSTICK_HIDAPI_XBOX_360_WIRELESS\"@, defined at @SDL3\/SDL_hints.h 2088:9@
 sDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS =
   BG.pack
@@ -5467,7 +5520,7 @@ sDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE@, literal @\"SDL_JOYSTICK_HIDAPI_XBOX_ONE\"@, defined at @SDL3\/SDL_hints.h 2080:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE@, literal @\"SDL_JOYSTICK_HIDAPI_XBOX_ONE\"@, defined at @SDL3\/SDL_hints.h 2105:9@
 sDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE =
   BG.pack
@@ -5515,7 +5568,7 @@ sDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED@, literal @\"SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED\"@, defined at @SDL3\/SDL_hints.h 2099:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED@, literal @\"SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED\"@, defined at @SDL3\/SDL_hints.h 2124:9@
 sDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED =
   BG.pack
@@ -5572,7 +5625,7 @@ sDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_GIP@, literal @\"SDL_JOYSTICK_HIDAPI_GIP\"@, defined at @SDL3\/SDL_hints.h 2116:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_GIP@, literal @\"SDL_JOYSTICK_HIDAPI_GIP\"@, defined at @SDL3\/SDL_hints.h 2141:9@
 sDL_HINT_JOYSTICK_HIDAPI_GIP :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_GIP =
   BG.pack
@@ -5615,7 +5668,7 @@ sDL_HINT_JOYSTICK_HIDAPI_GIP =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA@, literal @\"SDL_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA\"@, defined at @SDL3\/SDL_hints.h 2134:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA@, literal @\"SDL_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA\"@, defined at @SDL3\/SDL_hints.h 2159:9@
 sDL_HINT_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA :: BG.ByteString
 sDL_HINT_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA =
   BG.pack
@@ -5675,7 +5728,7 @@ sDL_HINT_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_IOKIT@, literal @\"SDL_JOYSTICK_IOKIT\"@, defined at @SDL3\/SDL_hints.h 2149:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_IOKIT@, literal @\"SDL_JOYSTICK_IOKIT\"@, defined at @SDL3\/SDL_hints.h 2174:9@
 sDL_HINT_JOYSTICK_IOKIT :: BG.ByteString
 sDL_HINT_JOYSTICK_IOKIT =
   BG.pack
@@ -5711,7 +5764,7 @@ sDL_HINT_JOYSTICK_IOKIT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_LINUX_CLASSIC@, literal @\"SDL_JOYSTICK_LINUX_CLASSIC\"@, defined at @SDL3\/SDL_hints.h 2164:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_LINUX_CLASSIC@, literal @\"SDL_JOYSTICK_LINUX_CLASSIC\"@, defined at @SDL3\/SDL_hints.h 2189:9@
 sDL_HINT_JOYSTICK_LINUX_CLASSIC :: BG.ByteString
 sDL_HINT_JOYSTICK_LINUX_CLASSIC =
   BG.pack
@@ -5755,7 +5808,7 @@ sDL_HINT_JOYSTICK_LINUX_CLASSIC =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_LINUX_DEADZONES@, literal @\"SDL_JOYSTICK_LINUX_DEADZONES\"@, defined at @SDL3\/SDL_hints.h 2179:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_LINUX_DEADZONES@, literal @\"SDL_JOYSTICK_LINUX_DEADZONES\"@, defined at @SDL3\/SDL_hints.h 2204:9@
 sDL_HINT_JOYSTICK_LINUX_DEADZONES :: BG.ByteString
 sDL_HINT_JOYSTICK_LINUX_DEADZONES =
   BG.pack
@@ -5801,7 +5854,7 @@ sDL_HINT_JOYSTICK_LINUX_DEADZONES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_LINUX_DIGITAL_HATS@, literal @\"SDL_JOYSTICK_LINUX_DIGITAL_HATS\"@, defined at @SDL3\/SDL_hints.h 2197:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_LINUX_DIGITAL_HATS@, literal @\"SDL_JOYSTICK_LINUX_DIGITAL_HATS\"@, defined at @SDL3\/SDL_hints.h 2222:9@
 sDL_HINT_JOYSTICK_LINUX_DIGITAL_HATS :: BG.ByteString
 sDL_HINT_JOYSTICK_LINUX_DIGITAL_HATS =
   BG.pack
@@ -5850,7 +5903,7 @@ sDL_HINT_JOYSTICK_LINUX_DIGITAL_HATS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_LINUX_HAT_DEADZONES@, literal @\"SDL_JOYSTICK_LINUX_HAT_DEADZONES\"@, defined at @SDL3\/SDL_hints.h 2213:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_LINUX_HAT_DEADZONES@, literal @\"SDL_JOYSTICK_LINUX_HAT_DEADZONES\"@, defined at @SDL3\/SDL_hints.h 2238:9@
 sDL_HINT_JOYSTICK_LINUX_HAT_DEADZONES :: BG.ByteString
 sDL_HINT_JOYSTICK_LINUX_HAT_DEADZONES =
   BG.pack
@@ -5900,7 +5953,7 @@ sDL_HINT_JOYSTICK_LINUX_HAT_DEADZONES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_MFI@, literal @\"SDL_JOYSTICK_MFI\"@, defined at @SDL3\/SDL_hints.h 2228:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_MFI@, literal @\"SDL_JOYSTICK_MFI\"@, defined at @SDL3\/SDL_hints.h 2253:9@
 sDL_HINT_JOYSTICK_MFI :: BG.ByteString
 sDL_HINT_JOYSTICK_MFI =
   BG.pack
@@ -5918,7 +5971,7 @@ sDL_HINT_JOYSTICK_MFI =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_RAWINPUT@, literal @\"SDL_JOYSTICK_RAWINPUT\"@, defined at @SDL3\/SDL_hints.h 2243:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_RAWINPUT@, literal @\"SDL_JOYSTICK_RAWINPUT\"@, defined at @SDL3\/SDL_hints.h 2268:9@
 sDL_HINT_JOYSTICK_RAWINPUT :: BG.ByteString
 sDL_HINT_JOYSTICK_RAWINPUT =
   BG.pack
@@ -5957,7 +6010,7 @@ sDL_HINT_JOYSTICK_RAWINPUT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT@, literal @\"SDL_JOYSTICK_RAWINPUT_CORRELATE_XINPUT\"@, defined at @SDL3\/SDL_hints.h 2260:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT@, literal @\"SDL_JOYSTICK_RAWINPUT_CORRELATE_XINPUT\"@, defined at @SDL3\/SDL_hints.h 2285:9@
 sDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT :: BG.ByteString
 sDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT =
   BG.pack
@@ -6013,7 +6066,7 @@ sDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_ROG_CHAKRAM@, literal @\"SDL_JOYSTICK_ROG_CHAKRAM\"@, defined at @SDL3\/SDL_hints.h 2275:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_ROG_CHAKRAM@, literal @\"SDL_JOYSTICK_ROG_CHAKRAM\"@, defined at @SDL3\/SDL_hints.h 2300:9@
 sDL_HINT_JOYSTICK_ROG_CHAKRAM :: BG.ByteString
 sDL_HINT_JOYSTICK_ROG_CHAKRAM =
   BG.pack
@@ -6055,7 +6108,7 @@ sDL_HINT_JOYSTICK_ROG_CHAKRAM =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_THREAD@, literal @\"SDL_JOYSTICK_THREAD\"@, defined at @SDL3\/SDL_hints.h 2290:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_THREAD@, literal @\"SDL_JOYSTICK_THREAD\"@, defined at @SDL3\/SDL_hints.h 2315:9@
 sDL_HINT_JOYSTICK_THREAD :: BG.ByteString
 sDL_HINT_JOYSTICK_THREAD =
   BG.pack
@@ -6092,7 +6145,7 @@ sDL_HINT_JOYSTICK_THREAD =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_THROTTLE_DEVICES@, literal @\"SDL_JOYSTICK_THROTTLE_DEVICES\"@, defined at @SDL3\/SDL_hints.h 2307:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_THROTTLE_DEVICES@, literal @\"SDL_JOYSTICK_THROTTLE_DEVICES\"@, defined at @SDL3\/SDL_hints.h 2332:9@
 sDL_HINT_JOYSTICK_THROTTLE_DEVICES :: BG.ByteString
 sDL_HINT_JOYSTICK_THROTTLE_DEVICES =
   BG.pack
@@ -6141,7 +6194,7 @@ sDL_HINT_JOYSTICK_THROTTLE_DEVICES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_THROTTLE_DEVICES_EXCLUDED@, literal @\"SDL_JOYSTICK_THROTTLE_DEVICES_EXCLUDED\"@, defined at @SDL3\/SDL_hints.h 2328:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_THROTTLE_DEVICES_EXCLUDED@, literal @\"SDL_JOYSTICK_THROTTLE_DEVICES_EXCLUDED\"@, defined at @SDL3\/SDL_hints.h 2353:9@
 sDL_HINT_JOYSTICK_THROTTLE_DEVICES_EXCLUDED :: BG.ByteString
 sDL_HINT_JOYSTICK_THROTTLE_DEVICES_EXCLUDED =
   BG.pack
@@ -6197,7 +6250,7 @@ sDL_HINT_JOYSTICK_THROTTLE_DEVICES_EXCLUDED =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_WGI@, literal @\"SDL_JOYSTICK_WGI\"@, defined at @SDL3\/SDL_hints.h 2343:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_WGI@, literal @\"SDL_JOYSTICK_WGI\"@, defined at @SDL3\/SDL_hints.h 2368:9@
 sDL_HINT_JOYSTICK_WGI :: BG.ByteString
 sDL_HINT_JOYSTICK_WGI =
   BG.pack
@@ -6215,7 +6268,7 @@ sDL_HINT_JOYSTICK_WGI =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_WHEEL_DEVICES@, literal @\"SDL_JOYSTICK_WHEEL_DEVICES\"@, defined at @SDL3\/SDL_hints.h 2360:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_WHEEL_DEVICES@, literal @\"SDL_JOYSTICK_WHEEL_DEVICES\"@, defined at @SDL3\/SDL_hints.h 2385:9@
 sDL_HINT_JOYSTICK_WHEEL_DEVICES :: BG.ByteString
 sDL_HINT_JOYSTICK_WHEEL_DEVICES =
   BG.pack
@@ -6261,7 +6314,7 @@ sDL_HINT_JOYSTICK_WHEEL_DEVICES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_WHEEL_DEVICES_EXCLUDED@, literal @\"SDL_JOYSTICK_WHEEL_DEVICES_EXCLUDED\"@, defined at @SDL3\/SDL_hints.h 2381:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_WHEEL_DEVICES_EXCLUDED@, literal @\"SDL_JOYSTICK_WHEEL_DEVICES_EXCLUDED\"@, defined at @SDL3\/SDL_hints.h 2406:9@
 sDL_HINT_JOYSTICK_WHEEL_DEVICES_EXCLUDED :: BG.ByteString
 sDL_HINT_JOYSTICK_WHEEL_DEVICES_EXCLUDED =
   BG.pack
@@ -6314,7 +6367,7 @@ sDL_HINT_JOYSTICK_WHEEL_DEVICES_EXCLUDED =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES@, literal @\"SDL_JOYSTICK_ZERO_CENTERED_DEVICES\"@, defined at @SDL3\/SDL_hints.h 2399:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES@, literal @\"SDL_JOYSTICK_ZERO_CENTERED_DEVICES\"@, defined at @SDL3\/SDL_hints.h 2424:9@
 sDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES :: BG.ByteString
 sDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES =
   BG.pack
@@ -6368,7 +6421,7 @@ sDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES =
 --
 --     @since 3.2.5
 --
---     [C declaration]: @macro SDL_HINT_JOYSTICK_HAPTIC_AXES@, literal @\"SDL_JOYSTICK_HAPTIC_AXES\"@, defined at @SDL3\/SDL_hints.h 2421:9@
+--     [C declaration]: @macro SDL_HINT_JOYSTICK_HAPTIC_AXES@, literal @\"SDL_JOYSTICK_HAPTIC_AXES\"@, defined at @SDL3\/SDL_hints.h 2446:9@
 sDL_HINT_JOYSTICK_HAPTIC_AXES :: BG.ByteString
 sDL_HINT_JOYSTICK_HAPTIC_AXES =
   BG.pack
@@ -6420,7 +6473,7 @@ sDL_HINT_JOYSTICK_HAPTIC_AXES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_KEYCODE_OPTIONS@, literal @\"SDL_KEYCODE_OPTIONS\"@, defined at @SDL3\/SDL_hints.h 2455:9@
+--     [C declaration]: @macro SDL_HINT_KEYCODE_OPTIONS@, literal @\"SDL_KEYCODE_OPTIONS\"@, defined at @SDL3\/SDL_hints.h 2480:9@
 sDL_HINT_KEYCODE_OPTIONS :: BG.ByteString
 sDL_HINT_KEYCODE_OPTIONS =
   BG.pack
@@ -6453,7 +6506,7 @@ sDL_HINT_KEYCODE_OPTIONS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_KMSDRM_DEVICE_INDEX@, literal @\"SDL_KMSDRM_DEVICE_INDEX\"@, defined at @SDL3\/SDL_hints.h 2469:9@
+--     [C declaration]: @macro SDL_HINT_KMSDRM_DEVICE_INDEX@, literal @\"SDL_KMSDRM_DEVICE_INDEX\"@, defined at @SDL3\/SDL_hints.h 2494:9@
 sDL_HINT_KMSDRM_DEVICE_INDEX :: BG.ByteString
 sDL_HINT_KMSDRM_DEVICE_INDEX =
   BG.pack
@@ -6498,7 +6551,7 @@ sDL_HINT_KMSDRM_DEVICE_INDEX =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER@, literal @\"SDL_KMSDRM_REQUIRE_DRM_MASTER\"@, defined at @SDL3\/SDL_hints.h 2497:9@
+--     [C declaration]: @macro SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER@, literal @\"SDL_KMSDRM_REQUIRE_DRM_MASTER\"@, defined at @SDL3\/SDL_hints.h 2522:9@
 sDL_HINT_KMSDRM_REQUIRE_DRM_MASTER :: BG.ByteString
 sDL_HINT_KMSDRM_REQUIRE_DRM_MASTER =
   BG.pack
@@ -6549,7 +6602,7 @@ sDL_HINT_KMSDRM_REQUIRE_DRM_MASTER =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_KMSDRM_ATOMIC@, literal @\"SDL_KMSDRM_ATOMIC\"@, defined at @SDL3\/SDL_hints.h 2518:9@
+--     [C declaration]: @macro SDL_HINT_KMSDRM_ATOMIC@, literal @\"SDL_KMSDRM_ATOMIC\"@, defined at @SDL3\/SDL_hints.h 2543:9@
 sDL_HINT_KMSDRM_ATOMIC :: BG.ByteString
 sDL_HINT_KMSDRM_ATOMIC =
   BG.pack
@@ -6594,7 +6647,7 @@ sDL_HINT_KMSDRM_ATOMIC =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_LOGGING@, literal @\"SDL_LOGGING\"@, defined at @SDL3\/SDL_hints.h 2549:9@
+--     [C declaration]: @macro SDL_HINT_LOGGING@, literal @\"SDL_LOGGING\"@, defined at @SDL3\/SDL_hints.h 2574:9@
 sDL_HINT_LOGGING :: BG.ByteString
 sDL_HINT_LOGGING =
   BG.pack [0x53, 0x44, 0x4C, 0x5F, 0x4C, 0x4F, 0x47, 0x47, 0x49, 0x4E, 0x47]
@@ -6611,7 +6664,7 @@ sDL_HINT_LOGGING =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MAC_BACKGROUND_APP@, literal @\"SDL_MAC_BACKGROUND_APP\"@, defined at @SDL3\/SDL_hints.h 2565:9@
+--     [C declaration]: @macro SDL_HINT_MAC_BACKGROUND_APP@, literal @\"SDL_MAC_BACKGROUND_APP\"@, defined at @SDL3\/SDL_hints.h 2590:9@
 sDL_HINT_MAC_BACKGROUND_APP :: BG.ByteString
 sDL_HINT_MAC_BACKGROUND_APP =
   BG.pack
@@ -6651,7 +6704,7 @@ sDL_HINT_MAC_BACKGROUND_APP =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK@, literal @\"SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK\"@, defined at @SDL3\/SDL_hints.h 2581:9@
+--     [C declaration]: @macro SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK@, literal @\"SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK\"@, defined at @SDL3\/SDL_hints.h 2606:9@
 sDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK :: BG.ByteString
 sDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK =
   BG.pack
@@ -6709,7 +6762,7 @@ sDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH@, literal @\"SDL_MAC_OPENGL_ASYNC_DISPATCH\"@, defined at @SDL3\/SDL_hints.h 2604:9@
+--     [C declaration]: @macro SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH@, literal @\"SDL_MAC_OPENGL_ASYNC_DISPATCH\"@, defined at @SDL3\/SDL_hints.h 2629:9@
 sDL_HINT_MAC_OPENGL_ASYNC_DISPATCH :: BG.ByteString
 sDL_HINT_MAC_OPENGL_ASYNC_DISPATCH =
   BG.pack
@@ -6762,7 +6815,7 @@ sDL_HINT_MAC_OPENGL_ASYNC_DISPATCH =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MAC_OPTION_AS_ALT@, literal @\"SDL_MAC_OPTION_AS_ALT\"@, defined at @SDL3\/SDL_hints.h 2629:9@
+--     [C declaration]: @macro SDL_HINT_MAC_OPTION_AS_ALT@, literal @\"SDL_MAC_OPTION_AS_ALT\"@, defined at @SDL3\/SDL_hints.h 2654:9@
 sDL_HINT_MAC_OPTION_AS_ALT :: BG.ByteString
 sDL_HINT_MAC_OPTION_AS_ALT =
   BG.pack
@@ -6801,7 +6854,7 @@ sDL_HINT_MAC_OPTION_AS_ALT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MAC_SCROLL_MOMENTUM@, literal @\"SDL_MAC_SCROLL_MOMENTUM\"@, defined at @SDL3\/SDL_hints.h 2644:9@
+--     [C declaration]: @macro SDL_HINT_MAC_SCROLL_MOMENTUM@, literal @\"SDL_MAC_SCROLL_MOMENTUM\"@, defined at @SDL3\/SDL_hints.h 2669:9@
 sDL_HINT_MAC_SCROLL_MOMENTUM :: BG.ByteString
 sDL_HINT_MAC_SCROLL_MOMENTUM =
   BG.pack
@@ -6842,7 +6895,7 @@ sDL_HINT_MAC_SCROLL_MOMENTUM =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_MAC_PRESS_AND_HOLD@, literal @\"SDL_MAC_PRESS_AND_HOLD\"@, defined at @SDL3\/SDL_hints.h 2659:9@
+--     [C declaration]: @macro SDL_HINT_MAC_PRESS_AND_HOLD@, literal @\"SDL_MAC_PRESS_AND_HOLD\"@, defined at @SDL3\/SDL_hints.h 2684:9@
 sDL_HINT_MAC_PRESS_AND_HOLD :: BG.ByteString
 sDL_HINT_MAC_PRESS_AND_HOLD =
   BG.pack
@@ -6886,7 +6939,7 @@ sDL_HINT_MAC_PRESS_AND_HOLD =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MAIN_CALLBACK_RATE@, literal @\"SDL_MAIN_CALLBACK_RATE\"@, defined at @SDL3\/SDL_hints.h 2689:9@
+--     [C declaration]: @macro SDL_HINT_MAIN_CALLBACK_RATE@, literal @\"SDL_MAIN_CALLBACK_RATE\"@, defined at @SDL3\/SDL_hints.h 2714:9@
 sDL_HINT_MAIN_CALLBACK_RATE :: BG.ByteString
 sDL_HINT_MAIN_CALLBACK_RATE =
   BG.pack
@@ -6928,7 +6981,7 @@ sDL_HINT_MAIN_CALLBACK_RATE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MOUSE_AUTO_CAPTURE@, literal @\"SDL_MOUSE_AUTO_CAPTURE\"@, defined at @SDL3\/SDL_hints.h 2708:9@
+--     [C declaration]: @macro SDL_HINT_MOUSE_AUTO_CAPTURE@, literal @\"SDL_MOUSE_AUTO_CAPTURE\"@, defined at @SDL3\/SDL_hints.h 2733:9@
 sDL_HINT_MOUSE_AUTO_CAPTURE :: BG.ByteString
 sDL_HINT_MOUSE_AUTO_CAPTURE =
   BG.pack
@@ -6962,7 +7015,7 @@ sDL_HINT_MOUSE_AUTO_CAPTURE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS@, literal @\"SDL_MOUSE_DOUBLE_CLICK_RADIUS\"@, defined at @SDL3\/SDL_hints.h 2717:9@
+--     [C declaration]: @macro SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS@, literal @\"SDL_MOUSE_DOUBLE_CLICK_RADIUS\"@, defined at @SDL3\/SDL_hints.h 2742:9@
 sDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS :: BG.ByteString
 sDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS =
   BG.pack
@@ -7003,7 +7056,7 @@ sDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MOUSE_DOUBLE_CLICK_TIME@, literal @\"SDL_MOUSE_DOUBLE_CLICK_TIME\"@, defined at @SDL3\/SDL_hints.h 2726:9@
+--     [C declaration]: @macro SDL_HINT_MOUSE_DOUBLE_CLICK_TIME@, literal @\"SDL_MOUSE_DOUBLE_CLICK_TIME\"@, defined at @SDL3\/SDL_hints.h 2751:9@
 sDL_HINT_MOUSE_DOUBLE_CLICK_TIME :: BG.ByteString
 sDL_HINT_MOUSE_DOUBLE_CLICK_TIME =
   BG.pack
@@ -7044,7 +7097,7 @@ sDL_HINT_MOUSE_DOUBLE_CLICK_TIME =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR@, literal @\"SDL_MOUSE_DEFAULT_SYSTEM_CURSOR\"@, defined at @SDL3\/SDL_hints.h 2738:9@
+--     [C declaration]: @macro SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR@, literal @\"SDL_MOUSE_DEFAULT_SYSTEM_CURSOR\"@, defined at @SDL3\/SDL_hints.h 2763:9@
 sDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR :: BG.ByteString
 sDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR =
   BG.pack
@@ -7087,13 +7140,13 @@ sDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR =
 --
 --     * \"0\": Cursors will not change size based on the display content scale. (default)
 --
---     * \"1\": Cursors will automatically match the display content scale (e.g. a 2x sized cursor will be used when the window is on a monitor with 200% scale). This is currently implemented on Windows and Wayland.
+--     * \"1\": Cursors will automatically match the display content scale (e.g. a 2x sized cursor will be used when the window is on a monitor with 200% scale). This is currently implemented on Windows.
 --
 --     This hint needs to be set before creating cursors.
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_MOUSE_DPI_SCALE_CURSORS@, literal @\"SDL_MOUSE_DPI_SCALE_CURSORS\"@, defined at @SDL3\/SDL_hints.h 2756:9@
+--     [C declaration]: @macro SDL_HINT_MOUSE_DPI_SCALE_CURSORS@, literal @\"SDL_MOUSE_DPI_SCALE_CURSORS\"@, defined at @SDL3\/SDL_hints.h 2781:9@
 sDL_HINT_MOUSE_DPI_SCALE_CURSORS :: BG.ByteString
 sDL_HINT_MOUSE_DPI_SCALE_CURSORS =
   BG.pack
@@ -7146,7 +7199,7 @@ sDL_HINT_MOUSE_DPI_SCALE_CURSORS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE@, literal @\"SDL_MOUSE_EMULATE_WARP_WITH_RELATIVE\"@, defined at @SDL3\/SDL_hints.h 2788:9@
+--     [C declaration]: @macro SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE@, literal @\"SDL_MOUSE_EMULATE_WARP_WITH_RELATIVE\"@, defined at @SDL3\/SDL_hints.h 2813:9@
 sDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE :: BG.ByteString
 sDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE =
   BG.pack
@@ -7200,7 +7253,7 @@ sDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH@, literal @\"SDL_MOUSE_FOCUS_CLICKTHROUGH\"@, defined at @SDL3\/SDL_hints.h 2802:9@
+--     [C declaration]: @macro SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH@, literal @\"SDL_MOUSE_FOCUS_CLICKTHROUGH\"@, defined at @SDL3\/SDL_hints.h 2827:9@
 sDL_HINT_MOUSE_FOCUS_CLICKTHROUGH :: BG.ByteString
 sDL_HINT_MOUSE_FOCUS_CLICKTHROUGH =
   BG.pack
@@ -7240,7 +7293,7 @@ sDL_HINT_MOUSE_FOCUS_CLICKTHROUGH =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MOUSE_NORMAL_SPEED_SCALE@, literal @\"SDL_MOUSE_NORMAL_SPEED_SCALE\"@, defined at @SDL3\/SDL_hints.h 2812:9@
+--     [C declaration]: @macro SDL_HINT_MOUSE_NORMAL_SPEED_SCALE@, literal @\"SDL_MOUSE_NORMAL_SPEED_SCALE\"@, defined at @SDL3\/SDL_hints.h 2837:9@
 sDL_HINT_MOUSE_NORMAL_SPEED_SCALE :: BG.ByteString
 sDL_HINT_MOUSE_NORMAL_SPEED_SCALE =
   BG.pack
@@ -7288,7 +7341,7 @@ sDL_HINT_MOUSE_NORMAL_SPEED_SCALE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MOUSE_RELATIVE_MODE_CENTER@, literal @\"SDL_MOUSE_RELATIVE_MODE_CENTER\"@, defined at @SDL3\/SDL_hints.h 2833:9@
+--     [C declaration]: @macro SDL_HINT_MOUSE_RELATIVE_MODE_CENTER@, literal @\"SDL_MOUSE_RELATIVE_MODE_CENTER\"@, defined at @SDL3\/SDL_hints.h 2858:9@
 sDL_HINT_MOUSE_RELATIVE_MODE_CENTER :: BG.ByteString
 sDL_HINT_MOUSE_RELATIVE_MODE_CENTER =
   BG.pack
@@ -7330,7 +7383,7 @@ sDL_HINT_MOUSE_RELATIVE_MODE_CENTER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE@, literal @\"SDL_MOUSE_RELATIVE_SPEED_SCALE\"@, defined at @SDL3\/SDL_hints.h 2843:9@
+--     [C declaration]: @macro SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE@, literal @\"SDL_MOUSE_RELATIVE_SPEED_SCALE\"@, defined at @SDL3\/SDL_hints.h 2868:9@
 sDL_HINT_MOUSE_RELATIVE_SPEED_SCALE :: BG.ByteString
 sDL_HINT_MOUSE_RELATIVE_SPEED_SCALE =
   BG.pack
@@ -7380,7 +7433,7 @@ sDL_HINT_MOUSE_RELATIVE_SPEED_SCALE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE@, literal @\"SDL_MOUSE_RELATIVE_SYSTEM_SCALE\"@, defined at @SDL3\/SDL_hints.h 2862:9@
+--     [C declaration]: @macro SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE@, literal @\"SDL_MOUSE_RELATIVE_SYSTEM_SCALE\"@, defined at @SDL3\/SDL_hints.h 2887:9@
 sDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE :: BG.ByteString
 sDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE =
   BG.pack
@@ -7431,7 +7484,7 @@ sDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MOUSE_RELATIVE_WARP_MOTION@, literal @\"SDL_MOUSE_RELATIVE_WARP_MOTION\"@, defined at @SDL3\/SDL_hints.h 2881:9@
+--     [C declaration]: @macro SDL_HINT_MOUSE_RELATIVE_WARP_MOTION@, literal @\"SDL_MOUSE_RELATIVE_WARP_MOTION\"@, defined at @SDL3\/SDL_hints.h 2906:9@
 sDL_HINT_MOUSE_RELATIVE_WARP_MOTION :: BG.ByteString
 sDL_HINT_MOUSE_RELATIVE_WARP_MOTION =
   BG.pack
@@ -7481,7 +7534,7 @@ sDL_HINT_MOUSE_RELATIVE_WARP_MOTION =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE@, literal @\"SDL_MOUSE_RELATIVE_CURSOR_VISIBLE\"@, defined at @SDL3\/SDL_hints.h 2900:9@
+--     [C declaration]: @macro SDL_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE@, literal @\"SDL_MOUSE_RELATIVE_CURSOR_VISIBLE\"@, defined at @SDL3\/SDL_hints.h 2925:9@
 sDL_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE :: BG.ByteString
 sDL_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE =
   BG.pack
@@ -7532,7 +7585,7 @@ sDL_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MOUSE_TOUCH_EVENTS@, literal @\"SDL_MOUSE_TOUCH_EVENTS\"@, defined at @SDL3\/SDL_hints.h 2917:9@
+--     [C declaration]: @macro SDL_HINT_MOUSE_TOUCH_EVENTS@, literal @\"SDL_MOUSE_TOUCH_EVENTS\"@, defined at @SDL3\/SDL_hints.h 2942:9@
 sDL_HINT_MOUSE_TOUCH_EVENTS :: BG.ByteString
 sDL_HINT_MOUSE_TOUCH_EVENTS =
   BG.pack
@@ -7574,7 +7627,7 @@ sDL_HINT_MOUSE_TOUCH_EVENTS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_MUTE_CONSOLE_KEYBOARD@, literal @\"SDL_MUTE_CONSOLE_KEYBOARD\"@, defined at @SDL3\/SDL_hints.h 2935:9@
+--     [C declaration]: @macro SDL_HINT_MUTE_CONSOLE_KEYBOARD@, literal @\"SDL_MUTE_CONSOLE_KEYBOARD\"@, defined at @SDL3\/SDL_hints.h 2960:9@
 sDL_HINT_MUTE_CONSOLE_KEYBOARD :: BG.ByteString
 sDL_HINT_MUTE_CONSOLE_KEYBOARD =
   BG.pack
@@ -7617,7 +7670,7 @@ sDL_HINT_MUTE_CONSOLE_KEYBOARD =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_NO_SIGNAL_HANDLERS@, literal @\"SDL_NO_SIGNAL_HANDLERS\"@, defined at @SDL3\/SDL_hints.h 2950:9@
+--     [C declaration]: @macro SDL_HINT_NO_SIGNAL_HANDLERS@, literal @\"SDL_NO_SIGNAL_HANDLERS\"@, defined at @SDL3\/SDL_hints.h 2975:9@
 sDL_HINT_NO_SIGNAL_HANDLERS :: BG.ByteString
 sDL_HINT_NO_SIGNAL_HANDLERS =
   BG.pack
@@ -7651,7 +7704,7 @@ sDL_HINT_NO_SIGNAL_HANDLERS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_OPENGL_LIBRARY@, literal @\"SDL_OPENGL_LIBRARY\"@, defined at @SDL3\/SDL_hints.h 2961:9@
+--     [C declaration]: @macro SDL_HINT_OPENGL_LIBRARY@, literal @\"SDL_OPENGL_LIBRARY\"@, defined at @SDL3\/SDL_hints.h 2986:9@
 sDL_HINT_OPENGL_LIBRARY :: BG.ByteString
 sDL_HINT_OPENGL_LIBRARY =
   BG.pack
@@ -7681,7 +7734,7 @@ sDL_HINT_OPENGL_LIBRARY =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_EGL_LIBRARY@, literal @\"SDL_EGL_LIBRARY\"@, defined at @SDL3\/SDL_hints.h 2973:9@
+--     [C declaration]: @macro SDL_HINT_EGL_LIBRARY@, literal @\"SDL_EGL_LIBRARY\"@, defined at @SDL3\/SDL_hints.h 2998:9@
 sDL_HINT_EGL_LIBRARY :: BG.ByteString
 sDL_HINT_EGL_LIBRARY =
   BG.pack [0x53, 0x44, 0x4C, 0x5F, 0x45, 0x47, 0x4C, 0x5F, 0x4C, 0x49, 0x42, 0x52, 0x41, 0x52, 0x59]
@@ -7706,7 +7759,7 @@ sDL_HINT_EGL_LIBRARY =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_OPENGL_ES_DRIVER@, literal @\"SDL_OPENGL_ES_DRIVER\"@, defined at @SDL3\/SDL_hints.h 3007:9@
+--     [C declaration]: @macro SDL_HINT_OPENGL_ES_DRIVER@, literal @\"SDL_OPENGL_ES_DRIVER\"@, defined at @SDL3\/SDL_hints.h 3032:9@
 sDL_HINT_OPENGL_ES_DRIVER :: BG.ByteString
 sDL_HINT_OPENGL_ES_DRIVER =
   BG.pack
@@ -7760,7 +7813,7 @@ sDL_HINT_OPENGL_ES_DRIVER =
 --
 --     @since 3.4.2
 --
---     [C declaration]: @macro SDL_HINT_OPENGL_FORCE_SRGB_FRAMEBUFFER@, literal @\"SDL_OPENGL_FORCE_SRGB_FRAMEBUFFER\"@, defined at @SDL3\/SDL_hints.h 3047:9@
+--     [C declaration]: @macro SDL_HINT_OPENGL_FORCE_SRGB_FRAMEBUFFER@, literal @\"SDL_OPENGL_FORCE_SRGB_FRAMEBUFFER\"@, defined at @SDL3\/SDL_hints.h 3072:9@
 sDL_HINT_OPENGL_FORCE_SRGB_FRAMEBUFFER :: BG.ByteString
 sDL_HINT_OPENGL_FORCE_SRGB_FRAMEBUFFER =
   BG.pack
@@ -7805,7 +7858,7 @@ sDL_HINT_OPENGL_FORCE_SRGB_FRAMEBUFFER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_OPENVR_LIBRARY@, literal @\"SDL_OPENVR_LIBRARY\"@, defined at @SDL3\/SDL_hints.h 3059:9@
+--     [C declaration]: @macro SDL_HINT_OPENVR_LIBRARY@, literal @\"SDL_OPENVR_LIBRARY\"@, defined at @SDL3\/SDL_hints.h 3084:9@
 sDL_HINT_OPENVR_LIBRARY :: BG.ByteString
 sDL_HINT_OPENVR_LIBRARY =
   BG.pack
@@ -7847,7 +7900,7 @@ sDL_HINT_OPENVR_LIBRARY =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_ORIENTATIONS@, literal @\"SDL_ORIENTATIONS\"@, defined at @SDL3\/SDL_hints.h 3078:9@
+--     [C declaration]: @macro SDL_HINT_ORIENTATIONS@, literal @\"SDL_ORIENTATIONS\"@, defined at @SDL3\/SDL_hints.h 3103:9@
 sDL_HINT_ORIENTATIONS :: BG.ByteString
 sDL_HINT_ORIENTATIONS =
   BG.pack
@@ -7867,7 +7920,7 @@ sDL_HINT_ORIENTATIONS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_POLL_SENTINEL@, literal @\"SDL_POLL_SENTINEL\"@, defined at @SDL3\/SDL_hints.h 3098:9@
+--     [C declaration]: @macro SDL_HINT_POLL_SENTINEL@, literal @\"SDL_POLL_SENTINEL\"@, defined at @SDL3\/SDL_hints.h 3123:9@
 sDL_HINT_POLL_SENTINEL :: BG.ByteString
 sDL_HINT_POLL_SENTINEL =
   BG.pack
@@ -7900,7 +7953,7 @@ sDL_HINT_POLL_SENTINEL =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_PREFERRED_LOCALES@, literal @\"SDL_PREFERRED_LOCALES\"@, defined at @SDL3\/SDL_hints.h 3116:9@
+--     [C declaration]: @macro SDL_HINT_PREFERRED_LOCALES@, literal @\"SDL_PREFERRED_LOCALES\"@, defined at @SDL3\/SDL_hints.h 3141:9@
 sDL_HINT_PREFERRED_LOCALES :: BG.ByteString
 sDL_HINT_PREFERRED_LOCALES =
   BG.pack
@@ -7941,7 +7994,7 @@ sDL_HINT_PREFERRED_LOCALES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE@, literal @\"SDL_QUIT_ON_LAST_WINDOW_CLOSE\"@, defined at @SDL3\/SDL_hints.h 3139:9@
+--     [C declaration]: @macro SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE@, literal @\"SDL_QUIT_ON_LAST_WINDOW_CLOSE\"@, defined at @SDL3\/SDL_hints.h 3164:9@
 sDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE :: BG.ByteString
 sDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE =
   BG.pack
@@ -7988,7 +8041,7 @@ sDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_RENDER_DIRECT3D_THREADSAFE@, literal @\"SDL_RENDER_DIRECT3D_THREADSAFE\"@, defined at @SDL3\/SDL_hints.h 3154:9@
+--     [C declaration]: @macro SDL_HINT_RENDER_DIRECT3D_THREADSAFE@, literal @\"SDL_RENDER_DIRECT3D_THREADSAFE\"@, defined at @SDL3\/SDL_hints.h 3179:9@
 sDL_HINT_RENDER_DIRECT3D_THREADSAFE :: BG.ByteString
 sDL_HINT_RENDER_DIRECT3D_THREADSAFE =
   BG.pack
@@ -8038,7 +8091,7 @@ sDL_HINT_RENDER_DIRECT3D_THREADSAFE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_RENDER_DIRECT3D11_DEBUG@, literal @\"SDL_RENDER_DIRECT3D11_DEBUG\"@, defined at @SDL3\/SDL_hints.h 3170:9@
+--     [C declaration]: @macro SDL_HINT_RENDER_DIRECT3D11_DEBUG@, literal @\"SDL_RENDER_DIRECT3D11_DEBUG\"@, defined at @SDL3\/SDL_hints.h 3195:9@
 sDL_HINT_RENDER_DIRECT3D11_DEBUG :: BG.ByteString
 sDL_HINT_RENDER_DIRECT3D11_DEBUG =
   BG.pack
@@ -8085,7 +8138,7 @@ sDL_HINT_RENDER_DIRECT3D11_DEBUG =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_RENDER_DIRECT3D11_WARP@, literal @\"SDL_RENDER_DIRECT3D11_WARP\"@, defined at @SDL3\/SDL_hints.h 3188:9@
+--     [C declaration]: @macro SDL_HINT_RENDER_DIRECT3D11_WARP@, literal @\"SDL_RENDER_DIRECT3D11_WARP\"@, defined at @SDL3\/SDL_hints.h 3213:9@
 sDL_HINT_RENDER_DIRECT3D11_WARP :: BG.ByteString
 sDL_HINT_RENDER_DIRECT3D11_WARP =
   BG.pack
@@ -8129,7 +8182,7 @@ sDL_HINT_RENDER_DIRECT3D11_WARP =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_RENDER_VULKAN_DEBUG@, literal @\"SDL_RENDER_VULKAN_DEBUG\"@, defined at @SDL3\/SDL_hints.h 3202:9@
+--     [C declaration]: @macro SDL_HINT_RENDER_VULKAN_DEBUG@, literal @\"SDL_RENDER_VULKAN_DEBUG\"@, defined at @SDL3\/SDL_hints.h 3227:9@
 sDL_HINT_RENDER_VULKAN_DEBUG :: BG.ByteString
 sDL_HINT_RENDER_VULKAN_DEBUG =
   BG.pack
@@ -8170,7 +8223,7 @@ sDL_HINT_RENDER_VULKAN_DEBUG =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_RENDER_GPU_DEBUG@, literal @\"SDL_RENDER_GPU_DEBUG\"@, defined at @SDL3\/SDL_hints.h 3216:9@
+--     [C declaration]: @macro SDL_HINT_RENDER_GPU_DEBUG@, literal @\"SDL_RENDER_GPU_DEBUG\"@, defined at @SDL3\/SDL_hints.h 3241:9@
 sDL_HINT_RENDER_GPU_DEBUG :: BG.ByteString
 sDL_HINT_RENDER_GPU_DEBUG =
   BG.pack
@@ -8208,7 +8261,7 @@ sDL_HINT_RENDER_GPU_DEBUG =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_RENDER_GPU_LOW_POWER@, literal @\"SDL_RENDER_GPU_LOW_POWER\"@, defined at @SDL3\/SDL_hints.h 3231:9@
+--     [C declaration]: @macro SDL_HINT_RENDER_GPU_LOW_POWER@, literal @\"SDL_RENDER_GPU_LOW_POWER\"@, defined at @SDL3\/SDL_hints.h 3256:9@
 sDL_HINT_RENDER_GPU_LOW_POWER :: BG.ByteString
 sDL_HINT_RENDER_GPU_LOW_POWER =
   BG.pack
@@ -8272,7 +8325,7 @@ sDL_HINT_RENDER_GPU_LOW_POWER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_RENDER_DRIVER@, literal @\"SDL_RENDER_DRIVER\"@, defined at @SDL3\/SDL_hints.h 3264:9@
+--     [C declaration]: @macro SDL_HINT_RENDER_DRIVER@, literal @\"SDL_RENDER_DRIVER\"@, defined at @SDL3\/SDL_hints.h 3289:9@
 sDL_HINT_RENDER_DRIVER :: BG.ByteString
 sDL_HINT_RENDER_DRIVER =
   BG.pack
@@ -8311,7 +8364,7 @@ sDL_HINT_RENDER_DRIVER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_RENDER_LINE_METHOD@, literal @\"SDL_RENDER_LINE_METHOD\"@, defined at @SDL3\/SDL_hints.h 3282:9@
+--     [C declaration]: @macro SDL_HINT_RENDER_LINE_METHOD@, literal @\"SDL_RENDER_LINE_METHOD\"@, defined at @SDL3\/SDL_hints.h 3307:9@
 sDL_HINT_RENDER_LINE_METHOD :: BG.ByteString
 sDL_HINT_RENDER_LINE_METHOD =
   BG.pack
@@ -8351,7 +8404,7 @@ sDL_HINT_RENDER_LINE_METHOD =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE@, literal @\"SDL_RENDER_METAL_PREFER_LOW_POWER_DEVICE\"@, defined at @SDL3\/SDL_hints.h 3297:9@
+--     [C declaration]: @macro SDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE@, literal @\"SDL_RENDER_METAL_PREFER_LOW_POWER_DEVICE\"@, defined at @SDL3\/SDL_hints.h 3322:9@
 sDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE :: BG.ByteString
 sDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE =
   BG.pack
@@ -8411,7 +8464,7 @@ sDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_RENDER_VSYNC@, literal @\"SDL_RENDER_VSYNC\"@, defined at @SDL3\/SDL_hints.h 3314:9@
+--     [C declaration]: @macro SDL_HINT_RENDER_VSYNC@, literal @\"SDL_RENDER_VSYNC\"@, defined at @SDL3\/SDL_hints.h 3339:9@
 sDL_HINT_RENDER_VSYNC :: BG.ByteString
 sDL_HINT_RENDER_VSYNC =
   BG.pack
@@ -8431,7 +8484,7 @@ sDL_HINT_RENDER_VSYNC =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_RETURN_KEY_HIDES_IME@, literal @\"SDL_RETURN_KEY_HIDES_IME\"@, defined at @SDL3\/SDL_hints.h 3331:9@
+--     [C declaration]: @macro SDL_HINT_RETURN_KEY_HIDES_IME@, literal @\"SDL_RETURN_KEY_HIDES_IME\"@, defined at @SDL3\/SDL_hints.h 3356:9@
 sDL_HINT_RETURN_KEY_HIDES_IME :: BG.ByteString
 sDL_HINT_RETURN_KEY_HIDES_IME =
   BG.pack
@@ -8475,7 +8528,7 @@ sDL_HINT_RETURN_KEY_HIDES_IME =
 --
 --     [See also]: 'sDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED'
 --
---     [C declaration]: @macro SDL_HINT_ROG_GAMEPAD_MICE@, literal @\"SDL_ROG_GAMEPAD_MICE\"@, defined at @SDL3\/SDL_hints.h 3350:9@
+--     [C declaration]: @macro SDL_HINT_ROG_GAMEPAD_MICE@, literal @\"SDL_ROG_GAMEPAD_MICE\"@, defined at @SDL3\/SDL_hints.h 3375:9@
 sDL_HINT_ROG_GAMEPAD_MICE :: BG.ByteString
 sDL_HINT_ROG_GAMEPAD_MICE =
   BG.pack
@@ -8515,7 +8568,7 @@ sDL_HINT_ROG_GAMEPAD_MICE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED@, literal @\"SDL_ROG_GAMEPAD_MICE_EXCLUDED\"@, defined at @SDL3\/SDL_hints.h 3370:9@
+--     [C declaration]: @macro SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED@, literal @\"SDL_ROG_GAMEPAD_MICE_EXCLUDED\"@, defined at @SDL3\/SDL_hints.h 3395:9@
 sDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED :: BG.ByteString
 sDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED =
   BG.pack
@@ -8556,7 +8609,7 @@ sDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_PS2_GS_WIDTH@, literal @\"SDL_PS2_GS_WIDTH\"@, defined at @SDL3\/SDL_hints.h 3379:9@
+--     [C declaration]: @macro SDL_HINT_PS2_GS_WIDTH@, literal @\"SDL_PS2_GS_WIDTH\"@, defined at @SDL3\/SDL_hints.h 3404:9@
 sDL_HINT_PS2_GS_WIDTH :: BG.ByteString
 sDL_HINT_PS2_GS_WIDTH =
   BG.pack
@@ -8568,7 +8621,7 @@ sDL_HINT_PS2_GS_WIDTH =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_PS2_GS_HEIGHT@, literal @\"SDL_PS2_GS_HEIGHT\"@, defined at @SDL3\/SDL_hints.h 3388:9@
+--     [C declaration]: @macro SDL_HINT_PS2_GS_HEIGHT@, literal @\"SDL_PS2_GS_HEIGHT\"@, defined at @SDL3\/SDL_hints.h 3413:9@
 sDL_HINT_PS2_GS_HEIGHT :: BG.ByteString
 sDL_HINT_PS2_GS_HEIGHT =
   BG.pack
@@ -8601,7 +8654,7 @@ sDL_HINT_PS2_GS_HEIGHT =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_PS2_GS_PROGRESSIVE@, literal @\"SDL_PS2_GS_PROGRESSIVE\"@, defined at @SDL3\/SDL_hints.h 3400:9@
+--     [C declaration]: @macro SDL_HINT_PS2_GS_PROGRESSIVE@, literal @\"SDL_PS2_GS_PROGRESSIVE\"@, defined at @SDL3\/SDL_hints.h 3425:9@
 sDL_HINT_PS2_GS_PROGRESSIVE :: BG.ByteString
 sDL_HINT_PS2_GS_PROGRESSIVE =
   BG.pack
@@ -8641,7 +8694,7 @@ sDL_HINT_PS2_GS_PROGRESSIVE =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_PS2_GS_MODE@, literal @\"SDL_PS2_GS_MODE\"@, defined at @SDL3\/SDL_hints.h 3413:9@
+--     [C declaration]: @macro SDL_HINT_PS2_GS_MODE@, literal @\"SDL_PS2_GS_MODE\"@, defined at @SDL3\/SDL_hints.h 3438:9@
 sDL_HINT_PS2_GS_MODE :: BG.ByteString
 sDL_HINT_PS2_GS_MODE =
   BG.pack [0x53, 0x44, 0x4C, 0x5F, 0x50, 0x53, 0x32, 0x5F, 0x47, 0x53, 0x5F, 0x4D, 0x4F, 0x44, 0x45]
@@ -8654,7 +8707,7 @@ sDL_HINT_PS2_GS_MODE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_RPI_VIDEO_LAYER@, literal @\"SDL_RPI_VIDEO_LAYER\"@, defined at @SDL3\/SDL_hints.h 3425:9@
+--     [C declaration]: @macro SDL_HINT_RPI_VIDEO_LAYER@, literal @\"SDL_RPI_VIDEO_LAYER\"@, defined at @SDL3\/SDL_hints.h 3450:9@
 sDL_HINT_RPI_VIDEO_LAYER :: BG.ByteString
 sDL_HINT_RPI_VIDEO_LAYER =
   BG.pack
@@ -8691,7 +8744,7 @@ sDL_HINT_RPI_VIDEO_LAYER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME@, literal @\"SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME\"@, defined at @SDL3\/SDL_hints.h 3447:9@
+--     [C declaration]: @macro SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME@, literal @\"SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME\"@, defined at @SDL3\/SDL_hints.h 3472:9@
 sDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME :: BG.ByteString
 sDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME =
   BG.pack
@@ -8748,7 +8801,7 @@ sDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_SHUTDOWN_DBUS_ON_QUIT@, literal @\"SDL_SHUTDOWN_DBUS_ON_QUIT\"@, defined at @SDL3\/SDL_hints.h 3466:9@
+--     [C declaration]: @macro SDL_HINT_SHUTDOWN_DBUS_ON_QUIT@, literal @\"SDL_SHUTDOWN_DBUS_ON_QUIT\"@, defined at @SDL3\/SDL_hints.h 3491:9@
 sDL_HINT_SHUTDOWN_DBUS_ON_QUIT :: BG.ByteString
 sDL_HINT_SHUTDOWN_DBUS_ON_QUIT =
   BG.pack
@@ -8787,7 +8840,7 @@ sDL_HINT_SHUTDOWN_DBUS_ON_QUIT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_STORAGE_TITLE_DRIVER@, literal @\"SDL_STORAGE_TITLE_DRIVER\"@, defined at @SDL3\/SDL_hints.h 3480:9@
+--     [C declaration]: @macro SDL_HINT_STORAGE_TITLE_DRIVER@, literal @\"SDL_STORAGE_TITLE_DRIVER\"@, defined at @SDL3\/SDL_hints.h 3505:9@
 sDL_HINT_STORAGE_TITLE_DRIVER :: BG.ByteString
 sDL_HINT_STORAGE_TITLE_DRIVER =
   BG.pack
@@ -8825,7 +8878,7 @@ sDL_HINT_STORAGE_TITLE_DRIVER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_STORAGE_USER_DRIVER@, literal @\"SDL_STORAGE_USER_DRIVER\"@, defined at @SDL3\/SDL_hints.h 3494:9@
+--     [C declaration]: @macro SDL_HINT_STORAGE_USER_DRIVER@, literal @\"SDL_STORAGE_USER_DRIVER\"@, defined at @SDL3\/SDL_hints.h 3519:9@
 sDL_HINT_STORAGE_USER_DRIVER :: BG.ByteString
 sDL_HINT_STORAGE_USER_DRIVER =
   BG.pack
@@ -8876,7 +8929,7 @@ sDL_HINT_STORAGE_USER_DRIVER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL@, literal @\"SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL\"@, defined at @SDL3\/SDL_hints.h 3523:9@
+--     [C declaration]: @macro SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL@, literal @\"SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL\"@, defined at @SDL3\/SDL_hints.h 3548:9@
 sDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL :: BG.ByteString
 sDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL =
   BG.pack
@@ -8933,7 +8986,7 @@ sDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_THREAD_PRIORITY_POLICY@, literal @\"SDL_THREAD_PRIORITY_POLICY\"@, defined at @SDL3\/SDL_hints.h 3546:9@
+--     [C declaration]: @macro SDL_HINT_THREAD_PRIORITY_POLICY@, literal @\"SDL_THREAD_PRIORITY_POLICY\"@, defined at @SDL3\/SDL_hints.h 3571:9@
 sDL_HINT_THREAD_PRIORITY_POLICY :: BG.ByteString
 sDL_HINT_THREAD_PRIORITY_POLICY =
   BG.pack
@@ -8979,7 +9032,7 @@ sDL_HINT_THREAD_PRIORITY_POLICY =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_TIMER_RESOLUTION@, literal @\"SDL_TIMER_RESOLUTION\"@, defined at @SDL3\/SDL_hints.h 3566:9@
+--     [C declaration]: @macro SDL_HINT_TIMER_RESOLUTION@, literal @\"SDL_TIMER_RESOLUTION\"@, defined at @SDL3\/SDL_hints.h 3591:9@
 sDL_HINT_TIMER_RESOLUTION :: BG.ByteString
 sDL_HINT_TIMER_RESOLUTION =
   BG.pack
@@ -9017,7 +9070,7 @@ sDL_HINT_TIMER_RESOLUTION =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_TOUCH_MOUSE_EVENTS@, literal @\"SDL_TOUCH_MOUSE_EVENTS\"@, defined at @SDL3\/SDL_hints.h 3581:9@
+--     [C declaration]: @macro SDL_HINT_TOUCH_MOUSE_EVENTS@, literal @\"SDL_TOUCH_MOUSE_EVENTS\"@, defined at @SDL3\/SDL_hints.h 3606:9@
 sDL_HINT_TOUCH_MOUSE_EVENTS :: BG.ByteString
 sDL_HINT_TOUCH_MOUSE_EVENTS =
   BG.pack
@@ -9059,7 +9112,7 @@ sDL_HINT_TOUCH_MOUSE_EVENTS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_TRACKPAD_IS_TOUCH_ONLY@, literal @\"SDL_TRACKPAD_IS_TOUCH_ONLY\"@, defined at @SDL3\/SDL_hints.h 3602:9@
+--     [C declaration]: @macro SDL_HINT_TRACKPAD_IS_TOUCH_ONLY@, literal @\"SDL_TRACKPAD_IS_TOUCH_ONLY\"@, defined at @SDL3\/SDL_hints.h 3627:9@
 sDL_HINT_TRACKPAD_IS_TOUCH_ONLY :: BG.ByteString
 sDL_HINT_TRACKPAD_IS_TOUCH_ONLY =
   BG.pack
@@ -9103,7 +9156,7 @@ sDL_HINT_TRACKPAD_IS_TOUCH_ONLY =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_TV_REMOTE_AS_JOYSTICK@, literal @\"SDL_TV_REMOTE_AS_JOYSTICK\"@, defined at @SDL3\/SDL_hints.h 3617:9@
+--     [C declaration]: @macro SDL_HINT_TV_REMOTE_AS_JOYSTICK@, literal @\"SDL_TV_REMOTE_AS_JOYSTICK\"@, defined at @SDL3\/SDL_hints.h 3642:9@
 sDL_HINT_TV_REMOTE_AS_JOYSTICK :: BG.ByteString
 sDL_HINT_TV_REMOTE_AS_JOYSTICK =
   BG.pack
@@ -9146,7 +9199,7 @@ sDL_HINT_TV_REMOTE_AS_JOYSTICK =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_ALLOW_SCREENSAVER@, literal @\"SDL_VIDEO_ALLOW_SCREENSAVER\"@, defined at @SDL3\/SDL_hints.h 3631:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_ALLOW_SCREENSAVER@, literal @\"SDL_VIDEO_ALLOW_SCREENSAVER\"@, defined at @SDL3\/SDL_hints.h 3656:9@
 sDL_HINT_VIDEO_ALLOW_SCREENSAVER :: BG.ByteString
 sDL_HINT_VIDEO_ALLOW_SCREENSAVER =
   BG.pack
@@ -9197,7 +9250,7 @@ sDL_HINT_VIDEO_ALLOW_SCREENSAVER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_DISPLAY_PRIORITY@, literal @\"SDL_VIDEO_DISPLAY_PRIORITY\"@, defined at @SDL3\/SDL_hints.h 3658:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_DISPLAY_PRIORITY@, literal @\"SDL_VIDEO_DISPLAY_PRIORITY\"@, defined at @SDL3\/SDL_hints.h 3683:9@
 sDL_HINT_VIDEO_DISPLAY_PRIORITY :: BG.ByteString
 sDL_HINT_VIDEO_DISPLAY_PRIORITY =
   BG.pack
@@ -9245,7 +9298,7 @@ sDL_HINT_VIDEO_DISPLAY_PRIORITY =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_DOUBLE_BUFFER@, literal @\"SDL_VIDEO_DOUBLE_BUFFER\"@, defined at @SDL3\/SDL_hints.h 3681:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_DOUBLE_BUFFER@, literal @\"SDL_VIDEO_DOUBLE_BUFFER\"@, defined at @SDL3\/SDL_hints.h 3706:9@
 sDL_HINT_VIDEO_DOUBLE_BUFFER :: BG.ByteString
 sDL_HINT_VIDEO_DOUBLE_BUFFER =
   BG.pack
@@ -9284,7 +9337,7 @@ sDL_HINT_VIDEO_DOUBLE_BUFFER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_DRIVER@, literal @\"SDL_VIDEO_DRIVER\"@, defined at @SDL3\/SDL_hints.h 3699:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_DRIVER@, literal @\"SDL_VIDEO_DRIVER\"@, defined at @SDL3\/SDL_hints.h 3724:9@
 sDL_HINT_VIDEO_DRIVER :: BG.ByteString
 sDL_HINT_VIDEO_DRIVER =
   BG.pack
@@ -9300,7 +9353,7 @@ sDL_HINT_VIDEO_DRIVER =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_DUMMY_SAVE_FRAMES@, literal @\"SDL_VIDEO_DUMMY_SAVE_FRAMES\"@, defined at @SDL3\/SDL_hints.h 3712:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_DUMMY_SAVE_FRAMES@, literal @\"SDL_VIDEO_DUMMY_SAVE_FRAMES\"@, defined at @SDL3\/SDL_hints.h 3737:9@
 sDL_HINT_VIDEO_DUMMY_SAVE_FRAMES :: BG.ByteString
 sDL_HINT_VIDEO_DUMMY_SAVE_FRAMES =
   BG.pack
@@ -9345,7 +9398,7 @@ sDL_HINT_VIDEO_DUMMY_SAVE_FRAMES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK@, literal @\"SDL_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK\"@, defined at @SDL3\/SDL_hints.h 3726:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK@, literal @\"SDL_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK\"@, defined at @SDL3\/SDL_hints.h 3751:9@
 sDL_HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK :: BG.ByteString
 sDL_HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK =
   BG.pack
@@ -9402,7 +9455,7 @@ sDL_HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_FORCE_EGL@, literal @\"SDL_VIDEO_FORCE_EGL\"@, defined at @SDL3\/SDL_hints.h 3742:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_FORCE_EGL@, literal @\"SDL_VIDEO_FORCE_EGL\"@, defined at @SDL3\/SDL_hints.h 3767:9@
 sDL_HINT_VIDEO_FORCE_EGL :: BG.ByteString
 sDL_HINT_VIDEO_FORCE_EGL =
   BG.pack
@@ -9439,7 +9492,7 @@ sDL_HINT_VIDEO_FORCE_EGL =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES@, literal @\"SDL_VIDEO_MAC_FULLSCREEN_SPACES\"@, defined at @SDL3\/SDL_hints.h 3760:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES@, literal @\"SDL_VIDEO_MAC_FULLSCREEN_SPACES\"@, defined at @SDL3\/SDL_hints.h 3785:9@
 sDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES :: BG.ByteString
 sDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES =
   BG.pack
@@ -9490,7 +9543,7 @@ sDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY@, literal @\"SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY\"@, defined at @SDL3\/SDL_hints.h 3781:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY@, literal @\"SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY\"@, defined at @SDL3\/SDL_hints.h 3806:9@
 sDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY :: BG.ByteString
 sDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY =
   BG.pack
@@ -9548,7 +9601,7 @@ sDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE@, literal @\"SDL_VIDEO_METAL_AUTO_RESIZE_DRAWABLE\"@, defined at @SDL3\/SDL_hints.h 3798:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE@, literal @\"SDL_VIDEO_METAL_AUTO_RESIZE_DRAWABLE\"@, defined at @SDL3\/SDL_hints.h 3823:9@
 sDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE :: BG.ByteString
 sDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE =
   BG.pack
@@ -9602,7 +9655,7 @@ sDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE@, literal @\"SDL_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE\"@, defined at @SDL3\/SDL_hints.h 3818:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE@, literal @\"SDL_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE\"@, defined at @SDL3\/SDL_hints.h 3843:9@
 sDL_HINT_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE :: BG.ByteString
 sDL_HINT_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE =
   BG.pack
@@ -9660,7 +9713,7 @@ sDL_HINT_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS@, literal @\"SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS\"@, defined at @SDL3\/SDL_hints.h 3836:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS@, literal @\"SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS\"@, defined at @SDL3\/SDL_hints.h 3861:9@
 sDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS :: BG.ByteString
 sDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS =
   BG.pack
@@ -9710,7 +9763,7 @@ sDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES@, literal @\"SDL_VIDEO_OFFSCREEN_SAVE_FRAMES\"@, defined at @SDL3\/SDL_hints.h 3853:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES@, literal @\"SDL_VIDEO_OFFSCREEN_SAVE_FRAMES\"@, defined at @SDL3\/SDL_hints.h 3878:9@
 sDL_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES :: BG.ByteString
 sDL_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES =
   BG.pack
@@ -9763,7 +9816,7 @@ sDL_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS@, literal @\"SDL_VIDEO_SYNC_WINDOW_OPERATIONS\"@, defined at @SDL3\/SDL_hints.h 3879:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS@, literal @\"SDL_VIDEO_SYNC_WINDOW_OPERATIONS\"@, defined at @SDL3\/SDL_hints.h 3904:9@
 sDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS :: BG.ByteString
 sDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS =
   BG.pack
@@ -9815,7 +9868,7 @@ sDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR@, literal @\"SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR\"@, defined at @SDL3\/SDL_hints.h 3897:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR@, literal @\"SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR\"@, defined at @SDL3\/SDL_hints.h 3922:9@
 sDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR :: BG.ByteString
 sDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR =
   BG.pack
@@ -9867,7 +9920,7 @@ sDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION@, literal @\"SDL_VIDEO_WAYLAND_MODE_EMULATION\"@, defined at @SDL3\/SDL_hints.h 3917:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION@, literal @\"SDL_VIDEO_WAYLAND_MODE_EMULATION\"@, defined at @SDL3\/SDL_hints.h 3942:9@
 sDL_HINT_VIDEO_WAYLAND_MODE_EMULATION :: BG.ByteString
 sDL_HINT_VIDEO_WAYLAND_MODE_EMULATION =
   BG.pack
@@ -9921,7 +9974,7 @@ sDL_HINT_VIDEO_WAYLAND_MODE_EMULATION =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_WAYLAND_MODE_SCALING@, literal @\"SDL_VIDEO_WAYLAND_MODE_SCALING\"@, defined at @SDL3\/SDL_hints.h 3939:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_WAYLAND_MODE_SCALING@, literal @\"SDL_VIDEO_WAYLAND_MODE_SCALING\"@, defined at @SDL3\/SDL_hints.h 3964:9@
 sDL_HINT_VIDEO_WAYLAND_MODE_SCALING :: BG.ByteString
 sDL_HINT_VIDEO_WAYLAND_MODE_SCALING =
   BG.pack
@@ -9971,7 +10024,7 @@ sDL_HINT_VIDEO_WAYLAND_MODE_SCALING =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR@, literal @\"SDL_VIDEO_WAYLAND_PREFER_LIBDECOR\"@, defined at @SDL3\/SDL_hints.h 3959:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR@, literal @\"SDL_VIDEO_WAYLAND_PREFER_LIBDECOR\"@, defined at @SDL3\/SDL_hints.h 3984:9@
 sDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR :: BG.ByteString
 sDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR =
   BG.pack
@@ -10042,7 +10095,7 @@ sDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY@, literal @\"SDL_VIDEO_WAYLAND_SCALE_TO_DISPLAY\"@, defined at @SDL3\/SDL_hints.h 3998:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY@, literal @\"SDL_VIDEO_WAYLAND_SCALE_TO_DISPLAY\"@, defined at @SDL3\/SDL_hints.h 4023:9@
 sDL_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY :: BG.ByteString
 sDL_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY =
   BG.pack
@@ -10098,7 +10151,7 @@ sDL_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_WIN_D3DCOMPILER@, literal @\"SDL_VIDEO_WIN_D3DCOMPILER\"@, defined at @SDL3\/SDL_hints.h 4020:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_WIN_D3DCOMPILER@, literal @\"SDL_VIDEO_WIN_D3DCOMPILER\"@, defined at @SDL3\/SDL_hints.h 4045:9@
 sDL_HINT_VIDEO_WIN_D3DCOMPILER :: BG.ByteString
 sDL_HINT_VIDEO_WIN_D3DCOMPILER =
   BG.pack
@@ -10129,6 +10182,62 @@ sDL_HINT_VIDEO_WIN_D3DCOMPILER =
     , 0x52
     ]
 
+-- | A variable controlling whether the X Synchronization Extension is enabled.
+--
+--     If set, this can result in smoother window resizing when rendering using OpenGL, however, there are some conditions:
+--
+--     * It is only activated on windows created with the @SDL_WINDOW_OPENGL@ flag (windows using an SDL OpenGL renderer have this automatically set).
+--
+--     * When activated, presentation must be done with @SDL_GL_SwapWindow()@ (@SDL_RenderPresent()@ calls this internally for OpenGL renderers as well).
+--
+--     Enabling this and presenting via an external mechanism will result in sync requests not being acked, and hangs and other odd window behavior may result.
+--
+--     The variable can be set to the following values:
+--
+--     * \"0\": The X Synchronization Extension is disabled. (default)
+--
+--     * \"1\": The X Synchronization Extension is enabled.
+--
+--     This hint should be set before creating a window.
+--
+--     @since 3.4.10
+--
+--     [C declaration]: @macro SDL_HINT_VIDEO_X11_ENABLE_XSYNC_EXT@, literal @\"SDL_VIDEO_X11_ENABLE_XSYNC_EXT\"@, defined at @SDL3\/SDL_hints.h 4070:9@
+sDL_HINT_VIDEO_X11_ENABLE_XSYNC_EXT :: BG.ByteString
+sDL_HINT_VIDEO_X11_ENABLE_XSYNC_EXT =
+  BG.pack
+    [ 0x53
+    , 0x44
+    , 0x4C
+    , 0x5F
+    , 0x56
+    , 0x49
+    , 0x44
+    , 0x45
+    , 0x4F
+    , 0x5F
+    , 0x58
+    , 0x31
+    , 0x31
+    , 0x5F
+    , 0x45
+    , 0x4E
+    , 0x41
+    , 0x42
+    , 0x4C
+    , 0x45
+    , 0x5F
+    , 0x58
+    , 0x53
+    , 0x59
+    , 0x4E
+    , 0x43
+    , 0x5F
+    , 0x45
+    , 0x58
+    , 0x54
+    ]
+
 -- | A variable controlling whether SDL should call XSelectInput() to enable input events on X11 windows wrapped by SDL windows.
 --
 --     The variable can be set to the following values:
@@ -10141,7 +10250,7 @@ sDL_HINT_VIDEO_WIN_D3DCOMPILER =
 --
 --     @since 3.2.10
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT@, literal @\"SDL_VIDEO_X11_EXTERNAL_WINDOW_INPUT\"@, defined at @SDL3\/SDL_hints.h 4036:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT@, literal @\"SDL_VIDEO_X11_EXTERNAL_WINDOW_INPUT\"@, defined at @SDL3\/SDL_hints.h 4086:9@
 sDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT :: BG.ByteString
 sDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT =
   BG.pack
@@ -10194,7 +10303,7 @@ sDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR@, literal @\"SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR\"@, defined at @SDL3\/SDL_hints.h 4051:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR@, literal @\"SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR\"@, defined at @SDL3\/SDL_hints.h 4101:9@
 sDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR :: BG.ByteString
 sDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR =
   BG.pack
@@ -10252,7 +10361,7 @@ sDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_X11_NET_WM_PING@, literal @\"SDL_VIDEO_X11_NET_WM_PING\"@, defined at @SDL3\/SDL_hints.h 4070:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_X11_NET_WM_PING@, literal @\"SDL_VIDEO_X11_NET_WM_PING\"@, defined at @SDL3\/SDL_hints.h 4120:9@
 sDL_HINT_VIDEO_X11_NET_WM_PING :: BG.ByteString
 sDL_HINT_VIDEO_X11_NET_WM_PING =
   BG.pack
@@ -10295,7 +10404,7 @@ sDL_HINT_VIDEO_X11_NET_WM_PING =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_X11_NODIRECTCOLOR@, literal @\"SDL_VIDEO_X11_NODIRECTCOLOR\"@, defined at @SDL3\/SDL_hints.h 4084:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_X11_NODIRECTCOLOR@, literal @\"SDL_VIDEO_X11_NODIRECTCOLOR\"@, defined at @SDL3\/SDL_hints.h 4134:9@
 sDL_HINT_VIDEO_X11_NODIRECTCOLOR :: BG.ByteString
 sDL_HINT_VIDEO_X11_NODIRECTCOLOR =
   BG.pack
@@ -10336,7 +10445,7 @@ sDL_HINT_VIDEO_X11_NODIRECTCOLOR =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_X11_SCALING_FACTOR@, literal @\"SDL_VIDEO_X11_SCALING_FACTOR\"@, defined at @SDL3\/SDL_hints.h 4095:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_X11_SCALING_FACTOR@, literal @\"SDL_VIDEO_X11_SCALING_FACTOR\"@, defined at @SDL3\/SDL_hints.h 4145:9@
 sDL_HINT_VIDEO_X11_SCALING_FACTOR :: BG.ByteString
 sDL_HINT_VIDEO_X11_SCALING_FACTOR =
   BG.pack
@@ -10376,7 +10485,7 @@ sDL_HINT_VIDEO_X11_SCALING_FACTOR =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_X11_VISUALID@, literal @\"SDL_VIDEO_X11_VISUALID\"@, defined at @SDL3\/SDL_hints.h 4104:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_X11_VISUALID@, literal @\"SDL_VIDEO_X11_VISUALID\"@, defined at @SDL3\/SDL_hints.h 4154:9@
 sDL_HINT_VIDEO_X11_VISUALID :: BG.ByteString
 sDL_HINT_VIDEO_X11_VISUALID =
   BG.pack
@@ -10410,7 +10519,7 @@ sDL_HINT_VIDEO_X11_VISUALID =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_X11_WINDOW_VISUALID@, literal @\"SDL_VIDEO_X11_WINDOW_VISUALID\"@, defined at @SDL3\/SDL_hints.h 4113:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_X11_WINDOW_VISUALID@, literal @\"SDL_VIDEO_X11_WINDOW_VISUALID\"@, defined at @SDL3\/SDL_hints.h 4163:9@
 sDL_HINT_VIDEO_X11_WINDOW_VISUALID :: BG.ByteString
 sDL_HINT_VIDEO_X11_WINDOW_VISUALID =
   BG.pack
@@ -10457,7 +10566,7 @@ sDL_HINT_VIDEO_X11_WINDOW_VISUALID =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VIDEO_X11_XRANDR@, literal @\"SDL_VIDEO_X11_XRANDR\"@, defined at @SDL3\/SDL_hints.h 4127:9@
+--     [C declaration]: @macro SDL_HINT_VIDEO_X11_XRANDR@, literal @\"SDL_VIDEO_X11_XRANDR\"@, defined at @SDL3\/SDL_hints.h 4177:9@
 sDL_HINT_VIDEO_X11_XRANDR :: BG.ByteString
 sDL_HINT_VIDEO_X11_XRANDR =
   BG.pack
@@ -10495,7 +10604,7 @@ sDL_HINT_VIDEO_X11_XRANDR =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VITA_ENABLE_BACK_TOUCH@, literal @\"SDL_VITA_ENABLE_BACK_TOUCH\"@, defined at @SDL3\/SDL_hints.h 4142:9@
+--     [C declaration]: @macro SDL_HINT_VITA_ENABLE_BACK_TOUCH@, literal @\"SDL_VITA_ENABLE_BACK_TOUCH\"@, defined at @SDL3\/SDL_hints.h 4192:9@
 sDL_HINT_VITA_ENABLE_BACK_TOUCH :: BG.ByteString
 sDL_HINT_VITA_ENABLE_BACK_TOUCH =
   BG.pack
@@ -10539,7 +10648,7 @@ sDL_HINT_VITA_ENABLE_BACK_TOUCH =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VITA_ENABLE_FRONT_TOUCH@, literal @\"SDL_VITA_ENABLE_FRONT_TOUCH\"@, defined at @SDL3\/SDL_hints.h 4157:9@
+--     [C declaration]: @macro SDL_HINT_VITA_ENABLE_FRONT_TOUCH@, literal @\"SDL_VITA_ENABLE_FRONT_TOUCH\"@, defined at @SDL3\/SDL_hints.h 4207:9@
 sDL_HINT_VITA_ENABLE_FRONT_TOUCH :: BG.ByteString
 sDL_HINT_VITA_ENABLE_FRONT_TOUCH =
   BG.pack
@@ -10580,7 +10689,7 @@ sDL_HINT_VITA_ENABLE_FRONT_TOUCH =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VITA_MODULE_PATH@, literal @\"SDL_VITA_MODULE_PATH\"@, defined at @SDL3\/SDL_hints.h 4168:9@
+--     [C declaration]: @macro SDL_HINT_VITA_MODULE_PATH@, literal @\"SDL_VITA_MODULE_PATH\"@, defined at @SDL3\/SDL_hints.h 4218:9@
 sDL_HINT_VITA_MODULE_PATH :: BG.ByteString
 sDL_HINT_VITA_MODULE_PATH =
   BG.pack
@@ -10616,7 +10725,7 @@ sDL_HINT_VITA_MODULE_PATH =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VITA_PVR_INIT@, literal @\"SDL_VITA_PVR_INIT\"@, defined at @SDL3\/SDL_hints.h 4181:9@
+--     [C declaration]: @macro SDL_HINT_VITA_PVR_INIT@, literal @\"SDL_VITA_PVR_INIT\"@, defined at @SDL3\/SDL_hints.h 4231:9@
 sDL_HINT_VITA_PVR_INIT :: BG.ByteString
 sDL_HINT_VITA_PVR_INIT =
   BG.pack
@@ -10653,7 +10762,7 @@ sDL_HINT_VITA_PVR_INIT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VITA_RESOLUTION@, literal @\"SDL_VITA_RESOLUTION\"@, defined at @SDL3\/SDL_hints.h 4196:9@
+--     [C declaration]: @macro SDL_HINT_VITA_RESOLUTION@, literal @\"SDL_VITA_RESOLUTION\"@, defined at @SDL3\/SDL_hints.h 4246:9@
 sDL_HINT_VITA_RESOLUTION :: BG.ByteString
 sDL_HINT_VITA_RESOLUTION =
   BG.pack
@@ -10690,7 +10799,7 @@ sDL_HINT_VITA_RESOLUTION =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VITA_PVR_OPENGL@, literal @\"SDL_VITA_PVR_OPENGL\"@, defined at @SDL3\/SDL_hints.h 4211:9@
+--     [C declaration]: @macro SDL_HINT_VITA_PVR_OPENGL@, literal @\"SDL_VITA_PVR_OPENGL\"@, defined at @SDL3\/SDL_hints.h 4261:9@
 sDL_HINT_VITA_PVR_OPENGL :: BG.ByteString
 sDL_HINT_VITA_PVR_OPENGL =
   BG.pack
@@ -10729,7 +10838,7 @@ sDL_HINT_VITA_PVR_OPENGL =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VITA_TOUCH_MOUSE_DEVICE@, literal @\"SDL_VITA_TOUCH_MOUSE_DEVICE\"@, defined at @SDL3\/SDL_hints.h 4227:9@
+--     [C declaration]: @macro SDL_HINT_VITA_TOUCH_MOUSE_DEVICE@, literal @\"SDL_VITA_TOUCH_MOUSE_DEVICE\"@, defined at @SDL3\/SDL_hints.h 4277:9@
 sDL_HINT_VITA_TOUCH_MOUSE_DEVICE :: BG.ByteString
 sDL_HINT_VITA_TOUCH_MOUSE_DEVICE =
   BG.pack
@@ -10770,7 +10879,7 @@ sDL_HINT_VITA_TOUCH_MOUSE_DEVICE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VULKAN_DISPLAY@, literal @\"SDL_VULKAN_DISPLAY\"@, defined at @SDL3\/SDL_hints.h 4238:9@
+--     [C declaration]: @macro SDL_HINT_VULKAN_DISPLAY@, literal @\"SDL_VULKAN_DISPLAY\"@, defined at @SDL3\/SDL_hints.h 4288:9@
 sDL_HINT_VULKAN_DISPLAY :: BG.ByteString
 sDL_HINT_VULKAN_DISPLAY =
   BG.pack
@@ -10800,7 +10909,7 @@ sDL_HINT_VULKAN_DISPLAY =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_VULKAN_LIBRARY@, literal @\"SDL_VULKAN_LIBRARY\"@, defined at @SDL3\/SDL_hints.h 4248:9@
+--     [C declaration]: @macro SDL_HINT_VULKAN_LIBRARY@, literal @\"SDL_VULKAN_LIBRARY\"@, defined at @SDL3\/SDL_hints.h 4298:9@
 sDL_HINT_VULKAN_LIBRARY :: BG.ByteString
 sDL_HINT_VULKAN_LIBRARY =
   BG.pack
@@ -10844,7 +10953,7 @@ sDL_HINT_VULKAN_LIBRARY =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WAVE_FACT_CHUNK@, literal @\"SDL_WAVE_FACT_CHUNK\"@, defined at @SDL3\/SDL_hints.h 4280:9@
+--     [C declaration]: @macro SDL_HINT_WAVE_FACT_CHUNK@, literal @\"SDL_WAVE_FACT_CHUNK\"@, defined at @SDL3\/SDL_hints.h 4330:9@
 sDL_HINT_WAVE_FACT_CHUNK :: BG.ByteString
 sDL_HINT_WAVE_FACT_CHUNK =
   BG.pack
@@ -10877,7 +10986,7 @@ sDL_HINT_WAVE_FACT_CHUNK =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WAVE_CHUNK_LIMIT@, literal @\"SDL_WAVE_CHUNK_LIMIT\"@, defined at @SDL3\/SDL_hints.h 4292:9@
+--     [C declaration]: @macro SDL_HINT_WAVE_CHUNK_LIMIT@, literal @\"SDL_WAVE_CHUNK_LIMIT\"@, defined at @SDL3\/SDL_hints.h 4342:9@
 sDL_HINT_WAVE_CHUNK_LIMIT :: BG.ByteString
 sDL_HINT_WAVE_CHUNK_LIMIT =
   BG.pack
@@ -10923,7 +11032,7 @@ sDL_HINT_WAVE_CHUNK_LIMIT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WAVE_RIFF_CHUNK_SIZE@, literal @\"SDL_WAVE_RIFF_CHUNK_SIZE\"@, defined at @SDL3\/SDL_hints.h 4320:9@
+--     [C declaration]: @macro SDL_HINT_WAVE_RIFF_CHUNK_SIZE@, literal @\"SDL_WAVE_RIFF_CHUNK_SIZE\"@, defined at @SDL3\/SDL_hints.h 4370:9@
 sDL_HINT_WAVE_RIFF_CHUNK_SIZE :: BG.ByteString
 sDL_HINT_WAVE_RIFF_CHUNK_SIZE =
   BG.pack
@@ -10971,7 +11080,7 @@ sDL_HINT_WAVE_RIFF_CHUNK_SIZE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WAVE_TRUNCATION@, literal @\"SDL_WAVE_TRUNCATION\"@, defined at @SDL3\/SDL_hints.h 4340:9@
+--     [C declaration]: @macro SDL_HINT_WAVE_TRUNCATION@, literal @\"SDL_WAVE_TRUNCATION\"@, defined at @SDL3\/SDL_hints.h 4390:9@
 sDL_HINT_WAVE_TRUNCATION :: BG.ByteString
 sDL_HINT_WAVE_TRUNCATION =
   BG.pack
@@ -11008,7 +11117,7 @@ sDL_HINT_WAVE_TRUNCATION =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED@, literal @\"SDL_WINDOW_ACTIVATE_WHEN_RAISED\"@, defined at @SDL3\/SDL_hints.h 4357:9@
+--     [C declaration]: @macro SDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED@, literal @\"SDL_WINDOW_ACTIVATE_WHEN_RAISED\"@, defined at @SDL3\/SDL_hints.h 4407:9@
 sDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED :: BG.ByteString
 sDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED =
   BG.pack
@@ -11057,7 +11166,7 @@ sDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOW_ACTIVATE_WHEN_SHOWN@, literal @\"SDL_WINDOW_ACTIVATE_WHEN_SHOWN\"@, defined at @SDL3\/SDL_hints.h 4374:9@
+--     [C declaration]: @macro SDL_HINT_WINDOW_ACTIVATE_WHEN_SHOWN@, literal @\"SDL_WINDOW_ACTIVATE_WHEN_SHOWN\"@, defined at @SDL3\/SDL_hints.h 4424:9@
 sDL_HINT_WINDOW_ACTIVATE_WHEN_SHOWN :: BG.ByteString
 sDL_HINT_WINDOW_ACTIVATE_WHEN_SHOWN =
   BG.pack
@@ -11107,7 +11216,7 @@ sDL_HINT_WINDOW_ACTIVATE_WHEN_SHOWN =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOW_ALLOW_TOPMOST@, literal @\"SDL_WINDOW_ALLOW_TOPMOST\"@, defined at @SDL3\/SDL_hints.h 4392:9@
+--     [C declaration]: @macro SDL_HINT_WINDOW_ALLOW_TOPMOST@, literal @\"SDL_WINDOW_ALLOW_TOPMOST\"@, defined at @SDL3\/SDL_hints.h 4442:9@
 sDL_HINT_WINDOW_ALLOW_TOPMOST :: BG.ByteString
 sDL_HINT_WINDOW_ALLOW_TOPMOST =
   BG.pack
@@ -11149,7 +11258,7 @@ sDL_HINT_WINDOW_ALLOW_TOPMOST =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN@, literal @\"SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN\"@, defined at @SDL3\/SDL_hints.h 4408:9@
+--     [C declaration]: @macro SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN@, literal @\"SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN\"@, defined at @SDL3\/SDL_hints.h 4458:9@
 sDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN :: BG.ByteString
 sDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN =
   BG.pack
@@ -11210,7 +11319,7 @@ sDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOWS_CLOSE_ON_ALT_F4@, literal @\"SDL_WINDOWS_CLOSE_ON_ALT_F4\"@, defined at @SDL3\/SDL_hints.h 4424:9@
+--     [C declaration]: @macro SDL_HINT_WINDOWS_CLOSE_ON_ALT_F4@, literal @\"SDL_WINDOWS_CLOSE_ON_ALT_F4\"@, defined at @SDL3\/SDL_hints.h 4474:9@
 sDL_HINT_WINDOWS_CLOSE_ON_ALT_F4 :: BG.ByteString
 sDL_HINT_WINDOWS_CLOSE_ON_ALT_F4 =
   BG.pack
@@ -11261,7 +11370,7 @@ sDL_HINT_WINDOWS_CLOSE_ON_ALT_F4 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOWS_ENABLE_MENU_MNEMONICS@, literal @\"SDL_WINDOWS_ENABLE_MENU_MNEMONICS\"@, defined at @SDL3\/SDL_hints.h 4453:9@
+--     [C declaration]: @macro SDL_HINT_WINDOWS_ENABLE_MENU_MNEMONICS@, literal @\"SDL_WINDOWS_ENABLE_MENU_MNEMONICS\"@, defined at @SDL3\/SDL_hints.h 4503:9@
 sDL_HINT_WINDOWS_ENABLE_MENU_MNEMONICS :: BG.ByteString
 sDL_HINT_WINDOWS_ENABLE_MENU_MNEMONICS =
   BG.pack
@@ -11312,7 +11421,7 @@ sDL_HINT_WINDOWS_ENABLE_MENU_MNEMONICS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP@, literal @\"SDL_WINDOWS_ENABLE_MESSAGELOOP\"@, defined at @SDL3\/SDL_hints.h 4468:9@
+--     [C declaration]: @macro SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP@, literal @\"SDL_WINDOWS_ENABLE_MESSAGELOOP\"@, defined at @SDL3\/SDL_hints.h 4518:9@
 sDL_HINT_WINDOWS_ENABLE_MESSAGELOOP :: BG.ByteString
 sDL_HINT_WINDOWS_ENABLE_MESSAGELOOP =
   BG.pack
@@ -11360,7 +11469,7 @@ sDL_HINT_WINDOWS_ENABLE_MESSAGELOOP =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOWS_GAMEINPUT@, literal @\"SDL_WINDOWS_GAMEINPUT\"@, defined at @SDL3\/SDL_hints.h 4483:9@
+--     [C declaration]: @macro SDL_HINT_WINDOWS_GAMEINPUT@, literal @\"SDL_WINDOWS_GAMEINPUT\"@, defined at @SDL3\/SDL_hints.h 4533:9@
 sDL_HINT_WINDOWS_GAMEINPUT :: BG.ByteString
 sDL_HINT_WINDOWS_GAMEINPUT =
   BG.pack
@@ -11399,7 +11508,7 @@ sDL_HINT_WINDOWS_GAMEINPUT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOWS_RAW_KEYBOARD@, literal @\"SDL_WINDOWS_RAW_KEYBOARD\"@, defined at @SDL3\/SDL_hints.h 4497:9@
+--     [C declaration]: @macro SDL_HINT_WINDOWS_RAW_KEYBOARD@, literal @\"SDL_WINDOWS_RAW_KEYBOARD\"@, defined at @SDL3\/SDL_hints.h 4547:9@
 sDL_HINT_WINDOWS_RAW_KEYBOARD :: BG.ByteString
 sDL_HINT_WINDOWS_RAW_KEYBOARD =
   BG.pack
@@ -11445,7 +11554,7 @@ sDL_HINT_WINDOWS_RAW_KEYBOARD =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS@, literal @\"SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS\"@, defined at @SDL3\/SDL_hints.h 4519:9@
+--     [C declaration]: @macro SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS@, literal @\"SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS\"@, defined at @SDL3\/SDL_hints.h 4569:9@
 sDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS :: BG.ByteString
 sDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS =
   BG.pack
@@ -11491,6 +11600,60 @@ sDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS =
     , 0x53
     ]
 
+-- | A variable controlling whether the RIDEV_INPUTSINK flag is set when enabling Windows raw keyboard events.
+--
+--     This enables the window to still receive input even if not in foreground.
+--
+--     Focused windows that receive text input will still prevent input events from triggering.
+--
+--     * \"0\": Input is not received when not in focus or foreground. (default)
+--
+--     * \"1\": Input will be received even when not in focus or foreground.
+--
+--     This hint can be set anytime.
+--
+--     @since 3.4.4
+--
+--     [C declaration]: @macro SDL_HINT_WINDOWS_RAW_KEYBOARD_INPUTSINK@, literal @\"SDL_WINDOWS_RAW_KEYBOARD_INPUTSINK\"@, defined at @SDL3\/SDL_hints.h 4586:9@
+sDL_HINT_WINDOWS_RAW_KEYBOARD_INPUTSINK :: BG.ByteString
+sDL_HINT_WINDOWS_RAW_KEYBOARD_INPUTSINK =
+  BG.pack
+    [ 0x53
+    , 0x44
+    , 0x4C
+    , 0x5F
+    , 0x57
+    , 0x49
+    , 0x4E
+    , 0x44
+    , 0x4F
+    , 0x57
+    , 0x53
+    , 0x5F
+    , 0x52
+    , 0x41
+    , 0x57
+    , 0x5F
+    , 0x4B
+    , 0x45
+    , 0x59
+    , 0x42
+    , 0x4F
+    , 0x41
+    , 0x52
+    , 0x44
+    , 0x5F
+    , 0x49
+    , 0x4E
+    , 0x50
+    , 0x55
+    , 0x54
+    , 0x53
+    , 0x49
+    , 0x4E
+    , 0x4B
+    ]
+
 -- | A variable controlling whether SDL uses Kernel Semaphores on Windows.
 --
 --     Kernel Semaphores are inter-process and require a context switch on every interaction. On Windows 8 and newer, the WaitOnAddress API is available. Using that and atomics to implement semaphores increases performance. SDL will fall back to Kernel Objects on older OS versions or if forced to by this hint.
@@ -11505,7 +11668,7 @@ sDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL@, literal @\"SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL\"@, defined at @SDL3\/SDL_hints.h 4540:9@
+--     [C declaration]: @macro SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL@, literal @\"SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL\"@, defined at @SDL3\/SDL_hints.h 4607:9@
 sDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL :: BG.ByteString
 sDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL =
   BG.pack
@@ -11551,7 +11714,7 @@ sDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOWS_INTRESOURCE_ICON@, literal @\"SDL_WINDOWS_INTRESOURCE_ICON\"@, defined at @SDL3\/SDL_hints.h 4550:9@
+--     [C declaration]: @macro SDL_HINT_WINDOWS_INTRESOURCE_ICON@, literal @\"SDL_WINDOWS_INTRESOURCE_ICON\"@, defined at @SDL3\/SDL_hints.h 4617:9@
 sDL_HINT_WINDOWS_INTRESOURCE_ICON :: BG.ByteString
 sDL_HINT_WINDOWS_INTRESOURCE_ICON =
   BG.pack
@@ -11591,7 +11754,7 @@ sDL_HINT_WINDOWS_INTRESOURCE_ICON =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL@, literal @\"SDL_WINDOWS_INTRESOURCE_ICON_SMALL\"@, defined at @SDL3\/SDL_hints.h 4560:9@
+--     [C declaration]: @macro SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL@, literal @\"SDL_WINDOWS_INTRESOURCE_ICON_SMALL\"@, defined at @SDL3\/SDL_hints.h 4627:9@
 sDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL :: BG.ByteString
 sDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL =
   BG.pack
@@ -11651,7 +11814,7 @@ sDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOWS_USE_D3D9EX@, literal @\"SDL_WINDOWS_USE_D3D9EX\"@, defined at @SDL3\/SDL_hints.h 4586:9@
+--     [C declaration]: @macro SDL_HINT_WINDOWS_USE_D3D9EX@, literal @\"SDL_WINDOWS_USE_D3D9EX\"@, defined at @SDL3\/SDL_hints.h 4653:9@
 sDL_HINT_WINDOWS_USE_D3D9EX :: BG.ByteString
 sDL_HINT_WINDOWS_USE_D3D9EX =
   BG.pack
@@ -11693,7 +11856,7 @@ sDL_HINT_WINDOWS_USE_D3D9EX =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_WINDOWS_ERASE_BACKGROUND_MODE@, literal @\"SDL_WINDOWS_ERASE_BACKGROUND_MODE\"@, defined at @SDL3\/SDL_hints.h 4603:9@
+--     [C declaration]: @macro SDL_HINT_WINDOWS_ERASE_BACKGROUND_MODE@, literal @\"SDL_WINDOWS_ERASE_BACKGROUND_MODE\"@, defined at @SDL3\/SDL_hints.h 4670:9@
 sDL_HINT_WINDOWS_ERASE_BACKGROUND_MODE :: BG.ByteString
 sDL_HINT_WINDOWS_ERASE_BACKGROUND_MODE =
   BG.pack
@@ -11748,7 +11911,7 @@ sDL_HINT_WINDOWS_ERASE_BACKGROUND_MODE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT@, literal @\"SDL_X11_FORCE_OVERRIDE_REDIRECT\"@, defined at @SDL3\/SDL_hints.h 4624:9@
+--     [C declaration]: @macro SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT@, literal @\"SDL_X11_FORCE_OVERRIDE_REDIRECT\"@, defined at @SDL3\/SDL_hints.h 4691:9@
 sDL_HINT_X11_FORCE_OVERRIDE_REDIRECT :: BG.ByteString
 sDL_HINT_X11_FORCE_OVERRIDE_REDIRECT =
   BG.pack
@@ -11793,7 +11956,7 @@ sDL_HINT_X11_FORCE_OVERRIDE_REDIRECT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_X11_WINDOW_TYPE@, literal @\"SDL_X11_WINDOW_TYPE\"@, defined at @SDL3\/SDL_hints.h 4641:9@
+--     [C declaration]: @macro SDL_HINT_X11_WINDOW_TYPE@, literal @\"SDL_X11_WINDOW_TYPE\"@, defined at @SDL3\/SDL_hints.h 4708:9@
 sDL_HINT_X11_WINDOW_TYPE :: BG.ByteString
 sDL_HINT_X11_WINDOW_TYPE =
   BG.pack
@@ -11826,7 +11989,7 @@ sDL_HINT_X11_WINDOW_TYPE =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_X11_XCB_LIBRARY@, literal @\"SDL_X11_XCB_LIBRARY\"@, defined at @SDL3\/SDL_hints.h 4652:9@
+--     [C declaration]: @macro SDL_HINT_X11_XCB_LIBRARY@, literal @\"SDL_X11_XCB_LIBRARY\"@, defined at @SDL3\/SDL_hints.h 4719:9@
 sDL_HINT_X11_XCB_LIBRARY :: BG.ByteString
 sDL_HINT_X11_XCB_LIBRARY =
   BG.pack
@@ -11863,7 +12026,7 @@ sDL_HINT_X11_XCB_LIBRARY =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_XINPUT_ENABLED@, literal @\"SDL_XINPUT_ENABLED\"@, defined at @SDL3\/SDL_hints.h 4667:9@
+--     [C declaration]: @macro SDL_HINT_XINPUT_ENABLED@, literal @\"SDL_XINPUT_ENABLED\"@, defined at @SDL3\/SDL_hints.h 4734:9@
 sDL_HINT_XINPUT_ENABLED :: BG.ByteString
 sDL_HINT_XINPUT_ENABLED =
   BG.pack
@@ -11907,7 +12070,7 @@ sDL_HINT_XINPUT_ENABLED =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_ASSERT@, literal @\"SDL_ASSERT\"@, defined at @SDL3\/SDL_hints.h 4691:9@
+--     [C declaration]: @macro SDL_HINT_ASSERT@, literal @\"SDL_ASSERT\"@, defined at @SDL3\/SDL_hints.h 4758:9@
 sDL_HINT_ASSERT :: BG.ByteString
 sDL_HINT_ASSERT =
   BG.pack [0x53, 0x44, 0x4C, 0x5F, 0x41, 0x53, 0x53, 0x45, 0x52, 0x54]
@@ -11924,7 +12087,7 @@ sDL_HINT_ASSERT =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_PEN_MOUSE_EVENTS@, literal @\"SDL_PEN_MOUSE_EVENTS\"@, defined at @SDL3\/SDL_hints.h 4706:9@
+--     [C declaration]: @macro SDL_HINT_PEN_MOUSE_EVENTS@, literal @\"SDL_PEN_MOUSE_EVENTS\"@, defined at @SDL3\/SDL_hints.h 4773:9@
 sDL_HINT_PEN_MOUSE_EVENTS :: BG.ByteString
 sDL_HINT_PEN_MOUSE_EVENTS =
   BG.pack
@@ -11962,7 +12125,7 @@ sDL_HINT_PEN_MOUSE_EVENTS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @macro SDL_HINT_PEN_TOUCH_EVENTS@, literal @\"SDL_PEN_TOUCH_EVENTS\"@, defined at @SDL3\/SDL_hints.h 4721:9@
+--     [C declaration]: @macro SDL_HINT_PEN_TOUCH_EVENTS@, literal @\"SDL_PEN_TOUCH_EVENTS\"@, defined at @SDL3\/SDL_hints.h 4788:9@
 sDL_HINT_PEN_TOUCH_EVENTS :: BG.ByteString
 sDL_HINT_PEN_TOUCH_EVENTS =
   BG.pack
@@ -11992,7 +12155,7 @@ sDL_HINT_PEN_TOUCH_EVENTS =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @enum SDL_HintPriority@, defined at @SDL3\/SDL_hints.h 4728:14@
+--     [C declaration]: @enum SDL_HintPriority@, defined at @SDL3\/SDL_hints.h 4795:14@
 newtype SDL_HintPriority = SDL_HintPriority
   { unwrap :: BG.CUInt
   }
@@ -12084,21 +12247,21 @@ instance HasCField.HasCField SDL_HintPriority "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_HINT_DEFAULT@, defined at @SDL3\/SDL_hints.h 4730:5@
+-- | [C declaration]: @SDL_HINT_DEFAULT@, defined at @SDL3\/SDL_hints.h 4797:5@
 pattern SDL_HINT_DEFAULT :: SDL_HintPriority
 pattern SDL_HINT_DEFAULT = SDL_HintPriority 0
 
--- | [C declaration]: @SDL_HINT_NORMAL@, defined at @SDL3\/SDL_hints.h 4731:5@
+-- | [C declaration]: @SDL_HINT_NORMAL@, defined at @SDL3\/SDL_hints.h 4798:5@
 pattern SDL_HINT_NORMAL :: SDL_HintPriority
 pattern SDL_HINT_NORMAL = SDL_HintPriority 1
 
--- | [C declaration]: @SDL_HINT_OVERRIDE@, defined at @SDL3\/SDL_hints.h 4732:5@
+-- | [C declaration]: @SDL_HINT_OVERRIDE@, defined at @SDL3\/SDL_hints.h 4799:5@
 pattern SDL_HINT_OVERRIDE :: SDL_HintPriority
 pattern SDL_HINT_OVERRIDE = SDL_HintPriority 2
 
 -- | Auxiliary type used by 'SDL_HintCallback'
 --
---     [C declaration]: @SDL_HintCallback@, defined at @SDL3\/SDL_hints.h 4866:23@
+--     [C declaration]: @SDL_HintCallback@, defined at @SDL3\/SDL_hints.h 4934:23@
 newtype SDL_HintCallback_Aux = SDL_HintCallback_Aux
   { unwrap
       :: BG.Ptr BG.Void
@@ -12192,7 +12355,7 @@ instance HasCField.HasCField SDL_HintCallback_Aux "unwrap" where
 
 -- | A callback used to send notifications of hint value changes.
 --
---     This is called an initial time during SDL_AddHintCallback with the hint\'s current value, and then again each time the hint\'s value changes.
+--     This is called an initial time during SDL_AddHintCallback with the hint\'s current value, and then again each time the hint\'s value changes. In the initial call, the current value is in both @oldValue@ and @newValue@.
 --
 --     [@userdata@]: what was passed as @userdata@ to @SDL_AddHintCallback()@.
 --
@@ -12208,7 +12371,7 @@ instance HasCField.HasCField SDL_HintCallback_Aux "unwrap" where
 --
 --     [See also]: 'sDL_AddHintCallback'
 --
---     [C declaration]: @SDL_HintCallback@, defined at @SDL3\/SDL_hints.h 4866:23@
+--     [C declaration]: @SDL_HintCallback@, defined at @SDL3\/SDL_hints.h 4934:23@
 newtype SDL_HintCallback = SDL_HintCallback
   { unwrap :: BG.FunPtr SDL_HintCallback_Aux
   }

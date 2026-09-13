@@ -63,7 +63,7 @@ data SDL_Mutex
 --
 --     @since 3.2.0
 --
---     [C declaration]: @struct SDL_RWLock@, defined at @SDL3\/SDL_mutex.h 437:16@
+--     [C declaration]: @struct SDL_RWLock@, defined at @SDL3\/SDL_mutex.h 438:16@
 data SDL_RWLock
 
 -- | A means to manage access to a resource, by count, between threads.
@@ -76,7 +76,7 @@ data SDL_RWLock
 --
 --     @since 3.2.0
 --
---     [C declaration]: @struct SDL_Semaphore@, defined at @SDL3\/SDL_mutex.h 682:16@
+--     [C declaration]: @struct SDL_Semaphore@, defined at @SDL3\/SDL_mutex.h 684:16@
 data SDL_Semaphore
 
 -- | A means to block multiple threads until a condition is satisfied.
@@ -89,14 +89,14 @@ data SDL_Semaphore
 --
 --     @since 3.2.0
 --
---     [C declaration]: @struct SDL_Condition@, defined at @SDL3\/SDL_mutex.h 839:16@
+--     [C declaration]: @struct SDL_Condition@, defined at @SDL3\/SDL_mutex.h 841:16@
 data SDL_Condition
 
 -- | The current status of an 'SDL_InitState' structure.
 --
 --     @since 3.2.0
 --
---     [C declaration]: @enum SDL_InitStatus@, defined at @SDL3\/SDL_mutex.h 973:14@
+--     [C declaration]: @enum SDL_InitStatus@, defined at @SDL3\/SDL_mutex.h 975:14@
 newtype SDL_InitStatus = SDL_InitStatus
   { unwrap :: BG.CUInt
   }
@@ -189,19 +189,19 @@ instance HasCField.HasCField SDL_InitStatus "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_INIT_STATUS_UNINITIALIZED@, defined at @SDL3\/SDL_mutex.h 975:5@
+-- | [C declaration]: @SDL_INIT_STATUS_UNINITIALIZED@, defined at @SDL3\/SDL_mutex.h 977:5@
 pattern SDL_INIT_STATUS_UNINITIALIZED :: SDL_InitStatus
 pattern SDL_INIT_STATUS_UNINITIALIZED = SDL_InitStatus 0
 
--- | [C declaration]: @SDL_INIT_STATUS_INITIALIZING@, defined at @SDL3\/SDL_mutex.h 976:5@
+-- | [C declaration]: @SDL_INIT_STATUS_INITIALIZING@, defined at @SDL3\/SDL_mutex.h 978:5@
 pattern SDL_INIT_STATUS_INITIALIZING :: SDL_InitStatus
 pattern SDL_INIT_STATUS_INITIALIZING = SDL_InitStatus 1
 
--- | [C declaration]: @SDL_INIT_STATUS_INITIALIZED@, defined at @SDL3\/SDL_mutex.h 977:5@
+-- | [C declaration]: @SDL_INIT_STATUS_INITIALIZED@, defined at @SDL3\/SDL_mutex.h 979:5@
 pattern SDL_INIT_STATUS_INITIALIZED :: SDL_InitStatus
 pattern SDL_INIT_STATUS_INITIALIZED = SDL_InitStatus 2
 
--- | [C declaration]: @SDL_INIT_STATUS_UNINITIALIZING@, defined at @SDL3\/SDL_mutex.h 978:5@
+-- | [C declaration]: @SDL_INIT_STATUS_UNINITIALIZING@, defined at @SDL3\/SDL_mutex.h 980:5@
 pattern SDL_INIT_STATUS_UNINITIALIZING :: SDL_InitStatus
 pattern SDL_INIT_STATUS_UNINITIALIZING = SDL_InitStatus 3
 
@@ -257,14 +257,14 @@ pattern SDL_INIT_STATUS_UNINITIALIZING = SDL_InitStatus 3
 --
 --     @since 3.2.0
 --
---     [C declaration]: @struct SDL_InitState@, defined at @SDL3\/SDL_mutex.h 1037:16@
+--     [C declaration]: @struct SDL_InitState@, defined at @SDL3\/SDL_mutex.h 1039:16@
 data SDL_InitState = SDL_InitState
   { status :: SDL3.Sys.Bindgen.Atomic.SDL_AtomicInt
-  -- ^ [C declaration]: @status@, defined at @SDL3\/SDL_mutex.h 1039:19@
+  -- ^ [C declaration]: @status@, defined at @SDL3\/SDL_mutex.h 1041:19@
   , thread :: SDL3.Sys.Bindgen.Thread.SDL_ThreadID
-  -- ^ [C declaration]: @thread@, defined at @SDL3\/SDL_mutex.h 1040:18@
+  -- ^ [C declaration]: @thread@, defined at @SDL3\/SDL_mutex.h 1042:18@
   , reserved :: BG.Ptr BG.Void
-  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_mutex.h 1041:11@
+  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_mutex.h 1043:11@
   }
   deriving stock (BG.Generic, Eq, Show)
 

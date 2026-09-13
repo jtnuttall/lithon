@@ -251,7 +251,7 @@ hs_bindgen_29e148c925d2e14a =
 
 -- | Get the default log output function.
 --
---     [Returns]: the default log output callback.
+--     [Returns]: the default log output callback. It should be called with NULL for the userdata argument.
 --
 --     [Thread safety]: It is safe to call this function from any thread.
 --
@@ -259,7 +259,7 @@ hs_bindgen_29e148c925d2e14a =
 --
 --     [See also]: 'sDL_SetLogOutputFunction', 'sDL_GetLogOutputFunction'
 --
---     [C declaration]: @SDL_GetDefaultLogOutputFunction@, defined at @SDL3\/SDL_log.h 499:51@
+--     [C declaration]: @SDL_GetDefaultLogOutputFunction@, defined at @SDL3\/SDL_log.h 500:51@
 sDL_GetDefaultLogOutputFunction :: IO SDL_LogOutputFunction
 sDL_GetDefaultLogOutputFunction =
   hs_bindgen_29e148c925d2e14a
@@ -287,7 +287,7 @@ hs_bindgen_50b31a8317423d85 =
 --
 --     [See also]: 'sDL_GetDefaultLogOutputFunction', 'sDL_SetLogOutputFunction'
 --
---     [C declaration]: @SDL_GetLogOutputFunction@, defined at @SDL3\/SDL_log.h 516:34@
+--     [C declaration]: @SDL_GetLogOutputFunction@, defined at @SDL3\/SDL_log.h 517:34@
 sDL_GetLogOutputFunction
   :: BG.Ptr SDL_LogOutputFunction
   -- ^
@@ -324,7 +324,7 @@ hs_bindgen_bef3e6ff73c88ce8 =
 --
 --     [See also]: 'sDL_GetDefaultLogOutputFunction', 'sDL_GetLogOutputFunction'
 --
---     [C declaration]: @SDL_SetLogOutputFunction@, defined at @SDL3\/SDL_log.h 531:34@
+--     [C declaration]: @SDL_SetLogOutputFunction@, defined at @SDL3\/SDL_log.h 532:34@
 sDL_SetLogOutputFunction
   :: SDL_LogOutputFunction
   -- ^

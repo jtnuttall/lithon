@@ -58,7 +58,7 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
          , "  SDL_ClipboardDataCallback arg1,"
          , "  SDL_ClipboardCleanupCallback arg2,"
          , "  void *arg3,"
-         , "  char const **arg4,"
+         , "  char const *const *arg4,"
          , "  size_t arg5"
          , ")"
          , "{"
@@ -261,7 +261,7 @@ hs_bindgen_d48cb2fd87e5c697
   :: SDL_ClipboardDataCallback
   -> SDL_ClipboardCleanupCallback
   -> BG.Ptr BG.Void
-  -> BG.Ptr (PtrConst.PtrConst BG.CChar)
+  -> PtrConst.PtrConst (PtrConst.PtrConst BG.CChar)
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CBool
 hs_bindgen_d48cb2fd87e5c697 =
@@ -295,7 +295,7 @@ sDL_SetClipboardData
   -- ^
   --
   --           [@userdata@]: an opaque pointer that will be forwarded to the callbacks.
-  -> BG.Ptr (PtrConst.PtrConst BG.CChar)
+  -> PtrConst.PtrConst (PtrConst.PtrConst BG.CChar)
   -- ^
   --
   --           [@mime_types@]: a list of mime-types that are being offered. SDL copies the given list.

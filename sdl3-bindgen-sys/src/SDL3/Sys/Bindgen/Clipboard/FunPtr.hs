@@ -72,7 +72,7 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
          , "  SDL_ClipboardDataCallback arg1,"
          , "  SDL_ClipboardCleanupCallback arg2,"
          , "  void *arg3,"
-         , "  char const **arg4,"
+         , "  char const *const *arg4,"
          , "  size_t arg5"
          , ")"
          , "{"
@@ -283,7 +283,7 @@ hs_bindgen_407833da207603f1
            ( SDL_ClipboardDataCallback
              -> SDL_ClipboardCleanupCallback
              -> BG.Ptr BG.Void
-             -> BG.Ptr (PtrConst.PtrConst BG.CChar)
+             -> PtrConst.PtrConst (PtrConst.PtrConst BG.CChar)
              -> HsBindgen.Runtime.LibC.CSize
              -> IO BG.CBool
            )
@@ -323,7 +323,7 @@ sDL_SetClipboardData
        ( SDL_ClipboardDataCallback
          -> SDL_ClipboardCleanupCallback
          -> BG.Ptr BG.Void
-         -> BG.Ptr (PtrConst.PtrConst BG.CChar)
+         -> PtrConst.PtrConst (PtrConst.PtrConst BG.CChar)
          -> HsBindgen.Runtime.LibC.CSize
          -> IO BG.CBool
        )

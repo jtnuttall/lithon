@@ -547,7 +547,7 @@ rectsEqualFloat =
 --
 --     @since 3.2.0
 --
---     [See also]: 'getRectIntersection'
+--     [See also]: 'getRectIntersectionFloat'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --

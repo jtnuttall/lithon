@@ -263,7 +263,7 @@ hs_bindgen_0e27a69a6cca6aac =
 --
 --     [See also]: @SDL_MemoryBarrierRelease@
 --
---     [C declaration]: @SDL_MemoryBarrierReleaseFunction@, defined at @SDL3\/SDL_atomic.h 192:34@
+--     [C declaration]: @SDL_MemoryBarrierReleaseFunction@, defined at @SDL3\/SDL_atomic.h 195:34@
 sDL_MemoryBarrierReleaseFunction :: IO ()
 sDL_MemoryBarrierReleaseFunction =
   hs_bindgen_0e27a69a6cca6aac
@@ -288,7 +288,7 @@ hs_bindgen_0eaa15705859b209 =
 --
 --     [See also]: @SDL_MemoryBarrierAcquire@
 --
---     [C declaration]: @SDL_MemoryBarrierAcquireFunction@, defined at @SDL3\/SDL_atomic.h 212:34@
+--     [C declaration]: @SDL_MemoryBarrierAcquireFunction@, defined at @SDL3\/SDL_atomic.h 215:34@
 sDL_MemoryBarrierAcquireFunction :: IO ()
 sDL_MemoryBarrierAcquireFunction =
   hs_bindgen_0eaa15705859b209
@@ -322,7 +322,7 @@ hs_bindgen_7528ef136d782538 =
 --
 --     [See also]: 'sDL_GetAtomicInt', 'sDL_SetAtomicInt'
 --
---     [C declaration]: @SDL_CompareAndSwapAtomicInt@, defined at @SDL3\/SDL_atomic.h 415:34@
+--     [C declaration]: @SDL_CompareAndSwapAtomicInt@, defined at @SDL3\/SDL_atomic.h 425:34@
 sDL_CompareAndSwapAtomicInt
   :: BG.Ptr SDL_AtomicInt
   -- ^
@@ -369,7 +369,7 @@ hs_bindgen_6267a61e0fd93b33 =
 --
 --     [See also]: 'sDL_GetAtomicInt'
 --
---     [C declaration]: @SDL_SetAtomicInt@, defined at @SDL3\/SDL_atomic.h 435:33@
+--     [C declaration]: @SDL_SetAtomicInt@, defined at @SDL3\/SDL_atomic.h 445:33@
 sDL_SetAtomicInt
   :: BG.Ptr SDL_AtomicInt
   -- ^
@@ -407,7 +407,7 @@ hs_bindgen_5d8655898ff6cb2a =
 --
 --     [See also]: 'sDL_SetAtomicInt'
 --
---     [C declaration]: @SDL_GetAtomicInt@, defined at @SDL3\/SDL_atomic.h 452:33@
+--     [C declaration]: @SDL_GetAtomicInt@, defined at @SDL3\/SDL_atomic.h 462:33@
 sDL_GetAtomicInt
   :: BG.Ptr SDL_AtomicInt
   -- ^
@@ -445,7 +445,7 @@ hs_bindgen_072d591dbe0586a7 =
 --
 --     [See also]: @SDL_AtomicDecRef@, @SDL_AtomicIncRef@
 --
---     [C declaration]: @SDL_AddAtomicInt@, defined at @SDL3\/SDL_atomic.h 473:33@
+--     [C declaration]: @SDL_AddAtomicInt@, defined at @SDL3\/SDL_atomic.h 483:33@
 sDL_AddAtomicInt
   :: BG.Ptr SDL_AtomicInt
   -- ^
@@ -487,7 +487,7 @@ hs_bindgen_f42a3f89648096cd =
 --
 --     [See also]: 'sDL_GetAtomicU32', 'sDL_SetAtomicU32'
 --
---     [C declaration]: @SDL_CompareAndSwapAtomicU32@, defined at @SDL3\/SDL_atomic.h 560:34@
+--     [C declaration]: @SDL_CompareAndSwapAtomicU32@, defined at @SDL3\/SDL_atomic.h 570:34@
 sDL_CompareAndSwapAtomicU32
   :: BG.Ptr SDL_AtomicU32
   -- ^
@@ -534,7 +534,7 @@ hs_bindgen_f11ee3aacbcad44d =
 --
 --     [See also]: 'sDL_GetAtomicU32'
 --
---     [C declaration]: @SDL_SetAtomicU32@, defined at @SDL3\/SDL_atomic.h 580:36@
+--     [C declaration]: @SDL_SetAtomicU32@, defined at @SDL3\/SDL_atomic.h 590:36@
 sDL_SetAtomicU32
   :: BG.Ptr SDL_AtomicU32
   -- ^
@@ -572,7 +572,7 @@ hs_bindgen_8dd395b4cca78369 =
 --
 --     [See also]: 'sDL_SetAtomicU32'
 --
---     [C declaration]: @SDL_GetAtomicU32@, defined at @SDL3\/SDL_atomic.h 597:36@
+--     [C declaration]: @SDL_GetAtomicU32@, defined at @SDL3\/SDL_atomic.h 607:36@
 sDL_GetAtomicU32
   :: BG.Ptr SDL_AtomicU32
   -- ^
@@ -608,7 +608,7 @@ hs_bindgen_faa1fbc7406c4097 =
 --
 --     @since 3.4.0
 --
---     [C declaration]: @SDL_AddAtomicU32@, defined at @SDL3\/SDL_atomic.h 615:36@
+--     [C declaration]: @SDL_AddAtomicU32@, defined at @SDL3\/SDL_atomic.h 625:36@
 sDL_AddAtomicU32
   :: BG.Ptr SDL_AtomicU32
   -- ^
@@ -650,7 +650,7 @@ hs_bindgen_b184ba517671509d =
 --
 --     [See also]: 'sDL_CompareAndSwapAtomicInt', 'sDL_GetAtomicPointer', 'sDL_SetAtomicPointer'
 --
---     [C declaration]: @SDL_CompareAndSwapAtomicPointer@, defined at @SDL3\/SDL_atomic.h 636:34@
+--     [C declaration]: @SDL_CompareAndSwapAtomicPointer@, defined at @SDL3\/SDL_atomic.h 646:34@
 sDL_CompareAndSwapAtomicPointer
   :: BG.Ptr (BG.Ptr BG.Void)
   -- ^
@@ -695,7 +695,7 @@ hs_bindgen_c511073c2deacde8 =
 --
 --     [See also]: 'sDL_CompareAndSwapAtomicPointer', 'sDL_GetAtomicPointer'
 --
---     [C declaration]: @SDL_SetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 655:36@
+--     [C declaration]: @SDL_SetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 665:36@
 sDL_SetAtomicPointer
   :: BG.Ptr (BG.Ptr BG.Void)
   -- ^
@@ -733,7 +733,7 @@ hs_bindgen_24c92517dd70cd57 =
 --
 --     [See also]: 'sDL_CompareAndSwapAtomicPointer', 'sDL_SetAtomicPointer'
 --
---     [C declaration]: @SDL_GetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 673:36@
+--     [C declaration]: @SDL_GetAtomicPointer@, defined at @SDL3\/SDL_atomic.h 683:36@
 sDL_GetAtomicPointer
   :: BG.Ptr (BG.Ptr BG.Void)
   -- ^

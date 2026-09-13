@@ -713,7 +713,7 @@ pattern DUMMY_ENUM_VALUE = SDL_DUMMY_ENUM 0
 
 -- | Auxiliary type used by 'SDL_malloc_func'
 --
---     [C declaration]: @SDL_malloc_func@, defined at @SDL3\/SDL_stdinc.h 1445:25@
+--     [C declaration]: @SDL_malloc_func@, defined at @SDL3\/SDL_stdinc.h 1446:25@
 newtype SDL_malloc_func_Aux = SDL_malloc_func_Aux
   { unwrap :: HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void)
   }
@@ -793,7 +793,7 @@ instance HasCField.HasCField SDL_malloc_func_Aux "unwrap" where
 --
 --     [See also]: 'sDL_malloc', 'sDL_GetOriginalMemoryFunctions', 'sDL_GetMemoryFunctions', 'sDL_SetMemoryFunctions'
 --
---     [C declaration]: @SDL_malloc_func@, defined at @SDL3\/SDL_stdinc.h 1445:25@
+--     [C declaration]: @SDL_malloc_func@, defined at @SDL3\/SDL_stdinc.h 1446:25@
 newtype SDL_malloc_func = SDL_malloc_func
   { unwrap :: BG.FunPtr SDL_malloc_func_Aux
   }
@@ -832,7 +832,7 @@ instance HasCField.HasCField SDL_malloc_func "unwrap" where
 
 -- | Auxiliary type used by 'SDL_calloc_func'
 --
---     [C declaration]: @SDL_calloc_func@, defined at @SDL3\/SDL_stdinc.h 1466:25@
+--     [C declaration]: @SDL_calloc_func@, defined at @SDL3\/SDL_stdinc.h 1467:25@
 newtype SDL_calloc_func_Aux = SDL_calloc_func_Aux
   { unwrap :: HsBindgen.Runtime.LibC.CSize -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void)
   }
@@ -915,7 +915,7 @@ instance HasCField.HasCField SDL_calloc_func_Aux "unwrap" where
 --
 --     [See also]: SDL_calloc, 'sDL_GetOriginalMemoryFunctions', 'sDL_GetMemoryFunctions', 'sDL_SetMemoryFunctions'
 --
---     [C declaration]: @SDL_calloc_func@, defined at @SDL3\/SDL_stdinc.h 1466:25@
+--     [C declaration]: @SDL_calloc_func@, defined at @SDL3\/SDL_stdinc.h 1467:25@
 newtype SDL_calloc_func = SDL_calloc_func
   { unwrap :: BG.FunPtr SDL_calloc_func_Aux
   }
@@ -954,7 +954,7 @@ instance HasCField.HasCField SDL_calloc_func "unwrap" where
 
 -- | Auxiliary type used by 'SDL_realloc_func'
 --
---     [C declaration]: @SDL_realloc_func@, defined at @SDL3\/SDL_stdinc.h 1487:25@
+--     [C declaration]: @SDL_realloc_func@, defined at @SDL3\/SDL_stdinc.h 1488:25@
 newtype SDL_realloc_func_Aux = SDL_realloc_func_Aux
   { unwrap :: BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void)
   }
@@ -1037,7 +1037,7 @@ instance HasCField.HasCField SDL_realloc_func_Aux "unwrap" where
 --
 --     [See also]: SDL_realloc, 'sDL_GetOriginalMemoryFunctions', 'sDL_GetMemoryFunctions', 'sDL_SetMemoryFunctions'
 --
---     [C declaration]: @SDL_realloc_func@, defined at @SDL3\/SDL_stdinc.h 1487:25@
+--     [C declaration]: @SDL_realloc_func@, defined at @SDL3\/SDL_stdinc.h 1488:25@
 newtype SDL_realloc_func = SDL_realloc_func
   { unwrap :: BG.FunPtr SDL_realloc_func_Aux
   }
@@ -1076,7 +1076,7 @@ instance HasCField.HasCField SDL_realloc_func "unwrap" where
 
 -- | Auxiliary type used by 'SDL_free_func'
 --
---     [C declaration]: @SDL_free_func@, defined at @SDL3\/SDL_stdinc.h 1505:24@
+--     [C declaration]: @SDL_free_func@, defined at @SDL3\/SDL_stdinc.h 1506:24@
 newtype SDL_free_func_Aux = SDL_free_func_Aux
   { unwrap :: BG.Ptr BG.Void -> IO ()
   }
@@ -1154,7 +1154,7 @@ instance HasCField.HasCField SDL_free_func_Aux "unwrap" where
 --
 --     [See also]: 'sDL_free', 'sDL_GetOriginalMemoryFunctions', 'sDL_GetMemoryFunctions', 'sDL_SetMemoryFunctions'
 --
---     [C declaration]: @SDL_free_func@, defined at @SDL3\/SDL_stdinc.h 1505:24@
+--     [C declaration]: @SDL_free_func@, defined at @SDL3\/SDL_stdinc.h 1506:24@
 newtype SDL_free_func = SDL_free_func
   { unwrap :: BG.FunPtr SDL_free_func_Aux
   }
@@ -1197,12 +1197,12 @@ instance HasCField.HasCField SDL_free_func "unwrap" where
 --
 --     [See also]: 'sDL_GetEnvironment', 'sDL_CreateEnvironment', 'sDL_GetEnvironmentVariable', 'sDL_GetEnvironmentVariables', 'sDL_SetEnvironmentVariable', 'sDL_UnsetEnvironmentVariable', 'sDL_DestroyEnvironment'
 --
---     [C declaration]: @struct SDL_Environment@, defined at @SDL3\/SDL_stdinc.h 1649:16@
+--     [C declaration]: @struct SDL_Environment@, defined at @SDL3\/SDL_stdinc.h 1650:16@
 data SDL_Environment
 
 -- | Auxiliary type used by 'SDL_CompareCallback'
 --
---     [C declaration]: @SDL_CompareCallback@, defined at @SDL3\/SDL_stdinc.h 1877:23@
+--     [C declaration]: @SDL_CompareCallback@, defined at @SDL3\/SDL_stdinc.h 1885:23@
 newtype SDL_CompareCallback_Aux = SDL_CompareCallback_Aux
   { unwrap :: PtrConst.PtrConst BG.Void -> PtrConst.PtrConst BG.Void -> IO BG.CInt
   }
@@ -1281,7 +1281,7 @@ instance HasCField.HasCField SDL_CompareCallback_Aux "unwrap" where
 --
 --     [See also]: 'sDL_bsearch', 'sDL_qsort'
 --
---     [C declaration]: @SDL_CompareCallback@, defined at @SDL3\/SDL_stdinc.h 1877:23@
+--     [C declaration]: @SDL_CompareCallback@, defined at @SDL3\/SDL_stdinc.h 1885:23@
 newtype SDL_CompareCallback = SDL_CompareCallback
   { unwrap :: BG.FunPtr SDL_CompareCallback_Aux
   }
@@ -1320,7 +1320,7 @@ instance HasCField.HasCField SDL_CompareCallback "unwrap" where
 
 -- | Auxiliary type used by 'SDL_CompareCallback_r'
 --
---     [C declaration]: @SDL_CompareCallback_r@, defined at @SDL3\/SDL_stdinc.h 1990:23@
+--     [C declaration]: @SDL_CompareCallback_r@, defined at @SDL3\/SDL_stdinc.h 1998:23@
 newtype SDL_CompareCallback_r_Aux = SDL_CompareCallback_r_Aux
   { unwrap :: BG.Ptr BG.Void -> PtrConst.PtrConst BG.Void -> PtrConst.PtrConst BG.Void -> IO BG.CInt
   }
@@ -1402,7 +1402,7 @@ instance HasCField.HasCField SDL_CompareCallback_r_Aux "unwrap" where
 --
 --     [See also]: 'sDL_qsort_r', 'sDL_bsearch_r'
 --
---     [C declaration]: @SDL_CompareCallback_r@, defined at @SDL3\/SDL_stdinc.h 1990:23@
+--     [C declaration]: @SDL_CompareCallback_r@, defined at @SDL3\/SDL_stdinc.h 1998:23@
 newtype SDL_CompareCallback_r = SDL_CompareCallback_r
   { unwrap :: BG.FunPtr SDL_CompareCallback_r_Aux
   }
@@ -1449,7 +1449,7 @@ instance HasCField.HasCField SDL_CompareCallback_r "unwrap" where
 --
 --     [See also]: 'sDL_StepBackUTF8', 'sDL_StepUTF8'
 --
---     [C declaration]: @macro SDL_INVALID_UNICODE_CODEPOINT@, defined at @SDL3\/SDL_stdinc.h 3977:9@
+--     [C declaration]: @macro SDL_INVALID_UNICODE_CODEPOINT@, defined at @SDL3\/SDL_stdinc.h 3985:9@
 sDL_INVALID_UNICODE_CODEPOINT :: BG.CInt
 sDL_INVALID_UNICODE_CODEPOINT = (65533 :: BG.CInt)
 
@@ -1459,7 +1459,7 @@ sDL_INVALID_UNICODE_CODEPOINT = (65533 :: BG.CInt)
 --
 --     [See also]: 'sDL_PI_F' pi (double)
 --
---     [C declaration]: @macro SDL_PI_D@, defined at @SDL3\/SDL_stdinc.h 4472:9@
+--     [C declaration]: @macro SDL_PI_D@, defined at @SDL3\/SDL_stdinc.h 4480:9@
 sDL_PI_D :: BG.CDouble
 sDL_PI_D = (3.141592653589793 :: BG.CDouble)
 
@@ -1469,11 +1469,11 @@ sDL_PI_D = (3.141592653589793 :: BG.CDouble)
 --
 --     [See also]: 'sDL_PI_D' pi (float)
 --
---     [C declaration]: @macro SDL_PI_F@, defined at @SDL3\/SDL_stdinc.h 4484:9@
+--     [C declaration]: @macro SDL_PI_F@, defined at @SDL3\/SDL_stdinc.h 4492:9@
 sDL_PI_F :: BG.CFloat
 sDL_PI_F = (3.1415927 :: BG.CFloat)
 
--- | [C declaration]: @struct SDL_iconv_data_t@, defined at @SDL3\/SDL_stdinc.h 5807:16@
+-- | [C declaration]: @struct SDL_iconv_data_t@, defined at @SDL3\/SDL_stdinc.h 5815:16@
 data SDL_iconv_data_t
 
 -- | An opaque handle representing string encoding conversion state.
@@ -1482,7 +1482,7 @@ data SDL_iconv_data_t
 --
 --     [See also]: 'sDL_iconv_open'
 --
---     [C declaration]: @SDL_iconv_t@, defined at @SDL3\/SDL_stdinc.h 5807:34@
+--     [C declaration]: @SDL_iconv_t@, defined at @SDL3\/SDL_stdinc.h 5815:34@
 newtype SDL_iconv_t = SDL_iconv_t
   { unwrap :: BG.Ptr SDL_iconv_data_t
   }
@@ -1521,7 +1521,7 @@ instance HasCField.HasCField SDL_iconv_t "unwrap" where
 
 -- | Auxiliary type used by 'SDL_FunctionPointer'
 --
---     [C declaration]: @SDL_FunctionPointer@, defined at @SDL3\/SDL_stdinc.h 6169:16@
+--     [C declaration]: @SDL_FunctionPointer@, defined at @SDL3\/SDL_stdinc.h 6177:16@
 newtype SDL_FunctionPointer_Aux = SDL_FunctionPointer_Aux
   { unwrap :: IO ()
   }
@@ -1586,7 +1586,7 @@ instance HasCField.HasCField SDL_FunctionPointer_Aux "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_FunctionPointer@, defined at @SDL3\/SDL_stdinc.h 6169:16@
+-- | [C declaration]: @SDL_FunctionPointer@, defined at @SDL3\/SDL_stdinc.h 6177:16@
 newtype SDL_FunctionPointer = SDL_FunctionPointer
   { unwrap :: BG.FunPtr SDL_FunctionPointer_Aux
   }

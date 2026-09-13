@@ -645,7 +645,7 @@ sDL_RemoveStoragePath
   -> PtrConst.PtrConst BG.CChar
   -- ^
   --
-  --           [@path@]: the path of the directory to enumerate.
+  --           [@path@]: the path to remove from the filesystem.
   -> IO BG.CBool
 sDL_RemoveStoragePath = hs_bindgen_76b7043c8ce038fa
 

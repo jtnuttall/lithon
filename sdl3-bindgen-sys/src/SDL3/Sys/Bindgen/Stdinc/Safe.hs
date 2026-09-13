@@ -1214,7 +1214,7 @@ hs_bindgen_0fa0437465ff2e3b =
 --
 --     [See also]: 'sDL_free', SDL_calloc, SDL_realloc, 'sDL_aligned_alloc'
 --
---     [C declaration]: @SDL_malloc@, defined at @SDL3\/SDL_stdinc.h 1341:47@
+--     [C declaration]: @SDL_malloc@, defined at @SDL3\/SDL_stdinc.h 1342:47@
 sDL_malloc
   :: HsBindgen.Runtime.LibC.CSize
   -- ^
@@ -1238,7 +1238,7 @@ hs_bindgen_12a69b8549cd3a89
 hs_bindgen_12a69b8549cd3a89 =
   BG.fromFFIType hs_bindgen_12a69b8549cd3a89_base
 
--- | [C declaration]: @SDL_calloc@, defined at @SDL3\/SDL_stdinc.h 1366:69@
+-- | [C declaration]: @SDL_calloc@, defined at @SDL3\/SDL_stdinc.h 1367:69@
 sDL_calloc
   :: HsBindgen.Runtime.LibC.CSize
   -- ^ [C declaration]: @nmemb@
@@ -1262,7 +1262,7 @@ hs_bindgen_749e3624b605eca6
 hs_bindgen_749e3624b605eca6 =
   BG.fromFFIType hs_bindgen_749e3624b605eca6_base
 
--- | [C declaration]: @SDL_realloc@, defined at @SDL3\/SDL_stdinc.h 1406:54@
+-- | [C declaration]: @SDL_realloc@, defined at @SDL3\/SDL_stdinc.h 1407:54@
 sDL_realloc
   :: BG.Ptr BG.Void
   -- ^ [C declaration]: @mem@
@@ -1296,7 +1296,7 @@ hs_bindgen_090b04617f4cc6c8 =
 --
 --     [See also]: 'sDL_malloc', SDL_calloc, SDL_realloc
 --
---     [C declaration]: @SDL_free@, defined at @SDL3\/SDL_stdinc.h 1426:34@
+--     [C declaration]: @SDL_free@, defined at @SDL3\/SDL_stdinc.h 1427:34@
 sDL_free
   :: BG.Ptr BG.Void
   -- ^
@@ -1332,7 +1332,7 @@ hs_bindgen_8ba528e1d8cc4754 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetOriginalMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1524:34@
+--     [C declaration]: @SDL_GetOriginalMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1525:34@
 sDL_GetOriginalMemoryFunctions
   :: BG.Ptr SDL_malloc_func
   -- ^
@@ -1381,7 +1381,7 @@ hs_bindgen_ad8799017bc65037 =
 --
 --     [See also]: 'sDL_SetMemoryFunctions', 'sDL_GetOriginalMemoryFunctions'
 --
---     [C declaration]: @SDL_GetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1546:34@
+--     [C declaration]: @SDL_GetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1547:34@
 sDL_GetMemoryFunctions
   :: BG.Ptr SDL_malloc_func
   -- ^
@@ -1435,7 +1435,7 @@ hs_bindgen_0320414e5ec49d1b =
 --
 --     [See also]: 'sDL_GetMemoryFunctions', 'sDL_GetOriginalMemoryFunctions'
 --
---     [C declaration]: @SDL_SetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1577:34@
+--     [C declaration]: @SDL_SetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1578:34@
 sDL_SetMemoryFunctions
   :: SDL_malloc_func
   -- ^
@@ -1487,7 +1487,7 @@ hs_bindgen_f88d3921cd5e4163 =
 --
 --     [See also]: 'sDL_aligned_free'
 --
---     [C declaration]: @SDL_aligned_alloc@, defined at @SDL3\/SDL_stdinc.h 1604:47@
+--     [C declaration]: @SDL_aligned_alloc@, defined at @SDL3\/SDL_stdinc.h 1605:47@
 sDL_aligned_alloc
   :: HsBindgen.Runtime.LibC.CSize
   -- ^
@@ -1525,7 +1525,7 @@ hs_bindgen_d2d698681f3145f2 =
 --
 --     [See also]: 'sDL_aligned_alloc'
 --
---     [C declaration]: @SDL_aligned_free@, defined at @SDL3\/SDL_stdinc.h 1622:34@
+--     [C declaration]: @SDL_aligned_free@, defined at @SDL3\/SDL_stdinc.h 1623:34@
 sDL_aligned_free
   :: BG.Ptr BG.Void
   -- ^
@@ -1552,7 +1552,7 @@ hs_bindgen_f0e7f10898be7ba4 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetNumAllocations@, defined at @SDL3\/SDL_stdinc.h 1634:33@
+--     [C declaration]: @SDL_GetNumAllocations@, defined at @SDL3\/SDL_stdinc.h 1635:33@
 sDL_GetNumAllocations :: IO BG.CInt
 sDL_GetNumAllocations = hs_bindgen_f0e7f10898be7ba4
 
@@ -1578,7 +1578,7 @@ hs_bindgen_e44727dd9f944e0a =
 --
 --     [See also]: 'sDL_GetEnvironmentVariable', 'sDL_GetEnvironmentVariables', 'sDL_SetEnvironmentVariable', 'sDL_UnsetEnvironmentVariable'
 --
---     [C declaration]: @SDL_GetEnvironment@, defined at @SDL3\/SDL_stdinc.h 1672:47@
+--     [C declaration]: @SDL_GetEnvironment@, defined at @SDL3\/SDL_stdinc.h 1673:47@
 sDL_GetEnvironment :: IO (BG.Ptr SDL_Environment)
 sDL_GetEnvironment = hs_bindgen_e44727dd9f944e0a
 
@@ -1605,7 +1605,7 @@ hs_bindgen_5c62fc7482159de0 =
 --
 --     [See also]: 'sDL_GetEnvironmentVariable', 'sDL_GetEnvironmentVariables', 'sDL_SetEnvironmentVariable', 'sDL_UnsetEnvironmentVariable', 'sDL_DestroyEnvironment'
 --
---     [C declaration]: @SDL_CreateEnvironment@, defined at @SDL3\/SDL_stdinc.h 1694:47@
+--     [C declaration]: @SDL_CreateEnvironment@, defined at @SDL3\/SDL_stdinc.h 1695:47@
 sDL_CreateEnvironment
   :: BG.CBool
   -- ^
@@ -1639,7 +1639,7 @@ hs_bindgen_4da0ee2273bc4013 =
 --
 --     [See also]: 'sDL_GetEnvironment', 'sDL_CreateEnvironment', 'sDL_GetEnvironmentVariables', 'sDL_SetEnvironmentVariable', 'sDL_UnsetEnvironmentVariable'
 --
---     [C declaration]: @SDL_GetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1714:42@
+--     [C declaration]: @SDL_GetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1715:42@
 sDL_GetEnvironmentVariable
   :: BG.Ptr SDL_Environment
   -- ^
@@ -1676,7 +1676,7 @@ hs_bindgen_4c1189e55e8583bb =
 --
 --     [See also]: 'sDL_GetEnvironment', 'sDL_CreateEnvironment', 'sDL_GetEnvironmentVariables', 'sDL_SetEnvironmentVariable', 'sDL_UnsetEnvironmentVariable'
 --
---     [C declaration]: @SDL_GetEnvironmentVariables@, defined at @SDL3\/SDL_stdinc.h 1735:37@
+--     [C declaration]: @SDL_GetEnvironmentVariables@, defined at @SDL3\/SDL_stdinc.h 1736:37@
 sDL_GetEnvironmentVariables
   :: BG.Ptr SDL_Environment
   -- ^
@@ -1715,7 +1715,7 @@ hs_bindgen_5824ff8a221d07c0 =
 --
 --     [See also]: 'sDL_GetEnvironment', 'sDL_CreateEnvironment', 'sDL_GetEnvironmentVariable', 'sDL_GetEnvironmentVariables', 'sDL_UnsetEnvironmentVariable'
 --
---     [C declaration]: @SDL_SetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1759:34@
+--     [C declaration]: @SDL_SetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1760:34@
 sDL_SetEnvironmentVariable
   :: BG.Ptr SDL_Environment
   -- ^
@@ -1762,7 +1762,7 @@ hs_bindgen_f695a3f593331aff =
 --
 --     [See also]: 'sDL_GetEnvironment', 'sDL_CreateEnvironment', 'sDL_GetEnvironmentVariable', 'sDL_GetEnvironmentVariables', 'sDL_SetEnvironmentVariable', 'sDL_UnsetEnvironmentVariable'
 --
---     [C declaration]: @SDL_UnsetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1780:34@
+--     [C declaration]: @SDL_UnsetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1781:34@
 sDL_UnsetEnvironmentVariable
   :: BG.Ptr SDL_Environment
   -- ^
@@ -1797,7 +1797,7 @@ hs_bindgen_1dd67a4722131c01 =
 --
 --     [See also]: 'sDL_CreateEnvironment'
 --
---     [C declaration]: @SDL_DestroyEnvironment@, defined at @SDL3\/SDL_stdinc.h 1794:34@
+--     [C declaration]: @SDL_DestroyEnvironment@, defined at @SDL3\/SDL_stdinc.h 1795:34@
 sDL_DestroyEnvironment
   :: BG.Ptr SDL_Environment
   -- ^
@@ -1821,6 +1821,8 @@ hs_bindgen_1af31e6913adf6ff =
 
 -- | Get the value of a variable in the environment.
 --
+--     The name of the variable is case sensitive on all platforms.
+--
 --     This function uses SDL\'s cached copy of the environment and is thread-safe.
 --
 --     [Returns]: a pointer to the value of the variable or NULL if it can\'t be found.
@@ -1829,7 +1831,7 @@ hs_bindgen_1af31e6913adf6ff =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_getenv@, defined at @SDL3\/SDL_stdinc.h 1809:42@
+--     [C declaration]: @SDL_getenv@, defined at @SDL3\/SDL_stdinc.h 1812:42@
 sDL_getenv
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -1855,6 +1857,8 @@ hs_bindgen_5a7e5c07a3b52c7c =
 --
 --     This function bypasses SDL\'s cached copy of the environment and is not thread-safe.
 --
+--     On some platforms, this may make case-insensitive matches, while other platforms are case-sensitive. It is best to be precise with strings used for queries through this interface. SDL_getenv is always case-sensitive, however.
+--
 --     [Returns]: a pointer to the value of the variable or NULL if it can\'t be found.
 --
 --     [Thread safety]: This function is not thread safe, consider using @SDL_getenv()@ instead.
@@ -1863,7 +1867,7 @@ hs_bindgen_5a7e5c07a3b52c7c =
 --
 --     [See also]: 'sDL_getenv'
 --
---     [C declaration]: @SDL_getenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1828:42@
+--     [C declaration]: @SDL_getenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1836:42@
 sDL_getenv_unsafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -1899,7 +1903,7 @@ hs_bindgen_e57ac980835e41db =
 --
 --     [See also]: 'sDL_SetEnvironmentVariable'
 --
---     [C declaration]: @SDL_setenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1846:33@
+--     [C declaration]: @SDL_setenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1854:33@
 sDL_setenv_unsafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -1939,7 +1943,7 @@ hs_bindgen_6237b0757e59fa37 =
 --
 --     [See also]: 'sDL_UnsetEnvironmentVariable'
 --
---     [C declaration]: @SDL_unsetenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1861:33@
+--     [C declaration]: @SDL_unsetenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1869:33@
 sDL_unsetenv_unsafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -2004,7 +2008,7 @@ hs_bindgen_b81d78a311d44f46 =
 --
 --     [See also]: 'sDL_bsearch', 'sDL_qsort_r'
 --
---     [C declaration]: @SDL_qsort@, defined at @SDL3\/SDL_stdinc.h 1923:34@
+--     [C declaration]: @SDL_qsort@, defined at @SDL3\/SDL_stdinc.h 1931:34@
 sDL_qsort
   :: BG.Ptr BG.Void
   -- ^
@@ -2086,7 +2090,7 @@ hs_bindgen_8c9a76f991574084 =
 --
 --     [See also]: 'sDL_bsearch_r', 'sDL_qsort'
 --
---     [C declaration]: @SDL_bsearch@, defined at @SDL3\/SDL_stdinc.h 1973:36@
+--     [C declaration]: @SDL_bsearch@, defined at @SDL3\/SDL_stdinc.h 1981:36@
 sDL_bsearch
   :: PtrConst.PtrConst BG.Void
   -- ^
@@ -2175,7 +2179,7 @@ hs_bindgen_d22a2fabdcd748eb =
 --
 --     [See also]: 'sDL_bsearch_r', 'sDL_qsort'
 --
---     [C declaration]: @SDL_qsort_r@, defined at @SDL3\/SDL_stdinc.h 2043:34@
+--     [C declaration]: @SDL_qsort_r@, defined at @SDL3\/SDL_stdinc.h 2051:34@
 sDL_qsort_r
   :: BG.Ptr BG.Void
   -- ^
@@ -2269,7 +2273,7 @@ hs_bindgen_9cce970e9842407b =
 --
 --     [See also]: 'sDL_bsearch', 'sDL_qsort_r'
 --
---     [C declaration]: @SDL_bsearch_r@, defined at @SDL3\/SDL_stdinc.h 2101:36@
+--     [C declaration]: @SDL_bsearch_r@, defined at @SDL3\/SDL_stdinc.h 2109:36@
 sDL_bsearch_r
   :: PtrConst.PtrConst BG.Void
   -- ^
@@ -2319,7 +2323,7 @@ hs_bindgen_3b7f43f8c476ee06 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_abs@, defined at @SDL3\/SDL_stdinc.h 2113:33@
+--     [C declaration]: @SDL_abs@, defined at @SDL3\/SDL_stdinc.h 2121:33@
 sDL_abs
   :: BG.CInt
   -- ^
@@ -2351,7 +2355,7 @@ hs_bindgen_9a00314812b7b060 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isalpha@, defined at @SDL3\/SDL_stdinc.h 2188:33@
+--     [C declaration]: @SDL_isalpha@, defined at @SDL3\/SDL_stdinc.h 2196:33@
 sDL_isalpha
   :: BG.CInt
   -- ^
@@ -2383,7 +2387,7 @@ hs_bindgen_f2e3b47d308f6330 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isalnum@, defined at @SDL3\/SDL_stdinc.h 2203:33@
+--     [C declaration]: @SDL_isalnum@, defined at @SDL3\/SDL_stdinc.h 2211:33@
 sDL_isalnum
   :: BG.CInt
   -- ^
@@ -2415,7 +2419,7 @@ hs_bindgen_94e1edfbd7c1b6fd =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isblank@, defined at @SDL3\/SDL_stdinc.h 2218:33@
+--     [C declaration]: @SDL_isblank@, defined at @SDL3\/SDL_stdinc.h 2226:33@
 sDL_isblank
   :: BG.CInt
   -- ^
@@ -2447,7 +2451,7 @@ hs_bindgen_f4e70f258fc0cd31 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_iscntrl@, defined at @SDL3\/SDL_stdinc.h 2233:33@
+--     [C declaration]: @SDL_iscntrl@, defined at @SDL3\/SDL_stdinc.h 2241:33@
 sDL_iscntrl
   :: BG.CInt
   -- ^
@@ -2479,7 +2483,7 @@ hs_bindgen_a92ce90ddf0e012f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isdigit@, defined at @SDL3\/SDL_stdinc.h 2248:33@
+--     [C declaration]: @SDL_isdigit@, defined at @SDL3\/SDL_stdinc.h 2256:33@
 sDL_isdigit
   :: BG.CInt
   -- ^
@@ -2511,7 +2515,7 @@ hs_bindgen_c2fe92c140d522e3 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isxdigit@, defined at @SDL3\/SDL_stdinc.h 2263:33@
+--     [C declaration]: @SDL_isxdigit@, defined at @SDL3\/SDL_stdinc.h 2271:33@
 sDL_isxdigit
   :: BG.CInt
   -- ^
@@ -2545,7 +2549,7 @@ hs_bindgen_abdf0b7703d7ef7b =
 --
 --     [See also]: 'sDL_isgraph', 'sDL_isalnum'
 --
---     [C declaration]: @SDL_ispunct@, defined at @SDL3\/SDL_stdinc.h 2281:33@
+--     [C declaration]: @SDL_ispunct@, defined at @SDL3\/SDL_stdinc.h 2289:33@
 sDL_ispunct
   :: BG.CInt
   -- ^
@@ -2589,7 +2593,7 @@ hs_bindgen_b0c62a95d4008bcb =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isspace@, defined at @SDL3\/SDL_stdinc.h 2303:33@
+--     [C declaration]: @SDL_isspace@, defined at @SDL3\/SDL_stdinc.h 2311:33@
 sDL_isspace
   :: BG.CInt
   -- ^
@@ -2621,7 +2625,7 @@ hs_bindgen_dbe8ad5b2415f52b =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isupper@, defined at @SDL3\/SDL_stdinc.h 2318:33@
+--     [C declaration]: @SDL_isupper@, defined at @SDL3\/SDL_stdinc.h 2326:33@
 sDL_isupper
   :: BG.CInt
   -- ^
@@ -2653,7 +2657,7 @@ hs_bindgen_4f1c801e2ffe74d9 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_islower@, defined at @SDL3\/SDL_stdinc.h 2333:33@
+--     [C declaration]: @SDL_islower@, defined at @SDL3\/SDL_stdinc.h 2341:33@
 sDL_islower
   :: BG.CInt
   -- ^
@@ -2687,7 +2691,7 @@ hs_bindgen_1de66809f06ec2cf =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isprint@, defined at @SDL3\/SDL_stdinc.h 2352:33@
+--     [C declaration]: @SDL_isprint@, defined at @SDL3\/SDL_stdinc.h 2360:33@
 sDL_isprint
   :: BG.CInt
   -- ^
@@ -2723,7 +2727,7 @@ hs_bindgen_7cecb757f16ce85d =
 --
 --     [See also]: 'sDL_isprint'
 --
---     [C declaration]: @SDL_isgraph@, defined at @SDL3\/SDL_stdinc.h 2373:33@
+--     [C declaration]: @SDL_isgraph@, defined at @SDL3\/SDL_stdinc.h 2381:33@
 sDL_isgraph
   :: BG.CInt
   -- ^
@@ -2757,7 +2761,7 @@ hs_bindgen_799fe4e6fc639bc0 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_toupper@, defined at @SDL3\/SDL_stdinc.h 2391:33@
+--     [C declaration]: @SDL_toupper@, defined at @SDL3\/SDL_stdinc.h 2399:33@
 sDL_toupper
   :: BG.CInt
   -- ^
@@ -2791,7 +2795,7 @@ hs_bindgen_af600e5bb74004b2 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_tolower@, defined at @SDL3\/SDL_stdinc.h 2409:33@
+--     [C declaration]: @SDL_tolower@, defined at @SDL3\/SDL_stdinc.h 2417:33@
 sDL_tolower
   :: BG.CInt
   -- ^
@@ -2829,7 +2833,7 @@ hs_bindgen_8b9d7fd6e4874342 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_crc16@, defined at @SDL3\/SDL_stdinc.h 2430:36@
+--     [C declaration]: @SDL_crc16@, defined at @SDL3\/SDL_stdinc.h 2438:36@
 sDL_crc16
   :: Uint16
   -- ^
@@ -2875,7 +2879,7 @@ hs_bindgen_20e1e20820f9c17a =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_crc32@, defined at @SDL3\/SDL_stdinc.h 2451:36@
+--     [C declaration]: @SDL_crc32@, defined at @SDL3\/SDL_stdinc.h 2459:36@
 sDL_crc32
   :: Uint32
   -- ^
@@ -2923,7 +2927,7 @@ hs_bindgen_e26385eb1b169df1 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_murmur3_32@, defined at @SDL3\/SDL_stdinc.h 2477:36@
+--     [C declaration]: @SDL_murmur3_32@, defined at @SDL3\/SDL_stdinc.h 2485:36@
 sDL_murmur3_32
   :: PtrConst.PtrConst BG.Void
   -- ^
@@ -2969,7 +2973,7 @@ hs_bindgen_39f43c1520a45f57 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_memset4@, defined at @SDL3\/SDL_stdinc.h 2601:36@
+--     [C declaration]: @SDL_memset4@, defined at @SDL3\/SDL_stdinc.h 2609:36@
 sDL_memset4
   :: BG.Ptr BG.Void
   -- ^
@@ -3011,7 +3015,7 @@ hs_bindgen_1386d72429f6b9cb =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_memcmp@, defined at @SDL3\/SDL_stdinc.h 2683:33@
+--     [C declaration]: @SDL_memcmp@, defined at @SDL3\/SDL_stdinc.h 2691:33@
 sDL_memcmp
   :: PtrConst.PtrConst BG.Void
   -- ^
@@ -3057,7 +3061,7 @@ hs_bindgen_e6c3253fb4b72427 =
 --
 --     [See also]: 'sDL_wcsnlen', 'sDL_utf8strlen', 'sDL_utf8strnlen'
 --
---     [C declaration]: @SDL_wcslen@, defined at @SDL3\/SDL_stdinc.h 2710:36@
+--     [C declaration]: @SDL_wcslen@, defined at @SDL3\/SDL_stdinc.h 2718:36@
 sDL_wcslen
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3099,7 +3103,7 @@ hs_bindgen_da04478d43043c90 =
 --
 --     [See also]: 'sDL_wcslen', 'sDL_utf8strlen', 'sDL_utf8strnlen'
 --
---     [C declaration]: @SDL_wcsnlen@, defined at @SDL3\/SDL_stdinc.h 2741:36@
+--     [C declaration]: @SDL_wcsnlen@, defined at @SDL3\/SDL_stdinc.h 2749:36@
 sDL_wcsnlen
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3145,7 +3149,7 @@ hs_bindgen_82a9094f0d522cdf =
 --
 --     [See also]: 'sDL_wcslcat'
 --
---     [C declaration]: @SDL_wcslcpy@, defined at @SDL3\/SDL_stdinc.h 2768:36@
+--     [C declaration]: @SDL_wcslcpy@, defined at @SDL3\/SDL_stdinc.h 2776:36@
 sDL_wcslcpy
   :: BG.Ptr HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3195,7 +3199,7 @@ hs_bindgen_c85ef13eabbd96dd =
 --
 --     [See also]: 'sDL_wcslcpy'
 --
---     [C declaration]: @SDL_wcslcat@, defined at @SDL3\/SDL_stdinc.h 2797:36@
+--     [C declaration]: @SDL_wcslcat@, defined at @SDL3\/SDL_stdinc.h 2805:36@
 sDL_wcslcat
   :: BG.Ptr HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3237,7 +3241,7 @@ hs_bindgen_9a5bf9db9506735d =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_wcsdup@, defined at @SDL3\/SDL_stdinc.h 2815:39@
+--     [C declaration]: @SDL_wcsdup@, defined at @SDL3\/SDL_stdinc.h 2823:39@
 sDL_wcsdup
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3273,7 +3277,7 @@ hs_bindgen_8807485ad58a476c =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_wcsstr@, defined at @SDL3\/SDL_stdinc.h 2835:39@
+--     [C declaration]: @SDL_wcsstr@, defined at @SDL3\/SDL_stdinc.h 2843:39@
 sDL_wcsstr
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3315,7 +3319,7 @@ hs_bindgen_0f95369992d6076d =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_wcsnstr@, defined at @SDL3\/SDL_stdinc.h 2860:39@
+--     [C declaration]: @SDL_wcsnstr@, defined at @SDL3\/SDL_stdinc.h 2868:39@
 sDL_wcsnstr
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3357,7 +3361,7 @@ hs_bindgen_a56659eded1129eb =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_wcscmp@, defined at @SDL3\/SDL_stdinc.h 2879:33@
+--     [C declaration]: @SDL_wcscmp@, defined at @SDL3\/SDL_stdinc.h 2887:33@
 sDL_wcscmp
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3401,7 +3405,7 @@ hs_bindgen_f249ec61a8d5978a =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_wcsncmp@, defined at @SDL3\/SDL_stdinc.h 2910:33@
+--     [C declaration]: @SDL_wcsncmp@, defined at @SDL3\/SDL_stdinc.h 2918:33@
 sDL_wcsncmp
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3445,7 +3449,7 @@ hs_bindgen_0e487d7f98097b0d =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_wcscasecmp@, defined at @SDL3\/SDL_stdinc.h 2940:33@
+--     [C declaration]: @SDL_wcscasecmp@, defined at @SDL3\/SDL_stdinc.h 2948:33@
 sDL_wcscasecmp
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3491,7 +3495,7 @@ hs_bindgen_9a4ad44438974867 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_wcsncasecmp@, defined at @SDL3\/SDL_stdinc.h 2982:33@
+--     [C declaration]: @SDL_wcsncasecmp@, defined at @SDL3\/SDL_stdinc.h 2990:33@
 sDL_wcsncasecmp
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -- ^
@@ -3535,7 +3539,7 @@ hs_bindgen_574becd3bb71e7b9 =
 --
 --     [See also]: 'sDL_strnlen', 'sDL_utf8strlen', 'sDL_utf8strnlen'
 --
---     [C declaration]: @SDL_strlen@, defined at @SDL3\/SDL_stdinc.h 3029:36@
+--     [C declaration]: @SDL_strlen@, defined at @SDL3\/SDL_stdinc.h 3037:36@
 sDL_strlen
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3573,7 +3577,7 @@ hs_bindgen_9232c1cbf65df9e5 =
 --
 --     [See also]: 'sDL_strlen', 'sDL_utf8strlen', 'sDL_utf8strnlen'
 --
---     [C declaration]: @SDL_strnlen@, defined at @SDL3\/SDL_stdinc.h 3053:36@
+--     [C declaration]: @SDL_strnlen@, defined at @SDL3\/SDL_stdinc.h 3061:36@
 sDL_strnlen
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3619,7 +3623,7 @@ hs_bindgen_1a460cf112b7fd68 =
 --
 --     [See also]: 'sDL_strlcat', 'sDL_utf8strlcpy'
 --
---     [C declaration]: @SDL_strlcpy@, defined at @SDL3\/SDL_stdinc.h 3082:36@
+--     [C declaration]: @SDL_strlcpy@, defined at @SDL3\/SDL_stdinc.h 3090:36@
 sDL_strlcpy
   :: BG.Ptr BG.CChar
   -- ^
@@ -3669,7 +3673,7 @@ hs_bindgen_10b5c948dc68c882 =
 --
 --     [See also]: 'sDL_strlcpy'
 --
---     [C declaration]: @SDL_utf8strlcpy@, defined at @SDL3\/SDL_stdinc.h 3110:36@
+--     [C declaration]: @SDL_utf8strlcpy@, defined at @SDL3\/SDL_stdinc.h 3118:36@
 sDL_utf8strlcpy
   :: BG.Ptr BG.CChar
   -- ^
@@ -3719,7 +3723,7 @@ hs_bindgen_8132fc050b3dda62 =
 --
 --     [See also]: 'sDL_strlcpy'
 --
---     [C declaration]: @SDL_strlcat@, defined at @SDL3\/SDL_stdinc.h 3138:36@
+--     [C declaration]: @SDL_strlcat@, defined at @SDL3\/SDL_stdinc.h 3146:36@
 sDL_strlcat
   :: BG.Ptr BG.CChar
   -- ^
@@ -3761,7 +3765,7 @@ hs_bindgen_e91dd28c0e034753 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strdup@, defined at @SDL3\/SDL_stdinc.h 3156:47@
+--     [C declaration]: @SDL_strdup@, defined at @SDL3\/SDL_stdinc.h 3164:47@
 sDL_strdup
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3799,7 +3803,7 @@ hs_bindgen_9f484a433e6fd1be =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strndup@, defined at @SDL3\/SDL_stdinc.h 3181:47@
+--     [C declaration]: @SDL_strndup@, defined at @SDL3\/SDL_stdinc.h 3189:47@
 sDL_strndup
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3837,7 +3841,7 @@ hs_bindgen_fd83e6da8cdd54dc =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strrev@, defined at @SDL3\/SDL_stdinc.h 3202:36@
+--     [C declaration]: @SDL_strrev@, defined at @SDL3\/SDL_stdinc.h 3210:36@
 sDL_strrev
   :: BG.Ptr BG.CChar
   -- ^
@@ -3873,7 +3877,7 @@ hs_bindgen_4821ca9fe328d7f0 =
 --
 --     [See also]: 'sDL_strlwr'
 --
---     [C declaration]: @SDL_strupr@, defined at @SDL3\/SDL_stdinc.h 3223:36@
+--     [C declaration]: @SDL_strupr@, defined at @SDL3\/SDL_stdinc.h 3231:36@
 sDL_strupr
   :: BG.Ptr BG.CChar
   -- ^
@@ -3909,7 +3913,7 @@ hs_bindgen_b313d67572ea455e =
 --
 --     [See also]: 'sDL_strupr'
 --
---     [C declaration]: @SDL_strlwr@, defined at @SDL3\/SDL_stdinc.h 3244:36@
+--     [C declaration]: @SDL_strlwr@, defined at @SDL3\/SDL_stdinc.h 3252:36@
 sDL_strlwr
   :: BG.Ptr BG.CChar
   -- ^
@@ -3945,7 +3949,7 @@ hs_bindgen_9b8b80f67620d0c0 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strchr@, defined at @SDL3\/SDL_stdinc.h 3264:36@
+--     [C declaration]: @SDL_strchr@, defined at @SDL3\/SDL_stdinc.h 3272:36@
 sDL_strchr
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3985,7 +3989,7 @@ hs_bindgen_61eb1646e2706ec9 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strrchr@, defined at @SDL3\/SDL_stdinc.h 3283:36@
+--     [C declaration]: @SDL_strrchr@, defined at @SDL3\/SDL_stdinc.h 3291:36@
 sDL_strrchr
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4025,7 +4029,7 @@ hs_bindgen_09dae8bc6d27bfa7 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strstr@, defined at @SDL3\/SDL_stdinc.h 3303:36@
+--     [C declaration]: @SDL_strstr@, defined at @SDL3\/SDL_stdinc.h 3311:36@
 sDL_strstr
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4067,7 +4071,7 @@ hs_bindgen_b253d6195ad29db6 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strnstr@, defined at @SDL3\/SDL_stdinc.h 3326:36@
+--     [C declaration]: @SDL_strnstr@, defined at @SDL3\/SDL_stdinc.h 3334:36@
 sDL_strnstr
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4111,7 +4115,7 @@ hs_bindgen_845c9ada7f0145b4 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strcasestr@, defined at @SDL3\/SDL_stdinc.h 3354:36@
+--     [C declaration]: @SDL_strcasestr@, defined at @SDL3\/SDL_stdinc.h 3362:36@
 sDL_strcasestr
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4157,7 +4161,7 @@ hs_bindgen_92aad5310bed80bf =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strtok_r@, defined at @SDL3\/SDL_stdinc.h 3383:36@
+--     [C declaration]: @SDL_strtok_r@, defined at @SDL3\/SDL_stdinc.h 3391:36@
 sDL_strtok_r
   :: BG.Ptr BG.CChar
   -- ^
@@ -4203,7 +4207,7 @@ hs_bindgen_2fe9c3d14ead61fa =
 --
 --     [See also]: 'sDL_utf8strnlen', 'sDL_strlen'
 --
---     [C declaration]: @SDL_utf8strlen@, defined at @SDL3\/SDL_stdinc.h 3411:36@
+--     [C declaration]: @SDL_utf8strlen@, defined at @SDL3\/SDL_stdinc.h 3419:36@
 sDL_utf8strlen
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4245,7 +4249,7 @@ hs_bindgen_7e1dc736bb92cf02 =
 --
 --     [See also]: 'sDL_utf8strlen', 'sDL_strnlen'
 --
---     [C declaration]: @SDL_utf8strnlen@, defined at @SDL3\/SDL_stdinc.h 3444:36@
+--     [C declaration]: @SDL_utf8strnlen@, defined at @SDL3\/SDL_stdinc.h 3452:36@
 sDL_utf8strnlen
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4289,7 +4293,7 @@ hs_bindgen_5e87f4eb430750ff =
 --
 --     [See also]: 'sDL_uitoa', @SDL_ltoa@, 'sDL_lltoa'
 --
---     [C declaration]: @SDL_itoa@, defined at @SDL3\/SDL_stdinc.h 3472:36@
+--     [C declaration]: @SDL_itoa@, defined at @SDL3\/SDL_stdinc.h 3480:36@
 sDL_itoa
   :: BG.CInt
   -- ^
@@ -4337,7 +4341,7 @@ hs_bindgen_6593301ad3b87e96 =
 --
 --     [See also]: 'sDL_itoa', @SDL_ultoa@, 'sDL_ulltoa'
 --
---     [C declaration]: @SDL_uitoa@, defined at @SDL3\/SDL_stdinc.h 3500:36@
+--     [C declaration]: @SDL_uitoa@, defined at @SDL3\/SDL_stdinc.h 3508:36@
 sDL_uitoa
   :: BG.CUInt
   -- ^
@@ -4385,7 +4389,7 @@ hs_bindgen_49dab071ddd94418 =
 --
 --     [See also]: 'sDL_ulltoa', 'sDL_itoa', @SDL_ltoa@
 --
---     [C declaration]: @SDL_lltoa@, defined at @SDL3\/SDL_stdinc.h 3586:36@
+--     [C declaration]: @SDL_lltoa@, defined at @SDL3\/SDL_stdinc.h 3594:36@
 sDL_lltoa
   :: BG.CLLong
   -- ^
@@ -4433,7 +4437,7 @@ hs_bindgen_8c172a64279b6c99 =
 --
 --     [See also]: 'sDL_lltoa', 'sDL_uitoa', @SDL_ultoa@
 --
---     [C declaration]: @SDL_ulltoa@, defined at @SDL3\/SDL_stdinc.h 3614:36@
+--     [C declaration]: @SDL_ulltoa@, defined at @SDL3\/SDL_stdinc.h 3622:36@
 sDL_ulltoa
   :: BG.CULLong
   -- ^
@@ -4475,7 +4479,7 @@ hs_bindgen_7ec5dbb16b1ec441 =
 --
 --     [See also]: 'sDL_atof', @SDL_strtol@, @SDL_strtoul@, 'sDL_strtoll', 'sDL_strtoull', 'sDL_strtod', 'sDL_itoa'
 --
---     [C declaration]: @SDL_atoi@, defined at @SDL3\/SDL_stdinc.h 3638:33@
+--     [C declaration]: @SDL_atoi@, defined at @SDL3\/SDL_stdinc.h 3646:33@
 sDL_atoi
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4509,7 +4513,7 @@ hs_bindgen_3da67c3a67185baf =
 --
 --     [See also]: 'sDL_atoi', @SDL_strtol@, @SDL_strtoul@, 'sDL_strtoll', 'sDL_strtoull', 'sDL_strtod'
 --
---     [C declaration]: @SDL_atof@, defined at @SDL3\/SDL_stdinc.h 3660:36@
+--     [C declaration]: @SDL_atof@, defined at @SDL3\/SDL_stdinc.h 3668:36@
 sDL_atof
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4549,7 +4553,7 @@ hs_bindgen_2d4f949f38ae668c =
 --
 --     [See also]: 'sDL_atoi', 'sDL_atof', @SDL_strtol@, @SDL_strtoul@, 'sDL_strtoull', 'sDL_strtod', 'sDL_lltoa'
 --
---     [C declaration]: @SDL_strtoll@, defined at @SDL3\/SDL_stdinc.h 3762:39@
+--     [C declaration]: @SDL_strtoll@, defined at @SDL3\/SDL_stdinc.h 3770:39@
 sDL_strtoll
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4597,7 +4601,7 @@ hs_bindgen_af470a839fcf6fbd =
 --
 --     [See also]: 'sDL_atoi', 'sDL_atof', @SDL_strtol@, 'sDL_strtoll', @SDL_strtoul@, 'sDL_strtod', 'sDL_ulltoa'
 --
---     [C declaration]: @SDL_strtoull@, defined at @SDL3\/SDL_stdinc.h 3796:48@
+--     [C declaration]: @SDL_strtoull@, defined at @SDL3\/SDL_stdinc.h 3804:48@
 sDL_strtoull
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4647,7 +4651,7 @@ hs_bindgen_717e481bd213c968 =
 --
 --     [See also]: 'sDL_atoi', 'sDL_atof', @SDL_strtol@, 'sDL_strtoll', @SDL_strtoul@, 'sDL_strtoull'
 --
---     [C declaration]: @SDL_strtod@, defined at @SDL3\/SDL_stdinc.h 3826:36@
+--     [C declaration]: @SDL_strtod@, defined at @SDL3\/SDL_stdinc.h 3834:36@
 sDL_strtod
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4685,7 +4689,7 @@ hs_bindgen_114ae5114f0f2f61 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strcmp@, defined at @SDL3\/SDL_stdinc.h 3846:33@
+--     [C declaration]: @SDL_strcmp@, defined at @SDL3\/SDL_stdinc.h 3854:33@
 sDL_strcmp
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4729,7 +4733,7 @@ hs_bindgen_07f412ca6ac64bca =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strncmp@, defined at @SDL3\/SDL_stdinc.h 3876:33@
+--     [C declaration]: @SDL_strncmp@, defined at @SDL3\/SDL_stdinc.h 3884:33@
 sDL_strncmp
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4773,7 +4777,7 @@ hs_bindgen_931c05e65f298770 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strcasecmp@, defined at @SDL3\/SDL_stdinc.h 3904:33@
+--     [C declaration]: @SDL_strcasecmp@, defined at @SDL3\/SDL_stdinc.h 3912:33@
 sDL_strcasecmp
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4819,7 +4823,7 @@ hs_bindgen_974c20bb6f7b7d03 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strncasecmp@, defined at @SDL3\/SDL_stdinc.h 3944:33@
+--     [C declaration]: @SDL_strncasecmp@, defined at @SDL3\/SDL_stdinc.h 3952:33@
 sDL_strncasecmp
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4859,7 +4863,7 @@ hs_bindgen_50473abaffb3417e =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strpbrk@, defined at @SDL3\/SDL_stdinc.h 3962:36@
+--     [C declaration]: @SDL_strpbrk@, defined at @SDL3\/SDL_stdinc.h 3970:36@
 sDL_strpbrk
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -4911,7 +4915,7 @@ hs_bindgen_e49242de1cec91d5 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_StepUTF8@, defined at @SDL3\/SDL_stdinc.h 4022:36@
+--     [C declaration]: @SDL_StepUTF8@, defined at @SDL3\/SDL_stdinc.h 4030:36@
 sDL_StepUTF8
   :: BG.Ptr (PtrConst.PtrConst BG.CChar)
   -- ^
@@ -4957,7 +4961,7 @@ hs_bindgen_0346c467944ee189 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_StepBackUTF8@, defined at @SDL3\/SDL_stdinc.h 4053:36@
+--     [C declaration]: @SDL_StepBackUTF8@, defined at @SDL3\/SDL_stdinc.h 4061:36@
 sDL_StepBackUTF8
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -5001,7 +5005,7 @@ hs_bindgen_bdc98e385efc6ab7 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_UCS4ToUTF8@, defined at @SDL3\/SDL_stdinc.h 4082:36@
+--     [C declaration]: @SDL_UCS4ToUTF8@, defined at @SDL3\/SDL_stdinc.h 4090:36@
 sDL_UCS4ToUTF8
   :: Uint32
   -- ^
@@ -5037,7 +5041,7 @@ hs_bindgen_bd195a3a2b34e483 =
 --
 --     [See also]: 'sDL_rand', 'sDL_rand_bits', 'sDL_randf'
 --
---     [C declaration]: @SDL_srand@, defined at @SDL3\/SDL_stdinc.h 4294:34@
+--     [C declaration]: @SDL_srand@, defined at @SDL3\/SDL_stdinc.h 4302:34@
 sDL_srand
   :: Uint64
   -- ^
@@ -5079,7 +5083,7 @@ hs_bindgen_4b2da7e53b63ed17 =
 --
 --     [See also]: 'sDL_srand', 'sDL_randf'
 --
---     [C declaration]: @SDL_rand@, defined at @SDL3\/SDL_stdinc.h 4328:36@
+--     [C declaration]: @SDL_rand@, defined at @SDL3\/SDL_stdinc.h 4336:36@
 sDL_rand
   :: Sint32
   -- ^
@@ -5112,7 +5116,7 @@ hs_bindgen_91fe5edd016e0570 =
 --
 --     [See also]: 'sDL_srand', 'sDL_rand'
 --
---     [C declaration]: @SDL_randf@, defined at @SDL3\/SDL_stdinc.h 4351:35@
+--     [C declaration]: @SDL_randf@, defined at @SDL3\/SDL_stdinc.h 4359:35@
 sDL_randf :: IO BG.CFloat
 sDL_randf = hs_bindgen_91fe5edd016e0570
 
@@ -5140,7 +5144,7 @@ hs_bindgen_5d81c1c12775308d =
 --
 --     [See also]: 'sDL_rand', 'sDL_randf', 'sDL_srand'
 --
---     [C declaration]: @SDL_rand_bits@, defined at @SDL3\/SDL_stdinc.h 4374:36@
+--     [C declaration]: @SDL_rand_bits@, defined at @SDL3\/SDL_stdinc.h 4382:36@
 sDL_rand_bits :: IO Uint32
 sDL_rand_bits = hs_bindgen_5d81c1c12775308d
 
@@ -5177,7 +5181,7 @@ hs_bindgen_59abfd01a8d7b8f7 =
 --
 --     [See also]: 'sDL_rand', 'sDL_rand_bits_r', 'sDL_randf_r'
 --
---     [C declaration]: @SDL_rand_r@, defined at @SDL3\/SDL_stdinc.h 4409:36@
+--     [C declaration]: @SDL_rand_r@, defined at @SDL3\/SDL_stdinc.h 4417:36@
 sDL_rand_r
   :: BG.Ptr Uint64
   -- ^
@@ -5217,7 +5221,7 @@ hs_bindgen_5da60fff1ce7873d =
 --
 --     [See also]: 'sDL_rand_bits_r', 'sDL_rand_r', 'sDL_randf'
 --
---     [C declaration]: @SDL_randf_r@, defined at @SDL3\/SDL_stdinc.h 4436:35@
+--     [C declaration]: @SDL_randf_r@, defined at @SDL3\/SDL_stdinc.h 4444:35@
 sDL_randf_r
   :: BG.Ptr Uint64
   -- ^
@@ -5253,7 +5257,7 @@ hs_bindgen_23de01659ed6ba6b =
 --
 --     [See also]: 'sDL_rand_r', 'sDL_randf_r'
 --
---     [C declaration]: @SDL_rand_bits_r@, defined at @SDL3\/SDL_stdinc.h 4461:36@
+--     [C declaration]: @SDL_rand_bits_r@, defined at @SDL3\/SDL_stdinc.h 4469:36@
 sDL_rand_bits_r
   :: BG.Ptr Uint64
   -- ^
@@ -5295,7 +5299,7 @@ hs_bindgen_217308a0a788520d =
 --
 --     [See also]: 'sDL_acosf', 'sDL_asin', 'sDL_cos'
 --
---     [C declaration]: @SDL_acos@, defined at @SDL3\/SDL_stdinc.h 4515:36@
+--     [C declaration]: @SDL_acos@, defined at @SDL3\/SDL_stdinc.h 4523:36@
 sDL_acos
   :: BG.CDouble
   -- ^
@@ -5337,7 +5341,7 @@ hs_bindgen_f093db4bb5e8e494 =
 --
 --     [See also]: 'sDL_acos', 'sDL_asinf', 'sDL_cosf'
 --
---     [C declaration]: @SDL_acosf@, defined at @SDL3\/SDL_stdinc.h 4545:35@
+--     [C declaration]: @SDL_acosf@, defined at @SDL3\/SDL_stdinc.h 4553:35@
 sDL_acosf
   :: BG.CFloat
   -- ^
@@ -5379,7 +5383,7 @@ hs_bindgen_205d9f923dff59cd =
 --
 --     [See also]: 'sDL_asinf', 'sDL_acos', 'sDL_sin'
 --
---     [C declaration]: @SDL_asin@, defined at @SDL3\/SDL_stdinc.h 4575:36@
+--     [C declaration]: @SDL_asin@, defined at @SDL3\/SDL_stdinc.h 4583:36@
 sDL_asin
   :: BG.CDouble
   -- ^
@@ -5421,7 +5425,7 @@ hs_bindgen_79771d582742f165 =
 --
 --     [See also]: 'sDL_asin', 'sDL_acosf', 'sDL_sinf'
 --
---     [C declaration]: @SDL_asinf@, defined at @SDL3\/SDL_stdinc.h 4605:35@
+--     [C declaration]: @SDL_asinf@, defined at @SDL3\/SDL_stdinc.h 4613:35@
 sDL_asinf
   :: BG.CFloat
   -- ^
@@ -5465,7 +5469,7 @@ hs_bindgen_3051cbc85bd5efba =
 --
 --     [See also]: 'sDL_atanf', 'sDL_atan2', 'sDL_tan'
 --
---     [C declaration]: @SDL_atan@, defined at @SDL3\/SDL_stdinc.h 4637:36@
+--     [C declaration]: @SDL_atan@, defined at @SDL3\/SDL_stdinc.h 4645:36@
 sDL_atan
   :: BG.CDouble
   -- ^
@@ -5509,7 +5513,7 @@ hs_bindgen_7d0bcd6030adfae6 =
 --
 --     [See also]: 'sDL_atan', 'sDL_atan2f', 'sDL_tanf'
 --
---     [C declaration]: @SDL_atanf@, defined at @SDL3\/SDL_stdinc.h 4669:35@
+--     [C declaration]: @SDL_atanf@, defined at @SDL3\/SDL_stdinc.h 4677:35@
 sDL_atanf
   :: BG.CFloat
   -- ^
@@ -5555,7 +5559,7 @@ hs_bindgen_9ae010b5b4d9f553 =
 --
 --     [See also]: 'sDL_atan2f', 'sDL_atan', 'sDL_tan'
 --
---     [C declaration]: @SDL_atan2@, defined at @SDL3\/SDL_stdinc.h 4705:36@
+--     [C declaration]: @SDL_atan2@, defined at @SDL3\/SDL_stdinc.h 4713:36@
 sDL_atan2
   :: BG.CDouble
   -- ^
@@ -5605,7 +5609,7 @@ hs_bindgen_3eac4b1bfc5aff58 =
 --
 --     [See also]: 'sDL_atan2', 'sDL_atan', 'sDL_tan'
 --
---     [C declaration]: @SDL_atan2f@, defined at @SDL3\/SDL_stdinc.h 4741:35@
+--     [C declaration]: @SDL_atan2f@, defined at @SDL3\/SDL_stdinc.h 4749:35@
 sDL_atan2f
   :: BG.CFloat
   -- ^
@@ -5649,7 +5653,7 @@ hs_bindgen_1630cb0e3a004beb =
 --
 --     [See also]: 'sDL_ceilf', 'sDL_floor', 'sDL_trunc', 'sDL_round', @SDL_lround@
 --
---     [C declaration]: @SDL_ceil@, defined at @SDL3\/SDL_stdinc.h 4769:36@
+--     [C declaration]: @SDL_ceil@, defined at @SDL3\/SDL_stdinc.h 4777:36@
 sDL_ceil
   :: BG.CDouble
   -- ^
@@ -5689,7 +5693,7 @@ hs_bindgen_04a706bfcc971297 =
 --
 --     [See also]: 'sDL_ceil', 'sDL_floorf', 'sDL_truncf', 'sDL_roundf', @SDL_lroundf@
 --
---     [C declaration]: @SDL_ceilf@, defined at @SDL3\/SDL_stdinc.h 4797:35@
+--     [C declaration]: @SDL_ceilf@, defined at @SDL3\/SDL_stdinc.h 4805:35@
 sDL_ceilf
   :: BG.CFloat
   -- ^
@@ -5731,7 +5735,7 @@ hs_bindgen_fed0484ab850ee6a =
 --
 --     [See also]: 'sDL_copysignf', 'sDL_fabs'
 --
---     [C declaration]: @SDL_copysign@, defined at @SDL3\/SDL_stdinc.h 4823:36@
+--     [C declaration]: @SDL_copysign@, defined at @SDL3\/SDL_stdinc.h 4831:36@
 sDL_copysign
   :: BG.CDouble
   -- ^
@@ -5777,7 +5781,7 @@ hs_bindgen_d21fe858af73dd98 =
 --
 --     [See also]: 'sDL_copysign', 'sDL_fabsf'
 --
---     [C declaration]: @SDL_copysignf@, defined at @SDL3\/SDL_stdinc.h 4849:35@
+--     [C declaration]: @SDL_copysignf@, defined at @SDL3\/SDL_stdinc.h 4857:35@
 sDL_copysignf
   :: BG.CFloat
   -- ^
@@ -5821,7 +5825,7 @@ hs_bindgen_a4c38d6732d22ffb =
 --
 --     [See also]: 'sDL_cosf', 'sDL_acos', 'sDL_sin'
 --
---     [C declaration]: @SDL_cos@, defined at @SDL3\/SDL_stdinc.h 4877:36@
+--     [C declaration]: @SDL_cos@, defined at @SDL3\/SDL_stdinc.h 4885:36@
 sDL_cos
   :: BG.CDouble
   -- ^
@@ -5861,7 +5865,7 @@ hs_bindgen_ad11505e8fd49060 =
 --
 --     [See also]: 'sDL_cos', 'sDL_acosf', 'sDL_sinf'
 --
---     [C declaration]: @SDL_cosf@, defined at @SDL3\/SDL_stdinc.h 4905:35@
+--     [C declaration]: @SDL_cosf@, defined at @SDL3\/SDL_stdinc.h 4913:35@
 sDL_cosf
   :: BG.CFloat
   -- ^
@@ -5905,7 +5909,7 @@ hs_bindgen_ffaa0913f3d0c63c =
 --
 --     [See also]: 'sDL_expf', 'sDL_log'
 --
---     [C declaration]: @SDL_exp@, defined at @SDL3\/SDL_stdinc.h 4937:36@
+--     [C declaration]: @SDL_exp@, defined at @SDL3\/SDL_stdinc.h 4945:36@
 sDL_exp
   :: BG.CDouble
   -- ^
@@ -5949,7 +5953,7 @@ hs_bindgen_4d5e3977a4eb4c12 =
 --
 --     [See also]: 'sDL_exp', 'sDL_logf'
 --
---     [C declaration]: @SDL_expf@, defined at @SDL3\/SDL_stdinc.h 4969:35@
+--     [C declaration]: @SDL_expf@, defined at @SDL3\/SDL_stdinc.h 4977:35@
 sDL_expf
   :: BG.CFloat
   -- ^
@@ -5987,7 +5991,7 @@ hs_bindgen_89730ae2b638ee61 =
 --
 --     [See also]: 'sDL_fabsf'
 --
---     [C declaration]: @SDL_fabs@, defined at @SDL3\/SDL_stdinc.h 4990:36@
+--     [C declaration]: @SDL_fabs@, defined at @SDL3\/SDL_stdinc.h 4998:36@
 sDL_fabs
   :: BG.CDouble
   -- ^
@@ -6025,7 +6029,7 @@ hs_bindgen_4e76324c9b8f7453 =
 --
 --     [See also]: 'sDL_fabs'
 --
---     [C declaration]: @SDL_fabsf@, defined at @SDL3\/SDL_stdinc.h 5011:35@
+--     [C declaration]: @SDL_fabsf@, defined at @SDL3\/SDL_stdinc.h 5019:35@
 sDL_fabsf
   :: BG.CFloat
   -- ^
@@ -6065,7 +6069,7 @@ hs_bindgen_4c646d1d6b7e922f =
 --
 --     [See also]: 'sDL_floorf', 'sDL_ceil', 'sDL_trunc', 'sDL_round', @SDL_lround@
 --
---     [C declaration]: @SDL_floor@, defined at @SDL3\/SDL_stdinc.h 5039:36@
+--     [C declaration]: @SDL_floor@, defined at @SDL3\/SDL_stdinc.h 5047:36@
 sDL_floor
   :: BG.CDouble
   -- ^
@@ -6105,7 +6109,7 @@ hs_bindgen_db6fbb0a591a2804 =
 --
 --     [See also]: 'sDL_floor', 'sDL_ceilf', 'sDL_truncf', 'sDL_roundf', @SDL_lroundf@
 --
---     [C declaration]: @SDL_floorf@, defined at @SDL3\/SDL_stdinc.h 5067:35@
+--     [C declaration]: @SDL_floorf@, defined at @SDL3\/SDL_stdinc.h 5075:35@
 sDL_floorf
   :: BG.CFloat
   -- ^
@@ -6145,7 +6149,7 @@ hs_bindgen_2b4f0ab682c421b7 =
 --
 --     [See also]: 'sDL_truncf', 'sDL_fmod', 'sDL_ceil', 'sDL_floor', 'sDL_round', @SDL_lround@
 --
---     [C declaration]: @SDL_trunc@, defined at @SDL3\/SDL_stdinc.h 5096:36@
+--     [C declaration]: @SDL_trunc@, defined at @SDL3\/SDL_stdinc.h 5104:36@
 sDL_trunc
   :: BG.CDouble
   -- ^
@@ -6185,7 +6189,7 @@ hs_bindgen_afe8ddb39d52a293 =
 --
 --     [See also]: 'sDL_trunc', 'sDL_fmodf', 'sDL_ceilf', 'sDL_floorf', 'sDL_roundf', @SDL_lroundf@
 --
---     [C declaration]: @SDL_truncf@, defined at @SDL3\/SDL_stdinc.h 5125:35@
+--     [C declaration]: @SDL_truncf@, defined at @SDL3\/SDL_stdinc.h 5133:35@
 sDL_truncf
   :: BG.CFloat
   -- ^
@@ -6227,7 +6231,7 @@ hs_bindgen_f1fc4d1a8a6fd613 =
 --
 --     [See also]: 'sDL_fmodf', 'sDL_modf', 'sDL_trunc', 'sDL_ceil', 'sDL_floor', 'sDL_round', @SDL_lround@
 --
---     [C declaration]: @SDL_fmod@, defined at @SDL3\/SDL_stdinc.h 5155:36@
+--     [C declaration]: @SDL_fmod@, defined at @SDL3\/SDL_stdinc.h 5163:36@
 sDL_fmod
   :: BG.CDouble
   -- ^
@@ -6273,7 +6277,7 @@ hs_bindgen_19c2a30dd6614c51 =
 --
 --     [See also]: 'sDL_fmod', 'sDL_truncf', 'sDL_modff', 'sDL_ceilf', 'sDL_floorf', 'sDL_roundf', @SDL_lroundf@
 --
---     [C declaration]: @SDL_fmodf@, defined at @SDL3\/SDL_stdinc.h 5185:35@
+--     [C declaration]: @SDL_fmodf@, defined at @SDL3\/SDL_stdinc.h 5193:35@
 sDL_fmodf
   :: BG.CFloat
   -- ^
@@ -6309,7 +6313,7 @@ hs_bindgen_9be13530739c3139 =
 --
 --     [See also]: 'sDL_isinff'
 --
---     [C declaration]: @SDL_isinf@, defined at @SDL3\/SDL_stdinc.h 5199:33@
+--     [C declaration]: @SDL_isinf@, defined at @SDL3\/SDL_stdinc.h 5207:33@
 sDL_isinf
   :: BG.CDouble
   -- ^
@@ -6341,7 +6345,7 @@ hs_bindgen_d063ada15b71ed19 =
 --
 --     [See also]: 'sDL_isinf'
 --
---     [C declaration]: @SDL_isinff@, defined at @SDL3\/SDL_stdinc.h 5213:33@
+--     [C declaration]: @SDL_isinff@, defined at @SDL3\/SDL_stdinc.h 5221:33@
 sDL_isinff
   :: BG.CFloat
   -- ^
@@ -6373,7 +6377,7 @@ hs_bindgen_bb4d9f6611f2a512 =
 --
 --     [See also]: 'sDL_isnanf'
 --
---     [C declaration]: @SDL_isnan@, defined at @SDL3\/SDL_stdinc.h 5227:33@
+--     [C declaration]: @SDL_isnan@, defined at @SDL3\/SDL_stdinc.h 5235:33@
 sDL_isnan
   :: BG.CDouble
   -- ^
@@ -6405,7 +6409,7 @@ hs_bindgen_48e10ed50de37991 =
 --
 --     [See also]: 'sDL_isnan'
 --
---     [C declaration]: @SDL_isnanf@, defined at @SDL3\/SDL_stdinc.h 5241:33@
+--     [C declaration]: @SDL_isnanf@, defined at @SDL3\/SDL_stdinc.h 5249:33@
 sDL_isnanf
   :: BG.CFloat
   -- ^
@@ -6447,7 +6451,7 @@ hs_bindgen_46922ccc470e92e0 =
 --
 --     [See also]: 'sDL_logf', 'sDL_log10', 'sDL_exp'
 --
---     [C declaration]: @SDL_log@, defined at @SDL3\/SDL_stdinc.h 5271:36@
+--     [C declaration]: @SDL_log@, defined at @SDL3\/SDL_stdinc.h 5279:36@
 sDL_log
   :: BG.CDouble
   -- ^
@@ -6489,7 +6493,7 @@ hs_bindgen_7ef0b9f4239eb37e =
 --
 --     [See also]: 'sDL_log', 'sDL_expf'
 --
---     [C declaration]: @SDL_logf@, defined at @SDL3\/SDL_stdinc.h 5300:35@
+--     [C declaration]: @SDL_logf@, defined at @SDL3\/SDL_stdinc.h 5308:35@
 sDL_logf
   :: BG.CFloat
   -- ^
@@ -6531,7 +6535,7 @@ hs_bindgen_bc1ad316da1b3bbc =
 --
 --     [See also]: 'sDL_log10f', 'sDL_log', 'sDL_pow'
 --
---     [C declaration]: @SDL_log10@, defined at @SDL3\/SDL_stdinc.h 5330:36@
+--     [C declaration]: @SDL_log10@, defined at @SDL3\/SDL_stdinc.h 5338:36@
 sDL_log10
   :: BG.CDouble
   -- ^
@@ -6573,7 +6577,7 @@ hs_bindgen_310aebbf28df3250 =
 --
 --     [See also]: 'sDL_log10', 'sDL_logf', 'sDL_powf'
 --
---     [C declaration]: @SDL_log10f@, defined at @SDL3\/SDL_stdinc.h 5360:35@
+--     [C declaration]: @SDL_log10f@, defined at @SDL3\/SDL_stdinc.h 5368:35@
 sDL_log10f
   :: BG.CFloat
   -- ^
@@ -6609,7 +6613,7 @@ hs_bindgen_93a468f91c55ba99 =
 --
 --     [See also]: 'sDL_modff', 'sDL_trunc', 'sDL_fmod'
 --
---     [C declaration]: @SDL_modf@, defined at @SDL3\/SDL_stdinc.h 5380:36@
+--     [C declaration]: @SDL_modf@, defined at @SDL3\/SDL_stdinc.h 5388:36@
 sDL_modf
   :: BG.CDouble
   -- ^
@@ -6649,7 +6653,7 @@ hs_bindgen_76a18e33bbbed6ee =
 --
 --     [See also]: 'sDL_modf', 'sDL_truncf', 'sDL_fmodf'
 --
---     [C declaration]: @SDL_modff@, defined at @SDL3\/SDL_stdinc.h 5400:35@
+--     [C declaration]: @SDL_modff@, defined at @SDL3\/SDL_stdinc.h 5408:35@
 sDL_modff
   :: BG.CFloat
   -- ^
@@ -6697,7 +6701,7 @@ hs_bindgen_b8c28ba00815fbb9 =
 --
 --     [See also]: 'sDL_powf', 'sDL_exp', 'sDL_log'
 --
---     [C declaration]: @SDL_pow@, defined at @SDL3\/SDL_stdinc.h 5432:36@
+--     [C declaration]: @SDL_pow@, defined at @SDL3\/SDL_stdinc.h 5440:36@
 sDL_pow
   :: BG.CDouble
   -- ^
@@ -6745,7 +6749,7 @@ hs_bindgen_d853802a7561099f =
 --
 --     [See also]: 'sDL_pow', 'sDL_expf', 'sDL_logf'
 --
---     [C declaration]: @SDL_powf@, defined at @SDL3\/SDL_stdinc.h 5464:35@
+--     [C declaration]: @SDL_powf@, defined at @SDL3\/SDL_stdinc.h 5472:35@
 sDL_powf
   :: BG.CFloat
   -- ^
@@ -6789,7 +6793,7 @@ hs_bindgen_097e1eceb090a078 =
 --
 --     [See also]: 'sDL_roundf', @SDL_lround@, 'sDL_floor', 'sDL_ceil', 'sDL_trunc'
 --
---     [C declaration]: @SDL_round@, defined at @SDL3\/SDL_stdinc.h 5493:36@
+--     [C declaration]: @SDL_round@, defined at @SDL3\/SDL_stdinc.h 5501:36@
 sDL_round
   :: BG.CDouble
   -- ^
@@ -6829,7 +6833,7 @@ hs_bindgen_5b677097112f1617 =
 --
 --     [See also]: 'sDL_round', @SDL_lroundf@, 'sDL_floorf', 'sDL_ceilf', 'sDL_truncf'
 --
---     [C declaration]: @SDL_roundf@, defined at @SDL3\/SDL_stdinc.h 5522:35@
+--     [C declaration]: @SDL_roundf@, defined at @SDL3\/SDL_stdinc.h 5530:35@
 sDL_roundf
   :: BG.CFloat
   -- ^
@@ -6871,7 +6875,7 @@ hs_bindgen_8038e0526522260c =
 --
 --     [See also]: 'sDL_scalbnf', 'sDL_pow'
 --
---     [C declaration]: @SDL_scalbn@, defined at @SDL3\/SDL_stdinc.h 5605:36@
+--     [C declaration]: @SDL_scalbn@, defined at @SDL3\/SDL_stdinc.h 5613:36@
 sDL_scalbn
   :: BG.CDouble
   -- ^
@@ -6917,7 +6921,7 @@ hs_bindgen_fc0cb80cec8a11b0 =
 --
 --     [See also]: 'sDL_scalbn', 'sDL_powf'
 --
---     [C declaration]: @SDL_scalbnf@, defined at @SDL3\/SDL_stdinc.h 5630:35@
+--     [C declaration]: @SDL_scalbnf@, defined at @SDL3\/SDL_stdinc.h 5638:35@
 sDL_scalbnf
   :: BG.CFloat
   -- ^
@@ -6961,7 +6965,7 @@ hs_bindgen_d062c0d717121757 =
 --
 --     [See also]: 'sDL_sinf', 'sDL_asin', 'sDL_cos'
 --
---     [C declaration]: @SDL_sin@, defined at @SDL3\/SDL_stdinc.h 5658:36@
+--     [C declaration]: @SDL_sin@, defined at @SDL3\/SDL_stdinc.h 5666:36@
 sDL_sin
   :: BG.CDouble
   -- ^
@@ -7001,7 +7005,7 @@ hs_bindgen_4ee3ee787bd19e91 =
 --
 --     [See also]: 'sDL_sin', 'sDL_asinf', 'sDL_cosf'
 --
---     [C declaration]: @SDL_sinf@, defined at @SDL3\/SDL_stdinc.h 5686:35@
+--     [C declaration]: @SDL_sinf@, defined at @SDL3\/SDL_stdinc.h 5694:35@
 sDL_sinf
   :: BG.CFloat
   -- ^
@@ -7041,7 +7045,7 @@ hs_bindgen_45b7bf5fa33e3269 =
 --
 --     [See also]: 'sDL_sqrtf'
 --
---     [C declaration]: @SDL_sqrt@, defined at @SDL3\/SDL_stdinc.h 5712:36@
+--     [C declaration]: @SDL_sqrt@, defined at @SDL3\/SDL_stdinc.h 5720:36@
 sDL_sqrt
   :: BG.CDouble
   -- ^
@@ -7081,7 +7085,7 @@ hs_bindgen_da05b17837e5fa68 =
 --
 --     [See also]: 'sDL_sqrt'
 --
---     [C declaration]: @SDL_sqrtf@, defined at @SDL3\/SDL_stdinc.h 5738:35@
+--     [C declaration]: @SDL_sqrtf@, defined at @SDL3\/SDL_stdinc.h 5746:35@
 sDL_sqrtf
   :: BG.CFloat
   -- ^
@@ -7121,7 +7125,7 @@ hs_bindgen_8e3c4624ada8d754 =
 --
 --     [See also]: 'sDL_tanf', 'sDL_sin', 'sDL_cos', 'sDL_atan', 'sDL_atan2'
 --
---     [C declaration]: @SDL_tan@, defined at @SDL3\/SDL_stdinc.h 5768:36@
+--     [C declaration]: @SDL_tan@, defined at @SDL3\/SDL_stdinc.h 5776:36@
 sDL_tan
   :: BG.CDouble
   -- ^
@@ -7161,7 +7165,7 @@ hs_bindgen_b4a5a33f270aeb8d =
 --
 --     [See also]: 'sDL_tan', 'sDL_sinf', 'sDL_cosf', 'sDL_atanf', 'sDL_atan2f'
 --
---     [C declaration]: @SDL_tanf@, defined at @SDL3\/SDL_stdinc.h 5798:35@
+--     [C declaration]: @SDL_tanf@, defined at @SDL3\/SDL_stdinc.h 5806:35@
 sDL_tanf
   :: BG.CFloat
   -- ^
@@ -7195,7 +7199,7 @@ hs_bindgen_4c58e728caad9aa3 =
 --
 --     [See also]: 'sDL_iconv', 'sDL_iconv_close', 'sDL_iconv_string'
 --
---     [C declaration]: @SDL_iconv_open@, defined at @SDL3\/SDL_stdinc.h 5826:41@
+--     [C declaration]: @SDL_iconv_open@, defined at @SDL3\/SDL_stdinc.h 5834:41@
 sDL_iconv_open
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -7231,7 +7235,7 @@ hs_bindgen_85fcb2de02d7791f =
 --
 --     [See also]: 'sDL_iconv', 'sDL_iconv_open', 'sDL_iconv_string'
 --
---     [C declaration]: @SDL_iconv_close@, defined at @SDL3\/SDL_stdinc.h 5843:33@
+--     [C declaration]: @SDL_iconv_close@, defined at @SDL3\/SDL_stdinc.h 5851:33@
 sDL_iconv_close
   :: SDL_iconv_t
   -- ^
@@ -7283,7 +7287,7 @@ hs_bindgen_73663c44fcaa8f9d =
 --
 --     [See also]: 'sDL_iconv_open', 'sDL_iconv_close', 'sDL_iconv_string'
 --
---     [C declaration]: @SDL_iconv@, defined at @SDL3\/SDL_stdinc.h 5883:36@
+--     [C declaration]: @SDL_iconv@, defined at @SDL3\/SDL_stdinc.h 5891:36@
 sDL_iconv
   :: SDL_iconv_t
   -- ^
@@ -7343,7 +7347,7 @@ hs_bindgen_066c0e98a41d1c6b =
 --
 --     [See also]: 'sDL_iconv_open', 'sDL_iconv_close', 'sDL_iconv'
 --
---     [C declaration]: @SDL_iconv_string@, defined at @SDL3\/SDL_stdinc.h 5920:36@
+--     [C declaration]: @SDL_iconv_string@, defined at @SDL3\/SDL_stdinc.h 5928:36@
 sDL_iconv_string
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -7381,7 +7385,7 @@ hs_bindgen_cb7ffceaa134d628
 hs_bindgen_cb7ffceaa134d628 =
   BG.fromFFIType hs_bindgen_cb7ffceaa134d628_base
 
--- | [C declaration]: @SDL_size_mul_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6101:23@
+-- | [C declaration]: @SDL_size_mul_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6109:23@
 sDL_size_mul_check_overflow_builtin
   :: HsBindgen.Runtime.LibC.CSize
   -- ^ [C declaration]: @a@
@@ -7410,7 +7414,7 @@ hs_bindgen_ca88dcdcdddd2954
 hs_bindgen_ca88dcdcdddd2954 =
   BG.fromFFIType hs_bindgen_ca88dcdcdddd2954_base
 
--- | [C declaration]: @SDL_size_add_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6139:23@
+-- | [C declaration]: @SDL_size_add_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6147:23@
 sDL_size_add_check_overflow_builtin
   :: HsBindgen.Runtime.LibC.CSize
   -- ^ [C declaration]: @a@

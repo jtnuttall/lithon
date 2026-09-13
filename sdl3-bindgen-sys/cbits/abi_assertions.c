@@ -17,7 +17,7 @@
  * registry (lithon-codegen sdl3/versions.json) — on SDL's own version
  * macros.
  */
-#define LITHON_ABI_HELP ". sdl3-bindgen-sys was generated from SDL 3.4.2; see the README section ABI verification. Please report this at https://github.com/jtnuttall/lithon/issues with your SDL version and platform, and if you are comfortable, open a PR updating the SDL version the bindings are generated from."
+#define LITHON_ABI_HELP ". sdl3-bindgen-sys was generated from SDL 3.4.10; see the README section ABI verification. Please report this at https://github.com/jtnuttall/lithon/issues with your SDL version and platform, and if you are comfortable, open a PR updating the SDL version the bindings are generated from."
 #ifdef LITHON_ABI_EXACT
 #define LITHON_ABI_PREFIX_OP ==
 #define LITHON_ABI_PREFIX_MSG "differs from your SDL3 headers (exact mode)"

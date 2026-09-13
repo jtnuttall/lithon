@@ -1515,7 +1515,7 @@ hs_bindgen_9722441ea82cf670 =
 --
 --     [See also]: 'sDL_free', SDL_calloc, SDL_realloc, 'sDL_aligned_alloc'
 --
---     [C declaration]: @SDL_malloc@, defined at @SDL3\/SDL_stdinc.h 1341:47@
+--     [C declaration]: @SDL_malloc@, defined at @SDL3\/SDL_stdinc.h 1342:47@
 sDL_malloc :: BG.FunPtr (HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
 sDL_malloc =
   BG.unsafePerformIO hs_bindgen_9722441ea82cf670
@@ -1533,7 +1533,7 @@ hs_bindgen_2b076bb91cf947df =
 
 {-# NOINLINE sDL_calloc #-}
 
--- | [C declaration]: @SDL_calloc@, defined at @SDL3\/SDL_stdinc.h 1366:69@
+-- | [C declaration]: @SDL_calloc@, defined at @SDL3\/SDL_stdinc.h 1367:69@
 sDL_calloc
   :: BG.FunPtr (HsBindgen.Runtime.LibC.CSize -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
 sDL_calloc =
@@ -1552,7 +1552,7 @@ hs_bindgen_bbae567861825a2b =
 
 {-# NOINLINE sDL_realloc #-}
 
--- | [C declaration]: @SDL_realloc@, defined at @SDL3\/SDL_stdinc.h 1406:54@
+-- | [C declaration]: @SDL_realloc@, defined at @SDL3\/SDL_stdinc.h 1407:54@
 sDL_realloc :: BG.FunPtr (BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
 sDL_realloc =
   BG.unsafePerformIO hs_bindgen_bbae567861825a2b
@@ -1583,7 +1583,7 @@ hs_bindgen_0f3dfcf2ab9d228a =
 --
 --     [See also]: 'sDL_malloc', SDL_calloc, SDL_realloc
 --
---     [C declaration]: @SDL_free@, defined at @SDL3\/SDL_stdinc.h 1426:34@
+--     [C declaration]: @SDL_free@, defined at @SDL3\/SDL_stdinc.h 1427:34@
 sDL_free :: BG.FunPtr (BG.Ptr BG.Void -> IO ())
 sDL_free =
   BG.unsafePerformIO hs_bindgen_0f3dfcf2ab9d228a
@@ -1625,7 +1625,7 @@ hs_bindgen_4ad4cf326cf2d8ee =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetOriginalMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1524:34@
+--     [C declaration]: @SDL_GetOriginalMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1525:34@
 sDL_GetOriginalMemoryFunctions
   :: BG.FunPtr
        ( BG.Ptr SDL_malloc_func
@@ -1674,7 +1674,7 @@ hs_bindgen_d860ef935b823504 =
 --
 --     [See also]: 'sDL_SetMemoryFunctions', 'sDL_GetOriginalMemoryFunctions'
 --
---     [C declaration]: @SDL_GetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1546:34@
+--     [C declaration]: @SDL_GetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1547:34@
 sDL_GetMemoryFunctions
   :: BG.FunPtr
        ( BG.Ptr SDL_malloc_func
@@ -1722,7 +1722,7 @@ hs_bindgen_a474c8c00b052ea2 =
 --
 --     [See also]: 'sDL_GetMemoryFunctions', 'sDL_GetOriginalMemoryFunctions'
 --
---     [C declaration]: @SDL_SetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1577:34@
+--     [C declaration]: @SDL_SetMemoryFunctions@, defined at @SDL3\/SDL_stdinc.h 1578:34@
 sDL_SetMemoryFunctions
   :: BG.FunPtr (SDL_malloc_func -> SDL_calloc_func -> SDL_realloc_func -> SDL_free_func -> IO BG.CBool)
 sDL_SetMemoryFunctions =
@@ -1761,7 +1761,7 @@ hs_bindgen_de151c2774561d5d =
 --
 --     [See also]: 'sDL_aligned_free'
 --
---     [C declaration]: @SDL_aligned_alloc@, defined at @SDL3\/SDL_stdinc.h 1604:47@
+--     [C declaration]: @SDL_aligned_alloc@, defined at @SDL3\/SDL_stdinc.h 1605:47@
 sDL_aligned_alloc
   :: BG.FunPtr (HsBindgen.Runtime.LibC.CSize -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
 sDL_aligned_alloc =
@@ -1793,7 +1793,7 @@ hs_bindgen_dd6b53bc3c6f96ea =
 --
 --     [See also]: 'sDL_aligned_alloc'
 --
---     [C declaration]: @SDL_aligned_free@, defined at @SDL3\/SDL_stdinc.h 1622:34@
+--     [C declaration]: @SDL_aligned_free@, defined at @SDL3\/SDL_stdinc.h 1623:34@
 sDL_aligned_free :: BG.FunPtr (BG.Ptr BG.Void -> IO ())
 sDL_aligned_free =
   BG.unsafePerformIO hs_bindgen_dd6b53bc3c6f96ea
@@ -1818,7 +1818,7 @@ hs_bindgen_fe81cad123788733 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetNumAllocations@, defined at @SDL3\/SDL_stdinc.h 1634:33@
+--     [C declaration]: @SDL_GetNumAllocations@, defined at @SDL3\/SDL_stdinc.h 1635:33@
 sDL_GetNumAllocations :: BG.FunPtr (IO BG.CInt)
 sDL_GetNumAllocations =
   BG.unsafePerformIO hs_bindgen_fe81cad123788733
@@ -1847,7 +1847,7 @@ hs_bindgen_9a656c04aab82f9e =
 --
 --     [See also]: 'sDL_GetEnvironmentVariable', 'sDL_GetEnvironmentVariables', 'sDL_SetEnvironmentVariable', 'sDL_UnsetEnvironmentVariable'
 --
---     [C declaration]: @SDL_GetEnvironment@, defined at @SDL3\/SDL_stdinc.h 1672:47@
+--     [C declaration]: @SDL_GetEnvironment@, defined at @SDL3\/SDL_stdinc.h 1673:47@
 sDL_GetEnvironment :: BG.FunPtr (IO (BG.Ptr SDL_Environment))
 sDL_GetEnvironment =
   BG.unsafePerformIO hs_bindgen_9a656c04aab82f9e
@@ -1876,7 +1876,7 @@ hs_bindgen_c0820759e235b8e4 =
 --
 --     [See also]: 'sDL_GetEnvironmentVariable', 'sDL_GetEnvironmentVariables', 'sDL_SetEnvironmentVariable', 'sDL_UnsetEnvironmentVariable', 'sDL_DestroyEnvironment'
 --
---     [C declaration]: @SDL_CreateEnvironment@, defined at @SDL3\/SDL_stdinc.h 1694:47@
+--     [C declaration]: @SDL_CreateEnvironment@, defined at @SDL3\/SDL_stdinc.h 1695:47@
 sDL_CreateEnvironment :: BG.FunPtr (BG.CBool -> IO (BG.Ptr SDL_Environment))
 sDL_CreateEnvironment =
   BG.unsafePerformIO hs_bindgen_c0820759e235b8e4
@@ -1909,7 +1909,7 @@ hs_bindgen_a475668aa4ab4369 =
 --
 --     [See also]: 'sDL_GetEnvironment', 'sDL_CreateEnvironment', 'sDL_GetEnvironmentVariables', 'sDL_SetEnvironmentVariable', 'sDL_UnsetEnvironmentVariable'
 --
---     [C declaration]: @SDL_GetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1714:42@
+--     [C declaration]: @SDL_GetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1715:42@
 sDL_GetEnvironmentVariable
   :: BG.FunPtr (BG.Ptr SDL_Environment -> PtrConst.PtrConst BG.CChar -> IO (PtrConst.PtrConst BG.CChar))
 sDL_GetEnvironmentVariable =
@@ -1940,7 +1940,7 @@ hs_bindgen_9fb7038d3656b96c =
 --
 --     [See also]: 'sDL_GetEnvironment', 'sDL_CreateEnvironment', 'sDL_GetEnvironmentVariables', 'sDL_SetEnvironmentVariable', 'sDL_UnsetEnvironmentVariable'
 --
---     [C declaration]: @SDL_GetEnvironmentVariables@, defined at @SDL3\/SDL_stdinc.h 1735:37@
+--     [C declaration]: @SDL_GetEnvironmentVariables@, defined at @SDL3\/SDL_stdinc.h 1736:37@
 sDL_GetEnvironmentVariables :: BG.FunPtr (BG.Ptr SDL_Environment -> IO (BG.Ptr (BG.Ptr BG.CChar)))
 sDL_GetEnvironmentVariables =
   BG.unsafePerformIO hs_bindgen_9fb7038d3656b96c
@@ -1984,7 +1984,7 @@ hs_bindgen_a99329e2f1a82258 =
 --
 --     [See also]: 'sDL_GetEnvironment', 'sDL_CreateEnvironment', 'sDL_GetEnvironmentVariable', 'sDL_GetEnvironmentVariables', 'sDL_UnsetEnvironmentVariable'
 --
---     [C declaration]: @SDL_SetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1759:34@
+--     [C declaration]: @SDL_SetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1760:34@
 sDL_SetEnvironmentVariable
   :: BG.FunPtr
        ( BG.Ptr SDL_Environment
@@ -2023,7 +2023,7 @@ hs_bindgen_c6a62ea65fc9d622 =
 --
 --     [See also]: 'sDL_GetEnvironment', 'sDL_CreateEnvironment', 'sDL_GetEnvironmentVariable', 'sDL_GetEnvironmentVariables', 'sDL_SetEnvironmentVariable', 'sDL_UnsetEnvironmentVariable'
 --
---     [C declaration]: @SDL_UnsetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1780:34@
+--     [C declaration]: @SDL_UnsetEnvironmentVariable@, defined at @SDL3\/SDL_stdinc.h 1781:34@
 sDL_UnsetEnvironmentVariable
   :: BG.FunPtr (BG.Ptr SDL_Environment -> PtrConst.PtrConst BG.CChar -> IO BG.CBool)
 sDL_UnsetEnvironmentVariable =
@@ -2051,7 +2051,7 @@ hs_bindgen_e750bb904f747388 =
 --
 --     [See also]: 'sDL_CreateEnvironment'
 --
---     [C declaration]: @SDL_DestroyEnvironment@, defined at @SDL3\/SDL_stdinc.h 1794:34@
+--     [C declaration]: @SDL_DestroyEnvironment@, defined at @SDL3\/SDL_stdinc.h 1795:34@
 sDL_DestroyEnvironment :: BG.FunPtr (BG.Ptr SDL_Environment -> IO ())
 sDL_DestroyEnvironment =
   BG.unsafePerformIO hs_bindgen_e750bb904f747388
@@ -2071,6 +2071,8 @@ hs_bindgen_b563cf6799d5c876 =
 
 -- | Get the value of a variable in the environment.
 --
+--     The name of the variable is case sensitive on all platforms.
+--
 --     This function uses SDL\'s cached copy of the environment and is thread-safe.
 --
 --     [@name@]: the name of the variable to get.
@@ -2081,7 +2083,7 @@ hs_bindgen_b563cf6799d5c876 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_getenv@, defined at @SDL3\/SDL_stdinc.h 1809:42@
+--     [C declaration]: @SDL_getenv@, defined at @SDL3\/SDL_stdinc.h 1812:42@
 sDL_getenv :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO (PtrConst.PtrConst BG.CChar))
 sDL_getenv =
   BG.unsafePerformIO hs_bindgen_b563cf6799d5c876
@@ -2103,6 +2105,8 @@ hs_bindgen_e6077a375be5ae63 =
 --
 --     This function bypasses SDL\'s cached copy of the environment and is not thread-safe.
 --
+--     On some platforms, this may make case-insensitive matches, while other platforms are case-sensitive. It is best to be precise with strings used for queries through this interface. SDL_getenv is always case-sensitive, however.
+--
 --     [@name@]: the name of the variable to get.
 --
 --     [Returns]: a pointer to the value of the variable or NULL if it can\'t be found.
@@ -2113,7 +2117,7 @@ hs_bindgen_e6077a375be5ae63 =
 --
 --     [See also]: 'sDL_getenv'
 --
---     [C declaration]: @SDL_getenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1828:42@
+--     [C declaration]: @SDL_getenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1836:42@
 sDL_getenv_unsafe :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO (PtrConst.PtrConst BG.CChar))
 sDL_getenv_unsafe =
   BG.unsafePerformIO hs_bindgen_e6077a375be5ae63
@@ -2147,7 +2151,7 @@ hs_bindgen_aaf5efc0afa93f4f =
 --
 --     [See also]: 'sDL_SetEnvironmentVariable'
 --
---     [C declaration]: @SDL_setenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1846:33@
+--     [C declaration]: @SDL_setenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1854:33@
 sDL_setenv_unsafe
   :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> BG.CInt -> IO BG.CInt)
 sDL_setenv_unsafe =
@@ -2177,7 +2181,7 @@ hs_bindgen_519fb9e8ee876013 =
 --
 --     [See also]: 'sDL_UnsetEnvironmentVariable'
 --
---     [C declaration]: @SDL_unsetenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1861:33@
+--     [C declaration]: @SDL_unsetenv_unsafe@, defined at @SDL3\/SDL_stdinc.h 1869:33@
 sDL_unsetenv_unsafe :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO BG.CInt)
 sDL_unsetenv_unsafe =
   BG.unsafePerformIO hs_bindgen_519fb9e8ee876013
@@ -2248,7 +2252,7 @@ hs_bindgen_fd5cea92e3ba7b16 =
 --
 --     [See also]: 'sDL_bsearch', 'sDL_qsort_r'
 --
---     [C declaration]: @SDL_qsort@, defined at @SDL3\/SDL_stdinc.h 1923:34@
+--     [C declaration]: @SDL_qsort@, defined at @SDL3\/SDL_stdinc.h 1931:34@
 sDL_qsort
   :: BG.FunPtr
        ( BG.Ptr BG.Void
@@ -2332,7 +2336,7 @@ hs_bindgen_00f02cc97cc6b9fd =
 --
 --     [See also]: 'sDL_bsearch_r', 'sDL_qsort'
 --
---     [C declaration]: @SDL_bsearch@, defined at @SDL3\/SDL_stdinc.h 1973:36@
+--     [C declaration]: @SDL_bsearch@, defined at @SDL3\/SDL_stdinc.h 1981:36@
 sDL_bsearch
   :: BG.FunPtr
        ( PtrConst.PtrConst BG.Void
@@ -2420,7 +2424,7 @@ hs_bindgen_271b6eff10a288b3 =
 --
 --     [See also]: 'sDL_bsearch_r', 'sDL_qsort'
 --
---     [C declaration]: @SDL_qsort_r@, defined at @SDL3\/SDL_stdinc.h 2043:34@
+--     [C declaration]: @SDL_qsort_r@, defined at @SDL3\/SDL_stdinc.h 2051:34@
 sDL_qsort_r
   :: BG.FunPtr
        ( BG.Ptr BG.Void
@@ -2514,7 +2518,7 @@ hs_bindgen_39f0a8a8445979b1 =
 --
 --     [See also]: 'sDL_bsearch', 'sDL_qsort_r'
 --
---     [C declaration]: @SDL_bsearch_r@, defined at @SDL3\/SDL_stdinc.h 2101:36@
+--     [C declaration]: @SDL_bsearch_r@, defined at @SDL3\/SDL_stdinc.h 2109:36@
 sDL_bsearch_r
   :: BG.FunPtr
        ( PtrConst.PtrConst BG.Void
@@ -2550,7 +2554,7 @@ hs_bindgen_955d92475ad359d8 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_abs@, defined at @SDL3\/SDL_stdinc.h 2113:33@
+--     [C declaration]: @SDL_abs@, defined at @SDL3\/SDL_stdinc.h 2121:33@
 sDL_abs :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_abs =
   BG.unsafePerformIO hs_bindgen_955d92475ad359d8
@@ -2579,7 +2583,7 @@ hs_bindgen_8e8018b5d5d8d98f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isalpha@, defined at @SDL3\/SDL_stdinc.h 2188:33@
+--     [C declaration]: @SDL_isalpha@, defined at @SDL3\/SDL_stdinc.h 2196:33@
 sDL_isalpha :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_isalpha =
   BG.unsafePerformIO hs_bindgen_8e8018b5d5d8d98f
@@ -2608,7 +2612,7 @@ hs_bindgen_a52d45d106787b27 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isalnum@, defined at @SDL3\/SDL_stdinc.h 2203:33@
+--     [C declaration]: @SDL_isalnum@, defined at @SDL3\/SDL_stdinc.h 2211:33@
 sDL_isalnum :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_isalnum =
   BG.unsafePerformIO hs_bindgen_a52d45d106787b27
@@ -2637,7 +2641,7 @@ hs_bindgen_0c075721ec100ff5 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isblank@, defined at @SDL3\/SDL_stdinc.h 2218:33@
+--     [C declaration]: @SDL_isblank@, defined at @SDL3\/SDL_stdinc.h 2226:33@
 sDL_isblank :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_isblank =
   BG.unsafePerformIO hs_bindgen_0c075721ec100ff5
@@ -2666,7 +2670,7 @@ hs_bindgen_de902558496e469f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_iscntrl@, defined at @SDL3\/SDL_stdinc.h 2233:33@
+--     [C declaration]: @SDL_iscntrl@, defined at @SDL3\/SDL_stdinc.h 2241:33@
 sDL_iscntrl :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_iscntrl =
   BG.unsafePerformIO hs_bindgen_de902558496e469f
@@ -2695,7 +2699,7 @@ hs_bindgen_61af141b860ceb41 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isdigit@, defined at @SDL3\/SDL_stdinc.h 2248:33@
+--     [C declaration]: @SDL_isdigit@, defined at @SDL3\/SDL_stdinc.h 2256:33@
 sDL_isdigit :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_isdigit =
   BG.unsafePerformIO hs_bindgen_61af141b860ceb41
@@ -2724,7 +2728,7 @@ hs_bindgen_c17beb32f0f1fd52 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isxdigit@, defined at @SDL3\/SDL_stdinc.h 2263:33@
+--     [C declaration]: @SDL_isxdigit@, defined at @SDL3\/SDL_stdinc.h 2271:33@
 sDL_isxdigit :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_isxdigit =
   BG.unsafePerformIO hs_bindgen_c17beb32f0f1fd52
@@ -2755,7 +2759,7 @@ hs_bindgen_a88a9667ca4e8aa7 =
 --
 --     [See also]: 'sDL_isgraph', 'sDL_isalnum'
 --
---     [C declaration]: @SDL_ispunct@, defined at @SDL3\/SDL_stdinc.h 2281:33@
+--     [C declaration]: @SDL_ispunct@, defined at @SDL3\/SDL_stdinc.h 2289:33@
 sDL_ispunct :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_ispunct =
   BG.unsafePerformIO hs_bindgen_a88a9667ca4e8aa7
@@ -2796,7 +2800,7 @@ hs_bindgen_02457e0c40d5e057 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isspace@, defined at @SDL3\/SDL_stdinc.h 2303:33@
+--     [C declaration]: @SDL_isspace@, defined at @SDL3\/SDL_stdinc.h 2311:33@
 sDL_isspace :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_isspace =
   BG.unsafePerformIO hs_bindgen_02457e0c40d5e057
@@ -2825,7 +2829,7 @@ hs_bindgen_0f55cc5ba611a3f2 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isupper@, defined at @SDL3\/SDL_stdinc.h 2318:33@
+--     [C declaration]: @SDL_isupper@, defined at @SDL3\/SDL_stdinc.h 2326:33@
 sDL_isupper :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_isupper =
   BG.unsafePerformIO hs_bindgen_0f55cc5ba611a3f2
@@ -2854,7 +2858,7 @@ hs_bindgen_f681ed21a8e1349a =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_islower@, defined at @SDL3\/SDL_stdinc.h 2333:33@
+--     [C declaration]: @SDL_islower@, defined at @SDL3\/SDL_stdinc.h 2341:33@
 sDL_islower :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_islower =
   BG.unsafePerformIO hs_bindgen_f681ed21a8e1349a
@@ -2885,7 +2889,7 @@ hs_bindgen_991fe49732021ccb =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_isprint@, defined at @SDL3\/SDL_stdinc.h 2352:33@
+--     [C declaration]: @SDL_isprint@, defined at @SDL3\/SDL_stdinc.h 2360:33@
 sDL_isprint :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_isprint =
   BG.unsafePerformIO hs_bindgen_991fe49732021ccb
@@ -2918,7 +2922,7 @@ hs_bindgen_192487d885c8ab5a =
 --
 --     [See also]: 'sDL_isprint'
 --
---     [C declaration]: @SDL_isgraph@, defined at @SDL3\/SDL_stdinc.h 2373:33@
+--     [C declaration]: @SDL_isgraph@, defined at @SDL3\/SDL_stdinc.h 2381:33@
 sDL_isgraph :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_isgraph =
   BG.unsafePerformIO hs_bindgen_192487d885c8ab5a
@@ -2949,7 +2953,7 @@ hs_bindgen_ffb5de4d18c52c67 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_toupper@, defined at @SDL3\/SDL_stdinc.h 2391:33@
+--     [C declaration]: @SDL_toupper@, defined at @SDL3\/SDL_stdinc.h 2399:33@
 sDL_toupper :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_toupper =
   BG.unsafePerformIO hs_bindgen_ffb5de4d18c52c67
@@ -2980,7 +2984,7 @@ hs_bindgen_9f7c4f835baa2ffa =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_tolower@, defined at @SDL3\/SDL_stdinc.h 2409:33@
+--     [C declaration]: @SDL_tolower@, defined at @SDL3\/SDL_stdinc.h 2417:33@
 sDL_tolower :: BG.FunPtr (BG.CInt -> IO BG.CInt)
 sDL_tolower =
   BG.unsafePerformIO hs_bindgen_9f7c4f835baa2ffa
@@ -3016,7 +3020,7 @@ hs_bindgen_a900454baab74e94 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_crc16@, defined at @SDL3\/SDL_stdinc.h 2430:36@
+--     [C declaration]: @SDL_crc16@, defined at @SDL3\/SDL_stdinc.h 2438:36@
 sDL_crc16
   :: BG.FunPtr (Uint16 -> PtrConst.PtrConst BG.Void -> HsBindgen.Runtime.LibC.CSize -> IO Uint16)
 sDL_crc16 =
@@ -3053,7 +3057,7 @@ hs_bindgen_ce720b59f82b140a =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_crc32@, defined at @SDL3\/SDL_stdinc.h 2451:36@
+--     [C declaration]: @SDL_crc32@, defined at @SDL3\/SDL_stdinc.h 2459:36@
 sDL_crc32
   :: BG.FunPtr (Uint32 -> PtrConst.PtrConst BG.Void -> HsBindgen.Runtime.LibC.CSize -> IO Uint32)
 sDL_crc32 =
@@ -3092,7 +3096,7 @@ hs_bindgen_fe133a77578cb1aa =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_murmur3_32@, defined at @SDL3\/SDL_stdinc.h 2477:36@
+--     [C declaration]: @SDL_murmur3_32@, defined at @SDL3\/SDL_stdinc.h 2485:36@
 sDL_murmur3_32
   :: BG.FunPtr (PtrConst.PtrConst BG.Void -> HsBindgen.Runtime.LibC.CSize -> Uint32 -> IO Uint32)
 sDL_murmur3_32 =
@@ -3129,7 +3133,7 @@ hs_bindgen_45d6fa96a2a35062 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_memset4@, defined at @SDL3\/SDL_stdinc.h 2601:36@
+--     [C declaration]: @SDL_memset4@, defined at @SDL3\/SDL_stdinc.h 2609:36@
 sDL_memset4
   :: BG.FunPtr (BG.Ptr BG.Void -> Uint32 -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
 sDL_memset4 =
@@ -3165,7 +3169,7 @@ hs_bindgen_d8af51803c9c5c62 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_memcmp@, defined at @SDL3\/SDL_stdinc.h 2683:33@
+--     [C declaration]: @SDL_memcmp@, defined at @SDL3\/SDL_stdinc.h 2691:33@
 sDL_memcmp
   :: BG.FunPtr
        (PtrConst.PtrConst BG.Void -> PtrConst.PtrConst BG.Void -> HsBindgen.Runtime.LibC.CSize -> IO BG.CInt)
@@ -3203,7 +3207,7 @@ hs_bindgen_b1d053429f9e09c3 =
 --
 --     [See also]: 'sDL_wcsnlen', 'sDL_utf8strlen', 'sDL_utf8strnlen'
 --
---     [C declaration]: @SDL_wcslen@, defined at @SDL3\/SDL_stdinc.h 2710:36@
+--     [C declaration]: @SDL_wcslen@, defined at @SDL3\/SDL_stdinc.h 2718:36@
 sDL_wcslen
   :: BG.FunPtr (PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar -> IO HsBindgen.Runtime.LibC.CSize)
 sDL_wcslen =
@@ -3250,7 +3254,7 @@ hs_bindgen_ce1645bc94a325e1 =
 --
 --     [See also]: 'sDL_wcslen', 'sDL_utf8strlen', 'sDL_utf8strnlen'
 --
---     [C declaration]: @SDL_wcsnlen@, defined at @SDL3\/SDL_stdinc.h 2741:36@
+--     [C declaration]: @SDL_wcsnlen@, defined at @SDL3\/SDL_stdinc.h 2749:36@
 sDL_wcsnlen
   :: BG.FunPtr
        ( PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
@@ -3302,7 +3306,7 @@ hs_bindgen_11ca43711b8baf20 =
 --
 --     [See also]: 'sDL_wcslcat'
 --
---     [C declaration]: @SDL_wcslcpy@, defined at @SDL3\/SDL_stdinc.h 2768:36@
+--     [C declaration]: @SDL_wcslcpy@, defined at @SDL3\/SDL_stdinc.h 2776:36@
 sDL_wcslcpy
   :: BG.FunPtr
        ( BG.Ptr HsBindgen.Runtime.LibC.CWchar
@@ -3355,7 +3359,7 @@ hs_bindgen_7e7896cd495dd344 =
 --
 --     [See also]: 'sDL_wcslcpy'
 --
---     [C declaration]: @SDL_wcslcat@, defined at @SDL3\/SDL_stdinc.h 2797:36@
+--     [C declaration]: @SDL_wcslcat@, defined at @SDL3\/SDL_stdinc.h 2805:36@
 sDL_wcslcat
   :: BG.FunPtr
        ( BG.Ptr HsBindgen.Runtime.LibC.CWchar
@@ -3396,7 +3400,7 @@ hs_bindgen_9ab91a86c489d607 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_wcsdup@, defined at @SDL3\/SDL_stdinc.h 2815:39@
+--     [C declaration]: @SDL_wcsdup@, defined at @SDL3\/SDL_stdinc.h 2823:39@
 sDL_wcsdup
   :: BG.FunPtr
        (PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar -> IO (BG.Ptr HsBindgen.Runtime.LibC.CWchar))
@@ -3438,7 +3442,7 @@ hs_bindgen_e5c78fe942e46a5f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_wcsstr@, defined at @SDL3\/SDL_stdinc.h 2835:39@
+--     [C declaration]: @SDL_wcsstr@, defined at @SDL3\/SDL_stdinc.h 2843:39@
 sDL_wcsstr
   :: BG.FunPtr
        ( PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
@@ -3486,7 +3490,7 @@ hs_bindgen_2dc934c7f1856237 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_wcsnstr@, defined at @SDL3\/SDL_stdinc.h 2860:39@
+--     [C declaration]: @SDL_wcsnstr@, defined at @SDL3\/SDL_stdinc.h 2868:39@
 sDL_wcsnstr
   :: BG.FunPtr
        ( PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
@@ -3530,7 +3534,7 @@ hs_bindgen_759b9046679b686f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_wcscmp@, defined at @SDL3\/SDL_stdinc.h 2879:33@
+--     [C declaration]: @SDL_wcscmp@, defined at @SDL3\/SDL_stdinc.h 2887:33@
 sDL_wcscmp
   :: BG.FunPtr
        ( PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
@@ -3580,7 +3584,7 @@ hs_bindgen_c5ac0e330fb4ae45 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_wcsncmp@, defined at @SDL3\/SDL_stdinc.h 2910:33@
+--     [C declaration]: @SDL_wcsncmp@, defined at @SDL3\/SDL_stdinc.h 2918:33@
 sDL_wcsncmp
   :: BG.FunPtr
        ( PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
@@ -3626,7 +3630,7 @@ hs_bindgen_fb42c136f5dd392f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_wcscasecmp@, defined at @SDL3\/SDL_stdinc.h 2940:33@
+--     [C declaration]: @SDL_wcscasecmp@, defined at @SDL3\/SDL_stdinc.h 2948:33@
 sDL_wcscasecmp
   :: BG.FunPtr
        ( PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
@@ -3678,7 +3682,7 @@ hs_bindgen_fcc719df5ea9c486 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_wcsncasecmp@, defined at @SDL3\/SDL_stdinc.h 2982:33@
+--     [C declaration]: @SDL_wcsncasecmp@, defined at @SDL3\/SDL_stdinc.h 2990:33@
 sDL_wcsncasecmp
   :: BG.FunPtr
        ( PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
@@ -3718,7 +3722,7 @@ hs_bindgen_7f2511e625836c60 =
 --
 --     [See also]: 'sDL_strnlen', 'sDL_utf8strlen', 'sDL_utf8strnlen'
 --
---     [C declaration]: @SDL_strlen@, defined at @SDL3\/SDL_stdinc.h 3029:36@
+--     [C declaration]: @SDL_strlen@, defined at @SDL3\/SDL_stdinc.h 3037:36@
 sDL_strlen :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO HsBindgen.Runtime.LibC.CSize)
 sDL_strlen =
   BG.unsafePerformIO hs_bindgen_7f2511e625836c60
@@ -3757,7 +3761,7 @@ hs_bindgen_f4143204114af698 =
 --
 --     [See also]: 'sDL_strlen', 'sDL_utf8strlen', 'sDL_utf8strnlen'
 --
---     [C declaration]: @SDL_strnlen@, defined at @SDL3\/SDL_stdinc.h 3053:36@
+--     [C declaration]: @SDL_strnlen@, defined at @SDL3\/SDL_stdinc.h 3061:36@
 sDL_strnlen
   :: BG.FunPtr
        (PtrConst.PtrConst BG.CChar -> HsBindgen.Runtime.LibC.CSize -> IO HsBindgen.Runtime.LibC.CSize)
@@ -3806,7 +3810,7 @@ hs_bindgen_7640410395c54d89 =
 --
 --     [See also]: 'sDL_strlcat', 'sDL_utf8strlcpy'
 --
---     [C declaration]: @SDL_strlcpy@, defined at @SDL3\/SDL_stdinc.h 3082:36@
+--     [C declaration]: @SDL_strlcpy@, defined at @SDL3\/SDL_stdinc.h 3090:36@
 sDL_strlcpy
   :: BG.FunPtr
        ( BG.Ptr BG.CChar
@@ -3859,7 +3863,7 @@ hs_bindgen_a2badcf2b044ea50 =
 --
 --     [See also]: 'sDL_strlcpy'
 --
---     [C declaration]: @SDL_utf8strlcpy@, defined at @SDL3\/SDL_stdinc.h 3110:36@
+--     [C declaration]: @SDL_utf8strlcpy@, defined at @SDL3\/SDL_stdinc.h 3118:36@
 sDL_utf8strlcpy
   :: BG.FunPtr
        ( BG.Ptr BG.CChar
@@ -3912,7 +3916,7 @@ hs_bindgen_26754eda643124d0 =
 --
 --     [See also]: 'sDL_strlcpy'
 --
---     [C declaration]: @SDL_strlcat@, defined at @SDL3\/SDL_stdinc.h 3138:36@
+--     [C declaration]: @SDL_strlcat@, defined at @SDL3\/SDL_stdinc.h 3146:36@
 sDL_strlcat
   :: BG.FunPtr
        ( BG.Ptr BG.CChar
@@ -3949,7 +3953,7 @@ hs_bindgen_71b06acdd2d314be =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strdup@, defined at @SDL3\/SDL_stdinc.h 3156:47@
+--     [C declaration]: @SDL_strdup@, defined at @SDL3\/SDL_stdinc.h 3164:47@
 sDL_strdup :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO (BG.Ptr BG.CChar))
 sDL_strdup =
   BG.unsafePerformIO hs_bindgen_71b06acdd2d314be
@@ -3985,7 +3989,7 @@ hs_bindgen_fd797c695710e05f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strndup@, defined at @SDL3\/SDL_stdinc.h 3181:47@
+--     [C declaration]: @SDL_strndup@, defined at @SDL3\/SDL_stdinc.h 3189:47@
 sDL_strndup
   :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.CChar))
 sDL_strndup =
@@ -4017,7 +4021,7 @@ hs_bindgen_ffc5b79b6b976433 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strrev@, defined at @SDL3\/SDL_stdinc.h 3202:36@
+--     [C declaration]: @SDL_strrev@, defined at @SDL3\/SDL_stdinc.h 3210:36@
 sDL_strrev :: BG.FunPtr (BG.Ptr BG.CChar -> IO (BG.Ptr BG.CChar))
 sDL_strrev =
   BG.unsafePerformIO hs_bindgen_ffc5b79b6b976433
@@ -4050,7 +4054,7 @@ hs_bindgen_ca97edf7bfcb6705 =
 --
 --     [See also]: 'sDL_strlwr'
 --
---     [C declaration]: @SDL_strupr@, defined at @SDL3\/SDL_stdinc.h 3223:36@
+--     [C declaration]: @SDL_strupr@, defined at @SDL3\/SDL_stdinc.h 3231:36@
 sDL_strupr :: BG.FunPtr (BG.Ptr BG.CChar -> IO (BG.Ptr BG.CChar))
 sDL_strupr =
   BG.unsafePerformIO hs_bindgen_ca97edf7bfcb6705
@@ -4083,7 +4087,7 @@ hs_bindgen_d78a5116cc6d3f71 =
 --
 --     [See also]: 'sDL_strupr'
 --
---     [C declaration]: @SDL_strlwr@, defined at @SDL3\/SDL_stdinc.h 3244:36@
+--     [C declaration]: @SDL_strlwr@, defined at @SDL3\/SDL_stdinc.h 3252:36@
 sDL_strlwr :: BG.FunPtr (BG.Ptr BG.CChar -> IO (BG.Ptr BG.CChar))
 sDL_strlwr =
   BG.unsafePerformIO hs_bindgen_d78a5116cc6d3f71
@@ -4117,7 +4121,7 @@ hs_bindgen_6ce9f7bacdf27653 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strchr@, defined at @SDL3\/SDL_stdinc.h 3264:36@
+--     [C declaration]: @SDL_strchr@, defined at @SDL3\/SDL_stdinc.h 3272:36@
 sDL_strchr :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> BG.CInt -> IO (BG.Ptr BG.CChar))
 sDL_strchr =
   BG.unsafePerformIO hs_bindgen_6ce9f7bacdf27653
@@ -4151,7 +4155,7 @@ hs_bindgen_d2538022eb73bf53 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strrchr@, defined at @SDL3\/SDL_stdinc.h 3283:36@
+--     [C declaration]: @SDL_strrchr@, defined at @SDL3\/SDL_stdinc.h 3291:36@
 sDL_strrchr :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> BG.CInt -> IO (BG.Ptr BG.CChar))
 sDL_strrchr =
   BG.unsafePerformIO hs_bindgen_d2538022eb73bf53
@@ -4185,7 +4189,7 @@ hs_bindgen_b07cb6fe84d9cf1e =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strstr@, defined at @SDL3\/SDL_stdinc.h 3303:36@
+--     [C declaration]: @SDL_strstr@, defined at @SDL3\/SDL_stdinc.h 3311:36@
 sDL_strstr
   :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> IO (BG.Ptr BG.CChar))
 sDL_strstr =
@@ -4229,7 +4233,7 @@ hs_bindgen_c3b37921fa630595 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strnstr@, defined at @SDL3\/SDL_stdinc.h 3326:36@
+--     [C declaration]: @SDL_strnstr@, defined at @SDL3\/SDL_stdinc.h 3334:36@
 sDL_strnstr
   :: BG.FunPtr
        ( PtrConst.PtrConst BG.CChar
@@ -4269,7 +4273,7 @@ hs_bindgen_3b1f9973e35be364 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strcasestr@, defined at @SDL3\/SDL_stdinc.h 3354:36@
+--     [C declaration]: @SDL_strcasestr@, defined at @SDL3\/SDL_stdinc.h 3362:36@
 sDL_strcasestr
   :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> IO (BG.Ptr BG.CChar))
 sDL_strcasestr =
@@ -4313,7 +4317,7 @@ hs_bindgen_99a1a0af797e8aad =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strtok_r@, defined at @SDL3\/SDL_stdinc.h 3383:36@
+--     [C declaration]: @SDL_strtok_r@, defined at @SDL3\/SDL_stdinc.h 3391:36@
 sDL_strtok_r
   :: BG.FunPtr
        (BG.Ptr BG.CChar -> PtrConst.PtrConst BG.CChar -> BG.Ptr (BG.Ptr BG.CChar) -> IO (BG.Ptr BG.CChar))
@@ -4351,7 +4355,7 @@ hs_bindgen_fdd33f5a5e9573d8 =
 --
 --     [See also]: 'sDL_utf8strnlen', 'sDL_strlen'
 --
---     [C declaration]: @SDL_utf8strlen@, defined at @SDL3\/SDL_stdinc.h 3411:36@
+--     [C declaration]: @SDL_utf8strlen@, defined at @SDL3\/SDL_stdinc.h 3419:36@
 sDL_utf8strlen :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO HsBindgen.Runtime.LibC.CSize)
 sDL_utf8strlen =
   BG.unsafePerformIO hs_bindgen_fdd33f5a5e9573d8
@@ -4394,7 +4398,7 @@ hs_bindgen_1e79ccdd40706b8d =
 --
 --     [See also]: 'sDL_utf8strlen', 'sDL_strnlen'
 --
---     [C declaration]: @SDL_utf8strnlen@, defined at @SDL3\/SDL_stdinc.h 3444:36@
+--     [C declaration]: @SDL_utf8strnlen@, defined at @SDL3\/SDL_stdinc.h 3452:36@
 sDL_utf8strnlen
   :: BG.FunPtr
        (PtrConst.PtrConst BG.CChar -> HsBindgen.Runtime.LibC.CSize -> IO HsBindgen.Runtime.LibC.CSize)
@@ -4434,7 +4438,7 @@ hs_bindgen_4cfc9a356cf1014c =
 --
 --     [See also]: 'sDL_uitoa', @SDL_ltoa@, 'sDL_lltoa'
 --
---     [C declaration]: @SDL_itoa@, defined at @SDL3\/SDL_stdinc.h 3472:36@
+--     [C declaration]: @SDL_itoa@, defined at @SDL3\/SDL_stdinc.h 3480:36@
 sDL_itoa :: BG.FunPtr (BG.CInt -> BG.Ptr BG.CChar -> BG.CInt -> IO (BG.Ptr BG.CChar))
 sDL_itoa =
   BG.unsafePerformIO hs_bindgen_4cfc9a356cf1014c
@@ -4472,7 +4476,7 @@ hs_bindgen_e052861370ec1ea4 =
 --
 --     [See also]: 'sDL_itoa', @SDL_ultoa@, 'sDL_ulltoa'
 --
---     [C declaration]: @SDL_uitoa@, defined at @SDL3\/SDL_stdinc.h 3500:36@
+--     [C declaration]: @SDL_uitoa@, defined at @SDL3\/SDL_stdinc.h 3508:36@
 sDL_uitoa :: BG.FunPtr (BG.CUInt -> BG.Ptr BG.CChar -> BG.CInt -> IO (BG.Ptr BG.CChar))
 sDL_uitoa =
   BG.unsafePerformIO hs_bindgen_e052861370ec1ea4
@@ -4510,7 +4514,7 @@ hs_bindgen_9c5155b926feaa3f =
 --
 --     [See also]: 'sDL_ulltoa', 'sDL_itoa', @SDL_ltoa@
 --
---     [C declaration]: @SDL_lltoa@, defined at @SDL3\/SDL_stdinc.h 3586:36@
+--     [C declaration]: @SDL_lltoa@, defined at @SDL3\/SDL_stdinc.h 3594:36@
 sDL_lltoa :: BG.FunPtr (BG.CLLong -> BG.Ptr BG.CChar -> BG.CInt -> IO (BG.Ptr BG.CChar))
 sDL_lltoa =
   BG.unsafePerformIO hs_bindgen_9c5155b926feaa3f
@@ -4548,7 +4552,7 @@ hs_bindgen_a3b3fdde6f9a0142 =
 --
 --     [See also]: 'sDL_lltoa', 'sDL_uitoa', @SDL_ultoa@
 --
---     [C declaration]: @SDL_ulltoa@, defined at @SDL3\/SDL_stdinc.h 3614:36@
+--     [C declaration]: @SDL_ulltoa@, defined at @SDL3\/SDL_stdinc.h 3622:36@
 sDL_ulltoa :: BG.FunPtr (BG.CULLong -> BG.Ptr BG.CChar -> BG.CInt -> IO (BG.Ptr BG.CChar))
 sDL_ulltoa =
   BG.unsafePerformIO hs_bindgen_a3b3fdde6f9a0142
@@ -4579,7 +4583,7 @@ hs_bindgen_9a3e9e2b67b916a2 =
 --
 --     [See also]: 'sDL_atof', @SDL_strtol@, @SDL_strtoul@, 'sDL_strtoll', 'sDL_strtoull', 'sDL_strtod', 'sDL_itoa'
 --
---     [C declaration]: @SDL_atoi@, defined at @SDL3\/SDL_stdinc.h 3638:33@
+--     [C declaration]: @SDL_atoi@, defined at @SDL3\/SDL_stdinc.h 3646:33@
 sDL_atoi :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO BG.CInt)
 sDL_atoi =
   BG.unsafePerformIO hs_bindgen_9a3e9e2b67b916a2
@@ -4610,7 +4614,7 @@ hs_bindgen_2804d8be78ed3cae =
 --
 --     [See also]: 'sDL_atoi', @SDL_strtol@, @SDL_strtoul@, 'sDL_strtoll', 'sDL_strtoull', 'sDL_strtod'
 --
---     [C declaration]: @SDL_atof@, defined at @SDL3\/SDL_stdinc.h 3660:36@
+--     [C declaration]: @SDL_atof@, defined at @SDL3\/SDL_stdinc.h 3668:36@
 sDL_atof :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO BG.CDouble)
 sDL_atof =
   BG.unsafePerformIO hs_bindgen_2804d8be78ed3cae
@@ -4648,7 +4652,7 @@ hs_bindgen_6e1c8dc5ccea4653 =
 --
 --     [See also]: 'sDL_atoi', 'sDL_atof', @SDL_strtol@, @SDL_strtoul@, 'sDL_strtoull', 'sDL_strtod', 'sDL_lltoa'
 --
---     [C declaration]: @SDL_strtoll@, defined at @SDL3\/SDL_stdinc.h 3762:39@
+--     [C declaration]: @SDL_strtoll@, defined at @SDL3\/SDL_stdinc.h 3770:39@
 sDL_strtoll
   :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> BG.Ptr (BG.Ptr BG.CChar) -> BG.CInt -> IO BG.CLLong)
 sDL_strtoll =
@@ -4687,7 +4691,7 @@ hs_bindgen_f81f822f17549fa4 =
 --
 --     [See also]: 'sDL_atoi', 'sDL_atof', @SDL_strtol@, 'sDL_strtoll', @SDL_strtoul@, 'sDL_strtod', 'sDL_ulltoa'
 --
---     [C declaration]: @SDL_strtoull@, defined at @SDL3\/SDL_stdinc.h 3796:48@
+--     [C declaration]: @SDL_strtoull@, defined at @SDL3\/SDL_stdinc.h 3804:48@
 sDL_strtoull
   :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> BG.Ptr (BG.Ptr BG.CChar) -> BG.CInt -> IO BG.CULLong)
 sDL_strtoull =
@@ -4728,7 +4732,7 @@ hs_bindgen_6ab6327bbf86f171 =
 --
 --     [See also]: 'sDL_atoi', 'sDL_atof', @SDL_strtol@, 'sDL_strtoll', @SDL_strtoul@, 'sDL_strtoull'
 --
---     [C declaration]: @SDL_strtod@, defined at @SDL3\/SDL_stdinc.h 3826:36@
+--     [C declaration]: @SDL_strtod@, defined at @SDL3\/SDL_stdinc.h 3834:36@
 sDL_strtod :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> BG.Ptr (BG.Ptr BG.CChar) -> IO BG.CDouble)
 sDL_strtod =
   BG.unsafePerformIO hs_bindgen_6ab6327bbf86f171
@@ -4760,7 +4764,7 @@ hs_bindgen_fc45ddd2c1f0219e =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strcmp@, defined at @SDL3\/SDL_stdinc.h 3846:33@
+--     [C declaration]: @SDL_strcmp@, defined at @SDL3\/SDL_stdinc.h 3854:33@
 sDL_strcmp :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> IO BG.CInt)
 sDL_strcmp =
   BG.unsafePerformIO hs_bindgen_fc45ddd2c1f0219e
@@ -4805,7 +4809,7 @@ hs_bindgen_18f45fe45a42c194 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strncmp@, defined at @SDL3\/SDL_stdinc.h 3876:33@
+--     [C declaration]: @SDL_strncmp@, defined at @SDL3\/SDL_stdinc.h 3884:33@
 sDL_strncmp
   :: BG.FunPtr
        ( PtrConst.PtrConst BG.CChar
@@ -4845,7 +4849,7 @@ hs_bindgen_2996562bf0a4585e =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strcasecmp@, defined at @SDL3\/SDL_stdinc.h 3904:33@
+--     [C declaration]: @SDL_strcasecmp@, defined at @SDL3\/SDL_stdinc.h 3912:33@
 sDL_strcasecmp :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> IO BG.CInt)
 sDL_strcasecmp =
   BG.unsafePerformIO hs_bindgen_2996562bf0a4585e
@@ -4892,7 +4896,7 @@ hs_bindgen_28d4c90d056ca0bb =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strncasecmp@, defined at @SDL3\/SDL_stdinc.h 3944:33@
+--     [C declaration]: @SDL_strncasecmp@, defined at @SDL3\/SDL_stdinc.h 3952:33@
 sDL_strncasecmp
   :: BG.FunPtr
        ( PtrConst.PtrConst BG.CChar
@@ -4928,7 +4932,7 @@ hs_bindgen_65f684850b2f315d =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_strpbrk@, defined at @SDL3\/SDL_stdinc.h 3962:36@
+--     [C declaration]: @SDL_strpbrk@, defined at @SDL3\/SDL_stdinc.h 3970:36@
 sDL_strpbrk
   :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> IO (BG.Ptr BG.CChar))
 sDL_strpbrk =
@@ -4976,7 +4980,7 @@ hs_bindgen_0907aee5a9e22b6c =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_StepUTF8@, defined at @SDL3\/SDL_stdinc.h 4022:36@
+--     [C declaration]: @SDL_StepUTF8@, defined at @SDL3\/SDL_stdinc.h 4030:36@
 sDL_StepUTF8
   :: BG.FunPtr (BG.Ptr (PtrConst.PtrConst BG.CChar) -> BG.Ptr HsBindgen.Runtime.LibC.CSize -> IO Uint32)
 sDL_StepUTF8 =
@@ -5017,7 +5021,7 @@ hs_bindgen_ccaed4cafbb7e45b =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_StepBackUTF8@, defined at @SDL3\/SDL_stdinc.h 4053:36@
+--     [C declaration]: @SDL_StepBackUTF8@, defined at @SDL3\/SDL_stdinc.h 4061:36@
 sDL_StepBackUTF8
   :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> BG.Ptr (PtrConst.PtrConst BG.CChar) -> IO Uint32)
 sDL_StepBackUTF8 =
@@ -5055,7 +5059,7 @@ hs_bindgen_d8d90fbed44bffa4 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_UCS4ToUTF8@, defined at @SDL3\/SDL_stdinc.h 4082:36@
+--     [C declaration]: @SDL_UCS4ToUTF8@, defined at @SDL3\/SDL_stdinc.h 4090:36@
 sDL_UCS4ToUTF8 :: BG.FunPtr (Uint32 -> BG.Ptr BG.CChar -> IO (BG.Ptr BG.CChar))
 sDL_UCS4ToUTF8 =
   BG.unsafePerformIO hs_bindgen_d8d90fbed44bffa4
@@ -5084,7 +5088,7 @@ hs_bindgen_da73119d08a07679 =
 --
 --     [See also]: 'sDL_rand', 'sDL_rand_bits', 'sDL_randf'
 --
---     [C declaration]: @SDL_srand@, defined at @SDL3\/SDL_stdinc.h 4294:34@
+--     [C declaration]: @SDL_srand@, defined at @SDL3\/SDL_stdinc.h 4302:34@
 sDL_srand :: BG.FunPtr (Uint64 -> IO ())
 sDL_srand =
   BG.unsafePerformIO hs_bindgen_da73119d08a07679
@@ -5123,7 +5127,7 @@ hs_bindgen_4e5afaafc53503d2 =
 --
 --     [See also]: 'sDL_srand', 'sDL_randf'
 --
---     [C declaration]: @SDL_rand@, defined at @SDL3\/SDL_stdinc.h 4328:36@
+--     [C declaration]: @SDL_rand@, defined at @SDL3\/SDL_stdinc.h 4336:36@
 sDL_rand :: BG.FunPtr (Sint32 -> IO Sint32)
 sDL_rand =
   BG.unsafePerformIO hs_bindgen_4e5afaafc53503d2
@@ -5154,7 +5158,7 @@ hs_bindgen_e6a11f5c2731e306 =
 --
 --     [See also]: 'sDL_srand', 'sDL_rand'
 --
---     [C declaration]: @SDL_randf@, defined at @SDL3\/SDL_stdinc.h 4351:35@
+--     [C declaration]: @SDL_randf@, defined at @SDL3\/SDL_stdinc.h 4359:35@
 sDL_randf :: BG.FunPtr (IO BG.CFloat)
 sDL_randf =
   BG.unsafePerformIO hs_bindgen_e6a11f5c2731e306
@@ -5185,7 +5189,7 @@ hs_bindgen_1b4a072c67be4b47 =
 --
 --     [See also]: 'sDL_rand', 'sDL_randf', 'sDL_srand'
 --
---     [C declaration]: @SDL_rand_bits@, defined at @SDL3\/SDL_stdinc.h 4374:36@
+--     [C declaration]: @SDL_rand_bits@, defined at @SDL3\/SDL_stdinc.h 4382:36@
 sDL_rand_bits :: BG.FunPtr (IO Uint32)
 sDL_rand_bits =
   BG.unsafePerformIO hs_bindgen_1b4a072c67be4b47
@@ -5224,7 +5228,7 @@ hs_bindgen_b7805b04f67ee663 =
 --
 --     [See also]: 'sDL_rand', 'sDL_rand_bits_r', 'sDL_randf_r'
 --
---     [C declaration]: @SDL_rand_r@, defined at @SDL3\/SDL_stdinc.h 4409:36@
+--     [C declaration]: @SDL_rand_r@, defined at @SDL3\/SDL_stdinc.h 4417:36@
 sDL_rand_r :: BG.FunPtr (BG.Ptr Uint64 -> Sint32 -> IO Sint32)
 sDL_rand_r =
   BG.unsafePerformIO hs_bindgen_b7805b04f67ee663
@@ -5257,7 +5261,7 @@ hs_bindgen_2868c0dca829c12d =
 --
 --     [See also]: 'sDL_rand_bits_r', 'sDL_rand_r', 'sDL_randf'
 --
---     [C declaration]: @SDL_randf_r@, defined at @SDL3\/SDL_stdinc.h 4436:35@
+--     [C declaration]: @SDL_randf_r@, defined at @SDL3\/SDL_stdinc.h 4444:35@
 sDL_randf_r :: BG.FunPtr (BG.Ptr Uint64 -> IO BG.CFloat)
 sDL_randf_r =
   BG.unsafePerformIO hs_bindgen_2868c0dca829c12d
@@ -5290,7 +5294,7 @@ hs_bindgen_4f041e8bf307388e =
 --
 --     [See also]: 'sDL_rand_r', 'sDL_randf_r'
 --
---     [C declaration]: @SDL_rand_bits_r@, defined at @SDL3\/SDL_stdinc.h 4461:36@
+--     [C declaration]: @SDL_rand_bits_r@, defined at @SDL3\/SDL_stdinc.h 4469:36@
 sDL_rand_bits_r :: BG.FunPtr (BG.Ptr Uint64 -> IO Uint32)
 sDL_rand_bits_r =
   BG.unsafePerformIO hs_bindgen_4f041e8bf307388e
@@ -5329,7 +5333,7 @@ hs_bindgen_fc7fee2483850ab3 =
 --
 --     [See also]: 'sDL_acosf', 'sDL_asin', 'sDL_cos'
 --
---     [C declaration]: @SDL_acos@, defined at @SDL3\/SDL_stdinc.h 4515:36@
+--     [C declaration]: @SDL_acos@, defined at @SDL3\/SDL_stdinc.h 4523:36@
 sDL_acos :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_acos =
   BG.unsafePerformIO hs_bindgen_fc7fee2483850ab3
@@ -5368,7 +5372,7 @@ hs_bindgen_521ecf135cd97997 =
 --
 --     [See also]: 'sDL_acos', 'sDL_asinf', 'sDL_cosf'
 --
---     [C declaration]: @SDL_acosf@, defined at @SDL3\/SDL_stdinc.h 4545:35@
+--     [C declaration]: @SDL_acosf@, defined at @SDL3\/SDL_stdinc.h 4553:35@
 sDL_acosf :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_acosf =
   BG.unsafePerformIO hs_bindgen_521ecf135cd97997
@@ -5407,7 +5411,7 @@ hs_bindgen_0446975347dc0e74 =
 --
 --     [See also]: 'sDL_asinf', 'sDL_acos', 'sDL_sin'
 --
---     [C declaration]: @SDL_asin@, defined at @SDL3\/SDL_stdinc.h 4575:36@
+--     [C declaration]: @SDL_asin@, defined at @SDL3\/SDL_stdinc.h 4583:36@
 sDL_asin :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_asin =
   BG.unsafePerformIO hs_bindgen_0446975347dc0e74
@@ -5446,7 +5450,7 @@ hs_bindgen_6069a6cbf645d9a4 =
 --
 --     [See also]: 'sDL_asin', 'sDL_acosf', 'sDL_sinf'
 --
---     [C declaration]: @SDL_asinf@, defined at @SDL3\/SDL_stdinc.h 4605:35@
+--     [C declaration]: @SDL_asinf@, defined at @SDL3\/SDL_stdinc.h 4613:35@
 sDL_asinf :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_asinf =
   BG.unsafePerformIO hs_bindgen_6069a6cbf645d9a4
@@ -5487,7 +5491,7 @@ hs_bindgen_eb9c094d5b8cc44a =
 --
 --     [See also]: 'sDL_atanf', 'sDL_atan2', 'sDL_tan'
 --
---     [C declaration]: @SDL_atan@, defined at @SDL3\/SDL_stdinc.h 4637:36@
+--     [C declaration]: @SDL_atan@, defined at @SDL3\/SDL_stdinc.h 4645:36@
 sDL_atan :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_atan =
   BG.unsafePerformIO hs_bindgen_eb9c094d5b8cc44a
@@ -5528,7 +5532,7 @@ hs_bindgen_9807f179a4fbb908 =
 --
 --     [See also]: 'sDL_atan', 'sDL_atan2f', 'sDL_tanf'
 --
---     [C declaration]: @SDL_atanf@, defined at @SDL3\/SDL_stdinc.h 4669:35@
+--     [C declaration]: @SDL_atanf@, defined at @SDL3\/SDL_stdinc.h 4677:35@
 sDL_atanf :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_atanf =
   BG.unsafePerformIO hs_bindgen_9807f179a4fbb908
@@ -5571,7 +5575,7 @@ hs_bindgen_c868e29b9251ada8 =
 --
 --     [See also]: 'sDL_atan2f', 'sDL_atan', 'sDL_tan'
 --
---     [C declaration]: @SDL_atan2@, defined at @SDL3\/SDL_stdinc.h 4705:36@
+--     [C declaration]: @SDL_atan2@, defined at @SDL3\/SDL_stdinc.h 4713:36@
 sDL_atan2 :: BG.FunPtr (BG.CDouble -> BG.CDouble -> IO BG.CDouble)
 sDL_atan2 =
   BG.unsafePerformIO hs_bindgen_c868e29b9251ada8
@@ -5614,7 +5618,7 @@ hs_bindgen_357a95d359b4aaad =
 --
 --     [See also]: 'sDL_atan2', 'sDL_atan', 'sDL_tan'
 --
---     [C declaration]: @SDL_atan2f@, defined at @SDL3\/SDL_stdinc.h 4741:35@
+--     [C declaration]: @SDL_atan2f@, defined at @SDL3\/SDL_stdinc.h 4749:35@
 sDL_atan2f :: BG.FunPtr (BG.CFloat -> BG.CFloat -> IO BG.CFloat)
 sDL_atan2f =
   BG.unsafePerformIO hs_bindgen_357a95d359b4aaad
@@ -5651,7 +5655,7 @@ hs_bindgen_51763cbf0b798de3 =
 --
 --     [See also]: 'sDL_ceilf', 'sDL_floor', 'sDL_trunc', 'sDL_round', @SDL_lround@
 --
---     [C declaration]: @SDL_ceil@, defined at @SDL3\/SDL_stdinc.h 4769:36@
+--     [C declaration]: @SDL_ceil@, defined at @SDL3\/SDL_stdinc.h 4777:36@
 sDL_ceil :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_ceil =
   BG.unsafePerformIO hs_bindgen_51763cbf0b798de3
@@ -5688,7 +5692,7 @@ hs_bindgen_362325253c9b19f8 =
 --
 --     [See also]: 'sDL_ceil', 'sDL_floorf', 'sDL_truncf', 'sDL_roundf', @SDL_lroundf@
 --
---     [C declaration]: @SDL_ceilf@, defined at @SDL3\/SDL_stdinc.h 4797:35@
+--     [C declaration]: @SDL_ceilf@, defined at @SDL3\/SDL_stdinc.h 4805:35@
 sDL_ceilf :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_ceilf =
   BG.unsafePerformIO hs_bindgen_362325253c9b19f8
@@ -5727,7 +5731,7 @@ hs_bindgen_df3beaabf480a0d3 =
 --
 --     [See also]: 'sDL_copysignf', 'sDL_fabs'
 --
---     [C declaration]: @SDL_copysign@, defined at @SDL3\/SDL_stdinc.h 4823:36@
+--     [C declaration]: @SDL_copysign@, defined at @SDL3\/SDL_stdinc.h 4831:36@
 sDL_copysign :: BG.FunPtr (BG.CDouble -> BG.CDouble -> IO BG.CDouble)
 sDL_copysign =
   BG.unsafePerformIO hs_bindgen_df3beaabf480a0d3
@@ -5766,7 +5770,7 @@ hs_bindgen_e6af77974ed5435f =
 --
 --     [See also]: 'sDL_copysign', 'sDL_fabsf'
 --
---     [C declaration]: @SDL_copysignf@, defined at @SDL3\/SDL_stdinc.h 4849:35@
+--     [C declaration]: @SDL_copysignf@, defined at @SDL3\/SDL_stdinc.h 4857:35@
 sDL_copysignf :: BG.FunPtr (BG.CFloat -> BG.CFloat -> IO BG.CFloat)
 sDL_copysignf =
   BG.unsafePerformIO hs_bindgen_e6af77974ed5435f
@@ -5803,7 +5807,7 @@ hs_bindgen_3d9b0e8a53288293 =
 --
 --     [See also]: 'sDL_cosf', 'sDL_acos', 'sDL_sin'
 --
---     [C declaration]: @SDL_cos@, defined at @SDL3\/SDL_stdinc.h 4877:36@
+--     [C declaration]: @SDL_cos@, defined at @SDL3\/SDL_stdinc.h 4885:36@
 sDL_cos :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_cos =
   BG.unsafePerformIO hs_bindgen_3d9b0e8a53288293
@@ -5840,7 +5844,7 @@ hs_bindgen_8a6d19c21d08744f =
 --
 --     [See also]: 'sDL_cos', 'sDL_acosf', 'sDL_sinf'
 --
---     [C declaration]: @SDL_cosf@, defined at @SDL3\/SDL_stdinc.h 4905:35@
+--     [C declaration]: @SDL_cosf@, defined at @SDL3\/SDL_stdinc.h 4913:35@
 sDL_cosf :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_cosf =
   BG.unsafePerformIO hs_bindgen_8a6d19c21d08744f
@@ -5881,7 +5885,7 @@ hs_bindgen_32a0ab5c8aca638e =
 --
 --     [See also]: 'sDL_expf', 'sDL_log'
 --
---     [C declaration]: @SDL_exp@, defined at @SDL3\/SDL_stdinc.h 4937:36@
+--     [C declaration]: @SDL_exp@, defined at @SDL3\/SDL_stdinc.h 4945:36@
 sDL_exp :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_exp =
   BG.unsafePerformIO hs_bindgen_32a0ab5c8aca638e
@@ -5922,7 +5926,7 @@ hs_bindgen_e734b446bd66b310 =
 --
 --     [See also]: 'sDL_exp', 'sDL_logf'
 --
---     [C declaration]: @SDL_expf@, defined at @SDL3\/SDL_stdinc.h 4969:35@
+--     [C declaration]: @SDL_expf@, defined at @SDL3\/SDL_stdinc.h 4977:35@
 sDL_expf :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_expf =
   BG.unsafePerformIO hs_bindgen_e734b446bd66b310
@@ -5957,7 +5961,7 @@ hs_bindgen_0fe1f848b90d29bc =
 --
 --     [See also]: 'sDL_fabsf'
 --
---     [C declaration]: @SDL_fabs@, defined at @SDL3\/SDL_stdinc.h 4990:36@
+--     [C declaration]: @SDL_fabs@, defined at @SDL3\/SDL_stdinc.h 4998:36@
 sDL_fabs :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_fabs =
   BG.unsafePerformIO hs_bindgen_0fe1f848b90d29bc
@@ -5992,7 +5996,7 @@ hs_bindgen_1e189b3e959f375b =
 --
 --     [See also]: 'sDL_fabs'
 --
---     [C declaration]: @SDL_fabsf@, defined at @SDL3\/SDL_stdinc.h 5011:35@
+--     [C declaration]: @SDL_fabsf@, defined at @SDL3\/SDL_stdinc.h 5019:35@
 sDL_fabsf :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_fabsf =
   BG.unsafePerformIO hs_bindgen_1e189b3e959f375b
@@ -6029,7 +6033,7 @@ hs_bindgen_ae709679ac231e3a =
 --
 --     [See also]: 'sDL_floorf', 'sDL_ceil', 'sDL_trunc', 'sDL_round', @SDL_lround@
 --
---     [C declaration]: @SDL_floor@, defined at @SDL3\/SDL_stdinc.h 5039:36@
+--     [C declaration]: @SDL_floor@, defined at @SDL3\/SDL_stdinc.h 5047:36@
 sDL_floor :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_floor =
   BG.unsafePerformIO hs_bindgen_ae709679ac231e3a
@@ -6066,7 +6070,7 @@ hs_bindgen_6bcbc045e8590408 =
 --
 --     [See also]: 'sDL_floor', 'sDL_ceilf', 'sDL_truncf', 'sDL_roundf', @SDL_lroundf@
 --
---     [C declaration]: @SDL_floorf@, defined at @SDL3\/SDL_stdinc.h 5067:35@
+--     [C declaration]: @SDL_floorf@, defined at @SDL3\/SDL_stdinc.h 5075:35@
 sDL_floorf :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_floorf =
   BG.unsafePerformIO hs_bindgen_6bcbc045e8590408
@@ -6103,7 +6107,7 @@ hs_bindgen_9ff826562c85b6db =
 --
 --     [See also]: 'sDL_truncf', 'sDL_fmod', 'sDL_ceil', 'sDL_floor', 'sDL_round', @SDL_lround@
 --
---     [C declaration]: @SDL_trunc@, defined at @SDL3\/SDL_stdinc.h 5096:36@
+--     [C declaration]: @SDL_trunc@, defined at @SDL3\/SDL_stdinc.h 5104:36@
 sDL_trunc :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_trunc =
   BG.unsafePerformIO hs_bindgen_9ff826562c85b6db
@@ -6140,7 +6144,7 @@ hs_bindgen_5afacbe63e710528 =
 --
 --     [See also]: 'sDL_trunc', 'sDL_fmodf', 'sDL_ceilf', 'sDL_floorf', 'sDL_roundf', @SDL_lroundf@
 --
---     [C declaration]: @SDL_truncf@, defined at @SDL3\/SDL_stdinc.h 5125:35@
+--     [C declaration]: @SDL_truncf@, defined at @SDL3\/SDL_stdinc.h 5133:35@
 sDL_truncf :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_truncf =
   BG.unsafePerformIO hs_bindgen_5afacbe63e710528
@@ -6179,7 +6183,7 @@ hs_bindgen_3a93d2030ffd9ef3 =
 --
 --     [See also]: 'sDL_fmodf', 'sDL_modf', 'sDL_trunc', 'sDL_ceil', 'sDL_floor', 'sDL_round', @SDL_lround@
 --
---     [C declaration]: @SDL_fmod@, defined at @SDL3\/SDL_stdinc.h 5155:36@
+--     [C declaration]: @SDL_fmod@, defined at @SDL3\/SDL_stdinc.h 5163:36@
 sDL_fmod :: BG.FunPtr (BG.CDouble -> BG.CDouble -> IO BG.CDouble)
 sDL_fmod =
   BG.unsafePerformIO hs_bindgen_3a93d2030ffd9ef3
@@ -6218,7 +6222,7 @@ hs_bindgen_a851844ef04e542d =
 --
 --     [See also]: 'sDL_fmod', 'sDL_truncf', 'sDL_modff', 'sDL_ceilf', 'sDL_floorf', 'sDL_roundf', @SDL_lroundf@
 --
---     [C declaration]: @SDL_fmodf@, defined at @SDL3\/SDL_stdinc.h 5185:35@
+--     [C declaration]: @SDL_fmodf@, defined at @SDL3\/SDL_stdinc.h 5193:35@
 sDL_fmodf :: BG.FunPtr (BG.CFloat -> BG.CFloat -> IO BG.CFloat)
 sDL_fmodf =
   BG.unsafePerformIO hs_bindgen_a851844ef04e542d
@@ -6247,7 +6251,7 @@ hs_bindgen_d9346ba385534fdd =
 --
 --     [See also]: 'sDL_isinff'
 --
---     [C declaration]: @SDL_isinf@, defined at @SDL3\/SDL_stdinc.h 5199:33@
+--     [C declaration]: @SDL_isinf@, defined at @SDL3\/SDL_stdinc.h 5207:33@
 sDL_isinf :: BG.FunPtr (BG.CDouble -> IO BG.CInt)
 sDL_isinf =
   BG.unsafePerformIO hs_bindgen_d9346ba385534fdd
@@ -6276,7 +6280,7 @@ hs_bindgen_bfaf6777c1c350c3 =
 --
 --     [See also]: 'sDL_isinf'
 --
---     [C declaration]: @SDL_isinff@, defined at @SDL3\/SDL_stdinc.h 5213:33@
+--     [C declaration]: @SDL_isinff@, defined at @SDL3\/SDL_stdinc.h 5221:33@
 sDL_isinff :: BG.FunPtr (BG.CFloat -> IO BG.CInt)
 sDL_isinff =
   BG.unsafePerformIO hs_bindgen_bfaf6777c1c350c3
@@ -6305,7 +6309,7 @@ hs_bindgen_006f33027be22f99 =
 --
 --     [See also]: 'sDL_isnanf'
 --
---     [C declaration]: @SDL_isnan@, defined at @SDL3\/SDL_stdinc.h 5227:33@
+--     [C declaration]: @SDL_isnan@, defined at @SDL3\/SDL_stdinc.h 5235:33@
 sDL_isnan :: BG.FunPtr (BG.CDouble -> IO BG.CInt)
 sDL_isnan =
   BG.unsafePerformIO hs_bindgen_006f33027be22f99
@@ -6334,7 +6338,7 @@ hs_bindgen_308e1efef7090245 =
 --
 --     [See also]: 'sDL_isnan'
 --
---     [C declaration]: @SDL_isnanf@, defined at @SDL3\/SDL_stdinc.h 5241:33@
+--     [C declaration]: @SDL_isnanf@, defined at @SDL3\/SDL_stdinc.h 5249:33@
 sDL_isnanf :: BG.FunPtr (BG.CFloat -> IO BG.CInt)
 sDL_isnanf =
   BG.unsafePerformIO hs_bindgen_308e1efef7090245
@@ -6373,7 +6377,7 @@ hs_bindgen_4f9418e7e4267684 =
 --
 --     [See also]: 'sDL_logf', 'sDL_log10', 'sDL_exp'
 --
---     [C declaration]: @SDL_log@, defined at @SDL3\/SDL_stdinc.h 5271:36@
+--     [C declaration]: @SDL_log@, defined at @SDL3\/SDL_stdinc.h 5279:36@
 sDL_log :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_log =
   BG.unsafePerformIO hs_bindgen_4f9418e7e4267684
@@ -6412,7 +6416,7 @@ hs_bindgen_ab81f791c1e3e516 =
 --
 --     [See also]: 'sDL_log', 'sDL_expf'
 --
---     [C declaration]: @SDL_logf@, defined at @SDL3\/SDL_stdinc.h 5300:35@
+--     [C declaration]: @SDL_logf@, defined at @SDL3\/SDL_stdinc.h 5308:35@
 sDL_logf :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_logf =
   BG.unsafePerformIO hs_bindgen_ab81f791c1e3e516
@@ -6451,7 +6455,7 @@ hs_bindgen_c9a4b45a046047ba =
 --
 --     [See also]: 'sDL_log10f', 'sDL_log', 'sDL_pow'
 --
---     [C declaration]: @SDL_log10@, defined at @SDL3\/SDL_stdinc.h 5330:36@
+--     [C declaration]: @SDL_log10@, defined at @SDL3\/SDL_stdinc.h 5338:36@
 sDL_log10 :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_log10 =
   BG.unsafePerformIO hs_bindgen_c9a4b45a046047ba
@@ -6490,7 +6494,7 @@ hs_bindgen_72ace8de925eb690 =
 --
 --     [See also]: 'sDL_log10', 'sDL_logf', 'sDL_powf'
 --
---     [C declaration]: @SDL_log10f@, defined at @SDL3\/SDL_stdinc.h 5360:35@
+--     [C declaration]: @SDL_log10f@, defined at @SDL3\/SDL_stdinc.h 5368:35@
 sDL_log10f :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_log10f =
   BG.unsafePerformIO hs_bindgen_72ace8de925eb690
@@ -6523,7 +6527,7 @@ hs_bindgen_b05adeb0cad2dab6 =
 --
 --     [See also]: 'sDL_modff', 'sDL_trunc', 'sDL_fmod'
 --
---     [C declaration]: @SDL_modf@, defined at @SDL3\/SDL_stdinc.h 5380:36@
+--     [C declaration]: @SDL_modf@, defined at @SDL3\/SDL_stdinc.h 5388:36@
 sDL_modf :: BG.FunPtr (BG.CDouble -> BG.Ptr BG.CDouble -> IO BG.CDouble)
 sDL_modf =
   BG.unsafePerformIO hs_bindgen_b05adeb0cad2dab6
@@ -6556,7 +6560,7 @@ hs_bindgen_59f3b87137ea46cd =
 --
 --     [See also]: 'sDL_modf', 'sDL_truncf', 'sDL_fmodf'
 --
---     [C declaration]: @SDL_modff@, defined at @SDL3\/SDL_stdinc.h 5400:35@
+--     [C declaration]: @SDL_modff@, defined at @SDL3\/SDL_stdinc.h 5408:35@
 sDL_modff :: BG.FunPtr (BG.CFloat -> BG.Ptr BG.CFloat -> IO BG.CFloat)
 sDL_modff =
   BG.unsafePerformIO hs_bindgen_59f3b87137ea46cd
@@ -6597,7 +6601,7 @@ hs_bindgen_75e5e5b712af4971 =
 --
 --     [See also]: 'sDL_powf', 'sDL_exp', 'sDL_log'
 --
---     [C declaration]: @SDL_pow@, defined at @SDL3\/SDL_stdinc.h 5432:36@
+--     [C declaration]: @SDL_pow@, defined at @SDL3\/SDL_stdinc.h 5440:36@
 sDL_pow :: BG.FunPtr (BG.CDouble -> BG.CDouble -> IO BG.CDouble)
 sDL_pow =
   BG.unsafePerformIO hs_bindgen_75e5e5b712af4971
@@ -6638,7 +6642,7 @@ hs_bindgen_deb1ba3db460136c =
 --
 --     [See also]: 'sDL_pow', 'sDL_expf', 'sDL_logf'
 --
---     [C declaration]: @SDL_powf@, defined at @SDL3\/SDL_stdinc.h 5464:35@
+--     [C declaration]: @SDL_powf@, defined at @SDL3\/SDL_stdinc.h 5472:35@
 sDL_powf :: BG.FunPtr (BG.CFloat -> BG.CFloat -> IO BG.CFloat)
 sDL_powf =
   BG.unsafePerformIO hs_bindgen_deb1ba3db460136c
@@ -6675,7 +6679,7 @@ hs_bindgen_e8841dcdfaff32de =
 --
 --     [See also]: 'sDL_roundf', @SDL_lround@, 'sDL_floor', 'sDL_ceil', 'sDL_trunc'
 --
---     [C declaration]: @SDL_round@, defined at @SDL3\/SDL_stdinc.h 5493:36@
+--     [C declaration]: @SDL_round@, defined at @SDL3\/SDL_stdinc.h 5501:36@
 sDL_round :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_round =
   BG.unsafePerformIO hs_bindgen_e8841dcdfaff32de
@@ -6712,7 +6716,7 @@ hs_bindgen_57450d2f082e285c =
 --
 --     [See also]: 'sDL_round', @SDL_lroundf@, 'sDL_floorf', 'sDL_ceilf', 'sDL_truncf'
 --
---     [C declaration]: @SDL_roundf@, defined at @SDL3\/SDL_stdinc.h 5522:35@
+--     [C declaration]: @SDL_roundf@, defined at @SDL3\/SDL_stdinc.h 5530:35@
 sDL_roundf :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_roundf =
   BG.unsafePerformIO hs_bindgen_57450d2f082e285c
@@ -6751,7 +6755,7 @@ hs_bindgen_6fc1ebd971ec8157 =
 --
 --     [See also]: 'sDL_scalbnf', 'sDL_pow'
 --
---     [C declaration]: @SDL_scalbn@, defined at @SDL3\/SDL_stdinc.h 5605:36@
+--     [C declaration]: @SDL_scalbn@, defined at @SDL3\/SDL_stdinc.h 5613:36@
 sDL_scalbn :: BG.FunPtr (BG.CDouble -> BG.CInt -> IO BG.CDouble)
 sDL_scalbn =
   BG.unsafePerformIO hs_bindgen_6fc1ebd971ec8157
@@ -6790,7 +6794,7 @@ hs_bindgen_706cd6213dd8d69d =
 --
 --     [See also]: 'sDL_scalbn', 'sDL_powf'
 --
---     [C declaration]: @SDL_scalbnf@, defined at @SDL3\/SDL_stdinc.h 5630:35@
+--     [C declaration]: @SDL_scalbnf@, defined at @SDL3\/SDL_stdinc.h 5638:35@
 sDL_scalbnf :: BG.FunPtr (BG.CFloat -> BG.CInt -> IO BG.CFloat)
 sDL_scalbnf =
   BG.unsafePerformIO hs_bindgen_706cd6213dd8d69d
@@ -6827,7 +6831,7 @@ hs_bindgen_e4b1725cdd38afe4 =
 --
 --     [See also]: 'sDL_sinf', 'sDL_asin', 'sDL_cos'
 --
---     [C declaration]: @SDL_sin@, defined at @SDL3\/SDL_stdinc.h 5658:36@
+--     [C declaration]: @SDL_sin@, defined at @SDL3\/SDL_stdinc.h 5666:36@
 sDL_sin :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_sin =
   BG.unsafePerformIO hs_bindgen_e4b1725cdd38afe4
@@ -6864,7 +6868,7 @@ hs_bindgen_4d400d672d200ac9 =
 --
 --     [See also]: 'sDL_sin', 'sDL_asinf', 'sDL_cosf'
 --
---     [C declaration]: @SDL_sinf@, defined at @SDL3\/SDL_stdinc.h 5686:35@
+--     [C declaration]: @SDL_sinf@, defined at @SDL3\/SDL_stdinc.h 5694:35@
 sDL_sinf :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_sinf =
   BG.unsafePerformIO hs_bindgen_4d400d672d200ac9
@@ -6901,7 +6905,7 @@ hs_bindgen_8352f3e6d4755f65 =
 --
 --     [See also]: 'sDL_sqrtf'
 --
---     [C declaration]: @SDL_sqrt@, defined at @SDL3\/SDL_stdinc.h 5712:36@
+--     [C declaration]: @SDL_sqrt@, defined at @SDL3\/SDL_stdinc.h 5720:36@
 sDL_sqrt :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_sqrt =
   BG.unsafePerformIO hs_bindgen_8352f3e6d4755f65
@@ -6938,7 +6942,7 @@ hs_bindgen_87f1efd0a9654c58 =
 --
 --     [See also]: 'sDL_sqrt'
 --
---     [C declaration]: @SDL_sqrtf@, defined at @SDL3\/SDL_stdinc.h 5738:35@
+--     [C declaration]: @SDL_sqrtf@, defined at @SDL3\/SDL_stdinc.h 5746:35@
 sDL_sqrtf :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_sqrtf =
   BG.unsafePerformIO hs_bindgen_87f1efd0a9654c58
@@ -6975,7 +6979,7 @@ hs_bindgen_4a65c95891312c30 =
 --
 --     [See also]: 'sDL_tanf', 'sDL_sin', 'sDL_cos', 'sDL_atan', 'sDL_atan2'
 --
---     [C declaration]: @SDL_tan@, defined at @SDL3\/SDL_stdinc.h 5768:36@
+--     [C declaration]: @SDL_tan@, defined at @SDL3\/SDL_stdinc.h 5776:36@
 sDL_tan :: BG.FunPtr (BG.CDouble -> IO BG.CDouble)
 sDL_tan =
   BG.unsafePerformIO hs_bindgen_4a65c95891312c30
@@ -7012,7 +7016,7 @@ hs_bindgen_094dc8b00c4ee010 =
 --
 --     [See also]: 'sDL_tan', 'sDL_sinf', 'sDL_cosf', 'sDL_atanf', 'sDL_atan2f'
 --
---     [C declaration]: @SDL_tanf@, defined at @SDL3\/SDL_stdinc.h 5798:35@
+--     [C declaration]: @SDL_tanf@, defined at @SDL3\/SDL_stdinc.h 5806:35@
 sDL_tanf :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 sDL_tanf =
   BG.unsafePerformIO hs_bindgen_094dc8b00c4ee010
@@ -7044,7 +7048,7 @@ hs_bindgen_704fe1bf2ce9aef6 =
 --
 --     [See also]: 'sDL_iconv', 'sDL_iconv_close', 'sDL_iconv_string'
 --
---     [C declaration]: @SDL_iconv_open@, defined at @SDL3\/SDL_stdinc.h 5826:41@
+--     [C declaration]: @SDL_iconv_open@, defined at @SDL3\/SDL_stdinc.h 5834:41@
 sDL_iconv_open
   :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> IO SDL_iconv_t)
 sDL_iconv_open =
@@ -7074,7 +7078,7 @@ hs_bindgen_2c0a62f403d4446c =
 --
 --     [See also]: 'sDL_iconv', 'sDL_iconv_open', 'sDL_iconv_string'
 --
---     [C declaration]: @SDL_iconv_close@, defined at @SDL3\/SDL_stdinc.h 5843:33@
+--     [C declaration]: @SDL_iconv_close@, defined at @SDL3\/SDL_stdinc.h 5851:33@
 sDL_iconv_close :: BG.FunPtr (SDL_iconv_t -> IO BG.CInt)
 sDL_iconv_close =
   BG.unsafePerformIO hs_bindgen_2c0a62f403d4446c
@@ -7133,7 +7137,7 @@ hs_bindgen_c0049201d1f4606f =
 --
 --     [See also]: 'sDL_iconv_open', 'sDL_iconv_close', 'sDL_iconv_string'
 --
---     [C declaration]: @SDL_iconv@, defined at @SDL3\/SDL_stdinc.h 5883:36@
+--     [C declaration]: @SDL_iconv@, defined at @SDL3\/SDL_stdinc.h 5891:36@
 sDL_iconv
   :: BG.FunPtr
        ( SDL_iconv_t
@@ -7191,7 +7195,7 @@ hs_bindgen_ce165346002f1247 =
 --
 --     [See also]: 'sDL_iconv_open', 'sDL_iconv_close', 'sDL_iconv'
 --
---     [C declaration]: @SDL_iconv_string@, defined at @SDL3\/SDL_stdinc.h 5920:36@
+--     [C declaration]: @SDL_iconv_string@, defined at @SDL3\/SDL_stdinc.h 5928:36@
 sDL_iconv_string
   :: BG.FunPtr
        ( PtrConst.PtrConst BG.CChar
@@ -7223,7 +7227,7 @@ hs_bindgen_5f2e41800217ca05 =
 
 {-# NOINLINE sDL_size_mul_check_overflow_builtin #-}
 
--- | [C declaration]: @SDL_size_mul_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6101:23@
+-- | [C declaration]: @SDL_size_mul_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6109:23@
 sDL_size_mul_check_overflow_builtin
   :: BG.FunPtr
        ( HsBindgen.Runtime.LibC.CSize
@@ -7254,7 +7258,7 @@ hs_bindgen_2d8ca557aa2f3eb0 =
 
 {-# NOINLINE sDL_size_add_check_overflow_builtin #-}
 
--- | [C declaration]: @SDL_size_add_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6139:23@
+-- | [C declaration]: @SDL_size_add_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6147:23@
 sDL_size_add_check_overflow_builtin
   :: BG.FunPtr
        ( HsBindgen.Runtime.LibC.CSize

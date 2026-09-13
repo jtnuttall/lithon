@@ -111,10 +111,10 @@ instance HasCField.HasCField SDL_SpinLock "unwrap" where
 --
 --     [See also]: 'sDL_CompareAndSwapAtomicInt', 'sDL_GetAtomicInt', 'sDL_SetAtomicInt', 'sDL_AddAtomicInt'
 --
---     [C declaration]: @struct SDL_AtomicInt@, defined at @SDL3\/SDL_atomic.h 395:16@
+--     [C declaration]: @struct SDL_AtomicInt@, defined at @SDL3\/SDL_atomic.h 405:16@
 data SDL_AtomicInt = SDL_AtomicInt
   { value :: BG.CInt
-  -- ^ [C declaration]: @value@, defined at @SDL3\/SDL_atomic.h 395:36@
+  -- ^ [C declaration]: @value@, defined at @SDL3\/SDL_atomic.h 405:36@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -173,10 +173,10 @@ instance HasCField.HasCField SDL_AtomicInt "value" where
 --
 --     [See also]: 'sDL_CompareAndSwapAtomicU32', 'sDL_GetAtomicU32', 'sDL_SetAtomicU32'
 --
---     [C declaration]: @struct SDL_AtomicU32@, defined at @SDL3\/SDL_atomic.h 540:16@
+--     [C declaration]: @struct SDL_AtomicU32@, defined at @SDL3\/SDL_atomic.h 550:16@
 data SDL_AtomicU32 = SDL_AtomicU32
   { value :: SDL3.Sys.Bindgen.Stdinc.Uint32
-  -- ^ [C declaration]: @value@, defined at @SDL3\/SDL_atomic.h 540:39@
+  -- ^ [C declaration]: @value@, defined at @SDL3\/SDL_atomic.h 550:39@
   }
   deriving stock (BG.Generic, Eq, Show)
 
