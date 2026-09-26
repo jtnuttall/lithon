@@ -6,12 +6,15 @@
 -- typed module names through the plan's mangle, 'HB.RequireHit' misses fail
 -- generation loudly, 'HB.AllowMiss' misses pass through untouched, text
 -- edits apply in list order (a later edit sees an earlier edit's output),
--- and the finalizer's payload arrives on the result.
+-- the finalizer's payload arrives on the result, and a header reaching
+-- another through a quoted include (libmpv's shape) chains after it and
+-- binds against its spec.
 module Bindgen.DriverTest (
   unit_driverFoldsToyHeader,
   unit_requireHitMissFails,
   unit_allowMissSkips,
   unit_editsApplyInOrder,
+  unit_quotedIncludeChains,
 ) where
 
 import Data.Text qualified as T
@@ -160,3 +163,48 @@ unit_editsApplyInOrder = do
         "later edit saw the earlier edit's output"
         (any (T.isInfixOf "{- pass1 pass2 -}" . snd) (renderedPairs r.modules))
     _other -> assertFailure "expected exactly one header result"
+
+-- | @toy_b.h@ reaches @toy_a.h@ only through a quoted include (as
+-- libmpv's @render_gl.h@ reaches @render.h@) and is the only main
+-- include: the preflight graph still finds both, the chain runs them in
+-- dependency order, and the second invocation binds @toy_point@ through
+-- the first one's spec — it imports the defining module instead of
+-- declaring the type again.
+unit_quotedIncludeChains :: Assertion
+unit_quotedIncludeChains = do
+  results <-
+    either (assertFailure . toString) pure
+      =<< runToyChain
+        (toyEnv "lithon-driver-quoted")
+        [ ToyHeader{include = "toy" </> "toy_a.h", source = headerA}
+        , ToyHeader{include = "toy" </> "toy_b.h", source = headerB}
+        ]
+        toyPlan{mainIncludes = ["toy/toy_b.h"]}
+        Visitor{passes = mempty, finalize = \_ _ _ -> Right ()}
+  map (.unit.headerName) results @?= ["toy_a.h", "toy_b.h"]
+  case results of
+    [a, b] -> do
+      let declares r = any (T.isInfixOf "data Toy_point" . snd) (renderedPairs r.modules)
+      assertBool "toy_a.h declares toy_point" (declares a)
+      assertBool "toy_b.h does not redeclare toy_point" (not (declares b))
+      assertBool
+        "toy_b.h's family imports toy_a.h's types module"
+        (any (elem "Toy.Bindgen.A" . (.hsModule.importedModules)) b.modules)
+    _other -> assertFailure "expected two header results"
+ where
+  headerA =
+    unlines
+      [ "#ifndef TOY_A_H"
+      , "#define TOY_A_H"
+      , "typedef struct toy_point { int x; int y; } toy_point;"
+      , "int toy_a_origin(toy_point *out);"
+      , "#endif"
+      ]
+  headerB =
+    unlines
+      [ "#ifndef TOY_B_H"
+      , "#define TOY_B_H"
+      , "#include \"toy_a.h\""
+      , "int toy_b_norm(toy_point p);"
+      , "#endif"
+      ]
