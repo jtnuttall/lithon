@@ -159,9 +159,9 @@ data BindgenError
   | BindgenFailed DriverError
   | EmitFailed EmitError
   | PackagingFailed BindgenPackagingError
-  | -- | The versions registry to record the fixes in, and the problems.
+  | -- | The availability annotations to record the fixes in, and the problems.
     AbiValidationFailed FilePath (Errors AbiProblem)
-  | -- | The versions registry, and the decls whose @stub-return@ no
+  | -- | The availability annotations, and the decls whose @stub-return@ no
     -- gated stub returns (and why).
     StubReturnUnused FilePath [(Text, UnusedStubReturn)]
   deriving stock (Show)
@@ -319,7 +319,7 @@ runBindgen target root cmd = runRethrow @BindgenResolutionError (ResolutionFaile
           $ emitHaskellPackage root opts.out (manifestMeta <> aliasMeta) tree
 
 -- | Refuse to write (or @--check@) a layout whose growth story is
--- incomplete, or a registry @stub-return@ no gate uses: every struct is
+-- incomplete, or a @stub-return@ annotation no gate uses: every struct is
 -- checked so one run reports them all, and it runs before 'syncSpecs' so
 -- a failing regeneration leaves the committed spec artifacts untouched.
 validateChain

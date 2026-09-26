@@ -104,9 +104,9 @@ data AbiEnumConst = AbiEnumConst
   , value :: Integer
   , since :: Maybe Version
   -- ^ Constant-level availability or value-change gate (enumerators
-  -- never carry @\\since@ upstream; the availability annotations). The
-  -- assert is emitted only at or above this version — for value changes,
-  -- the baked value is the truth from this version on.
+  -- never carry @\\since@ upstream, so only the availability annotations
+  -- set it). The assert is emitted only at or above this version — for
+  -- value changes, the baked value is the truth from this version on.
   }
   deriving stock (Eq, Generic, Show)
 
@@ -159,7 +159,7 @@ data AbiDecl = AbiDecl
   -- ^ Enums only; declaration order.
   , since :: Maybe Version
   -- ^ The decl's doxygen @\@since@, corrected by the override map
-  -- (SDL's annotations lie in both directions); 'Nothing' emits
+  -- (SDL's @\\since@ notes lie in both directions); 'Nothing' emits
   -- unguarded asserts.
   , growth :: Maybe AbiGrowth
   -- ^ When set (override map), the type predates its own guard but grew
@@ -182,7 +182,7 @@ data AbiDecl = AbiDecl
 -- Keys are bare C names (no @struct@\/@enum@ spelling).
 data AbiOverrides = AbiOverrides
   { decls :: Map Text Version
-  -- ^ Decl-level corrections (lies and missing annotations).
+  -- ^ Decl-level corrections (lies and missing @\\since@ notes).
   , constants :: Map Text Version
   -- ^ Enum constants: introduction gates and value-change gates, merged.
   , macros :: Map Text Version
@@ -244,7 +244,7 @@ distillAbi scheme headerName ov = sequenceA . mapMaybe abiDeclOf
         , alignment
         , fields = []
         , constants = []
-        , -- The override map wins over the header's own annotation: SDL's
+        , -- The override map wins over the header's own @\since@: SDL's
           -- @\since@ lies in both directions (see sdl3/versions.json).
           since = Map.lookup bareName ov.decls <|> scheme.declSince decl.info
         , growth = structOv >>= (.growth)

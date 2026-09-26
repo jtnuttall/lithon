@@ -146,7 +146,7 @@ validateAbi baseline library decls = failUnlessEmpty (mapMaybe problemOf decls) 
   mismatch d g step
     | g.since /= step.since =
         Just
-          ( "the annotation gates sizeof at "
+          ( "sizeof-since gates sizeof at "
               <> renderVersion g.since
               <> " but the appended members are gated at "
               <> renderVersion step.since

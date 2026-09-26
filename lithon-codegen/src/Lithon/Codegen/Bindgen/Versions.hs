@@ -11,7 +11,7 @@
 -- both directions (SDL: @SDL_ProgressState@ claims 3.2.8 and does not
 -- exist until 3.4.0; @SDL_StretchSurface@ claims 3.4.0 and exists since
 -- 3.2.4) and is absent entirely at member granularity (enum constants,
--- struct fields), when the library documents it at all. Every annotation
+-- struct fields), when the library documents it at all. Every entry
 -- was established by compiling the generated C against the real
 -- release-header matrix (SDL: 3.2.0 through 3.4.16) — never by trusting
 -- documentation. The annotations are the deliberate, reviewable record of
@@ -127,7 +127,7 @@ data PrologueEntry = PrologueEntry
 -- | The registry: keys are bare C names throughout.
 data VersionsRegistry = VersionsRegistry
   { decls :: Map Text DeclEntry
-  -- ^ Decl-level @\\since@ corrections (lies and missing annotations).
+  -- ^ Decl-level @\\since@ corrections (lies and missing @\\since@ notes).
   , enumConstants :: Map Text Versioned
   -- ^ Constants added to pre-existing enums.
   , valueGates :: Map Text Versioned

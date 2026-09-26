@@ -5,7 +5,7 @@
 -- vocabulary under the target record ("Lithon.Codegen.Bindgen.Target"),
 -- whose 'Lithon.Codegen.Bindgen.Target.VersionScheme' says how many parts a
 -- version has and how it is written in the library's own C, and under the
--- registry ("Lithon.Codegen.Bindgen.Versions").
+-- annotations ("Lithon.Codegen.Bindgen.Versions").
 module Lithon.Codegen.Bindgen.Version (
   Version,
   mkVersion,

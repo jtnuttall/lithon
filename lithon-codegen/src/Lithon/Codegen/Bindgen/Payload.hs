@@ -3,7 +3,7 @@
 -- | What one header yields for the later stages: alias-layer facts, ABI
 -- layout facts, which wrappers were gated. 'distillPayload' is the
 -- target's finalizer in the driver's fold; the curated layer, the ABI
--- assertion TU, and the registry checks read its result.
+-- assertion TU, and the annotation checks read its result.
 module Lithon.Codegen.Bindgen.Payload (
   BindgenPayload (..),
   distillPayload,

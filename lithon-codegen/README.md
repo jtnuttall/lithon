@@ -151,13 +151,16 @@ A target binds one C library through hs-bindgen. There are two: `sdl3` and
   fields.
 - The driver runs hs-bindgen per bound header, in dependency order. Each run
   reads its predecessors' binding specs.
-- `aliases.json` and `constants.json` plan the curated layer (`SDL3.Sys.*`)
-  over the raw one (`SDL3.Sys.Bindgen.*`). The availability annotations gate
-  anything newer than the floor, the oldest supported release.
-  `cbits/abi_assertions.c` re-checks every baked layout at build time.
-- `generate` writes the package with a `.lithon-manifest.json`; `--check`
-  diffs against the tree instead. Manifests and ABI messages record the
-  library version, from `pkg-config --modversion <pkgConfig>`.
+- `aliases.json` and `constants.json` plan the curated layer
+  (`<namespace>.*`, e.g. `SDL3.Sys.*`) over the raw one
+  (`<namespace>.Bindgen.*`).
+- Anything newer than the floor, the oldest supported release, gets a version
+  gate. Availability comes from the library's docs and the availability
+  annotations; the annotations win.
+- `cbits/abi_assertions.c` re-checks every baked layout at build time.
+- `generate` writes the package with a `.lithon-manifest.json`. Manifests and
+  ABI messages record the library version, from
+  `pkg-config --modversion <pkgConfig>`.
 
 ### Data directory
 
@@ -218,7 +221,8 @@ Every target has two commands. `<key>` is `sdl3` or `mpv`.
 | `--yes`     | `spec`, `generate` | Skip the output-directory confirmation.                      |
 | `--out DIR` | `generate`         | Write the package to `DIR`. The default is the package name. |
 
-Both commands check the annotations first; a failure writes nothing and names the fix.
+Both commands check the annotations before writing. A failure writes nothing
+and names the fix.
 
 <details>
 <summary><code>--help</code> output: <code>sdl3</code> and its subcommands</summary>
@@ -311,7 +315,7 @@ Available options:
 
 ### Add a library
 
-1. Create the data directory with `static/`. Seed `aliases.json`,
+1. Create `lithon-codegen/data/<key>/` with `static/`. Seed `aliases.json`,
    `constants.json`, and `versions.json` with `{"naming": "camel-segments"}`,
    `{"groups": {}}`, and `{}`.
 2. In `lithon-codegen/src/Lithon/Codegen/Bindgen/`, copy `Target/Mpv.hs` to
@@ -336,7 +340,10 @@ Available options:
      `extraPkgconfigMappings` entry, and a `<package>-docs` output. Set
      `pc-version`, like `libmpv`, when the `.pc` version differs from nixpkgs.
    - `.github/workflows/ci.yml`: a consumer job running
-     `.github/scripts/consumer-bindgen-sys.sh <package> <pkg-config name>`.
+     `.github/scripts/consumer-bindgen-sys.sh <package> <pkg-config-name>`.
+   - `lithon-examples`: an example executable needs a default-on cabal flag
+     like `mpv` (`buildable: false` when off), and the `sdl3-shmup-smoke`
+     job's `cabal.project.shmup` must pass `-<flag>`.
 
 ### sdl3
 
@@ -428,6 +435,6 @@ welcome to:
 - copy the tool, in whole or in part, with attribution;
 - use it and its [profiles](#profiles) to generate your own curated bindings:
   a different Vulkan surface, or a reshaped SDL3 or libmpv layer through a
-  target's registries.
+  target's data directory.
 
 If you build something with it, I'd be glad to hear about it. Open an issue.

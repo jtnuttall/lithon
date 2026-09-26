@@ -23,7 +23,6 @@ esac
 
 STRICT_CHECK_ABI="${STRICT_CHECK_ABI:-false}"
 
-
 if [ "$RUNNER_OS" = "Windows" ]; then
   # setup-sdl exports a Windows-style PKG_CONFIG_PATH; nothing does for mpv.
   CLEAN_PKG_CONFIG_PATH=""
