@@ -38,7 +38,7 @@ import Mpv.Sys.Bindgen.StreamCb.Unsafe qualified as Unsafe
 --
 --     [FFI safety]: __Unsafe__ foreign import of @mpv_stream_cb_add_ro@.
 --                   The safe flavor is 'streamCbAddRoSafe'
---                   : registration; open_fn and the stream callbacks it installs fire later on mpv\'s threads.
+--                   : registration; open_fn and the stream callbacks it installs fire later on mpv\'s threads; takes the client-list lock, like mpv_create_client.
 --
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
@@ -79,7 +79,7 @@ streamCbAddRo =
 --
 --     [FFI safety]: __Safe__ foreign import of @mpv_stream_cb_add_ro@.
 --                   The unsafe flavor is 'streamCbAddRo'
---                   : registration; open_fn and the stream callbacks it installs fire later on mpv\'s threads.
+--                   : registration; open_fn and the stream callbacks it installs fire later on mpv\'s threads; takes the client-list lock, like mpv_create_client.
 --
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.

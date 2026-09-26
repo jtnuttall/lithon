@@ -1967,7 +1967,7 @@ eventName = Unsafe.mpv_event_name
 --
 --     [FFI safety]: __Unsafe__ foreign import of @mpv_event_to_node@.
 --                   The safe import is not exported
---                   : copies the event into freshly allocated nodes; cannot block or call back.
+--                   : converts the event into freshly allocated nodes (parts may point into the event); cannot block or call back.
 --
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.

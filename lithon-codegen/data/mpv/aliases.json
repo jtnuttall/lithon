@@ -67,7 +67,7 @@
     },
     "mpv_event_to_node": {
       "safety": "unsafe-only",
-      "rationale": "copies the event into freshly allocated nodes; cannot block or call back"
+      "rationale": "converts the event into freshly allocated nodes (parts may point into the event); cannot block or call back"
     },
     "mpv_free": {
       "safety": "unsafe-only",
@@ -191,7 +191,7 @@
     },
     "mpv_stream_cb_add_ro": {
       "safety": "both",
-      "rationale": "registration; open_fn and the stream callbacks it installs fire later on mpv's threads"
+      "rationale": "registration; open_fn and the stream callbacks it installs fire later on mpv's threads; takes the client-list lock, like mpv_create_client"
     },
     "mpv_terminate_destroy": {
       "safety": "both",

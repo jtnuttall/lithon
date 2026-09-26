@@ -1,11 +1,11 @@
 {
   "files": {
-    "CHANGELOG.md": "rhv3:74287b77a98758c3",
+    "CHANGELOG.md": "rhv3:b47c8b41a7c6f79b",
     "LICENSE": "rhv3:e95315cef45a1f9f",
     "LICENSE_c-expr-runtime": "rhv3:5134b2c7a1f80df7",
     "LICENSE_hs-bindgen-runtime": "rhv3:5134b2c7a1f80df7",
-    "LICENSE_libmpv": "rhv3:5cb465a153195015",
-    "README.md": "rhv3:53b3e5564d8e39bb",
+    "LICENSE_libmpv": "rhv3:1ef9ef6af4f95f82",
+    "README.md": "rhv3:b7254bcecd4fafa0",
     "cbits/abi_assertions.c": "rhv3:3d3fcf76ab7c934f",
     "mpv-bindgen-sys.cabal": "rhv3:bef833c4c7580a17",
     "package.yaml": "rhv3:1b377ad1df1ed42f",
@@ -49,7 +49,7 @@
     "runtime/HsBindgen/Runtime/Support/TH/Instances.hs": "rhv3:bdb93093d5c9d558",
     "runtime/HsBindgen/Runtime/Support/TH/Types.hs": "rhv3:2d5d6477e4821e8d",
     "runtime/HsBindgen/Runtime/Union.hs": "rhv3:038d0df55bb42643",
-    "src/Mpv/Sys.hs": "rhv3:892c1765e1c12010",
+    "src/Mpv/Sys.hs": "rhv3:574ca77670dfdd29",
     "src/Mpv/Sys/Bindgen/Client.hs": "rhv3:d69cf9d9e161ad53",
     "src/Mpv/Sys/Bindgen/Client/FunPtr.hs": "rhv3:cb3d85651719641b",
     "src/Mpv/Sys/Bindgen/Client/Safe.hs": "rhv3:0869386523949350",
@@ -78,15 +78,15 @@
     "src/Mpv/Sys/Bindgen/StreamCb/FunPtr.hs": "rhv3:be2480ac825c60a4",
     "src/Mpv/Sys/Bindgen/StreamCb/Safe.hs": "rhv3:9e40b9c972be49f8",
     "src/Mpv/Sys/Bindgen/StreamCb/Unsafe.hs": "rhv3:b2c0bcec1e398cdd",
-    "src/Mpv/Sys/Client.hs": "rhv3:27a134f19dd46d2b",
+    "src/Mpv/Sys/Client.hs": "rhv3:9a32169fdf63a391",
     "src/Mpv/Sys/Render.hs": "rhv3:aefcdc6fa8cf74e3",
     "src/Mpv/Sys/RenderGl.hs": "rhv3:4f1be5215e50bc7e",
     "src/Mpv/Sys/Runtime.hs": "rhv3:4c486c58f2baa7eb",
-    "src/Mpv/Sys/StreamCb.hs": "rhv3:a7e7dc643541e287"
+    "src/Mpv/Sys/StreamCb.hs": "rhv3:fd0108fa0ce1dc9d"
   },
   "generatorVersion": "0.1.1.0",
   "meta": {
-    "aliasConfig": "rhv3:f2bcb81791b01d78",
+    "aliasConfig": "rhv3:85cea250e7b4820a",
     "aliasNaming": "camel-segments",
     "constants": 0,
     "constantsConfig": "rhv3:94a7984c871de438",

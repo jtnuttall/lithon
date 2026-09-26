@@ -177,7 +177,7 @@ umbrellaDoc familyIndex =
   --
   -- * Function aliases follow the camel-segments rule: strip @mpv_@ and
   --   join the underscore segments (@mpv_set_property@ -> @setProperty@,
-  --   @mpv_render_context_create@ -> @renderContextCreate@,
+  --   @mpv_render_context_render@ -> @renderContextRender@,
   --   @mpv_get_time_ns@ -> @getTimeNs@).
   --
   -- * An /unsuffixed/ alias is always the __unsafe__ foreign import; a

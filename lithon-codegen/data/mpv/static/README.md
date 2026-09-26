@@ -221,7 +221,7 @@ The curated registry settles the rest:
 - **Unsafe only:** `clientId`, `clientName`, `errorString`, `eventName`,
   `eventToNode`, `free`, `freeNodeContents`, `getTimeNs`, and `getTimeUs`
   cannot block or call back.
-- Every other function exports both. Most of them wait for the playback
+- Every other function exports both. Many of them wait for the playback
   core, which `client.h` says "can take an unbounded time", and several
   run the wakeup callback synchronously.
 
@@ -281,6 +281,9 @@ in.
   defined, the headers turn every `mpv_*` function into a `pfn_mpv_*`
   function pointer for C plugins loaded into the mpv player. These
   bindings are generated without it and bind the functions directly.
+- **`MPV_RENDER_PARAM_DRM_OSD_SIZE`**: a `#define` alias of an enum
+  constant, which hs-bindgen does not bind. Use
+  `MPV_RENDER_PARAM_DRM_DRAW_SURFACE_SIZE`, the value it names.
 
 Deprecated declarations are bound, not omitted: `MPV_ENABLE_DEPRECATED`
 keeps its default, so `MPV_EVENT_IDLE`, `MPV_EVENT_TICK`, and
@@ -300,6 +303,9 @@ against an older libmpv: their wrapper C is gated on
 - `getTimeNs` (`mpv_get_time_ns`, client API 2.2 / mpv 0.37) returns
   `mpv_get_time_us` times 1000: the same clock, at microsecond
   resolution.
+
+Below the gate, their raw `Mpv.Sys.Bindgen.Client.FunPtr` addresses are
+`nullFunPtr`.
 
 No struct layout or enum value changed between client API 2.0 and 2.5,
 so the ABI assertions check the same layouts on every supported libmpv.
@@ -351,6 +357,14 @@ against headers that disagree with it.
   read them against the header.
 - The raw layer keeps hs-bindgen's default type names, the C spelling
   capitalized: `Mpv_node`, `Mpv_event_id`, `Mpv_render_param`.
+- `enum mpv_render_update_flag` is bound under its typedef name,
+  `Mpv_render_context_flag`; `mpv_node`'s anonymous union is
+  `Mpv_node_u`; `struct _drmModeAtomicReq` is the opaque
+  `C_DrmModeAtomicReq`.
+- Each header's opening overview comment lands in its first
+  declaration's haddock (`client.h` → `mPV_MAKE_VERSION`, `render.h` →
+  `Mpv_render_context`, `render_gl.h` → `Mpv_opengl_init_params`,
+  `stream_cb.h` → `Mpv_stream_cb_read_fn`).
 
 ## Provenance and licensing
 
