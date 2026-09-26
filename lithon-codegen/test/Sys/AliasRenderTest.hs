@@ -19,11 +19,9 @@ import Data.List qualified as L
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
-import Data.Text.IO qualified as TIO
 import Lithon.HsBindgen qualified as HB
 import Lithon.Prelude
 import System.FilePath ((</>))
-import System.IO.Temp (withSystemTempDirectory)
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Golden (goldenVsStringDiff)
 import Test.Tasty.HUnit (assertFailure, (@?=))
@@ -52,6 +50,7 @@ import Lithon.Codegen.Sys.Alias.Constants (
  )
 import Lithon.Codegen.Sys.Alias.Constants qualified as Constants
 import Lithon.Codegen.Sys.Alias.Names (Safety (..))
+import Sys.Support.Toy (ToyEnv (..), ToyHeader (..), renderedPairs, toyArtefacts, toyEnv)
 
 unit_toyCensusDetectsCallbacks :: IO ()
 unit_toyCensusDetectsCallbacks = do
@@ -178,60 +177,36 @@ test_aliasRenderGolden =
 
 -- | Run the toy header through the same artefact demands as @runHeader@
 -- and distill it for the planner; also return the rendered Bindgen base
--- (types) module for the peel golden. A unique temp dir per invocation:
--- the fixed shared name raced under tasty parallelism (toyFamily runs
--- several times) and was squattable in a shared @\/tmp@. The header file
--- is only read during the bindgen invocation; the distilled decls derive
--- from the in-memory result, so the directory may die at the end of the
--- bracket.
+-- (types) module for the peel golden.
 toyFamily :: IO (FamilyDecls, Text)
-toyFamily = withSystemTempDirectory "lithon-sdl3-alias-toy" \dir -> do
-  TIO.writeFile (dir </> "SDL_toy.h") toyHeader
-  let env =
-        HB.InvocationEnv
-          { extraIncludeDirs = [dir]
-          , defineMacros = []
-          , -- Mirrors the production env in "Lithon.Codegen.Sys.Chain":
-            -- without the alias, doxygen leaks @\\threadsafety ...@ verbatim.
-            doxygenAliases = [("threadsafety", "\\par Thread safety:^^")]
-          , fieldNaming = HB.AddFieldPrefixes
-          , uniqueId = "lithon-alias-toy"
-          }
-      spec =
-        HB.InvocationSpec
-          { baseModule = "SDL3.Sys.Bindgen.Toy"
-          , includes = ["SDL_toy.h"]
-          , priorSpecs = []
-          , prescriptiveSpec = Nothing
-          }
-  eres <-
-    HB.runBindgen env spec do
-      family <- HB.translatedFamily
-      hsDecls <- HB.reifiedHs
-      cDecls <- HB.reifiedC
-      mdoc <- HB.headerComment
-      pure (family, hsDecls, cDecls, mdoc)
-  case eres of
-    Left err -> assertFailure ("bindgen error: " <> toString (display err))
-    Right (family, hsDecls, cDecls, mdoc) -> do
-      rendered <-
-        either (assertFailure . show) pure (HB.renderFamilyWith [] family)
-      let pairs = map (\m -> (HB.moduleName m, m.hsModule.text)) rendered
-      baseModule <-
-        maybe
-          (assertFailure "no Bindgen base module for the toy header")
-          pure
-          (L.lookup "SDL3.Sys.Bindgen.Toy" pairs)
+toyFamily = do
+  arts <-
+    toyArtefacts
+      (toyEnv "lithon-alias-toy")
+        { -- Mirrors the production env in "Lithon.Codegen.Sys.Chain":
+          -- without the alias, doxygen leaks @\\threadsafety ...@ verbatim.
+          doxygenAliases = [("threadsafety", "\\par Thread safety:^^")]
+        }
+      "SDL3.Sys.Bindgen.Toy"
+      ToyHeader{include = "SDL_toy.h", source = toyHeader}
+  rendered <-
+    either (assertFailure . show) pure (HB.renderFamilyWith [] arts.family)
+  let pairs = renderedPairs rendered
+  baseModule <-
+    maybe
+      (assertFailure "no Bindgen base module for the toy header")
       pure
-        ( distillFamily
-            "SDL3.Sys.Bindgen.Toy"
-            "SDL_toy.h"
-            (any ((== "SDL3.Sys.Bindgen.Toy") . fst) pairs)
-            mdoc
-            hsDecls
-            cDecls
-        , baseModule
-        )
+      (L.lookup "SDL3.Sys.Bindgen.Toy" pairs)
+  pure
+    ( distillFamily
+        "SDL3.Sys.Bindgen.Toy"
+        "SDL_toy.h"
+        (any ((== "SDL3.Sys.Bindgen.Toy") . fst) pairs)
+        arts.headerComment
+        arts.hsDecls
+        arts.cDecls
+    , baseModule
+    )
 
 -- | SDL-shaped toy header. The file-level @# CategoryToy@ comment mirrors
 -- SDL's per-header category overview: doxygen fuses it into the first

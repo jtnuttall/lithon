@@ -347,6 +347,7 @@ test-suite lithon-codegen-test
       Sys.AliasRenderTest
       Sys.CensusTest
       Sys.PlatformShimTest
+      Sys.Support.Toy
       Sys.VersionsTest
       Vulkan.Curate.ClosureTest
       Vulkan.CurateTest

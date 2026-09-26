@@ -15,32 +15,21 @@ module Bindgen.DriverTest (
 ) where
 
 import Data.Text qualified as T
-import Data.Text.IO qualified as TIO
-import Effectful (runEff)
-import Lithon.Effect.Error
-import Lithon.Effect.Log (runLog)
-import Lithon.Effect.Temporary (runTemporary)
 import Lithon.HsBindgen qualified as HB
 import Lithon.Prelude
-import System.Directory (createDirectoryIfMissing)
-import System.FilePath (takeDirectory, (</>))
-import System.IO.Temp (withSystemTempDirectory)
+import System.FilePath ((</>))
 import Test.Tasty.HUnit (Assertion, assertBool, assertFailure, (@?=))
 
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Bindgen (
-  BindgenError,
-  BindgenOpts (..),
   HeaderPlan (..),
   HeaderResult (..),
   HeaderUnit (..),
-  PackageInfo (..),
   Passes (..),
   Visitor (..),
   defaultSpecFileName,
-  runBindgen,
-  runHeaderChain,
  )
+import Sys.Support.Toy (ToyHeader (..), renderedPairs, runToyChain, toyEnv)
 
 toyHeader :: Text
 toyHeader =
@@ -69,38 +58,13 @@ toyPlan =
     , specFileName = defaultSpecFileName
     }
 
-toyOpts :: FilePath -> BindgenOpts
-toyOpts dir =
-  BindgenOpts
-    { invocationEnv =
-        HB.InvocationEnv
-          { extraIncludeDirs = [dir]
-          , defineMacros = []
-          , doxygenAliases = []
-          , fieldNaming = HB.AddFieldPrefixes
-          , uniqueId = "lithon-driver-toy"
-          }
-    , prescriptiveSpec = Nothing
-    , packageInfo = PackageInfo{name = "driver-toy", dataDir = dir, version = Nothing}
-    }
-
 -- | Run one visitor over the toy universe under the real effect stack.
 runDriver :: Visitor r -> IO (Either Text [HeaderResult r])
-runDriver visitor = withSystemTempDirectory "lithon-driver-toy" \dir -> do
-  let headerPath = dir </> "toy" </> "toy_thing.h"
-  createDirectoryIfMissing True (takeDirectory headerPath)
-  TIO.writeFile headerPath toyHeader
-  fmap (first snd)
-    . runEff
-    . runLog "driver-test"
-    . runError @Text
-    . runErrorDisplay @BindgenError
-    . runTemporary
-    . runBindgen (toyOpts dir)
-    $ runHeaderChain toyPlan visitor
-
-renderedPairs :: [HB.NameableModule HB.RenderedHsModule] -> [(Text, Text)]
-renderedPairs = map \m -> (HB.moduleName m, m.hsModule.text)
+runDriver =
+  runToyChain
+    (toyEnv "lithon-driver-toy")
+    [ToyHeader{include = "toy" </> "toy_thing.h", source = toyHeader}]
+    toyPlan
 
 unit_driverFoldsToyHeader :: Assertion
 unit_driverFoldsToyHeader = do

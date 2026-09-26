@@ -18,44 +18,22 @@ module Sys.PlatformShimTest (
 
 import Data.List qualified as L
 import Data.Text qualified as T
-import Data.Text.IO qualified as TIO
 import Lithon.HsBindgen qualified as HB
 import Lithon.Prelude
-import System.Directory (createDirectoryIfMissing)
-import System.FilePath (takeDirectory, (</>))
-import System.IO.Temp (withSystemTempDirectory)
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
 import Lithon.Codegen.Sys.Chain (stubEditsFor, textEditsFor)
-
--- | Project a rendered family onto (dotted name, source) pairs — the seam
--- types deliberately carry no 'Eq'\/'Show'.
-renderedPairs :: [HB.NameableModule HB.RenderedHsModule] -> [(Text, Text)]
-renderedPairs = map \m -> (HB.moduleName m, m.hsModule.text)
+import Sys.Support.Toy (ToyHeader (..), renderedPairs, runToy, toyEnv)
 
 -- | Drive one toy header through the seam and hand back the translated
 -- family (pre-render).
 toyFamily :: FilePath -> Text -> IO [HB.NameableModule HB.HsModule]
-toyFamily include header = withSystemTempDirectory "lithon-sdl3-shim-toy" \dir -> do
-  createDirectoryIfMissing True (takeDirectory (dir </> include))
-  TIO.writeFile (dir </> include) header
-  let env =
-        HB.InvocationEnv
-          { extraIncludeDirs = [dir]
-          , defineMacros = []
-          , doxygenAliases = []
-          , fieldNaming = HB.AddFieldPrefixes
-          , uniqueId = "lithon-shim-toy"
-          }
-      spec =
-        HB.InvocationSpec
-          { baseModule = "SDL3.Sys.Bindgen.ShimToy"
-          , includes = [include]
-          , priorSpecs = []
-          , prescriptiveSpec = Nothing
-          }
-  either (\e -> assertFailure ("bindgen error: " <> toString (display e))) pure
-    =<< HB.runBindgen env spec HB.translatedFamily
+toyFamily include source =
+  runToy
+    (toyEnv "lithon-shim-toy")
+    "SDL3.Sys.Bindgen.ShimToy"
+    [ToyHeader{include, source}]
+    HB.translatedFamily
 
 -- | A header declaring exactly the two Linux-only symbols the production
 -- shims guard, so 'stubEditsFor' applies to real wrapper C.

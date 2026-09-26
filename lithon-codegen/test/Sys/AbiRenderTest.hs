@@ -27,11 +27,9 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
-import Data.Text.IO qualified as TIO
 import Lithon.HsBindgen qualified as HB
 import Lithon.Prelude
 import System.FilePath ((</>))
-import System.IO.Temp (withSystemTempDirectory)
 import Test.Tasty (TestTree)
 import Test.Tasty.Golden (goldenVsStringDiff)
 import Test.Tasty.HUnit (assertFailure, (@?=))
@@ -52,6 +50,7 @@ import Lithon.Codegen.Sys.Abi (
   emptyAbiOverrides,
   renderAbiAssertions,
  )
+import Sys.Support.Toy (ToyHeader (..), runToy, toyEnv)
 
 unit_toyDistillPins :: IO ()
 unit_toyDistillPins = do
@@ -260,32 +259,16 @@ toyOverrides =
     }
 
 -- | Run the toy header through the same artefact demand as @runHeader@
--- and distill it. A unique temp dir per invocation, mirroring
--- "Sys.AliasRenderTest" (the fixed shared name raced under tasty
--- parallelism there).
+-- and distill it.
 toyAbi :: AbiOverrides -> IO [AbiDecl]
-toyAbi overrides = withSystemTempDirectory "lithon-sdl3-abi-toy" \dir -> do
-  TIO.writeFile (dir </> "SDL_toy_abi.h") toyHeader
-  let env =
-        HB.InvocationEnv
-          { extraIncludeDirs = [dir]
-          , defineMacros = []
-          , doxygenAliases = []
-          , fieldNaming = HB.AddFieldPrefixes
-          , uniqueId = "lithon-abi-toy"
-          }
-      spec =
-        HB.InvocationSpec
-          { baseModule = "SDL3.Sys.Bindgen.ToyAbi"
-          , includes = ["SDL_toy_abi.h"]
-          , priorSpecs = []
-          , prescriptiveSpec = Nothing
-          }
-  eres <- HB.runBindgen env spec HB.reifiedC
-  case eres of
-    Left err -> assertFailure ("bindgen error: " <> toString (display err))
-    Right cDecls ->
-      either (assertFailure . toString) pure (distillAbi "SDL_toy_abi.h" overrides cDecls)
+toyAbi overrides = do
+  cDecls <-
+    runToy
+      (toyEnv "lithon-abi-toy")
+      "SDL3.Sys.Bindgen.ToyAbi"
+      [ToyHeader{include = "SDL_toy_abi.h", source = toyHeader}]
+      HB.reifiedC
+  either (assertFailure . toString) pure (distillAbi "SDL_toy_abi.h" overrides cDecls)
 
 -- | Toy header exercising every distiller rule on x86_64 layouts (the
 -- suite runs on the Linux generation host, like generation itself).

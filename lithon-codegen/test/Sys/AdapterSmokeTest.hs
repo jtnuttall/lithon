@@ -21,65 +21,41 @@ import Data.Text qualified as T
 import Data.Text.IO qualified as TIO
 import Lithon.HsBindgen qualified as HB
 import Lithon.Prelude
-import System.Directory (
-  createDirectoryIfMissing,
-  getTemporaryDirectory,
-  removePathForcibly,
- )
 import System.FilePath ((</>))
 import Test.Tasty.HUnit (Assertion, assertBool, assertFailure)
 
+import Sys.Support.Toy (ToyHeader (..), invokeToy, renderedPairs, toyEnv, withToyRoot)
+
 unit_adapterSmoke :: Assertion
-unit_adapterSmoke = do
-  tmpRoot <- getTemporaryDirectory
-  let dir = tmpRoot </> "lithon-hs-bindgen-smoke"
-  removePathForcibly dir
-  createDirectoryIfMissing True dir
-  TIO.writeFile (dir </> "toy.h") toyHeader
-  let specPath = dir </> "toy.yaml"
-      env =
-        HB.InvocationEnv
-          { extraIncludeDirs = [dir]
-          , defineMacros = []
-          , doxygenAliases = []
-          , fieldNaming = HB.AddFieldPrefixes
-          , uniqueId = "lithon-smoke"
-          }
-      spec =
-        HB.InvocationSpec
-          { baseModule = "Toy.Bindgen"
-          , includes = ["toy.h"]
-          , priorSpecs = []
-          , prescriptiveSpec = Nothing
-          }
-  eres <-
-    HB.runBindgen env spec do
+unit_adapterSmoke = withToyRoot [ToyHeader{include = "toy.h", source = toyHeader}] \root -> do
+  -- The binding spec is written into the include root, so it is read back
+  -- before the bracket closes.
+  let specPath = root </> "toy.yaml"
+  (deps, family) <-
+    invokeToy root (toyEnv "lithon-smoke") "Toy.Bindgen" ["toy.h"] do
       deps <- HB.sortedIncludeGraph
       family <- HB.translatedFamily
       HB.writeSpec specPath
       pure (deps, family)
-  case eres of
-    Left err -> assertFailure ("bindgen error: " <> toString (display err))
-    Right (deps, family) -> do
-      assertBool "include graph has entries" (not (null deps))
-      rendered <-
-        either (assertFailure . show) pure (HB.renderFamilyWith [] family)
-      let pairs = map (\m -> (HB.moduleName m, m.hsModule.text)) rendered
-          typesSrc = fromMaybe "" (L.lookup "Toy.Bindgen" pairs)
-          safeSrc = fromMaybe "" (L.lookup "Toy.Bindgen.Safe" pairs)
-      assertBool
-        "types module rendered under the base name"
-        ("module Toy.Bindgen" `T.isInfixOf` typesSrc)
-      assertBool
-        "types module declares something"
-        (any (`T.isInfixOf` typesSrc) ["data ", "newtype "])
-      assertBool "safe module binds toy_add" ("toy_add" `T.isInfixOf` safeSrc)
-      assertBool "safe module has foreign imports" ("foreign import" `T.isInfixOf` safeSrc)
-      assertBool
-        "by-value struct argument goes through an inline CAPI wrapper"
-        ("addCSource" `T.isInfixOf` safeSrc)
-      spec <- TIO.readFile specPath
-      assertBool "binding spec mentions the struct" ("toy_point" `T.isInfixOf` spec)
+  assertBool "include graph has entries" (not (null deps))
+  rendered <-
+    either (assertFailure . show) pure (HB.renderFamilyWith [] family)
+  let pairs = renderedPairs rendered
+      typesSrc = fromMaybe "" (L.lookup "Toy.Bindgen" pairs)
+      safeSrc = fromMaybe "" (L.lookup "Toy.Bindgen.Safe" pairs)
+  assertBool
+    "types module rendered under the base name"
+    ("module Toy.Bindgen" `T.isInfixOf` typesSrc)
+  assertBool
+    "types module declares something"
+    (any (`T.isInfixOf` typesSrc) ["data ", "newtype "])
+  assertBool "safe module binds toy_add" ("toy_add" `T.isInfixOf` safeSrc)
+  assertBool "safe module has foreign imports" ("foreign import" `T.isInfixOf` safeSrc)
+  assertBool
+    "by-value struct argument goes through an inline CAPI wrapper"
+    ("addCSource" `T.isInfixOf` safeSrc)
+  specText <- TIO.readFile specPath
+  assertBool "binding spec mentions the struct" ("toy_point" `T.isInfixOf` specText)
 
 toyHeader :: Text
 toyHeader =
