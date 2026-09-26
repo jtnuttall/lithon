@@ -1,0 +1,14 @@
+{
+  "decls": {
+    "mpv_del_property": {
+      "since": "2.1",
+      "stub-return": "MPV_ERROR_UNSUPPORTED",
+      "note": "Added in client API 2.1 (mpv 0.36.0; client-api-changes.rst: \"add mpv_del_property()\"); absent from the 0.35.0 (API 2.0) headers. Below it the wrapper returns MPV_ERROR_UNSUPPORTED without calling libmpv."
+    },
+    "mpv_get_time_ns": {
+      "since": "2.2",
+      "stub-return": "mpv_get_time_us(arg1) * 1000",
+      "note": "Added in client API 2.2 (mpv 0.37.0; client-api-changes.rst: \"add mpv_time_ns()\", sic); absent from the 0.36.0 (API 2.1) headers. Below it the wrapper polyfills from mpv_get_time_us: the same clock at microsecond resolution."
+    }
+  }
+}
