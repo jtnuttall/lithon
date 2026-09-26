@@ -65,5 +65,4 @@ toy2 =
               , "#if guards come from the availability registry alone."
               ]
           }
-    , versionMetaKey = "libraryVersion"
     }

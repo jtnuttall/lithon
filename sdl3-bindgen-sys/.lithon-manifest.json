@@ -348,6 +348,6 @@
     "constants": 145,
     "constantsConfig": "rhv3:0d9408d8737e811a",
     "headers": 58,
-    "sdlVersion": "3.4.16"
+    "libraryVersion": "3.4.16"
   }
 }

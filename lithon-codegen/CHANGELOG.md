@@ -28,6 +28,26 @@
 - Tests: `Sdl3.VersionsTest` (registry codec) and an extended
   `abi-toy-assertions` golden covering both policies, both override
   directions, and the pre-growth branch.
+- `versions.json`: `decls.<fn>.stub-return`, the C expression a gated
+  wrapper returns below its gate (default `0`; the parameters are
+  `arg1`…`argN`). A `stub-return` on a decl no header gates is an error.
+
+### Changed
+
+- The SDL3 layer is a generic bindgen-sys pipeline (`Lithon.Codegen.Sys.*`)
+  driven by a plain `SysTarget` record: a target is one module, one
+  `data/<key>/` directory, and an entry in `Lithon.Codegen.Sys.Targets`.
+- Versions have the target's number of parts (SDL: 3); `versions.json`
+  rejects any other count.
+- `versions.json`: every `prologue-typedefs` entry needs a `since` (one
+  guard block per release); `shape` is `opaque-struct`, `void-ptr`, or the
+  aliased C type as C spells it (`uint32` is now `Uint32`).
+- Package statics are read from `data/<key>/static/` at run time:
+  `package.yaml`, `README.md`, `CHANGELOG.md`, and every other file as a
+  license under its own name (`LICENSE_SDL3` moved to
+  `data/sdl3/static/LICENSE_SDL`).
+- Manifests record the library version as `libraryVersion` (was
+  `sdlVersion`).
 
 ## 0.1.1.0 - 2026-07-30
 

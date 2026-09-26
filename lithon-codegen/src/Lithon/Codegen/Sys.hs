@@ -284,7 +284,7 @@ runSys target root cmd = runRethrow @SysResolutionError (ResolutionFailed target
         registry <- loadVersionsRegistry target
         results <- runChain target registry
         validateChain target registry results
-        syncSpecs target (guardCtx root opts.assumeYes) opts.emitEffect results
+        syncSpecs (guardCtx root opts.assumeYes) opts.emitEffect results
       CmdGenerate opts -> do
         -- Before the chain: a missing README should not cost a full run.
         statics <- loadStatics target env
@@ -293,14 +293,14 @@ runSys target root cmd = runRethrow @SysResolutionError (ResolutionFailed target
         validateChain target registry results
         -- Specs and package come from the same chain run, so they can never
         -- skew; both emits respect --check.
-        syncSpecs target (guardCtx root opts.out.assumeYes) opts.out.emitEffect results
+        syncSpecs (guardCtx root opts.out.assumeYes) opts.out.emitEffect results
         (aliasFiles, macroConsts, aliasMeta) <-
           planAliases target registry results
         tree <-
           liftEither
             . first PackagingFailed
             $ assembleSysPackage target statics env.libraryVersion aliasFiles macroConsts results
-        manifestMeta <- chainMeta target results
+        manifestMeta <- chainMeta results
         runErrorFrom @EmitError @SysError
           $ emitHaskellPackage root opts.out (manifestMeta <> aliasMeta) tree
 
@@ -531,15 +531,15 @@ syncSpecs
      , Console :> es
      , Bindgen :> es
      )
-  => SysTarget -> GuardCtx -> EmitEffect -> [HeaderResult SysPayload] -> Eff es ()
-syncSpecs target ctx effect results = do
+  => GuardCtx -> EmitEffect -> [HeaderResult SysPayload] -> Eff es ()
+syncSpecs ctx effect results = do
   env <- getSysEnv
   SystemTempDir scratch <- getScratchDirectory
   specMap <-
     fmap Map.fromList . for results $ \r -> do
       bytes <- EBS.readFile (scratch </> r.unit.specFile)
       pure ("spec" </> r.unit.specFile, decodeUtf8 bytes)
-  manifestMeta <- chainMeta target results
+  manifestMeta <- chainMeta results
   runErrorFrom
     $ emitPackage
       ArtifactsOnly
@@ -550,12 +550,12 @@ syncSpecs target ctx effect results = do
         }
       specMap
 
-chainMeta
-  :: (SysGen :> es) => SysTarget -> [HeaderResult SysPayload] -> Eff es (Map Text Aeson.Value)
-chainMeta target results = do
+-- | What every target's manifests record about the chain run.
+chainMeta :: (SysGen :> es) => [HeaderResult SysPayload] -> Eff es (Map Text Aeson.Value)
+chainMeta results = do
   env <- getSysEnv
   pure
     $ Map.fromList
-      [ (target.versionMetaKey, Aeson.toJSON env.libraryVersion)
+      [ ("libraryVersion", Aeson.toJSON env.libraryVersion)
       , ("headers", Aeson.toJSON (length results))
       ]

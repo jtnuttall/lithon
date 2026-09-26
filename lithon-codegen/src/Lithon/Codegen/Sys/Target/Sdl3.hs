@@ -114,7 +114,6 @@ sdl3 =
           , runtimeDoc
           , abiBanner
           }
-    , versionMetaKey = "sdlVersion"
     }
 
 excludedHeaders :: Set FilePath

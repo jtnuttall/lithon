@@ -92,8 +92,6 @@ data SysTarget = SysTarget
   , widthTypedefs :: Maybe WidthTypedefs
   , docs :: DocHooks
   , prose :: Prose
-  , versionMetaKey :: Text
-  -- ^ The manifest key recording the library version.
   }
 
 -- | The header universe.
