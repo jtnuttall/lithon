@@ -26,6 +26,9 @@ module Lithon.Codegen.Bindgen (
   bindgenCmdP,
   bindgenCommand,
   runBindgen,
+
+  -- * The per-header visitor
+  bindgenVisitor,
 ) where
 
 import Data.Aeson qualified as Aeson
@@ -98,19 +101,12 @@ import Lithon.Codegen.Bindgen.Alias.Constants (
   scanObjectMacros,
  )
 import Lithon.Codegen.Bindgen.Alias.Names (AliasError)
-import Lithon.Codegen.Bindgen.Chain (
-  BindgenPayload (..),
-  UnusedStubReturn (..),
-  bindgenVisitor,
-  driverOpts,
-  headerPlan,
-  unusedStubReturns,
- )
 import Lithon.Codegen.Bindgen.Driver (
   Driver,
   DriverError,
   HeaderResult (..),
   HeaderUnit (..),
+  Visitor (..),
   chainHeaders,
   getScratchDirectory,
   planHeaders,
@@ -123,15 +119,18 @@ import Lithon.Codegen.Bindgen.Env (
   BindgenPaths (..),
   BindgenResolutionError (TargetInvalid),
   Registry (..),
+  driverOpts,
   getBindgenEnv,
   loadStatics,
   registryFile,
   runBindgenGen,
  )
 import Lithon.Codegen.Bindgen.Package (BindgenPackagingError, assembleBindgenPackage)
+import Lithon.Codegen.Bindgen.Payload (BindgenPayload (..), distillPayload)
 import Lithon.Codegen.Bindgen.Target (
   BindgenTarget (..),
   VersionScheme (..),
+  headerPlan,
   includeArg,
   registryDisplayPath,
   validateTarget,
@@ -140,6 +139,12 @@ import Lithon.Codegen.Bindgen.Versions (
   Versioned (..),
   VersionsRegistry (..),
   decodeVersionsRegistry,
+ )
+import Lithon.Codegen.Bindgen.Versions.Guards (
+  UnusedStubReturn (..),
+  retypePrologue,
+  unusedStubReturns,
+  versionGates,
  )
 
 data BindgenError
@@ -332,7 +337,7 @@ validateChain target registry results = do
     . first (AbiValidationFailed library.registry)
     . validationToEither
     $ validateAbi target.versioning.baseline library (concatMap (.payload.abi) results)
-  case unusedStubReturns registry (map (.payload) results) of
+  case unusedStubReturns registry (concatMap (.payload.gated) results) of
     [] -> pass
     unused -> throwError (StubReturnUnused library.registry unused)
 
@@ -526,6 +531,17 @@ runChain target registry = runErrorFrom do
        , "modules" .= sum [length r.modules | r <- results]
        ]
   pure results
+
+-- | The target's visitor: its shims, the retype prologue, and the version
+-- gates, in that order ("Lithon.Codegen.Bindgen.Versions.Guards"), then
+-- the payload distillation ("Lithon.Codegen.Bindgen.Payload"). The gate
+-- tests drive it header by header.
+bindgenVisitor :: BindgenTarget -> VersionsRegistry -> Visitor BindgenPayload
+bindgenVisitor target registry =
+  Visitor
+    { passes = target.shims <> retypePrologue target registry <> versionGates target registry
+    , finalize = distillPayload target registry
+    }
 
 -- | Sync the freshly generated specs (and the manifest recording them)
 -- into the artifact directory.

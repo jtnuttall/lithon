@@ -32,9 +32,9 @@ import Lithon.Codegen.Backend.Package (PackageSpec (..), RootFiles (..))
 import Lithon.Codegen.Backend.Package qualified as Package
 import Lithon.Codegen.Backend.Package.Assemble (assemblePackage)
 import Lithon.Codegen.Bindgen.Abi (AbiMacroConst, renderAbiAssertions)
-import Lithon.Codegen.Bindgen.Chain (BindgenPayload (..))
 import Lithon.Codegen.Bindgen.Driver (HeaderResult (..))
 import Lithon.Codegen.Bindgen.Env (PackageStatics (..))
+import Lithon.Codegen.Bindgen.Payload (BindgenPayload (..))
 import Lithon.Codegen.Bindgen.Target (
   BindgenTarget,
   bindgenNamespaceText,

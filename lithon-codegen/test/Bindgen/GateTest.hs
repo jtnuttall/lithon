@@ -44,23 +44,27 @@ import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 import Bindgen.Support.Targets (toy2)
 import Bindgen.Support.Toy (ToyHeader (..), invokeToy, renderedPairs, toyEnv, withToyRoot)
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
-import Lithon.Codegen.Bindgen.Chain (
-  BindgenPayload (..),
-  GatedDecl (..),
-  UnusedStubReturn (..),
-  bindgenVisitor,
-  moduleFor,
-  unusedStubReturns,
- )
+import Lithon.Codegen.Bindgen (bindgenVisitor)
 import Lithon.Codegen.Bindgen.Driver (
   HeaderUnit (..),
   Passes (..),
   Visitor (..),
   defaultSpecFileName,
  )
-import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), VersionScheme (..), includeArg)
+import Lithon.Codegen.Bindgen.Payload (BindgenPayload (..))
+import Lithon.Codegen.Bindgen.Target (
+  BindgenTarget (..),
+  VersionScheme (..),
+  includeArg,
+  moduleFor,
+ )
 import Lithon.Codegen.Bindgen.Target.Sdl3 (sdl3)
 import Lithon.Codegen.Bindgen.Versions (VersionsRegistry, decodeVersionsRegistry)
+import Lithon.Codegen.Bindgen.Versions.Guards (
+  GatedDecl (..),
+  UnusedStubReturn (..),
+  unusedStubReturns,
+ )
 
 -- | One header's family after the target's visitor: the wrapper C of each
 -- module that carries any (dotted module name, C lines), and the payload.
@@ -405,8 +409,8 @@ unit_unusedStubReturnsFlagged = do
       \  \"toy_flush\": {\"since\": \"2.2\", \"stub-return\": \"0\"}}}"
   registry <- registryAt 2 toyRegistry
   withToy2Gated \_root gated -> do
-    unusedStubReturns registry [gated.payload] @?= []
-    unusedStubReturns stray [gated.payload]
+    unusedStubReturns registry gated.payload.gated @?= []
+    unusedStubReturns stray gated.payload.gated
       @?= [("toy_error", NotGated), ("toy_flush", ReturnsVoid), ("toy_open", NotGated)]
 
 {-------------------------------------------------------------------------------

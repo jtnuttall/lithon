@@ -69,7 +69,7 @@ data Versioned = Versioned
 -- void function's stub returns nothing, and a FunPtr address getter's
 -- always returns a null pointer. A @stub-return@ no gated stub returns —
 -- on a decl that no header gates, or on a void function — is a hard
--- error ('Lithon.Codegen.Bindgen.Chain.unusedStubReturns').
+-- error ('Lithon.Codegen.Bindgen.Versions.Guards.unusedStubReturns').
 data DeclEntry = DeclEntry
   { since :: Version
   , stubReturn :: Maybe Text

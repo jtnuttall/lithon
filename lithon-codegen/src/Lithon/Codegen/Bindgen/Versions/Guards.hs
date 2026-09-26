@@ -5,21 +5,31 @@
 -- application.
 {- HLINT ignore "Redundant id" -}
 
--- | A target's configuration of the generic bindgen fold
--- ("Lithon.Codegen.Bindgen.Driver"): the header plan, the invocation
--- environment, and the visitor — the target's shims, the retype prologue,
--- the version gates, and the finalizer distilling the alias-layer facts and
--- the ABI assertion inputs.
-module Lithon.Codegen.Bindgen.Chain (
-  -- * Plan + environment
-  headerPlan,
-  driverOpts,
-  moduleFor,
+-- | Rendering @versions.json@ ("Lithon.Codegen.Bindgen.Versions") into the
+-- wrapper C of each translated family, and checking what it asks for:
+--
+-- * 'retypePrologue' renders @prologue-typedefs@: stand-ins, guarded to
+--   the releases that lack them, prepended to every wrapper naming one.
+--
+-- * 'versionGates' renders @decls@: an @#if@ guard around each call of a
+--   function whose availability (its @since@ there, else the documented
+--   one) is later than the baseline, and below it a stub returning the
+--   entry's @stub-return@.
+--
+-- * 'unusedStubReturns' reports each @stub-return@ no gated stub returns.
+--
+-- Both renderers are 'Passes', and their order is the caller's contract:
+-- the target's shims, then the retype prologue, then the gates. The gates
+-- match call lines the shims may have rewritten, and a gated wrapper's
+-- own includes land above the prologue.
+module Lithon.Codegen.Bindgen.Versions.Guards (
+  -- * Passes
+  retypePrologue,
+  versionGates,
 
-  -- * Visitors
-  BindgenPayload (..),
+  -- * Gated functions
   GatedDecl (..),
-  bindgenVisitor,
+  gatedDecls,
 
   -- * Registry checks
   UnusedStubReturn (..),
@@ -33,31 +43,12 @@ import Lithon.HsBindgen qualified as HB
 import Lithon.HsBindgen.C qualified as C
 import Lithon.Prelude
 
-import Lithon.Codegen.Backend.Hs.Module qualified as Module
-import Lithon.Codegen.Bindgen.Abi (AbiDecl, distillAbi)
-import Lithon.Codegen.Bindgen.Alias (FamilyDecls, distillFamily)
-import Lithon.Codegen.Bindgen.Driver (
-  DriverOpts (..),
-  HeaderPlan (..),
-  HeaderUnit (..),
-  PackageInfo (..),
-  Passes (..),
-  Visitor (..),
-  defaultSpecFileName,
- )
-import Lithon.Codegen.Bindgen.Env
+import Lithon.Codegen.Bindgen.Driver (HeaderUnit (..), Passes (..))
 import Lithon.Codegen.Bindgen.Target (
   BindgenTarget (..),
   GateStubs (..),
-  HeaderSpec (..),
-  ParseEnv (..),
   VersionScheme (..),
-  bindgenNamespace,
-  defineArg,
-  includeArg,
   includeLine,
-  mainIncludeArgs,
-  projectHeaderUnder,
  )
 import Lithon.Codegen.Bindgen.Version (Version)
 import Lithon.Codegen.Bindgen.Versions (
@@ -65,78 +56,7 @@ import Lithon.Codegen.Bindgen.Versions (
   PrologueEntry (..),
   ShapeSpec (..),
   VersionsRegistry (..),
-  abiOverrides,
  )
-
--- | The full module name for one public-header basename (the census
--- derives header->module rows through this, so it cannot drift from the
--- chain's own minting).
-moduleFor :: BindgenTarget -> FilePath -> Either Module.MangleError Module.Meta
-moduleFor target basename =
-  (bindgenNamespace target <>)
-    . view Module.metaL
-    <$> Module.mangleHeader basename target.headers.mangle
-
--- | The target's header universe, as data.
-headerPlan :: BindgenTarget -> HeaderPlan
-headerPlan target =
-  HeaderPlan
-    { baseNamespace = bindgenNamespace target
-    , mangle = target.headers.mangle
-    , projectHeader = projectHeaderUnder target.headers.includeRoot
-    , includeArg = includeArg target
-    , excludedHeaders = target.headers.excluded
-    , mainIncludes = mainIncludeArgs target
-    , specFileName = defaultSpecFileName
-    }
-
--- | Invocation environment shared by every hs-bindgen run.
---
--- - The target's defines and doxygen aliases apply to every header.
---
--- - Field prefixes are omitted per the lithon record style; hs-bindgen emits
--- @DuplicateRecordFields@ + @NoFieldSelectors@ pragmas as needed.
---
--- - Program slicing stays OFF (the seam's default): the headers are
--- expected to be self-contained, so an unresolved reference will fail
--- loudly.
---
--- - The package name is the @uniqueId@: it seeds the wrapper symbol hashes.
-invocationEnv :: BindgenTarget -> BindgenEnv -> HB.InvocationEnv
-invocationEnv target env =
-  HB.InvocationEnv
-    { extraIncludeDirs = [env.includeDir]
-    , defineMacros = map defineArg target.parse.defines
-    , doxygenAliases = target.parse.doxygenAliases
-    , fieldNaming = HB.OmitFieldPrefixes
-    , uniqueId = toString target.packageName
-    }
-
--- | The target's generation run: the shared invocation environment plus
--- the prescriptive overrides registry, when present.
-driverOpts :: BindgenTarget -> BindgenEnv -> DriverOpts
-driverOpts target env =
-  DriverOpts
-    { invocationEnv = invocationEnv target env
-    , prescriptiveSpec = env.paths.overrides
-    , packageInfo =
-        PackageInfo
-          { name = target.packageName
-          , dataDir = env.paths.dataDir
-          , version = Nothing
-          }
-    }
-
--- | The per-header payload distilled from each fold step.
-data BindgenPayload = BindgenPayload
-  { facts :: FamilyDecls
-  -- ^ The alias-layer distillate (function census + translated decls).
-  , abi :: [AbiDecl]
-  -- ^ The layout distillate feeding the ABI assertion TU.
-  , gated :: [GatedDecl]
-  -- ^ The functions whose wrappers the version gates guard, header
-  -- declaration order.
-  }
 
 -- | A function the version gates guard, as the registry checks see it.
 data GatedDecl = GatedDecl
@@ -148,35 +68,13 @@ data GatedDecl = GatedDecl
   }
   deriving stock (Eq, Show)
 
--- | The whole visitor: the target's shims, then the retype prologue, then
--- the version gates (gates match lines the shims may have rewritten —
--- ordering is contract), then the payload distillation.
-bindgenVisitor :: BindgenTarget -> VersionsRegistry -> Visitor BindgenPayload
-bindgenVisitor target registry =
-  Visitor
-    { passes = target.shims <> retypePrologue target registry <> versionGates target registry
-    , finalize = \unit arts _rendered -> do
-        abi <- distillAbi target.versioning unit.headerName (abiOverrides registry) arts.cDecls
-        -- A base (types) module exists iff hs-bindgen produced the CType
-        -- category — the alias layer's sys modules re-export it only then.
-        let hasBaseModule = any ((== Just HB.CType) . (.category)) arts.family
-        pure
-          BindgenPayload
-            { facts =
-                distillFamily
-                  (Module.hsName unit.moduleName)
-                  unit.headerName
-                  hasBaseModule
-                  arts.headerComment
-                  arts.hsDecls
-                  arts.cDecls
-            , abi
-            , gated =
-                [ GatedDecl{name = fn.name, returnsVoid = fn.returnsVoid}
-                | fn <- gatedFunctions target registry arts.cDecls
-                ]
-            }
-    }
+-- | The functions among one header's declarations whose wrappers the
+-- version gates guard, in declaration order.
+gatedDecls :: BindgenTarget -> VersionsRegistry -> [C.Decl l C.Final] -> [GatedDecl]
+gatedDecls target registry cDecls =
+  [ GatedDecl{name = fn.name, returnsVoid = fn.returnsVoid}
+  | fn <- gatedFunctions target registry cDecls
+  ]
 
 -- | Why a registry @stub-return@ is dead configuration.
 data UnusedStubReturn
@@ -188,19 +86,20 @@ data UnusedStubReturn
     ReturnsVoid
   deriving stock (Eq, Show)
 
--- | The registry's @stub-return@ entries no gated stub returns, by name:
--- dead configuration, reported rather than ignored.
-unusedStubReturns :: VersionsRegistry -> [BindgenPayload] -> [(Text, UnusedStubReturn)]
-unusedStubReturns registry payloads =
+-- | The registry's @stub-return@ entries no gated stub returns, by name,
+-- given every header's gated functions: dead configuration, reported
+-- rather than ignored.
+unusedStubReturns :: VersionsRegistry -> [GatedDecl] -> [(Text, UnusedStubReturn)]
+unusedStubReturns registry gated =
   [ (name, unused)
   | (name, entry) <- Map.toAscList registry.decls
   , isJust entry.stubReturn
-  , unused <- case Map.lookup name gated of
+  , unused <- case Map.lookup name byName of
       Nothing -> [NotGated]
       Just decl -> [ReturnsVoid | decl.returnsVoid]
   ]
  where
-  gated = Map.fromList [(decl.name, decl) | payload <- payloads, decl <- payload.gated]
+  byName = Map.fromList [(decl.name, decl) | decl <- gated]
 
 -- | A function whose registry-corrected availability is later than the
 -- target's baseline.

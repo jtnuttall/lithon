@@ -14,6 +14,9 @@ module Lithon.Codegen.Bindgen.Env (
   getBindgenEnv,
   runBindgenGen,
 
+  -- * The driver's options
+  driverOpts,
+
   -- * Package statics
   PackageStatics (..),
   loadStatics,
@@ -41,11 +44,13 @@ import Lithon.Effect.FileSystem (
   listDirectory,
  )
 import Lithon.Effect.Log
+import Lithon.HsBindgen qualified as HB
 import Lithon.Prelude
 import System.FilePath ((</>))
 
 import Lithon.Codegen.Backend.Env (DataDirError, targetDataDir)
-import Lithon.Codegen.Bindgen.Target (BindgenTarget (..))
+import Lithon.Codegen.Bindgen.Driver (DriverOpts (..), PackageInfo (..))
+import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), ParseEnv (..), defineArg)
 
 -- | The three registries every target's data directory carries.
 data Registry = VersionsJson | AliasesJson | ConstantsJson
@@ -242,6 +247,43 @@ runBindgenGen target eff = do
         GetBindgenEnv -> ask
     )
     eff
+
+-- | Invocation environment shared by every hs-bindgen run.
+--
+-- - The target's defines and doxygen aliases apply to every header.
+--
+-- - Field prefixes are omitted per the lithon record style; hs-bindgen emits
+-- @DuplicateRecordFields@ + @NoFieldSelectors@ pragmas as needed.
+--
+-- - Program slicing stays OFF (the seam's default): the headers are
+-- expected to be self-contained, so an unresolved reference will fail
+-- loudly.
+--
+-- - The package name is the @uniqueId@: it seeds the wrapper symbol hashes.
+invocationEnv :: BindgenTarget -> BindgenEnv -> HB.InvocationEnv
+invocationEnv target env =
+  HB.InvocationEnv
+    { extraIncludeDirs = [env.includeDir]
+    , defineMacros = map defineArg target.parse.defines
+    , doxygenAliases = target.parse.doxygenAliases
+    , fieldNaming = HB.OmitFieldPrefixes
+    , uniqueId = toString target.packageName
+    }
+
+-- | The target's generation run: the shared invocation environment plus
+-- the prescriptive overrides registry, when present.
+driverOpts :: BindgenTarget -> BindgenEnv -> DriverOpts
+driverOpts target env =
+  DriverOpts
+    { invocationEnv = invocationEnv target env
+    , prescriptiveSpec = env.paths.overrides
+    , packageInfo =
+        PackageInfo
+          { name = target.packageName
+          , dataDir = env.paths.dataDir
+          , version = Nothing
+          }
+    }
 
 -- | The generated package's hand-written root files: @package.yaml@,
 -- @README.md@, @CHANGELOG.md@, and the library's license files.

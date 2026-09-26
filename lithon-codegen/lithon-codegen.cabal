@@ -64,10 +64,10 @@ library
       Lithon.Codegen.Bindgen.Alias.Config
       Lithon.Codegen.Bindgen.Alias.Constants
       Lithon.Codegen.Bindgen.Alias.Names
-      Lithon.Codegen.Bindgen.Chain
       Lithon.Codegen.Bindgen.Driver
       Lithon.Codegen.Bindgen.Env
       Lithon.Codegen.Bindgen.Package
+      Lithon.Codegen.Bindgen.Payload
       Lithon.Codegen.Bindgen.Target
       Lithon.Codegen.Bindgen.Target.Mpv
       Lithon.Codegen.Bindgen.Target.Sdl3
@@ -75,6 +75,7 @@ library
       Lithon.Codegen.Bindgen.Version
       Lithon.Codegen.Bindgen.Version.Doc
       Lithon.Codegen.Bindgen.Versions
+      Lithon.Codegen.Bindgen.Versions.Guards
       Lithon.Codegen.Cli
       Lithon.Codegen.Vulkan
       Lithon.Codegen.Vulkan.Curate

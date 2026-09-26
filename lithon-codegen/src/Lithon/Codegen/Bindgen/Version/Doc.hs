@@ -27,8 +27,9 @@ import Lithon.Codegen.Bindgen.Version (Version, mkVersion)
 -- backend's extraction: the first version-shaped token of the doxygen
 -- @\\since@ section ("This function is available since SDL 3.2.0.").
 -- A target wires it in as its 'Lithon.Codegen.Bindgen.Target.VersionScheme'
--- decl reader; the wrapper version gates ("Lithon.Codegen.Bindgen.Chain")
--- and the assert TU correct it through the same registry.
+-- decl reader; the wrapper version gates
+-- ("Lithon.Codegen.Bindgen.Versions.Guards") and the assert TU correct it
+-- through the same registry.
 doxygenSince :: Int -> C.DeclInfo C.Final -> Maybe Version
 doxygenSince arity info = do
   comment <- info.comment

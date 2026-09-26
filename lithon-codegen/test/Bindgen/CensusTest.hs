@@ -30,8 +30,7 @@ import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Bindgen.Alias (sysModuleName)
 import Lithon.Codegen.Bindgen.Alias.Config (AliasConfig (..), FunctionEntry (..), decodeAliasConfig)
 import Lithon.Codegen.Bindgen.Alias.Names (Safety (..))
-import Lithon.Codegen.Bindgen.Chain (moduleFor)
-import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), bindgenNamespaceText)
+import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), bindgenNamespaceText, moduleFor)
 import Lithon.Codegen.Bindgen.Targets (bindgenTargets)
 
 -- | The lithon-codegen package directory; every target's committed

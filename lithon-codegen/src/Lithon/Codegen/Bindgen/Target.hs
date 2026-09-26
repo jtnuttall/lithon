@@ -45,6 +45,10 @@ module Lithon.Codegen.Bindgen.Target (
   defineArg,
   defineLine,
 
+  -- * The header plan
+  headerPlan,
+  moduleFor,
+
   -- * Validation
   validateTarget,
   validateTargets,
@@ -60,7 +64,7 @@ import Lithon.Prelude
 import System.FilePath (isPathSeparator, splitDirectories, takeFileName, (</>))
 
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
-import Lithon.Codegen.Bindgen.Driver (Passes)
+import Lithon.Codegen.Bindgen.Driver (HeaderPlan (..), Passes, defaultSpecFileName)
 import Lithon.Codegen.Bindgen.Version (Version, renderVersion, versionArity)
 
 -- | One C library bound through the generic bindgen pipeline.
@@ -248,6 +252,28 @@ defineArg d = toString (d.name <> maybe "" ("=" <>) d.value)
 -- | The define as a C source line.
 defineLine :: CDefine -> Text
 defineLine d = "#define " <> d.name <> maybe "" (" " <>) d.value
+
+-- | The target's header universe, as data.
+headerPlan :: BindgenTarget -> HeaderPlan
+headerPlan target =
+  HeaderPlan
+    { baseNamespace = bindgenNamespace target
+    , mangle = target.headers.mangle
+    , projectHeader = projectHeaderUnder target.headers.includeRoot
+    , includeArg = includeArg target
+    , excludedHeaders = target.headers.excluded
+    , mainIncludes = mainIncludeArgs target
+    , specFileName = defaultSpecFileName
+    }
+
+-- | The full module name for one public-header basename (the census
+-- derives header->module rows through this, so it cannot drift from the
+-- chain's own minting).
+moduleFor :: BindgenTarget -> FilePath -> Either Module.MangleError Module.Meta
+moduleFor target basename =
+  (bindgenNamespace target <>)
+    . view Module.metaL
+    <$> Module.mangleHeader basename target.headers.mangle
 
 -- | Everything about one target that no type rules out. Run first by
 -- 'Lithon.Codegen.Bindgen.runBindgen'.
