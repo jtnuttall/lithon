@@ -59,7 +59,7 @@ import System.FilePath (isPathSeparator, splitDirectories, takeFileName, (</>))
 
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Bindgen (Passes)
-import Lithon.Codegen.Sys.Version (AbiSince)
+import Lithon.Codegen.Sys.Version (Version, renderVersion, versionArity)
 
 -- | One C library bound through the generic sys pipeline.
 data SysTarget = SysTarget
@@ -127,19 +127,22 @@ data CDefine = CDefine
 -- | How the library spells availability in its own C, and where its docs
 -- state it.
 data VersionScheme = VersionScheme
-  { baseline :: AbiSince
+  { arity :: Int
+  -- ^ The parts of every version (SDL: 3): the registry codec rejects
+  -- any other count, and the doc readers pad to it.
+  , baseline :: Version
   -- ^ The oldest supported release; nothing at or below it is gated.
-  , atLeast :: AbiSince -> Text
+  , atLeast :: Version -> Text
   -- ^ The C condition (without @#if@) true at or above a version.
-  , below :: AbiSince -> Text
+  , below :: Version -> Text
   -- ^ Its negation, spelled by the target (operator precedence is the
   -- target's to get right).
   , guardIncludes :: [FilePath]
   -- ^ Basenames declaring the version macros, prepended to gated
   -- wrappers.
-  , declSince :: C.DeclInfo C.Final -> Maybe AbiSince
+  , declSince :: C.DeclInfo C.Final -> Maybe Version
   -- ^ A declaration's documented availability, if the docs state one.
-  , fieldSince :: C.FieldInfo C.Final -> Maybe AbiSince
+  , fieldSince :: C.FieldInfo C.Final -> Maybe Version
   -- ^ A struct member's documented availability.
   }
 
@@ -148,7 +151,7 @@ data VersionScheme = VersionScheme
 data GateStubs = GateStubs
   { includes :: [FilePath]
   -- ^ Basenames declaring what 'failure' calls.
-  , failure :: Maybe (Text -> AbiSince -> Text)
+  , failure :: Maybe (Text -> Version -> Text)
   -- ^ The C statement reporting a gated call (symbol, required version).
   }
 
@@ -277,15 +280,30 @@ targetProblems t =
   [ "key must match [a-z0-9-]+: " <> show t.key
   | T.null t.key || not (T.all (\c -> isAsciiLower c || isDigit c || c == '-') t.key)
   ]
+    <> ["the key vulkan is the Vulkan generator's" | t.key == "vulkan"]
     <> ["not a valid cabal package name: " <> show t.packageName | not (validPackageName t.packageName)]
     <> ["the function prefix is empty" | T.null t.functionPrefix]
     <> [ "the include root must be one directory component: " <> show root
        | null root || any isPathSeparator root || root `elem` [".", ".."]
        ]
     <> ["no main includes" | null t.headers.mainIncludes]
-    <> [ "main includes are basenames under the include root: " <> show f
-       | f <- t.headers.mainIncludes
-       , null f || takeFileName f /= f
+    <> [ what <> " are basenames under the include root: " <> show f
+       | (what, fs) <-
+           [ ("main includes" :: Text, t.headers.mainIncludes)
+           , ("guard includes", t.versioning.guardIncludes)
+           , ("gate stub includes", t.gateStubs.includes)
+           ]
+       , f <- fs
+       , null f || takeFileName f /= f || f `elem` [".", ".."]
+       ]
+    <> ["the version arity must be positive: " <> show scheme.arity | scheme.arity < 1]
+    <> [ "the baseline "
+           <> renderVersion scheme.baseline
+           <> " has "
+           <> show (versionArity scheme.baseline)
+           <> " parts; the scheme's arity is "
+           <> show scheme.arity
+       | versionArity scheme.baseline /= scheme.arity
        ]
     <> [ "the namespace may not end in " <> lastSegment <> ": " <> Module.hsName t.namespace
        | lastSegment `elem` ["Bindgen", "Runtime" :: Text]
@@ -302,6 +320,7 @@ targetProblems t =
        ]
  where
   root = t.headers.includeRoot
+  scheme = t.versioning
   lastSegment = T.takeWhileEnd (/= '.') (Module.hsName t.namespace)
 
 -- | Cabal's rule: hyphen-separated ASCII-alphanumeric words, each with at

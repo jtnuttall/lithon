@@ -1,10 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE StrictData #-}
 
+-- At present, HLINT flags OverloadedRecordDot x.id.y as a redundant `id`
+-- application.
+{- HLINT ignore "Redundant id" -}
+
 -- | A target's configuration of the generic bindgen fold
 -- ("Lithon.Codegen.Bindgen"): the header plan, the invocation environment,
--- and the visitor — the target's shims, the version gates, and the
--- finalizer distilling the alias-layer facts and the ABI assertion inputs.
+-- and the visitor — the target's shims, the retype prologue, the version
+-- gates, and the finalizer distilling the alias-layer facts and the ABI
+-- assertion inputs.
 module Lithon.Codegen.Sys.Chain (
   -- * Plan + environment
   headerPlan,
@@ -14,11 +19,12 @@ module Lithon.Codegen.Sys.Chain (
   -- * Visitors
   SysPayload (..),
   sysVisitor,
-  versionGates,
+  ungatedStubReturns,
 ) where
 
 import Data.List qualified as L
 import Data.Map.Strict qualified as Map
+import Data.Set qualified as Set
 import Data.Text qualified as T
 import Lithon.HsBindgen qualified as HB
 import Lithon.HsBindgen.C qualified as C
@@ -50,11 +56,11 @@ import Lithon.Codegen.Sys.Target (
   mainIncludeArgs,
   projectHeaderUnder,
  )
-import Lithon.Codegen.Sys.Version (AbiSince (..))
+import Lithon.Codegen.Sys.Version (Version)
 import Lithon.Codegen.Sys.Versions (
+  DeclEntry (..),
   PrologueEntry (..),
-  TypedefShape (..),
-  Versioned (..),
+  ShapeSpec (..),
   VersionsRegistry (..),
   abiOverrides,
  )
@@ -124,15 +130,18 @@ data SysPayload = SysPayload
   -- ^ The alias-layer distillate (function census + translated decls).
   , abi :: [AbiDecl]
   -- ^ The layout distillate feeding the ABI assertion TU.
+  , gated :: [Text]
+  -- ^ The C names of the functions whose wrappers the version gates
+  -- guard, header declaration order.
   }
 
--- | The whole visitor: the target's shims before the version gates (gates
--- match lines the shims may have rewritten — ordering is contract), then
--- the payload distillation.
+-- | The whole visitor: the target's shims, then the retype prologue, then
+-- the version gates (gates match lines the shims may have rewritten —
+-- ordering is contract), then the payload distillation.
 sysVisitor :: SysTarget -> VersionsRegistry -> Visitor SysPayload
 sysVisitor target registry =
   Visitor
-    { passes = target.shims <> versionGates target registry
+    { passes = target.shims <> retypePrologue target registry <> versionGates target registry
     , finalize = \unit arts _rendered -> do
         abi <- distillAbi target.versioning unit.headerName (abiOverrides registry) arts.cDecls
         -- A base (types) module exists iff hs-bindgen produced the CType
@@ -149,54 +158,65 @@ sysVisitor target registry =
                   arts.hsDecls
                   arts.cDecls
             , abi
+            , gated = map (.name) (gatedFunctions target registry arts.cDecls)
             }
     }
 
--- | The version gates for the target's floor, as a composable pass set
--- (reads the reified C declarations).
-versionGates :: SysTarget -> VersionsRegistry -> Passes
-versionGates target registry =
-  Passes
-    { stubEdits = \unit arts -> versionStubEdits target registry unit.headerName arts.cDecls
-    , textEdits = \_ _ -> []
-    }
+-- | The registry's @stub-return@ entries naming a decl no header gated
+-- (at or below the baseline, or not a bound function): dead
+-- configuration, reported rather than ignored.
+ungatedStubReturns :: VersionsRegistry -> [SysPayload] -> [Text]
+ungatedStubReturns registry payloads =
+  [ name
+  | (name, entry) <- Map.toAscList registry.decls
+  , isJust entry.stubReturn
+  , name `Set.notMember` gated
+  ]
+ where
+  gated = Set.fromList (concatMap (.gated) payloads)
 
--- | Version gates for the target's floor: every function whose
--- registry-corrected availability is later than the baseline gets its
--- wrapper bodies guarded on the library's own version macros — the call
--- (or FunPtr address) stays live at or above the version; below it the
--- stub reports the failure through the target's channel (SDL:
--- @SDL_SetError@) and returns the zero of its return class. The wrapper
--- SYMBOL always exists, so consumer links never break; misuse on an old
--- library fails loudly at the call site. Each gated stub carries its own
--- prologue: the version macros' home plus ABI-equivalent stand-ins (from
--- the registry) for type names its signature uses that older headers do
--- not declare — linkage ignores C types, so an @int@\/pointer stand-in is
--- exact.
-versionStubEdits
-  :: SysTarget -> VersionsRegistry -> FilePath -> [C.Decl l C.Final] -> [HB.StubEdit]
-versionStubEdits target registry headerName cDecls =
-  retypePrologue
-    <> [ versionGate name since (length fn.args)
-       | decl <- cDecls
-       , let name = decl.info.id.cName.name.text
-       , C.DeclFunction fn <- [decl.kind]
-       , Just since <-
-           [ Map.lookup name declOverrides
-               <|> scheme.declSince decl.info
-           ]
-       , since > scheme.baseline
-       ]
+-- | A function whose registry-corrected availability is later than the
+-- target's baseline.
+data GatedFunction = GatedFunction
+  { name :: Text
+  , since :: Version
+  , params :: Int
+  , stubReturn :: Maybe Text
+  -- ^ The registry's @stub-return@, if any.
+  }
+
+gatedFunctions :: SysTarget -> VersionsRegistry -> [C.Decl l C.Final] -> [GatedFunction]
+gatedFunctions target registry cDecls =
+  [ GatedFunction{name, since, params = length fn.args, stubReturn = entry >>= (.stubReturn)}
+  | decl <- cDecls
+  , let name = decl.info.id.cName.name.text
+        entry = Map.lookup name registry.decls
+  , C.DeclFunction fn <- [decl.kind]
+  , Just since <- [((.since) <$> entry) <|> scheme.declSince decl.info]
+  , since > scheme.baseline
+  ]
  where
   scheme = target.versioning
-  declOverrides = (.since) <$> registry.decls
 
-  -- The retype class: wrappers of functions that exist at the baseline but
-  -- whose newer signatures use type names older headers do not declare.
-  -- One family-wide edit prepends the guarded stand-ins to every wrapper
-  -- that references one; hidden at or above their version, they can never
-  -- conflict with the real declarations.
-  retypePrologue = case headerTypedefs of
+-- | The retype class: wrappers of functions that exist at the baseline but
+-- whose newer signatures use type names older headers do not declare
+-- (and gated wrappers naming such a type). One family-wide edit prepends
+-- the guarded stand-ins (from the registry) to every wrapper that
+-- references one: the guard macro's home, then one block per release
+-- that introduced names, below which they are declared. Hidden at or
+-- above their version, they can never conflict with the real
+-- declarations; linkage ignores C types, so an @int@\/pointer stand-in
+-- is exact.
+retypePrologue :: SysTarget -> VersionsRegistry -> Passes
+retypePrologue target registry =
+  Passes
+    { stubEdits = \unit _arts -> retypeEdits unit.headerName
+    , textEdits = \_ _ -> []
+    }
+ where
+  scheme = target.versioning
+
+  retypeEdits headerName = case headerEntries of
     [] -> []
     entries ->
       [ HB.StubEdit
@@ -206,76 +226,96 @@ versionStubEdits target registry headerName cDecls =
           , onMiss = HB.RequireHit
           , edit = \ls ->
               if any (\(n, _) -> any (n `T.isInfixOf`) ls) entries then
-                Just
-                  ( map (includeLine target) scheme.guardIncludes
-                      <> ["#if " <> scheme.below retypeSince]
-                      <> map snd entries
-                      <> ["#endif"]
-                      <> ls
-                  )
+                Just (prologue entries <> ls)
               else
                 Nothing
           }
       ]
+   where
+    headerEntries =
+      [ (n, e)
+      | (n, e) <- Map.toList registry.prologueTypedefs
+      , headerName `elem` e.headers
+      ]
 
-  -- TODO(A2): SDL's twelve prologue typedefs all appeared at 3.4.0; the
-  -- version belongs to each registry entry (prologue-typedefs.<name>.since).
-  retypeSince = AbiSince{major = 3, minor = 4, patch = 0}
+  prologue entries =
+    map (includeLine target) scheme.guardIncludes
+      <> concat
+        [ ["#if " <> scheme.below since]
+            <> [typedefLine n e.shape | (n, e) <- sortOn fst introduced]
+            <> ["#endif"]
+        | (since, introduced) <-
+            Map.toAscList (Map.fromListWith (<>) [(e.since, [(n, e)]) | (n, e) <- entries])
+        ]
 
-  headerTypedefs =
-    [ (n, typedefLine n e.shape)
-    | (n, e) <- Map.toList registry.prologueTypedefs
-    , headerName `elem` e.headers
-    ]
-
-  -- TODO(A2): ShapeUint32 spells SDL's Uint32; the registry names the
-  -- aliased C type instead (ShapeAlias).
   typedefLine n = \case
-    ShapeInt -> "typedef int " <> n <> ";"
-    ShapeUint32 -> "typedef Uint32 " <> n <> ";"
+    ShapeAlias spelling -> "typedef " <> spelling <> " " <> n <> ";"
     ShapeOpaqueStruct -> "typedef struct " <> n <> " " <> n <> ";"
     ShapeVoidPtr -> "typedef void *" <> n <> ";"
 
-  versionGate sym since arity =
-    HB.StubEdit
-      { label = sym <> " version gate"
-      , symbol = Just sym
-      , target = "the call/address line of " <> sym
-      , onMiss = HB.RequireHit
-      , edit = \ls -> do
-          i <- L.findIndex isTargetLine ls
-          line <- ls L.!? i
-          pure (prologue ls <> take i ls <> guardBlock line <> drop (i + 1) ls)
-      }
-   where
-    addressLine = "  return &" <> sym <> ";"
+-- | Version gates for the target's floor: every function whose
+-- registry-corrected availability is later than the baseline gets its
+-- wrapper bodies guarded on the library's own version macros — the call
+-- (or FunPtr address) stays live at or above the version; below it the
+-- stub silences the arguments, reports the failure through the target's
+-- channel (SDL: @SDL_SetError@) when it has one, and returns the
+-- registry's @stub-return@ (default zero) — a FunPtr getter a null
+-- pointer, a void call nothing. The wrapper SYMBOL always exists, so
+-- consumer links never break; misuse on an old library fails loudly at
+-- the call site. Each gated stub carries its own prologue: the version
+-- macros' home and the failure channel's; stand-ins for type names its
+-- signature uses that older headers do not declare come from the
+-- family-wide retype prologue.
+versionGates :: SysTarget -> VersionsRegistry -> Passes
+versionGates target registry =
+  Passes
+    { stubEdits = \_unit arts -> map (versionGate target) (gatedFunctions target registry arts.cDecls)
+    , textEdits = \_ _ -> []
+    }
 
-    isTargetLine l =
-      or @[Bool]
-        [ ("  return (" <> sym <> ")(") `T.isPrefixOf` l
-        , ("  (" <> sym <> ")(") `T.isPrefixOf` l
-        , l == addressLine
-        ]
+versionGate :: SysTarget -> GatedFunction -> HB.StubEdit
+versionGate target fn =
+  HB.StubEdit
+    { label = sym <> " version gate"
+    , symbol = Just sym
+    , target = "the call/address line of " <> sym
+    , onMiss = HB.RequireHit
+    , edit = \ls -> do
+        i <- L.findIndex isTargetLine ls
+        line <- ls L.!? i
+        pure (prologue <> take i ls <> guardBlock line <> drop (i + 1) ls)
+    }
+ where
+  scheme = target.versioning
+  sym = fn.name
+  addressLine = "  return &" <> sym <> ";"
 
-    guardBlock line =
-      [ "#if " <> scheme.atLeast since
-      , line
-      , "#else"
-      , "  " <> stubLine line
-      , "#endif"
+  isTargetLine l =
+    or @[Bool]
+      [ ("  return (" <> sym <> ")(") `T.isPrefixOf` l
+      , ("  (" <> sym <> ")(") `T.isPrefixOf` l
+      , l == addressLine
       ]
 
+  guardBlock line =
+    [ "#if " <> scheme.atLeast fn.since
+    , line
+    , "#else"
+    , "  " <> T.unwords (silence <> failure <> ret)
+    , "#endif"
+    ]
+   where
     -- Address getters return a null function pointer; returning calls
-    -- silence their arguments and return zero; void calls only silence.
-    stubLine line
-      | line == addressLine = T.unwords (failure <> ["return 0;"])
-      | "  return " `T.isPrefixOf` line = T.unwords (silence <> failure <> ["return 0;"])
-      | otherwise = T.unwords (silence <> failure)
+    -- silence their arguments and return the stub value; void calls only
+    -- silence.
+    address = line == addressLine
+    silence = ["(void)arg" <> show n <> ";" | not address, n <- [1 .. fn.params]]
+    failure = [report sym fn.since | Just report <- [target.gateStubs.failure]]
+    ret
+      | address = ["return 0;"]
+      | "  return " `T.isPrefixOf` line = ["return " <> fromMaybe "0" fn.stubReturn <> ";"]
+      | otherwise = []
 
-    failure = [report sym since | Just report <- [target.gateStubs.failure]]
-    silence = ["(void)arg" <> show n <> ";" | n <- [1 .. arity]]
-
-    -- The guard macro's home and the failure channel's; per-header TUs may
-    -- reach neither on their own at the baseline. Stand-in typedefs come
-    -- from the family-wide retype prologue.
-    prologue _ls = map (includeLine target) (scheme.guardIncludes <> target.gateStubs.includes)
+  -- The guard macro's home and the failure channel's; per-header TUs may
+  -- reach neither on their own at the baseline.
+  prologue = map (includeLine target) (scheme.guardIncludes <> target.gateStubs.includes)

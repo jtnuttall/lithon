@@ -7,6 +7,7 @@
 -- resolution).
 module Sys.AliasNamesTest (
   unit_normalizeCorpusShapes,
+  unit_normalizeMpvShapes,
   unit_flavorSurface,
   unit_invalidNamesError,
   unit_collisionsAccumulate,
@@ -56,6 +57,22 @@ unit_normalizeCorpusShapes =
     , ("SDL_IOFromFile", "ioFromFile")
     , ("SDL_UCS4ToUTF8", "ucs4ToUTF8") -- acronym run ended by a digit
     , ("SDL_isalpha", "isalpha") -- already lowercase
+    ]
+
+-- | The same rule over libmpv's all-snake_case spellings: a lowercase
+-- prefix, every later segment capitalized.
+unit_normalizeMpvShapes :: IO ()
+unit_normalizeMpvShapes =
+  for_ cases $ \(cName, expected) ->
+    normalizeFunctionName "mpv_" cName @?= expected
+ where
+  cases :: [(Text, Text)]
+  cases =
+    [ ("mpv_set_property", "setProperty")
+    , ("mpv_get_time_ns", "getTimeNs")
+    , ("mpv_render_context_create", "renderContextCreate")
+    , ("mpv_stream_cb_add_ro", "streamCbAddRo")
+    , ("mpv_command", "command") -- single segment
     ]
 
 unit_flavorSurface :: IO ()

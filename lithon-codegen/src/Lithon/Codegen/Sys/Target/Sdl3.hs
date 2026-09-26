@@ -27,7 +27,7 @@ import System.FilePath ((<.>))
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Bindgen (HeaderUnit (..), Passes (..))
 import Lithon.Codegen.Sys.Target
-import Lithon.Codegen.Sys.Version (AbiSince (..), renderSince, versionArgs)
+import Lithon.Codegen.Sys.Version (mkVersion, renderVersion, versionArgs)
 import Lithon.Codegen.Sys.Version.Doc qualified as Doc
 
 sdl3 :: SysTarget
@@ -66,13 +66,16 @@ sdl3 =
           }
     , versioning =
         VersionScheme
-          { -- The oldest SDL with a stable ABI.
-            baseline = AbiSince{major = 3, minor = 2, patch = 0}
+          { arity = 3
+          , -- The oldest SDL with a stable ABI.
+            baseline = mkVersion (3 :| [2, 0])
           , atLeast = \v -> "SDL_VERSION_ATLEAST(" <> versionArgs v <> ")"
           , below = \v -> "!SDL_VERSION_ATLEAST(" <> versionArgs v <> ")"
           , guardIncludes = ["SDL_version.h"]
-          , declSince = Doc.declSince
-          , fieldSince = Doc.fieldSince
+          , -- SDL states availability in each declaration's doxygen \since
+            -- and in a late member's "(added in [SDL] X.Y.Z)" note.
+            declSince = Doc.doxygenSince 3
+          , fieldSince = Doc.addedInNote 3 ["sdl"]
           }
     , -- The gated stub's error channel; per-header TUs do not reach it on
       -- their own at 3.2 (SDL_cpuinfo.h has no transitive SDL_error.h
@@ -81,7 +84,7 @@ sdl3 =
         GateStubs
           { includes = ["SDL_error.h"]
           , failure = Just \sym since ->
-              "SDL_SetError(\"" <> sym <> " requires SDL >= " <> renderSince since <> "\");"
+              "SDL_SetError(\"" <> sym <> " requires SDL >= " <> renderVersion since <> "\");"
           }
     , shims = platformShims
     , widthTypedefs =

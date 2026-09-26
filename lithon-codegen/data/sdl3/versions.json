@@ -66,42 +66,49 @@
   },
   "prologue-typedefs": {
     "SDL_CameraPermissionState": {
+      "since": "3.4.0",
       "shape": "int",
       "headers": ["SDL_camera.h"],
       "note": "enum; SDL_GetCameraPermissionState exists at 3.2 returning int (retype)"
     },
     "SDL_HapticEffectID": {
+      "since": "3.4.0",
       "shape": "int",
       "headers": ["SDL_haptic.h"],
       "note": "typedef int upstream; the six 3.2-era haptic-effect functions retype to it at 3.4"
     },
-    "SDL_TextureAddressMode": { "shape": "int", "headers": ["SDL_render.h"], "note": "enum" },
-    "SDL_ProgressState": { "shape": "int", "headers": ["SDL_video.h"], "note": "enum" },
-    "SDL_PenDeviceType": { "shape": "int", "headers": ["SDL_pen.h"], "note": "enum" },
+    "SDL_TextureAddressMode": { "since": "3.4.0", "shape": "int", "headers": ["SDL_render.h"], "note": "enum" },
+    "SDL_ProgressState": { "since": "3.4.0", "shape": "int", "headers": ["SDL_video.h"], "note": "enum" },
+    "SDL_PenDeviceType": { "since": "3.4.0", "shape": "int", "headers": ["SDL_pen.h"], "note": "enum" },
     "SDL_CursorFrameInfo": {
+      "since": "3.4.0",
       "shape": "opaque-struct",
       "headers": ["SDL_mouse.h"],
       "note": "pointer-position only"
     },
-    "SDL_GPURenderState": { "shape": "opaque-struct", "headers": ["SDL_render.h"] },
-    "SDL_GPURenderStateCreateInfo": { "shape": "opaque-struct", "headers": ["SDL_render.h"] },
+    "SDL_GPURenderState": { "since": "3.4.0", "shape": "opaque-struct", "headers": ["SDL_render.h"] },
+    "SDL_GPURenderStateCreateInfo": { "since": "3.4.0", "shape": "opaque-struct", "headers": ["SDL_render.h"] },
     "SDL_MouseMotionTransformCallback": {
+      "since": "3.4.0",
       "shape": "void-ptr",
       "headers": ["SDL_mouse.h"],
       "note": "function pointer"
     },
     "SDL_AudioStreamDataCompleteCallback": {
+      "since": "3.4.0",
       "shape": "void-ptr",
       "headers": ["SDL_audio.h"],
       "note": "function pointer"
     },
     "SDL_GPUDevice": {
+      "since": "3.4.0",
       "shape": "opaque-struct",
       "headers": ["SDL_render.h"],
       "note": "Exists at 3.2 but unreachable from the SDL_render.h wrapper TU's single include."
     },
     "SDL_PropertiesID": {
-      "shape": "uint32",
+      "since": "3.4.0",
+      "shape": "Uint32",
       "headers": ["SDL_hidapi.h"],
       "note": "Exists at 3.2 but unreachable from the SDL_hidapi.h wrapper TU's single include."
     }

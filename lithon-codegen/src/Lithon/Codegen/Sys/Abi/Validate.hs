@@ -36,12 +36,12 @@ import Lithon.Codegen.Sys.Abi (
   AbiKind (..),
   AbiLayoutBefore (..),
  )
-import Lithon.Codegen.Sys.Version (AbiSince, renderSince)
+import Lithon.Codegen.Sys.Version (Version, renderVersion)
 
 -- | One size-changing append: the trailing members first gated at
 -- @since@, and the @sizeof@ the struct must have had just before them.
 data GrowthStep = GrowthStep
-  { since :: AbiSince
+  { since :: Version
   , members :: NonEmpty AbiField
   -- ^ Declaration order.
   , preSizeof :: Int
@@ -84,7 +84,7 @@ data LibraryRef = LibraryRef
 data AbiProblem = AbiProblem
   { library :: LibraryRef
   , decl :: AbiDecl
-  , outer :: AbiSince
+  , outer :: Version
   -- ^ The struct's own floor (its gate, or the baseline).
   , kind :: AbiProblemKind
   }
@@ -99,7 +99,7 @@ roundUp n align
 -- members (empty for unions, enums, and structs whose gated members all
 -- fit inside the pre-existing layout), given the target's baseline. 'Left'
 -- when the trailing gates are not monotone.
-growthSteps :: AbiSince -> AbiDecl -> Either AbiProblemKind [GrowthStep]
+growthSteps :: Version -> AbiDecl -> Either AbiProblemKind [GrowthStep]
 growthSteps baseline d
   | d.kind /= AbiStruct = Right []
   | not monotone = Left (TrailingGatesNotMonotone run)
@@ -126,7 +126,7 @@ growthSteps baseline d
 
 -- | Every struct whose growth story is missing or inconsistent, given the
 -- target's baseline and, for the messages, the generation library.
-validateAbi :: AbiSince -> LibraryRef -> [AbiDecl] -> Validation (Errors AbiProblem) ()
+validateAbi :: Version -> LibraryRef -> [AbiDecl] -> Validation (Errors AbiProblem) ()
 validateAbi baseline library decls = failUnlessEmpty (mapMaybe problemOf decls) ()
  where
   problemOf d = do
@@ -145,9 +145,9 @@ validateAbi baseline library decls = failUnlessEmpty (mapMaybe problemOf decls) 
     | g.since /= step.since =
         Just
           ( "the registry gates sizeof at "
-              <> renderSince g.since
+              <> renderVersion g.since
               <> " but the appended members are gated at "
-              <> renderSince step.since
+              <> renderVersion step.since
           )
     | g.before.alignment > d.alignment =
         Just
@@ -195,12 +195,12 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
   heading = d.cTypeName <> " (" <> toText d.headerName <> "): " <> headline
   (headline, body) = case p.kind of
     GrowthUnrecorded step ->
-      ( "grew at " <> renderSince step.since <> ", but the registry records no growth gate."
+      ( "grew at " <> renderVersion step.since <> ", but the registry records no growth gate."
       , gatedMembers (toList step.members)
           <> [ ""
              , baked
              , "Implied pre-"
-                 <> renderSince step.since
+                 <> renderVersion step.since
                  <> " layout: sizeof "
                  <> show step.preSizeof
                  <> " (offset "
@@ -216,7 +216,7 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
              , "Without the gate the unguarded sizeof/alignment asserts fail to compile on every"
              , p.library.label
                  <> " < "
-                 <> renderSince step.since
+                 <> renderVersion step.since
                  <> ". Add under \"structs\" in "
                  <> toText p.library.registry
                  <> ":"
@@ -230,14 +230,14 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
           <> [ ""
              , baked
              , "Registry: sizeof-since "
-                 <> renderSince g.since
+                 <> renderVersion g.since
                  <> ", before sizeof "
                  <> show g.before.sizeof
                  <> ", alignment "
                  <> show g.before.alignment
                  <> "."
              , "Offsets imply: sizeof-since "
-                 <> renderSince step.since
+                 <> renderVersion step.since
                  <> ", before sizeof "
                  <> show step.preSizeof
                  <> " (alignment assumed unchanged)."
@@ -250,10 +250,10 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
       )
     GrowthMultiStep steps ->
       ( "grew at "
-          <> T.intercalate " and " (map (renderSince . (.since)) (toList steps))
+          <> T.intercalate " and " (map (renderVersion . (.since)) (toList steps))
           <> "; the registry can only record one growth gate."
       , concat
-          [ ("At " <> renderSince s.since <> ": sizeof " <> show s.preSizeof <> " -> " <> show s.postSizeof)
+          [ ("At " <> renderVersion s.since <> ": sizeof " <> show s.preSizeof <> " -> " <> show s.postSizeof)
               : gatedMembers (toList s.members)
           | s <- toList steps
           ]
@@ -265,9 +265,9 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
       )
     GrowthUnexplained g ->
       ( "the registry records growth at "
-          <> renderSince g.since
+          <> renderVersion g.since
           <> " but no trailing member is gated above the struct's floor ("
-          <> renderSince p.outer
+          <> renderVersion p.outer
           <> ")."
       ,
         [ baked
@@ -300,13 +300,13 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
       <> show d.alignment
       <> "."
   gatedMembers fs =
-    ("Trailing members gated above the struct's floor (" <> renderSince p.outer <> "):")
+    ("Trailing members gated above the struct's floor (" <> renderVersion p.outer <> "):")
       : [ "  "
             <> f.name
             <> "  offset "
             <> show f.byteOffset
             <> "  since "
-            <> maybe "?" renderSince f.since
+            <> maybe "?" renderVersion f.since
             <> provenance f
         | f <- fs
         ]
@@ -316,7 +316,7 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
     | otherwise = ""
   snippet step =
     [ "\"" <> bare <> "\": {"
-    , "  \"sizeof-since\": \"" <> renderSince step.since <> "\","
+    , "  \"sizeof-since\": \"" <> renderVersion step.since <> "\","
     , "  \"before\": { \"sizeof\": "
         <> show step.preSizeof
         <> ", \"alignment\": "
@@ -325,7 +325,7 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
     , "  \"note\": \""
         <> T.intercalate "/" (map (.name) (toList step.members))
         <> " added in "
-        <> renderSince step.since
+        <> renderVersion step.since
         <> "; sizeof "
         <> show step.preSizeof
         <> " -> "
@@ -334,7 +334,7 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
     , "  \"members\": { "
         <> T.intercalate
           ", "
-          ["\"" <> f.name <> "\": \"" <> renderSince step.since <> "\"" | f <- toList step.members]
+          ["\"" <> f.name <> "\": \"" <> renderVersion step.since <> "\"" | f <- toList step.members]
         <> " }"
     , "}"
     ]

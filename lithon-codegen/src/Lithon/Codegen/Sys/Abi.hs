@@ -77,7 +77,7 @@ import Lithon.Codegen.Sys.Target (
   VersionScheme (..),
   defineLine,
  )
-import Lithon.Codegen.Sys.Version (AbiSince, renderSince)
+import Lithon.Codegen.Sys.Version (Version, renderVersion)
 
 -- | Which C sort an 'AbiDecl' describes.
 data AbiKind = AbiStruct | AbiUnion | AbiEnum
@@ -87,10 +87,10 @@ data AbiKind = AbiStruct | AbiUnion | AbiEnum
 data AbiField = AbiField
   { name :: Text
   , byteOffset :: Int
-  , since :: Maybe AbiSince
+  , since :: Maybe Version
   -- ^ Member-level availability: the registry's @members@ entry when
   -- there is one, else 'commentSince'.
-  , commentSince :: Maybe AbiSince
+  , commentSince :: Maybe Version
   -- ^ What the member's own doxygen comment says, via SDL's prose
   -- convention for late members (\"(added in 3.4.16)\"); kept apart from
   -- 'since' so a validation error can say where a floor came from.
@@ -100,7 +100,7 @@ data AbiField = AbiField
 data AbiEnumConst = AbiEnumConst
   { name :: Text
   , value :: Integer
-  , since :: Maybe AbiSince
+  , since :: Maybe Version
   -- ^ Constant-level availability or value-change gate (enumerators
   -- never carry @\\since@ upstream; empirical override map). The assert
   -- is emitted only at or above this version — for value changes, the
@@ -116,7 +116,7 @@ data AbiMacroConst = AbiMacroConst
   { name :: Text
   , value :: Integer
   , headerName :: FilePath
-  , since :: Maybe AbiSince
+  , since :: Maybe Version
   -- ^ From the empirical override map (macro constants' own docs are not
   -- trusted for availability).
   }
@@ -137,7 +137,7 @@ data AbiLayoutBefore = AbiLayoutBefore
   deriving stock (Eq, Generic, Show)
 
 data AbiGrowth = AbiGrowth
-  { since :: AbiSince
+  { since :: Version
   , before :: AbiLayoutBefore
   }
   deriving stock (Eq, Generic, Show)
@@ -155,7 +155,7 @@ data AbiDecl = AbiDecl
   -- ^ Structs only; declaration order.
   , constants :: [AbiEnumConst]
   -- ^ Enums only; declaration order.
-  , since :: Maybe AbiSince
+  , since :: Maybe Version
   -- ^ The decl's doxygen @\@since@, corrected by the override map
   -- (SDL's annotations lie in both directions); 'Nothing' emits
   -- unguarded asserts.
@@ -177,11 +177,11 @@ data AbiDecl = AbiDecl
 -- against the real SDL release-header matrix.
 -- Keys are bare C names (no @struct@\/@enum@ spelling).
 data AbiOverrides = AbiOverrides
-  { decls :: Map Text AbiSince
+  { decls :: Map Text Version
   -- ^ Decl-level corrections (lies and missing annotations).
-  , constants :: Map Text AbiSince
+  , constants :: Map Text Version
   -- ^ Enum constants: introduction gates and value-change gates, merged.
-  , macros :: Map Text AbiSince
+  , macros :: Map Text Version
   -- ^ Typed-constant macros.
   , structs :: Map Text StructOverrides
   -- ^ Per-struct member/size gates and layout policy.
@@ -191,7 +191,7 @@ data AbiOverrides = AbiOverrides
 data StructOverrides = StructOverrides
   { growth :: Maybe AbiGrowth
   , layout :: Maybe AbiLayout
-  , members :: Map Text AbiSince
+  , members :: Map Text Version
   }
   deriving stock (Eq, Generic, Show)
 
@@ -249,7 +249,7 @@ distillAbi scheme headerName ov = sequenceA . mapMaybe abiDeclOf
         }
 
 assertableFields
-  :: VersionScheme -> Text -> Map Text AbiSince -> [C.Field C.Final] -> Either Text [AbiField]
+  :: VersionScheme -> Text -> Map Text Version -> [C.Field C.Final] -> Either Text [AbiField]
 assertableFields scheme owner memberSinces fs =
   sequenceA
     [ if bits `mod` 8 /= 0 then
@@ -277,7 +277,7 @@ assertableFields scheme owner memberSinces fs =
           commentSince = scheme.fieldSince ef.info
     ]
 
-constsOf :: Map Text AbiSince -> [C.EnumConstant C.Final] -> [AbiEnumConst]
+constsOf :: Map Text Version -> [C.EnumConstant C.Final] -> [AbiEnumConst]
 constsOf constSinces cs =
   [ AbiEnumConst{name = cname, value = c.value, since = Map.lookup cname constSinces}
   | c <- cs
@@ -390,7 +390,7 @@ renderAbiAssertions target libraryVersion includes decls macroConsts =
             [atleastLine g.since]
               <> layoutAsserts "baked" d.sizeof d.alignment
               <> ["#else"]
-              <> layoutAsserts ("pre-" <> renderSince g.since) g.before.sizeof g.before.alignment
+              <> layoutAsserts ("pre-" <> renderVersion g.since) g.before.sizeof g.before.alignment
               <> ["#endif"]
       _atOrBelowOuter -> layoutAsserts "baked" d.sizeof d.alignment
     layoutAsserts prov sizeof alignment =

@@ -7,6 +7,7 @@
 -- shapes (multi-step, unexplained, non-monotone, unions).
 module Sys.AbiValidateTest (
   unit_parseSinceProse,
+  unit_parseSinceProseTwoParts,
   unit_addedInSinceProse,
   unit_validateRejectsUnrecordedGrowth,
   unit_validateAcceptsGolden,
@@ -42,30 +43,46 @@ import Lithon.Codegen.Sys.Abi.Validate (
  )
 import Lithon.Codegen.Sys.Target (SysTarget (..), VersionScheme (..), registryDisplayPath)
 import Lithon.Codegen.Sys.Target.Sdl3 (sdl3)
-import Lithon.Codegen.Sys.Version (AbiSince (..))
-import Lithon.Codegen.Sys.Version.Doc (addedInSince, parseSince, versionToken)
+import Lithon.Codegen.Sys.Version (Version, mkVersion)
+import Lithon.Codegen.Sys.Version.Doc (addedInProse, parseVersionProse, versionToken)
 import Sys.AbiRenderTest (toyAbi, toyOverrides)
 
-v :: Int -> Int -> Int -> AbiSince
-v major minor patch = AbiSince{major, minor, patch}
+v :: Int -> Int -> Int -> Version
+v major minor patch = mkVersion (major :| [minor, patch])
 
 unit_parseSinceProse :: IO ()
 unit_parseSinceProse = do
-  versionToken "This function is available since SDL 3.2.0." @?= Just (v 3 2 0)
-  parseSince "3.4.16)." @?= Just (v 3 4 16)
-  parseSince "3.4" @?= Just (v 3 4 0)
-  parseSince "1.2.3.4" @?= Nothing
-  parseSince "v3.4" @?= Nothing
-  parseSince "3" @?= Nothing
-  parseSince "3..4" @?= Nothing
+  versionToken 3 "This function is available since SDL 3.2.0." @?= Just (v 3 2 0)
+  parseVersionProse 3 "3.4.16)." @?= Just (v 3 4 16)
+  parseVersionProse 3 "3.4" @?= Just (v 3 4 0)
+  parseVersionProse 3 "1.2.3.4" @?= Nothing
+  parseVersionProse 3 "v3.4" @?= Nothing
+  parseVersionProse 3 "3" @?= Nothing
+  parseVersionProse 3 "3..4" @?= Nothing
+
+-- | A two-part scheme reads exactly two groups: never padded, never
+-- truncated.
+unit_parseSinceProseTwoParts :: IO ()
+unit_parseSinceProseTwoParts = do
+  let v2 major minor = mkVersion (major :| [minor])
+  versionToken 2 "added in client API 2.1 (mpv 0.36)" @?= Just (v2 2 1)
+  parseVersionProse 2 "2.5," @?= Just (v2 2 5)
+  parseVersionProse 2 "2.1.0" @?= Nothing
+  parseVersionProse 2 "2" @?= Nothing
+  addedInProse 2 [] "(added in 2.2)" @?= Just (v2 2 2)
+  -- Skipped words are the target's; nothing is skipped by default.
+  addedInProse 2 [] "added in mpv 0.37" @?= Nothing
+  addedInProse 2 ["mpv"] "added in mpv 0.37" @?= Just (v2 0 37)
 
 unit_addedInSinceProse :: IO ()
 unit_addedInSinceProse = do
-  addedInSince "Complete pen input state at time of event (added in 3.4.16)." @?= Just (v 3 4 16)
-  addedInSince "(Added In SDL 3.4.0)" @?= Just (v 3 4 0)
-  addedInSince "The window with pen focus, if any" @?= Nothing
+  added "Complete pen input state at time of event (added in 3.4.16)." @?= Just (v 3 4 16)
+  added "(Added In SDL 3.4.0)" @?= Just (v 3 4 0)
+  added "The window with pen focus, if any" @?= Nothing
   -- Only the "added in" phrase gates; other version prose is inert.
-  addedInSince "This macro is available since SDL 3.4.0." @?= Nothing
+  added "This macro is available since SDL 3.4.0." @?= Nothing
+ where
+  added = addedInProse 3 ["sdl"]
 
 problems :: Text -> [AbiDecl] -> [AbiProblem]
 problems sdlVersion decls = case validateAbi sdl3.versioning.baseline library decls of
@@ -157,7 +174,7 @@ unit_validateRejectsWrongGate = do
         ("gates sizeof at 3.2.8" `T.isInfixOf` why && "gated at 3.2.12" `T.isInfixOf` why)
     other -> assertFailure ("unexpected: " <> show other)
 
-field :: Text -> Int -> Maybe AbiSince -> AbiField
+field :: Text -> Int -> Maybe Version -> AbiField
 field name byteOffset since = AbiField{name, byteOffset, since, commentSince = Nothing}
 
 decl :: AbiKind -> Text -> [AbiField] -> Int -> Int -> Maybe AbiGrowth -> AbiDecl

@@ -19,6 +19,8 @@ module Sys.AbiRenderTest (
   unit_memberSinceRegistryWins,
   unit_prefixDerivesAcrossHeaders,
   test_abiRenderGolden,
+  test_abiRenderToy2Golden,
+  unit_abiToy2Compiles,
   toyAbi,
   toyOverrides,
 ) where
@@ -27,12 +29,16 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
+import Data.Text.IO qualified as TIO
 import Lithon.HsBindgen qualified as HB
 import Lithon.Prelude
+import System.Directory (findExecutable)
+import System.Exit (ExitCode (..))
 import System.FilePath ((</>))
+import System.Process (readProcessWithExitCode)
 import Test.Tasty (TestTree)
 import Test.Tasty.Golden (goldenVsStringDiff)
-import Test.Tasty.HUnit (assertFailure, (@?=))
+import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
 import Lithon.Codegen.Sys.Abi (
   AbiDecl (..),
@@ -49,10 +55,21 @@ import Lithon.Codegen.Sys.Abi (
   emptyAbiOverrides,
   renderAbiAssertions,
  )
-import Lithon.Codegen.Sys.Target (SysTarget (..))
+import Lithon.Codegen.Sys.Abi.Validate (LibraryRef (..), validateAbi)
+import Lithon.Codegen.Sys.Target (SysTarget (..), VersionScheme (..), includeArg)
 import Lithon.Codegen.Sys.Target.Sdl3 (sdl3)
-import Lithon.Codegen.Sys.Version (AbiSince (..))
-import Sys.Support.Toy (ToyHeader (..), runToy, toyEnv)
+import Lithon.Codegen.Sys.Version (Version, mkVersion)
+import Lithon.Codegen.Sys.Versions (
+  Versioned (since),
+  VersionsRegistry (macroConstants),
+  abiOverrides,
+  decodeVersionsRegistry,
+ )
+import Sys.Support.Targets (toy2)
+import Sys.Support.Toy (ToyHeader (..), invokeToy, runToy, toyEnv, withToyRoot)
+
+v3 :: Int -> Int -> Int -> Version
+v3 major minor patch = mkVersion (major :| [minor, patch])
 
 unit_toyDistillPins :: IO ()
 unit_toyDistillPins = do
@@ -77,15 +94,15 @@ unit_toyDistillPins = do
   [(c.name, c.value) | d <- abi, d.cTypeName == "enum SDL_ToyStatus", c <- d.constants]
     @?= [("SDL_TOY_INVALID", -1), ("SDL_TOY_OK", 0), ("SDL_TOY_BIG", 1073741824)]
   map (.since) abi
-    @?= [ Just AbiSince{major = 3, minor = 2, patch = 0}
-        , Just AbiSince{major = 3, minor = 4, patch = 0}
-        , Just AbiSince{major = 3, minor = 2, patch = 0}
-        , Just AbiSince{major = 3, minor = 2, patch = 0}
-        , Just AbiSince{major = 3, minor = 2, patch = 0}
-        , Just AbiSince{major = 3, minor = 2, patch = 0}
-        , Just AbiSince{major = 3, minor = 2, patch = 0}
+    @?= [ Just (v3 3 2 0)
+        , Just (v3 3 4 0)
+        , Just (v3 3 2 0)
+        , Just (v3 3 2 0)
+        , Just (v3 3 2 0)
+        , Just (v3 3 2 0)
+        , Just (v3 3 2 0)
         , Nothing
-        , Just AbiSince{major = 3, minor = 2, patch = 0}
+        , Just (v3 3 2 0)
         ]
   concat [d.memberTypes | d <- abi, d.cTypeName == "union SDL_ToyPayload"]
     @?= ["struct SDL_ToyMix", "struct SDL_ToyBody", "struct SDL_ToyPinned", "struct SDL_ToyGrown"]
@@ -97,10 +114,10 @@ unit_toyDistillPins = do
         , ("timestamp", 8, Nothing)
         , ("windowID", 16, Nothing)
         , ("which", 20, Nothing)
-        , ("pen_state", 24, Just AbiSince{major = 3, minor = 2, patch = 12})
+        , ("pen_state", 24, Just (v3 3 2 12))
         ]
   [(f.name, f.byteOffset, f.since) | d <- abi, d.cTypeName == "struct SDL_ToyPadded", f <- d.fields]
-    @?= [("a", 0, Nothing), ("b", 8, Nothing), ("c", 12, Just AbiSince{major = 3, minor = 2, patch = 10})]
+    @?= [("a", 0, Nothing), ("b", 8, Nothing), ("c", 12, Just (v3 3 2 10))]
   [f.since | d <- abi, d.cTypeName == "struct SDL_ToyMix", f <- d.fields]
     @?= [Nothing, Nothing, Nothing]
 
@@ -118,7 +135,7 @@ unit_memberSinceRegistryWins = do
                 , StructOverrides
                     { growth = Nothing
                     , layout = Nothing
-                    , members = Map.fromList [("pen_state", AbiSince{major = 3, minor = 4, patch = 0})]
+                    , members = Map.fromList [("pen_state", v3 3 4 0)]
                     }
                 )
               ]
@@ -129,7 +146,7 @@ unit_memberSinceRegistryWins = do
     , f <- d.fields
     , f.name == "pen_state"
     ]
-    @?= [(Just AbiSince{major = 3, minor = 4, patch = 0}, Just AbiSince{major = 3, minor = 2, patch = 12})]
+    @?= [(Just (v3 3 4 0), Just (v3 3 2 12))]
 
 unit_prefixDerivesAcrossHeaders :: IO ()
 unit_prefixDerivesAcrossHeaders = do
@@ -187,7 +204,7 @@ test_abiRenderGolden =
         { name = "SDL_TOY_WIDE"
         , value = 0x8000000000000000
         , headerName = "SDL_toy_abi.h"
-        , since = Just AbiSince{major = 3, minor = 4, patch = 0}
+        , since = Just (v3 3 4 0)
         }
     ]
 
@@ -204,8 +221,8 @@ test_abiRenderGolden =
 toyOverrides :: AbiOverrides
 toyOverrides =
   AbiOverrides
-    { decls = Map.fromList [("SDL_ToyPayload", AbiSince{major = 3, minor = 4, patch = 0})]
-    , constants = Map.fromList [("SDL_TOY_BIG", AbiSince{major = 3, minor = 4, patch = 0})]
+    { decls = Map.fromList [("SDL_ToyPayload", v3 3 4 0)]
+    , constants = Map.fromList [("SDL_TOY_BIG", v3 3 4 0)]
     , macros = mempty
     , structs =
         Map.fromList
@@ -215,11 +232,11 @@ toyOverrides =
                 { growth =
                     Just
                       AbiGrowth
-                        { since = AbiSince{major = 3, minor = 2, patch = 12}
+                        { since = v3 3 2 12
                         , before = AbiLayoutBefore{sizeof = 12, alignment = 4}
                         }
                 , layout = Nothing
-                , members = Map.fromList [("wide", AbiSince{major = 3, minor = 2, patch = 12})]
+                , members = Map.fromList [("wide", v3 3 2 12)]
                 }
             )
           ,
@@ -228,11 +245,11 @@ toyOverrides =
                 { growth =
                     Just
                       AbiGrowth
-                        { since = AbiSince{major = 3, minor = 2, patch = 8}
+                        { since = v3 3 2 8
                         , before = AbiLayoutBefore{sizeof = 8, alignment = 4}
                         }
                 , layout = Nothing
-                , members = Map.fromList [("scale", AbiSince{major = 3, minor = 2, patch = 8})]
+                , members = Map.fromList [("scale", v3 3 2 8)]
                 }
             )
           ,
@@ -241,7 +258,7 @@ toyOverrides =
                 { growth =
                     Just
                       AbiGrowth
-                        { since = AbiSince{major = 3, minor = 2, patch = 12}
+                        { since = v3 3 2 12
                         , before = AbiLayoutBefore{sizeof = 24, alignment = 8}
                         }
                 , layout = Nothing
@@ -395,3 +412,151 @@ toyHeader =
     , ""
     , "#endif"
     ]
+
+{-------------------------------------------------------------------------------
+  toy2: the two-part scheme
+-------------------------------------------------------------------------------}
+
+-- | The TU at the mpv-shaped scheme: guards spelled through the target's
+-- comparison macro at two parts, every one of them from the registry (a
+-- late decl, a late enum constant, a late typed constant, and a struct
+-- that grew by appending a member).
+test_abiRenderToy2Golden :: TestTree
+test_abiRenderToy2Golden =
+  goldenVsStringDiff
+    "abi-toy2-assertions"
+    (\ref new -> ["diff", "-u", ref, new])
+    ("test/golden/sys" </> "abi-toy2-assertions.golden")
+    (LBS.fromStrict . TE.encodeUtf8 <$> withToy2Abi \_root tu -> pure tu)
+
+-- | The TU compiles against the headers of the newest release, of the
+-- release between the gates, and of the baseline (whose @toy_event@ is
+-- the recorded pre-growth layout).
+unit_abiToy2Compiles :: IO ()
+unit_abiToy2Compiles =
+  findExecutable "cc" >>= \case
+    Nothing -> pass
+    Just cc -> withToy2Abi \root tu -> do
+      let file = root </> "abi_assertions.c"
+      TIO.writeFile file tu
+      for_ [Nothing, Just "2, 1", Just ("2, 0" :: Text)] \release -> do
+        let args =
+              ["-std=c17", "-fsyntax-only", "-I", root]
+                <> ["-DTOY_API_VERSION=TOY_MAKE_VERSION(" <> toString r <> ")" | Just r <- [release]]
+                <> [file]
+        (code, _out, err) <- readProcessWithExitCode cc args ""
+        assertBool
+          ("abi_assertions.c at " <> maybe "the newest release" toString release <> ":\n" <> err)
+          (code == ExitSuccess)
+
+-- | Distill the toy2 ABI header under the registry, check the growth
+-- story validates, and render the TU (under a live toy root).
+withToy2Abi :: (FilePath -> Text -> IO a) -> IO a
+withToy2Abi k = do
+  registry <-
+    either (assertFailure . toString) pure
+      $ decodeVersionsRegistry toy2.versioning.arity toy2AbiRegistry
+  withToyRoot toy2AbiHeaders \root -> do
+    cDecls <-
+      invokeToy
+        root
+        (toyEnv "lithon-abi-toy2")
+        "Toy2.Sys.Bindgen.ToyAbi"
+        [includeArg toy2 "toy_abi.h"]
+        HB.reifiedC
+    abi <-
+      either (assertFailure . toString) pure
+        $ distillAbi toy2.versioning "toy_abi.h" (abiOverrides registry) cDecls
+    case validateAbi toy2.versioning.baseline library abi of
+      Success () -> pass
+      Failure errs -> assertFailure (toString (T.unlines (map display (toList errs))))
+    let macroConsts =
+          [ AbiMacroConst
+              { name
+              , value
+              , headerName = "toy_abi.h"
+              , since = (.since) <$> Map.lookup name registry.macroConstants
+              }
+          | (name, value) <- [("TOY_FLAG_A", 1), ("TOY_FLAG_B", 2)]
+          ]
+    tu <-
+      either (assertFailure . toString) pure
+        $ renderAbiAssertions toy2 "2.2" [includeArg toy2 "toy_abi.h"] abi macroConsts
+    k root tu
+ where
+  library = LibraryRef{label = toy2.versionLabel, version = "2.2", registry = "toy2/versions.json"}
+
+toy2AbiRegistry :: LBS.ByteString
+toy2AbiRegistry =
+  "{\"decls\": {\"toy_format\": {\"since\": \"2.1\"}},\
+  \ \"enum-constants\": {\"TOY_LEVEL_MAX\": {\"since\": \"2.1\"}},\
+  \ \"macro-constants\": {\"TOY_FLAG_B\": {\"since\": \"2.1\"}},\
+  \ \"structs\": {\"toy_event\": {\
+  \   \"sizeof-since\": \"2.2\",\
+  \   \"before\": {\"sizeof\": 8, \"alignment\": 4},\
+  \   \"members\": {\"stamp\": \"2.2\"}}}}"
+
+-- | What each release declares: 2.1 adds @toy_format@, @TOY_LEVEL_MAX@,
+-- and @TOY_FLAG_B@; 2.2 appends @stamp@ to @toy_event@. The header's
+-- release defaults to the newest; a compile overrides it.
+toy2AbiHeaders :: [ToyHeader]
+toy2AbiHeaders =
+  [ ToyHeader
+      { include = "toy2/toy_version.h"
+      , source =
+          unlines
+            [ "#ifndef TOY_VERSION_H"
+            , "#define TOY_VERSION_H"
+            , "#define TOY_MAKE_VERSION(major, minor) (((major) << 16) | (minor) | 0UL)"
+            , "#ifndef TOY_API_VERSION"
+            , "#define TOY_API_VERSION TOY_MAKE_VERSION(2, 2)"
+            , "#endif"
+            , "#endif"
+            ]
+      }
+  , ToyHeader
+      { include = "toy2/toy_abi.h"
+      , source =
+          unlines
+            [ "#ifndef TOY_ABI_H"
+            , "#define TOY_ABI_H"
+            , ""
+            , "#include \"toy_version.h\""
+            , ""
+            , "typedef struct toy_rect {"
+            , "  int x;"
+            , "  int y;"
+            , "} toy_rect;"
+            , ""
+            , "#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 1)"
+            , "typedef struct toy_format {"
+            , "  unsigned code;"
+            , "  double scale;"
+            , "} toy_format;"
+            , "#endif"
+            , ""
+            , "typedef struct toy_event {"
+            , "  int type;"
+            , "  unsigned id;"
+            , "#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 2)"
+            , "  double stamp;"
+            , "#endif"
+            , "} toy_event;"
+            , ""
+            , "typedef enum toy_level {"
+            , "  TOY_LEVEL_LOW = 0,"
+            , "  TOY_LEVEL_HIGH = 1,"
+            , "#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 1)"
+            , "  TOY_LEVEL_MAX = 2,"
+            , "#endif"
+            , "} toy_level;"
+            , ""
+            , "#define TOY_FLAG_A 1"
+            , "#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 1)"
+            , "#define TOY_FLAG_B 2"
+            , "#endif"
+            , ""
+            , "#endif"
+            ]
+      }
+  ]

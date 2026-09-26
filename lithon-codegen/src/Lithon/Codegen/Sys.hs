@@ -111,6 +111,7 @@ import Lithon.Codegen.Sys.Chain (
   bindgenOpts,
   headerPlan,
   sysVisitor,
+  ungatedStubReturns,
  )
 import Lithon.Codegen.Sys.Env (
   SysEnv (..),
@@ -151,6 +152,9 @@ data SysError
   | PackagingError SysPackagingError
   | -- | The versions registry to record the fixes in, and the problems.
     AbiValidationFailed FilePath (Errors AbiProblem)
+  | -- | The versions registry, and the decls whose @stub-return@ no
+    -- header's gate uses.
+    StubReturnUngated FilePath [Text]
   deriving stock (Show)
 
 instance From (Errors AliasError) SysError where
@@ -200,6 +204,12 @@ instance Display SysError where
         <> from registry
         <> " and rerun:\n\n"
         <> intercalateTB "\n\n" (map displayBuilder (toList errs))
+    StubReturnUngated registry names ->
+      "stub-return recorded in "
+        <> from registry
+        <> " for decls no header gates (their availability is at or below the baseline, or they"
+        <> " are not bound functions); nothing was written. Remove it or correct the since:"
+        <> foldMap (\name -> "\n  - " <> from name) names
 
 data SysCmd
   = CmdSpec SpecOpts
@@ -275,14 +285,14 @@ runSys target root cmd = runRethrow @SysResolutionError (ResolutionFailed target
     env <- getSysEnv
     runBindgen (bindgenOpts target env) case cmd of
       CmdSpec opts -> do
-        registry <- loadVersionsRegistry
+        registry <- loadVersionsRegistry target
         results <- runChain target registry
-        validateChain target results
+        validateChain target registry results
         syncSpecs target (guardCtx root opts.assumeYes) opts.emitEffect results
       CmdGenerate opts -> do
-        registry <- loadVersionsRegistry
+        registry <- loadVersionsRegistry target
         results <- runChain target registry
-        validateChain target results
+        validateChain target registry results
         -- Specs and package come from the same chain run, so they can never
         -- skew; both emits respect --check.
         syncSpecs target (guardCtx root opts.out.assumeYes) opts.out.emitEffect results
@@ -297,13 +307,13 @@ runSys target root cmd = runRethrow @SysResolutionError (ResolutionFailed target
           $ emitHaskellPackage root opts.out (manifestMeta <> aliasMeta) tree
 
 -- | Refuse to write (or @--check@) a layout whose growth story is
--- incomplete: every struct is checked so one run reports them all, and
--- it runs before 'syncSpecs' so a failing regeneration leaves the
--- committed spec artifacts untouched.
+-- incomplete, or a registry @stub-return@ no gate uses: every struct is
+-- checked so one run reports them all, and it runs before 'syncSpecs' so
+-- a failing regeneration leaves the committed spec artifacts untouched.
 validateChain
   :: (SysGen :> es, Error SysError :> es)
-  => SysTarget -> [HeaderResult SysPayload] -> Eff es ()
-validateChain target results = do
+  => SysTarget -> VersionsRegistry -> [HeaderResult SysPayload] -> Eff es ()
+validateChain target registry results = do
   env <- getSysEnv
   let library =
         LibraryRef
@@ -315,6 +325,9 @@ validateChain target results = do
     . first (AbiValidationFailed library.registry)
     . validationToEither
     $ validateAbi target.versioning.baseline library (concatMap (.payload.abi) results)
+  case ungatedStubReturns registry (map (.payload) results) of
+    [] -> pass
+    names -> throwError (StubReturnUngated library.registry names)
 
 -- | Load, validate, plan, and render the target's curated layer.
 --
@@ -459,11 +472,12 @@ probeConstants target probeInputs
 
 loadVersionsRegistry
   :: (SysGen :> es, Error SysError :> es, FileSystem :> es)
-  => Eff es VersionsRegistry
-loadVersionsRegistry = do
+  => SysTarget -> Eff es VersionsRegistry
+loadVersionsRegistry target = do
   env <- getSysEnv
   bytes <- LBS.fromStrict <$> EBS.readFile env.versionsRegistryPath
-  liftEither $ first VersionsRegistryDecodeError (decodeVersionsRegistry bytes)
+  liftEither
+    $ first VersionsRegistryDecodeError (decodeVersionsRegistry target.versioning.arity bytes)
 
 runChain
   :: ( HasCallStack

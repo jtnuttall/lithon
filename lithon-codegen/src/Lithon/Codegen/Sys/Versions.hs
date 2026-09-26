@@ -1,6 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE StrictData #-}
-{-# OPTIONS_GHC -Wno-orphans #-}
 
 -- | The empirical SDL availability registry: @sdl3\/versions.json@.
 --
@@ -15,22 +14,28 @@
 -- those corrections, exactly like @aliases.json@ records flavor
 -- decisions.
 --
--- The orphan 'HasCodec' instances for 'AbiSince', 'AbiLayout' and
--- 'AbiLayoutBefore' are deliberate: they are emitter vocabulary
--- ("Lithon.Codegen.Sys.Version", "Lithon.Codegen.Sys.Abi") and must not
--- know about serialization; this module owns the registry format.
+-- Every version in the registry has the target's arity
+-- ('Lithon.Codegen.Sys.Target.VersionScheme'), so the codecs are
+-- functions of it ('registryCodec'). They are plain values rather than
+-- 'HasCodec' instances: the emitter vocabulary
+-- ("Lithon.Codegen.Sys.Version", "Lithon.Codegen.Sys.Abi") must not know
+-- about serialization; this module owns the registry format.
 module Lithon.Codegen.Sys.Versions (
   VersionsRegistry (..),
+  DeclEntry (..),
   Versioned (..),
   StructEntry (..),
   PrologueEntry (..),
-  TypedefShape (..),
+  ShapeSpec (..),
+  registryCodec,
   decodeVersionsRegistry,
   encodeVersionsRegistry,
   abiOverrides,
 ) where
 
 import Autodocodec
+import Data.Aeson qualified as Aeson
+import Data.Aeson.Types qualified as Aeson
 import Data.ByteString.Lazy qualified as LBS
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
@@ -43,12 +48,27 @@ import Lithon.Codegen.Sys.Abi (
   AbiOverrides (..),
   StructOverrides (..),
  )
-import Lithon.Codegen.Sys.Version (AbiSince (..), renderSince)
+import Lithon.Codegen.Sys.Version (Version, versionCodec)
 
 -- | One versioned entry: the empirically established availability, plus
 -- the evidence note (surfaced to reviewers, ignored by generation).
 data Versioned = Versioned
-  { since :: AbiSince
+  { since :: Version
+  , note :: Maybe Text
+  }
+  deriving stock (Eq, Generic, Show)
+
+-- | A decl-level availability correction. For a function gated by it
+-- (available only above the baseline), @stub-return@ is the C expression
+-- its wrapper returns below the gate instead of @0@ — a sentinel the
+-- library defines at the baseline, or a polyfill over the wrapper's
+-- parameters, which are named @arg1@ … @argN@ in declaration order. A
+-- void function's stub returns nothing, and a FunPtr address getter's
+-- always returns a null pointer. A @stub-return@ on a decl that no
+-- header gates is a hard error ('Lithon.Codegen.Sys.Chain.SysPayload').
+data DeclEntry = DeclEntry
+  { since :: Version
+  , stubReturn :: Maybe Text
   , note :: Maybe Text
   }
   deriving stock (Eq, Generic, Show)
@@ -60,26 +80,33 @@ data Versioned = Versioned
 -- appended, since the earlier members' offsets stay asserted unguarded.
 -- @layout@ overrides the emitter's derived policy.
 data StructEntry = StructEntry
-  { sizeofSince :: Maybe AbiSince
+  { sizeofSince :: Maybe Version
   , before :: Maybe AbiLayoutBefore
   , layout :: Maybe AbiLayout
   , note :: Maybe Text
-  , members :: Map Text AbiSince
+  , members :: Map Text Version
   }
   deriving stock (Eq, Generic, Show)
 
 -- | The ABI-equivalent stand-in a wrapper-C prologue declares for a type
--- name absent from (or unreachable in) pre-3.4 headers. Linkage ignores
--- C types; only ABI shape matters.
-data TypedefShape
-  = ShapeInt
-  | ShapeUint32
-  | ShapeOpaqueStruct
-  | ShapeVoidPtr
-  deriving stock (Bounded, Enum, Eq, Generic, Show)
+-- name absent from (or unreachable in) older headers. Linkage ignores C
+-- types; only ABI shape matters. Spelled @\"opaque-struct\"@,
+-- @\"void-ptr\"@, or any other string: the C type the name aliases
+-- (@\"int\"@, SDL's @\"Uint32\"@).
+data ShapeSpec
+  = -- | @typedef \<spelling\> \<name\>;@
+    ShapeAlias Text
+  | -- | @typedef struct \<name\> \<name\>;@
+    ShapeOpaqueStruct
+  | -- | @typedef void *\<name\>;@ (function pointers included).
+    ShapeVoidPtr
+  deriving stock (Eq, Generic, Show)
 
 data PrologueEntry = PrologueEntry
-  { shape :: TypedefShape
+  { since :: Version
+  -- ^ The release that declares the name; the stand-in is guarded to
+  -- versions below it.
+  , shape :: ShapeSpec
   , headers :: [FilePath]
   -- ^ The wrapper TUs (by header) whose signatures reference this name
   -- OUTSIDE version-gated stubs — the retype class: functions that exist
@@ -92,7 +119,7 @@ data PrologueEntry = PrologueEntry
 
 -- | The registry: keys are bare C names throughout.
 data VersionsRegistry = VersionsRegistry
-  { decls :: Map Text Versioned
+  { decls :: Map Text DeclEntry
   -- ^ Decl-level @\\since@ corrections (lies and missing annotations).
   , enumConstants :: Map Text Versioned
   -- ^ Constants added to pre-existing enums.
@@ -108,11 +135,14 @@ data VersionsRegistry = VersionsRegistry
   }
   deriving stock (Eq, Generic, Show)
 
-decodeVersionsRegistry :: LBS.ByteString -> Either Text VersionsRegistry
-decodeVersionsRegistry = first T.pack . eitherDecodeJSONViaCodec
+-- | Decode a registry whose versions all have the given arity.
+decodeVersionsRegistry :: Int -> LBS.ByteString -> Either Text VersionsRegistry
+decodeVersionsRegistry arity bytes = first T.pack do
+  value <- Aeson.eitherDecode bytes
+  Aeson.parseEither (parseJSONVia (registryCodec arity)) value
 
-encodeVersionsRegistry :: VersionsRegistry -> LBS.ByteString
-encodeVersionsRegistry = encodeJSONViaCodec
+encodeVersionsRegistry :: Int -> VersionsRegistry -> LBS.ByteString
+encodeVersionsRegistry arity = Aeson.encode . toJSONVia (registryCodec arity)
 
 -- | Project the registry onto the ABI distiller's override vocabulary.
 abiOverrides :: VersionsRegistry -> AbiOverrides
@@ -130,92 +160,144 @@ abiOverrides reg =
             }
     }
 
-instance HasCodec AbiSince where
-  codec = bimapCodec parseSince renderSince codec
-   where
-    parseSince :: Text -> Either String AbiSince
-    parseSince t = case traverse (readMaybe . toString) (T.splitOn "." t) of
-      Just [major, minor, patch] -> Right AbiSince{major, minor, patch}
-      _malformed -> Left ("expected a MAJOR.MINOR.PATCH version, got: " <> toString t)
+-- | The registry format at the given version arity.
+registryCodec :: Int -> JSONCodec VersionsRegistry
+registryCodec arity =
+  object "VersionsRegistry"
+    $ VersionsRegistry
+    <$> optionalFieldWithDefaultWith
+      "decls"
+      (mapCodec (declEntryCodec arity))
+      Map.empty
+      "decl-level since corrections"
+    .= (.decls)
+    <*> optionalFieldWithDefaultWith
+      "enum-constants"
+      (mapCodec (versionedCodec arity))
+      Map.empty
+      "constants added to pre-existing enums"
+    .= (.enumConstants)
+    <*> optionalFieldWithDefaultWith
+      "value-gates"
+      (mapCodec (versionedCodec arity))
+      Map.empty
+      "constants whose value changed at the gate"
+    .= (.valueGates)
+    <*> optionalFieldWithDefaultWith
+      "macro-constants"
+      (mapCodec (versionedCodec arity))
+      Map.empty
+      "typed-constant macros added post-baseline"
+    .= (.macroConstants)
+    <*> optionalFieldWithDefaultWith
+      "structs"
+      (mapCodec (structEntryCodec arity))
+      Map.empty
+      "per-struct member/size gates and layout policy"
+    .= (.structs)
+    <*> optionalFieldWithDefaultWith
+      "prologue-typedefs"
+      (mapCodec (prologueEntryCodec arity))
+      Map.empty
+      "wrapper-prologue stand-in declarations"
+    .= (.prologueTypedefs)
 
-instance HasCodec Versioned where
-  codec =
-    object "Versioned"
-      $ Versioned
-      <$> requiredField "since" "empirically established availability"
-      .= (.since)
-      <*> optionalField "note" "the evidence, for reviewers"
-      .= (.note)
+versionedCodec :: Int -> JSONCodec Versioned
+versionedCodec arity =
+  object "Versioned"
+    $ Versioned
+    <$> requiredFieldWith "since" (versionCodec arity) "empirically established availability"
+    .= (.since)
+    <*> optionalField "note" "the evidence, for reviewers"
+    .= (.note)
 
-instance HasCodec StructEntry where
-  codec =
-    bimapCodec growthPaired id
-      $ object "StructEntry"
-      $ StructEntry
-      <$> optionalField "sizeof-since" "gate for the sizeof/alignment asserts"
-      .= (.sizeofSince)
-      <*> optionalField "before" "pre-growth sizeof/alignment, asserted below sizeof-since"
-      .= (.before)
-      <*> optionalField "layout" "exact (default) or prefix (sizeof asserted >=)"
-      .= (.layout)
-      <*> optionalField "note" "the evidence, for reviewers"
-      .= (.note)
-      <*> optionalFieldWithDefault "members" Map.empty "member name -> availability"
-      .= (.members)
-   where
-    growthPaired e
-      | isJust e.sizeofSince == isJust e.before = Right e
-      | otherwise = Left "sizeof-since and before must be given together"
+declEntryCodec :: Int -> JSONCodec DeclEntry
+declEntryCodec arity =
+  object "DeclEntry"
+    $ DeclEntry
+    <$> requiredFieldWith "since" (versionCodec arity) "empirically established availability"
+    .= (.since)
+    <*> optionalField
+      "stub-return"
+      "C expression a gated wrapper returns below its gate (default 0; parameters are arg1..argN)"
+    .= (.stubReturn)
+    <*> optionalField "note" "the evidence, for reviewers"
+    .= (.note)
 
-instance HasCodec AbiLayout where
-  codec = stringConstCodec ((LayoutExact, "exact") :| [(LayoutPrefix, "prefix")])
+structEntryCodec :: Int -> JSONCodec StructEntry
+structEntryCodec arity =
+  bimapCodec growthPaired id
+    $ object "StructEntry"
+    $ StructEntry
+    <$> optionalFieldWith
+      "sizeof-since"
+      (versionCodec arity)
+      "gate for the sizeof/alignment asserts"
+    .= (.sizeofSince)
+    <*> optionalFieldWith
+      "before"
+      layoutBeforeCodec
+      "pre-growth sizeof/alignment, asserted below sizeof-since"
+    .= (.before)
+    <*> optionalFieldWith "layout" layoutCodec "exact (default) or prefix (sizeof asserted >=)"
+    .= (.layout)
+    <*> optionalField "note" "the evidence, for reviewers"
+    .= (.note)
+    <*> optionalFieldWithDefaultWith
+      "members"
+      (mapCodec (versionCodec arity))
+      Map.empty
+      "member name -> availability"
+    .= (.members)
+ where
+  growthPaired e
+    | isJust e.sizeofSince == isJust e.before = Right e
+    | otherwise = Left "sizeof-since and before must be given together"
 
-instance HasCodec AbiLayoutBefore where
-  codec =
-    object "AbiLayoutBefore"
-      $ AbiLayoutBefore
-      <$> requiredField "sizeof" "sizeof below the gate"
-      .= (.sizeof)
-      <*> requiredField "alignment" "alignment below the gate"
-      .= (.alignment)
+layoutCodec :: JSONCodec AbiLayout
+layoutCodec = stringConstCodec ((LayoutExact, "exact") :| [(LayoutPrefix, "prefix")])
 
-instance HasCodec TypedefShape where
-  codec =
-    stringConstCodec
-      ( (ShapeInt, "int")
-          :| [ (ShapeUint32, "uint32")
-             , (ShapeOpaqueStruct, "opaque-struct")
-             , (ShapeVoidPtr, "void-ptr")
-             ]
-      )
+layoutBeforeCodec :: JSONCodec AbiLayoutBefore
+layoutBeforeCodec =
+  object "AbiLayoutBefore"
+    $ AbiLayoutBefore
+    <$> requiredField "sizeof" "sizeof below the gate"
+    .= (.sizeof)
+    <*> requiredField "alignment" "alignment below the gate"
+    .= (.alignment)
 
-instance HasCodec PrologueEntry where
-  codec =
-    object "PrologueEntry"
-      $ PrologueEntry
-      <$> requiredField "shape" "the ABI-equivalent stand-in declaration"
-      .= (.shape)
-      <*> optionalFieldWithDefault
-        "headers"
-        []
-        "wrapper TUs referencing this name outside gated stubs (retype class)"
-      .= (.headers)
-      <*> optionalField "note" "the evidence, for reviewers"
-      .= (.note)
+shapeCodec :: JSONCodec ShapeSpec
+shapeCodec = bimapCodec parseShape renderShape textCodec
+ where
+  parseShape = \case
+    "opaque-struct" -> Right ShapeOpaqueStruct
+    "void-ptr" -> Right ShapeVoidPtr
+    spelling
+      | T.null (T.strip spelling) -> Left "expected opaque-struct, void-ptr, or a C type spelling"
+      | otherwise -> Right (ShapeAlias spelling)
+  renderShape = \case
+    ShapeAlias spelling -> spelling
+    ShapeOpaqueStruct -> "opaque-struct"
+    ShapeVoidPtr -> "void-ptr"
 
-instance HasCodec VersionsRegistry where
-  codec =
-    object "VersionsRegistry"
-      $ VersionsRegistry
-      <$> optionalFieldWithDefault "decls" Map.empty "decl-level since corrections"
-      .= (.decls)
-      <*> optionalFieldWithDefault "enum-constants" Map.empty "constants added to pre-existing enums"
-      .= (.enumConstants)
-      <*> optionalFieldWithDefault "value-gates" Map.empty "constants whose value changed at the gate"
-      .= (.valueGates)
-      <*> optionalFieldWithDefault "macro-constants" Map.empty "typed-constant macros added post-baseline"
-      .= (.macroConstants)
-      <*> optionalFieldWithDefault "structs" Map.empty "per-struct member/size gates and layout policy"
-      .= (.structs)
-      <*> optionalFieldWithDefault "prologue-typedefs" Map.empty "wrapper-prologue stand-in declarations"
-      .= (.prologueTypedefs)
+prologueEntryCodec :: Int -> JSONCodec PrologueEntry
+prologueEntryCodec arity =
+  object "PrologueEntry"
+    $ PrologueEntry
+    <$> requiredFieldWith
+      "since"
+      (versionCodec arity)
+      "the release declaring the name; the stand-in is declared below it"
+    .= (.since)
+    <*> requiredFieldWith
+      "shape"
+      shapeCodec
+      "the ABI-equivalent stand-in: opaque-struct, void-ptr, or the aliased C type"
+    .= (.shape)
+    <*> optionalFieldWithDefault
+      "headers"
+      []
+      "wrapper TUs referencing this name outside gated stubs (retype class)"
+    .= (.headers)
+    <*> optionalField "note" "the evidence, for reviewers"
+    .= (.note)
