@@ -26,7 +26,15 @@
           overlays = [
             haskellNix.overlay
             (final: prev: {
-              sdl3 = prev.callPackage "${nixpkgs-sdl3}/pkgs/by-name/sd/sdl3/package.nix" {};
+              # Built against another nixpkgs, so no binary cache has it and
+              # CI builds it from source. Its test suite has an intermittent
+              # timeout (testrwlock, libsdl-org/SDL#15346) that nixpkgs
+              # patches around but CI still hits, and it tests SDL, not
+              # this repo.
+              sdl3 =
+                (prev.callPackage "${nixpkgs-sdl3}/pkgs/by-name/sd/sdl3/package.nix" {}).overrideAttrs {
+                  doCheck = false;
+                };
             })
             (final: prev: {
               haskell-nix =

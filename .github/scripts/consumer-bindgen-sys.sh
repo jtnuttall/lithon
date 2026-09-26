@@ -23,9 +23,6 @@ esac
 
 STRICT_CHECK_ABI="${STRICT_CHECK_ABI:-false}"
 
-# Extra `cabal build` flags, expanded as ${extra[@]+"${extra[@]}"}: bash < 4.4
-# (the macOS runners' 3.2) treats an empty array as unbound under `set -u`.
-extra=()
 if [ "$RUNNER_OS" = "Windows" ]; then
   # setup-sdl exports a Windows-style PKG_CONFIG_PATH; nothing does for mpv.
   CLEAN_PKG_CONFIG_PATH=""
@@ -35,15 +32,15 @@ if [ "$RUNNER_OS" = "Windows" ]; then
   export PKG_CONFIG_PATH="/c/msys64/ucrt64/lib/pkgconfig${CLEAN_PKG_CONFIG_PATH}"
   export PATH="/c/msys64/ucrt64/bin:$PATH"
   if [ "$pkg" != sdl3 ]; then
-    # For a library installed in the MSYS2 prefix, pkgconf prints POSIX
-    # prefix paths (-I/ucrt64/include, -L/ucrt64/lib), which Cabal 3.18
-    # rejects when registering the package ("makeRelativePathEx: absolute
-    # path /ucrt64/include"). Filter them as system paths and hand cabal the
-    # same directories in Windows form. setup-sdl's sdl3.pc already carries
-    # Windows paths, so sdl3 needs neither.
-    export PKG_CONFIG_SYSTEM_INCLUDE_PATH=/ucrt64/include
-    export PKG_CONFIG_SYSTEM_LIBRARY_PATH=/ucrt64/lib
-    extra=(--extra-include-dirs=C:/msys64/ucrt64/include --extra-lib-dirs=C:/msys64/ucrt64/lib)
+    # Some .pc files in the MSYS2 prefix carry POSIX paths that pkgconf's
+    # prefix relocation leaves alone (-I/ucrt64/include), and Cabal 3.18
+    # rejects a drive-less include dir when it registers the package
+    # ("makeRelativePathEx: absolute path /ucrt64/include"). Cabal sets
+    # PKG_CONFIG_ALLOW_SYSTEM_CFLAGS, so filtering them as system paths does
+    # nothing; rooting them at the MSYS2 install does. pkgconf prefixes the
+    # sysroot to every -I/-L outside it, so sdl3 (setup-sdl's .pc lives
+    # elsewhere and already carries Windows paths) must not get it.
+    export PKG_CONFIG_SYSROOT_DIR=C:/msys64
   fi
 elif [ "$RUNNER_OS" = "Linux" ] && [ "$pkg" = "sdl3" ]; then
   # The SDL setup action installs under $HOME/sdl3.
@@ -51,8 +48,10 @@ elif [ "$RUNNER_OS" = "Linux" ] && [ "$pkg" = "sdl3" ]; then
 fi
 
 pkg-config --modversion "$pkg"
-# What cabal will see; the register step rejects POSIX-rooted -I/-L paths.
-pkg-config --cflags --libs "$pkg"
+# What cabal will see: it runs pkg-config with system paths kept. The
+# register step rejects drive-less -I paths on Windows.
+PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 PKG_CONFIG_ALLOW_SYSTEM_LIBS=1 \
+  pkg-config --cflags --libs "$pkg"
 
 mkdir -p "$RUNNER_TEMP/sdist"
 (cd "$package" && cabal sdist --ignore-project -o "$RUNNER_TEMP/sdist")
@@ -91,9 +90,9 @@ EOF
 }
 
 if [ "$STRICT_CHECK_ABI" = "true" ]; then
-  cabal build ${extra[@]+"${extra[@]}"} --constraint="$package +abi-assertions-exact"
+  cabal build --constraint="$package +abi-assertions-exact"
 else
-  cabal build ${extra[@]+"${extra[@]}"}
+  cabal build
 fi || { report_build_failure; exit 1; }
 
 if [ "$RUNNER_OS" != "Windows" ]; then cabal haddock; fi
