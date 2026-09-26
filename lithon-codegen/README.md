@@ -149,20 +149,15 @@ A target binds one C library through hs-bindgen. There are two: `sdl3` and
 - Each target is one `BindgenTarget` value in
   `Lithon.Codegen.Bindgen.Target.<Name>`. The generic pipeline only reads its
   fields.
-- The driver, `Lithon.Codegen.Bindgen.Driver`, runs hs-bindgen once per public
-  header it binds, in dependency order. Each run reads the binding specs of the
-  headers before it.
-- Raw modules land under `<namespace>.Bindgen`, such as
-  `SDL3.Sys.Bindgen.Video`. `aliases.json` and `constants.json` plan the
-  curated layer, such as `SDL3.Sys.Video`.
-- Anything newer than the target's floor, its oldest supported release, gets
-  a version gate. Availability comes from the library's docs and from
-  `versions.json`, which wins.
-- The package holds the generated modules, the statics, copies of the
-  hs-bindgen and c-expr runtimes, and `cbits/abi_assertions.c`. That ABI
-  assertion TU re-checks every baked layout at build time.
-- A `.lithon-manifest.json` records every emitted file. `--check` diffs a
-  fresh run against the tree and writes nothing.
+- The driver runs hs-bindgen per bound header, in dependency order. Each run
+  reads its predecessors' binding specs.
+- `aliases.json` and `constants.json` plan the curated layer (`SDL3.Sys.*`)
+  over the raw one (`SDL3.Sys.Bindgen.*`). The availability annotations gate
+  anything newer than the floor, the oldest supported release.
+  `cbits/abi_assertions.c` re-checks every baked layout at build time.
+- `generate` writes the package with a `.lithon-manifest.json`; `--check`
+  diffs against the tree instead. Manifests and ABI messages record the
+  library version, from `pkg-config --modversion <pkgConfig>`.
 
 ### Data directory
 
@@ -223,8 +218,7 @@ Every target has two commands. `<key>` is `sdl3` or `mpv`.
 | `--yes`     | `spec`, `generate` | Skip the output-directory confirmation.                      |
 | `--out DIR` | `generate`         | Write the package to `DIR`. The default is the package name. |
 
-Both commands check the ABI layouts and `stub-return` entries before writing.
-On a failure they write nothing and name the `versions.json` fix.
+Both commands check the annotations first; a failure writes nothing and names the fix.
 
 <details>
 <summary><code>--help</code> output: <code>sdl3</code> and its subcommands</summary>
@@ -317,63 +311,54 @@ Available options:
 
 ### Add a library
 
-1. Create `lithon-codegen/data/<key>/` with `static/` and the three
-   registries. Start `aliases.json`, `constants.json`, and `versions.json` as
-   `{"naming": "camel-segments"}`, `{"groups": {}}`, and `{}`.
-2. Add `lithon-codegen/src/Lithon/Codegen/Bindgen/Target/<Name>.hs` with one
-   `BindgenTarget` value. Copy `Target/Mpv.hs`, the smallest target, and fill
-   every field:
+1. Create the data directory with `static/`. Seed `aliases.json`,
+   `constants.json`, and `versions.json` with `{"naming": "camel-segments"}`,
+   `{"groups": {}}`, and `{}`.
+2. In `lithon-codegen/src/Lithon/Codegen/Bindgen/`, copy `Target/Mpv.hs` to
+   `Target/<Name>.hs`. Fill every field:
    - names: `key`, `packageName`, `displayName`, `versionLabel`,
      `namespace`, `functionPrefix`
    - headers: `pkgConfig`, `headers`, `parse`
    - versions: `versioning`, `gateStubs`
    - output: `shims`, `widthTypedefs`, `docs`, `prose`
-3. Run `hpack lithon-codegen` so the `.cabal` file lists the new module.
-4. Add the value to `bindgenTargets` in `Lithon.Codegen.Bindgen.Targets`. This
-   adds the `lithon-codegen <key>` command and the target's tests.
-5. Run `cabal run lithon-codegen -- <key> generate --yes`. Fix what each error
+3. Run `hpack lithon-codegen` to add the module to the `.cabal` file.
+4. Register the value in `bindgenTargets` (`Lithon.Codegen.Bindgen.Targets`)
+   for the `<key>` command and tests.
+5. Run `cabal run lithon-codegen -- <key> generate --yes`. Fix each error it
    names, then rerun.
 6. Add the package to `cabal.project`, then run `cabal build <package>`.
-7. Run `cabal test lithon-codegen`. Review the
-   `lithon-codegen/test/golden/<key>/census.golden` it creates, then commit.
+7. Run `cabal test lithon-codegen`. Review and commit the
+   `lithon-codegen/test/golden/<key>/census.golden` it creates.
 8. Wire the package into the repository:
-   - `scripts/check.sh`: the freshness, hpack parity, doc-regression grep, and
-     haddock steps, plus an example run.
-   - `flake.nix`: the library in the devshell and the `libHook` calls, its
-     `extraPkgconfigMappings` entry, and a `<package>-docs` output. If the `.pc`
-     version is not the nixpkgs version, set `pc-version` like `libmpv`.
-   - `.github/workflows/ci.yml`: a consumer job that runs
+   - `scripts/check.sh`: freshness, hpack parity, the doc-regression grep,
+     haddock, and an example run.
+   - `flake.nix`: the devshell library, `libHook` calls, an
+     `extraPkgconfigMappings` entry, and a `<package>-docs` output. Set
+     `pc-version`, like `libmpv`, when the `.pc` version differs from nixpkgs.
+   - `.github/workflows/ci.yml`: a consumer job running
      `.github/scripts/consumer-bindgen-sys.sh <package> <pkg-config name>`.
 
 ### sdl3
 
 `sdl3` generates `sdl3-bindgen-sys`. Its floor is SDL 3.2.0, the oldest SDL
-with a stable ABI.
+with a stable ABI. Its annotations cover SDL's doc errors and gaps:
 
-`lithon-codegen/data/sdl3/versions.json` covers what SDL's docs get wrong or
-leave out:
-
-- **Wrong `\since`.** `decls` corrects releases SDL documents wrongly.
-  `SDL_ProgressState` claims 3.2.8 but first exists in 3.4.0.
-- **Members and constants.** The bindings need availability per member and
-  per constant, finer than SDL documents it. A member's `(added in X.Y.Z)`
-  note is the default; the annotations can override it.
-- **Missing type names.** `prologue-typedefs` declares twelve names that 3.4
-  signatures use and 3.2 headers lack. All twelve have `since` 3.4.0.
+- **Wrong `\since`.** `decls` corrects them: `SDL_ProgressState` claims 3.2.8
+  but first exists in 3.4.0.
+- **Members and constants.** The annotations date them, falling back to a
+  member's `(added in X.Y.Z)` note.
+- **Missing type names.** `prologue-typedefs` declares twelve names 3.4
+  signatures use but 3.2 headers lack.
 
 Below its gate, a wrapper reports the failure through `SDL_SetError`.
 
-The SDL version comes from the devshell's `pkg-config --modversion sdl3`. The
-package manifest and the ABI assertion messages record it.
-
 ### mpv
 
-`mpv` generates `mpv-bindgen-sys`. Its floor is client API 2.0 (mpv 0.35),
-and its versions have two parts.
+`mpv` generates `mpv-bindgen-sys`. Its floor is client API 2.0 (mpv 0.35).
+Versions are two-part client API versions, not mpv releases.
 
-libmpv states availability only in prose, so
-`lithon-codegen/data/mpv/versions.json` is the only source. It gates two
-functions:
+libmpv states availability only in prose, so its annotations are the whole
+set:
 
 | Function           | Since | Below the gate, the wrapper returns |
 | ------------------ | ----- | ----------------------------------- |
@@ -381,10 +366,6 @@ functions:
 | `mpv_get_time_ns`  | 2.2   | `mpv_get_time_us(arg1) * 1000`      |
 
 libmpv has no error channel, so the return value is the only report.
-
-The version comes from the devshell's `pkg-config --modversion mpv`, which
-reports the client API version, not mpv's. The package manifest and the ABI
-assertion messages record it.
 
 ## Running lithon-codegen
 
