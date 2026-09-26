@@ -64,9 +64,9 @@
             ];
           };
           sdl3Hook = ''
-            BINDGEN_EXTRA_CLANG_ARGS="-isystem ${sdl3}/include ''${BINDGEN_EXTRA_CLANG_ARGS:-}"
+            BINDGEN_EXTRA_CLANG_ARGS="-isystem ${lib.getDev sdl3}/include ''${BINDGEN_EXTRA_CLANG_ARGS:-}"
             export BINDGEN_EXTRA_CLANG_ARGS
-            C_INCLUDE_PATH="${sdl3}/include''${C_INCLUDE_PATH:+:''${C_INCLUDE_PATH}}"
+            C_INCLUDE_PATH="${lib.getDev sdl3}/include''${C_INCLUDE_PATH:+:''${C_INCLUDE_PATH}}"
             export C_INCLUDE_PATH
             # Note the brackets around [ sdl3 ] here!
             LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath [sdl3]}''${LD_LIBRARY_PATH:+:''${LD_LIBRARY_PATH}}"
