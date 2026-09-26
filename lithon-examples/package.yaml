@@ -10,7 +10,9 @@ description: |
   SDL2 window through @VK_KHR_swapchain@. @sdl3-raw@ draws a triangle
   raw through @sdl3-bindgen-sys@ — that package's usability gate — and
   @shmup@ is the apecs Shmup example, playable, running on and rendering
-  through the same bindings. Not published.
+  through the same bindings. @mpv-headless@ plays a lavfi test clip
+  headless through @mpv-bindgen-sys@ — that package's usability gate.
+  Not published.
 author: Jeremy Nuttall
 maintainer: jeremy@jeremy-nuttall.com
 license: BSD-3-Clause
@@ -96,6 +98,16 @@ executables:
       - apecs ^>=0.10
       - random ^>=1.3
       - sdl3-bindgen-sys
+
+  # A one-second lavfi test clip played headless (vo=null, ao=null)
+  # through the curated Mpv.Sys layer — the mpv-bindgen-sys usability
+  # gate: asserts the baked MPV_CLIENT_API_VERSION, the loaded width, and
+  # the EOF reason in the end-file payload, under a 15-second deadline.
+  mpv-headless:
+    main: Main.hs
+    source-dirs: app/mpv-headless
+    dependencies:
+      - mpv-bindgen-sys
 
 tests:
   lithon-examples-test:

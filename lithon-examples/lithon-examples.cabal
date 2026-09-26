@@ -14,7 +14,9 @@ description:    End-to-end demos driving the generated @lithon@ binding. The pri
                 SDL2 window through @VK_KHR_swapchain@. @sdl3-raw@ draws a triangle
                 raw through @sdl3-bindgen-sys@ — that package's usability gate — and
                 @shmup@ is the apecs Shmup example, playable, running on and rendering
-                through the same bindings. Not published.
+                through the same bindings. @mpv-headless@ plays a lavfi test clip
+                headless through @mpv-bindgen-sys@ — that package's usability gate.
+                Not published.
 homepage:       https://github.com/jtnuttall/lithon#readme
 bug-reports:    https://github.com/jtnuttall/lithon/issues
 author:         Jeremy Nuttall
@@ -60,6 +62,32 @@ library
     , lithon-vk
     , vector ==0.13.*
     , vector-sized ==1.6.*
+  default-language: GHC2024
+
+executable mpv-headless
+  main-is: Main.hs
+  other-modules:
+      Paths_lithon_examples
+  autogen-modules:
+      Paths_lithon_examples
+  hs-source-dirs:
+      app/mpv-headless
+  default-extensions:
+      BlockArguments
+      DataKinds
+      DuplicateRecordFields
+      NoFieldSelectors
+      OverloadedRecordDot
+      OverloadedStrings
+      PatternSynonyms
+  ghc-options: -Wall -threaded
+  build-depends:
+      base <4.22.0.0
+    , bytestring ==0.12.*
+    , lithon-core
+    , lithon-vk
+    , mpv-bindgen-sys
+    , vector ==0.13.*
   default-language: GHC2024
 
 executable sdl3-raw
