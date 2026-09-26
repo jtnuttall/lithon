@@ -39,6 +39,9 @@
                     };
                 };
             })
+            (final: prev: {
+              libmpv = prev.mpv-unwrapped;
+            })
           ];
         };
 
@@ -139,6 +142,9 @@
 
                 # windowed demo (triangle-sdl, cabal flag `sdl`)
                 SDL2
+
+                # libmpv bindings
+                libmpv
 
                 # windowing dependencies
                 libx11
