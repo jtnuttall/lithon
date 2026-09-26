@@ -6,7 +6,8 @@ module Lithon.Codegen.Sys.Targets (
 ) where
 
 import Lithon.Codegen.Sys.Target (SysTarget)
+import Lithon.Codegen.Sys.Target.Mpv (mpv)
 import Lithon.Codegen.Sys.Target.Sdl3 (sdl3)
 
 sysTargets :: [SysTarget]
-sysTargets = [sdl3]
+sysTargets = [sdl3, mpv]

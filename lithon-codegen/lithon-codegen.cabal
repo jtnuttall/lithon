@@ -70,6 +70,7 @@ library
       Lithon.Codegen.Sys.Env
       Lithon.Codegen.Sys.Package
       Lithon.Codegen.Sys.Target
+      Lithon.Codegen.Sys.Target.Mpv
       Lithon.Codegen.Sys.Target.Sdl3
       Lithon.Codegen.Sys.Targets
       Lithon.Codegen.Sys.Version
