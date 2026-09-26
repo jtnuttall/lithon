@@ -37,7 +37,7 @@ import Lithon.Codegen.Sys.Chain (SysPayload (..))
 import Lithon.Codegen.Sys.Env (PackageStatics (..))
 import Lithon.Codegen.Sys.Target (
   SysTarget,
-  bindgenNamespace,
+  bindgenNamespaceText,
   mainIncludeArgs,
  )
 
@@ -100,7 +100,7 @@ assembleSysPackage target statics libraryVersion aliasModules macroConsts result
     meta <- metaFor "aliases" (T.splitOn "." name)
     pure (meta, contents)
   facadeSources <-
-    hsBindgenRuntimeReexports (Module.hsName (bindgenNamespace target))
+    hsBindgenRuntimeReexports (bindgenNamespaceText target)
       $ typedRuntimeImports (concatMap (.modules) results)
       <> runtimeImports (map snd aliases)
   facades <- for facadeSources \(name, contents) -> do

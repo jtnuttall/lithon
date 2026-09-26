@@ -5,6 +5,8 @@
 
 module Lithon.Codegen.Sys.Env (
   SysResolutionError (..),
+  Registry (..),
+  registryFile,
   SysEnv (..),
   SysPaths (..),
   SysGen,
@@ -41,15 +43,30 @@ import System.FilePath ((</>))
 import Lithon.Codegen.Backend.Env (DataDirError, targetDataDir)
 import Lithon.Codegen.Sys.Target (SysTarget (..))
 
+-- | The three registries every target's data directory carries.
+data Registry = VersionsJson | AliasesJson | ConstantsJson
+  deriving stock (Bounded, Enum, Eq, Generic, Show)
+
+-- | The registry's file name in @data\/\<key\>\/@, which is also how
+-- messages name it.
+registryFile :: Registry -> FilePath
+registryFile = \case
+  VersionsJson -> "versions.json"
+  AliasesJson -> "aliases.json"
+  ConstantsJson -> "constants.json"
+
+instance Display Registry where
+  displayBuilder = from . registryFile
+
 -- | Why a target's generation environment could not be resolved. The
 -- 'Text' fields carry the target's display name, for the messages.
 data SysResolutionError
-  = PkgConfigMissing Text PkgMetaDb
+  = -- | The display name, the pkg-config package, and what pkg-config
+    -- does know.
+    PkgConfigMissing Text PkgName PkgMetaDb
   | IncludeDirUnset Text PkgName [PkgVarName]
   | VersionUnknown Text
-  | VersionsRegistryMissing Text FilePath
-  | AliasesRegistryMissing Text FilePath
-  | ConstantsRegistryMissing Text FilePath
+  | RegistryMissing Registry FilePath
   | -- | A required file of @static\/@ is absent.
     StaticMissing FilePath
   | -- | @static\/@ holds something it may not (a directory, a dotfile).
@@ -64,11 +81,12 @@ instance From DataDirError SysResolutionError where
 
 instance Display SysResolutionError where
   displayBuilder = \case
-    PkgConfigMissing name db ->
+    PkgConfigMissing name pkg db ->
       let dbd = display db
+          pkgd = pkg.name
        in from
             [trimmingQQ| 
-              $name does not appear to be resolvable from pkg-config.
+              $name ($pkgd) does not appear to be resolvable from pkg-config.
 
               Here's what I got found with `pkg-config --list-all`:
 
@@ -86,12 +104,8 @@ instance Display SysResolutionError where
               $varsd
             |]
     VersionUnknown name -> "Could not determine " <> from name <> " version from pkg-config!"
-    VersionsRegistryMissing name path ->
-      "Could not find " <> from name <> " versions registry at: " <> from path
-    AliasesRegistryMissing name path ->
-      "Could not find " <> from name <> " aliases registry at: " <> from path
-    ConstantsRegistryMissing name path ->
-      "Could not find " <> from name <> " constants registry at: " <> from path
+    RegistryMissing registry path ->
+      "Could not find the " <> displayBuilder registry <> " registry at: " <> from path
     StaticMissing path ->
       "Could not find the package static "
         <> from path
@@ -165,15 +179,15 @@ runSysGen
   => SysTarget -> Eff (SysGen : es) a -> Eff es a
 runSysGen target eff = do
   dataDir <- runErrorFrom @DataDirError $ targetDataDir (toString target.key)
-  let versions = dataDir </> "versions.json"
-      aliases = dataDir </> "aliases.json"
-      constants = dataDir </> "constants.json"
+  let versions = dataDir </> registryFile VersionsJson
+      aliases = dataDir </> registryFile AliasesJson
+      constants = dataDir </> registryFile ConstantsJson
       static = dataDir </> "static"
       name = target.displayName
 
-  assertFileExists versions (VersionsRegistryMissing name)
-  assertFileExists aliases (AliasesRegistryMissing name)
-  assertFileExists constants (ConstantsRegistryMissing name)
+  assertFileExists versions (RegistryMissing VersionsJson)
+  assertFileExists aliases (RegistryMissing AliasesJson)
+  assertFileExists constants (RegistryMissing ConstantsJson)
 
   overrides <- do
     let path = dataDir </> "overrides.yaml"
@@ -183,7 +197,9 @@ runSysGen target eff = do
     else
       pure Nothing
 
-  pkgDbEntry <- noteErrM (PkgConfigMissing name <$> getPkgMetaDb) =<< getPkgDbEntry target.pkgConfig
+  pkgDbEntry <-
+    noteErrM (PkgConfigMissing name target.pkgConfig <$> getPkgMetaDb)
+      =<< getPkgDbEntry target.pkgConfig
 
   PkgVarValue includeDirVar <-
     noteErr (IncludeDirUnset name target.pkgConfig (HM.keys pkgDbEntry.vars))

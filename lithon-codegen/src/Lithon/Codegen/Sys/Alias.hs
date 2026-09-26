@@ -73,7 +73,7 @@ import Lithon.Codegen.Sys.Target (
   Prose (..),
   SysTarget (..),
   WidthTypedefs (..),
-  bindgenNamespace,
+  bindgenNamespaceText,
   runtimeModule,
  )
 
@@ -336,7 +336,7 @@ sysModuleName target base = do
     $ Left ("family segment shadows the " <> familySeg <> " namespace: " <> base)
   pure (Module.hsName target.namespace <> "." <> familySeg)
  where
-  bindgenRoot = Module.hsName (bindgenNamespace target)
+  bindgenRoot = bindgenNamespaceText target
 
 {-------------------------------------------------------------------------------
   Rendering
@@ -549,7 +549,7 @@ scalarBridge target = \case
   _notBridgedScalar -> Nothing
  where
   widthFamilyModule =
-    target.widthTypedefs <&> \w -> Module.hsName (bindgenNamespace target) <> "." <> w.family
+    target.widthTypedefs <&> \w -> bindgenNamespaceText target <> "." <> w.family
   widthNative name = do
     w <- target.widthTypedefs
     nativeGlobal <$> Map.lookup name w.natives
@@ -1004,7 +1004,7 @@ renderRuntimeModule target =
   )
  where
   runtimeName = runtimeModuleName target
-  bindgenRoot = Module.hsName (bindgenNamespace target)
+  bindgenRoot = bindgenNamespaceText target
 
 -- | Flatten a title's inline content to plain text for the umbrella index.
 -- Mirrors the renderer's spacing rule: elements are space-separated except

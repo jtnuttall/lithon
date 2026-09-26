@@ -34,10 +34,12 @@ module Lithon.Codegen.Sys.Target (
 
   -- * Derived names
   bindgenNamespace,
+  bindgenNamespaceText,
   runtimeModule,
   includeArg,
   mainIncludeArgs,
   includeLine,
+  includeArgLine,
   projectHeaderUnder,
   registryDisplayPath,
   defineArg,
@@ -200,6 +202,10 @@ data Prose = Prose
 bindgenNamespace :: SysTarget -> Module.Meta
 bindgenNamespace t = t.namespace <> $$(Module.metaLit ["Bindgen"])
 
+-- | 'bindgenNamespace', dotted.
+bindgenNamespaceText :: SysTarget -> Text
+bindgenNamespaceText = Module.hsName . bindgenNamespace
+
 -- | @SDL3.Sys.Runtime@: the curated bridge module.
 runtimeModule :: SysTarget -> Module.Meta
 runtimeModule t = t.namespace <> $$(Module.metaLit ["Runtime"])
@@ -214,7 +220,12 @@ mainIncludeArgs t = map (includeArg t) t.headers.mainIncludes
 
 -- | Basename -> @#include \<SDL3\/SDL_version.h\>@.
 includeLine :: SysTarget -> FilePath -> Text
-includeLine t basename = "#include <" <> toText (includeArg t basename) <> ">"
+includeLine t = includeArgLine . includeArg t
+
+-- | An include argument as its line: @SDL3\/SDL.h@ -> @#include
+-- \<SDL3\/SDL.h\>@.
+includeArgLine :: FilePath -> Text
+includeArgLine arg = "#include <" <> toText arg <> ">"
 
 -- | Include-graph source path -> public-header basename: @Just@ exactly
 -- when the header's parent directory is the include root (libc, clang

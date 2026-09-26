@@ -114,12 +114,14 @@ import Lithon.Codegen.Sys.Chain (
   ungatedStubReturns,
  )
 import Lithon.Codegen.Sys.Env (
+  Registry (..),
   SysEnv (..),
   SysGen,
   SysPaths (..),
   SysResolutionError (TargetInvalid),
   getSysEnv,
   loadStatics,
+  registryFile,
   runSysGen,
  )
 import Lithon.Codegen.Sys.Package (SysPackagingError, assembleSysPackage)
@@ -139,19 +141,15 @@ import Lithon.Codegen.Sys.Versions (
 data SysError
   = -- | The target's display name, and why its environment did not resolve.
     ResolutionFailed Text SysResolutionError
-  | VersionsRegistryMissing FilePath
-  | VersionsRegistryDecodeError Text
-  | AliasesRegistryMissing FilePath
-  | AliasesRegistryDecodeError Text
-  | AliasesError (Errors AliasError)
-  | ConstantsRegistryMissing FilePath
-  | ConstantsRegistryParseError Text
-  | ConstantsProbeParseError Text
-  | ConstantsError (Errors ConstantError)
+  | -- | Which registry, the file read, and the decoder's complaint.
+    RegistryDecodeFailed Registry FilePath Text
+  | AliasesFailed (Errors AliasError)
+  | ConstantsFailed (Errors ConstantError)
+  | ConstantsProbeUnparseable Text
   | ToolCallFailed Text (ProcessConfig () () ()) ProcessFailureCode ProcessStdout ProcessStderr
-  | BindgenError BindgenError
-  | EmitError EmitError
-  | PackagingError SysPackagingError
+  | BindgenFailed BindgenError
+  | EmitFailed EmitError
+  | PackagingFailed SysPackagingError
   | -- | The versions registry to record the fixes in, and the problems.
     AbiValidationFailed FilePath (Errors AbiProblem)
   | -- | The versions registry, and the decls whose @stub-return@ no
@@ -160,29 +158,25 @@ data SysError
   deriving stock (Show)
 
 instance From (Errors AliasError) SysError where
-  from = AliasesError
+  from = AliasesFailed
 
 instance From (Errors ConstantError) SysError where
-  from = ConstantsError
+  from = ConstantsFailed
 
 instance From BindgenError SysError where
-  from = BindgenError
+  from = BindgenFailed
 
 instance From EmitError SysError where
-  from = EmitError
+  from = EmitFailed
 
 -- TODO: Lower about half of these into aliases/constants modules
 instance Display SysError where
   displayBuilder = \case
     ResolutionFailed name err -> "Failed to resolve the " <> from name <> " environment: " <> from err
-    VersionsRegistryMissing path -> "Version registry not found: " <> from path
-    VersionsRegistryDecodeError err -> "Failed to decode version registry: " <> from err
-    AliasesRegistryMissing path -> "Alias registry not found: " <> from path
-    AliasesRegistryDecodeError err -> "Failed to decode alias registry: " <> from err
-    AliasesError errs -> "Aliases failed: " <> from errs
-    ConstantsRegistryMissing path -> "Constants registry not found: " <> from path
-    ConstantsRegistryParseError err -> "Failed to parse constants registry: " <> from err
-    ConstantsProbeParseError err -> "Failed to parse constants probe output: " <> from err
+    RegistryDecodeFailed registry path err ->
+      "Failed to decode the " <> displayBuilder registry <> " registry " <> from path <> ": " <> from err
+    AliasesFailed errs -> "Aliases failed: " <> from errs
+    ConstantsProbeUnparseable err -> "Failed to parse constants probe output: " <> from err
     ToolCallFailed tag cfg (ProcessFailureCode code) (ProcessStdout out) (ProcessStderr err) ->
       let coded = show code
           cmd = show cfg
@@ -197,10 +191,10 @@ instance Display SysError where
               Stderr:
                 $errd
               |]
-    ConstantsError err -> "Constants failed: " <> from err
-    BindgenError err -> "Failed while invoking hs-bindgen: " <> from err
-    EmitError err -> "Failed to emit library: " <> from err
-    PackagingError err -> "Failed to emit library package: " <> from err
+    ConstantsFailed err -> "Constants failed: " <> from err
+    BindgenFailed err -> "Failed while invoking hs-bindgen: " <> from err
+    EmitFailed err -> "Failed to emit library: " <> from err
+    PackagingFailed err -> "Failed to emit library package: " <> from err
     AbiValidationFailed registry errs ->
       "ABI validation failed; nothing was written. Record the availability in "
         <> from registry
@@ -304,7 +298,7 @@ runSys target root cmd = runRethrow @SysResolutionError (ResolutionFailed target
           planAliases target registry results
         tree <-
           liftEither
-            . first PackagingError
+            . first PackagingFailed
             $ assembleSysPackage target statics env.libraryVersion aliasFiles macroConsts results
         manifestMeta <- chainMeta target results
         runErrorFrom @EmitError @SysError
@@ -323,7 +317,7 @@ validateChain target registry results = do
         LibraryRef
           { label = target.versionLabel
           , version = env.libraryVersion
-          , registry = registryDisplayPath target "versions.json"
+          , registry = registryDisplayPath target (registryFile VersionsJson)
           }
   liftEither
     . first (AbiValidationFailed library.registry)
@@ -358,7 +352,10 @@ planAliases target registry headerResults = do
   let families = map (.payload.facts) headerResults
 
   registryBytes <- LBS.fromStrict <$> EBS.readFile env.paths.aliases
-  config <- liftEither . first AliasesRegistryDecodeError $ decodeAliasConfig registryBytes
+  config <-
+    liftEither
+      . first (RegistryDecodeFailed AliasesJson env.paths.aliases)
+      $ decodeAliasConfig registryBytes
   validated <-
     liftEither
       . first from
@@ -415,7 +412,9 @@ planConstantGroups target families = do
 
   constantsBytes <- LBS.fromStrict <$> EBS.readFile env.paths.constants
   constantsConfig <-
-    liftEither . first ConstantsRegistryParseError $ decodeConstantsConfig constantsBytes
+    liftEither
+      . first (RegistryDecodeFailed ConstantsJson env.paths.constants)
+      $ decodeConstantsConfig constantsBytes
 
   familyConstants <- forM families \fd -> do
     source <- decodeUtf8 <$> EBS.readFile (env.includeDir </> includeArg target fd.headerName)
@@ -472,7 +471,7 @@ probeConstants target probeInputs
           (from probeBin)
           []
 
-      liftEither . first ConstantsProbeParseError $ parseProbeOutput runOut
+      liftEither . first ConstantsProbeUnparseable $ parseProbeOutput runOut
 
 loadVersionsRegistry
   :: (SysGen :> es, Error SysError :> es, FileSystem :> es)
@@ -481,7 +480,8 @@ loadVersionsRegistry target = do
   env <- getSysEnv
   bytes <- LBS.fromStrict <$> EBS.readFile env.paths.versions
   liftEither
-    $ first VersionsRegistryDecodeError (decodeVersionsRegistry target.versioning.arity bytes)
+    . first (RegistryDecodeFailed VersionsJson env.paths.versions)
+    $ decodeVersionsRegistry target.versioning.arity bytes
 
 runChain
   :: ( HasCallStack

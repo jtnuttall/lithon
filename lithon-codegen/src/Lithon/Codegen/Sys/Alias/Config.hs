@@ -1,13 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | The checked-in alias registry for the curated @SDL3.Sys.*@ layer:
--- @lithon-codegen\/sdl3\/aliases.json@.
+-- | The checked-in alias registry for a target's curated layer (SDL:
+-- @SDL3.Sys.*@): @lithon-codegen\/data\/\<key\>\/aliases.json@.
 --
 -- The registry is the deterministic record of every per-function decision
 -- the layer makes — flavor classification (with rationale), renames, and
 -- skips. Classification of callback-taking functions is deliberately
 -- explicit: generation hard-fails on an unclassified callback function, so
--- an SDL upgrade that adds one stops the build until a human decides
+-- a library upgrade that adds one stops the build until a human decides
 -- whether its callback is bypassable ('Both') or unavoidably synchronous
 -- ('SafeOnly').
 --

@@ -76,6 +76,7 @@ import Lithon.Codegen.Sys.Target (
   SysTarget (..),
   VersionScheme (..),
   defineLine,
+  includeArgLine,
  )
 import Lithon.Codegen.Sys.Version (Version, renderVersion)
 
@@ -169,12 +170,13 @@ data AbiDecl = AbiDecl
   }
   deriving stock (Eq, Generic, Show)
 
--- | Empirical availability overrides for the @>= 3.2.0@ floor, loaded
--- from @sdl3\/versions.json@ ("Lithon.Codegen.Sys.Versions"). SDL's
--- @\\since@ annotations (and, for members, its \"(added in X.Y.Z)\"
--- notes) are the default source but lie in both directions and are
--- often simply absent; every entry here was established by compiling
--- against the real SDL release-header matrix.
+-- | Empirical availability overrides for the target's floor (SDL: @>=
+-- 3.2.0@), loaded from its @versions.json@ ("Lithon.Codegen.Sys.Versions").
+-- The documented availability its 'VersionScheme' reads (SDL: the
+-- @\\since@ annotations and, for members, the \"(added in X.Y.Z)\"
+-- notes) is the default source but lies in both directions and is often
+-- simply absent; every entry here was established by compiling against
+-- the real release-header matrix.
 -- Keys are bare C names (no @struct@\/@enum@ spelling).
 data AbiOverrides = AbiOverrides
   { decls :: Map Text Version
@@ -363,7 +365,7 @@ renderAbiAssertions target libraryVersion includes decls macroConsts =
          , ""
          ]
       <> map defineLine target.parse.defines
-      <> ["#include <" <> toText inc <> ">" | inc <- includes]
+      <> map includeArgLine includes
 
   bannerLine l
     | T.null l = " *"
