@@ -95,8 +95,8 @@ main = do
 
 This plays `video.mkv` with the video output disabled (audio still
 plays) until the file ends. `initialize`, `waitEvent`, and
-`terminateDestroy` only come in their `Safe` flavor; see
-[Safe and unsafe FFI](#safe-and-unsafe-ffi).
+`terminateDestroy` can block for a long time, so the example uses their
+`Safe` flavor; see [Safe and unsafe FFI](#safe-and-unsafe-ffi).
 
 For a fuller example, see `mpv-headless` in
 [`lithon-examples`](https://github.com/jtnuttall/lithon/tree/main/lithon-examples).
@@ -213,11 +213,11 @@ The curated registry settles the rest:
   `mpv_opengl_init_params`. That last one is curated by hand: the
   callback travels inside the `mpv_render_param` array, where the
   generator's callback census cannot see it.
-- **Safe only, because the call can block for a long time:**
-  `waitEventSafe` (up to its timeout; forever when negative),
-  `waitAsyncRequestsSafe`, `initializeSafe`, `destroySafe`, and
-  `terminateDestroySafe`. An `unsafe` call would stall the garbage
-  collector program-wide meanwhile.
+- **Both flavors, but use the Safe one:** `waitEventSafe` (up to its
+  timeout; forever when negative), `waitAsyncRequestsSafe`,
+  `initializeSafe`, `destroySafe`, and `terminateDestroySafe` can block
+  for a long time (an `unsafe` call would stall the garbage collector
+  program-wide meanwhile).
 - **Unsafe only:** `clientId`, `clientName`, `errorString`, `eventName`,
   `eventToNode`, `free`, `freeNodeContents`, `getTimeNs`, and `getTimeUs`
   cannot block or call back.

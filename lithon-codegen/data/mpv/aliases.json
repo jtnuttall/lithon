@@ -54,8 +54,8 @@
       "rationale": "runs the del command synchronously; blocks and calls back like mpv_command"
     },
     "mpv_destroy": {
-      "safety": "safe-only",
-      "rationale": "blocks on pending async requests and, for the last strong handle, on core shutdown; an unsafe call would stall GC program-wide"
+      "safety": "both",
+      "rationale": "blocks on pending async requests and, for the last strong handle, on core shutdown; prefer the Safe alias, an unsafe call stalls every capability and GC meanwhile"
     },
     "mpv_error_string": {
       "safety": "unsafe-only",
@@ -114,8 +114,8 @@
       "rationale": "takes the core lock, then sends MPV_EVENT_HOOK to the next handler, running its wakeup callback synchronously"
     },
     "mpv_initialize": {
-      "safety": "safe-only",
-      "rationale": "initializes the player on the calling thread (config files, scripts, force-window); an unsafe call would stall GC program-wide"
+      "safety": "both",
+      "rationale": "initializes the player on the calling thread (config files, scripts, force-window); prefer the Safe alias, an unsafe call stalls every capability and GC meanwhile"
     },
     "mpv_load_config_file": {
       "safety": "both",
@@ -194,20 +194,20 @@
       "rationale": "registration; open_fn and the stream callbacks it installs fire later on mpv's threads"
     },
     "mpv_terminate_destroy": {
-      "safety": "safe-only",
-      "rationale": "quits the player and blocks until every other handle and the core are gone; an unsafe call would stall GC program-wide"
+      "safety": "both",
+      "rationale": "quits the player and blocks until every other handle and the core are gone; prefer the Safe alias, an unsafe call stalls every capability and GC meanwhile"
     },
     "mpv_unobserve_property": {
       "safety": "both",
       "rationale": "takes the handle's lock, which mpv holds while running the wakeup callback; never waits for the core"
     },
     "mpv_wait_async_requests": {
-      "safety": "safe-only",
-      "rationale": "blocks until every async request has replied; an unsafe call would stall GC program-wide"
+      "safety": "both",
+      "rationale": "blocks until every async request has replied; prefer the Safe alias, an unsafe call stalls every capability and GC meanwhile"
     },
     "mpv_wait_event": {
-      "safety": "safe-only",
-      "rationale": "blocks up to the timeout (negative waits forever); an unsafe call would stall GC program-wide"
+      "safety": "both",
+      "rationale": "blocks up to the timeout (negative waits forever); prefer the Safe alias, an unsafe call stalls every capability and GC meanwhile"
     },
     "mpv_wakeup": {
       "safety": "both",

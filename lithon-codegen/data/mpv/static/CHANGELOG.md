@@ -15,8 +15,7 @@ supports API >= 2.0 with version-gated wrappers for `mpv_del_property`
   `MPV_ERROR_UNSUPPORTED`; below 2.2, `mpv_get_time_ns` is polyfilled
   from `mpv_get_time_us`.
 - Per-function safe/unsafe curation with rationales. Functions that run
-  a callback during the call, or that can block for a long time, export
-  only their `Safe` alias.
+  a callback during the call export only their `Safe` alias.
 - `mpv_client_api_version` is not bound (`unsigned long` has no portable
   FFI type across LP64 and LLP64); see the README.
 - Build flags, as in `sdl3-bindgen-sys`:
