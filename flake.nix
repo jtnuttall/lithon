@@ -40,7 +40,17 @@
                 };
             })
             (final: prev: {
-              libmpv = prev.mpv-unwrapped;
+              libmpv = prev.mpv-unwrapped.overrideAttrs (old: {
+                # mpv.pc's Version is the client API version, not mpv's, and
+                # haskell.nix's plan reads it from pc-version (else .version).
+                passthru =
+                  (old.passthru or {})
+                  // {
+                    pc-version =
+                      {"0.41.0" = "2.5.0";}.${old.version}
+                      or (throw "flake.nix: record the client API version of mpv ${old.version} (pkg-config --modversion mpv)");
+                  };
+              });
             })
           ];
         };
