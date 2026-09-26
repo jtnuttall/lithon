@@ -34,8 +34,8 @@ import Lithon.Codegen.Backend.Package.Assemble (assemblePackage)
 import Lithon.Codegen.Bindgen (HeaderResult (..))
 import Lithon.Codegen.Sys.Abi (AbiMacroConst, renderAbiAssertions)
 import Lithon.Codegen.Sys.Chain (SysPayload (..))
+import Lithon.Codegen.Sys.Env (PackageStatics (..))
 import Lithon.Codegen.Sys.Target (
-  PackageStatics (..),
   SysTarget,
   bindgenNamespace,
   mainIncludeArgs,

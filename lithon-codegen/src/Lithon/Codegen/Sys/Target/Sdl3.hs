@@ -16,9 +16,7 @@ module Lithon.Codegen.Sys.Target.Sdl3 (
   textEditsFor,
 ) where
 
-import Data.FileEmbed (embedFileRelative)
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as T
 import Lithon.HsBindgen qualified as HB
 import Lithon.HsBindgen.HsDoc qualified as HsDoc
 import Lithon.Prelude
@@ -115,13 +113,6 @@ sdl3 =
           , umbrellaDoc
           , runtimeDoc
           , abiBanner
-          }
-    , statics =
-        PackageStatics
-          { packageYaml = T.decodeUtf8 $(embedFileRelative "data/sdl3/static/package.yaml")
-          , readme = T.decodeUtf8 $(embedFileRelative "data/sdl3/static/README.md")
-          , changelog = T.decodeUtf8 $(embedFileRelative "data/sdl3/static/CHANGELOG.md")
-          , licenses = [("LICENSE_SDL", T.decodeUtf8 $(embedFileRelative "LICENSE_SDL3"))]
           }
     , versionMetaKey = "sdlVersion"
     }

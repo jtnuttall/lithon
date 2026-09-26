@@ -6,9 +6,14 @@
 module Lithon.Codegen.Sys.Env (
   SysResolutionError (..),
   SysEnv (..),
+  SysPaths (..),
   SysGen,
   getSysEnv,
   runSysGen,
+
+  -- * Package statics
+  PackageStatics (..),
+  loadStatics,
 ) where
 
 import Control.Monad (join)
@@ -17,13 +22,17 @@ import Data.HashMap.Strict qualified as HM
 import Effectful
 import Effectful.Dispatch.Dynamic
 import Effectful.Error.Dynamic
+import Effectful.FileSystem.IO.ByteString qualified as EBS
 import Effectful.Reader.Dynamic
 import Lithon.Effect.ClangEnv
 import Lithon.Effect.Error (runErrorFrom)
 import Lithon.Effect.FileSystem (
   FileSystem,
+  assertDirectoryExists,
   assertFileExists,
+  doesDirectoryExist,
   doesFileExist,
+  listDirectory,
  )
 import Lithon.Effect.Log
 import Lithon.Prelude
@@ -41,6 +50,10 @@ data SysResolutionError
   | VersionsRegistryMissing Text FilePath
   | AliasesRegistryMissing Text FilePath
   | ConstantsRegistryMissing Text FilePath
+  | -- | A required file of @static\/@ is absent.
+    StaticMissing FilePath
+  | -- | @static\/@ holds something it may not (a directory, a dotfile).
+    StaticUnexpected FilePath
   | -- | The target record itself is malformed (its key, the problems).
     TargetInvalid Text [Text]
   | DataDirUnresolved DataDirError
@@ -79,6 +92,14 @@ instance Display SysResolutionError where
       "Could not find " <> from name <> " aliases registry at: " <> from path
     ConstantsRegistryMissing name path ->
       "Could not find " <> from name <> " constants registry at: " <> from path
+    StaticMissing path ->
+      "Could not find the package static "
+        <> from path
+        <> " (static/ needs package.yaml, README.md, and CHANGELOG.md)"
+    StaticUnexpected path ->
+      "Unexpected package static "
+        <> from path
+        <> " (static/ holds package.yaml, README.md, CHANGELOG.md, and license files, nothing else)"
     TargetInvalid key problems ->
       "target "
         <> from key
@@ -86,8 +107,8 @@ instance Display SysResolutionError where
         <> foldMap (\problem -> "\n  - " <> from problem) problems
     DataDirUnresolved err -> displayBuilder err
 
--- | The resolved generation environment: where the target's headers live
--- and which library version they belong to.
+-- | The resolved generation environment: where the target's headers live,
+-- which library version they belong to, and where its data is.
 --
 -- hs-bindgen additionally honors @BINDGEN_EXTRA_CLANG_ARGS@ from the environment
 -- on top of this.
@@ -98,11 +119,27 @@ data SysEnv = SysEnv
   , libraryVersion :: Text
   -- ^ @pkg-config --modversion \<pkgConfig\>@.
   , pkgDbEntry :: PkgDbEntry
-  , versionsRegistryPath :: FilePath
-  , aliasesRegistryPath :: FilePath
-  , dataDir :: FilePath
-  , constantsRegistryPath :: FilePath
-  , overridesRegistryPath :: Maybe FilePath
+  , paths :: SysPaths
+  }
+  deriving stock (Generic, Show)
+  deriving anyclass (A.ToJSON)
+
+-- | The target's data directory and what the pipeline reads from it —
+-- the same layout for every target.
+data SysPaths = SysPaths
+  { dataDir :: FilePath
+  -- ^ @lithon-codegen\/data\/\<key\>\/@, absolute: the spec artifacts'
+  -- home.
+  , versions :: FilePath
+  -- ^ @versions.json@ (required).
+  , aliases :: FilePath
+  -- ^ @aliases.json@ (required).
+  , constants :: FilePath
+  -- ^ @constants.json@ (required).
+  , static :: FilePath
+  -- ^ @static\/@: the package's hand-written root files ('loadStatics').
+  , overrides :: Maybe FilePath
+  -- ^ @overrides.yaml@, the prescriptive binding spec, when present.
   }
   deriving stock (Generic, Show)
   deriving anyclass (A.ToJSON)
@@ -128,16 +165,17 @@ runSysGen
   => SysTarget -> Eff (SysGen : es) a -> Eff es a
 runSysGen target eff = do
   dataDir <- runErrorFrom @DataDirError $ targetDataDir (toString target.key)
-  let versionsRegistryPath = dataDir </> "versions.json"
-      aliasesRegistryPath = dataDir </> "aliases.json"
-      constantsRegistryPath = dataDir </> "constants.json"
+  let versions = dataDir </> "versions.json"
+      aliases = dataDir </> "aliases.json"
+      constants = dataDir </> "constants.json"
+      static = dataDir </> "static"
       name = target.displayName
 
-  assertFileExists versionsRegistryPath (VersionsRegistryMissing name)
-  assertFileExists aliasesRegistryPath (AliasesRegistryMissing name)
-  assertFileExists constantsRegistryPath (ConstantsRegistryMissing name)
+  assertFileExists versions (VersionsRegistryMissing name)
+  assertFileExists aliases (AliasesRegistryMissing name)
+  assertFileExists constants (ConstantsRegistryMissing name)
 
-  overridesRegistryPath <- do
+  overrides <- do
     let path = dataDir </> "overrides.yaml"
     exists <- doesFileExist path
     if exists then
@@ -155,9 +193,50 @@ runSysGen target eff = do
 
   PkgVersion libraryVersion <- noteErr (VersionUnknown name) pkgDbEntry.version
 
+  let paths = SysPaths{dataDir, versions, aliases, constants, static, overrides}
   reinterpret
-    (runReader @SysEnv SysEnv{..})
+    (runReader @SysEnv SysEnv{includeDir, libraryVersion, pkgDbEntry, paths})
     ( const \case
         GetSysEnv -> ask
     )
     eff
+
+-- | The generated package's hand-written root files: @package.yaml@,
+-- @README.md@, @CHANGELOG.md@, and the library's license files.
+data PackageStatics = PackageStatics
+  { packageYaml :: Text
+  , readme :: Text
+  , changelog :: Text
+  , licenses :: [(FilePath, Text)]
+  -- ^ Staged verbatim at the package root under their own names (SDL:
+  -- @LICENSE_SDL@), by name.
+  }
+
+-- | Read the package statics from @data\/\<key\>\/static\/@ (generation
+-- only; @spec@ never needs them): @package.yaml@, @README.md@, and
+-- @CHANGELOG.md@ are required, every other file is a license staged
+-- verbatim at the package root under its own name, and a directory or a
+-- dotfile is an error rather than a guess.
+loadStatics
+  :: (FileSystem :> es, Log :> es, Error SysResolutionError :> es)
+  => SysTarget -> SysEnv -> Eff es PackageStatics
+loadStatics target env = do
+  assertDirectoryExists dir StaticMissing
+  entries <- sort <$> listDirectory dir
+  for_ entries \entry -> do
+    isDirectory <- doesDirectoryExist (dir </> entry)
+    when (isDirectory || "." `isPrefixOf` entry) $ throwError (StaticUnexpected (dir </> entry))
+  packageYaml <- required "package.yaml"
+  readme <- required "README.md"
+  changelog <- required "CHANGELOG.md"
+  licenses <-
+    for [entry | entry <- entries, entry `notElem` ["package.yaml", "README.md", "CHANGELOG.md"]] \entry ->
+      (entry,) <$> readText (dir </> entry)
+  logInfo $ "package statics" :# ["target" .= target.key, "licenses" .= map fst licenses]
+  pure PackageStatics{packageYaml, readme, changelog, licenses}
+ where
+  dir = env.paths.static
+  required name = do
+    assertFileExists (dir </> name) StaticMissing
+    readText (dir </> name)
+  readText path = decodeUtf8 <$> EBS.readFile path

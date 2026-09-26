@@ -115,11 +115,11 @@ bindgenOpts :: SysTarget -> SysEnv -> BindgenOpts
 bindgenOpts target env =
   BindgenOpts
     { invocationEnv = invocationEnv target env
-    , prescriptiveSpec = env.overridesRegistryPath
+    , prescriptiveSpec = env.paths.overrides
     , packageInfo =
         PackageInfo
           { name = target.packageName
-          , dataDir = env.dataDir
+          , dataDir = env.paths.dataDir
           , version = Nothing
           }
     }

@@ -15,9 +15,10 @@
 -- "Lithon.Codegen.Sys.Targets".
 --
 -- Deliberately not fields (the same contract for every target): the
--- three registries are required, @overrides.yaml@ is optional, record
--- fields omit their prefixes, the vendored runtime and facade set, the
--- flavor rules, emission and manifest mechanics, and probe compilation.
+-- three registries are required, @overrides.yaml@ is optional, the
+-- package statics live in @static\/@, record fields omit their prefixes,
+-- the vendored runtime and facade set, the flavor rules, emission and
+-- manifest mechanics, and probe compilation.
 module Lithon.Codegen.Sys.Target (
   -- * The target record
   SysTarget (..),
@@ -30,7 +31,6 @@ module Lithon.Codegen.Sys.Target (
   NativeScalar (..),
   DocHooks (..),
   Prose (..),
-  PackageStatics (..),
 
   -- * Derived names
   bindgenNamespace,
@@ -90,8 +90,6 @@ data SysTarget = SysTarget
   , widthTypedefs :: Maybe WidthTypedefs
   , docs :: DocHooks
   , prose :: Prose
-  , statics :: PackageStatics
-  -- ^ The package's hand-written root files.
   , versionMetaKey :: Text
   -- ^ The manifest key recording the library version.
   }
@@ -196,15 +194,6 @@ data Prose = Prose
   , abiBanner :: [Text]
   -- ^ The body of the ABI assertion TU's banner comment, one line per
   -- element (rendered as @ * line@; an empty element as @ *@).
-  }
-
--- | The generated package's hand-written root files: @package.yaml@,
--- @README.md@, @CHANGELOG.md@, and the library's license files.
-data PackageStatics = PackageStatics
-  { packageYaml :: Text
-  , readme :: Text
-  , changelog :: Text
-  , licenses :: [(FilePath, Text)]
   }
 
 -- | @SDL3.Sys.Bindgen@: the root of the raw families.

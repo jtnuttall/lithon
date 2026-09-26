@@ -116,8 +116,10 @@ import Lithon.Codegen.Sys.Chain (
 import Lithon.Codegen.Sys.Env (
   SysEnv (..),
   SysGen,
+  SysPaths (..),
   SysResolutionError (TargetInvalid),
   getSysEnv,
+  loadStatics,
   runSysGen,
  )
 import Lithon.Codegen.Sys.Package (SysPackagingError, assembleSysPackage)
@@ -290,6 +292,8 @@ runSys target root cmd = runRethrow @SysResolutionError (ResolutionFailed target
         validateChain target registry results
         syncSpecs target (guardCtx root opts.assumeYes) opts.emitEffect results
       CmdGenerate opts -> do
+        -- Before the chain: a missing README should not cost a full run.
+        statics <- loadStatics target env
         registry <- loadVersionsRegistry target
         results <- runChain target registry
         validateChain target registry results
@@ -301,7 +305,7 @@ runSys target root cmd = runRethrow @SysResolutionError (ResolutionFailed target
         tree <-
           liftEither
             . first PackagingError
-            $ assembleSysPackage target target.statics env.libraryVersion aliasFiles macroConsts results
+            $ assembleSysPackage target statics env.libraryVersion aliasFiles macroConsts results
         manifestMeta <- chainMeta target results
         runErrorFrom @EmitError @SysError
           $ emitHaskellPackage root opts.out (manifestMeta <> aliasMeta) tree
@@ -353,7 +357,7 @@ planAliases target registry headerResults = do
   env <- getSysEnv
   let families = map (.payload.facts) headerResults
 
-  registryBytes <- LBS.fromStrict <$> EBS.readFile env.aliasesRegistryPath
+  registryBytes <- LBS.fromStrict <$> EBS.readFile env.paths.aliases
   config <- liftEither . first AliasesRegistryDecodeError $ decodeAliasConfig registryBytes
   validated <-
     liftEither
@@ -409,7 +413,7 @@ planConstantGroups
 planConstantGroups target families = do
   env <- getSysEnv
 
-  constantsBytes <- LBS.fromStrict <$> EBS.readFile env.constantsRegistryPath
+  constantsBytes <- LBS.fromStrict <$> EBS.readFile env.paths.constants
   constantsConfig <-
     liftEither . first ConstantsRegistryParseError $ decodeConstantsConfig constantsBytes
 
@@ -475,7 +479,7 @@ loadVersionsRegistry
   => SysTarget -> Eff es VersionsRegistry
 loadVersionsRegistry target = do
   env <- getSysEnv
-  bytes <- LBS.fromStrict <$> EBS.readFile env.versionsRegistryPath
+  bytes <- LBS.fromStrict <$> EBS.readFile env.paths.versions
   liftEither
     $ first VersionsRegistryDecodeError (decodeVersionsRegistry target.versioning.arity bytes)
 
@@ -540,7 +544,7 @@ syncSpecs target ctx effect results = do
     $ emitPackage
       ArtifactsOnly
       EmitTarget
-        { outDir = env.dataDir
+        { outDir = env.paths.dataDir
         , guard = Guarded ctx
         , ..
         }

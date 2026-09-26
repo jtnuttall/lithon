@@ -18,16 +18,25 @@ license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
+    data/mpv/static/CHANGELOG.md
+    data/mpv/static/LICENSE_libmpv
+    data/mpv/static/package.yaml
+    data/mpv/static/README.md
     data/sdl3/static/CHANGELOG.md
+    data/sdl3/static/LICENSE_SDL
     data/sdl3/static/package.yaml
     data/sdl3/static/README.md
-    data/sdl3/aliases.json
-    data/sdl3/constants.json
-    data/sdl3/versions.json
-    data/sdl3/overrides.yaml
     data/vulkan/static/CHANGELOG.md
     data/vulkan/static/package.yaml
     data/vulkan/static/README.md
+    data/mpv/aliases.json
+    data/mpv/constants.json
+    data/mpv/versions.json
+    data/sdl3/aliases.json
+    data/sdl3/constants.json
+    data/sdl3/versions.json
+    data/mpv/overrides.yaml
+    data/sdl3/overrides.yaml
 extra-doc-files:
     README.md
     CHANGELOG.md
@@ -353,6 +362,7 @@ test-suite lithon-codegen-test
       Sys.CensusTest
       Sys.GateTest
       Sys.PlatformShimTest
+      Sys.StaticsTest
       Sys.Support.Targets
       Sys.Support.Toy
       Sys.TargetsTest

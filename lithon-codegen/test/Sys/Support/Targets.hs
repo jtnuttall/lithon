@@ -65,12 +65,5 @@ toy2 =
               , "#if guards come from the availability registry alone."
               ]
           }
-    , statics =
-        PackageStatics
-          { packageYaml = ""
-          , readme = ""
-          , changelog = ""
-          , licenses = []
-          }
     , versionMetaKey = "libraryVersion"
     }
