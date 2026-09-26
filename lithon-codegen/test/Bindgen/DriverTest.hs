@@ -24,7 +24,7 @@ import System.FilePath ((</>))
 import Test.Tasty.HUnit (Assertion, assertBool, assertFailure, (@?=))
 
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
-import Lithon.Codegen.Bindgen (
+import Lithon.Codegen.Bindgen.Driver (
   HeaderPlan (..),
   HeaderResult (..),
   HeaderUnit (..),
@@ -62,8 +62,8 @@ toyPlan =
     }
 
 -- | Run one visitor over the toy universe under the real effect stack.
-runDriver :: Visitor r -> IO (Either Text [HeaderResult r])
-runDriver =
+runToyDriver :: Visitor r -> IO (Either Text [HeaderResult r])
+runToyDriver =
   runToyChain
     (toyEnv "lithon-driver-toy")
     [ToyHeader{include = "toy" </> "toy_thing.h", source = toyHeader}]
@@ -73,7 +73,7 @@ unit_driverFoldsToyHeader :: Assertion
 unit_driverFoldsToyHeader = do
   results <-
     either (assertFailure . toString) pure
-      =<< runDriver Visitor{passes = mempty, finalize = \_ arts _ -> Right (length arts.cDecls)}
+      =<< runToyDriver Visitor{passes = mempty, finalize = \_ arts _ -> Right (length arts.cDecls)}
   case results of
     [r] -> do
       Module.hsName r.unit.moduleName @?= "Toy.Bindgen.Thing"
@@ -90,7 +90,7 @@ unit_driverFoldsToyHeader = do
 unit_requireHitMissFails :: Assertion
 unit_requireHitMissFails = do
   r <-
-    runDriver
+    runToyDriver
       Visitor
         { passes =
             mempty
@@ -107,7 +107,7 @@ unit_allowMissSkips :: Assertion
 unit_allowMissSkips = do
   results <-
     either (assertFailure . toString) pure
-      =<< runDriver
+      =<< runToyDriver
         Visitor
           { passes =
               mempty
@@ -135,7 +135,7 @@ unit_editsApplyInOrder :: Assertion
 unit_editsApplyInOrder = do
   results <-
     either (assertFailure . toString) pure
-      =<< runDriver
+      =<< runToyDriver
         Visitor
           { passes =
               Passes

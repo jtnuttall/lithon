@@ -31,7 +31,7 @@ import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Backend.Package (PackageSpec (..), RootFiles (..))
 import Lithon.Codegen.Backend.Package qualified as Package
 import Lithon.Codegen.Backend.Package.Assemble (assemblePackage)
-import Lithon.Codegen.Bindgen (HeaderResult (..))
+import Lithon.Codegen.Bindgen.Driver (HeaderResult (..))
 import Lithon.Codegen.Sys.Abi (AbiMacroConst, renderAbiAssertions)
 import Lithon.Codegen.Sys.Chain (SysPayload (..))
 import Lithon.Codegen.Sys.Env (PackageStatics (..))

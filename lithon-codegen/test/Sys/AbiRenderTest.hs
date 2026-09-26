@@ -2,7 +2,7 @@
 
 -- | End-to-end pins for the ABI assertion layer: drive a toy header
 -- through the real hs-bindgen pipeline (the same @getReifiedC@ artefact
--- 'Lithon.Codegen.Sys.Chain.runHeader' demands), distill, and render
+-- 'Lithon.Codegen.Bindgen.Driver.runHeader' demands), distill, and render
 -- the @_Static_assert@ TU.
 --
 -- Pins, in one artifact: the skip set (bitfields, the anonymous union

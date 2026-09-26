@@ -2,7 +2,7 @@
 
 -- | End-to-end golden of the alias planner\/renderer: drive an SDL-shaped
 -- toy header through the real hs-bindgen pipeline (the same artefacts
--- 'Lithon.Codegen.Sys.Chain.runHeader' demands), then distill, census,
+-- 'Lithon.Codegen.Bindgen.Driver.runHeader' demands), then distill, census,
 -- validate, plan, and render.
 --
 -- Pins, in one artifact: callback detection on the C AST (including the

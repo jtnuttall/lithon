@@ -60,7 +60,7 @@ import Lithon.Prelude
 import System.FilePath (isPathSeparator, splitDirectories, takeFileName, (</>))
 
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
-import Lithon.Codegen.Bindgen (Passes)
+import Lithon.Codegen.Bindgen.Driver (Passes)
 import Lithon.Codegen.Sys.Version (Version, renderVersion, versionArity)
 
 -- | One C library bound through the generic sys pipeline.

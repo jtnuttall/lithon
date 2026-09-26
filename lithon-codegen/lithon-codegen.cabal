@@ -57,7 +57,7 @@ library
       Lithon.Codegen.Backend.Package
       Lithon.Codegen.Backend.Package.Assemble
       Lithon.Codegen.Backend.Package.Emit
-      Lithon.Codegen.Bindgen
+      Lithon.Codegen.Bindgen.Driver
       Lithon.Codegen.Cli
       Lithon.Codegen.Sys
       Lithon.Codegen.Sys.Abi

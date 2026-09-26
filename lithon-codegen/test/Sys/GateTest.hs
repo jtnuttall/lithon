@@ -42,7 +42,12 @@ import Test.Tasty.Golden (goldenVsStringDiff)
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
-import Lithon.Codegen.Bindgen (HeaderUnit (..), Passes (..), Visitor (..), defaultSpecFileName)
+import Lithon.Codegen.Bindgen.Driver (
+  HeaderUnit (..),
+  Passes (..),
+  Visitor (..),
+  defaultSpecFileName,
+ )
 import Lithon.Codegen.Sys.Chain (
   GatedDecl (..),
   SysPayload (..),

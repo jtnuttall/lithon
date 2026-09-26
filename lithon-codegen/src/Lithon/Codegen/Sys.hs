@@ -63,16 +63,16 @@ import Lithon.Codegen.Backend.Package.Emit (
   guardCtx,
   packageOutP,
  )
-import Lithon.Codegen.Bindgen (
-  Bindgen,
-  BindgenError,
+import Lithon.Codegen.Bindgen.Driver (
+  Driver,
+  DriverError,
   HeaderResult (..),
   HeaderUnit (..),
   chainHeaders,
   getScratchDirectory,
   planHeaders,
   preflightGraph,
-  runBindgen,
+  runDriver,
  )
 import Lithon.Codegen.Sys.Abi (AbiMacroConst (..))
 import Lithon.Codegen.Sys.Abi.Validate (AbiProblem, LibraryRef (..), validateAbi)
@@ -109,7 +109,7 @@ import Lithon.Codegen.Sys.Alias.Names (AliasError)
 import Lithon.Codegen.Sys.Chain (
   SysPayload (..),
   UnusedStubReturn (..),
-  bindgenOpts,
+  driverOpts,
   headerPlan,
   sysVisitor,
   unusedStubReturns,
@@ -148,7 +148,7 @@ data SysError
   | ConstantsFailed (Errors ConstantError)
   | ConstantsProbeUnparseable Text
   | ToolCallFailed Text (ProcessConfig () () ()) ProcessFailureCode ProcessStdout ProcessStderr
-  | BindgenFailed BindgenError
+  | BindgenFailed DriverError
   | EmitFailed EmitError
   | PackagingFailed SysPackagingError
   | -- | The versions registry to record the fixes in, and the problems.
@@ -164,7 +164,7 @@ instance From (Errors AliasError) SysError where
 instance From (Errors ConstantError) SysError where
   from = ConstantsFailed
 
-instance From BindgenError SysError where
+instance From DriverError SysError where
   from = BindgenFailed
 
 instance From EmitError SysError where
@@ -285,7 +285,7 @@ runSys target root cmd = runRethrow @SysResolutionError (ResolutionFailed target
   either (throwError . TargetInvalid target.key) pure (validateTarget target)
   runSysGen target do
     env <- getSysEnv
-    runBindgen (bindgenOpts target env) case cmd of
+    runDriver (driverOpts target env) case cmd of
       CmdSpec opts -> do
         registry <- loadVersionsRegistry target
         results <- runChain target registry
@@ -345,7 +345,7 @@ planAliases
      , IOE :> es
      , Log :> es
      , SysGen :> es
-     , Bindgen :> es
+     , Driver :> es
      , Error SysError :> es
      , FileSystem :> es
      )
@@ -411,7 +411,7 @@ planAliases target registry headerResults = do
 -- headers, evaluate every value and group sizeof in a probe TU compiled
 -- against those same headers, and validate the lot.
 planConstantGroups
-  :: (IOE :> es, SysGen :> es, Bindgen :> es, Error SysError :> es, FileSystem :> es)
+  :: (IOE :> es, SysGen :> es, Driver :> es, Error SysError :> es, FileSystem :> es)
   => SysTarget -> [FamilyDecls] -> Eff es ([ConstantGroupPlan], LByteString)
 planConstantGroups target families = do
   env <- getSysEnv
@@ -452,7 +452,7 @@ planConstantGroups target families = do
   pure (plans, constantsBytes)
 
 probeConstants
-  :: (IOE :> es, SysGen :> es, Bindgen :> es, Error SysError :> es)
+  :: (IOE :> es, SysGen :> es, Driver :> es, Error SysError :> es)
   => SysTarget -> [(Text, [Text])] -> Eff es (Map Text Int, Map Text Integer)
 probeConstants target probeInputs
   | null probeInputs = pure (mempty, mempty)
@@ -495,7 +495,7 @@ runChain
      , Environment :> es
      , Log :> es
      , SysGen :> es
-     , Bindgen :> es
+     , Driver :> es
      , Error SysError :> es
      )
   => SysTarget -> VersionsRegistry -> Eff es [HeaderResult SysPayload]
@@ -535,7 +535,7 @@ syncSpecs
      , Error SysError :> es
      , FileSystem :> es
      , Console :> es
-     , Bindgen :> es
+     , Driver :> es
      )
   => GuardCtx -> EmitEffect -> [HeaderResult SysPayload] -> Eff es ()
 syncSpecs ctx effect results = do

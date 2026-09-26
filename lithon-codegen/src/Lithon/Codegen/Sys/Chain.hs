@@ -6,14 +6,14 @@
 {- HLINT ignore "Redundant id" -}
 
 -- | A target's configuration of the generic bindgen fold
--- ("Lithon.Codegen.Bindgen"): the header plan, the invocation environment,
--- and the visitor — the target's shims, the retype prologue, the version
--- gates, and the finalizer distilling the alias-layer facts and the ABI
--- assertion inputs.
+-- ("Lithon.Codegen.Bindgen.Driver"): the header plan, the invocation
+-- environment, and the visitor — the target's shims, the retype prologue,
+-- the version gates, and the finalizer distilling the alias-layer facts and
+-- the ABI assertion inputs.
 module Lithon.Codegen.Sys.Chain (
   -- * Plan + environment
   headerPlan,
-  bindgenOpts,
+  driverOpts,
   moduleFor,
 
   -- * Visitors
@@ -34,8 +34,8 @@ import Lithon.HsBindgen.C qualified as C
 import Lithon.Prelude
 
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
-import Lithon.Codegen.Bindgen (
-  BindgenOpts (..),
+import Lithon.Codegen.Bindgen.Driver (
+  DriverOpts (..),
   HeaderPlan (..),
   HeaderUnit (..),
   PackageInfo (..),
@@ -114,9 +114,9 @@ invocationEnv target env =
 
 -- | The target's generation run: the shared invocation environment plus
 -- the prescriptive overrides registry, when present.
-bindgenOpts :: SysTarget -> SysEnv -> BindgenOpts
-bindgenOpts target env =
-  BindgenOpts
+driverOpts :: SysTarget -> SysEnv -> DriverOpts
+driverOpts target env =
+  DriverOpts
     { invocationEnv = invocationEnv target env
     , prescriptiveSpec = env.paths.overrides
     , packageInfo =

@@ -38,14 +38,14 @@ import System.FilePath (takeDirectory, (</>))
 import System.IO.Temp (withSystemTempDirectory)
 import Test.Tasty.HUnit (assertFailure)
 
-import Lithon.Codegen.Bindgen (
-  BindgenError,
-  BindgenOpts (..),
+import Lithon.Codegen.Bindgen.Driver (
+  DriverError,
+  DriverOpts (..),
   HeaderPlan,
   HeaderResult,
   PackageInfo (..),
   Visitor,
-  runBindgen,
+  runDriver,
   runHeaderChain,
  )
 
@@ -139,10 +139,10 @@ runToyChain env headers plan visitor = withToyRoot headers \root ->
     . runEff
     . runLog "toy-chain"
     . runError @Text
-    . runErrorDisplay @BindgenError
+    . runErrorDisplay @DriverError
     . runTemporary
-    . runBindgen
-      BindgenOpts
+    . runDriver
+      DriverOpts
         { invocationEnv = invocationEnv env root
         , prescriptiveSpec = Nothing
         , packageInfo = PackageInfo{name = toText env.uniqueId, dataDir = root, version = Nothing}

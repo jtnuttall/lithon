@@ -23,7 +23,7 @@ import Lithon.Prelude
 import System.FilePath ((<.>))
 
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
-import Lithon.Codegen.Bindgen (HeaderUnit (..), Passes (..))
+import Lithon.Codegen.Bindgen.Driver (HeaderUnit (..), Passes (..))
 import Lithon.Codegen.Sys.Target
 import Lithon.Codegen.Sys.Version (mkVersion, renderVersion, versionArgs)
 import Lithon.Codegen.Sys.Version.Doc qualified as Doc
