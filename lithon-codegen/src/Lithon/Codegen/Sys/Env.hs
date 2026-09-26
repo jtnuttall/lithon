@@ -22,6 +22,7 @@ module Lithon.Codegen.Sys.Env (
 
 import Control.Monad (join)
 import Data.Aeson qualified as A
+import Data.Char (isAsciiLower, isAsciiUpper, isDigit)
 import Data.HashMap.Strict qualified as HM
 import Data.List qualified as L
 import Effectful
@@ -84,7 +85,9 @@ data StaticRefusal
   = -- | A directory or a dotfile.
     NotAFile
   | -- | A file other than the three required ones that is not named
-    -- @LICENSE_\<name\>@: every such file is staged as a license.
+    -- @LICENSE_\<name\>@, a non-empty @\<name\>@ of ASCII letters, digits,
+    -- @_@, and @-@ (so not an editor's backup like @LICENSE_SDL~@): every
+    -- such file is staged as a license.
     NotALicense
   | -- | One of the 'reservedLicenses', which the generator stages itself.
     ReservedLicense
@@ -131,7 +134,8 @@ instance Display SysResolutionError where
             <> " else: no directories, no dotfiles)"
         NotALicense ->
           " (every file in static/ besides package.yaml, README.md, and CHANGELOG.md is staged as a"
-            <> " license under its own name, so it must be named LICENSE_<name>, like LICENSE_SDL)"
+            <> " license under its own name, so it must be named LICENSE_<name>, a non-empty <name>"
+            <> " of ASCII letters, digits, '_', and '-', like LICENSE_SDL)"
         ReservedLicense ->
           " (the generator stages "
             <> intercalateTB ", " (map from reservedLicenses)
@@ -254,9 +258,10 @@ data PackageStatics = PackageStatics
 -- only; @spec@ never needs them): @package.yaml@, @README.md@, and
 -- @CHANGELOG.md@ are required, every other file is a license staged
 -- verbatim at the package root under its own name, which must be
--- @LICENSE_\<name\>@ and not one of the 'reservedLicenses'. Anything
--- else (a directory, a dotfile, an editor's backup) is an error rather
--- than a guess.
+-- @LICENSE_\<name\>@, a non-empty @\<name\>@ of ASCII letters, digits,
+-- @_@, and @-@, and not one of the 'reservedLicenses'. Anything else (a
+-- directory, a dotfile, an editor's backup like @LICENSE_SDL~@ or
+-- @LICENSE_SDL.orig@) is an error rather than a guess.
 loadStatics
   :: (FileSystem :> es, Log :> es, Error SysResolutionError :> es)
   => SysTarget -> SysEnv -> Eff es PackageStatics
@@ -281,8 +286,10 @@ loadStatics target env = do
     | isDirectory || "." `isPrefixOf` entry = Just NotAFile
     | entry `elem` requiredStatics = Nothing
     | entry `elem` reservedLicenses = Just ReservedLicense
-    | Just name <- L.stripPrefix "LICENSE_" entry, not (null name) = Nothing
+    | Just name <- L.stripPrefix "LICENSE_" entry, isLicenseName name = Nothing
     | otherwise = Just NotALicense
+  isLicenseName name = not (null name) && all isLicenseNameChar name
+  isLicenseNameChar c = isAsciiUpper c || isAsciiLower c || isDigit c || c == '_' || c == '-'
   required name = do
     assertFileExists (dir </> name) StaticMissing
     readText (dir </> name)

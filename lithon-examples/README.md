@@ -15,8 +15,10 @@ Not published; build from the repository devshell (`nix develop` — see the
 | `triangle-sdl`       | The same triangle presented in an SDL2 window via `VK_KHR_swapchain`        |
 | `sdl3-raw`           | A minimal `sdl3-bindgen-sys` triangle: window, event loop, `renderGeometry` |
 | `shmup`              | The apecs Shmup example, playable, running on and rendering through SDL3    |
+| `mpv-headless`       | A lavfi test clip played headless through `mpv-bindgen-sys`, EOF-asserted   |
 
 ```sh
+cabal run mpv-headless
 cabal run sdl3-raw
 cabal run shmup               # --frames N bounds the loop
 cabal run triangle-offscreen

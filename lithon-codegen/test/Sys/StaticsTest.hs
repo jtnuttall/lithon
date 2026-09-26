@@ -85,10 +85,13 @@ withStatics extras k = withSystemTempDirectory "lithon-statics" \dir -> do
   k dir
 
 unit_staticsLicensesAreTheRest :: IO ()
-unit_staticsLicensesAreTheRest = withStatics [("LICENSE_b", "b\n"), ("LICENSE_a", "a\n")] \dir -> do
+unit_staticsLicensesAreTheRest = withStatics extras \dir -> do
   loaded <- either (assertFailure . toString . display) pure =<< statics dir
-  loaded.licenses @?= [("LICENSE_a", "a\n"), ("LICENSE_b", "b\n")]
+  loaded.licenses @?= [("LICENSE_a", "a\n"), ("LICENSE_b", "b\n"), ("LICENSE_c-2_d", "c\n")]
   loaded.packageYaml @?= "name: x"
+ where
+  -- A license name takes ASCII letters, digits, '_', and '-'.
+  extras = [("LICENSE_b", "b\n"), ("LICENSE_c-2_d", "c\n"), ("LICENSE_a", "a\n")]
 
 unit_staticsRejectMalformed :: IO ()
 unit_staticsRejectMalformed = do
@@ -116,14 +119,17 @@ unit_staticsRejectMalformed = do
   shown = either show (const "the statics loaded")
 
 -- | Every file beyond the three required ones is staged as a license under
--- its own name, so a stray file is refused rather than shipped, and so is
--- a name the generator stages itself (it would collide at the package
--- root); the message says which rule the name broke.
+-- its own name, so a stray file is refused rather than shipped (an editor's
+-- backup of a license included), and so is a name the generator stages
+-- itself (it would collide at the package root); the message says which
+-- rule the name broke.
 unit_staticsRejectNonLicenses :: IO ()
 unit_staticsRejectNonLicenses = do
   refused "README.md~" NotALicense "must be named LICENSE_<name>"
   refused "NOTICE" NotALicense "must be named LICENSE_<name>"
   refused "LICENSE_" NotALicense "must be named LICENSE_<name>"
+  refused "LICENSE_SDL~" NotALicense "a non-empty <name> of ASCII letters, digits, '_', and '-'"
+  refused "LICENSE_SDL.orig" NotALicense "a non-empty <name> of ASCII letters, digits, '_', and '-'"
   refused
     "LICENSE"
     ReservedLicense

@@ -53,7 +53,7 @@
                   // {
                     pc-version =
                       {"0.41.0" = "2.5.0";}.${old.version}
-                      or (throw "flake.nix: record the client API version of mpv ${old.version} (pkg-config --modversion mpv)");
+                      or (throw "flake.nix: record the client API version of mpv ${old.version} (the Version field of mpv.pc in the mpv-unwrapped dev output, or DOCS/client-api-changes.rst)");
                   };
               });
             })

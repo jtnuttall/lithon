@@ -49,7 +49,8 @@
   aliased C type as C spells it (`uint32` is now `Uint32`).
 - Package statics are read from `data/<key>/static/` at run time:
   `package.yaml`, `README.md`, `CHANGELOG.md`, and every other file as a
-  license under its own name, which must be `LICENSE_<name>` and not one the
+  license under its own name, which must be `LICENSE_<name>` (a non-empty
+  `<name>` of ASCII letters, digits, `_`, and `-`) and not one the
   generator stages itself (`LICENSE_SDL3` moved to
   `data/sdl3/static/LICENSE_SDL`).
 - Manifests record the library version as `libraryVersion` (was

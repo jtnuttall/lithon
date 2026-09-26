@@ -160,8 +160,9 @@ target it runs.
 
 Everything else a target needs lives in `lithon-codegen/data/<key>/`:
 
-- `aliases.json`: the curated layer's naming rule and every function's FFI
-  flavor, with rationales.
+- `aliases.json`: the curated layer's naming rule and FFI flavor
+  classifications, with rationales. Every callback-taking function must be
+  classified; an unlisted non-callback function defaults to `both`.
 - `constants.json`: typed-constant groups (macro ↔ newtype membership);
   `{"groups": {}}` when there are none.
 - `versions.json`: the availability registry. Versions have the target's
@@ -187,11 +188,15 @@ Binding another C library takes four steps:
    `SysTarget`.
 2. Its data directory, `lithon-codegen/data/<key>/`, as above.
 3. An entry in `sysTargets` (`Lithon.Codegen.Sys.Targets`), which adds the
-   `lithon-codegen <key>` subcommand.
+   `lithon-codegen <key>` subcommand and the target's census golden,
+   `lithon-codegen/test/golden/<key>/census.golden`: `CensusTest` creates
+   it on the first test run after generating; review it before committing.
 4. Repo wiring: the package in `cabal.project`; the library in the flake
    (the devshell, `libHook`, and the pkg-config mapping haskell.nix plans
-   with; see libmpv's `pc-version`); the freshness and haddock steps in
-   `scripts/check.sh`; and a CI consumer job.
+   with; see libmpv's `pc-version`); the package in every per-package step
+   of `scripts/check.sh` (generated-tree freshness, hpack parity, the
+   rendered-doc regression grep, haddock, and an example gate); and a CI
+   consumer job.
 
 Regenerate the bindings with:
 
