@@ -2,7 +2,7 @@
 
 -- | End-to-end pins for the ABI assertion layer: drive a toy header
 -- through the real hs-bindgen pipeline (the same @getReifiedC@ artefact
--- 'Lithon.Codegen.Sdl3.Bindgen.runHeader' demands), distill, and render
+-- 'Lithon.Codegen.Sys.Chain.runHeader' demands), distill, and render
 -- the @_Static_assert@ TU.
 --
 -- Pins, in one artifact: the skip set (bitfields, the anonymous union
@@ -14,7 +14,7 @@
 -- overridden in either direction), the pre-growth @#else@ branch of
 -- a growth gate, and a member gate read from the member's own
 -- \"(added in X.Y.Z)\" note.
-module Sdl3.AbiRenderTest (
+module Sys.AbiRenderTest (
   unit_toyDistillPins,
   unit_memberSinceRegistryWins,
   unit_prefixDerivesAcrossHeaders,
@@ -36,7 +36,7 @@ import Test.Tasty (TestTree)
 import Test.Tasty.Golden (goldenVsStringDiff)
 import Test.Tasty.HUnit (assertFailure, (@?=))
 
-import Lithon.Codegen.Sdl3.Abi (
+import Lithon.Codegen.Sys.Abi (
   AbiDecl (..),
   AbiEnumConst (..),
   AbiField (..),
@@ -199,7 +199,7 @@ test_abiRenderGolden =
 -- (ToyGrown), a layout override in each direction (ToyPinned exact
 -- despite union membership, ToyHolder prefix without it), and a value
 -- gate on a baseline enum constant (TOY_BIG). Also the configuration
--- "Sdl3.AbiValidateTest" pins as valid.
+-- "Sys.AbiValidateTest" pins as valid.
 toyOverrides :: AbiOverrides
 toyOverrides =
   AbiOverrides
@@ -261,7 +261,7 @@ toyOverrides =
 
 -- | Run the toy header through the same artefact demand as @runHeader@
 -- and distill it. A unique temp dir per invocation, mirroring
--- "Sdl3.AliasRenderTest" (the fixed shared name raced under tasty
+-- "Sys.AliasRenderTest" (the fixed shared name raced under tasty
 -- parallelism there).
 toyAbi :: AbiOverrides -> IO [AbiDecl]
 toyAbi overrides = withSystemTempDirectory "lithon-sdl3-abi-toy" \dir -> do

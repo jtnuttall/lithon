@@ -50,17 +50,17 @@ library
       Lithon.Codegen.Backend.Package.Emit
       Lithon.Codegen.Bindgen
       Lithon.Codegen.Cli
-      Lithon.Codegen.Sdl3
-      Lithon.Codegen.Sdl3.Abi
-      Lithon.Codegen.Sdl3.Abi.Validate
-      Lithon.Codegen.Sdl3.Alias
-      Lithon.Codegen.Sdl3.Alias.Config
-      Lithon.Codegen.Sdl3.Alias.Constants
-      Lithon.Codegen.Sdl3.Alias.Names
-      Lithon.Codegen.Sdl3.Bindgen
-      Lithon.Codegen.Sdl3.Env
-      Lithon.Codegen.Sdl3.Package
-      Lithon.Codegen.Sdl3.Versions
+      Lithon.Codegen.Sys
+      Lithon.Codegen.Sys.Abi
+      Lithon.Codegen.Sys.Abi.Validate
+      Lithon.Codegen.Sys.Alias
+      Lithon.Codegen.Sys.Alias.Config
+      Lithon.Codegen.Sys.Alias.Constants
+      Lithon.Codegen.Sys.Alias.Names
+      Lithon.Codegen.Sys.Chain
+      Lithon.Codegen.Sys.Env
+      Lithon.Codegen.Sys.Package
+      Lithon.Codegen.Sys.Versions
       Lithon.Codegen.Vulkan
       Lithon.Codegen.Vulkan.Curate
       Lithon.Codegen.Vulkan.Curate.Closure
@@ -339,15 +339,15 @@ test-suite lithon-codegen-test
       Backend.EmitTest
       Backend.PackageTest
       Bindgen.DriverTest
-      Sdl3.AbiRenderTest
-      Sdl3.AbiValidateTest
-      Sdl3.AdapterSmokeTest
-      Sdl3.AliasConfigTest
-      Sdl3.AliasNamesTest
-      Sdl3.AliasRenderTest
-      Sdl3.CensusTest
-      Sdl3.PlatformShimTest
-      Sdl3.VersionsTest
+      Sys.AbiRenderTest
+      Sys.AbiValidateTest
+      Sys.AdapterSmokeTest
+      Sys.AliasConfigTest
+      Sys.AliasNamesTest
+      Sys.AliasRenderTest
+      Sys.CensusTest
+      Sys.PlatformShimTest
+      Sys.VersionsTest
       Vulkan.Curate.ClosureTest
       Vulkan.CurateTest
       Vulkan.Generate.AbiTest

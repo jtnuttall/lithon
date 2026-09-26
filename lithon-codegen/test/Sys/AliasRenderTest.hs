@@ -2,14 +2,14 @@
 
 -- | End-to-end golden of the alias planner\/renderer: drive an SDL-shaped
 -- toy header through the real hs-bindgen pipeline (the same artefacts
--- 'Lithon.Codegen.Sdl3.Bindgen.runHeader' demands), then distill, census,
+-- 'Lithon.Codegen.Sys.Chain.runHeader' demands), then distill, census,
 -- validate, plan, and render.
 --
 -- Pins, in one artifact: callback detection on the C AST (including the
 -- pointer-to-callback out-param exclusion), the three flavor classes, the
 -- camel-segments minting, see-also rewriting to alias names, the flavor
 -- provenance paragraphs, and the module\/umbrella shapes.
-module Sdl3.AliasRenderTest (
+module Sys.AliasRenderTest (
   unit_toyCensusDetectsCallbacks,
   test_aliasRenderGolden,
 ) where
@@ -28,7 +28,7 @@ import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Golden (goldenVsStringDiff)
 import Test.Tasty.HUnit (assertFailure, (@?=))
 
-import Lithon.Codegen.Sdl3.Alias (
+import Lithon.Codegen.Sys.Alias (
   FamilyDecls (..),
   aliasRewriteMap,
   distillFamily,
@@ -37,21 +37,21 @@ import Lithon.Codegen.Sdl3.Alias (
   renderAliasModule,
   renderUmbrella,
  )
-import Lithon.Codegen.Sdl3.Alias.Config (
+import Lithon.Codegen.Sys.Alias.Config (
   AliasConfig (..),
   FunctionEntry (..),
   NamingRule (..),
   validateAliasConfig,
  )
-import Lithon.Codegen.Sdl3.Alias.Constants (
+import Lithon.Codegen.Sys.Alias.Constants (
   Combine (..),
   ConstantGroup (..),
   ConstantsConfig (..),
   planConstants,
   scanObjectMacros,
  )
-import Lithon.Codegen.Sdl3.Alias.Constants qualified as Constants
-import Lithon.Codegen.Sdl3.Alias.Names (Safety (..))
+import Lithon.Codegen.Sys.Alias.Constants qualified as Constants
+import Lithon.Codegen.Sys.Alias.Names (Safety (..))
 
 unit_toyCensusDetectsCallbacks :: IO ()
 unit_toyCensusDetectsCallbacks = do
@@ -191,7 +191,7 @@ toyFamily = withSystemTempDirectory "lithon-sdl3-alias-toy" \dir -> do
         HB.InvocationEnv
           { extraIncludeDirs = [dir]
           , defineMacros = []
-          , -- Mirrors the production env in "Lithon.Codegen.Sdl3.Bindgen":
+          , -- Mirrors the production env in "Lithon.Codegen.Sys.Chain":
             -- without the alias, doxygen leaks @\\threadsafety ...@ verbatim.
             doxygenAliases = [("threadsafety", "\\par Thread safety:^^")]
           , fieldNaming = HB.AddFieldPrefixes

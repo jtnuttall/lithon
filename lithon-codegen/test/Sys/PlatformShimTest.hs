@@ -2,14 +2,14 @@
 
 -- | Pins for the platform shims under the AST-level transform mechanism:
 -- the per-family >= 1-hit invariant and the production shim data itself
--- ('Lithon.Codegen.Sdl3.Bindgen.stubEditsFor' \/ 'textEditsFor'), driven
+-- ('Lithon.Codegen.Sys.Chain.stubEditsFor' \/ 'textEditsFor'), driven
 -- through the REAL pipeline over toy headers that declare the shimmed
 -- symbols. Shim edits legitimately miss individual modules (the types
 -- module carries no wrapper C; call bodies live in @.Safe@\/@.Unsafe@,
 -- address-of bodies in @.FunPtr@), but an edit matching NO module means
 -- the wrapper shape drifted under an hs-bindgen change and a platform
 -- guard would silently vanish — generation must fail instead.
-module Sdl3.PlatformShimTest (
+module Sys.PlatformShimTest (
   unit_linuxStubsRewriteTheFamily,
   unit_mainHandledInsertsDefine,
   unit_shimDriftFails,
@@ -26,7 +26,7 @@ import System.FilePath (takeDirectory, (</>))
 import System.IO.Temp (withSystemTempDirectory)
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Sdl3.Bindgen (stubEditsFor, textEditsFor)
+import Lithon.Codegen.Sys.Chain (stubEditsFor, textEditsFor)
 
 -- | Project a rendered family onto (dotted name, source) pairs — the seam
 -- types deliberately carry no 'Eq'\/'Show'.

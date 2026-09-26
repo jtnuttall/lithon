@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-module Sdl3.VersionsTest where
+module Sys.VersionsTest where
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.FileEmbed (embedFileRelative)
@@ -10,7 +10,7 @@ import Data.Text qualified as T
 import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Sdl3.Abi (
+import Lithon.Codegen.Sys.Abi (
   AbiGrowth (..),
   AbiLayout (..),
   AbiLayoutBefore (..),
@@ -18,7 +18,7 @@ import Lithon.Codegen.Sdl3.Abi (
   AbiSince (..),
   StructOverrides (..),
  )
-import Lithon.Codegen.Sdl3.Versions (
+import Lithon.Codegen.Sys.Versions (
   StructEntry (..),
   VersionsRegistry (..),
   abiOverrides,

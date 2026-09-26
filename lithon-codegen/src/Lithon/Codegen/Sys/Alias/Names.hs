@@ -10,7 +10,7 @@
 -- * Later segments join capitalized (@qsort_r@ -> @qsortR@, @iconv_string@
 --   -> @iconvString@), except digit-led segments, which keep their
 --   underscore (@murmur3_32@ -> @murmur3_32@).
-module Lithon.Codegen.Sdl3.Alias.Names (
+module Lithon.Codegen.Sys.Alias.Names (
   -- * Vocabulary
   Flavor (..),
   Safety (..),
@@ -272,4 +272,3 @@ validVarId t
   | otherwise = Nothing
  where
   identChar c = Char.isAlphaNum c || c == '_' || c == '\''
-

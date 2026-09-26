@@ -16,11 +16,11 @@ import Effectful (runEff)
 import Effectful.Concurrent.Async (runConcurrent)
 import Effectful.Console.ByteString.Lazy (runConsole)
 import Effectful.Environment (runEnvironment)
-import Lithon.Effect.FileSystem (runFileSystem)
 import Effectful.Resource (runResource)
 import Lithon.Effect.ClangEnv
 import Lithon.Effect.Clock (runClock)
 import Lithon.Effect.Error
+import Lithon.Effect.FileSystem (runFileSystem)
 import Lithon.Effect.Log
 import Lithon.Effect.PrettyPrint
 import Lithon.Effect.Temporary (runTemporary)
@@ -28,7 +28,7 @@ import Lithon.Prelude
 import Options.Applicative hiding (ParseError, asum)
 
 import Lithon.Codegen.Backend.Package.Emit (findProjectRoot)
-import Lithon.Codegen.Sdl3 (Sdl3Cmd, runSdl3, sdl3CmdP)
+import Lithon.Codegen.Sys (SysCmd, runSys, sysCmdP)
 import Lithon.Codegen.Vulkan (VulkanCmd, runVulkan, vulkanCmdP)
 
 newtype Opts = Opts
@@ -37,7 +37,7 @@ newtype Opts = Opts
 
 data Cmd
   = CmdVulkan VulkanCmd
-  | CmdSdl3 Sdl3Cmd
+  | CmdSys SysCmd
 
 main :: IO ()
 main = do
@@ -58,11 +58,11 @@ main = do
           CmdVulkan cmd ->
             runErrorDisplay
               $ runVulkan root cmd
-          CmdSdl3 cmd ->
+          CmdSys cmd ->
             runErrorDisplay
               . runClangEnv
               . runErrorDisplay
-              $ runSdl3 root cmd
+              $ runSys root cmd
 
     case res of
       Right () -> pure ()
@@ -92,7 +92,7 @@ optsP =
           <> command
             "sdl3"
             ( info
-                (CmdSdl3 <$> sdl3CmdP)
+                (CmdSys <$> sysCmdP)
                 (progDesc "SDL3 binding generation via hs-bindgen: spec / generate")
             )
       )

@@ -46,7 +46,7 @@
 -- both sides, each under the struct's layout policy: the baked layout at
 -- or above the gate, the recorded pre-growth layout in an @#else@ branch
 -- below it.
-module Lithon.Codegen.Sdl3.Abi (
+module Lithon.Codegen.Sys.Abi (
   AbiDecl (..),
   AbiKind (..),
   AbiField (..),
@@ -109,7 +109,7 @@ data AbiEnumConst = AbiEnumConst
   deriving stock (Eq, Generic, Show)
 
 -- | A typed-constant macro whose probed value the curated layer baked as
--- a pattern synonym (see "Lithon.Codegen.Sdl3.Alias.Constants"). Every
+-- a pattern synonym (see "Lithon.Codegen.Sys.Alias.Constants"). Every
 -- baked value is re-asserted against the consumer's headers, exactly like
 -- enum values.
 data AbiMacroConst = AbiMacroConst
@@ -186,7 +186,7 @@ data AbiDecl = AbiDecl
   deriving stock (Eq, Generic, Show)
 
 -- | Empirical availability overrides for the @>= 3.2.0@ floor, loaded
--- from @sdl3\/versions.json@ ("Lithon.Codegen.Sdl3.Versions"). SDL's
+-- from @sdl3\/versions.json@ ("Lithon.Codegen.Sys.Versions"). SDL's
 -- @\\since@ annotations (and, for members, its \"(added in X.Y.Z)\"
 -- notes) are the default source but lie in both directions and are
 -- often simply absent; every entry here was established by compiling
@@ -307,7 +307,7 @@ memberTypesOf fs =
 -- | The declaration's @\@since@ version, mirroring the vendored haddock
 -- backend's extraction: the first version-shaped token of the doxygen
 -- @\\since@ section ("This function is available since SDL 3.2.0.").
--- Exported for the wrapper version gates ("Lithon.Codegen.Sdl3.Bindgen"),
+-- Exported for the wrapper version gates ("Lithon.Codegen.Sys.Chain"),
 -- which correct it through the same registry as the assert TU.
 declSince :: C.DeclInfo C.Final -> Maybe AbiSince
 declSince info = do

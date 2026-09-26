@@ -17,9 +17,9 @@
 --
 -- The orphan 'HasCodec' instances for 'AbiSince', 'AbiLayout' and
 -- 'AbiLayoutBefore' are deliberate: they are emitter vocabulary
--- ("Lithon.Codegen.Sdl3.Abi") and must not know about serialization;
+-- ("Lithon.Codegen.Sys.Abi") and must not know about serialization;
 -- this module owns the registry format.
-module Lithon.Codegen.Sdl3.Versions (
+module Lithon.Codegen.Sys.Versions (
   VersionsRegistry (..),
   Versioned (..),
   StructEntry (..),
@@ -36,7 +36,7 @@ import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Lithon.Prelude
 
-import Lithon.Codegen.Sdl3.Abi (
+import Lithon.Codegen.Sys.Abi (
   AbiGrowth (..),
   AbiLayout (..),
   AbiLayoutBefore (..),

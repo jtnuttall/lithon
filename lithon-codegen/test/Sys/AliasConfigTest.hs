@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-module Sdl3.AliasConfigTest where
+module Sys.AliasConfigTest where
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.FileEmbed (embedFileRelative)
@@ -10,7 +10,7 @@ import Data.Set qualified as Set
 import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Sdl3.Alias.Config (
+import Lithon.Codegen.Sys.Alias.Config (
   AliasConfig (..),
   FunctionEntry (..),
   NamingRule (..),
@@ -18,7 +18,7 @@ import Lithon.Codegen.Sdl3.Alias.Config (
   decodeAliasConfig,
   validateAliasConfig,
  )
-import Lithon.Codegen.Sdl3.Alias.Names (AliasError (..), Safety (..))
+import Lithon.Codegen.Sys.Alias.Names (AliasError (..), Safety (..))
 
 unit_committedRegistryDecodes :: IO ()
 unit_committedRegistryDecodes = do

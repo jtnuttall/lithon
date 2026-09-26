@@ -7,7 +7,7 @@
 -- tree — no libclang, no SDL headers. Live drift against the environment
 -- is scripts\/check.sh's @sdl3 generate --check@; THIS golden is the
 -- reviewable record of the generated surface's shape.
-module Sdl3.CensusTest (test_sdl3Census) where
+module Sys.CensusTest (test_sdl3Census) where
 
 import Data.Aeson qualified as Aeson
 import Data.ByteString qualified as BS
@@ -25,10 +25,10 @@ import Test.Tasty.Golden (goldenVsStringDiff)
 
 import Lithon.Codegen.Backend.Emit (Manifest (..), manifestFileName)
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
-import Lithon.Codegen.Sdl3.Alias (sysModuleName, sysNamespace)
-import Lithon.Codegen.Sdl3.Alias.Config (AliasConfig (..), FunctionEntry (..), decodeAliasConfig)
-import Lithon.Codegen.Sdl3.Alias.Names (Safety (..))
-import Lithon.Codegen.Sdl3.Bindgen (baseNamespace, sdl3ModuleFor)
+import Lithon.Codegen.Sys.Alias (sysModuleName, sysNamespace)
+import Lithon.Codegen.Sys.Alias.Config (AliasConfig (..), FunctionEntry (..), decodeAliasConfig)
+import Lithon.Codegen.Sys.Alias.Names (Safety (..))
+import Lithon.Codegen.Sys.Chain (baseNamespace, sdl3ModuleFor)
 
 packageDir, specDir :: FilePath
 packageDir = $(stringE =<< makeRelativeToProject "../sdl3-bindgen-sys")

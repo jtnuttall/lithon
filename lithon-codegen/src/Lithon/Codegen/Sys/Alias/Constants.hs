@@ -21,7 +21,7 @@
 -- pattern. The generated @_Static_assert@ layer re-asserts every baked
 -- value on the consumer's platform, so only /grouping/ can ever be wrong,
 -- never a number.
-module Lithon.Codegen.Sdl3.Alias.Constants (
+module Lithon.Codegen.Sys.Alias.Constants (
   -- * Registry model
   ConstantsConfig (..),
   ConstantGroup (..),

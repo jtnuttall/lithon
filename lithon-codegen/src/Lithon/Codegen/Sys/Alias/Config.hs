@@ -14,7 +14,7 @@
 -- JSON via autodocodec, mirroring the Vulkan profile
 -- ("Lithon.Codegen.Vulkan.Curate.Profile"): one codec definition yields the
 -- decoder, the encoder, and field documentation.
-module Lithon.Codegen.Sdl3.Alias.Config (
+module Lithon.Codegen.Sys.Alias.Config (
   AliasConfig (..),
   FunctionEntry (..),
   NamingRule (..),
@@ -42,7 +42,7 @@ import Data.Set qualified as Set
 import Data.Text qualified as T
 import Lithon.Prelude
 
-import Lithon.Codegen.Sdl3.Alias.Names (AliasError (..), Safety (..))
+import Lithon.Codegen.Sys.Alias.Names (AliasError (..), Safety (..))
 
 -- | The alias-layer naming rule. Single-valued today; an enum so the
 -- registry names its rule and the manifest can record it.

@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE StrictData #-}
 
--- | Consistency checks over the distilled ABI ('Lithon.Codegen.Sdl3.Abi'),
+-- | Consistency checks over the distilled ABI ('Lithon.Codegen.Sys.Abi'),
 -- run on every generation before anything is written.
 --
 -- The assertion TU guards each member's @offsetof@ on that member's
@@ -15,7 +15,7 @@
 -- precedent). 'validateAbi' finds every such struct and says exactly what
 -- to record; the registry stays the source of truth for the pre-growth
 -- layout, because the new headers cannot prove the old alignment.
-module Lithon.Codegen.Sdl3.Abi.Validate (
+module Lithon.Codegen.Sys.Abi.Validate (
   AbiProblem (..),
   AbiProblemKind (..),
   GrowthStep (..),
@@ -28,7 +28,7 @@ import Data.List.NonEmpty qualified as NE
 import Data.Text qualified as T
 import Lithon.Prelude
 
-import Lithon.Codegen.Sdl3.Abi (
+import Lithon.Codegen.Sys.Abi (
   AbiDecl (..),
   AbiField (..),
   AbiGrowth (..),

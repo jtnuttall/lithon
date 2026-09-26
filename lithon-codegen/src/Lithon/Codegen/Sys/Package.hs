@@ -7,9 +7,9 @@
 -- 'PackageSpec' — statics, licenses, vendored runtime trees, the
 -- ABI-assertion TU — over the shared packaging backend. The code generator
 -- owns everything in the package; nothing in it is ever edited by hand.
-module Lithon.Codegen.Sdl3.Package (
-  Sdl3PackagingError (..),
-  assembleSdl3Package,
+module Lithon.Codegen.Sys.Package (
+  SysPackagingError (..),
+  assembleSysPackage,
 ) where
 
 import Data.FileEmbed (embedFileRelative)
@@ -34,9 +34,9 @@ import Lithon.Codegen.Backend.Package (PackageSpec (..), RootFiles (..))
 import Lithon.Codegen.Backend.Package qualified as Package
 import Lithon.Codegen.Backend.Package.Assemble (assemblePackage)
 import Lithon.Codegen.Bindgen (HeaderResult (..))
-import Lithon.Codegen.Sdl3.Abi (AbiMacroConst, renderAbiAssertions)
-import Lithon.Codegen.Sdl3.Bindgen (Sdl3Payload (..), mainIncludes)
-import Lithon.Codegen.Sdl3.Bindgen qualified as Bindgen
+import Lithon.Codegen.Sys.Abi (AbiMacroConst, renderAbiAssertions)
+import Lithon.Codegen.Sys.Chain (SysPayload (..), mainIncludes)
+import Lithon.Codegen.Sys.Chain qualified as Bindgen
 
 -- Cheap compile-time sanity check. These are embedded directory tries from 'Data.FileEmbed'.
 do
@@ -68,17 +68,22 @@ cexprRuntimeOut = "runtime-cexpr"
 baseNamespace :: Text
 baseNamespace = Module.hsName Bindgen.baseNamespace
 
-data Sdl3PackagingError
+data SysPackagingError
   = GeneratorEmittedInvalidModuleName Text Text Module.MetaError
   | GeneratorEmittedOutOfTreeModules [Text]
   | AbiAssertionsInvalid Text
   | Assembly Package.PackageAssemblyError
   deriving stock (Show)
 
-instance Display Sdl3PackagingError where
+instance Display SysPackagingError where
   displayBuilder = \case
     GeneratorEmittedInvalidModuleName what name err ->
-      "[" <> from what <> "]: generator emitted invalid module name " <> show name <> ": " <> displayBuilder err
+      "["
+        <> from what
+        <> "]: generator emitted invalid module name "
+        <> show name
+        <> ": "
+        <> displayBuilder err
     GeneratorEmittedOutOfTreeModules mods ->
       "generated code imports vendored-runtime modules outside the"
         <> " expected surface: "
@@ -90,14 +95,14 @@ instance Display Sdl3PackagingError where
 -- Build the SDL3 'PackageSpec' — generated Bindgen modules, the rendered
 -- @SDL3.Sys.*@ alias layer, runtime copies, hs-bindgen facades, and
 -- metadata — and assemble it through the shared backend.
-assembleSdl3Package
+assembleSysPackage
   :: Text
   -> [(Text, Text)]
   -> [AbiMacroConst]
   -- ^ Probed typed-constant values (curated layer), re-asserted in the TU.
-  -> [HeaderResult Sdl3Payload]
-  -> Either Sdl3PackagingError FileTree
-assembleSdl3Package sdlVersion aliasModules macroConsts results = do
+  -> [HeaderResult SysPayload]
+  -> Either SysPackagingError FileTree
+assembleSysPackage sdlVersion aliasModules macroConsts results = do
   generated <- for (concatMap (.modules) results) \m -> do
     meta <- metaFor "generated modules" (HB.moduleNameSegments m)
     pure (meta, m.hsModule.text)
@@ -182,7 +187,7 @@ runtimeImports sources =
 -- Once hs-bindgen releases, this becomes a real dependency and re-exports
 -- from the runtime. Depending on the final export surface of the released hs-bindgen,
 -- there is a good chance that this breaks nothing in downstream code.
-hsBindgenRuntimeReexports :: Set Text -> Either Sdl3PackagingError [(Text, Text)]
+hsBindgenRuntimeReexports :: Set Text -> Either SysPackagingError [(Text, Text)]
 hsBindgenRuntimeReexports census = do
   case Set.toList (Set.filter unexpected census) of
     [] -> pure ()

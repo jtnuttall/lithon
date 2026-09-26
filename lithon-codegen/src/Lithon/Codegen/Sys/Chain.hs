@@ -7,7 +7,7 @@
 -- ("Lithon.Codegen.Bindgen"): the header plan, the invocation environment,
 -- and the visitors — platform shims, version gates, and the finalizer
 -- distilling the alias-layer facts and the ABI assertion inputs.
-module Lithon.Codegen.Sdl3.Bindgen (
+module Lithon.Codegen.Sys.Chain (
   -- * Plan + environment
   baseNamespace,
   mainIncludes,
@@ -16,8 +16,8 @@ module Lithon.Codegen.Sdl3.Bindgen (
   sdl3ModuleFor,
 
   -- * Visitors
-  Sdl3Payload (..),
-  sdl3Visitor,
+  SysPayload (..),
+  sysVisitor,
   platformShims,
   versionGates,
   stubEditsFor,
@@ -42,10 +42,10 @@ import Lithon.Codegen.Bindgen (
   Visitor (..),
   defaultSpecFileName,
  )
-import Lithon.Codegen.Sdl3.Abi (AbiDecl, AbiSince (..), declSince, distillAbi, sdlBaseline)
-import Lithon.Codegen.Sdl3.Alias (FamilyDecls, distillFamily)
-import Lithon.Codegen.Sdl3.Env
-import Lithon.Codegen.Sdl3.Versions (
+import Lithon.Codegen.Sys.Abi (AbiDecl, AbiSince (..), declSince, distillAbi, sdlBaseline)
+import Lithon.Codegen.Sys.Alias (FamilyDecls, distillFamily)
+import Lithon.Codegen.Sys.Env
+import Lithon.Codegen.Sys.Versions (
   PrologueEntry (..),
   TypedefShape (..),
   Versioned (..),
@@ -132,7 +132,7 @@ sdl3Basename path =
 --
 -- - Program slicing stays OFF (the seam's default): the SDL headers are
 -- self-contained, so an unresolved reference will fail loudly.
-sdl3InvocationEnv :: Sdl3Env -> HB.InvocationEnv
+sdl3InvocationEnv :: SysEnv -> HB.InvocationEnv
 sdl3InvocationEnv env =
   HB.InvocationEnv
     { extraIncludeDirs = [env.includeDir]
@@ -148,7 +148,7 @@ sdl3InvocationEnv env =
 
 -- | The SDL3 generation run: the shared invocation environment plus the
 -- prescriptive overrides registry, when present.
-sdl3BindgenOpts :: Sdl3Env -> BindgenOpts
+sdl3BindgenOpts :: SysEnv -> BindgenOpts
 sdl3BindgenOpts env =
   BindgenOpts
     { invocationEnv = sdl3InvocationEnv env
@@ -156,13 +156,13 @@ sdl3BindgenOpts env =
     , packageInfo =
         PackageInfo
           { name = "sdl3-bindgen-sys"
-          , dataDir = env.sdl3SpecDir
+          , dataDir = env.dataDir
           , version = Nothing
           }
     }
 
 -- | The per-header payload SDL3 distills from each fold step.
-data Sdl3Payload = Sdl3Payload
+data SysPayload = SysPayload
   { facts :: FamilyDecls
   -- ^ The alias-layer distillate (function census + translated decls).
   , abi :: [AbiDecl]
@@ -172,8 +172,8 @@ data Sdl3Payload = Sdl3Payload
 -- | The whole SDL3 visitor: platform shims before version gates (gates
 -- match lines the shims may have rewritten — ordering is contract), then
 -- the payload distillation.
-sdl3Visitor :: VersionsRegistry -> Visitor Sdl3Payload
-sdl3Visitor registry =
+sysVisitor :: VersionsRegistry -> Visitor SysPayload
+sysVisitor registry =
   Visitor
     { passes = platformShims <> versionGates registry
     , finalize = \unit arts _rendered -> do
@@ -182,7 +182,7 @@ sdl3Visitor registry =
         -- category — the alias layer's sys modules re-export it only then.
         let hasBaseModule = any ((== Just HB.CType) . (.category)) arts.family
         pure
-          Sdl3Payload
+          SysPayload
             { facts =
                 distillFamily
                   (Module.hsName unit.moduleName)

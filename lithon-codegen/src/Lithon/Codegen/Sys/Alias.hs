@@ -16,7 +16,7 @@
 --   module-qualified reference to the Bindgen name in the right flavor
 --   module, carrying the function's translated signature, per-parameter
 --   docs, and full header Haddock
-module Lithon.Codegen.Sdl3.Alias (
+module Lithon.Codegen.Sys.Alias (
   -- * Per-family distillation (consumed by the bindgen driver)
   FamilyDecls (..),
   CFunction (..),
@@ -53,13 +53,13 @@ import Lithon.HsBindgen.SHs qualified as SHs
 import Lithon.Prelude hiding (group, one)
 import Numeric (showHex)
 
-import Lithon.Codegen.Sdl3.Alias.Config (ValidatedAliasConfig (..))
-import Lithon.Codegen.Sdl3.Alias.Constants (
+import Lithon.Codegen.Sys.Alias.Config (ValidatedAliasConfig (..))
+import Lithon.Codegen.Sys.Alias.Constants (
   Combine (..),
   ConstantGroupPlan (..),
   ConstantMember (..),
  )
-import Lithon.Codegen.Sdl3.Alias.Names (
+import Lithon.Codegen.Sys.Alias.Names (
   AliasError (..),
   Flavor (..),
   MintedAlias (..),

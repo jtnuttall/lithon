@@ -5,7 +5,7 @@
 -- exceptionless flavor surface, and the loud-failure paths (invalid
 -- identifiers, collisions — including the @Safe@-suffix trap — and rename
 -- resolution).
-module Sdl3.AliasNamesTest (
+module Sys.AliasNamesTest (
   unit_normalizeCorpusShapes,
   unit_flavorSurface,
   unit_invalidNamesError,
@@ -18,7 +18,7 @@ import Data.Map.Strict qualified as Map
 import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Sdl3.Alias.Names (
+import Lithon.Codegen.Sys.Alias.Names (
   AliasError (..),
   MintedAlias (..),
   Safety (..),

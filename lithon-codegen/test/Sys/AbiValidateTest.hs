@@ -5,7 +5,7 @@
 -- whose member note gates it (and passing with the golden's overrides),
 -- registry entries that contradict the offsets, and the hand-built
 -- shapes (multi-step, unexplained, non-monotone, unions).
-module Sdl3.AbiValidateTest (
+module Sys.AbiValidateTest (
   unit_parseSinceProse,
   unit_addedInSinceProse,
   unit_validateRejectsUnrecordedGrowth,
@@ -23,7 +23,7 @@ import Data.Text qualified as T
 import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Sdl3.Abi (
+import Lithon.Codegen.Sys.Abi (
   AbiDecl (..),
   AbiField (..),
   AbiGrowth (..),
@@ -37,13 +37,13 @@ import Lithon.Codegen.Sdl3.Abi (
   parseSince,
   versionToken,
  )
-import Lithon.Codegen.Sdl3.Abi.Validate (
+import Lithon.Codegen.Sys.Abi.Validate (
   AbiProblem (..),
   AbiProblemKind (..),
   GrowthStep (..),
   validateAbi,
  )
-import Sdl3.AbiRenderTest (toyAbi, toyOverrides)
+import Sys.AbiRenderTest (toyAbi, toyOverrides)
 
 v :: Int -> Int -> Int -> AbiSince
 v major minor patch = AbiSince{major, minor, patch}

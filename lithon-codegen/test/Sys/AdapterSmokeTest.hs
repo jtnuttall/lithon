@@ -12,7 +12,7 @@
 -- a struct BY VALUE so the userland-CAPI wrapper path (inline
 -- @addCSource@ Template Haskell splice) is exercised, not just plain
 -- foreign imports.
-module Sdl3.AdapterSmokeTest (
+module Sys.AdapterSmokeTest (
   unit_adapterSmoke,
 ) where
 
