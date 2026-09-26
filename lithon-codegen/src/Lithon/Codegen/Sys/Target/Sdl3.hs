@@ -64,7 +64,7 @@ sdl3 =
           }
     , versioning =
         VersionScheme
-          { arity = 3
+          { arity = sdlArity
           , -- The oldest SDL with a stable ABI.
             baseline = mkVersion (3 :| [2, 0])
           , atLeast = \v -> "SDL_VERSION_ATLEAST(" <> versionArgs v <> ")"
@@ -72,8 +72,8 @@ sdl3 =
           , guardIncludes = ["SDL_version.h"]
           , -- SDL states availability in each declaration's doxygen \since
             -- and in a late member's "(added in [SDL] X.Y.Z)" note.
-            declSince = Doc.doxygenSince 3
-          , fieldSince = Doc.addedInNote 3 ["sdl"]
+            declSince = Doc.doxygenSince sdlArity
+          , fieldSince = Doc.addedInNote sdlArity ["sdl"]
           }
     , -- The gated stub's error channel; per-header TUs do not reach it on
       -- their own at 3.2 (SDL_cpuinfo.h has no transitive SDL_error.h
@@ -115,6 +115,10 @@ sdl3 =
           , abiBanner
           }
     }
+
+-- | SDL versions are MAJOR.MINOR.PATCH, in the registry and in the docs.
+sdlArity :: Int
+sdlArity = 3
 
 excludedHeaders :: Set FilePath
 excludedHeaders = sdlMain <> sdlInternal <> egl <> gl

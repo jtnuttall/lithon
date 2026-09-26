@@ -108,10 +108,11 @@ import Lithon.Codegen.Sys.Alias.Constants (
 import Lithon.Codegen.Sys.Alias.Names (AliasError)
 import Lithon.Codegen.Sys.Chain (
   SysPayload (..),
+  UnusedStubReturn (..),
   bindgenOpts,
   headerPlan,
   sysVisitor,
-  ungatedStubReturns,
+  unusedStubReturns,
  )
 import Lithon.Codegen.Sys.Env (
   Registry (..),
@@ -153,8 +154,8 @@ data SysError
   | -- | The versions registry to record the fixes in, and the problems.
     AbiValidationFailed FilePath (Errors AbiProblem)
   | -- | The versions registry, and the decls whose @stub-return@ no
-    -- header's gate uses.
-    StubReturnUngated FilePath [Text]
+    -- gated stub returns (and why).
+    StubReturnUnused FilePath [(Text, UnusedStubReturn)]
   deriving stock (Show)
 
 instance From (Errors AliasError) SysError where
@@ -200,12 +201,17 @@ instance Display SysError where
         <> from registry
         <> " and rerun:\n\n"
         <> intercalateTB "\n\n" (map displayBuilder (toList errs))
-    StubReturnUngated registry names ->
-      "stub-return recorded in "
+    StubReturnUnused registry unused ->
+      "unused stub-return in "
         <> from registry
-        <> " for decls no header gates (their availability is at or below the baseline, or they"
-        <> " are not bound functions); nothing was written. Remove it or correct the since:"
-        <> foldMap (\name -> "\n  - " <> from name) names
+        <> " (no gated stub returns it); nothing was written:"
+        <> foldMap (\(name, why) -> "\n  - " <> from name <> ": " <> unusedStubReturn why) unused
+   where
+    unusedStubReturn = \case
+      NotGated ->
+        "no header gates it (its availability is at or below the baseline, or it is not a bound"
+          <> " function); remove the stub-return or correct the since"
+      ReturnsVoid -> "the function returns void, so its stub returns nothing; remove the stub-return"
 
 data SysCmd
   = CmdSpec SpecOpts
@@ -323,9 +329,9 @@ validateChain target registry results = do
     . first (AbiValidationFailed library.registry)
     . validationToEither
     $ validateAbi target.versioning.baseline library (concatMap (.payload.abi) results)
-  case ungatedStubReturns registry (map (.payload) results) of
+  case unusedStubReturns registry (map (.payload) results) of
     [] -> pass
-    names -> throwError (StubReturnUngated library.registry names)
+    unused -> throwError (StubReturnUnused library.registry unused)
 
 -- | Load, validate, plan, and render the target's curated layer.
 --

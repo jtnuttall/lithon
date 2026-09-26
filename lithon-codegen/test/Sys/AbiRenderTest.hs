@@ -435,7 +435,9 @@ test_abiRenderToy2Golden =
 unit_abiToy2Compiles :: IO ()
 unit_abiToy2Compiles =
   findExecutable "cc" >>= \case
-    Nothing -> pass
+    Nothing ->
+      putStrLn @Text
+        "TOY2 ABI COMPILE SKIPPED: no cc on PATH; run inside the dev shell for the real check"
     Just cc -> withToy2Abi \root tu -> do
       let file = root </> "abi_assertions.c"
       TIO.writeFile file tu

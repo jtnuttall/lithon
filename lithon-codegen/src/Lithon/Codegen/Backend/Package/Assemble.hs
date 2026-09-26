@@ -2,8 +2,8 @@
 
 -- | Assemble a 'PackageSpec' into the full file tree of a generated package:
 -- root files and licenses at the root, the module tree under the spec's
--- source dir, extras and pre-rooted embedded trees merged with cross-tree
--- duplicate detection.
+-- source dir, extras and pre-rooted embedded trees, each tree checked for
+-- duplicate paths and then merged with cross-tree duplicate detection.
 module Lithon.Codegen.Backend.Package.Assemble (
   assemblePackage,
   srcFilePairs,
@@ -32,12 +32,15 @@ assemblePackage spec = do
     first (GeneratorOutputInvalid "modules") $ tryFrom (srcFilePairs spec.srcDir spec.modules)
   extras :: FileTree <-
     first (GeneratorOutputInvalid "extra files") $ tryFrom spec.extraFiles
-  let rootFiles =
-        FileTree.fromUniqueList
-          $ [ ("package.yaml", spec.root.packageYaml)
-            , ("README.md", spec.root.readme)
-            , ("CHANGELOG.md", spec.root.changelog)
-            , ("LICENSE", spec.root.license)
-            ]
-          <> spec.extraLicenses
+  -- A license staged under a root file's name (or twice) is a collision,
+  -- never a silent last-wins overwrite.
+  rootFiles :: FileTree <-
+    first from
+      . FileTree.fromList
+      $ [ ("package.yaml", spec.root.packageYaml)
+        , ("README.md", spec.root.readme)
+        , ("CHANGELOG.md", spec.root.changelog)
+        , ("LICENSE", spec.root.license)
+        ]
+      <> spec.extraLicenses
   first from $ FileTree.cata (rootFiles :| src : extras : spec.extraTrees)

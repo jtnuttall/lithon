@@ -5,11 +5,13 @@
 -- @data\/\<key\>\/static\/@: the committed SDL set loads with its one
 -- license, every file beyond the three required ones is a license staged
 -- by name, and a malformed directory fails loudly (a missing required
--- file, a subdirectory, a dotfile, no directory at all).
+-- file, a subdirectory, a dotfile, no directory at all, a file that is
+-- not a @LICENSE_\<name\>@, a license name the generator stages itself).
 module Sys.StaticsTest (
   unit_sdl3StaticsLoad,
   unit_staticsLicensesAreTheRest,
   unit_staticsRejectMalformed,
+  unit_staticsRejectNonLicenses,
 ) where
 
 import Data.FileEmbed (makeRelativeToProject)
@@ -29,6 +31,7 @@ import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
 import Lithon.Codegen.Sys.Env (
   PackageStatics (..),
+  StaticRefusal (..),
   SysEnv (..),
   SysPaths (..),
   SysResolutionError (..),
@@ -95,14 +98,14 @@ unit_staticsRejectMalformed = do
       Left (StaticMissing path) -> takeFileName path @?= "README.md"
       other -> assertFailure ("expected README.md missing, got " <> shown other)
   withStatics [] \dir -> do
-    createDirectory (dir </> "extra")
+    createDirectory (dir </> "LICENSE_extra")
     statics dir >>= \case
-      Left (StaticUnexpected path) -> takeFileName path @?= "extra"
+      Left (StaticUnexpected path refusal) -> (takeFileName path, refusal) @?= ("LICENSE_extra", NotAFile)
       other -> assertFailure ("expected the subdirectory rejected, got " <> shown other)
   withStatics [(".DS_Store", "")] \dir -> do
     loaded <- statics dir
     case loaded of
-      Left (StaticUnexpected path) -> takeFileName path @?= ".DS_Store"
+      Left (StaticUnexpected path refusal) -> (takeFileName path, refusal) @?= (".DS_Store", NotAFile)
       other -> assertFailure ("expected the dotfile rejected, got " <> shown other)
   withSystemTempDirectory "lithon-statics" \dir -> do
     loaded <- statics (dir </> "static")
@@ -111,3 +114,29 @@ unit_staticsRejectMalformed = do
       other -> assertFailure ("expected the directory missing, got " <> shown other)
  where
   shown = either show (const "the statics loaded")
+
+-- | Every file beyond the three required ones is staged as a license under
+-- its own name, so a stray file is refused rather than shipped, and so is
+-- a name the generator stages itself (it would collide at the package
+-- root); the message says which rule the name broke.
+unit_staticsRejectNonLicenses :: IO ()
+unit_staticsRejectNonLicenses = do
+  refused "README.md~" NotALicense "must be named LICENSE_<name>"
+  refused "NOTICE" NotALicense "must be named LICENSE_<name>"
+  refused "LICENSE_" NotALicense "must be named LICENSE_<name>"
+  refused
+    "LICENSE"
+    ReservedLicense
+    "stages LICENSE, LICENSE_hs-bindgen-runtime, LICENSE_c-expr-runtime"
+  refused "LICENSE_hs-bindgen-runtime" ReservedLicense "in every package itself"
+  refused "LICENSE_c-expr-runtime" ReservedLicense "in every package itself"
+ where
+  refused name why needle = withStatics [(name, "x\n")] \dir ->
+    statics dir >>= \case
+      Left err@(StaticUnexpected path refusal) -> do
+        (takeFileName path, refusal) @?= (name, why)
+        assertBool
+          (name <> ": the message says why:\n" <> toString (display err))
+          (needle `T.isInfixOf` display err)
+      Left err -> assertFailure (name <> ": expected it refused, got " <> toString (display err))
+      Right _ -> assertFailure (name <> ": expected it refused, but the statics loaded")

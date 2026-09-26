@@ -16,11 +16,14 @@
 --   blocks), pinned by golden and — when a C compiler is on the path —
 --   compiled against toy headers declaring what each release declares, at
 --   the newest release, between the gates, and at the baseline.
+--
+-- A @stub-return@ no gated stub returns (on an ungated decl, or on a void
+-- function) is reported as dead configuration.
 module Sys.GateTest (
   unit_sdl3GateShapes,
   test_toy2GateGolden,
   unit_toy2GatesCompile,
-  unit_ungatedStubReturnsFlagged,
+  unit_unusedStubReturnsFlagged,
 ) where
 
 import Data.ByteString.Lazy qualified as LBS
@@ -40,7 +43,14 @@ import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Bindgen (HeaderUnit (..), Passes (..), Visitor (..), defaultSpecFileName)
-import Lithon.Codegen.Sys.Chain (SysPayload (..), moduleFor, sysVisitor, ungatedStubReturns)
+import Lithon.Codegen.Sys.Chain (
+  GatedDecl (..),
+  SysPayload (..),
+  UnusedStubReturn (..),
+  moduleFor,
+  sysVisitor,
+  unusedStubReturns,
+ )
 import Lithon.Codegen.Sys.Target (SysTarget (..), VersionScheme (..), includeArg)
 import Lithon.Codegen.Sys.Target.Sdl3 (sdl3)
 import Lithon.Codegen.Sys.Versions (VersionsRegistry, decodeVersionsRegistry)
@@ -179,12 +189,12 @@ unit_sdl3GateShapes = do
   gated <-
     withToyRoot [ToyHeader{include = "SDL3/SDL_toy_gate.h", source = sdlHeader}] \root ->
       gateFamily sdl3 registry "lithon-gate-sdl3" root "SDL_toy_gate.h"
-  gated.payload.gated
-    @?= [ "SDL_ToyGatedCall"
-        , "SDL_ToyGatedNullary"
-        , "SDL_ToyGatedVoid"
-        , "SDL_ToyGatedVoidNullary"
-        , "SDL_ToyCorrected"
+  [(decl.name, decl.returnsVoid) | decl <- gated.payload.gated]
+    @?= [ ("SDL_ToyGatedCall", False)
+        , ("SDL_ToyGatedNullary", False)
+        , ("SDL_ToyGatedVoid", True)
+        , ("SDL_ToyGatedVoidNullary", True)
+        , ("SDL_ToyCorrected", False)
         ]
   calls <- wrappersOf gated "SDL3.Sys.Bindgen.ToyGate.Unsafe"
   addresses <- wrappersOf gated "SDL3.Sys.Bindgen.ToyGate.FunPtr"
@@ -343,7 +353,7 @@ test_toy2GateGolden =
         . LBS.fromStrict
         . TE.encodeUtf8
         . T.unlines
-        $ ("/* gated: " <> T.unwords gated.payload.gated <> " */")
+        $ ("/* gated: " <> T.unwords (map (.name) gated.payload.gated) <> " */")
         : concat
           [ ("/* ---- " <> name <> " ---- */") : c
           | (name, c) <- gated.wrappers
@@ -357,7 +367,9 @@ test_toy2GateGolden =
 unit_toy2GatesCompile :: IO ()
 unit_toy2GatesCompile =
   findExecutable "cc" >>= \case
-    Nothing -> pass
+    Nothing ->
+      putStrLn @Text
+        "TOY2 GATE COMPILE SKIPPED: no cc on PATH; run inside the dev shell for the real check"
     Just cc -> withToy2Gated \root gated -> do
       length gated.wrappers @?= 3
       for_ gated.wrappers \(name, c) -> do
@@ -373,21 +385,24 @@ unit_toy2GatesCompile =
             (toString name <> " at " <> maybe "the newest release" toString release <> ":\n" <> err)
             (code == ExitSuccess)
 
--- | A @stub-return@ is only meaningful on a gated function; one on a
--- baseline function or on a non-function is dead configuration.
-unit_ungatedStubReturnsFlagged :: IO ()
-unit_ungatedStubReturnsFlagged = do
+-- | A @stub-return@ is only meaningful on a gated function that returns a
+-- value; one on a baseline function, on a non-function, or on a gated
+-- void function is dead configuration.
+unit_unusedStubReturnsFlagged :: IO ()
+unit_unusedStubReturnsFlagged = do
   stray <-
     registryAt
       2
       "{\"decls\": {\
       \  \"toy_remove\": {\"since\": \"2.1\", \"stub-return\": \"TOY_ERROR_UNSUPPORTED\"},\
       \  \"toy_open\": {\"since\": \"2.0\", \"stub-return\": \"-1\"},\
-      \  \"toy_error\": {\"since\": \"2.1\", \"stub-return\": \"0\"}}}"
+      \  \"toy_error\": {\"since\": \"2.1\", \"stub-return\": \"0\"},\
+      \  \"toy_flush\": {\"since\": \"2.2\", \"stub-return\": \"0\"}}}"
   registry <- registryAt 2 toyRegistry
   withToy2Gated \_root gated -> do
-    ungatedStubReturns registry [gated.payload] @?= []
-    ungatedStubReturns stray [gated.payload] @?= ["toy_error", "toy_open"]
+    unusedStubReturns registry [gated.payload] @?= []
+    unusedStubReturns stray [gated.payload]
+      @?= [("toy_error", NotGated), ("toy_flush", ReturnsVoid), ("toy_open", NotGated)]
 
 {-------------------------------------------------------------------------------
   Line matching

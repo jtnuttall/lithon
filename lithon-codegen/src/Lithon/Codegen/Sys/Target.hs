@@ -88,7 +88,8 @@ data SysTarget = SysTarget
   , versioning :: VersionScheme
   , gateStubs :: GateStubs
   , shims :: Passes
-  -- ^ Target-owned edits, composed before the generic version gates.
+  -- ^ Target-owned edits, composed before the retype prologue and the
+  -- version gates.
   , widthTypedefs :: Maybe WidthTypedefs
   , docs :: DocHooks
   , prose :: Prose
@@ -137,7 +138,7 @@ data VersionScheme = VersionScheme
   -- target's to get right).
   , guardIncludes :: [FilePath]
   -- ^ Basenames declaring the version macros, prepended to gated
-  -- wrappers.
+  -- wrappers; they also head every retype prologue.
   , declSince :: C.DeclInfo C.Final -> Maybe Version
   -- ^ A declaration's documented availability, if the docs state one.
   , fieldSince :: C.FieldInfo C.Final -> Maybe Version

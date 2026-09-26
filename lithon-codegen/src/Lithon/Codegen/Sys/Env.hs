@@ -5,6 +5,7 @@
 
 module Lithon.Codegen.Sys.Env (
   SysResolutionError (..),
+  StaticRefusal (..),
   Registry (..),
   registryFile,
   SysEnv (..),
@@ -16,11 +17,13 @@ module Lithon.Codegen.Sys.Env (
   -- * Package statics
   PackageStatics (..),
   loadStatics,
+  reservedLicenses,
 ) where
 
 import Control.Monad (join)
 import Data.Aeson qualified as A
 import Data.HashMap.Strict qualified as HM
+import Data.List qualified as L
 import Effectful
 import Effectful.Dispatch.Dynamic
 import Effectful.Error.Dynamic
@@ -69,12 +72,23 @@ data SysResolutionError
   | RegistryMissing Registry FilePath
   | -- | A required file of @static\/@ is absent.
     StaticMissing FilePath
-  | -- | @static\/@ holds something it may not (a directory, a dotfile).
-    StaticUnexpected FilePath
+  | -- | @static\/@ holds something it may not: the entry, and why.
+    StaticUnexpected FilePath StaticRefusal
   | -- | The target record itself is malformed (its key, the problems).
     TargetInvalid Text [Text]
   | DataDirUnresolved DataDirError
   deriving stock (Generic, Show)
+
+-- | Why 'loadStatics' refuses an entry of @static\/@.
+data StaticRefusal
+  = -- | A directory or a dotfile.
+    NotAFile
+  | -- | A file other than the three required ones that is not named
+    -- @LICENSE_\<name\>@: every such file is staged as a license.
+    NotALicense
+  | -- | One of the 'reservedLicenses', which the generator stages itself.
+    ReservedLicense
+  deriving stock (Eq, Generic, Show)
 
 instance From DataDirError SysResolutionError where
   from = DataDirUnresolved
@@ -110,10 +124,18 @@ instance Display SysResolutionError where
       "Could not find the package static "
         <> from path
         <> " (static/ needs package.yaml, README.md, and CHANGELOG.md)"
-    StaticUnexpected path ->
-      "Unexpected package static "
-        <> from path
-        <> " (static/ holds package.yaml, README.md, CHANGELOG.md, and license files, nothing else)"
+    StaticUnexpected path refusal ->
+      "Unexpected package static " <> from path <> case refusal of
+        NotAFile ->
+          " (static/ holds package.yaml, README.md, CHANGELOG.md, and LICENSE_<name> files, nothing"
+            <> " else: no directories, no dotfiles)"
+        NotALicense ->
+          " (every file in static/ besides package.yaml, README.md, and CHANGELOG.md is staged as a"
+            <> " license under its own name, so it must be named LICENSE_<name>, like LICENSE_SDL)"
+        ReservedLicense ->
+          " (the generator stages "
+            <> intercalateTB ", " (map from reservedLicenses)
+            <> " in every package itself; name the library's license LICENSE_<name>)"
     TargetInvalid key problems ->
       "target "
         <> from key
@@ -231,8 +253,10 @@ data PackageStatics = PackageStatics
 -- | Read the package statics from @data\/\<key\>\/static\/@ (generation
 -- only; @spec@ never needs them): @package.yaml@, @README.md@, and
 -- @CHANGELOG.md@ are required, every other file is a license staged
--- verbatim at the package root under its own name, and a directory or a
--- dotfile is an error rather than a guess.
+-- verbatim at the package root under its own name, which must be
+-- @LICENSE_\<name\>@ and not one of the 'reservedLicenses'. Anything
+-- else (a directory, a dotfile, an editor's backup) is an error rather
+-- than a guess.
 loadStatics
   :: (FileSystem :> es, Log :> es, Error SysResolutionError :> es)
   => SysTarget -> SysEnv -> Eff es PackageStatics
@@ -241,18 +265,32 @@ loadStatics target env = do
   entries <- sort <$> listDirectory dir
   for_ entries \entry -> do
     isDirectory <- doesDirectoryExist (dir </> entry)
-    when (isDirectory || "." `isPrefixOf` entry) $ throwError (StaticUnexpected (dir </> entry))
+    whenJust (refusal isDirectory entry) (throwError . StaticUnexpected (dir </> entry))
   packageYaml <- required "package.yaml"
   readme <- required "README.md"
   changelog <- required "CHANGELOG.md"
   licenses <-
-    for [entry | entry <- entries, entry `notElem` ["package.yaml", "README.md", "CHANGELOG.md"]] \entry ->
+    for [entry | entry <- entries, entry `notElem` requiredStatics] \entry ->
       (entry,) <$> readText (dir </> entry)
   logInfo $ "package statics" :# ["target" .= target.key, "licenses" .= map fst licenses]
   pure PackageStatics{packageYaml, readme, changelog, licenses}
  where
   dir = env.paths.static
+  requiredStatics = ["package.yaml", "README.md", "CHANGELOG.md"]
+  refusal isDirectory entry
+    | isDirectory || "." `isPrefixOf` entry = Just NotAFile
+    | entry `elem` requiredStatics = Nothing
+    | entry `elem` reservedLicenses = Just ReservedLicense
+    | Just name <- L.stripPrefix "LICENSE_" entry, not (null name) = Nothing
+    | otherwise = Just NotALicense
   required name = do
     assertFileExists (dir </> name) StaticMissing
     readText (dir </> name)
   readText path = decodeUtf8 <$> EBS.readFile path
+
+-- | The root license files the generator stages in every package itself:
+-- lithon's own (@LICENSE@, "Lithon.Codegen.Backend.Package.RootFiles")
+-- and the vendored runtimes' ("Lithon.Codegen.Sys.Package"). A static by
+-- one of these names would collide with it.
+reservedLicenses :: [FilePath]
+reservedLicenses = ["LICENSE", "LICENSE_hs-bindgen-runtime", "LICENSE_c-expr-runtime"]

@@ -25,12 +25,13 @@
   `LITHON_ABI_EXACT` (the `sdl3-bindgen-sys` cabal flag
   `abi-assertions-exact`), so a maintainer build asserts every `sizeof`
   exactly.
-- Tests: `Sdl3.VersionsTest` (registry codec) and an extended
+- Tests: `Sys.VersionsTest` (registry codec) and an extended
   `abi-toy-assertions` golden covering both policies, both override
   directions, and the pre-growth branch.
 - `versions.json`: `decls.<fn>.stub-return`, the C expression a gated
   wrapper returns below its gate (default `0`; the parameters are
-  `arg1`…`argN`). A `stub-return` on a decl no header gates is an error.
+  `arg1`…`argN`). A `stub-return` on a decl no header gates, or on a void
+  function, is an error.
 
 ### Changed
 
@@ -44,7 +45,8 @@
   aliased C type as C spells it (`uint32` is now `Uint32`).
 - Package statics are read from `data/<key>/static/` at run time:
   `package.yaml`, `README.md`, `CHANGELOG.md`, and every other file as a
-  license under its own name (`LICENSE_SDL3` moved to
+  license under its own name, which must be `LICENSE_<name>` and not one the
+  generator stages itself (`LICENSE_SDL3` moved to
   `data/sdl3/static/LICENSE_SDL`).
 - Manifests record the library version as `libraryVersion` (was
   `sdlVersion`).

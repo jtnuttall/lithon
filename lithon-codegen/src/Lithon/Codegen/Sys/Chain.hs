@@ -18,13 +18,16 @@ module Lithon.Codegen.Sys.Chain (
 
   -- * Visitors
   SysPayload (..),
+  GatedDecl (..),
   sysVisitor,
-  ungatedStubReturns,
+
+  -- * Registry checks
+  UnusedStubReturn (..),
+  unusedStubReturns,
 ) where
 
 import Data.List qualified as L
 import Data.Map.Strict qualified as Map
-import Data.Set qualified as Set
 import Data.Text qualified as T
 import Lithon.HsBindgen qualified as HB
 import Lithon.HsBindgen.C qualified as C
@@ -130,10 +133,20 @@ data SysPayload = SysPayload
   -- ^ The alias-layer distillate (function census + translated decls).
   , abi :: [AbiDecl]
   -- ^ The layout distillate feeding the ABI assertion TU.
-  , gated :: [Text]
-  -- ^ The C names of the functions whose wrappers the version gates
-  -- guard, header declaration order.
+  , gated :: [GatedDecl]
+  -- ^ The functions whose wrappers the version gates guard, header
+  -- declaration order.
   }
+
+-- | A function the version gates guard, as the registry checks see it.
+data GatedDecl = GatedDecl
+  { name :: Text
+  -- ^ Its C name.
+  , returnsVoid :: Bool
+  -- ^ Its call wrappers return nothing, so below the gate its stub
+  -- returns nothing either.
+  }
+  deriving stock (Eq, Show)
 
 -- | The whole visitor: the target's shims, then the retype prologue, then
 -- the version gates (gates match lines the shims may have rewritten —
@@ -158,22 +171,36 @@ sysVisitor target registry =
                   arts.hsDecls
                   arts.cDecls
             , abi
-            , gated = map (.name) (gatedFunctions target registry arts.cDecls)
+            , gated =
+                [ GatedDecl{name = fn.name, returnsVoid = fn.returnsVoid}
+                | fn <- gatedFunctions target registry arts.cDecls
+                ]
             }
     }
 
--- | The registry's @stub-return@ entries naming a decl no header gated
--- (at or below the baseline, or not a bound function): dead
--- configuration, reported rather than ignored.
-ungatedStubReturns :: VersionsRegistry -> [SysPayload] -> [Text]
-ungatedStubReturns registry payloads =
-  [ name
+-- | Why a registry @stub-return@ is dead configuration.
+data UnusedStubReturn
+  = -- | No header gates the decl: its availability is at or below the
+    -- baseline, or it is not a bound function.
+    NotGated
+  | -- | The function is gated, but it returns void: its stubs return
+    -- nothing.
+    ReturnsVoid
+  deriving stock (Eq, Show)
+
+-- | The registry's @stub-return@ entries no gated stub returns, by name:
+-- dead configuration, reported rather than ignored.
+unusedStubReturns :: VersionsRegistry -> [SysPayload] -> [(Text, UnusedStubReturn)]
+unusedStubReturns registry payloads =
+  [ (name, unused)
   | (name, entry) <- Map.toAscList registry.decls
   , isJust entry.stubReturn
-  , name `Set.notMember` gated
+  , unused <- case Map.lookup name gated of
+      Nothing -> [NotGated]
+      Just decl -> [ReturnsVoid | decl.returnsVoid]
   ]
  where
-  gated = Set.fromList (concatMap (.gated) payloads)
+  gated = Map.fromList [(decl.name, decl) | payload <- payloads, decl <- payload.gated]
 
 -- | A function whose registry-corrected availability is later than the
 -- target's baseline.
@@ -183,11 +210,22 @@ data GatedFunction = GatedFunction
   , params :: Int
   , stubReturn :: Maybe Text
   -- ^ The registry's @stub-return@, if any.
+  , returnsVoid :: Bool
+  -- ^ Its result type is @void@: hs-bindgen's own test for a call
+  -- wrapper that returns nothing.
   }
 
 gatedFunctions :: SysTarget -> VersionsRegistry -> [C.Decl l C.Final] -> [GatedFunction]
 gatedFunctions target registry cDecls =
-  [ GatedFunction{name, since, params = length fn.args, stubReturn = entry >>= (.stubReturn)}
+  [ GatedFunction
+      { name
+      , since
+      , params = length fn.args
+      , stubReturn = entry >>= (.stubReturn)
+      , returnsVoid = case fn.res of
+          C.TypeVoid -> True
+          _nonVoid -> False
+      }
   | decl <- cDecls
   , let name = decl.info.id.cName.name.text
         entry = Map.lookup name registry.decls

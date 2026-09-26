@@ -12,7 +12,7 @@
 -- 3.2.4) and is absent entirely at member granularity (enum constants,
 -- struct fields), when the library documents it at all. Every entry in
 -- the registry was established by compiling the generated C against the
--- real release-header matrix (SDL: 3.2.0 through 3.4.2) — never by
+-- real release-header matrix (SDL: 3.2.0 through 3.4.16) — never by
 -- trusting documentation. The registry is the deliberate, reviewable
 -- record of those corrections, exactly like @aliases.json@ records flavor
 -- decisions.
@@ -67,8 +67,9 @@ data Versioned = Versioned
 -- library defines at the baseline, or a polyfill over the wrapper's
 -- parameters, which are named @arg1@ … @argN@ in declaration order. A
 -- void function's stub returns nothing, and a FunPtr address getter's
--- always returns a null pointer. A @stub-return@ on a decl that no
--- header gates is a hard error ('Lithon.Codegen.Sys.Chain.SysPayload').
+-- always returns a null pointer. A @stub-return@ no gated stub returns —
+-- on a decl that no header gates, or on a void function — is a hard
+-- error ('Lithon.Codegen.Sys.Chain.unusedStubReturns').
 data DeclEntry = DeclEntry
   { since :: Version
   , stubReturn :: Maybe Text
@@ -111,11 +112,14 @@ data PrologueEntry = PrologueEntry
   -- versions below it.
   , shape :: ShapeSpec
   , headers :: [FilePath]
-  -- ^ The wrapper TUs (by header) whose signatures reference this name
-  -- OUTSIDE version-gated stubs — the retype class: functions that exist
-  -- at 3.2 but whose 3.4 signatures use a newer type name. Gated stubs
-  -- carry their own prologue; these headers additionally get a
-  -- family-wide one.
+  -- ^ The headers (by basename) whose wrapper TUs name this type: list a
+  -- header whenever ANY wrapper in it names the type, gated or not — the
+  -- retype class (SDL: functions that exist at 3.2.0 but whose 3.4.0
+  -- signatures use a newer type name) as well as version-gated
+  -- functions. The stand-ins come only from this family-wide prologue; a
+  -- gated stub's own prologue carries includes, never typedefs. A header
+  -- whose wrappers name none of the types listed for it fails
+  -- generation.
   , note :: Maybe Text
   }
   deriving stock (Eq, Generic, Show)

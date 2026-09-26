@@ -6,15 +6,16 @@
 --
 -- The assertion TU guards each member's @offsetof@ on that member's
 -- availability, but a struct's @sizeof@\/@_Alignof@ asserts are guarded
--- only by a registry growth gate ('AbiGrowth'). A member SDL appended in
--- a later release therefore needs both: its own gate (from the registry
--- or its \"(added in X.Y.Z)\" note) /and/ a recorded pre-growth layout,
--- or the baked @sizeof@ is asserted unconditionally and the package
--- stops compiling on every SDL older than the one it was generated from
--- (SDL 3.4.16 appending @pen_state@ to @SDL_PenProximityEvent@ was the
--- precedent). 'validateAbi' finds every such struct and says exactly what
--- to record; the registry stays the source of truth for the pre-growth
--- layout, because the new headers cannot prove the old alignment.
+-- only by a registry growth gate ('AbiGrowth'). A member the library
+-- appended in a later release therefore needs both: its own gate (from
+-- the registry or its documented availability, like SDL's \"(added in
+-- X.Y.Z)\" note) /and/ a recorded pre-growth layout, or the baked
+-- @sizeof@ is asserted unconditionally and the package stops compiling
+-- on every release older than the one it was generated from (SDL 3.4.16
+-- appending @pen_state@ to @SDL_PenProximityEvent@ was the precedent).
+-- 'validateAbi' finds every such struct and says exactly what to record;
+-- the registry stays the source of truth for the pre-growth layout,
+-- because the new headers cannot prove the old alignment.
 module Lithon.Codegen.Sys.Abi.Validate (
   LibraryRef (..),
   AbiProblem (..),
@@ -53,7 +54,8 @@ data GrowthStep = GrowthStep
 
 data AbiProblemKind
   = -- | Appended members are gated but no growth gate is recorded: the
-    -- baked @sizeof@ would be asserted on every SDL.
+    -- baked @sizeof@ would be asserted on every release of the library,
+    -- the older ones included.
     GrowthUnrecorded GrowthStep
   | -- | A growth gate is recorded but disagrees with the baked offsets;
     -- the text says how.
@@ -63,7 +65,7 @@ data AbiProblemKind
     GrowthMultiStep (NonEmpty GrowthStep)
   | -- | A growth gate is recorded but no trailing member is gated above
     -- the struct's floor: the appended members' offsets would be asserted
-    -- on every SDL.
+    -- on every release of the library, the older ones included.
     GrowthUnexplained AbiGrowth
   | -- | The gated trailing members are not in non-decreasing version
     -- order, which no append sequence can produce.
