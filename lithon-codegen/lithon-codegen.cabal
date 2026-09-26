@@ -57,25 +57,25 @@ library
       Lithon.Codegen.Backend.Package
       Lithon.Codegen.Backend.Package.Assemble
       Lithon.Codegen.Backend.Package.Emit
+      Lithon.Codegen.Bindgen
+      Lithon.Codegen.Bindgen.Abi
+      Lithon.Codegen.Bindgen.Abi.Validate
+      Lithon.Codegen.Bindgen.Alias
+      Lithon.Codegen.Bindgen.Alias.Config
+      Lithon.Codegen.Bindgen.Alias.Constants
+      Lithon.Codegen.Bindgen.Alias.Names
+      Lithon.Codegen.Bindgen.Chain
       Lithon.Codegen.Bindgen.Driver
+      Lithon.Codegen.Bindgen.Env
+      Lithon.Codegen.Bindgen.Package
+      Lithon.Codegen.Bindgen.Target
+      Lithon.Codegen.Bindgen.Target.Mpv
+      Lithon.Codegen.Bindgen.Target.Sdl3
+      Lithon.Codegen.Bindgen.Targets
+      Lithon.Codegen.Bindgen.Version
+      Lithon.Codegen.Bindgen.Version.Doc
+      Lithon.Codegen.Bindgen.Versions
       Lithon.Codegen.Cli
-      Lithon.Codegen.Sys
-      Lithon.Codegen.Sys.Abi
-      Lithon.Codegen.Sys.Abi.Validate
-      Lithon.Codegen.Sys.Alias
-      Lithon.Codegen.Sys.Alias.Config
-      Lithon.Codegen.Sys.Alias.Constants
-      Lithon.Codegen.Sys.Alias.Names
-      Lithon.Codegen.Sys.Chain
-      Lithon.Codegen.Sys.Env
-      Lithon.Codegen.Sys.Package
-      Lithon.Codegen.Sys.Target
-      Lithon.Codegen.Sys.Target.Mpv
-      Lithon.Codegen.Sys.Target.Sdl3
-      Lithon.Codegen.Sys.Targets
-      Lithon.Codegen.Sys.Version
-      Lithon.Codegen.Sys.Version.Doc
-      Lithon.Codegen.Sys.Versions
       Lithon.Codegen.Vulkan
       Lithon.Codegen.Vulkan.Curate
       Lithon.Codegen.Vulkan.Curate.Closure
@@ -353,21 +353,21 @@ test-suite lithon-codegen-test
   other-modules:
       Backend.EmitTest
       Backend.PackageTest
+      Bindgen.AbiRenderTest
+      Bindgen.AbiValidateTest
+      Bindgen.AdapterSmokeTest
+      Bindgen.AliasConfigTest
+      Bindgen.AliasNamesTest
+      Bindgen.AliasRenderTest
+      Bindgen.CensusTest
       Bindgen.DriverTest
-      Sys.AbiRenderTest
-      Sys.AbiValidateTest
-      Sys.AdapterSmokeTest
-      Sys.AliasConfigTest
-      Sys.AliasNamesTest
-      Sys.AliasRenderTest
-      Sys.CensusTest
-      Sys.GateTest
-      Sys.PlatformShimTest
-      Sys.StaticsTest
-      Sys.Support.Targets
-      Sys.Support.Toy
-      Sys.TargetsTest
-      Sys.VersionsTest
+      Bindgen.GateTest
+      Bindgen.PlatformShimTest
+      Bindgen.StaticsTest
+      Bindgen.Support.Targets
+      Bindgen.Support.Toy
+      Bindgen.TargetsTest
+      Bindgen.VersionsTest
       Vulkan.Curate.ClosureTest
       Vulkan.CurateTest
       Vulkan.Generate.AbiTest

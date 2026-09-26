@@ -1,0 +1,271 @@
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE StrictData #-}
+{-# LANGUAGE TemplateHaskell #-}
+
+-- | Assembling a target's @*-bindgen-sys@ package itself: its
+-- 'PackageSpec' — statics, licenses, vendored runtime trees, the
+-- ABI-assertion TU — over the shared packaging backend. The code generator
+-- owns everything in the package; nothing in it is ever edited by hand.
+module Lithon.Codegen.Bindgen.Package (
+  BindgenPackagingError (..),
+  assembleBindgenPackage,
+) where
+
+import Data.Set qualified as Set
+import Data.Text qualified as T
+import Lithon.HsBindgen qualified as HB
+import Lithon.HsBindgen.Runtime (
+  cexprRuntimeCoreTree,
+  cexprRuntimeLibTree,
+  cexprRuntimeLicense,
+  hsBindgenRuntimeLicense,
+  hsBindgenRuntimeTree,
+ )
+import Lithon.Prelude
+import System.FilePath (isAbsolute)
+
+import Lithon.Codegen.Backend.FileTree (FileTree)
+import Lithon.Codegen.Backend.FileTree qualified as FileTree
+import Lithon.Codegen.Backend.Hs.Module qualified as Module
+import Lithon.Codegen.Backend.Package (PackageSpec (..), RootFiles (..))
+import Lithon.Codegen.Backend.Package qualified as Package
+import Lithon.Codegen.Backend.Package.Assemble (assemblePackage)
+import Lithon.Codegen.Bindgen.Abi (AbiMacroConst, renderAbiAssertions)
+import Lithon.Codegen.Bindgen.Chain (BindgenPayload (..))
+import Lithon.Codegen.Bindgen.Driver (HeaderResult (..))
+import Lithon.Codegen.Bindgen.Env (PackageStatics (..))
+import Lithon.Codegen.Bindgen.Target (
+  BindgenTarget,
+  bindgenNamespaceText,
+  mainIncludeArgs,
+ )
+
+-- Cheap compile-time sanity check. These are embedded directory tries from 'Data.FileEmbed'.
+do
+  let absPaths = filter (isAbsolute . fst) $ hsBindgenRuntimeTree <> cexprRuntimeCoreTree <> cexprRuntimeLibTree
+  unless (null absPaths)
+    $ fail
+      ( "Expected the embedded runtime paths to be relative, but the following are absolute:\n - "
+          <> intercalate "\n - " (map fst absPaths)
+      )
+  pure []
+
+hsbindgenRuntimeOut, cexprRuntimeOut :: FilePath
+hsbindgenRuntimeOut = "runtime"
+cexprRuntimeOut = "runtime-cexpr"
+
+data BindgenPackagingError
+  = GeneratorEmittedInvalidModuleName Text Text Module.MetaError
+  | GeneratorEmittedOutOfTreeModules [Text]
+  | AbiAssertionsInvalid Text
+  | Assembly Package.PackageAssemblyError
+  deriving stock (Show)
+
+instance Display BindgenPackagingError where
+  displayBuilder = \case
+    GeneratorEmittedInvalidModuleName what name err ->
+      "["
+        <> from what
+        <> "]: generator emitted invalid module name "
+        <> show name
+        <> ": "
+        <> displayBuilder err
+    GeneratorEmittedOutOfTreeModules mods ->
+      "generated code imports vendored-runtime modules outside the"
+        <> " expected surface: "
+        <> intercalateTB ", " (map from mods)
+    AbiAssertionsInvalid msg -> from msg
+    Assembly err -> displayBuilder err
+
+-- |
+-- Build the target's 'PackageSpec' — generated Bindgen modules, the
+-- rendered curated alias layer, runtime copies, hs-bindgen facades, and
+-- metadata — and assemble it through the shared backend.
+assembleBindgenPackage
+  :: BindgenTarget
+  -> PackageStatics
+  -> Text
+  -- ^ The library version the layouts were distilled from.
+  -> [(Text, Text)]
+  -> [AbiMacroConst]
+  -- ^ Probed typed-constant values (curated layer), re-asserted in the TU.
+  -> [HeaderResult BindgenPayload]
+  -> Either BindgenPackagingError FileTree
+assembleBindgenPackage target statics libraryVersion aliasModules macroConsts results = do
+  generated <- for (concatMap (.modules) results) \m -> do
+    meta <- metaFor "generated modules" (HB.moduleNameSegments m)
+    pure (meta, m.hsModule.text)
+  aliases <- for aliasModules \(name, contents) -> do
+    meta <- metaFor "aliases" (T.splitOn "." name)
+    pure (meta, contents)
+  facadeSources <-
+    hsBindgenRuntimeReexports (bindgenNamespaceText target)
+      $ typedRuntimeImports (concatMap (.modules) results)
+      <> runtimeImports (map snd aliases)
+  facades <- for facadeSources \(name, contents) -> do
+    meta <- metaFor "hs-bindgen facades" (T.splitOn "." name)
+    pure (meta, contents)
+  abiAssertions <-
+    first AbiAssertionsInvalid
+      $ renderAbiAssertions
+        target
+        libraryVersion
+        (mainIncludeArgs target)
+        (concatMap (.payload.abi) results)
+        macroConsts
+
+  first Assembly
+    $ assemblePackage
+      PackageSpec
+        { root =
+            RootFiles
+              { packageYaml = statics.packageYaml
+              , readme = statics.readme
+              , changelog = statics.changelog
+              , license = Package.lithonLicense
+              }
+        , extraLicenses =
+            statics.licenses
+              <> [ ("LICENSE_hs-bindgen-runtime", decodeUtf8 hsBindgenRuntimeLicense)
+                 , ("LICENSE_c-expr-runtime", decodeUtf8 cexprRuntimeLicense)
+                 ]
+        , srcDir = "src"
+        , modules = generated <> aliases <> facades
+        , extraFiles = [("cbits/abi_assertions.c", abiAssertions)]
+        , extraTrees =
+            [ FileTree.prependPath hsbindgenRuntimeOut $ FileTree.fromUniqueListBS hsBindgenRuntimeTree
+            , FileTree.prependPath cexprRuntimeOut $ FileTree.fromUniqueListBS cexprRuntimeCoreTree
+            , FileTree.prependPath cexprRuntimeOut $ FileTree.fromUniqueListBS cexprRuntimeLibTree
+            ]
+        }
+ where
+  metaFor what segs =
+    first (GeneratorEmittedInvalidModuleName what (T.intercalate "." segs))
+      $ Module.fromSegments segs
+
+isRuntimeModule :: Text -> Bool
+isRuntimeModule token =
+  ("HsBindgen.Runtime." `T.isPrefixOf` token) || ("C.Expr." `T.isPrefixOf` token)
+
+-- | Runtime modules imported by the generated families, read from the
+-- typed import lists the seam captures at render — no text scraping.
+typedRuntimeImports :: [HB.NameableModule HB.RenderedHsModule] -> Set Text
+typedRuntimeImports mods =
+  fromList
+    [ imported
+    | m <- mods
+    , imported <- m.hsModule.importedModules
+    , isRuntimeModule imported
+    ]
+
+-- | Every @HsBindgen.Runtime.*@ \/ @C.Expr.*@ module imported by the
+-- AUTHORED alias sources (rendered text is all we hold for them today;
+-- their typed import lists arrive when the alias boundary is typed).
+runtimeImports :: [Text] -> Set Text
+runtimeImports sources =
+  fromList
+    [ imported
+    | source <- sources
+    , line <- T.lines source
+    , Just rest <- [T.stripPrefix "import " (T.stripStart line)]
+    , imported <- take 1 do
+        token <- T.words rest
+        guard $ isRuntimeModule token
+        pure token
+    ]
+
+-- | The public runtime re-exports. Downstream code can name the hs-bindgen
+-- runtime vocabulary that appears in the generated signature without waiting
+-- on an hs-bindgen official release.
+--
+-- Once hs-bindgen releases, this becomes a real dependency and re-exports
+-- from the runtime. Depending on the final export surface of the released hs-bindgen,
+-- there is a good chance that this breaks nothing in downstream code.
+hsBindgenRuntimeReexports :: Text -> Set Text -> Either BindgenPackagingError [(Text, Text)]
+hsBindgenRuntimeReexports baseNamespace census = do
+  case Set.toList (Set.filter unexpected census) of
+    [] -> pure ()
+    surprises -> Left $ GeneratorEmittedOutOfTreeModules surprises
+  pure
+    $ [ (baseNamespace <> ".Runtime", runtimeFacade)
+      , (baseNamespace <> ".Runtime.CExpr", cexprFacade)
+      ]
+    <> [ (baseNamespace <> ".Runtime." <> leaf, leafFacade leaf)
+       | leaf <- runtimeLeafhsBindgenFacades
+       ]
+ where
+  unexpected m =
+    "C.Expr." `T.isPrefixOf` m && m /= "C.Expr.HostPlatform"
+  runtimeReexports =
+    ["HsBindgen.Runtime.Prelude"]
+      <> ["HsBindgen.Runtime.LibC" | "HsBindgen.Runtime.LibC" `Set.member` census]
+
+  leafFacade leaf =
+    [trimmingQQ|
+      -- | Facade over @HsBindgen.Runtime.$leaf@ from the vendored hs-bindgen runtime.
+      --
+      -- Intended for qualified import:
+      --
+      -- > import qualified $baseNamespace.Runtime.$leaf as $leaf
+      --
+      -- For licensing information, see LICENSE_hs-bindgen-runtime in this package's root.
+      module $baseNamespace.Runtime.$leaf (
+        module HsBindgen.Runtime.$leaf
+      ) where
+
+      import HsBindgen.Runtime.$leaf
+    |]
+
+  runtimeFacade =
+    let modules = T.unlines . map (("module " <>) . (<> ",")) $ runtimeReexports
+        imports = T.unlines . map ("import " <>) $ runtimeReexports
+     in [trimmingQQ|
+          -- | The runtime vocabulary used by the generated bindings.
+          --
+          -- Generated signatures mention runtime types (CEnum, constant and
+          -- incomplete arrays, read-only pointers, …); this facade makes them
+          -- nameable downstream. The runtime itself is a verbatim, PRIVATE copy
+          -- of the pinned hs-bindgen runtime (see LICENSE_hs-bindgen-runtime);
+          -- once hs-bindgen releases, it becomes a real dependency and this
+          -- module keeps downstream code source-compatible.
+          module $baseNamespace.Runtime (
+            $modules
+          ) where
+
+          $imports
+        |]
+
+  cexprFacade =
+    [trimmingQQ|
+      -- | The C-expression vocabulary used by translated macros.
+      --
+      -- Re-exports @C.Expr.HostPlatform@ from the vendored copy of c-expr-runtime
+      --
+      -- Import qualified. Exports are operator classes like @+@, @*@, ...
+      --
+      -- For licensing information, see LICENSE_c-expr-runtime in this package's root.
+      module $baseNamespace.Runtime.CExpr (
+        module C.Expr.HostPlatform,
+      ) where
+
+      import C.Expr.HostPlatform
+    |]
+
+-- | Every public module of the vendored hs-bindgen runtime.
+runtimeLeafhsBindgenFacades :: [Text]
+runtimeLeafhsBindgenFacades =
+  [ "BitfieldPtr"
+  , "Block"
+  , "CBool"
+  , "CEnum"
+  , "ConstantArray"
+  , "FLAM"
+  , "HasCBitfield"
+  , "HasCField"
+  , "IncompleteArray"
+  , "IsArray"
+  , "Marshal"
+  , "PtrConst"
+  , "Union"
+  ]

@@ -23,6 +23,7 @@ import Lithon.Prelude
 import System.FilePath ((</>))
 import Test.Tasty.HUnit (Assertion, assertBool, assertFailure, (@?=))
 
+import Bindgen.Support.Toy (ToyHeader (..), renderedPairs, runToyChain, toyEnv)
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Bindgen.Driver (
   HeaderPlan (..),
@@ -32,7 +33,6 @@ import Lithon.Codegen.Bindgen.Driver (
   Visitor (..),
   defaultSpecFileName,
  )
-import Sys.Support.Toy (ToyHeader (..), renderedPairs, runToyChain, toyEnv)
 
 toyHeader :: Text
 toyHeader =

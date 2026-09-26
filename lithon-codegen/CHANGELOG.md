@@ -6,7 +6,7 @@
 
 - The libmpv target: `lithon-codegen mpv spec|generate` emits
   `mpv-bindgen-sys` from the libmpv client API headers
-  (`Lithon.Codegen.Sys.Target.Mpv`, `data/mpv/`), down to client API 2.0,
+  (`Lithon.Codegen.Bindgen.Target.Mpv`, `data/mpv/`), down to client API 2.0,
   with `mpv_del_property` (2.1) and `mpv_get_time_ns` (2.2) version-gated.
 - SDL3 ABI assertions: a member's availability defaults to the
   `(added in X.Y.Z)` note in its doxygen comment.
@@ -29,7 +29,7 @@
   `LITHON_ABI_EXACT` (the `sdl3-bindgen-sys` cabal flag
   `abi-assertions-exact`), so a maintainer build asserts every `sizeof`
   exactly.
-- Tests: `Sys.VersionsTest` (registry codec) and an extended
+- Tests: `Bindgen.VersionsTest` (registry codec) and an extended
   `abi-toy-assertions` golden covering both policies, both override
   directions, and the pre-growth branch.
 - `versions.json`: `decls.<fn>.stub-return`, the C expression a gated
@@ -39,9 +39,9 @@
 
 ### Changed
 
-- The SDL3 layer is a generic bindgen-sys pipeline (`Lithon.Codegen.Sys.*`)
-  driven by a plain `SysTarget` record: a target is one module, one
-  `data/<key>/` directory, and an entry in `Lithon.Codegen.Sys.Targets`.
+- The SDL3 layer is a generic bindgen-sys pipeline (`Lithon.Codegen.Bindgen.*`)
+  driven by a plain `BindgenTarget` record: a target is one module, one
+  `data/<key>/` directory, and an entry in `Lithon.Codegen.Bindgen.Targets`.
 - Versions have the target's number of parts (SDL: 3); `versions.json`
   rejects any other count.
 - `versions.json`: every `prologue-typedefs` entry needs a `since` (one
