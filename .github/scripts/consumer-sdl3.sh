@@ -56,7 +56,7 @@ if [ "$STRICT_CHECK_ABI" = "true" ]; then
   cabal build --constraint="sdl3-bindgen-sys +abi-assertions-exact"
 else
   cabal build
-fi || report_build_failure
+fi || { report_build_failure; exit 1; }
 
 if [ "$RUNNER_OS" != "Windows" ]; then cabal haddock; fi
 if [ "$RUNNER_OS" = "Linux" ]; then cabal check; fi
