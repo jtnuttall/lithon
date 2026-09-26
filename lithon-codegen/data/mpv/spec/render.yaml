@@ -1,0 +1,182 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: Mpv.Sys.Bindgen.Render
+ctypes:
+  - omit:
+      headers: mpv/render.h
+      cname: mpv_client_api_version
+  - headers: mpv/render.h
+    cname: struct mpv_render_context
+    hsname: Mpv_render_context
+  - headers: mpv/render.h
+    cname: mpv_render_context
+    hsname: Mpv_render_context
+  - headers: mpv/render.h
+    cname: enum mpv_render_param_type
+    hsname: Mpv_render_param_type
+    enum: open
+  - headers: mpv/render.h
+    cname: mpv_render_param_type
+    hsname: Mpv_render_param_type
+  - headers: mpv/render.h
+    cname: struct mpv_render_param
+    hsname: Mpv_render_param
+  - headers: mpv/render.h
+    cname: mpv_render_param
+    hsname: Mpv_render_param
+  - headers: mpv/render.h
+    cname: enum mpv_render_frame_info_flag
+    hsname: Mpv_render_frame_info_flag
+    enum: open
+  - headers: mpv/render.h
+    cname: mpv_render_frame_info_flag
+    hsname: Mpv_render_frame_info_flag
+  - headers: mpv/render.h
+    cname: struct mpv_render_frame_info
+    hsname: Mpv_render_frame_info
+  - headers: mpv/render.h
+    cname: mpv_render_frame_info
+    hsname: Mpv_render_frame_info
+  - headers: mpv/render.h
+    cname: mpv_render_update_fn
+    hsname: Mpv_render_update_fn
+  - headers: mpv/render.h
+    cname: enum mpv_render_update_flag
+    hsname: Mpv_render_context_flag
+    enum: open
+  - headers: mpv/render.h
+    cname: mpv_render_context_flag
+    hsname: Mpv_render_context_flag
+hstypes:
+  - hsname: Mpv_render_context
+    representation: emptydata
+  - hsname: Mpv_render_context_flag
+    representation:
+      newtype:
+        constructor: Mpv_render_context_flag
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_render_frame_info
+    representation:
+      record:
+        constructor: Mpv_render_frame_info
+        fields:
+          - flags
+          - target_time
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_render_frame_info_flag
+    representation:
+      newtype:
+        constructor: Mpv_render_frame_info_flag
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_render_param
+    representation:
+      record:
+        constructor: Mpv_render_param
+        fields:
+          - type'
+          - data'
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_render_param_type
+    representation:
+      newtype:
+        constructor: Mpv_render_param_type
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_render_update_fn
+    representation:
+      newtype:
+        constructor: Mpv_render_update_fn
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

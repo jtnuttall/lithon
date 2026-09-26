@@ -1,0 +1,168 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: Mpv.Sys.Bindgen.RenderGl
+ctypes:
+  - omit:
+      headers: mpv/render_gl.h
+      cname: mpv_client_api_version
+  - headers: mpv/render_gl.h
+    cname: struct mpv_opengl_init_params
+    hsname: Mpv_opengl_init_params
+  - headers: mpv/render_gl.h
+    cname: mpv_opengl_init_params
+    hsname: Mpv_opengl_init_params
+  - headers: mpv/render_gl.h
+    cname: struct mpv_opengl_fbo
+    hsname: Mpv_opengl_fbo
+  - headers: mpv/render_gl.h
+    cname: mpv_opengl_fbo
+    hsname: Mpv_opengl_fbo
+  - headers: mpv/render_gl.h
+    cname: struct mpv_opengl_drm_params
+    hsname: Mpv_opengl_drm_params
+  - headers: mpv/render_gl.h
+    cname: struct _drmModeAtomicReq
+    hsname: C_DrmModeAtomicReq
+  - headers: mpv/render_gl.h
+    cname: mpv_opengl_drm_params
+    hsname: Mpv_opengl_drm_params
+  - headers: mpv/render_gl.h
+    cname: struct mpv_opengl_drm_draw_surface_size
+    hsname: Mpv_opengl_drm_draw_surface_size
+  - headers: mpv/render_gl.h
+    cname: mpv_opengl_drm_draw_surface_size
+    hsname: Mpv_opengl_drm_draw_surface_size
+  - headers: mpv/render_gl.h
+    cname: struct mpv_opengl_drm_params_v2
+    hsname: Mpv_opengl_drm_params_v2
+  - headers: mpv/render_gl.h
+    cname: mpv_opengl_drm_params_v2
+    hsname: Mpv_opengl_drm_params_v2
+  - headers: mpv/render_gl.h
+    cname: macro mpv_opengl_drm_osd_size
+    hsname: Mpv_opengl_drm_osd_size
+hstypes:
+  - hsname: C_DrmModeAtomicReq
+    representation: emptydata
+  - hsname: Mpv_opengl_drm_draw_surface_size
+    representation:
+      record:
+        constructor: Mpv_opengl_drm_draw_surface_size
+        fields:
+          - width
+          - height
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_opengl_drm_osd_size
+    representation:
+      newtype:
+        constructor: Mpv_opengl_drm_osd_size
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_opengl_drm_params
+    representation:
+      record:
+        constructor: Mpv_opengl_drm_params
+        fields:
+          - fd
+          - crtc_id
+          - connector_id
+          - atomic_request_ptr
+          - render_fd
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_opengl_drm_params_v2
+    representation:
+      record:
+        constructor: Mpv_opengl_drm_params_v2
+        fields:
+          - fd
+          - crtc_id
+          - connector_id
+          - atomic_request_ptr
+          - render_fd
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_opengl_fbo
+    representation:
+      record:
+        constructor: Mpv_opengl_fbo
+        fields:
+          - fbo
+          - w
+          - h
+          - internal_format
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_opengl_init_params
+    representation:
+      record:
+        constructor: Mpv_opengl_init_params
+        fields:
+          - get_proc_address
+          - get_proc_address_ctx
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

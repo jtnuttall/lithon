@@ -1,0 +1,467 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: Mpv.Sys.Bindgen.Client
+ctypes:
+  - omit:
+      headers: mpv/client.h
+      cname: mpv_client_api_version
+  - headers: mpv/client.h
+    cname: struct mpv_handle
+    hsname: Mpv_handle
+  - headers: mpv/client.h
+    cname: mpv_handle
+    hsname: Mpv_handle
+  - headers: mpv/client.h
+    cname: enum mpv_error
+    hsname: Mpv_error
+    enum: open
+  - headers: mpv/client.h
+    cname: mpv_error
+    hsname: Mpv_error
+  - headers: mpv/client.h
+    cname: enum mpv_format
+    hsname: Mpv_format
+    enum: open
+  - headers: mpv/client.h
+    cname: mpv_format
+    hsname: Mpv_format
+  - headers: mpv/client.h
+    cname: struct mpv_node
+    hsname: Mpv_node
+  - headers: mpv/client.h
+    cname: union @mpv_node_u
+    hsname: Mpv_node_u
+  - headers: mpv/client.h
+    cname: mpv_node
+    hsname: Mpv_node
+  - headers: mpv/client.h
+    cname: struct mpv_node_list
+    hsname: Mpv_node_list
+  - headers: mpv/client.h
+    cname: mpv_node_list
+    hsname: Mpv_node_list
+  - headers: mpv/client.h
+    cname: struct mpv_byte_array
+    hsname: Mpv_byte_array
+  - headers: mpv/client.h
+    cname: mpv_byte_array
+    hsname: Mpv_byte_array
+  - headers: mpv/client.h
+    cname: enum mpv_event_id
+    hsname: Mpv_event_id
+    enum: open
+  - headers: mpv/client.h
+    cname: mpv_event_id
+    hsname: Mpv_event_id
+  - headers: mpv/client.h
+    cname: struct mpv_event_property
+    hsname: Mpv_event_property
+  - headers: mpv/client.h
+    cname: mpv_event_property
+    hsname: Mpv_event_property
+  - headers: mpv/client.h
+    cname: enum mpv_log_level
+    hsname: Mpv_log_level
+    enum: open
+  - headers: mpv/client.h
+    cname: mpv_log_level
+    hsname: Mpv_log_level
+  - headers: mpv/client.h
+    cname: struct mpv_event_log_message
+    hsname: Mpv_event_log_message
+  - headers: mpv/client.h
+    cname: mpv_event_log_message
+    hsname: Mpv_event_log_message
+  - headers: mpv/client.h
+    cname: enum mpv_end_file_reason
+    hsname: Mpv_end_file_reason
+    enum: open
+  - headers: mpv/client.h
+    cname: mpv_end_file_reason
+    hsname: Mpv_end_file_reason
+  - headers: mpv/client.h
+    cname: struct mpv_event_start_file
+    hsname: Mpv_event_start_file
+  - headers: mpv/client.h
+    cname: mpv_event_start_file
+    hsname: Mpv_event_start_file
+  - headers: mpv/client.h
+    cname: struct mpv_event_end_file
+    hsname: Mpv_event_end_file
+  - headers: mpv/client.h
+    cname: mpv_event_end_file
+    hsname: Mpv_event_end_file
+  - headers: mpv/client.h
+    cname: struct mpv_event_client_message
+    hsname: Mpv_event_client_message
+  - headers: mpv/client.h
+    cname: mpv_event_client_message
+    hsname: Mpv_event_client_message
+  - headers: mpv/client.h
+    cname: struct mpv_event_hook
+    hsname: Mpv_event_hook
+  - headers: mpv/client.h
+    cname: mpv_event_hook
+    hsname: Mpv_event_hook
+  - headers: mpv/client.h
+    cname: struct mpv_event_command
+    hsname: Mpv_event_command
+  - headers: mpv/client.h
+    cname: mpv_event_command
+    hsname: Mpv_event_command
+  - headers: mpv/client.h
+    cname: struct mpv_event
+    hsname: Mpv_event
+  - headers: mpv/client.h
+    cname: mpv_event
+    hsname: Mpv_event
+hstypes:
+  - hsname: Mpv_byte_array
+    representation:
+      record:
+        constructor: Mpv_byte_array
+        fields:
+          - data'
+          - size
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_end_file_reason
+    representation:
+      newtype:
+        constructor: Mpv_end_file_reason
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_error
+    representation:
+      newtype:
+        constructor: Mpv_error
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_event
+    representation:
+      record:
+        constructor: Mpv_event
+        fields:
+          - event_id
+          - error
+          - reply_userdata
+          - data'
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_event_client_message
+    representation:
+      record:
+        constructor: Mpv_event_client_message
+        fields:
+          - num_args
+          - args
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_event_command
+    representation:
+      record:
+        constructor: Mpv_event_command
+        fields:
+          - result
+    instances:
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_event_end_file
+    representation:
+      record:
+        constructor: Mpv_event_end_file
+        fields:
+          - reason
+          - error
+          - playlist_entry_id
+          - playlist_insert_id
+          - playlist_insert_num_entries
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_event_hook
+    representation:
+      record:
+        constructor: Mpv_event_hook
+        fields:
+          - name
+          - id
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_event_id
+    representation:
+      newtype:
+        constructor: Mpv_event_id
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_event_log_message
+    representation:
+      record:
+        constructor: Mpv_event_log_message
+        fields:
+          - prefix
+          - level
+          - text
+          - log_level
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_event_property
+    representation:
+      record:
+        constructor: Mpv_event_property
+        fields:
+          - name
+          - format
+          - data'
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_event_start_file
+    representation:
+      record:
+        constructor: Mpv_event_start_file
+        fields:
+          - playlist_entry_id
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_format
+    representation:
+      newtype:
+        constructor: Mpv_format
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_handle
+    representation: emptydata
+  - hsname: Mpv_log_level
+    representation:
+      newtype:
+        constructor: Mpv_log_level
+        fields:
+          - unwrap
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_node
+    representation:
+      record:
+        constructor: Mpv_node
+        fields:
+          - u
+          - format
+    instances:
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_node_list
+    representation:
+      record:
+        constructor: Mpv_node_list
+        fields:
+          - num
+          - values
+          - keys
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_node_u
+    representation:
+      newtype:
+        constructor: Mpv_node_u
+        fields:
+          - unwrap
+    instances:
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - IsUnion
+      - ReadRaw
+      - StaticSize
+      - Storable
+      - WriteRaw

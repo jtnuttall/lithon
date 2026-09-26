@@ -1,0 +1,176 @@
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+hsmodule: Mpv.Sys.Bindgen.StreamCb
+ctypes:
+  - omit:
+      headers: mpv/stream_cb.h
+      cname: mpv_client_api_version
+  - headers: mpv/stream_cb.h
+    cname: mpv_stream_cb_read_fn
+    hsname: Mpv_stream_cb_read_fn
+  - headers: mpv/stream_cb.h
+    cname: mpv_stream_cb_seek_fn
+    hsname: Mpv_stream_cb_seek_fn
+  - headers: mpv/stream_cb.h
+    cname: mpv_stream_cb_size_fn
+    hsname: Mpv_stream_cb_size_fn
+  - headers: mpv/stream_cb.h
+    cname: mpv_stream_cb_close_fn
+    hsname: Mpv_stream_cb_close_fn
+  - headers: mpv/stream_cb.h
+    cname: mpv_stream_cb_cancel_fn
+    hsname: Mpv_stream_cb_cancel_fn
+  - headers: mpv/stream_cb.h
+    cname: struct mpv_stream_cb_info
+    hsname: Mpv_stream_cb_info
+  - headers: mpv/stream_cb.h
+    cname: mpv_stream_cb_info
+    hsname: Mpv_stream_cb_info
+  - headers: mpv/stream_cb.h
+    cname: mpv_stream_cb_open_ro_fn
+    hsname: Mpv_stream_cb_open_ro_fn
+hstypes:
+  - hsname: Mpv_stream_cb_cancel_fn
+    representation:
+      newtype:
+        constructor: Mpv_stream_cb_cancel_fn
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_stream_cb_close_fn
+    representation:
+      newtype:
+        constructor: Mpv_stream_cb_close_fn
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_stream_cb_info
+    representation:
+      record:
+        constructor: Mpv_stream_cb_info
+        fields:
+          - cookie
+          - read_fn
+          - seek_fn
+          - size_fn
+          - close_fn
+          - cancel_fn
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_stream_cb_open_ro_fn
+    representation:
+      newtype:
+        constructor: Mpv_stream_cb_open_ro_fn
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_stream_cb_read_fn
+    representation:
+      newtype:
+        constructor: Mpv_stream_cb_read_fn
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_stream_cb_seek_fn
+    representation:
+      newtype:
+        constructor: Mpv_stream_cb_seek_fn
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: Mpv_stream_cb_size_fn
+    representation:
+      newtype:
+        constructor: Mpv_stream_cb_size_fn
+        fields:
+          - unwrap
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
