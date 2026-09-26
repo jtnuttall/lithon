@@ -6,16 +6,16 @@
 --
 -- The assertion TU guards each member's @offsetof@ on that member's
 -- availability, but a struct's @sizeof@\/@_Alignof@ asserts are guarded
--- only by a registry growth gate ('AbiGrowth'). A member the library
--- appended in a later release therefore needs both: its own gate (from
--- the registry or its documented availability, like SDL's \"(added in
--- X.Y.Z)\" note) /and/ a recorded pre-growth layout, or the baked
--- @sizeof@ is asserted unconditionally and the package stops compiling
--- on every release older than the one it was generated from (SDL 3.4.16
--- appending @pen_state@ to @SDL_PenProximityEvent@ was the precedent).
--- 'validateAbi' finds every such struct and says exactly what to record;
--- the registry stays the source of truth for the pre-growth layout,
--- because the new headers cannot prove the old alignment.
+-- only by a growth gate in the availability annotations ('AbiGrowth'). A
+-- member the library appended in a later release therefore needs both:
+-- its own gate (from the annotations or its documented availability, like
+-- SDL's \"(added in X.Y.Z)\" note) /and/ a recorded pre-growth layout, or
+-- the baked @sizeof@ is asserted unconditionally and the package stops
+-- compiling on every release older than the one it was generated from
+-- (SDL 3.4.16 appending @pen_state@ to @SDL_PenProximityEvent@ was the
+-- precedent). 'validateAbi' finds every such struct and says exactly what
+-- to record; the annotations stay the source of truth for the pre-growth
+-- layout, because the new headers cannot prove the old alignment.
 module Lithon.Codegen.Bindgen.Abi.Validate (
   LibraryRef (..),
   AbiProblem (..),
@@ -60,7 +60,7 @@ data AbiProblemKind
   | -- | A growth gate is recorded but disagrees with the baked offsets;
     -- the text says how.
     GrowthMismatch AbiGrowth GrowthStep Text
-  | -- | The struct grew at more than one version; the registry's single
+  | -- | The struct grew at more than one version; the annotations' single
     -- @sizeof-since@\/@before@ cannot express that.
     GrowthMultiStep (NonEmpty GrowthStep)
   | -- | A growth gate is recorded but no trailing member is gated above
@@ -79,7 +79,7 @@ data LibraryRef = LibraryRef
   , version :: Text
   -- ^ The version the layout was distilled from.
   , registry :: FilePath
-  -- ^ The versions registry to record fixes in, as displayed.
+  -- ^ The @versions.json@ to record fixes in, as displayed.
   }
   deriving stock (Eq, Generic, Show)
 
@@ -146,7 +146,7 @@ validateAbi baseline library decls = failUnlessEmpty (mapMaybe problemOf decls) 
   mismatch d g step
     | g.since /= step.since =
         Just
-          ( "the registry gates sizeof at "
+          ( "the annotation gates sizeof at "
               <> renderVersion g.since
               <> " but the appended members are gated at "
               <> renderVersion step.since
@@ -197,7 +197,7 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
   heading = d.cTypeName <> " (" <> toText d.headerName <> "): " <> headline
   (headline, body) = case p.kind of
     GrowthUnrecorded step ->
-      ( "grew at " <> renderVersion step.since <> ", but the registry records no growth gate."
+      ( "grew at " <> renderVersion step.since <> ", but the annotations record no growth gate."
       , gatedMembers (toList step.members)
           <> [ ""
              , baked
@@ -227,11 +227,11 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
           <> map ("  " <>) (snippet step)
       )
     GrowthMismatch g step why ->
-      ( "the registry's growth gate disagrees with the baked offsets: " <> why <> "."
+      ( "the annotated growth gate disagrees with the baked offsets: " <> why <> "."
       , gatedMembers (toList step.members)
           <> [ ""
              , baked
-             , "Registry: sizeof-since "
+             , "Annotated: sizeof-since "
                  <> renderVersion g.since
                  <> ", before sizeof "
                  <> show g.before.sizeof
@@ -253,7 +253,7 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
     GrowthMultiStep steps ->
       ( "grew at "
           <> T.intercalate " and " (map (renderVersion . (.since)) (toList steps))
-          <> "; the registry can only record one growth gate."
+          <> "; the annotations can only record one growth gate."
       , concat
           [ ("At " <> renderVersion s.since <> ": sizeof " <> show s.preSizeof <> " -> " <> show s.postSizeof)
               : gatedMembers (toList s.members)
@@ -261,19 +261,19 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
           ]
           <> [ ""
              , baked
-             , "A single sizeof-since/before cannot express two steps; extend the registry's growth"
+             , "A single sizeof-since/before cannot express two steps; extend the annotations' growth"
              , "vocabulary (structs.<name>.growth as a list) and the emitter's #elif chain first."
              ]
       )
     GrowthUnexplained g ->
-      ( "the registry records growth at "
+      ( "the annotations record growth at "
           <> renderVersion g.since
           <> " but no trailing member is gated above the struct's floor ("
           <> renderVersion p.outer
           <> ")."
       ,
         [ baked
-        , "Registry: before sizeof "
+        , "Annotated: before sizeof "
             <> show g.before.sizeof
             <> ", alignment "
             <> show g.before.alignment
@@ -314,7 +314,7 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
         ]
   provenance f
     | isJust f.since, f.since == f.commentSince = "  (from the member's comment)"
-    | isJust f.since = "  (registry)"
+    | isJust f.since = "  (from the annotations)"
     | otherwise = ""
   snippet step =
     [ "\"" <> bare <> "\": {"

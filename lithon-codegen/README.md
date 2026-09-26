@@ -172,7 +172,7 @@ Every target uses the same layout in `lithon-codegen/data/<key>/`:
 | ----------------------- | ------------- | ---------------------------------------------------------------------------- |
 | `aliases.json`          | You           | The naming rule and each function's FFI flavor, with rationales.             |
 | `constants.json`        | You           | Typed-constant groups: which macros belong to which newtype.                 |
-| `versions.json`         | You           | The availability registry. See [`versions.json`](#versionsjson).             |
+| `versions.json`         | You           | The availability annotations. See [`versions.json`](#versionsjson).          |
 | `overrides.yaml`        | You, optional | hs-bindgen's prescriptive binding spec: renames, representations, omissions. |
 | `static/`               | You           | The statics, copied to the package root.                                     |
 | `spec/`                 | Generator     | The spec artifacts: one binding spec per header, committed for review.       |
@@ -188,7 +188,9 @@ The generator enforces three rules:
 
 #### `versions.json`
 
-Keys are bare C names. Any entry may add a `note` for reviewers.
+The library's availability annotations, kept by hand. Corrections where the
+headers carry their own (SDL's `\since`); the whole set where they don't
+(libmpv). Keys are bare C names. Any entry may add a `note` for reviewers.
 
 | Key                 | Entry fields                                  | Affects                  | Use it to                                               |
 | ------------------- | --------------------------------------------- | ------------------------ | ------------------------------------------------------- |
@@ -355,7 +357,7 @@ leave out:
   `SDL_ProgressState` claims 3.2.8 but first exists in 3.4.0.
 - **Members and constants.** The bindings need availability per member and
   per constant, finer than SDL documents it. A member's `(added in X.Y.Z)`
-  note is the default; the registry can override it.
+  note is the default; the annotations can override it.
 - **Missing type names.** `prologue-typedefs` declares twelve names that 3.4
   signatures use and 3.2 headers lack. All twelve have `since` 3.4.0.
 

@@ -6,9 +6,9 @@
 -- rather than SDL: two-part versions compared through a version macro
 -- (@TOY_API_VERSION >= TOY_MAKE_VERSION(2, 1)@), no failure statement in
 -- gated stubs, no stub includes, no documented availability (the
--- registry is the only source), no width typedefs, no shims, and no doc
--- rewrites. Nothing here is registered: it exists to prove the SDL
--- configuration is data, not a hidden assumption.
+-- availability annotations are the only source), no width typedefs, no
+-- shims, and no doc rewrites. Nothing here is registered: it exists to
+-- prove the SDL configuration is data, not a hidden assumption.
 module Bindgen.Support.Targets (
   toy2,
 ) where
@@ -62,7 +62,7 @@ toy2 =
               [ "Every size, alignment, field offset, and enum value baked into the"
               , "generated Haskell is re-asserted here against the libtoy headers."
               , ""
-              , "#if guards come from the availability registry alone."
+              , "#if guards come from the availability annotations alone."
               ]
           }
     }

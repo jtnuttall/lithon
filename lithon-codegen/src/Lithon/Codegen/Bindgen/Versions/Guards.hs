@@ -5,8 +5,9 @@
 -- application.
 {- HLINT ignore "Redundant id" -}
 
--- | Rendering @versions.json@ ("Lithon.Codegen.Bindgen.Versions") into the
--- wrapper C of each translated family, and checking what it asks for:
+-- | Rendering the availability annotations (@versions.json@,
+-- "Lithon.Codegen.Bindgen.Versions") into the wrapper C of each translated
+-- family, and checking what they ask for:
 --
 -- * 'retypePrologue' renders @prologue-typedefs@: stand-ins, guarded to
 --   the releases that lack them, prepended to every wrapper naming one.
@@ -31,7 +32,7 @@ module Lithon.Codegen.Bindgen.Versions.Guards (
   GatedDecl (..),
   gatedDecls,
 
-  -- * Registry checks
+  -- * Checks
   UnusedStubReturn (..),
   unusedStubReturns,
 ) where
@@ -58,7 +59,7 @@ import Lithon.Codegen.Bindgen.Versions (
   VersionsRegistry (..),
  )
 
--- | A function the version gates guard, as the registry checks see it.
+-- | A function the version gates guard, as 'unusedStubReturns' sees it.
 data GatedDecl = GatedDecl
   { name :: Text
   -- ^ Its C name.
@@ -76,7 +77,7 @@ gatedDecls target registry cDecls =
   | fn <- gatedFunctions target registry cDecls
   ]
 
--- | Why a registry @stub-return@ is dead configuration.
+-- | Why a @stub-return@ annotation is dead configuration.
 data UnusedStubReturn
   = -- | No header gates the decl: its availability is at or below the
     -- baseline, or it is not a bound function.
@@ -86,7 +87,7 @@ data UnusedStubReturn
     ReturnsVoid
   deriving stock (Eq, Show)
 
--- | The registry's @stub-return@ entries no gated stub returns, by name,
+-- | The annotations' @stub-return@ entries no gated stub returns, by name,
 -- given every header's gated functions: dead configuration, reported
 -- rather than ignored.
 unusedStubReturns :: VersionsRegistry -> [GatedDecl] -> [(Text, UnusedStubReturn)]
@@ -101,14 +102,14 @@ unusedStubReturns registry gated =
  where
   byName = Map.fromList [(decl.name, decl) | decl <- gated]
 
--- | A function whose registry-corrected availability is later than the
+-- | A function whose annotation-corrected availability is later than the
 -- target's baseline.
 data GatedFunction = GatedFunction
   { name :: Text
   , since :: Version
   , params :: Int
   , stubReturn :: Maybe Text
-  -- ^ The registry's @stub-return@, if any.
+  -- ^ Its @stub-return@ annotation, if any.
   , returnsVoid :: Bool
   -- ^ Its result type is @void@: hs-bindgen's own test for a call
   -- wrapper that returns nothing.
@@ -138,7 +139,7 @@ gatedFunctions target registry cDecls =
 -- | The retype class: wrappers of functions that exist at the baseline but
 -- whose newer signatures use type names older headers do not declare
 -- (and gated wrappers naming such a type). One family-wide edit prepends
--- the guarded stand-ins (from the registry) to every wrapper that
+-- the guarded stand-ins (from the annotations) to every wrapper that
 -- references one: the guard macro's home, then one block per release
 -- that introduced names, below which they are declared. Hidden at or
 -- above their version, they can never conflict with the real
@@ -191,12 +192,12 @@ retypePrologue target registry =
     ShapeVoidPtr -> "typedef void *" <> n <> ";"
 
 -- | Version gates for the target's floor: every function whose
--- registry-corrected availability is later than the baseline gets its
+-- annotation-corrected availability is later than the baseline gets its
 -- wrapper bodies guarded on the library's own version macros — the call
 -- (or FunPtr address) stays live at or above the version; below it the
 -- stub silences the arguments, reports the failure through the target's
 -- channel (SDL: @SDL_SetError@) when it has one, and returns the
--- registry's @stub-return@ (default zero) — a FunPtr getter a null
+-- @stub-return@ annotation (default zero) — a FunPtr getter a null
 -- pointer, a void call nothing. The wrapper SYMBOL always exists, so
 -- consumer links never break; misuse on an old library fails loudly at
 -- the call site. Each gated stub carries its own prologue: the version

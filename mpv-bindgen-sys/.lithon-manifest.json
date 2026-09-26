@@ -6,7 +6,7 @@
     "LICENSE_hs-bindgen-runtime": "rhv3:5134b2c7a1f80df7",
     "LICENSE_libmpv": "rhv3:1ef9ef6af4f95f82",
     "README.md": "rhv3:b7254bcecd4fafa0",
-    "cbits/abi_assertions.c": "rhv3:3d3fcf76ab7c934f",
+    "cbits/abi_assertions.c": "rhv3:416e82744b1f1e04",
     "mpv-bindgen-sys.cabal": "rhv3:bef833c4c7580a17",
     "package.yaml": "rhv3:1b377ad1df1ed42f",
     "runtime-cexpr/C/Expr/HostPlatform.hs": "rhv3:e094390014d60e82",

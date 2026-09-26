@@ -3,7 +3,7 @@
  * Every size, alignment, field offset, and enum value baked into the
  * generated Haskell is re-asserted here against the libtoy headers.
  *
- * #if guards come from the availability registry alone.
+ * #if guards come from the availability annotations alone.
  */
 #define LITHON_ABI_HELP ". toy2-bindgen-sys was generated from libtoy API 2.2; see the README section ABI verification. Please report this at https://github.com/jtnuttall/lithon/issues with your libtoy API version and platform, and if you are comfortable, open a PR updating the libtoy API version the bindings are generated from."
 #ifdef LITHON_ABI_EXACT

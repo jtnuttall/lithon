@@ -13,7 +13,7 @@
 - `sdl3 generate`/`spec` validate the distilled layouts before writing:
   a struct whose gated trailing members imply it grew, with no
   `sizeof-since`/`before` recorded (or a recorded pair that contradicts the
-  offsets), is a hard error that prints the registry entry to add.
+  offsets), is a hard error that prints the `versions.json` entry to add.
 - SDL3 ABI assertions: a per-struct layout policy (`exact` | `prefix`).
   `prefix` keeps every field offset and the alignment exact and asserts
   `sizeof >=`; it is derived for every member type of a named union and
@@ -29,7 +29,7 @@
   `LITHON_ABI_EXACT` (the `sdl3-bindgen-sys` cabal flag
   `abi-assertions-exact`), so a maintainer build asserts every `sizeof`
   exactly.
-- Tests: `Bindgen.VersionsTest` (registry codec) and an extended
+- Tests: `Bindgen.VersionsTest` (the `versions.json` codec) and an extended
   `abi-toy-assertions` golden covering both policies, both override
   directions, and the pre-growth branch.
 - `versions.json`: `decls.<fn>.stub-return`, the C expression a gated

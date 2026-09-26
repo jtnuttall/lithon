@@ -5,8 +5,9 @@
 -- doxygen @\\since@ section of a declaration and the \"(added in
 -- X.Y.Z)\" prose note of a member — SDL's two conventions. A target whose
 -- docs state availability wires these into its
--- 'Lithon.Codegen.Bindgen.Target.VersionScheme', at its arity; the empirical
--- registry ("Lithon.Codegen.Bindgen.Versions") corrects them either way.
+-- 'Lithon.Codegen.Bindgen.Target.VersionScheme', at its arity; the
+-- availability annotations ("Lithon.Codegen.Bindgen.Versions") correct
+-- them either way.
 module Lithon.Codegen.Bindgen.Version.Doc (
   doxygenSince,
   addedInNote,
@@ -29,7 +30,7 @@ import Lithon.Codegen.Bindgen.Version (Version, mkVersion)
 -- A target wires it in as its 'Lithon.Codegen.Bindgen.Target.VersionScheme'
 -- decl reader; the wrapper version gates
 -- ("Lithon.Codegen.Bindgen.Versions.Guards") and the assert TU correct it
--- through the same registry.
+-- through the same annotations.
 doxygenSince :: Int -> C.DeclInfo C.Final -> Maybe Version
 doxygenSince arity info = do
   comment <- info.comment
@@ -43,7 +44,7 @@ doxygenSince arity info = do
 -- convention for a late member is \"(added in 3.4.16)\" in the
 -- @\/**< ... *\/@ trailing its declaration (fields never carry a
 -- @\\since@ section). The given words may stand between \"added in\"
--- and the version (SDL: @[\"sdl\"]@). The registry wins over it
+-- and the version (SDL: @[\"sdl\"]@). The annotations win over it
 -- ('Lithon.Codegen.Bindgen.Abi.distillAbi').
 addedInNote :: Int -> [Text] -> C.FieldInfo C.Final -> Maybe Version
 addedInNote arity skipped info = do

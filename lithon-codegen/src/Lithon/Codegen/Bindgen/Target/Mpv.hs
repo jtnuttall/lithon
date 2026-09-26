@@ -51,8 +51,8 @@ mpv =
           , below = \v -> "MPV_CLIENT_API_VERSION < MPV_MAKE_VERSION(" <> versionArgs v <> ")"
           , guardIncludes = ["client.h"]
           , -- libmpv states availability only in free prose ("Since API
-            -- version 1.108"), all of it below the floor: the registry is
-            -- the only source.
+            -- version 1.108"), all of it below the floor: the availability
+            -- annotations are the only source.
             declSince = const Nothing
           , fieldSince = const Nothing
           }
@@ -147,8 +147,8 @@ abiBanner =
   , "See the package README, section \"ABI verification\"."
   , ""
   , "#if guards on libmpv's own version macro, MPV_CLIENT_API_VERSION,"
-  , "come only from the empirical availability registry"
-  , "(lithon-codegen mpv/versions.json)."
+  , "come only from the availability annotations"
+  , "(lithon-codegen data/mpv/versions.json)."
   ]
 
 -- | The umbrella module's Haddock, around the family index.

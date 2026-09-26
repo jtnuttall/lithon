@@ -116,7 +116,7 @@ sdl3 =
           }
     }
 
--- | SDL versions are MAJOR.MINOR.PATCH, in the registry and in the docs.
+-- | SDL versions are MAJOR.MINOR.PATCH, in the annotations and in the docs.
 sdlArity :: Int
 sdlArity = 3
 
@@ -304,14 +304,14 @@ abiBanner =
   , "See the package README, section \"ABI verification\"."
   , "A sizeof asserted with >= belongs to a struct the bindings only ever"
   , "read inside a named union (SDL_Event, SDL_HapticEffect) or one the"
-  , "registry marks layout: prefix. SDL may append fields to it; its known"
+  , "annotations mark layout: prefix. SDL may append fields to it; its known"
   , "fields stay pinned by offset and the union's own size stays exact."
   , "Building with the cabal flag abi-assertions-exact makes every sizeof"
   , "exact again, for checking a newer SDL."
   , ""
   , "#if guards mirror each declaration's documented @since and each"
   , "member's \"(added in X.Y.Z)\" note — corrected and refined by the"
-  , "empirical availability registry (lithon-codegen sdl3/versions.json)"
+  , "availability annotations (lithon-codegen data/sdl3/versions.json)"
   , "— on SDL's own version macros."
   ]
 

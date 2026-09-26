@@ -131,8 +131,8 @@ data CDefine = CDefine
 -- state it.
 data VersionScheme = VersionScheme
   { arity :: Int
-  -- ^ The parts of every version (SDL: 3): the registry codec rejects
-  -- any other count, and the doc readers pad to it.
+  -- ^ The parts of every version (SDL: 3): the annotations' codec
+  -- rejects any other count, and the doc readers pad to it.
   , baseline :: Version
   -- ^ The oldest supported release; nothing at or below it is gated.
   , atLeast :: Version -> Text

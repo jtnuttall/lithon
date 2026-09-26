@@ -7,8 +7,8 @@
  * See the package README, section "ABI verification".
  *
  * #if guards on libmpv's own version macro, MPV_CLIENT_API_VERSION,
- * come only from the empirical availability registry
- * (lithon-codegen mpv/versions.json).
+ * come only from the availability annotations
+ * (lithon-codegen data/mpv/versions.json).
  */
 #define LITHON_ABI_HELP ". mpv-bindgen-sys was generated from libmpv client API 2.5.0; see the README section ABI verification. Please report this at https://github.com/jtnuttall/lithon/issues with your libmpv client API version and platform, and if you are comfortable, open a PR updating the libmpv client API version the bindings are generated from."
 #ifdef LITHON_ABI_EXACT

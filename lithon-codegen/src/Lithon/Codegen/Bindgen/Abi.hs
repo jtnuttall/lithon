@@ -35,15 +35,16 @@
 -- cabal flag. Availability comes from the target's
 -- 'Lithon.Codegen.Bindgen.Target.VersionScheme' readers (SDL: the doxygen
 -- @\@since@ section, and for members, which have none, the prose note
--- \"(added in 3.4.16)\" in their own comment). The registry corrects both.
+-- \"(added in 3.4.16)\" in their own comment). The availability
+-- annotations ("Lithon.Codegen.Bindgen.Versions") correct both.
 --
 -- Sizes are asserted @==@ by default: SDL fills most structs into memory
 -- the bindings allocate at the baked size. A struct read only inside a
 -- named union is asserted as a layout prefix instead ('LayoutPrefix':
 -- offsets and alignment exact, sizeof @>=@, or @==@ again under the
 -- package's @abi-assertions-exact@ flag) — derived from union membership
--- across every header, overridable either way by the registry. A
--- registry growth gate ('AbiGrowth') keeps the assertion on
+-- across every header, overridable either way by the annotations. A
+-- growth gate in the annotations ('AbiGrowth') keeps the assertion on
 -- both sides, each under the struct's layout policy: the baked layout at
 -- or above the gate, the recorded pre-growth layout in an @#else@ branch
 -- below it.
@@ -89,7 +90,7 @@ data AbiField = AbiField
   { name :: Text
   , byteOffset :: Int
   , since :: Maybe Version
-  -- ^ Member-level availability: the registry's @members@ entry when
+  -- ^ Member-level availability: the annotations' @members@ entry when
   -- there is one, else 'commentSince'.
   , commentSince :: Maybe Version
   -- ^ What the member's own doxygen comment says, via SDL's prose
@@ -103,9 +104,9 @@ data AbiEnumConst = AbiEnumConst
   , value :: Integer
   , since :: Maybe Version
   -- ^ Constant-level availability or value-change gate (enumerators
-  -- never carry @\\since@ upstream; empirical override map). The assert
-  -- is emitted only at or above this version — for value changes, the
-  -- baked value is the truth from this version on.
+  -- never carry @\\since@ upstream; the availability annotations). The
+  -- assert is emitted only at or above this version — for value changes,
+  -- the baked value is the truth from this version on.
   }
   deriving stock (Eq, Generic, Show)
 
@@ -118,8 +119,8 @@ data AbiMacroConst = AbiMacroConst
   , value :: Integer
   , headerName :: FilePath
   , since :: Maybe Version
-  -- ^ From the empirical override map (macro constants' own docs are not
-  -- trusted for availability).
+  -- ^ From the availability annotations (macro constants' own docs are
+  -- not trusted for availability).
   }
   deriving stock (Eq, Generic, Show)
 
@@ -170,8 +171,9 @@ data AbiDecl = AbiDecl
   }
   deriving stock (Eq, Generic, Show)
 
--- | Empirical availability overrides for the target's floor (SDL: @>=
--- 3.2.0@), loaded from its @versions.json@ ("Lithon.Codegen.Bindgen.Versions").
+-- | The availability annotations as overrides for the target's floor
+-- (SDL: @>= 3.2.0@), loaded from its @versions.json@
+-- ("Lithon.Codegen.Bindgen.Versions").
 -- The documented availability its 'VersionScheme' reads (SDL: the
 -- @\\since@ annotations and, for members, the \"(added in X.Y.Z)\"
 -- notes) is the default source but lies in both directions and is often
@@ -268,7 +270,7 @@ assertableFields scheme owner memberSinces fs =
           AbiField
             { name = fname
             , byteOffset = bits `div` 8
-            , -- The registry wins over the member's own note, as for decls.
+            , -- The annotations win over the member's own note, as for decls.
               since = Map.lookup fname memberSinces <|> commentSince
             , commentSince
             }

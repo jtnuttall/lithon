@@ -1,23 +1,23 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE StrictData #-}
 
--- | A target's empirical availability registry:
--- @lithon-codegen\/data\/\<key\>\/versions.json@ (SDL:
--- @sdl3\/versions.json@).
+-- | @lithon-codegen\/data\/\<key\>\/versions.json@ (SDL:
+-- @sdl3\/versions.json@): the library's availability annotations, kept by
+-- hand. Corrections where the headers carry their own (SDL's @\\since@);
+-- the whole set where they don't (libmpv).
 --
 -- The library's documented availability (SDL: its @\\since@
 -- annotations) is the default source for version gating, but it lies in
 -- both directions (SDL: @SDL_ProgressState@ claims 3.2.8 and does not
 -- exist until 3.4.0; @SDL_StretchSurface@ claims 3.4.0 and exists since
 -- 3.2.4) and is absent entirely at member granularity (enum constants,
--- struct fields), when the library documents it at all. Every entry in
--- the registry was established by compiling the generated C against the
--- real release-header matrix (SDL: 3.2.0 through 3.4.16) — never by
--- trusting documentation. The registry is the deliberate, reviewable
--- record of those corrections, exactly like @aliases.json@ records flavor
--- decisions.
+-- struct fields), when the library documents it at all. Every annotation
+-- was established by compiling the generated C against the real
+-- release-header matrix (SDL: 3.2.0 through 3.4.16) — never by trusting
+-- documentation. The annotations are the deliberate, reviewable record of
+-- those corrections, exactly like @aliases.json@ records flavor decisions.
 --
--- Every version in the registry has the target's arity
+-- Every version in @versions.json@ has the target's arity
 -- ('Lithon.Codegen.Bindgen.Target.VersionScheme'), so the codecs are
 -- functions of it ('registryCodec'). They are plain values rather than
 -- 'HasCodec' instances: the emitter vocabulary
