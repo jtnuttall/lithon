@@ -1,9 +1,10 @@
 # CI here has two important jobs:
 # 1. Verify compilation of lithon's libraries across GHC versions, Cabal
 #    flags, and supported platforms.
-# 2. SDL3: Check ABI validity on supported platforms. Building `sdl3-bindgen-sys`
-#    entails compiling `abi_assertions.c`, which contains static assertions
-#    pinning the expected ABI sizes and alignments.
+# 2. SDL3 and libmpv: Check ABI validity on supported platforms. Building
+#    `sdl3-bindgen-sys` or `mpv-bindgen-sys` entails compiling
+#    `abi_assertions.c`, which contains static assertions pinning the
+#    expected ABI sizes and alignments.
 name: lithon-ci
 
 on:
@@ -61,7 +62,7 @@ jobs:
 
       - name: Build and haddock from sdist
         shell: bash
-        run: .github/scripts/consumer-sdl3.sh
+        run: .github/scripts/consumer-bindgen-sys.sh sdl3-bindgen-sys sdl3
 
       - name: Strict-flag compile smoke
         if: runner.os == 'Linux' && matrix.ghc == env.GHC_VERSION
@@ -69,6 +70,65 @@ jobs:
         run: |
           export PKG_CONFIG_PATH="$HOME/sdl3/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
           cd "$RUNNER_TEMP/sdist"/sdl3-bindgen-sys-*/
+          cabal build --flags="strict -optimize"
+
+  consumer-mpv-bindgen-sys:
+    if: github.repository == 'jtnuttall/lithon'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            ghc: 9.8.4
+          - os: ubuntu-24.04
+            ghc: 9.10.3
+          - os: ubuntu-24.04
+            ghc: 9.12.4
+          - os: ubuntu-24.04
+            ghc: 9.14.1
+          - os: macos-14
+            ghc: 9.12.4
+          - os: windows-latest
+            ghc: 9.12.4
+    steps:
+      - uses: actions/checkout@v4
+
+      # mpv 0.37 = client API 2.2: exercises the version gates.
+      - name: Install libmpv (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libmpv-dev
+
+      # mpv 0.41 = client API 2.5.
+      - name: Install libmpv (macOS)
+        if: runner.os == 'macOS'
+        run: brew install mpv
+
+      - name: Setup MSYS2 (Windows)
+        if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          release: false
+          msystem: UCRT64
+          install: mingw-w64-ucrt-x86_64-mpv mingw-w64-ucrt-x86_64-pkgconf
+
+      - uses: ./.github/actions/setup-haskell
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: ${{ env.CABAL_VERSION }}
+          cabal-update: false
+
+      - name: Build and haddock from sdist
+        shell: bash
+        run: .github/scripts/consumer-bindgen-sys.sh mpv-bindgen-sys mpv
+
+      - name: Strict-flag compile smoke
+        if: runner.os == 'Linux' && matrix.ghc == env.GHC_VERSION
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP/sdist"/mpv-bindgen-sys-*/
           cabal build --flags="strict -optimize"
 
   # If these fail the library will need to be updated to accomodate the new SDL header.
@@ -94,7 +154,7 @@ jobs:
 
       - name: Build and haddock from sdist
         shell: bash
-        run: .github/scripts/consumer-sdl3.sh
+        run: .github/scripts/consumer-bindgen-sys.sh sdl3-bindgen-sys sdl3
 
   consumer-rapidhash:
     if: github.repository == 'jtnuttall/lithon'
