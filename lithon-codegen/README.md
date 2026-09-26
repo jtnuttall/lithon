@@ -1,17 +1,18 @@
 # lithon-codegen
 
-Code generation tool for `lithon-vk` and `sdl3-bindgen-sys`.
+Code generation tool for `lithon-vk`, `sdl3-bindgen-sys`, and `mpv-bindgen-sys`.
 
 - Parses the Vulkan XML registry to generate `lithon-vk`.
-- Drives `hs-bindgen` as a library to emit `sdl3-bindgen-sys` from the SDL3 headers.
+- Drives `hs-bindgen` as a library to emit the bindgen-sys packages from C
+  headers: `sdl3-bindgen-sys` from SDL3's, `mpv-bindgen-sys` from libmpv's.
 
 Not published to Hackage, but public and BSD-3-Clause — you're welcome to copy it
 or build your own bindings with it; see [Reuse](#reuse).
 
 ## CLI
 
-Two subcommand trees, `vulkan` and `sdl3`. Run `--help` on any command for the
-authoritative option list — the blocks below are that help.
+Three subcommand trees: `vulkan`, `sdl3`, and `mpv`. Run `--help` on any
+command for the authoritative option list — the blocks below are that help.
 
 ```
 $ lithon-codegen --help
@@ -28,6 +29,8 @@ Available commands:
   vulkan                   Vulkan registry pipeline: parse / check / resolve /
                            curate / generate
   sdl3                     SDL3 binding generation via hs-bindgen: spec /
+                           generate
+  mpv                      libmpv binding generation via hs-bindgen: spec /
                            generate
 ```
 
@@ -143,18 +146,64 @@ the core-version window (`baseline` … `max`), target `platforms`, the
 block (dependency-closure mode, promoted-to-core handling, provisional/deprecated
 toggles, legacy-core categories, registry-drift warning).
 
-## SDL3
+## bindgen-sys targets
 
-The SDL3 pipeline drives `hs-bindgen` (through `lithon-hs-bindgen`) over the SDL
-headers and emits the complete `sdl3-bindgen-sys` package: the generated modules,
-the curated `SDL3.Sys.*` alias layer, the ABI-assertion translation unit, and the
-static README/CHANGELOG/package.yaml under `data/sdl3/static/`. Curation
-decisions — FFI flavors, typed-constant membership, documentation overrides —
-live in the checked-in registries (`data/sdl3/aliases.json`,
-`data/sdl3/constants.json`, `data/sdl3/versions.json`,
-`data/sdl3/overrides.yaml`); the binding-spec artifacts sync into
-`data/sdl3/spec/`, resolved through the tool's data directory rather than a
-flag.
+`sdl3` and `mpv` are two instances of one pipeline (`Lithon.Codegen.Sys`).
+It drives `hs-bindgen` (through `lithon-hs-bindgen`) over a C library's
+headers and emits the complete `*-bindgen-sys` package: the generated
+modules, the curated alias layer, the ABI-assertion translation unit, the
+version gates, and the vendored hs-bindgen and c-expr runtimes. Each
+library is one `SysTarget` value in `Lithon.Codegen.Sys.Target.*` (names,
+header universe, version spelling, gated-stub policy, prose), registered
+in `Lithon.Codegen.Sys.Targets`; the generic code never branches on which
+target it runs.
+
+Everything else a target needs lives in `lithon-codegen/data/<key>/`:
+
+- `aliases.json`: the curated layer's naming rule and every function's FFI
+  flavor, with rationales.
+- `constants.json`: typed-constant groups (macro ↔ newtype membership);
+  `{"groups": {}}` when there are none.
+- `versions.json`: the availability registry. Versions have the target's
+  number of parts (SDL: 3, libmpv: 2). `decls` corrects a declaration's
+  availability, and a gated function's `stub-return` is the C expression
+  its wrapper returns below the gate (default `0`; the parameters are
+  `arg1`…`argN`). `prologue-typedefs` declares stand-ins for type names
+  older headers lack, each with the `since` release that declares it and
+  a `shape` (`opaque-struct`, `void-ptr`, or the aliased C type).
+  `structs`, `enum-constants`, `value-gates`, and `macro-constants` gate
+  the ABI assertions.
+- `overrides.yaml` (optional): hs-bindgen's prescriptive binding spec
+  (renames, representations, omissions).
+- `static/`: the package's `package.yaml`, `README.md`, and `CHANGELOG.md`,
+  plus the library's license as `LICENSE_<name>`, staged verbatim at the
+  package root.
+- `spec/` and `.lithon-manifest.json`: machine-owned; `spec` and
+  `generate` rewrite them.
+
+Binding another C library takes four steps:
+
+1. A target module, `Lithon.Codegen.Sys.Target.<Name>`, defining its
+   `SysTarget`.
+2. Its data directory, `lithon-codegen/data/<key>/`, as above.
+3. An entry in `sysTargets` (`Lithon.Codegen.Sys.Targets`), which adds the
+   `lithon-codegen <key>` subcommand.
+4. Repo wiring: the package in `cabal.project`; the library in the flake
+   (the devshell, `libHook`, and the pkg-config mapping haskell.nix plans
+   with; see libmpv's `pc-version`); the freshness and haddock steps in
+   `scripts/check.sh`; and a CI consumer job.
+
+Regenerate the bindings with:
+
+```sh
+cabal run lithon-codegen -- sdl3 generate
+cabal run lithon-codegen -- mpv generate
+```
+
+`--check` (on any `generate` or `spec`) diffs fresh output against the tree and
+writes nothing — the CI freshness gate.
+
+### sdl3
 
 `data/sdl3/versions.json` tracks per-SDL-version availability, including:
 
@@ -163,6 +212,8 @@ flag.
   higher granularity than SDL seems to provide). The `(added in X.Y.Z)` line
   in the member's comment serves as a the default floor, although the registry
   can override it.
+- Stand-ins for type names that 3.4 signatures use but 3.2 headers do not
+  declare (`prologue-typedefs`; all twelve have `since` 3.4.0).
 
 The SDL version the bindings are generated from is the devshell's
 `pkg-config --modversion sdl3`; it is recorded in the package manifest and
@@ -213,14 +264,63 @@ Available options:
 
 </details>
 
-Regenerate the bindings with:
+### mpv
 
-```sh
-cabal run lithon-codegen -- sdl3 generate
+`mpv-bindgen-sys` binds the libmpv client API down to its floor, client API
+2.0 (mpv 0.35). libmpv states availability only in prose, so
+`data/mpv/versions.json` is the only source, and it gates two functions:
+`mpv_del_property` (2.1; below it, the stub returns
+`MPV_ERROR_UNSUPPORTED`) and `mpv_get_time_ns` (2.2; below it, the stub
+returns `mpv_get_time_us(arg1) * 1000`).
+
+The client API version the bindings are generated from is the devshell's
+`pkg-config --modversion mpv` (`mpv.pc` reports the client API version,
+not mpv's); it is recorded in the package manifest and in ABI assertion
+messages.
+
+```
+$ lithon-codegen mpv --help
+Usage: lithon-codegen mpv COMMAND
+
+  libmpv binding generation via hs-bindgen: spec / generate
+
+Available options:
+  -h,--help                Show this help text
+
+Available commands:
+  spec                     Run the per-header chain and sync the binding-spec
+                           artifacts (steps 1-2)
+  generate                 Run the chain and emit the mpv-bindgen-sys package +
+                           spec artifacts (step 3)
 ```
 
-`--check` (on any `generate` or `spec`) diffs fresh output against the tree and
-writes nothing — the CI freshness gate.
+<details>
+<summary><code>spec</code> · <code>generate</code> — full options</summary>
+
+```
+$ lithon-codegen mpv spec --help
+Usage: lithon-codegen mpv spec [--check] [--yes]
+
+  Run the per-header chain and sync the binding-spec artifacts (steps 1-2)
+
+Available options:
+  --check                  Diff fresh output against the tree; write nothing
+  --yes                    Skip the output-directory confirmation
+  -h,--help                Show this help text
+
+$ lithon-codegen mpv generate --help
+Usage: lithon-codegen mpv generate [--out DIR] [--check] [--yes]
+
+  Run the chain and emit the mpv-bindgen-sys package + spec artifacts (step 3)
+
+Available options:
+  --out DIR                Target package directory (default: "mpv-bindgen-sys")
+  --check                  Diff fresh output against the tree; write nothing
+  --yes                    Skip the output-directory confirmation
+  -h,--help                Show this help text
+```
+
+</details>
 
 ## Running lithon-codegen
 
@@ -251,7 +351,7 @@ whenever a module file is added.
 
 - copy the tool, in whole or in part, with attribution; and
 - use it — and the [profile](#profiles) mechanism — to generate your own curated
-  binding set: a different Vulkan surface, or (through the SDL3 pipeline's
-  registries) a reshaped SDL3 layer.
+  binding set: a different Vulkan surface, or (through a bindgen-sys target's
+  registries) a reshaped SDL3 or libmpv layer.
 
 If you build something with it, I'd be glad to hear about it — open an issue.

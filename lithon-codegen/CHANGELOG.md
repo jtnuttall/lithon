@@ -4,6 +4,10 @@
 
 ### Added
 
+- The libmpv target: `lithon-codegen mpv spec|generate` emits
+  `mpv-bindgen-sys` from the libmpv client API headers
+  (`Lithon.Codegen.Sys.Target.Mpv`, `data/mpv/`), down to client API 2.0,
+  with `mpv_del_property` (2.1) and `mpv_get_time_ns` (2.2) version-gated.
 - SDL3 ABI assertions: a member's availability defaults to the
   `(added in X.Y.Z)` note in its doxygen comment.
 - `sdl3 generate`/`spec` validate the distilled layouts before writing:
