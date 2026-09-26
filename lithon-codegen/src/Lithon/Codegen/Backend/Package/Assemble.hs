@@ -32,8 +32,6 @@ assemblePackage spec = do
     first (GeneratorOutputInvalid "modules") $ tryFrom (srcFilePairs spec.srcDir spec.modules)
   extras :: FileTree <-
     first (GeneratorOutputInvalid "extra files") $ tryFrom spec.extraFiles
-  -- A license staged under a root file's name (or twice) is a collision,
-  -- never a silent last-wins overwrite.
   rootFiles :: FileTree <-
     first from
       . FileTree.fromList

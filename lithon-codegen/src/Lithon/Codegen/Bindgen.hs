@@ -5,18 +5,21 @@
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# OPTIONS_GHC -fplugin=Effectful.Plugin #-}
 
--- | The per-target subcommand tree of hs-bindgen-driven @*-bindgen-sys@
--- generation (@lithon-codegen sdl3 …@), generic over the target record
--- ("Lithon.Codegen.Bindgen.Target").
+-- | The @lithon-codegen \<key\>@ subcommands (@sdl3@, @mpv@, …): generating
+-- a @*-bindgen-sys@ package from one C library's headers, driven by the
+-- library's 'BindgenTarget'.
 --
--- @spec@ (steps 1–2 of the artifact flow) runs the per-header chain far
--- enough to produce every header's binding specification and syncs them
--- under @lithon-codegen\/data\/\<key\>\/spec\/@ — the committed,
--- reviewable record of the generated type surface, and the chaining medium
--- between header invocations. @generate@ additionally emits the package.
+-- @spec@ runs hs-bindgen over every public header and syncs the resulting
+-- binding specifications into @lithon-codegen\/data\/\<key\>\/spec\/@. Each
+-- header's invocation consumes the specs of the headers it includes, so the
+-- committed specs are both the reviewable record of the generated type
+-- surface and the chaining medium between invocations.
 --
--- Curation lives in @lithon-codegen\/data\/\<key\>\/overrides.yaml@ and
--- the three registries beside it.
+-- @generate@ does the same, then plans the curated alias layer and emits
+-- the package.
+--
+-- Curation inputs live beside the specs: @overrides.yaml@ (the prescriptive
+-- hs-bindgen spec), @aliases.json@, @constants.json@, and @versions.json@.
 module Lithon.Codegen.Bindgen (
   BindgenError (..),
   BindgenCmd (..),
