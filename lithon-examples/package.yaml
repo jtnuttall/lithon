@@ -109,6 +109,7 @@ executables:
   # through the curated Mpv.Sys layer — the mpv-bindgen-sys usability
   # gate: asserts the baked MPV_CLIENT_API_VERSION, the loaded width, and
   # the EOF reason in the end-file payload, under a 15-second deadline.
+  # Needs libmpv in the environment; the devshell carries it.
   mpv-headless:
     main: Main.hs
     source-dirs: app/mpv-headless

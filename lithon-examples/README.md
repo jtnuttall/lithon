@@ -26,8 +26,8 @@ cabal run triangle-sdl        # needs SDL2; disable with -f -sdl elsewhere
 ```
 
 On Windows without Nix, the SDL3 examples build natively from Git Bash
-against MSYS2 UCRT64 (install `mingw-w64-ucrt-x86_64-sdl3` and
-`mingw-w64-ucrt-x86_64-pkgconf` as in the
+against MSYS2 UCRT64 (install `mingw-w64-ucrt-x86_64-sdl3`,
+`mingw-w64-ucrt-x86_64-mpv`, and `mingw-w64-ucrt-x86_64-pkgconf` as in the
 [sdl3-bindgen-sys README](../sdl3-bindgen-sys/README.md#windows-set-up)):
 
 ```sh
@@ -40,6 +40,8 @@ cabal run --with-compiler=/c/ghcup/ghc/9.12.2/bin/ghc.exe \
 ```
 
 `-sdl` leaves out `triangle-sdl`, the one executable that needs SDL2.
+The root `cabal.project` lists `mpv-bindgen-sys`, whose `pkg-config`
+dependency the solver checks, so libmpv is needed even with `-mpv`.
 
 `sdl3-raw` and `shmup` run headless under `SDL_VIDEODRIVER=offscreen`,
 which is how `scripts/check.sh` probe-asserts their pixels; `triangle-sdl`

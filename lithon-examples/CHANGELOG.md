@@ -20,6 +20,11 @@
   replaced by an explicit fixed-1/60-step SDL loop. Playable by default;
   bounded + unpaced with `--frames N` or under CI (headless,
   probe-asserted).
+- `mpv-headless` (flag `mpv`, on by default): one-second lavfi test clip
+  played headless (`vo=null`, `ao=null`) through the curated `Mpv.Sys`
+  layer — the `mpv-bindgen-sys` usability gate: asserts the baked
+  `MPV_CLIENT_API_VERSION`, the loaded width, and the EOF reason in the
+  end-file payload, under a 15-second deadline.
 - Shader blobs moved to `Lithon.Examples.Triangle.Shaders`; `embedFile`
   paths are anchored with `makeRelativeToProject` so HLS's multi-repl
   (project-root cwd) loads the package.
