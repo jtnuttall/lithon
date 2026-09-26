@@ -244,7 +244,7 @@ jobs:
             lithon-examples
           index-state: 2026-07-01T00:00:00Z
           package lithon-examples
-            flags: -sdl
+            flags: -sdl -mpv
           EOF
           cabal update --project-file=cabal.project.shmup
           cabal build --project-file=cabal.project.shmup lithon-examples:exe:shmup

@@ -39,6 +39,12 @@ flags:
       the devshell carries it — disable with -f -sdl elsewhere)
     manual: true
     default: true
+  mpv:
+    description: >-
+      Build the headless libmpv example (needs libmpv in the environment;
+      the devshell carries it — disable with -f -mpv elsewhere)
+    manual: true
+    default: true
 
 dependencies:
   - base <4.22.0.0
@@ -106,8 +112,13 @@ executables:
   mpv-headless:
     main: Main.hs
     source-dirs: app/mpv-headless
-    dependencies:
-      - mpv-bindgen-sys
+    when:
+      - condition: flag(mpv)
+        then:
+          dependencies:
+            - mpv-bindgen-sys
+        else:
+          buildable: false
 
 tests:
   lithon-examples-test:

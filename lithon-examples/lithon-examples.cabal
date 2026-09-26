@@ -29,6 +29,11 @@ source-repository head
   type: git
   location: https://github.com/jtnuttall/lithon
 
+flag mpv
+  description: Build the headless libmpv example (needs libmpv in the environment; the devshell carries it — disable with -f -mpv elsewhere)
+  manual: True
+  default: True
+
 flag sdl
   description: Build the windowed SDL2 triangle (needs SDL2 in the environment; the devshell carries it — disable with -f -sdl elsewhere)
   manual: True
@@ -86,9 +91,13 @@ executable mpv-headless
     , bytestring ==0.12.*
     , lithon-core
     , lithon-vk
-    , mpv-bindgen-sys
     , vector ==0.13.*
   default-language: GHC2024
+  if flag(mpv)
+    build-depends:
+        mpv-bindgen-sys
+  else
+    buildable: False
 
 executable sdl3-raw
   main-is: Main.hs
