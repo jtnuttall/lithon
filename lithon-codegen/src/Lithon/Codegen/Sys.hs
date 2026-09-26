@@ -5,19 +5,23 @@
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# OPTIONS_GHC -fplugin=Effectful.Plugin #-}
 
--- | The @sdl3@ subcommand tree: hs-bindgen-driven SDL3 binding generation.
+-- | The per-target subcommand tree of hs-bindgen-driven @*-bindgen-sys@
+-- generation (@lithon-codegen sdl3 …@), generic over the target record
+-- ("Lithon.Codegen.Sys.Target").
 --
 -- @spec@ (steps 1–2 of the artifact flow) runs the per-header chain far
 -- enough to produce every header's binding specification and syncs them
--- under @lithon-codegen\/sdl3\/spec\/@ — the committed, reviewable record
--- of the generated type surface, and the chaining medium between header
--- invocations.
+-- under @lithon-codegen\/data\/\<key\>\/spec\/@ — the committed,
+-- reviewable record of the generated type surface, and the chaining medium
+-- between header invocations. @generate@ additionally emits the package.
 --
--- Curation lives in @lithon-codegen\/sdl3\/overrides.yaml@
+-- Curation lives in @lithon-codegen\/data\/\<key\>\/overrides.yaml@ and
+-- the three registries beside it.
 module Lithon.Codegen.Sys (
   SysError (..),
   SysCmd (..),
   sysCmdP,
+  sysCommand,
   runSys,
 ) where
 
@@ -71,7 +75,7 @@ import Lithon.Codegen.Bindgen (
   runBindgen,
  )
 import Lithon.Codegen.Sys.Abi (AbiMacroConst (..))
-import Lithon.Codegen.Sys.Abi.Validate (AbiProblem, validateAbi)
+import Lithon.Codegen.Sys.Abi.Validate (AbiProblem, LibraryRef (..), validateAbi)
 import Lithon.Codegen.Sys.Alias (
   AliasModule (..),
   FamilyDecls (..),
@@ -104,18 +108,25 @@ import Lithon.Codegen.Sys.Alias.Constants (
 import Lithon.Codegen.Sys.Alias.Names (AliasError)
 import Lithon.Codegen.Sys.Chain (
   SysPayload (..),
-  sdl3BindgenOpts,
-  sdl3Plan,
+  bindgenOpts,
+  headerPlan,
   sysVisitor,
  )
 import Lithon.Codegen.Sys.Env (
   SysEnv (..),
   SysGen,
-  SysResolutionError,
+  SysResolutionError (TargetInvalid),
   getSysEnv,
   runSysGen,
  )
 import Lithon.Codegen.Sys.Package (SysPackagingError, assembleSysPackage)
+import Lithon.Codegen.Sys.Target (
+  SysTarget (..),
+  VersionScheme (..),
+  includeArg,
+  registryDisplayPath,
+  validateTarget,
+ )
 import Lithon.Codegen.Sys.Versions (
   Versioned (..),
   VersionsRegistry (..),
@@ -123,7 +134,8 @@ import Lithon.Codegen.Sys.Versions (
  )
 
 data SysError
-  = SysResolutionError SysResolutionError
+  = -- | The target's display name, and why its environment did not resolve.
+    ResolutionFailed Text SysResolutionError
   | VersionsRegistryMissing FilePath
   | VersionsRegistryDecodeError Text
   | AliasesRegistryMissing FilePath
@@ -137,20 +149,15 @@ data SysError
   | BindgenError BindgenError
   | EmitError EmitError
   | PackagingError SysPackagingError
-  | AbiValidationFailed (Errors AbiProblem)
+  | -- | The versions registry to record the fixes in, and the problems.
+    AbiValidationFailed FilePath (Errors AbiProblem)
   deriving stock (Show)
-
-instance From (Errors AbiProblem) SysError where
-  from = AbiValidationFailed
 
 instance From (Errors AliasError) SysError where
   from = AliasesError
 
 instance From (Errors ConstantError) SysError where
   from = ConstantsError
-
-instance From SysResolutionError SysError where
-  from = SysResolutionError
 
 instance From BindgenError SysError where
   from = BindgenError
@@ -161,7 +168,7 @@ instance From EmitError SysError where
 -- TODO: Lower about half of these into aliases/constants modules
 instance Display SysError where
   displayBuilder = \case
-    SysResolutionError err -> "Failed to resolve the SDL3 environment: " <> from err
+    ResolutionFailed name err -> "Failed to resolve the " <> from name <> " environment: " <> from err
     VersionsRegistryMissing path -> "Version registry not found: " <> from path
     VersionsRegistryDecodeError err -> "Failed to decode version registry: " <> from err
     AliasesRegistryMissing path -> "Alias registry not found: " <> from path
@@ -188,17 +195,18 @@ instance Display SysError where
     BindgenError err -> "Failed while invoking hs-bindgen: " <> from err
     EmitError err -> "Failed to emit library: " <> from err
     PackagingError err -> "Failed to emit library package: " <> from err
-    AbiValidationFailed errs ->
-      "ABI validation failed; nothing was written. Record the availability in"
-        <> " lithon-codegen/data/sdl3/versions.json and rerun:\n\n"
+    AbiValidationFailed registry errs ->
+      "ABI validation failed; nothing was written. Record the availability in "
+        <> from registry
+        <> " and rerun:\n\n"
         <> intercalateTB "\n\n" (map displayBuilder (toList errs))
 
 data SysCmd
   = CmdSpec SpecOpts
   | CmdGenerate GenerateOpts
 
-sysCmdP :: Parser SysCmd
-sysCmdP =
+sysCmdP :: SysTarget -> Parser SysCmd
+sysCmdP target =
   hsubparser
     ( command
         "spec"
@@ -209,9 +217,24 @@ sysCmdP =
         <> command
           "generate"
           ( info
-              (CmdGenerate <$> generateOptsP)
-              (progDesc "Run the chain and emit the sdl3-bindgen-sys package + spec artifacts (step 3)")
+              (CmdGenerate <$> generateOptsP target)
+              ( progDesc
+                  ( "Run the chain and emit the "
+                      <> toString target.packageName
+                      <> " package + spec artifacts (step 3)"
+                  )
+              )
           )
+    )
+
+-- | The target's subcommand (@lithon-codegen \<key\> spec|generate@).
+sysCommand :: (SysTarget -> SysCmd -> a) -> SysTarget -> Mod CommandFields a
+sysCommand wrap target =
+  command
+    (toString target.key)
+    ( info
+        (wrap target <$> sysCmdP target)
+        (progDesc (toString target.displayName <> " binding generation via hs-bindgen: spec / generate"))
     )
 
 data SpecOpts = SpecOpts
@@ -229,9 +252,9 @@ newtype GenerateOpts = GenerateOpts
   { out :: PackageOut
   }
 
-generateOptsP :: Parser GenerateOpts
-generateOptsP = do
-  out <- packageOutP "sdl3-bindgen-sys"
+generateOptsP :: SysTarget -> Parser GenerateOpts
+generateOptsP target = do
+  out <- packageOutP (toString target.packageName)
   pure GenerateOpts{..}
 
 runSys
@@ -245,31 +268,33 @@ runSys
      , FileSystem :> es
      , Console :> es
      )
-  => Maybe ProjectRoot -> SysCmd -> Eff es ()
-runSys root cmd = runErrorFrom @SysResolutionError $ runSysGen do
-  env <- getSysEnv
-  runBindgen (sdl3BindgenOpts env) case cmd of
-    CmdSpec opts -> do
-      registry <- loadVersionsRegistry
-      results <- runChain registry
-      validateChain results
-      syncSpecs (guardCtx root opts.assumeYes) opts.emitEffect results
-    CmdGenerate opts -> do
-      registry <- loadVersionsRegistry
-      results <- runChain registry
-      validateChain results
-      -- Specs and package come from the same chain run, so they can never
-      -- skew; both emits respect --check.
-      syncSpecs (guardCtx root opts.out.assumeYes) opts.out.emitEffect results
-      (aliasFiles, macroConsts, aliasMeta) <-
-        planAliases registry results
-      tree <-
-        liftEither
-          . first PackagingError
-          $ assembleSysPackage env.libraryVersion aliasFiles macroConsts results
-      manifestMeta <- chainMeta results
-      runErrorFrom @EmitError @SysError
-        $ emitHaskellPackage root opts.out (manifestMeta <> aliasMeta) tree
+  => SysTarget -> Maybe ProjectRoot -> SysCmd -> Eff es ()
+runSys target root cmd = runRethrow @SysResolutionError (ResolutionFailed target.displayName) do
+  either (throwError . TargetInvalid target.key) pure (validateTarget target)
+  runSysGen target do
+    env <- getSysEnv
+    runBindgen (bindgenOpts target env) case cmd of
+      CmdSpec opts -> do
+        registry <- loadVersionsRegistry
+        results <- runChain target registry
+        validateChain target results
+        syncSpecs target (guardCtx root opts.assumeYes) opts.emitEffect results
+      CmdGenerate opts -> do
+        registry <- loadVersionsRegistry
+        results <- runChain target registry
+        validateChain target results
+        -- Specs and package come from the same chain run, so they can never
+        -- skew; both emits respect --check.
+        syncSpecs target (guardCtx root opts.out.assumeYes) opts.out.emitEffect results
+        (aliasFiles, macroConsts, aliasMeta) <-
+          planAliases target registry results
+        tree <-
+          liftEither
+            . first PackagingError
+            $ assembleSysPackage target target.statics env.libraryVersion aliasFiles macroConsts results
+        manifestMeta <- chainMeta target results
+        runErrorFrom @EmitError @SysError
+          $ emitHaskellPackage root opts.out (manifestMeta <> aliasMeta) tree
 
 -- | Refuse to write (or @--check@) a layout whose growth story is
 -- incomplete: every struct is checked so one run reports them all, and
@@ -277,15 +302,21 @@ runSys root cmd = runErrorFrom @SysResolutionError $ runSysGen do
 -- committed spec artifacts untouched.
 validateChain
   :: (SysGen :> es, Error SysError :> es)
-  => [HeaderResult SysPayload] -> Eff es ()
-validateChain results = do
+  => SysTarget -> [HeaderResult SysPayload] -> Eff es ()
+validateChain target results = do
   env <- getSysEnv
+  let library =
+        LibraryRef
+          { label = target.versionLabel
+          , version = env.libraryVersion
+          , registry = registryDisplayPath target "versions.json"
+          }
   liftEither
-    . first from
+    . first (AbiValidationFailed library.registry)
     . validationToEither
-    $ validateAbi env.libraryVersion (concatMap (.payload.abi) results)
+    $ validateAbi target.versioning.baseline library (concatMap (.payload.abi) results)
 
--- | Load, validate, plan, and render the curated @SDL3.Sys.*@ layer.
+-- | Load, validate, plan, and render the target's curated layer.
 --
 -- Both registries are required: every callback-taking function must be
 -- classified (@aliases.json@) and the typed-constant groups are the
@@ -301,10 +332,11 @@ planAliases
      , Error SysError :> es
      , FileSystem :> es
      )
-  => VersionsRegistry
+  => SysTarget
+  -> VersionsRegistry
   -> [HeaderResult SysPayload]
   -> Eff es ([(Text, Text)], [AbiMacroConst], Map Text Aeson.Value)
-planAliases registry headerResults = do
+planAliases target registry headerResults = do
   env <- getSysEnv
   let families = map (.payload.facts) headerResults
 
@@ -315,7 +347,7 @@ planAliases registry headerResults = do
       . first from
       $ validateAliasConfig (functionCensus families) config
 
-  (constantPlans, constantsBytes) <- planConstantGroups families
+  (constantPlans, constantsBytes) <- planConstantGroups target families
   let plansByFamily =
         Map.fromListWith
           (flip (<>))
@@ -332,11 +364,11 @@ planAliases registry headerResults = do
         , m <- p.members
         ]
 
-  aliasModules <- liftEither . first from $ planAliasLayer validated plansByFamily families
+  aliasModules <- liftEither . first from $ planAliasLayer target validated plansByFamily families
   let rewriteMap = aliasRewriteMap aliasModules
       rendered =
-        map (renderAliasModule rewriteMap) aliasModules
-          <> [renderRuntimeModule, renderUmbrella aliasModules]
+        map (renderAliasModule target rewriteMap) aliasModules
+          <> [renderRuntimeModule target, renderUmbrella target aliasModules]
   logInfo
     $ "alias layer planned"
     :# [ "modules" .= length rendered
@@ -360,8 +392,8 @@ planAliases registry headerResults = do
 -- against those same headers, and validate the lot.
 planConstantGroups
   :: (IOE :> es, SysGen :> es, Bindgen :> es, Error SysError :> es, FileSystem :> es)
-  => [FamilyDecls] -> Eff es ([ConstantGroupPlan], LByteString)
-planConstantGroups families = do
+  => SysTarget -> [FamilyDecls] -> Eff es ([ConstantGroupPlan], LByteString)
+planConstantGroups target families = do
   env <- getSysEnv
 
   constantsBytes <- LBS.fromStrict <$> EBS.readFile env.constantsRegistryPath
@@ -369,7 +401,7 @@ planConstantGroups families = do
     liftEither . first ConstantsRegistryParseError $ decodeConstantsConfig constantsBytes
 
   familyConstants <- forM families \fd -> do
-    source <- decodeUtf8 <$> EBS.readFile (env.includeDir </> "SDL3" </> fd.headerName)
+    source <- decodeUtf8 <$> EBS.readFile (env.includeDir </> includeArg target fd.headerName)
     pure
       FamilyConstants
         { familyBase = fd.familyBase
@@ -390,7 +422,7 @@ planConstantGroups families = do
             [validationToEither (enumerateMembers typeName cgroup fc.headerMacros)]
         ]
 
-  (sizeofs, values) <- probeConstants probeInputs
+  (sizeofs, values) <- probeConstants target probeInputs
   plans <-
     liftEither
       . first from
@@ -399,8 +431,8 @@ planConstantGroups families = do
 
 probeConstants
   :: (IOE :> es, SysGen :> es, Bindgen :> es, Error SysError :> es)
-  => [(Text, [Text])] -> Eff es (Map Text Int, Map Text Integer)
-probeConstants probeInputs
+  => SysTarget -> [(Text, [Text])] -> Eff es (Map Text Int, Map Text Integer)
+probeConstants target probeInputs
   | null probeInputs = pure (mempty, mempty)
   | otherwise = do
       SystemTempDir scratch <- getScratchDirectory
@@ -408,7 +440,7 @@ probeConstants probeInputs
       let probeC = scratch </> "lithon_constants_probe.c"
           probeBin = scratch </> "lithon_constants_probe"
 
-      liftIO (TIO.writeFile probeC (renderProbeSource probeInputs))
+      liftIO (TIO.writeFile probeC (renderProbeSource target probeInputs))
 
       env <- getSysEnv
       _ <-
@@ -442,22 +474,25 @@ runChain
      , Bindgen :> es
      , Error SysError :> es
      )
-  => VersionsRegistry -> Eff es [HeaderResult SysPayload]
-runChain registry = runErrorFrom do
+  => SysTarget -> VersionsRegistry -> Eff es [HeaderResult SysPayload]
+runChain target registry = runErrorFrom do
   env <- getSysEnv
   -- libc headers reach libclang only via BINDGEN_EXTRA_CLANG_ARGS (the
   -- devshell's hs-bindgen hook populates it from the cc-wrapper's
   -- cc-cflags + libc-cflags); without it the chain dies on <string.h>.
   extraClangArgs <- lookupEnv "BINDGEN_EXTRA_CLANG_ARGS"
-  logInfo $ "sdl3 environment" :# ["env" .= env, "bindgenExtraClangArgs" .= isJust extraClangArgs]
+  logInfo
+    $ "environment"
+    :# ["target" .= target.key, "env" .= env, "bindgenExtraClangArgs" .= isJust extraClangArgs]
   when (isNothing extraClangArgs)
     $ logWarn "BINDGEN_EXTRA_CLANG_ARGS is unset; libclang may fail to find libc headers."
 
-  graph <- preflightGraph sdl3Plan
-  units <- planHeaders sdl3Plan graph
+  let plan = headerPlan target
+  graph <- preflightGraph plan
+  units <- planHeaders plan graph
   logInfo $ "planned headers" :# ["count" .= length units]
 
-  results <- chainHeaders (sysVisitor registry) units
+  results <- chainHeaders (sysVisitor target registry) units
   logInfo
     $ "chain complete"
     :# [ "headers" .= length results
@@ -478,15 +513,15 @@ syncSpecs
      , Console :> es
      , Bindgen :> es
      )
-  => GuardCtx -> EmitEffect -> [HeaderResult SysPayload] -> Eff es ()
-syncSpecs ctx effect results = do
+  => SysTarget -> GuardCtx -> EmitEffect -> [HeaderResult SysPayload] -> Eff es ()
+syncSpecs target ctx effect results = do
   env <- getSysEnv
   SystemTempDir scratch <- getScratchDirectory
   specMap <-
     fmap Map.fromList . for results $ \r -> do
       bytes <- EBS.readFile (scratch </> r.unit.specFile)
       pure ("spec" </> r.unit.specFile, decodeUtf8 bytes)
-  manifestMeta <- chainMeta results
+  manifestMeta <- chainMeta target results
   runErrorFrom
     $ emitPackage
       ArtifactsOnly
@@ -497,11 +532,12 @@ syncSpecs ctx effect results = do
         }
       specMap
 
-chainMeta :: (SysGen :> es) => [HeaderResult SysPayload] -> Eff es (Map Text Aeson.Value)
-chainMeta results = do
+chainMeta
+  :: (SysGen :> es) => SysTarget -> [HeaderResult SysPayload] -> Eff es (Map Text Aeson.Value)
+chainMeta target results = do
   env <- getSysEnv
   pure
     $ Map.fromList
-      [ ("sdlVersion", Aeson.toJSON env.libraryVersion)
+      [ (target.versionMetaKey, Aeson.toJSON env.libraryVersion)
       , ("headers", Aeson.toJSON (length results))
       ]

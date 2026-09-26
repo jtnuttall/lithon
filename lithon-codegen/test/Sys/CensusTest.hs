@@ -25,10 +25,12 @@ import Test.Tasty.Golden (goldenVsStringDiff)
 
 import Lithon.Codegen.Backend.Emit (Manifest (..), manifestFileName)
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
-import Lithon.Codegen.Sys.Alias (sysModuleName, sysNamespace)
+import Lithon.Codegen.Sys.Alias (sysModuleName)
 import Lithon.Codegen.Sys.Alias.Config (AliasConfig (..), FunctionEntry (..), decodeAliasConfig)
 import Lithon.Codegen.Sys.Alias.Names (Safety (..))
-import Lithon.Codegen.Sys.Chain (baseNamespace, sdl3ModuleFor)
+import Lithon.Codegen.Sys.Chain (moduleFor)
+import Lithon.Codegen.Sys.Target (SysTarget (..), bindgenNamespace)
+import Lithon.Codegen.Sys.Target.Sdl3 (sdl3)
 
 packageDir, specDir :: FilePath
 packageDir = $(stringE =<< makeRelativeToProject "../sdl3-bindgen-sys")
@@ -70,10 +72,11 @@ test_sdl3Census =
             , ".hs" `T.isSuffixOf` T.pack path
             ]
         headers = [T.dropEnd 5 spec <> ".h" | spec <- specs]
+        sysNamespace = Module.hsName sdl3.namespace
         familyOf header =
           either error id (runMangle (toString header))
         sysOf header =
-          either error id (sysModuleName (familyOf header))
+          either error id (sysModuleName sdl3 (familyOf header))
         familyModules =
           fromList @(Set Text)
             [ familyOf header <> suffix
@@ -100,7 +103,7 @@ test_sdl3Census =
       $ LBS.fromStrict
       . TE.encodeUtf8
       . T.unlines
-      $ [ "namespace: " <> Module.hsName baseNamespace
+      $ [ "namespace: " <> Module.hsName (bindgenNamespace sdl3)
         , "curated namespace: " <> sysNamespace
         , "headers (specs): " <> T.show (length specs)
         , "modules: " <> T.show (Set.size moduleNames)
@@ -122,9 +125,9 @@ test_sdl3Census =
       <> map headerLine headers
 
 -- | Header basename -> dotted module name, through the chain's own minting
--- ('sdl3ModuleFor') — the census cannot drift from generation.
+-- ('moduleFor') — the census cannot drift from generation.
 runMangle :: FilePath -> Either Text Text
-runMangle = bimap display Module.hsName . sdl3ModuleFor
+runMangle = bimap display Module.hsName . moduleFor sdl3
 
 -- | How many committed source modules embed C via the Template Haskell
 -- @addCSource@ splice.

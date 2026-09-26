@@ -13,7 +13,7 @@
 -- renders it as a C translation unit of @_Static_assert@s
 -- ('renderAbiAssertions') that is compiled into the package via
 -- @c-sources@: whoever builds the package re-checks the baked layout
--- against /their/ SDL headers, so divergence is a compile error naming
+-- against /their/ library headers, so divergence is a compile error naming
 -- the exact declaration instead of runtime memory corruption.
 --
 -- Deliberately not asserted:
@@ -29,12 +29,13 @@
 --   vocabulary; the layout risk this TU exists for does not apply);
 -- * @PlatformDefines@ (documented as generation-host values).
 --
--- Declarations documented @\@since@ later than the SDL 3.2.0 baseline
--- get their asserts wrapped in @#if SDL_VERSION_ATLEAST@ on SDL's own
--- version macros — header truth, independent of any cabal flag. Members
--- have no @\@since@ section; SDL's convention for a late member is a
--- prose note in its own comment ("(added in 3.4.16)"), which
--- 'fieldSince' reads the same way. The registry corrects both.
+-- Declarations available later than the target's baseline (SDL: 3.2.0)
+-- get their asserts wrapped in the target's own version-macro condition
+-- (SDL: @#if SDL_VERSION_ATLEAST@) — header truth, independent of any
+-- cabal flag. Availability comes from the target's
+-- 'Lithon.Codegen.Sys.Target.VersionScheme' readers (SDL: the doxygen
+-- @\@since@ section, and for members, which have none, the prose note
+-- \"(added in 3.4.16)\" in their own comment). The registry corrects both.
 --
 -- Sizes are asserted @==@ by default: SDL fills most structs into memory
 -- the bindings allocate at the baked size. A struct read only inside a
@@ -52,32 +53,31 @@ module Lithon.Codegen.Sys.Abi (
   AbiField (..),
   AbiEnumConst (..),
   AbiMacroConst (..),
-  AbiSince (..),
   AbiLayout (..),
   AbiLayoutBefore (..),
   AbiGrowth (..),
   AbiOverrides (..),
   StructOverrides (..),
   emptyAbiOverrides,
-  sdlBaseline,
-  renderSince,
-  declSince,
-  fieldSince,
-  addedInSince,
-  versionToken,
-  parseSince,
   distillAbi,
   renderAbiAssertions,
 ) where
 
-import Data.Char (isDigit)
 import Data.List.NonEmpty qualified as NE
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
-import Doxygen.Parser.Types qualified as Doxy
 import Lithon.HsBindgen.C qualified as C
 import Lithon.Prelude
+
+import Lithon.Codegen.Sys.Target (
+  ParseEnv (..),
+  Prose (..),
+  SysTarget (..),
+  VersionScheme (..),
+  defineLine,
+ )
+import Lithon.Codegen.Sys.Version (AbiSince, renderSince)
 
 -- | Which C sort an 'AbiDecl' describes.
 data AbiKind = AbiStruct | AbiUnion | AbiEnum
@@ -122,19 +122,6 @@ data AbiMacroConst = AbiMacroConst
   }
   deriving stock (Eq, Generic, Show)
 
--- | The SDL release a declaration's docs mark it @\@since@.
-data AbiSince = AbiSince
-  { major :: Int
-  , minor :: Int
-  , patch :: Int
-  }
-  deriving stock (Eq, Generic, Ord, Show)
-
--- | The oldest SDL with a stable ABI; @\@since@ at the baseline needs no
--- version guard.
-sdlBaseline :: AbiSince
-sdlBaseline = AbiSince{major = 3, minor = 2, patch = 0}
-
 data AbiLayout
   = LayoutExact
   | -- | Offsets and alignment stay @==@ but sizeof is asserted @>=@ (@==@
@@ -154,9 +141,6 @@ data AbiGrowth = AbiGrowth
   , before :: AbiLayoutBefore
   }
   deriving stock (Eq, Generic, Show)
-
-renderSince :: AbiSince -> Text
-renderSince v = T.intercalate "." (map show [v.major, v.minor, v.patch])
 
 -- | The layout ground truth of one non-opaque, named C type declaration.
 data AbiDecl = AbiDecl
@@ -215,15 +199,17 @@ emptyAbiOverrides :: AbiOverrides
 emptyAbiOverrides =
   AbiOverrides{decls = mempty, constants = mempty, macros = mempty, structs = mempty}
 
--- | Distill one header's reified declarations. 'Left' only on evidence
--- of a distiller bug (a non-bitfield member whose bit offset is not
--- byte-aligned cannot come out of a conforming C frontend).
-distillAbi :: FilePath -> AbiOverrides -> [C.Decl l C.Final] -> Either Text [AbiDecl]
-distillAbi headerName ov = sequenceA . mapMaybe abiDeclOf
+-- | Distill one header's reified declarations, reading documented
+-- availability through the target's 'VersionScheme'. 'Left' only on
+-- evidence of a distiller bug (a non-bitfield member whose bit offset is
+-- not byte-aligned cannot come out of a conforming C frontend).
+distillAbi
+  :: VersionScheme -> FilePath -> AbiOverrides -> [C.Decl l C.Final] -> Either Text [AbiDecl]
+distillAbi scheme headerName ov = sequenceA . mapMaybe abiDeclOf
  where
   abiDeclOf decl = case decl.kind of
     C.DeclStruct s | named -> Just do
-      fields <- assertableFields cTypeName memberSinces s.fields
+      fields <- assertableFields scheme cTypeName memberSinces s.fields
       Right (base AbiStruct s.sizeof s.alignment){fields}
     C.DeclUnion u
       | named ->
@@ -256,14 +242,15 @@ distillAbi headerName ov = sequenceA . mapMaybe abiDeclOf
         , constants = []
         , -- The override map wins over the header's own annotation: SDL's
           -- @\since@ lies in both directions (see sdl3/versions.json).
-          since = Map.lookup bareName ov.decls <|> declSince decl.info
+          since = Map.lookup bareName ov.decls <|> scheme.declSince decl.info
         , growth = structOv >>= (.growth)
         , layout = structOv >>= (.layout)
         , memberTypes = []
         }
 
-assertableFields :: Text -> Map Text AbiSince -> [C.Field C.Final] -> Either Text [AbiField]
-assertableFields owner memberSinces fs =
+assertableFields
+  :: VersionScheme -> Text -> Map Text AbiSince -> [C.Field C.Final] -> Either Text [AbiField]
+assertableFields scheme owner memberSinces fs =
   sequenceA
     [ if bits `mod` 8 /= 0 then
         Left
@@ -287,7 +274,7 @@ assertableFields owner memberSinces fs =
     , isNothing ef.width
     , let bits = ef.offset
           fname = ef.info.name.cName.text
-          commentSince = fieldSince ef.info
+          commentSince = scheme.fieldSince ef.info
     ]
 
 constsOf :: Map Text AbiSince -> [C.EnumConstant C.Final] -> [AbiEnumConst]
@@ -304,82 +291,14 @@ memberTypesOf fs =
   , C.TypeRef ref <- [C.getCanonicalType f.typ]
   ]
 
--- | The declaration's @\@since@ version, mirroring the vendored haddock
--- backend's extraction: the first version-shaped token of the doxygen
--- @\\since@ section ("This function is available since SDL 3.2.0.").
--- Exported for the wrapper version gates ("Lithon.Codegen.Sys.Chain"),
--- which correct it through the same registry as the assert TU.
-declSince :: C.DeclInfo C.Final -> Maybe AbiSince
-declSince info = do
-  comment <- info.comment
-  safeHead
-    [ v
-    | Doxy.SimpleSect Doxy.SSSince inner <- comment.doxygen.detailed
-    , Just v <- [versionToken (blockText inner)]
-    ]
-
--- | A member's availability from its own doxygen comment: SDL's prose
--- convention for a late member is \"(added in 3.4.16)\" in the
--- @\/**< ... *\/@ trailing its declaration (fields never carry a
--- @\\since@ section). The registry wins over it ('assertableFields').
-fieldSince :: C.FieldInfo C.Final -> Maybe AbiSince
-fieldSince info = do
-  comment <- info.comment
-  addedInSince (inlineText comment.doxygen.brief <> " " <> blockText comment.doxygen.detailed)
-
--- | The version named by the first \"added in\" phrase in prose,
--- case-insensitive, an intervening \"SDL\" word tolerated.
-addedInSince :: Text -> Maybe AbiSince
-addedInSince prose = do
-  let (_, hit) = T.breakOn marker (T.toLower prose)
-  guard (not (T.null hit))
-  w <- safeHead (dropSdl (T.words (T.drop (T.length marker) hit)))
-  parseSince w
- where
-  marker = "added in "
-  dropSdl = \case
-    ("sdl" : rest) -> rest
-    ws -> ws
-
--- | The first version-shaped word in prose ("SDL 3.2.0." -> 3.2.0).
-versionToken :: Text -> Maybe AbiSince
-versionToken = safeHead . mapMaybe parseSince . T.words
-
--- | One word as a version: two or three dot-separated digit groups, a
--- trailing run of sentence punctuation tolerated ("3.4.16)." -> 3.4.16).
--- Two groups mean patch 0.
-parseSince :: Text -> Maybe AbiSince
-parseSince w
-  | all (\g -> not (T.null g) && T.all isDigit g) groups =
-      case traverse (readMaybe . toString) groups of
-        Just [major, minor] -> Just AbiSince{major, minor, patch = 0}
-        Just [major, minor, patch] -> Just AbiSince{major, minor, patch}
-        _malformed -> Nothing
-  | otherwise = Nothing
- where
-  groups = T.splitOn "." (T.dropWhileEnd (`elem` (".,;:)" :: String)) w)
-
--- | The plain text of a doxygen paragraph list (paragraphs only).
-blockText :: [Doxy.Block r] -> Text
-blockText blocks = T.strip (T.unwords [inlineText inlines | Doxy.Paragraph inlines <- blocks])
-
--- | The display text of doxygen inlines, markup flattened.
-inlineText :: [Doxy.Inline r] -> Text
-inlineText =
-  T.concat . map \case
-    Doxy.Text t -> t
-    Doxy.Bold is -> inlineText is
-    Doxy.Emph is -> inlineText is
-    Doxy.Mono is -> inlineText is
-    Doxy.Ref _ t -> t
-    Doxy.Anchor _ -> ""
-    Doxy.Link is _ -> inlineText is
-
--- | Render the assertion TU. 'Left' if two headers ever produced the
--- same C type (the chain's selection predicate should make that
--- impossible; a duplicate means double-baked layouts worth a hard stop).
-renderAbiAssertions :: Text -> [FilePath] -> [AbiDecl] -> [AbiMacroConst] -> Either Text Text
-renderAbiAssertions sdlVersion includes decls macroConsts =
+-- | Render the assertion TU for the target, given the library version the
+-- layouts were distilled from and the include arguments of its prologue.
+-- 'Left' if two headers ever produced the same C type (the chain's
+-- selection predicate should make that impossible; a duplicate means
+-- double-baked layouts worth a hard stop).
+renderAbiAssertions
+  :: SysTarget -> Text -> [FilePath] -> [AbiDecl] -> [AbiMacroConst] -> Either Text Text
+renderAbiAssertions target libraryVersion includes decls macroConsts =
   case toList (duplicates (map (.cTypeName) decls)) of
     [] -> Right rendered
     dups -> Left ("abi: type declared by more than one header: " <> T.intercalate ", " dups)
@@ -396,7 +315,7 @@ renderAbiAssertions sdlVersion includes decls macroConsts =
   constFamilyLines family =
     ["", "/* ---- " <> toText (head family).headerName <> " (typed constants) ---- */"]
       <> guardRuns
-        sdlBaseline
+        baseline
         [ ( c.since
           , sassert
               ("(" <> c.name <> ") == (" <> show c.value <> "ull)")
@@ -405,45 +324,50 @@ renderAbiAssertions sdlVersion includes decls macroConsts =
         | c <- toList family
         ]
 
+  baseline = target.versioning.baseline
+  label = target.versionLabel
+
   prologue =
-    [ "/* GENERATED by lithon-codegen (sdl3 generate) - do not edit."
+    [ "/* GENERATED by lithon-codegen (" <> target.key <> " generate) - do not edit."
     , " *"
-    , " * Every size, alignment, field offset, and enum value baked into the"
-    , " * generated Haskell is re-asserted here against the SDL headers this"
-    , " * package is compiled with. A failing line means the bindings would"
-    , " * corrupt memory under this platform/SDL — the build stops instead."
-    , " * See the package README, section \"ABI verification\"."
-    , " * A sizeof asserted with >= belongs to a struct the bindings only ever"
-    , " * read inside a named union (SDL_Event, SDL_HapticEffect) or one the"
-    , " * registry marks layout: prefix. SDL may append fields to it; its known"
-    , " * fields stay pinned by offset and the union's own size stays exact."
-    , " * Building with the cabal flag abi-assertions-exact makes every sizeof"
-    , " * exact again, for checking a newer SDL."
-    , " *"
-    , " * #if guards mirror each declaration's documented @since and each"
-    , " * member's \"(added in X.Y.Z)\" note — corrected and refined by the"
-    , " * empirical availability registry (lithon-codegen sdl3/versions.json)"
-    , " * — on SDL's own version macros."
-    , " */"
-    , "#define LITHON_ABI_HELP \". sdl3-bindgen-sys was generated from SDL "
-        <> sdlVersion
-        <> "; see the README section ABI verification. Please report this at"
-        <> " https://github.com/jtnuttall/lithon/issues with your SDL version and platform,"
-        <> " and if you are comfortable, open a PR updating the SDL version the bindings"
-        <> " are generated from.\""
-    , "#ifdef LITHON_ABI_EXACT"
-    , "#define LITHON_ABI_PREFIX_OP =="
-    , "#define LITHON_ABI_PREFIX_MSG \"differs from your SDL3 headers (exact mode)\""
-    , "#else"
-    , "#define LITHON_ABI_PREFIX_OP >="
-    , "#define LITHON_ABI_PREFIX_MSG \"exceeds your SDL3 headers"
-        <> " (growth is accepted, shrinking is not)\""
-    , "#endif"
-    , "#include <stddef.h>"
-    , ""
-    , "#define SDL_MAIN_HANDLED"
     ]
+      <> map bannerLine target.prose.abiBanner
+      <> [ " */"
+         , "#define LITHON_ABI_HELP \". "
+             <> target.packageName
+             <> " was generated from "
+             <> label
+             <> " "
+             <> libraryVersion
+             <> "; see the README section ABI verification. Please report this at"
+             <> " https://github.com/jtnuttall/lithon/issues with your "
+             <> label
+             <> " version and platform,"
+             <> " and if you are comfortable, open a PR updating the "
+             <> label
+             <> " version the bindings"
+             <> " are generated from.\""
+         , "#ifdef LITHON_ABI_EXACT"
+         , "#define LITHON_ABI_PREFIX_OP =="
+         , "#define LITHON_ABI_PREFIX_MSG \"differs from your "
+             <> target.displayName
+             <> " headers (exact mode)\""
+         , "#else"
+         , "#define LITHON_ABI_PREFIX_OP >="
+         , "#define LITHON_ABI_PREFIX_MSG \"exceeds your "
+             <> target.displayName
+             <> " headers"
+             <> " (growth is accepted, shrinking is not)\""
+         , "#endif"
+         , "#include <stddef.h>"
+         , ""
+         ]
+      <> map defineLine target.parse.defines
       <> ["#include <" <> toText inc <> ">" | inc <- includes]
+
+  bannerLine l
+    | T.null l = " *"
+    | otherwise = " * " <> l
 
   familyLines family =
     ["", "/* ---- " <> toText (head family).headerName <> " ---- */"]
@@ -459,7 +383,7 @@ renderAbiAssertions sdlVersion includes decls macroConsts =
 
   declLines d = versionGuard d.since (layoutLines <> guardRuns outer entries)
    where
-    outer = fromMaybe sdlBaseline d.since
+    outer = fromMaybe baseline d.since
     layoutLines = case d.growth of
       Just g
         | g.since > outer ->
@@ -501,7 +425,7 @@ renderAbiAssertions sdlVersion includes decls macroConsts =
            ]
 
   versionGuard since body = case since of
-    Just v | v > sdlBaseline -> atleastLine v : body <> ["#endif"]
+    Just v | v > baseline -> atleastLine v : body <> ["#endif"]
     _baselineOrUnknown -> body
 
   -- Emit assert lines with per-entry gates relative to the enclosing
@@ -517,15 +441,8 @@ renderAbiAssertions sdlVersion includes decls macroConsts =
       Nothing -> toList (fmap snd run)
       Just v -> atleastLine v : toList (fmap snd run) <> ["#endif"]
 
-  atleastLine v =
-    "#if SDL_VERSION_ATLEAST("
-      <> show v.major
-      <> ", "
-      <> show v.minor
-      <> ", "
-      <> show v.patch
-      <> ")"
+  atleastLine v = "#if " <> target.versioning.atLeast v
 
   sassert cond msg = "_Static_assert(" <> cond <> ", " <> msg <> " LITHON_ABI_HELP);"
 
-  divergence = " differs from your SDL3 headers"
+  divergence = " differs from your " <> target.displayName <> " headers"

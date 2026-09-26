@@ -5,8 +5,9 @@
 -- | The lithon-codegen command line: a thin dispatcher over per-target
 -- subcommand trees.
 --
--- @vulkan@ is the registry pipeline (see "Lithon.Codegen.Vulkan"); @sdl3@
--- (the hs-bindgen-driven SDL3 generator) joins it as its milestones land.
+-- @vulkan@ is the registry pipeline (see "Lithon.Codegen.Vulkan"); every
+-- hs-bindgen-driven bindgen-sys target ("Lithon.Codegen.Sys.Targets", e.g.
+-- @sdl3@) contributes its own subcommand.
 module Lithon.Codegen.Cli (
   main,
 ) where
@@ -28,7 +29,9 @@ import Lithon.Prelude
 import Options.Applicative hiding (ParseError, asum)
 
 import Lithon.Codegen.Backend.Package.Emit (findProjectRoot)
-import Lithon.Codegen.Sys (SysCmd, runSys, sysCmdP)
+import Lithon.Codegen.Sys (SysCmd, runSys, sysCommand)
+import Lithon.Codegen.Sys.Target (SysTarget)
+import Lithon.Codegen.Sys.Targets (sysTargets)
 import Lithon.Codegen.Vulkan (VulkanCmd, runVulkan, vulkanCmdP)
 
 newtype Opts = Opts
@@ -37,7 +40,7 @@ newtype Opts = Opts
 
 data Cmd
   = CmdVulkan VulkanCmd
-  | CmdSys SysCmd
+  | CmdSys SysTarget SysCmd
 
 main :: IO ()
 main = do
@@ -58,11 +61,11 @@ main = do
           CmdVulkan cmd ->
             runErrorDisplay
               $ runVulkan root cmd
-          CmdSys cmd ->
+          CmdSys target cmd ->
             runErrorDisplay
               . runClangEnv
               . runErrorDisplay
-              $ runSys root cmd
+              $ runSys target root cmd
 
     case res of
       Right () -> pure ()
@@ -89,10 +92,5 @@ optsP =
               (CmdVulkan <$> vulkanCmdP)
               (progDesc "Vulkan registry pipeline: parse / check / resolve / curate / generate")
           )
-          <> command
-            "sdl3"
-            ( info
-                (CmdSys <$> sysCmdP)
-                (progDesc "SDL3 binding generation via hs-bindgen: spec / generate")
-            )
+          <> foldMap (sysCommand CmdSys) sysTargets
       )

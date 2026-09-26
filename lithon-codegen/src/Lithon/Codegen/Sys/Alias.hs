@@ -4,7 +4,8 @@
 
 {- HLINT ignore "Replace case with maybe" -}
 
--- | Planning and rendering the @SDL3.Sys.*@ layer.
+-- | Planning and rendering a target's curated layer (@SDL3.Sys.*@ for
+-- SDL3).
 --
 -- One module per header family, emitted with hs-bindgen's own AST and
 -- renderer so the output is byte-style-identical with the Bindgen modules:
@@ -35,7 +36,6 @@ module Lithon.Codegen.Sys.Alias (
   renderAliasModule,
   renderRuntimeModule,
   renderUmbrella,
-  sysNamespace,
   sysModuleName,
 ) where
 
@@ -53,6 +53,7 @@ import Lithon.HsBindgen.SHs qualified as SHs
 import Lithon.Prelude hiding (group, one)
 import Numeric (showHex)
 
+import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Sys.Alias.Config (ValidatedAliasConfig (..))
 import Lithon.Codegen.Sys.Alias.Constants (
   Combine (..),
@@ -66,12 +67,15 @@ import Lithon.Codegen.Sys.Alias.Names (
   mintAliasNames,
   primaryAliasName,
  )
-
-sysNamespace :: Text
-sysNamespace = "SDL3.Sys"
-
-bindgenNamespace :: Text
-bindgenNamespace = "SDL3.Sys.Bindgen"
+import Lithon.Codegen.Sys.Target (
+  DocHooks (..),
+  NativeScalar (..),
+  Prose (..),
+  SysTarget (..),
+  WidthTypedefs (..),
+  bindgenNamespace,
+  runtimeModule,
+ )
 
 -- | One bound C function, as seen by the final C AST.
 data CFunction = CFunction
@@ -201,13 +205,14 @@ data AliasModule = AliasModule
   }
 
 planAliasLayer
-  :: ValidatedAliasConfig
+  :: SysTarget
+  -> ValidatedAliasConfig
   -> Map Text [ConstantGroupPlan]
   -- ^ Planned constant groups, keyed by family base module.
   -> [FamilyDecls]
   -> Either (Errors AliasError) [AliasModule]
-planAliasLayer validated constantPlans families = validationToEither
-  case mintAliasNames validated.renames classified of
+planAliasLayer target validated constantPlans families = validationToEither
+  case mintAliasNames target.functionPrefix validated.renames classified of
     Failure errs -> Failure errs
     Success minted ->
       reservedCheck minted
@@ -217,7 +222,7 @@ planAliasLayer validated constantPlans families = validationToEither
   -- an alias reusing a bridge name would be a duplicate export downstream.
   reservedCheck minted =
     failUnlessEmpty
-      [ AliasReservedCollision{aliasName, cName}
+      [ AliasReservedCollision{aliasName, cName, bridgeModule = runtimeModuleName target}
       | (cName, m) <- Map.toAscList minted
       , aliasName <- maybeToList m.unsafeName <> maybeToList m.safeName
       , Set.member aliasName runtimeReservedNames
@@ -259,7 +264,7 @@ planAliasLayer validated constantPlans families = validationToEither
             (errors1 AliasFamilyInvalid{familyModule = family.familyBase, reason})
       )
       Success
-      (sysModuleName family.familyBase)
+      (sysModuleName target family.familyBase)
 
   bindingsOf minted family fn =
     case Map.lookup fn.cName validated.safeties of
@@ -320,16 +325,18 @@ aliasRewriteMap aliasModules =
 
 -- | @SDL3.Sys.Bindgen.Video@ -> @SDL3.Sys.Video@. Guards the namespace: the
 -- family segment may not shadow the @Bindgen@ or @Runtime@ siblings.
-sysModuleName :: Text -> Either Text Text
-sysModuleName base = do
+sysModuleName :: SysTarget -> Text -> Either Text Text
+sysModuleName target base = do
   familySeg <-
-    maybeToRight ("not under " <> bindgenNamespace <> ": " <> base)
-      $ T.stripPrefix (bindgenNamespace <> ".") base
+    maybeToRight ("not under " <> bindgenRoot <> ": " <> base)
+      $ T.stripPrefix (bindgenRoot <> ".") base
   when ("." `T.isInfixOf` familySeg)
     $ Left ("family module has nested segments: " <> base)
   when (familySeg `elem` (["Bindgen", "Runtime"] :: [Text]))
     $ Left ("family segment shadows the " <> familySeg <> " namespace: " <> base)
-  pure (sysNamespace <> "." <> familySeg)
+  pure (Module.hsName target.namespace <> "." <> familySeg)
+ where
+  bindgenRoot = Module.hsName (bindgenNamespace target)
 
 {-------------------------------------------------------------------------------
   Rendering
@@ -338,13 +345,13 @@ sysModuleName base = do
 -- | Render one family module through hs-bindgen's own module assembly and
 -- pretty-printer. The rewrite map sends mangled Bindgen names to primary
 -- alias names inside copied documentation.
-renderAliasModule :: Map Text (Text, Text) -> AliasModule -> (Text, Text)
-renderAliasModule rewriteMap aliasModule =
+renderAliasModule :: SysTarget -> Map Text (Text, Text) -> AliasModule -> (Text, Text)
+renderAliasModule target rewriteMap aliasModule =
   ( aliasModule.moduleName
   , renderModule hsModule <> constantsBlock aliasModule
   )
  where
-  rewrite = rewriteComment rewriteMap aliasModule.moduleName
+  rewrite = rewriteComment target rewriteMap aliasModule.moduleName
   hsModule =
     HsModule.HsModule
       { pragmas =
@@ -360,7 +367,7 @@ renderAliasModule rewriteMap aliasModule =
       , -- The SDL category overview leads (rewritten so its cross-references
         -- resolve to curated aliases), followed by the compact conventions
         -- block; rendered by the same pretty-printer as the Bindgen modules.
-        moduleComment = Just (familyComment rewrite aliasModule)
+        moduleComment = Just (familyComment target rewrite aliasModule)
       , name = Hs.ModuleName aliasModule.moduleName
       , exports
       , imports
@@ -418,16 +425,20 @@ renderAliasModule rewriteMap aliasModule =
         | scope <- Set.toAscList ctorScopes
         , let scopeModule = case scope of
                 LibCScope -> "HsBindgen.Runtime.LibC"
-                StdincScope -> bindgenNamespace <> ".Stdinc"
+                WidthScope widthModule -> widthModule
         ]
 
-  declsWithScopes = map (bindingDecl rewrite aliasModule.familyBase) aliasModule.bindings
+  declsWithScopes = map (bindingDecl target rewrite aliasModule.familyBase) aliasModule.bindings
   decls = map fst declsWithScopes
   ctorScopes = Set.unions (map snd declsWithScopes)
 
 bindingDecl
-  :: (HsDoc.Comment -> HsDoc.Comment) -> Text -> AliasBinding -> (SHs.SDecl, Set CtorScope)
-bindingDecl rewrite familyBase b =
+  :: SysTarget
+  -> (HsDoc.Comment -> HsDoc.Comment)
+  -> Text
+  -> AliasBinding
+  -> (SHs.SDecl, Set CtorScope)
+bindingDecl target rewrite familyBase b =
   ( SHs.DBinding
       SHs.Binding
         { name = Hs.ExportedName (Hs.UnsafeName b.aliasName)
@@ -439,7 +450,8 @@ bindingDecl rewrite familyBase b =
         , body
         , pragmas = []
         , comment =
-            Just (annotatedComment rewrite familyBase (isJust resultBridge || any isJust paramBridges) b)
+            Just
+              (annotatedComment target rewrite familyBase (isJust resultBridge || any isJust paramBridges) b)
         }
   , Set.fromList
       [ scope
@@ -447,26 +459,26 @@ bindingDecl rewrite familyBase b =
       ]
   )
  where
-  target :: forall ctx. SHs.SExpr ctx
-  target =
+  callee :: forall ctx. SHs.SExpr ctx
+  callee =
     SHs.EGlobal (SHs.CustomGlobal (TH.mkName (toString b.bindgenName)) SHs.GVar flavorImport)
 
   paramTys = map (SHs.translateType . (.typ)) b.funDecl.parameters
   resultTy = SHs.translateType b.funDecl.result
-  paramBridges = map scalarBridge paramTys
+  paramBridges = map (scalarBridge target) paramTys
   resultBridge = case resultTy of
     SHs.TApp (SHs.TGlobal io) inner
-      | io == SHs.bindgenGlobalType SHs.IO_type -> scalarBridge inner
+      | io == SHs.bindgenGlobalType SHs.IO_type -> scalarBridge target inner
     _notIoScalar -> Nothing
 
   -- Mixed emission: bindings without a scalar bridge stay thin,
   -- point-free references; bridged ones are eta-expanded with the
   -- conversions applied per argument and 'fmap'-ed over the result.
   body
-    | all isNothing paramBridges && isNothing resultBridge = target
-    | otherwise = etaBody paramBridges resultBridge target
+    | all isNothing paramBridges && isNothing resultBridge = callee
+    | otherwise = etaBody paramBridges resultBridge callee
 
-  bridgedType t = maybe t nativeScalarType (scalarBridge t)
+  bridgedType t = maybe t nativeScalarType (scalarBridge target t)
   bridgedResult t = case (t, resultBridge) of
     (SHs.TApp io _inner, Just bridge) -> SHs.TApp io (nativeScalarType bridge)
     _unbridged -> t
@@ -485,8 +497,9 @@ bindingDecl rewrite familyBase b =
 -- change, never a range judgment. 'CBool'⇄'Bool' is the one semantic
 -- conversion (a 0\/1 compare against a 10–25ns unsafe-ccall floor);
 -- everything else — 'CFloat'⇄'Float', 'CDouble'⇄'Double', the fixed-width
--- @Foreign.C@ integers ('CInt'⇄'Int32', …), @size_t@⇄'Word64', and SDL's
--- own @UintN@\/@SintN@ width typedefs — is a 'Data.Coerce.coerce'.
+-- @Foreign.C@ integers ('CInt'⇄'Int32', …), @size_t@⇄'Word64', and the
+-- target's own width typedefs ('WidthTypedefs'; SDL's @UintN@\/@SintN@) —
+-- is a 'Data.Coerce.coerce'.
 --
 -- @size_t@⇄'Word64' bakes in the package's 64-bit-only support statement;
 -- a hypothetical 32-bit port fails to compile at the coercion site, the
@@ -505,13 +518,14 @@ data ScalarBridge
 
 -- | Which qualified import guarantees the bridged newtype's constructor is
 -- in scope (nothing organic does — see the import note in
--- 'renderAliasModule'). Same-family Stdinc references need no entry: the
--- family's own base module is already imported unqualified and wholesale.
-data CtorScope = LibCScope | StdincScope
+-- 'renderAliasModule'): @HsBindgen.Runtime.LibC@, or the width typedefs'
+-- family module. Same-family width references need no entry: the family's
+-- own base module is already imported unqualified and wholesale.
+data CtorScope = LibCScope | WidthScope Text
   deriving stock (Eq, Ord, Show)
 
-scalarBridge :: SHs.SType ctx -> Maybe ScalarBridge
-scalarBridge = \case
+scalarBridge :: SysTarget -> SHs.SType ctx -> Maybe ScalarBridge
+scalarBridge target = \case
   SHs.TGlobal g
     | g == SHs.bindgenGlobalType SHs.CBool_type -> Just BridgeBool
     | otherwise ->
@@ -520,18 +534,25 @@ scalarBridge = \case
           | (foreignC, native) <- foreignCBridges
           , g == SHs.bindgenGlobalType foreignC
           ]
-  -- Same-family reference to an SDL width typedef (the Stdinc module's own
-  -- functions). Name-only match: SDL declares these eight names in
+  -- Same-family reference to a width typedef (the width family's own
+  -- functions). Name-only match: SDL declares its eight names in
   -- @SDL_stdinc.h@ alone, and the toy golden pins a same-named semantic
   -- typedef staying raw.
-  SHs.TCon n -> BridgeCoerce <$> stdincNative n.text <*> pure Nothing
+  SHs.TCon n -> BridgeCoerce <$> widthNative n.text <*> pure Nothing
   SHs.TExt ref _cTypeSpec _hsTypeSpec
-    | ref.moduleName.text == bindgenNamespace <> ".Stdinc" ->
-        BridgeCoerce <$> stdincNative ref.name.text <*> pure (Just StdincScope)
+    | Just widthModule <- widthFamilyModule
+    , ref.moduleName.text == widthModule ->
+        BridgeCoerce <$> widthNative ref.name.text <*> pure (Just (WidthScope widthModule))
     | ref.moduleName.text == "HsBindgen.Runtime.LibC"
     , ref.name.text == "CSize" ->
         Just (BridgeCoerce SHs.Word64_type (Just LibCScope))
   _notBridgedScalar -> Nothing
+ where
+  widthFamilyModule =
+    target.widthTypedefs <&> \w -> Module.hsName (bindgenNamespace target) <> "." <> w.family
+  widthNative name = do
+    w <- target.widthTypedefs
+    nativeGlobal <$> Map.lookup name w.natives
 
 -- | @Foreign.C@ scalars and their equal-width native twins. 'CLong' and
 -- 'CULong' are deliberately absent (platform-width; zero occurrences).
@@ -547,21 +568,17 @@ foreignCBridges =
   , (SHs.CULLong_type, SHs.Word64_type)
   ]
 
--- | The eight SDL width typedefs (newtypes over the equal-width GHC
--- primitives in the generated Stdinc module). Semantic typedefs layered on
--- top of these ('SDL_JoystickID', 'SDL_InitFlags', …) are different names
--- and therefore never match — they keep their newtypes by design.
-stdincNative :: Text -> Maybe SHs.BindgenGlobalType
-stdincNative = \case
-  "Uint8" -> Just SHs.Word8_type
-  "Uint16" -> Just SHs.Word16_type
-  "Uint32" -> Just SHs.Word32_type
-  "Uint64" -> Just SHs.Word64_type
-  "Sint8" -> Just SHs.Int8_type
-  "Sint16" -> Just SHs.Int16_type
-  "Sint32" -> Just SHs.Int32_type
-  "Sint64" -> Just SHs.Int64_type
-  _notWidthTypedef -> Nothing
+-- | A width typedef's equal-width GHC primitive.
+nativeGlobal :: NativeScalar -> SHs.BindgenGlobalType
+nativeGlobal = \case
+  NativeWord8 -> SHs.Word8_type
+  NativeWord16 -> SHs.Word16_type
+  NativeWord32 -> SHs.Word32_type
+  NativeWord64 -> SHs.Word64_type
+  NativeInt8 -> SHs.Int8_type
+  NativeInt16 -> SHs.Int16_type
+  NativeInt32 -> SHs.Int32_type
+  NativeInt64 -> SHs.Int64_type
 
 nativeScalarType :: ScalarBridge -> SHs.SType ctx
 nativeScalarType =
@@ -595,7 +612,7 @@ cboolToBool = runtimeCBoolGlobal "toBool"
 -- needs the newtype constructors visible at the use site, which
 -- 'renderAliasModule' guarantees with covering qualified imports
 -- ("HsBindgen.Runtime.LibC" exports every @Foreign.C@ constructor;
--- the Stdinc base module exports the width typedefs').
+-- the width family's base module exports the width typedefs').
 coerceGlobal =
   SHs.CustomGlobal
     (TH.mkName "coerce")
@@ -619,7 +636,7 @@ etaBody
   -> Maybe ScalarBridge
   -> (forall ctx. SHs.SExpr ctx)
   -> SHs.ClosedExpr
-etaBody paramBridges resultBridge target = go (zip [0 :: Int ..] paramBridges) []
+etaBody paramBridges resultBridge callee = go (zip [0 :: Int ..] paramBridges) []
  where
   go
     :: forall ctx
@@ -632,7 +649,7 @@ etaBody paramBridges resultBridge target = go (zip [0 :: Int ..] paramBridges) [
           [ maybe id bridgeArg bridge (SHs.EBound ix)
           | (ix, bridge) <- zip (reverse acc) paramBridges
           ]
-        call = foldl' SHs.EApp target args
+        call = foldl' SHs.EApp callee args
      in maybe call (`bridgeResult` call) resultBridge
   go ((i, _) : rest) acc =
     SHs.ELam
@@ -640,8 +657,13 @@ etaBody paramBridges resultBridge target = go (zip [0 :: Int ..] paramBridges) [
       (go rest (SHs.IZ : map SHs.IS acc))
 
 annotatedComment
-  :: (HsDoc.Comment -> HsDoc.Comment) -> Text -> Bool -> AliasBinding -> HsDoc.Comment
-annotatedComment rewrite familyBase bridged b =
+  :: SysTarget
+  -> (HsDoc.Comment -> HsDoc.Comment)
+  -> Text
+  -> Bool
+  -> AliasBinding
+  -> HsDoc.Comment
+annotatedComment target rewrite familyBase bridged b =
   rewritten
     { HsDoc.children = rewritten.children <> sysNotes
     , HsDoc.origin = rewritten.origin <|> Just b.cName
@@ -655,7 +677,7 @@ annotatedComment rewrite familyBase bridged b =
     -- This produces '=== __TITLE__', which is collapsible
     HsDoc.Header
       HsDoc.Level4
-      [HsDoc.Bold [HsDoc.Monospace [HsDoc.TextContent "sdl3-bindgen-sys"], HsDoc.TextContent "notes"]]
+      [HsDoc.Bold [HsDoc.Monospace [HsDoc.TextContent target.packageName], HsDoc.TextContent "notes"]]
       : ffiNotes
         <> scalarNotes
 
@@ -774,22 +796,16 @@ constantsBlock aliasModule = case aliasModule.constants of
        in "0x" <> T.justifyRight digits '0' (T.pack (showHex v ""))
     ValueSpace -> show v
 
--- | Doxygen leaves SDL-wiki-relative markdown links (@[x](CategoryY)@) as
--- plain text inside peeled category overviews, where they never become
--- 'HsDoc.Link' nodes; the exact-prefix substitution points them at the SDL
--- wiki, whose page names are exactly these identifiers. Link-node targets
--- get the same treatment in 'rewriteComment'.
-wikiFixLinks :: Text -> Text
-wikiFixLinks = T.replace "](Category" "](https://wiki.libsdl.org/SDL3/Category"
-
 -- | Rewrite documentation cross-references: identifier nodes through the
--- mangled-name map, and bare-text @SDL_*@ word tokens through the C-name
--- map (with trailing sentence punctuation peeled into its own node — the
--- renderer attaches punctuation-leading text without a space). Targets in
--- another family render as module-qualified links, which Haddock resolves
--- without an import.
-rewriteComment :: Map Text (Text, Text) -> Text -> HsDoc.Comment -> HsDoc.Comment
-rewriteComment rewriteMap currentModule comment =
+-- mangled-name map, and bare-text word tokens carrying the target's
+-- function prefix (@SDL_*@) through the C-name map (with trailing sentence
+-- punctuation peeled into its own node — the renderer attaches
+-- punctuation-leading text without a space). Targets in another family
+-- render as module-qualified links, which Haddock resolves without an
+-- import. Text and link targets pass through the target's 'DocHooks'
+-- first.
+rewriteComment :: SysTarget -> Map Text (Text, Text) -> Text -> HsDoc.Comment -> HsDoc.Comment
+rewriteComment target rewriteMap currentModule comment =
   comment
     { HsDoc.title = concatMap inlines <$> comment.title
     , HsDoc.children = map block comment.children
@@ -813,21 +829,12 @@ rewriteComment rewriteMap currentModule comment =
   inlines = \case
     HsDoc.Identifier t
       | Just q <- qualified t -> [HsDoc.Identifier q]
-    HsDoc.TextContent t -> textTokens (wikiFixLinks t)
+    HsDoc.TextContent t -> textTokens (target.docs.fixText t)
     HsDoc.Monospace xs -> [HsDoc.Monospace (concatMap inlines xs)]
     HsDoc.Emph xs -> [HsDoc.Emph (concatMap inlines xs)]
     HsDoc.Bold xs -> [HsDoc.Bold (concatMap inlines xs)]
-    HsDoc.Link lbl url -> [HsDoc.Link (concatMap inlines lbl) (sdlWikiUrl url)]
+    HsDoc.Link lbl url -> [HsDoc.Link (concatMap inlines lbl) (target.docs.fixLink url)]
     other -> [other]
-
-  -- Doxygen leaves SDL-wiki-relative link targets (@CategoryAudio@,
-  -- @CategoryAudio#anchor@) unresolved — they only mean something on the
-  -- SDL wiki. Anything with a scheme (https:, mailto:, …) passes through;
-  -- scheme-less targets get pointed at the wiki, whose page names are
-  -- exactly these identifiers.
-  sdlWikiUrl url
-    | ":" `T.isInfixOf` url = url
-    | otherwise = "https://wiki.libsdl.org/SDL3/" <> url
 
   qualified t = do
     (targetModule, alias) <- Map.lookup t rewriteMap
@@ -837,10 +844,12 @@ rewriteComment rewriteMap currentModule comment =
       else
         targetModule <> "." <> alias
 
-  -- Bare-text mentions: an exact SDL_* word (trailing punctuation peeled)
-  -- becomes a link; tokens with parentheses or other decoration stay text.
+  -- Bare-text mentions: an exact prefixed word (trailing punctuation
+  -- peeled) becomes a link; tokens with parentheses or other decoration
+  -- stay text.
+  prefix = target.functionPrefix
   textTokens t
-    | not ("SDL_" `T.isInfixOf` t) = [HsDoc.TextContent t]
+    | not (prefix `T.isInfixOf` t) = [HsDoc.TextContent t]
     | otherwise = mergeTexts (concatMap tokenSegments (T.words t))
 
   tokenSegments w =
@@ -852,7 +861,7 @@ rewriteComment rewriteMap currentModule comment =
         core = fromMaybe trimmed (T.stripSuffix "()" trimmed)
      in case qualified core of
           Just q
-            | "SDL_" `T.isPrefixOf` core
+            | prefix `T.isPrefixOf` core
             , T.all (\c -> isAlphaNum c || c == '_') core ->
                 HsDoc.Identifier q
                   : [HsDoc.TextContent punct | not (T.null punct)]
@@ -867,15 +876,17 @@ rewriteComment rewriteMap currentModule comment =
     step x rest = x : rest
 
 -- | The umbrella module: every family plus the Runtime bridge module,
--- re-exported whole, with a one-line index built from each family's SDL
+-- re-exported whole, with a one-line index built from each family's
 -- overview title.
-renderUmbrella :: [AliasModule] -> (Text, Text)
-renderUmbrella aliasModules =
-  ( sysNamespace
-  , withModuleDoc (umbrellaDoc familyIndex) (renderModule hsModule)
+renderUmbrella :: SysTarget -> [AliasModule] -> (Text, Text)
+renderUmbrella target aliasModules =
+  ( umbrellaName
+  , withModuleDoc (target.prose.umbrellaDoc familyIndex) (renderModule hsModule)
   )
  where
-  names = sort (runtimeModuleName : map (.moduleName) aliasModules)
+  umbrellaName = Module.hsName target.namespace
+  runtimeName = runtimeModuleName target
+  names = sort (runtimeName : map (.moduleName) aliasModules)
 
   familyIndex =
     T.intercalate "\n"
@@ -883,16 +894,16 @@ renderUmbrella aliasModules =
         (\(name, title) -> "-- * \"" <> name <> "\"" <> maybe "" (" — " <>) title)
         ( sortOn
             fst
-            ( (runtimeModuleName, Just runtimeIndexTitle)
+            ( (runtimeName, Just runtimeIndexTitle)
                 : [(m.moduleName, titleOf m) | m <- aliasModules]
             )
         )
   titleOf m = case m.moduleDoc >>= (.title) of
     Just inlines
-      | let t = firstSentence (wikiFixLinks (inlineText inlines))
+      | let t = firstSentence (target.docs.fixText (inlineText inlines))
       , not (T.null t) ->
           Just t
-    _noTitle -> familyOneLiner m.familyBase
+    _noTitle -> familyOneLiner target m.familyBase
 
   -- Category-overview fusion can glue the first declaration's prose onto
   -- a family's title (the upstream doxygen seam); the index keeps only
@@ -906,7 +917,7 @@ renderUmbrella aliasModules =
     HsModule.HsModule
       { pragmas = ["LANGUAGE DuplicateRecordFields"]
       , moduleComment = Nothing
-      , name = Hs.ModuleName sysNamespace
+      , name = Hs.ModuleName umbrellaName
       , exports =
           [ HsModule.ExportEntry (HsModule.ExportModule (Hs.ModuleName m))
           | m <- names
@@ -920,28 +931,19 @@ renderUmbrella aliasModules =
       , decls = []
       }
 
-runtimeModuleName :: Text
-runtimeModuleName = "SDL3.Sys.Runtime"
+runtimeModuleName :: SysTarget -> Text
+runtimeModuleName = Module.hsName . runtimeModule
 
--- | Hand-curated one-liners for the families whose SDL category overview
--- doxygen cannot attach (their category comments precede macros libclang
--- never surfaces, so the peel finds nothing). Consulted only when no
--- overview title exists; phrasing follows SDL's own category summaries
--- where one exists.
-familyOneLiner :: Text -> Maybe Text
-familyOneLiner familyBase =
-  case T.takeWhileEnd (/= '.') familyBase of
-    "Endian" -> Just "Functions for reading and writing endian-specific values."
-    "Error" -> Just "Simple error message routines for SDL."
-    "Main" -> Just "App entry-point handling; SDL_main is not bound here."
-    "Mutex" ->
-      Just
-        "Thread synchronization primitives: mutexes, semaphores, condition variables, and read/write locks."
-    "PlatformDefines" -> Just "Platform-detection defines, baked at generation time."
-    "Stdinc" -> Just "SDL's C-library replacements: memory, strings, math, and conversions."
-    "System" -> Just "Platform-specific SDL API functions."
-    "Vulkan" -> Just "Functions for creating Vulkan surfaces on SDL windows."
-    _hasOverview -> Nothing
+-- | The last segment of a dotted module name: the key of the target's
+-- per-family prose.
+familySegment :: Text -> Text
+familySegment = T.takeWhileEnd (/= '.')
+
+-- | The target's hand-curated one-liner for a family whose overview doxygen
+-- cannot attach; consulted only when no overview title exists.
+familyOneLiner :: SysTarget -> Text -> Maybe Text
+familyOneLiner target familyBase =
+  Map.lookup (familySegment familyBase) target.prose.familyOneLiners
 
 runtimeIndexTitle :: Text
 runtimeIndexTitle =
@@ -969,27 +971,19 @@ runtimeReservedNames =
     , "getNames"
     ]
 
--- | The curated Runtime bridge module: the conversion vocabulary an
--- @SDL3.Sys@ consumer actually reaches for, re-exported with explicit
--- names so the runtime modules' Prelude-clashing lifted combinators
--- (@not@, @&&@, @when@, …) stay out of the umbrella. Emitted as a text
--- template: selective class-method re-exports are not expressible in the
--- hs-bindgen export AST.
-renderRuntimeModule :: (Text, Text)
-renderRuntimeModule =
-  ( runtimeModuleName
-  , [trimmingQQ|
-      -- | Bridge vocabulary for the curated layer: C99 bool conversions and
-      -- the C enum classes, curated from the vendored hs-bindgen runtime.
-      --
-      -- Struct fields deliberately keep their C types (a keyboard event's
-      -- @repeat@ field is a @CBool@; a rect's @x@ is a C @int@); 'toBool'
-      -- bridges the bool case, and plain 'Prelude.fromIntegral' or
-      -- 'Data.Coerce.coerce' the fixed-width integer typedefs. The full
-      -- runtime surface — including the lifted 'Prelude'-shadowing
-      -- combinators these exports leave behind — stays available under
-      -- "SDL3.Sys.Bindgen.Runtime" and its submodules.
-      module SDL3.Sys.Runtime (
+-- | The curated Runtime bridge module: the conversion vocabulary a
+-- consumer of the curated layer actually reaches for, re-exported with
+-- explicit names so the runtime modules' Prelude-clashing lifted
+-- combinators (@not@, @&&@, @when@, …) stay out of the umbrella. Emitted as
+-- a text template under the target's Haddock: selective class-method
+-- re-exports are not expressible in the hs-bindgen export AST.
+renderRuntimeModule :: SysTarget -> (Text, Text)
+renderRuntimeModule target =
+  ( runtimeName
+  , target.prose.runtimeDoc
+      <> "\n"
+      <> [trimmingQQ|
+      module $runtimeName (
           -- * C99 bool
           CBool.toBool,
           CBool.fromBool,
@@ -1003,11 +997,14 @@ renderRuntimeModule =
           CEnum.getNames,
         ) where
 
-      import SDL3.Sys.Bindgen.Runtime.CBool qualified as CBool
-      import SDL3.Sys.Bindgen.Runtime.CEnum qualified as CEnum
+      import $bindgenRoot.Runtime.CBool qualified as CBool
+      import $bindgenRoot.Runtime.CEnum qualified as CEnum
     |]
       <> "\n"
   )
+ where
+  runtimeName = runtimeModuleName target
+  bindgenRoot = Module.hsName (bindgenNamespace target)
 
 -- | Flatten a title's inline content to plain text for the umbrella index.
 -- Mirrors the renderer's spacing rule: elements are space-separated except
@@ -1056,16 +1053,17 @@ withModuleDoc doc rendered =
 -- header carried one (54 of 58 do), else a synthesized title — followed by
 -- the compact conventions block and any per-family extras. The full
 -- conventions story lives once, on the umbrella.
-familyComment :: (HsDoc.Comment -> HsDoc.Comment) -> AliasModule -> HsDoc.Comment
-familyComment rewrite aliasModule =
-  lead <> conventionsComment aliasModule <> familyExtraComment aliasModule
+familyComment
+  :: SysTarget -> (HsDoc.Comment -> HsDoc.Comment) -> AliasModule -> HsDoc.Comment
+familyComment target rewrite aliasModule =
+  lead <> conventionsComment target aliasModule <> familyExtraComment target aliasModule
  where
   lead = case aliasModule.moduleDoc of
     Just overview -> rewrite overview
     Nothing ->
       mempty
         { HsDoc.title =
-            Just $ case familyOneLiner aliasModule.familyBase of
+            Just $ case familyOneLiner target aliasModule.familyBase of
               Just oneLiner -> [HsDoc.TextContent oneLiner]
               Nothing ->
                 [ HsDoc.TextContent "Curated aliases for"
@@ -1077,8 +1075,8 @@ familyComment rewrite aliasModule =
 -- | The per-family conventions block, deliberately compact: the flavor rule
 -- and a pointer at the umbrella for the full story (registry, refusal
 -- rationale, the Bindgen escape hatch).
-conventionsComment :: AliasModule -> HsDoc.Comment
-conventionsComment aliasModule =
+conventionsComment :: SysTarget -> AliasModule -> HsDoc.Comment
+conventionsComment target aliasModule =
   mempty
     { HsDoc.children =
         [ -- The pretty-printer emits @fromEnum level@ equals signs, so
@@ -1101,94 +1099,15 @@ conventionsComment aliasModule =
             ]
         , HsDoc.Paragraph
             [ HsDoc.TextContent "Full conventions:"
-            , HsDoc.Module sysNamespace
+            , HsDoc.Module (Module.hsName target.namespace)
             , HsDoc.TextContent "."
             ]
         ]
     }
 
--- | Per-family additions to the module header, keyed by the family
--- segment. The place for usage guidance that belongs at the point of
--- need rather than in the package README.
-familyExtraComment :: AliasModule -> HsDoc.Comment
-familyExtraComment aliasModule =
-  case T.takeWhileEnd (/= '.') aliasModule.moduleName of
-    "Events" ->
-      mempty
-        { HsDoc.children =
-            [ HsDoc.Header HsDoc.Level3 [HsDoc.TextContent "Reading events"]
-            , HsDoc.Paragraph
-                [ HsDoc.Monospace [HsDoc.TextContent "SDL_Event"]
-                , HsDoc.TextContent "is a C union: poll into an"
-                , HsDoc.Monospace [HsDoc.TextContent "alloca"]
-                , HsDoc.TextContent
-                    "buffer, read the event-type discriminant first, then \
-                    \peek the payload member for that type. The"
-                , HsDoc.Monospace [HsDoc.TextContent "sdl3-raw"]
-                , HsDoc.TextContent
-                    "example in the repository shows the full idiom;"
-                , HsDoc.Identifier "pollEvent"
-                , HsDoc.TextContent "and the"
-                , HsDoc.Monospace [HsDoc.TextContent "SDL_EVENT_*"]
-                , HsDoc.TextContent "patterns live in this module."
-                ]
-            ]
-        }
-    _ -> mempty
-
-umbrellaDoc :: Text -> Text
-umbrellaDoc familyIndex =
-  [trimmingQQ|
-  -- |
-  -- Curated low-level SDL3 surface: Re-exports every per-header module.
-  --
-  -- This is a low-level module intended to provide the building blocks for
-  -- higher-level libraries.
-  --
-  -- Contributing is encouraged. Please submit either an issue or PR to the
-  -- upstream repository if you run into problems with these generated bindings.
-  --
-  -- These bindings are still experimental and in flux, and will not stabilize
-  -- at least until hs-bindgen is itself released stably. 
-  --
-  -- Pin to a minor version (e.g. @>=0.0.0.1 && <0.0.1@) until this library hits @0.1.0.0@.
-  --
-  -- __Conventions__
-  --
-  -- * Every function's foreign-import flavor is classified deterministically
-  --   by the checked-in registry. Most functions export both @safe@ and @unsafe@
-  --   FFI bindings.
-  --
-  -- * Function aliases follow the camel-segments rule: strip @SDL_@ and
-  --   join the underscore segments (@SDL_CreateWindow@ -> @createWindow@,
-  --   @SDL_GL_SwapWindow@ -> @glSwapWindow@, @SDL_GUIDToString@ ->
-  --   @guidToString@).
-  --
-  -- * An /unsuffixed/ alias is always the __unsafe__ foreign import; a
-  --   @Safe@-suffixed alias is always the __safe__ one. 
-  --
-  -- * Functions that unavoidably invoke a callback during the call export 
-  --   only the @Safe@ alias — re-entering Haskell from an unsafe call is undefined
-  --   behavior, so the footgun is simply not handed out. NB: A non-Haskell 
-  --   callback function (e.g., written in C or Rust) cannot re-enter the runtime; 
-  --   for that case the unsafe imports stay available under the 
-  --   @SDL3.Sys.Bindgen.*.Unsafe@ modules.
-  --
-  -- * Functions curated @unsafe-only@ — quick, nonblocking, callback-free —
-  --   export only the unsuffixed alias: paying the safe-call overhead for
-  --   them buys nothing. Each alias's documentation records its rationale.
-  --
-  -- * Types, enum patterns, macro constants, and property keys re-export
-  --   verbatim from the @SDL3.Sys.Bindgen.*@ base modules.
-  --
-  -- * This layer additionally provides typed pattern synonyms for
-  --   the macro constant groups in SDL headers.
-  --
-  -- * Some aliases (@free@, @abs@, @init@, …) collide with the "Prelude";
-  --   import this module qualified or curate your import list.
-  --
-  -- == Families
-  --
-  $familyIndex
-  --
-  |]
+-- | The target's per-family additions to the module header, keyed by the
+-- family segment: usage guidance that belongs at the point of need rather
+-- than in the package README.
+familyExtraComment :: SysTarget -> AliasModule -> HsDoc.Comment
+familyExtraComment target aliasModule =
+  Map.findWithDefault mempty (familySegment aliasModule.moduleName) target.prose.familyExtras

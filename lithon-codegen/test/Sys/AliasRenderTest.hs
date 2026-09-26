@@ -50,6 +50,8 @@ import Lithon.Codegen.Sys.Alias.Constants (
  )
 import Lithon.Codegen.Sys.Alias.Constants qualified as Constants
 import Lithon.Codegen.Sys.Alias.Names (Safety (..))
+import Lithon.Codegen.Sys.Target qualified as Target
+import Lithon.Codegen.Sys.Target.Sdl3 (sdl3)
 import Sys.Support.Toy (ToyEnv (..), ToyHeader (..), renderedPairs, toyArtefacts, toyEnv)
 
 unit_toyCensusDetectsCallbacks :: IO ()
@@ -167,10 +169,10 @@ test_aliasRenderGolden =
           Map.fromListWith (flip (<>)) [(p.familyBase, [p]) | p <- constantPlans]
     aliasModules <-
       either (assertFailure . toString . display) pure
-        $ planAliasLayer validated plansByFamily [facts]
+        $ planAliasLayer sdl3 validated plansByFamily [facts]
     let rewriteMap = aliasRewriteMap aliasModules
-        modules = map (renderAliasModule rewriteMap) aliasModules
-        umbrella = renderUmbrella aliasModules
+        modules = map (renderAliasModule sdl3 rewriteMap) aliasModules
+        umbrella = renderUmbrella sdl3 aliasModules
     case modules of
       [(_, familySrc)] -> pure (familySrc, snd umbrella, baseModule)
       _unexpected -> assertFailure ("expected exactly one alias module, got " <> show (map fst modules))
@@ -183,9 +185,9 @@ toyFamily = do
   arts <-
     toyArtefacts
       (toyEnv "lithon-alias-toy")
-        { -- Mirrors the production env in "Lithon.Codegen.Sys.Chain":
-          -- without the alias, doxygen leaks @\\threadsafety ...@ verbatim.
-          doxygenAliases = [("threadsafety", "\\par Thread safety:^^")]
+        { -- The production parse environment's aliases: without the
+          -- threadsafety alias, doxygen leaks @\\threadsafety ...@ verbatim.
+          doxygenAliases = sdl3.parse.doxygenAliases
         }
       "SDL3.Sys.Bindgen.Toy"
       ToyHeader{include = "SDL_toy.h", source = toyHeader}

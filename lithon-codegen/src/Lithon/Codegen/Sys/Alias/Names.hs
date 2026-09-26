@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | C -> Haskell alias-name minting for the curated @SDL3.Sys.*@ layer.
+-- | C -> Haskell alias-name minting for a target's curated layer.
 --
--- * Strip @SDL_@ and split on underscores.
+-- * Strip the target's function prefix (@SDL_@) and split on underscores.
 -- * First segment: lower a leading acronym run, keeping its last letter
 --   when a lowercase word follows (@GPUSupports…@ -> @gpuSupports…@,
 --   @IOFromFile@ -> @ioFromFile@, @GL@ -> @gl@, @GetError@ -> @getError@,
@@ -117,13 +117,14 @@ data AliasError
       { familyModule :: !Text
       , reason :: !Text
       }
-  | -- | A minted alias collides with a name the curated
-    -- @SDL3.Sys.Runtime@ bridge module reserves — the umbrella re-exports
-    -- both, so the duplicate would otherwise only surface as a downstream
-    -- GHC ambiguity.
+  | -- | A minted alias collides with a name the curated Runtime bridge
+    -- module (@SDL3.Sys.Runtime@) reserves — the umbrella re-exports both,
+    -- so the duplicate would otherwise only surface as a downstream GHC
+    -- ambiguity.
     AliasReservedCollision
       { aliasName :: !Text
       , cName :: !Text
+      , bridgeModule :: !Text
       }
   deriving stock (Eq, Generic, Ord, Show)
   deriving anyclass (NFData)
@@ -167,12 +168,14 @@ instance Display AliasError where
           <> "' (hs-bindgen invariant violation)"
       AliasFamilyInvalid{familyModule, reason} ->
         "family module '" <> familyModule <> "': " <> reason
-      AliasReservedCollision{aliasName, cName} ->
+      AliasReservedCollision{aliasName, cName, bridgeModule} ->
         "alias '"
           <> aliasName
           <> "' minted for "
           <> cName
-          <> " collides with the SDL3.Sys.Runtime bridge vocabulary; "
+          <> " collides with the "
+          <> bridgeModule
+          <> " bridge vocabulary; "
           <> "resolve with a rename in aliases.json"
 
 -- | Mint the alias surface for every function, validating identifiers and
@@ -182,12 +185,14 @@ instance Display AliasError where
 -- unsuffixed shape; a @Safe@ variant derives from it). Callers validate the
 -- rename keys against the census before minting.
 mintAliasNames
-  :: Map Text Text
+  :: Text
+  -- ^ The target's function prefix, stripped before normalizing.
+  -> Map Text Text
   -- ^ Renames: C name -> unsuffixed alias override.
   -> [(Text, Safety)]
   -- ^ The functions to alias, with their classified flavor surface.
   -> Validation (Errors AliasError) (Map Text MintedAlias)
-mintAliasNames renames functions =
+mintAliasNames prefix renames functions =
   failUnlessEmpty (invalids <> collisions) (Map.fromList entries)
  where
   entries =
@@ -196,7 +201,7 @@ mintAliasNames renames functions =
     ]
 
   mintOne cName safety =
-    let base = fromMaybe (normalizeFunctionName cName) (Map.lookup cName renames)
+    let base = fromMaybe (normalizeFunctionName prefix cName) (Map.lookup cName renames)
      in MintedAlias
           { unsafeName = case safety of
               SafeOnly -> Nothing
@@ -229,16 +234,16 @@ mintAliasNames renames functions =
       (<>)
       [(name, [cName]) | (name, cName) <- exported]
 
--- | The camelCase-segments rule (see module header). Total over any C
--- function name; names without the @SDL_@ prefix normalize from their full
--- spelling.
-normalizeFunctionName :: Text -> Text
-normalizeFunctionName cName =
+-- | The camelCase-segments rule (see module header), given the target's
+-- function prefix (@SDL_@). Total over any C function name; names without
+-- the prefix normalize from their full spelling.
+normalizeFunctionName :: Text -> Text -> Text
+normalizeFunctionName prefix cName =
   case filter (not . T.null) (T.splitOn "_" stripped) of
     [] -> ""
     (s0 : rest) -> T.concat (firstSegment s0 : map laterSegment rest)
  where
-  stripped = fromMaybe cName (T.stripPrefix "SDL_" cName)
+  stripped = fromMaybe cName (T.stripPrefix prefix cName)
 
   -- Lower a leading acronym run; when a lowercase word follows a multi-letter
   -- run, the run's last letter starts that word (GUIDToString -> guidToString).

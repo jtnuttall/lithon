@@ -33,7 +33,7 @@ import Lithon.Codegen.Sys.Alias.Names (
 unit_normalizeCorpusShapes :: IO ()
 unit_normalizeCorpusShapes =
   for_ cases $ \(cName, expected) ->
-    normalizeFunctionName cName @?= expected
+    normalizeFunctionName sdlPrefix cName @?= expected
  where
   cases :: [(Text, Text)]
   cases =
@@ -64,6 +64,7 @@ unit_flavorSurface = do
     either (assertFailureText . display) pure
       . validationToEither
       $ mintAliasNames
+        sdlPrefix
         mempty
         [ ("SDL_CreateWindow", UnsafeOnly)
         , ("SDL_WaitEvent", Both)
@@ -82,7 +83,7 @@ unit_invalidNamesError = do
   validVarId "" @?= Just "empty after prefix strip"
   assertBool "valid name passes" (isNothing (validVarId "createWindow"))
   -- A C name normalizing to a keyword is a hard error naming the culprit.
-  let errs = failures (mintAliasNames mempty [("SDL_case", UnsafeOnly)])
+  let errs = failures (mintAliasNames sdlPrefix mempty [("SDL_case", UnsafeOnly)])
   errs @?= [AliasNameInvalid{cName = "SDL_case", minted = "case", reason = "Haskell keyword"}]
 
 unit_collisionsAccumulate :: IO ()
@@ -91,6 +92,7 @@ unit_collisionsAccumulate = do
   let errs =
         failures
           $ mintAliasNames
+            sdlPrefix
             mempty
             [ ("SDL_rand_bits", UnsafeOnly)
             , ("SDL_RandBits", UnsafeOnly) -- synthetic doppelgänger
@@ -111,6 +113,7 @@ unit_safeSuffixTrapCollides = do
   let errs =
         failures
           $ mintAliasNames
+            sdlPrefix
             mempty
             [ ("SDL_getenv", Both)
             , ("SDL_getenv_safe", UnsafeOnly)
@@ -130,6 +133,7 @@ unit_renamesOverrideAndResolve = do
     either (assertFailureText . display) pure
       . validationToEither
       $ mintAliasNames
+        sdlPrefix
         (Map.fromList [("SDL_getenv", "getEnvironment")])
         [ ("SDL_getenv", Both)
         , ("SDL_getenv_safe", UnsafeOnly)
@@ -144,6 +148,7 @@ unit_renamesOverrideAndResolve = do
   let errs =
         failures
           $ mintAliasNames
+            sdlPrefix
             (Map.fromList [("SDL_getenv", "Class")])
             [("SDL_getenv", UnsafeOnly)]
   errs
@@ -153,6 +158,10 @@ unit_renamesOverrideAndResolve = do
             , reason = "does not start with a lowercase letter"
             }
         ]
+
+-- | The SDL prefix the corpus shapes strip.
+sdlPrefix :: Text
+sdlPrefix = "SDL_"
 
 failures :: Validation (Errors e) a -> [e]
 failures = \case

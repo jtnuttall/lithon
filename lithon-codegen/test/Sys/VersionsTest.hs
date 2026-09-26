@@ -15,9 +15,9 @@ import Lithon.Codegen.Sys.Abi (
   AbiLayout (..),
   AbiLayoutBefore (..),
   AbiOverrides (..),
-  AbiSince (..),
   StructOverrides (..),
  )
+import Lithon.Codegen.Sys.Version (AbiSince (..))
 import Lithon.Codegen.Sys.Versions (
   StructEntry (..),
   VersionsRegistry (..),

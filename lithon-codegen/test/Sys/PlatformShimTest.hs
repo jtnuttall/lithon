@@ -2,7 +2,7 @@
 
 -- | Pins for the platform shims under the AST-level transform mechanism:
 -- the per-family >= 1-hit invariant and the production shim data itself
--- ('Lithon.Codegen.Sys.Chain.stubEditsFor' \/ 'textEditsFor'), driven
+-- ('Lithon.Codegen.Sys.Target.Sdl3.stubEditsFor' \/ 'textEditsFor'), driven
 -- through the REAL pipeline over toy headers that declare the shimmed
 -- symbols. Shim edits legitimately miss individual modules (the types
 -- module carries no wrapper C; call bodies live in @.Safe@\/@.Unsafe@,
@@ -22,7 +22,7 @@ import Lithon.HsBindgen qualified as HB
 import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
-import Lithon.Codegen.Sys.Chain (stubEditsFor, textEditsFor)
+import Lithon.Codegen.Sys.Target.Sdl3 (stubEditsFor, textEditsFor)
 import Sys.Support.Toy (ToyHeader (..), renderedPairs, runToy, toyEnv)
 
 -- | Drive one toy header through the seam and hand back the translated

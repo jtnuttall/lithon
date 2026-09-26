@@ -30,19 +30,20 @@ import Lithon.Codegen.Sys.Abi (
   AbiKind (..),
   AbiLayoutBefore (..),
   AbiOverrides (..),
-  AbiSince (..),
   StructOverrides (..),
-  addedInSince,
   emptyAbiOverrides,
-  parseSince,
-  versionToken,
  )
 import Lithon.Codegen.Sys.Abi.Validate (
   AbiProblem (..),
   AbiProblemKind (..),
   GrowthStep (..),
+  LibraryRef (..),
   validateAbi,
  )
+import Lithon.Codegen.Sys.Target (SysTarget (..), VersionScheme (..), registryDisplayPath)
+import Lithon.Codegen.Sys.Target.Sdl3 (sdl3)
+import Lithon.Codegen.Sys.Version (AbiSince (..))
+import Lithon.Codegen.Sys.Version.Doc (addedInSince, parseSince, versionToken)
 import Sys.AbiRenderTest (toyAbi, toyOverrides)
 
 v :: Int -> Int -> Int -> AbiSince
@@ -67,9 +68,16 @@ unit_addedInSinceProse = do
   addedInSince "This macro is available since SDL 3.4.0." @?= Nothing
 
 problems :: Text -> [AbiDecl] -> [AbiProblem]
-problems sdlVersion decls = case validateAbi sdlVersion decls of
+problems sdlVersion decls = case validateAbi sdl3.versioning.baseline library decls of
   Success () -> []
   Failure errs -> toList errs
+ where
+  library =
+    LibraryRef
+      { label = sdl3.versionLabel
+      , version = sdlVersion
+      , registry = registryDisplayPath sdl3 "versions.json"
+      }
 
 kinds :: Text -> [AbiDecl] -> [(Text, AbiProblemKind)]
 kinds sdlVersion decls = [(p.decl.cTypeName, p.kind) | p <- problems sdlVersion decls]

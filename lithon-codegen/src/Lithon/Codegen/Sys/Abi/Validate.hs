@@ -16,6 +16,7 @@
 -- to record; the registry stays the source of truth for the pre-growth
 -- layout, because the new headers cannot prove the old alignment.
 module Lithon.Codegen.Sys.Abi.Validate (
+  LibraryRef (..),
   AbiProblem (..),
   AbiProblemKind (..),
   GrowthStep (..),
@@ -34,10 +35,8 @@ import Lithon.Codegen.Sys.Abi (
   AbiGrowth (..),
   AbiKind (..),
   AbiLayoutBefore (..),
-  AbiSince,
-  renderSince,
-  sdlBaseline,
  )
+import Lithon.Codegen.Sys.Version (AbiSince, renderSince)
 
 -- | One size-changing append: the trailing members first gated at
 -- @since@, and the @sizeof@ the struct must have had just before them.
@@ -71,9 +70,19 @@ data AbiProblemKind
     TrailingGatesNotMonotone [AbiField]
   deriving stock (Eq, Generic, Show)
 
+-- | The library a layout was distilled from, as problem reports name it.
+data LibraryRef = LibraryRef
+  { label :: Text
+  -- ^ The word before a version (@SDL@).
+  , version :: Text
+  -- ^ The version the layout was distilled from.
+  , registry :: FilePath
+  -- ^ The versions registry to record fixes in, as displayed.
+  }
+  deriving stock (Eq, Generic, Show)
+
 data AbiProblem = AbiProblem
-  { sdlVersion :: Text
-  -- ^ The SDL the layout was distilled from.
+  { library :: LibraryRef
   , decl :: AbiDecl
   , outer :: AbiSince
   -- ^ The struct's own floor (its gate, or the baseline).
@@ -88,10 +97,10 @@ roundUp n align
 
 -- | The size-changing appends implied by a struct's gated trailing
 -- members (empty for unions, enums, and structs whose gated members all
--- fit inside the pre-existing layout). 'Left' when the trailing gates are
--- not monotone.
-growthSteps :: AbiDecl -> Either AbiProblemKind [GrowthStep]
-growthSteps d
+-- fit inside the pre-existing layout), given the target's baseline. 'Left'
+-- when the trailing gates are not monotone.
+growthSteps :: AbiSince -> AbiDecl -> Either AbiProblemKind [GrowthStep]
+growthSteps baseline d
   | d.kind /= AbiStruct = Right []
   | not monotone = Left (TrailingGatesNotMonotone run)
   | otherwise =
@@ -101,7 +110,7 @@ growthSteps d
         , preSizeof < postSizeof
         ]
  where
-  outer = fromMaybe sdlBaseline d.since
+  outer = fromMaybe baseline d.since
   gateOf f = case f.since of
     Just v | v > outer -> Just v
     _atOrBelowOuter -> Nothing
@@ -115,16 +124,16 @@ growthSteps d
   pres = [roundUp (NE.head members).byteOffset d.alignment | (_, members) <- groups]
   posts = drop 1 pres <> [d.sizeof]
 
--- | Every struct whose growth story is missing or inconsistent, with the
--- generation SDL version for the messages.
-validateAbi :: Text -> [AbiDecl] -> Validation (Errors AbiProblem) ()
-validateAbi sdlVersion decls = failUnlessEmpty (mapMaybe problemOf decls) ()
+-- | Every struct whose growth story is missing or inconsistent, given the
+-- target's baseline and, for the messages, the generation library.
+validateAbi :: AbiSince -> LibraryRef -> [AbiDecl] -> Validation (Errors AbiProblem) ()
+validateAbi baseline library decls = failUnlessEmpty (mapMaybe problemOf decls) ()
  where
   problemOf d = do
     kind <- kindOf d
-    pure AbiProblem{sdlVersion, decl = d, outer = fromMaybe sdlBaseline d.since, kind}
+    pure AbiProblem{library, decl = d, outer = fromMaybe baseline d.since, kind}
 
-  kindOf d = case growthSteps d of
+  kindOf d = case growthSteps baseline d of
     Left problem -> Just problem
     Right [] -> GrowthUnexplained <$> d.growth
     Right [step] -> case d.growth of
@@ -205,9 +214,12 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
              , "against the previous release's header before recording it."
              , ""
              , "Without the gate the unguarded sizeof/alignment asserts fail to compile on every"
-             , "SDL < "
+             , p.library.label
+                 <> " < "
                  <> renderSince step.since
-                 <> ". Add under \"structs\" in lithon-codegen/data/sdl3/versions.json:"
+                 <> ". Add under \"structs\" in "
+                 <> toText p.library.registry
+                 <> ":"
              , ""
              ]
           <> map ("  " <>) (snippet step)
@@ -231,7 +243,9 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
                  <> " (alignment assumed unchanged)."
              , "Fix the "
                  <> bare
-                 <> " entry in lithon-codegen/data/sdl3/versions.json against the release headers."
+                 <> " entry in "
+                 <> toText p.library.registry
+                 <> " against the release headers."
              ]
       )
     GrowthMultiStep steps ->
@@ -271,13 +285,15 @@ renderProblem p = T.intercalate "\n" (heading : "" : map indent body)
       , gatedMembers fs
           <> [ ""
              , "No sequence of appends produces this; check the member gates in"
-             , "lithon-codegen/data/sdl3/versions.json (structs." <> bare <> ".members)."
+             , toText p.library.registry <> " (structs." <> bare <> ".members)."
              ]
       )
   bare = fromMaybe d.cTypeName (T.stripPrefix "struct " d.cTypeName)
   baked =
-    "Baked layout from SDL "
-      <> p.sdlVersion
+    "Baked layout from "
+      <> p.library.label
+      <> " "
+      <> p.library.version
       <> ": sizeof "
       <> show d.sizeof
       <> ", alignment "

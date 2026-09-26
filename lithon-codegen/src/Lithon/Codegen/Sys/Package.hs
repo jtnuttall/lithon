@@ -3,7 +3,7 @@
 {-# LANGUAGE StrictData #-}
 {-# LANGUAGE TemplateHaskell #-}
 
--- | Assembling the @sdl3-bindgen-sys@ package itself: the SDL3
+-- | Assembling a target's @*-bindgen-sys@ package itself: its
 -- 'PackageSpec' — statics, licenses, vendored runtime trees, the
 -- ABI-assertion TU — over the shared packaging backend. The code generator
 -- owns everything in the package; nothing in it is ever edited by hand.
@@ -12,10 +12,8 @@ module Lithon.Codegen.Sys.Package (
   assembleSysPackage,
 ) where
 
-import Data.FileEmbed (embedFileRelative)
 import Data.Set qualified as Set
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as T
 import Lithon.HsBindgen qualified as HB
 import Lithon.HsBindgen.Runtime (
   cexprRuntimeCoreTree,
@@ -35,8 +33,13 @@ import Lithon.Codegen.Backend.Package qualified as Package
 import Lithon.Codegen.Backend.Package.Assemble (assemblePackage)
 import Lithon.Codegen.Bindgen (HeaderResult (..))
 import Lithon.Codegen.Sys.Abi (AbiMacroConst, renderAbiAssertions)
-import Lithon.Codegen.Sys.Chain (SysPayload (..), mainIncludes)
-import Lithon.Codegen.Sys.Chain qualified as Bindgen
+import Lithon.Codegen.Sys.Chain (SysPayload (..))
+import Lithon.Codegen.Sys.Target (
+  PackageStatics (..),
+  SysTarget,
+  bindgenNamespace,
+  mainIncludeArgs,
+ )
 
 -- Cheap compile-time sanity check. These are embedded directory tries from 'Data.FileEmbed'.
 do
@@ -48,25 +51,9 @@ do
       )
   pure []
 
-packageYaml :: Text
-packageYaml = T.decodeUtf8 $(embedFileRelative "data/sdl3/static/package.yaml")
-
-readme :: Text
-readme = T.decodeUtf8 $(embedFileRelative "data/sdl3/static/README.md")
-
-changelog :: Text
-changelog = T.decodeUtf8 $(embedFileRelative "data/sdl3/static/CHANGELOG.md")
-
-sdlLicense :: Text
-sdlLicense = T.decodeUtf8 $(embedFileRelative "LICENSE_SDL3")
-
 hsbindgenRuntimeOut, cexprRuntimeOut :: FilePath
 hsbindgenRuntimeOut = "runtime"
 cexprRuntimeOut = "runtime-cexpr"
-
--- | The dotted namespace root, for facade rendering.
-baseNamespace :: Text
-baseNamespace = Module.hsName Bindgen.baseNamespace
 
 data SysPackagingError
   = GeneratorEmittedInvalidModuleName Text Text Module.MetaError
@@ -92,17 +79,20 @@ instance Display SysPackagingError where
     Assembly err -> displayBuilder err
 
 -- |
--- Build the SDL3 'PackageSpec' — generated Bindgen modules, the rendered
--- @SDL3.Sys.*@ alias layer, runtime copies, hs-bindgen facades, and
+-- Build the target's 'PackageSpec' — generated Bindgen modules, the
+-- rendered curated alias layer, runtime copies, hs-bindgen facades, and
 -- metadata — and assemble it through the shared backend.
 assembleSysPackage
-  :: Text
+  :: SysTarget
+  -> PackageStatics
+  -> Text
+  -- ^ The library version the layouts were distilled from.
   -> [(Text, Text)]
   -> [AbiMacroConst]
   -- ^ Probed typed-constant values (curated layer), re-asserted in the TU.
   -> [HeaderResult SysPayload]
   -> Either SysPackagingError FileTree
-assembleSysPackage sdlVersion aliasModules macroConsts results = do
+assembleSysPackage target statics libraryVersion aliasModules macroConsts results = do
   generated <- for (concatMap (.modules) results) \m -> do
     meta <- metaFor "generated modules" (HB.moduleNameSegments m)
     pure (meta, m.hsModule.text)
@@ -110,7 +100,7 @@ assembleSysPackage sdlVersion aliasModules macroConsts results = do
     meta <- metaFor "aliases" (T.splitOn "." name)
     pure (meta, contents)
   facadeSources <-
-    hsBindgenRuntimeReexports
+    hsBindgenRuntimeReexports (Module.hsName (bindgenNamespace target))
       $ typedRuntimeImports (concatMap (.modules) results)
       <> runtimeImports (map snd aliases)
   facades <- for facadeSources \(name, contents) -> do
@@ -118,23 +108,28 @@ assembleSysPackage sdlVersion aliasModules macroConsts results = do
     pure (meta, contents)
   abiAssertions <-
     first AbiAssertionsInvalid
-      $ renderAbiAssertions sdlVersion mainIncludes (concatMap (.payload.abi) results) macroConsts
+      $ renderAbiAssertions
+        target
+        libraryVersion
+        (mainIncludeArgs target)
+        (concatMap (.payload.abi) results)
+        macroConsts
 
   first Assembly
     $ assemblePackage
       PackageSpec
         { root =
             RootFiles
-              { packageYaml
-              , readme
-              , changelog
+              { packageYaml = statics.packageYaml
+              , readme = statics.readme
+              , changelog = statics.changelog
               , license = Package.lithonLicense
               }
         , extraLicenses =
-            [ ("LICENSE_SDL", sdlLicense)
-            , ("LICENSE_hs-bindgen-runtime", decodeUtf8 hsBindgenRuntimeLicense)
-            , ("LICENSE_c-expr-runtime", decodeUtf8 cexprRuntimeLicense)
-            ]
+            statics.licenses
+              <> [ ("LICENSE_hs-bindgen-runtime", decodeUtf8 hsBindgenRuntimeLicense)
+                 , ("LICENSE_c-expr-runtime", decodeUtf8 cexprRuntimeLicense)
+                 ]
         , srcDir = "src"
         , modules = generated <> aliases <> facades
         , extraFiles = [("cbits/abi_assertions.c", abiAssertions)]
@@ -187,8 +182,8 @@ runtimeImports sources =
 -- Once hs-bindgen releases, this becomes a real dependency and re-exports
 -- from the runtime. Depending on the final export surface of the released hs-bindgen,
 -- there is a good chance that this breaks nothing in downstream code.
-hsBindgenRuntimeReexports :: Set Text -> Either SysPackagingError [(Text, Text)]
-hsBindgenRuntimeReexports census = do
+hsBindgenRuntimeReexports :: Text -> Set Text -> Either SysPackagingError [(Text, Text)]
+hsBindgenRuntimeReexports baseNamespace census = do
   case Set.toList (Set.filter unexpected census) of
     [] -> pure ()
     surprises -> Left $ GeneratorEmittedOutOfTreeModules surprises

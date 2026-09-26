@@ -44,12 +44,14 @@ import Lithon.Codegen.Sys.Abi (
   AbiLayoutBefore (..),
   AbiMacroConst (..),
   AbiOverrides (..),
-  AbiSince (..),
   StructOverrides (..),
   distillAbi,
   emptyAbiOverrides,
   renderAbiAssertions,
  )
+import Lithon.Codegen.Sys.Target (SysTarget (..))
+import Lithon.Codegen.Sys.Target.Sdl3 (sdl3)
+import Lithon.Codegen.Sys.Version (AbiSince (..))
 import Sys.Support.Toy (ToyHeader (..), runToy, toyEnv)
 
 unit_toyDistillPins :: IO ()
@@ -133,7 +135,7 @@ unit_prefixDerivesAcrossHeaders :: IO ()
 unit_prefixDerivesAcrossHeaders = do
   tu <-
     either (assertFailure . toString) pure
-      $ renderAbiAssertions "3.9.0" ["SDL_a.h", "SDL_b.h"] [holder, member, other] []
+      $ renderAbiAssertions sdl3 "3.9.0" ["SDL_a.h", "SDL_b.h"] [holder, member, other] []
   let sizeofLine ty = filter (("sizeof(" <> ty <> ")") `T.isInfixOf`) (lines tu)
   sizeofLine "struct SDL_B"
     @?= [ "_Static_assert(sizeof(struct SDL_B) LITHON_ABI_PREFIX_OP 16, \"struct SDL_B: baked sizeof 16 \" LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);"
@@ -172,7 +174,7 @@ test_abiRenderGolden =
         either
           (assertFailure . toString)
           pure
-          (renderAbiAssertions "3.9.0" ["SDL_toy_abi.h"] abi toyMacroConsts)
+          (renderAbiAssertions sdl3 "3.9.0" ["SDL_toy_abi.h"] abi toyMacroConsts)
       pure (LBS.fromStrict (TE.encodeUtf8 tu))
  where
   -- The typed-constant section: probed curated-layer values re-asserted
@@ -268,7 +270,7 @@ toyAbi overrides = do
       "SDL3.Sys.Bindgen.ToyAbi"
       [ToyHeader{include = "SDL_toy_abi.h", source = toyHeader}]
       HB.reifiedC
-  either (assertFailure . toString) pure (distillAbi "SDL_toy_abi.h" overrides cDecls)
+  either (assertFailure . toString) pure (distillAbi sdl3.versioning "SDL_toy_abi.h" overrides cDecls)
 
 -- | Toy header exercising every distiller rule on x86_64 layouts (the
 -- suite runs on the Linux generation host, like generation itself).
