@@ -23,6 +23,9 @@ esac
 
 STRICT_CHECK_ABI="${STRICT_CHECK_ABI:-false}"
 
+# Extra `cabal build` flags, expanded as ${extra[@]+"${extra[@]}"}: bash < 4.4
+# (the macOS runners' 3.2) treats an empty array as unbound under `set -u`.
+extra=()
 if [ "$RUNNER_OS" = "Windows" ]; then
   # setup-sdl exports a Windows-style PKG_CONFIG_PATH; nothing does for mpv.
   CLEAN_PKG_CONFIG_PATH=""
@@ -31,12 +34,25 @@ if [ "$RUNNER_OS" = "Windows" ]; then
   fi
   export PKG_CONFIG_PATH="/c/msys64/ucrt64/lib/pkgconfig${CLEAN_PKG_CONFIG_PATH}"
   export PATH="/c/msys64/ucrt64/bin:$PATH"
+  if [ "$pkg" != sdl3 ]; then
+    # For a library installed in the MSYS2 prefix, pkgconf prints POSIX
+    # prefix paths (-I/ucrt64/include, -L/ucrt64/lib), which Cabal 3.18
+    # rejects when registering the package ("makeRelativePathEx: absolute
+    # path /ucrt64/include"). Filter them as system paths and hand cabal the
+    # same directories in Windows form. setup-sdl's sdl3.pc already carries
+    # Windows paths, so sdl3 needs neither.
+    export PKG_CONFIG_SYSTEM_INCLUDE_PATH=/ucrt64/include
+    export PKG_CONFIG_SYSTEM_LIBRARY_PATH=/ucrt64/lib
+    extra=(--extra-include-dirs=C:/msys64/ucrt64/include --extra-lib-dirs=C:/msys64/ucrt64/lib)
+  fi
 elif [ "$RUNNER_OS" = "Linux" ] && [ "$pkg" = "sdl3" ]; then
   # The SDL setup action installs under $HOME/sdl3.
   export PKG_CONFIG_PATH="$HOME/sdl3/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
 fi
 
 pkg-config --modversion "$pkg"
+# What cabal will see; the register step rejects POSIX-rooted -I/-L paths.
+pkg-config --cflags --libs "$pkg"
 
 mkdir -p "$RUNNER_TEMP/sdist"
 (cd "$package" && cabal sdist --ignore-project -o "$RUNNER_TEMP/sdist")
@@ -75,9 +91,9 @@ EOF
 }
 
 if [ "$STRICT_CHECK_ABI" = "true" ]; then
-  cabal build --constraint="$package +abi-assertions-exact"
+  cabal build ${extra[@]+"${extra[@]}"} --constraint="$package +abi-assertions-exact"
 else
-  cabal build
+  cabal build ${extra[@]+"${extra[@]}"}
 fi || { report_build_failure; exit 1; }
 
 if [ "$RUNNER_OS" != "Windows" ]; then cabal haddock; fi
