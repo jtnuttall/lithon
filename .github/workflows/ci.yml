@@ -102,9 +102,11 @@ jobs:
           sudo apt-get install -y --no-install-recommends libmpv-dev
 
       # mpv 0.41 = client API 2.5.
+      # pkgconf provides the pkg-config cabal calls; the image ships it
+      # today, this guards image changes.
       - name: Install libmpv (macOS)
         if: runner.os == 'macOS'
-        run: brew install mpv
+        run: brew install mpv pkgconf
 
       - name: Setup MSYS2 (Windows)
         if: runner.os == 'Windows'

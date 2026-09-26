@@ -23,12 +23,24 @@ esac
 
 STRICT_CHECK_ABI="${STRICT_CHECK_ABI:-false}"
 
-if [ "$RUNNER_OS" = "Windows" ]; then
-  # Patch the setup actions' pkgconfig path.
-  CLEAN_PKG_CONFIG_PATH=$(cygpath -u "${PKG_CONFIG_PATH:-}")
+# Extra `cabal build` flags, expanded as ${extra[@]+"${extra[@]}"} rather
+# than "${extra[@]}": bash < 4.4 calls an empty array unbound under `set -u`.
+# The Windows runner's Git Bash is 5.x, but the macOS runners' bash is 3.2.
+extra=()
 
-  export PKG_CONFIG_PATH="/c/msys64/ucrt64/lib/pkgconfig:${CLEAN_PKG_CONFIG_PATH}"
+if [ "$RUNNER_OS" = "Windows" ]; then
+  # setup-sdl exports a Windows-style PKG_CONFIG_PATH; nothing does for mpv.
+  CLEAN_PKG_CONFIG_PATH=""
+  if [ -n "${PKG_CONFIG_PATH:-}" ]; then
+    CLEAN_PKG_CONFIG_PATH=":$(cygpath -u "$PKG_CONFIG_PATH")"
+  fi
+  export PKG_CONFIG_PATH="/c/msys64/ucrt64/lib/pkgconfig${CLEAN_PKG_CONFIG_PATH}"
   export PATH="/c/msys64/ucrt64/bin:$PATH"
+  # A library installed into the MSYS2 prefix takes the consumer flags its
+  # README documents; setup-sdl installs SDL outside the prefix.
+  if [ "$pkg" != sdl3 ]; then
+    extra=(--extra-lib-dirs=/c/msys64/ucrt64/lib --extra-include-dirs=/c/msys64/ucrt64/include)
+  fi
 elif [ "$RUNNER_OS" = "Linux" ] && [ "$pkg" = "sdl3" ]; then
   # The SDL setup action installs under $HOME/sdl3.
   export PKG_CONFIG_PATH="$HOME/sdl3/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
@@ -73,9 +85,9 @@ EOF
 }
 
 if [ "$STRICT_CHECK_ABI" = "true" ]; then
-  cabal build --constraint="$package +abi-assertions-exact"
+  cabal build ${extra[@]+"${extra[@]}"} --constraint="$package +abi-assertions-exact"
 else
-  cabal build
+  cabal build ${extra[@]+"${extra[@]}"}
 fi || { report_build_failure; exit 1; }
 
 if [ "$RUNNER_OS" != "Windows" ]; then cabal haddock; fi
