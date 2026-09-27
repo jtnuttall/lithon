@@ -24,14 +24,18 @@ cabal run lithon-codegen -- vulkan generate --profile "$PROFILE" --check
 echo "== generated tree freshness (sdl3: specs + sdl3-bindgen-sys) =="
 cabal run lithon-codegen -- sdl3 generate --check
 
+echo "== generated tree freshness (mpv: specs + mpv-bindgen-sys) =="
+cabal run lithon-codegen -- mpv generate --check
+
 echo "== hpack parity (generated packages) =="
 hpack lithon-vk
 hpack sdl3-bindgen-sys
-git diff --exit-code -- lithon-vk/lithon-vk.cabal sdl3-bindgen-sys/sdl3-bindgen-sys.cabal
+hpack mpv-bindgen-sys
+git diff --exit-code -- lithon-vk/lithon-vk.cabal sdl3-bindgen-sys/sdl3-bindgen-sys.cabal mpv-bindgen-sys/mpv-bindgen-sys.cabal
 
-echo "== rendered-doc regressions (sdl3-bindgen-sys) =="
+echo "== rendered-doc regressions (sdl3-bindgen-sys, mpv-bindgen-sys) =="
 for pat in '@@' '[__@@__]' '__Returns:__' '__Thread safety:__' '__See:__' '__C declaration:__' '__defined at:__' '__exported by:__'; do
-  if hits=$(grep -rF -l -- "$pat" sdl3-bindgen-sys/src); then
+  if hits=$(grep -rF -l -- "$pat" sdl3-bindgen-sys/src mpv-bindgen-sys/src); then
     echo "doc regression: pattern '$pat' present in:"
     echo "$hits" | head -5
     exit 1
@@ -53,6 +57,7 @@ echo "== rapidhash doctests =="
 echo "== haddock =="
 cabal haddock lithon-vk
 cabal haddock sdl3-bindgen-sys
+cabal haddock mpv-bindgen-sys
 cabal haddock rapidhash
 
 echo "== triangle-offscreen (lavapipe) =="
@@ -84,5 +89,8 @@ SDL_VIDEODRIVER=offscreen cabal run -v0 lithon-examples:sdl3-raw -- --frames 60
 
 echo "== shmup headless (apecs over the generated sys bindings, probe-asserted) =="
 SDL_VIDEODRIVER=offscreen cabal run -v0 lithon-examples:shmup -- --frames 60
+
+echo "== mpv-headless (generated libmpv bindings, lavfi test source) =="
+cabal run -v0 lithon-examples:mpv-headless
 
 echo "== all gates green =="

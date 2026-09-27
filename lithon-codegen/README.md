@@ -1,48 +1,48 @@
 # lithon-codegen
 
-Code generation tool for `lithon-vk` and `sdl3-bindgen-sys`.
+`lithon-codegen` generates `lithon-vk` from the Vulkan XML registry. It also
+generates the `*-bindgen-sys` packages, `sdl3-bindgen-sys` and
+`mpv-bindgen-sys`, from C headers by driving hs-bindgen as a library through
+`lithon-hs-bindgen`.
 
-- Parses the Vulkan XML registry to generate `lithon-vk`.
-- Drives `hs-bindgen` as a library to emit `sdl3-bindgen-sys` from the SDL3 headers.
+It is not published to Hackage, but it is public and BSD-3-Clause. See
+[Reuse](#reuse).
 
-Not published to Hackage, but public and BSD-3-Clause — you're welcome to copy it
-or build your own bindings with it; see [Reuse](#reuse).
+## Quick reference
 
-## CLI
+Regenerate every package from the repository root, inside the devshell:
 
-Two subcommand trees, `vulkan` and `sdl3`. Run `--help` on any command for the
-authoritative option list — the blocks below are that help.
-
+```sh
+cabal run lithon-codegen -- vulkan generate \
+  --profile lithon-codegen/data/vulkan/profiles/lithon-core.json
+cabal run lithon-codegen -- sdl3 generate
+cabal run lithon-codegen -- mpv generate
 ```
-$ lithon-codegen --help
-lithon-codegen - binding generators for lithon
 
-Usage: lithon-codegen COMMAND
-
-  Code generation tooling for lithon
-
-Available options:
-  -h,--help                Show this help text
-
-Available commands:
-  vulkan                   Vulkan registry pipeline: parse / check / resolve /
-                           curate / generate
-  sdl3                     SDL3 binding generation via hs-bindgen: spec /
-                           generate
-```
+- Add `--check` to diff fresh output against the tree and write nothing. CI
+  runs all three this way through `scripts/check.sh`.
+- Inputs live in `lithon-codegen/data/<target>/`, where `<target>` is
+  `vulkan`, `sdl3`, or `mpv`.
 
 ## Vulkan
 
-The Vulkan pipeline runs in three phases:
+The Vulkan pipeline turns `vk.xml` into `lithon-vk` in three phases:
 
-1. **Parse**: `vk.xml` → a lossless, position-annotated typed IR. Any unmodeled
-   attribute, element, or text anywhere in the registry is an error.
-   `lithon-codegen vulkan check` is the CI gate.
-2. **Resolve + curate**: the phase-1 IR → a resolved registry (canonical names,
-   materialized enum values, classified availability, inverted alias/pNext
-   topologies, dispatch levels, enum flow) → pruned to a declarative curation
-   [profile](#profiles).
-3. **Generate**: emit `lithon-vk` from the curated metadata.
+1. **Parse** (`parse`, `check`): `vk.xml` becomes a lossless,
+   position-annotated typed IR.
+2. **Resolve and curate** (`resolve`, `curate`): the IR becomes a resolved
+   registry, pruned to a [profile](#profiles).
+3. **Generate** (`generate`): the curated registry becomes the `lithon-vk`
+   sources.
+
+- `vk.xml` comes from the `Vulkan-Docs` submodule in
+  `lithon-codegen/data/vulkan/`.
+- Parsing is strict: any unmodeled attribute, element, or text is an error.
+- `vulkan check` parses and reports every diagnostic. With `--profile FILE`,
+  it also gates resolve and curation.
+
+<details>
+<summary><code>--help</code> output: <code>vulkan</code> and its subcommands</summary>
 
 ```
 $ lithon-codegen vulkan --help
@@ -63,9 +63,6 @@ Available commands:
   generate                 Curate, then emit the lithon package sources (phase
                            3)
 ```
-
-<details>
-<summary><code>parse</code> · <code>check</code> · <code>resolve</code> · <code>curate</code> · <code>generate</code> — full options</summary>
 
 ```
 $ lithon-codegen vulkan parse --help
@@ -136,37 +133,99 @@ Available options:
 
 ### Profiles
 
-`vulkan curate` and `vulkan generate` take a `--profile FILE`: the path to a
-self-describing JSON curation profile. A profile declares a `name`/`description`,
-the core-version window (`baseline` … `max`), target `platforms`, the
-`extensions` to include (each with a rationale) or `exclude`, and a `policy`
-block (dependency-closure mode, promoted-to-core handling, provisional/deprecated
-toggles, legacy-core categories, registry-drift warning).
+`vulkan curate` and `vulkan generate` require `--profile FILE`, a JSON
+curation profile. It declares a `name`, the core-version window (`core`), the
+target `platforms`, the `extensions` to include or `exclude`, and a `policy`
+block. lithon's own profile is
+`lithon-codegen/data/vulkan/profiles/lithon-core.json`; copy it to start.
 
-## SDL3
+## bindgen-sys targets
 
-The SDL3 pipeline drives `hs-bindgen` (through `lithon-hs-bindgen`) over the SDL
-headers and emits the complete `sdl3-bindgen-sys` package: the generated modules,
-the curated `SDL3.Sys.*` alias layer, the ABI-assertion translation unit, and the
-static README/CHANGELOG/package.yaml under `data/sdl3/static/`. Curation
-decisions — FFI flavors, typed-constant membership, documentation overrides —
-live in the checked-in registries (`data/sdl3/aliases.json`,
-`data/sdl3/constants.json`, `data/sdl3/versions.json`,
-`data/sdl3/overrides.yaml`); the binding-spec artifacts sync into
-`data/sdl3/spec/`, resolved through the tool's data directory rather than a
-flag.
+A target binds one C library through hs-bindgen. There are two: `sdl3` and
+`mpv`.
 
-`data/sdl3/versions.json` tracks per-SDL-version availability, including:
+### How it works
 
-- Corrections for `\since` declarations that SDL seems to document wrongly,
-- Member and constant existence/value conditions (the binding needs a
-  higher granularity than SDL seems to provide). The `(added in X.Y.Z)` line
-  in the member's comment serves as a the default floor, although the registry
-  can override it.
+- Each target is one `BindgenTarget` value in
+  `Lithon.Codegen.Bindgen.Target.<Name>`. The generic pipeline only reads its
+  fields.
+- The driver runs hs-bindgen per bound header, in dependency order. Each run
+  reads its predecessors' binding specs.
+- `aliases.json` and `constants.json` plan the curated layer
+  (`<namespace>.*`, e.g. `SDL3.Sys.*`) over the raw one
+  (`<namespace>.Bindgen.*`).
+- Anything newer than the floor, the oldest supported release, gets a version
+  gate. Availability comes from the library's docs and the availability
+  annotations; the annotations win.
+- `cbits/abi_assertions.c` re-checks every baked layout at build time.
+- `generate` writes the package with a `.lithon-manifest.json`. Manifests and
+  ABI messages record the library version, from
+  `pkg-config --modversion <pkgConfig>`.
 
-The SDL version the bindings are generated from is the devshell's
-`pkg-config --modversion sdl3`; it is recorded in the package manifest and
-in ABI assertion messages.
+### Data directory
+
+Every target uses the same layout in `lithon-codegen/data/<key>/`:
+
+| Path                    | Written by    | Holds                                                                        |
+| ----------------------- | ------------- | ---------------------------------------------------------------------------- |
+| `aliases.json`          | You           | The naming rule and each function's FFI flavor, with rationales.             |
+| `constants.json`        | You           | Typed-constant groups: which macros belong to which newtype.                 |
+| `versions.json`         | You           | The availability annotations. See [`versions.json`](#versionsjson).          |
+| `overrides.yaml`        | You, optional | hs-bindgen's prescriptive binding spec: renames, representations, omissions. |
+| `static/`               | You           | The statics, copied to the package root.                                     |
+| `spec/`                 | Generator     | The spec artifacts: one binding spec per header, committed for review.       |
+| `.lithon-manifest.json` | Generator     | Digests of the spec artifacts.                                               |
+
+The generator enforces three rules:
+
+- `aliases.json` must classify every callback-taking function as `both` or
+  `safe-only`. Other functions default to `both`.
+- `constants.json` needs `groups`, even when empty: `{"groups": {}}`.
+- `static/` needs `package.yaml`, `README.md`, and `CHANGELOG.md`. Any other
+  file is a license and must be named `LICENSE_<name>`.
+
+#### `versions.json`
+
+The library's availability annotations, kept by hand. Corrections where the
+headers carry their own (SDL's `\since`); the whole set where they don't
+(libmpv). Keys are bare C names. Any entry may add a `note` for reviewers.
+
+| Key                 | Entry fields                                  | Affects                  | Use it to                                               |
+| ------------------- | --------------------------------------------- | ------------------------ | ------------------------------------------------------- |
+| `decls`             | `since`, `stub-return`                        | Wrappers, ABI assertions | Correct a declaration's availability.                   |
+| `enum-constants`    | `since`                                       | ABI assertions           | Gate a constant added to an existing enum.              |
+| `value-gates`       | `since`                                       | ABI assertions           | Gate a constant whose value changed.                    |
+| `macro-constants`   | `since`                                       | ABI assertions           | Gate a typed-constant macro added after the floor.      |
+| `structs`           | `members`, `sizeof-since`, `before`, `layout` | ABI assertions           | Gate late members, a size change, or the layout policy. |
+| `prologue-typedefs` | `since`, `shape`, `headers`                   | Wrappers                 | Declare stand-ins for type names older headers lack.    |
+
+- Versions have the target's number of parts: `3.2.0` for sdl3, `2.1` for
+  mpv. Any other count is an error.
+- Below its gate, a function's wrapper returns `stub-return`: a C expression
+  over `arg1` … `argN`, default `0`. An unused `stub-return` is an error.
+- In `prologue-typedefs`, `shape` is `opaque-struct`, `void-ptr`, or the
+  aliased C type.
+
+### Commands
+
+Every target has two commands. `<key>` is `sdl3` or `mpv`.
+
+| Command                         | What it does                                                     |
+| ------------------------------- | ---------------------------------------------------------------- |
+| `lithon-codegen <key> spec`     | Runs the header chain and syncs the spec artifacts into `spec/`. |
+| `lithon-codegen <key> generate` | Does the same, then emits the package.                           |
+
+| Flag        | Commands           | Effect                                                       |
+| ----------- | ------------------ | ------------------------------------------------------------ |
+| `--check`   | `spec`, `generate` | Diff fresh output against the tree; write nothing.           |
+| `--yes`     | `spec`, `generate` | Skip the output-directory confirmation.                      |
+| `--out DIR` | `generate`         | Write the package to `DIR`. The default is the package name. |
+
+Both commands check the annotations before writing. A failure writes nothing
+and names the fix.
+
+<details>
+<summary><code>--help</code> output: <code>sdl3</code> and its subcommands</summary>
 
 ```
 $ lithon-codegen sdl3 --help
@@ -183,9 +242,6 @@ Available commands:
   generate                 Run the chain and emit the sdl3-bindgen-sys package +
                            spec artifacts (step 3)
 ```
-
-<details>
-<summary><code>spec</code> · <code>generate</code> — full options</summary>
 
 ```
 $ lithon-codegen sdl3 spec --help
@@ -213,45 +269,172 @@ Available options:
 
 </details>
 
-Regenerate the bindings with:
+<details>
+<summary><code>--help</code> output: <code>mpv</code> and its subcommands</summary>
 
-```sh
-cabal run lithon-codegen -- sdl3 generate
+```
+$ lithon-codegen mpv --help
+Usage: lithon-codegen mpv COMMAND
+
+  libmpv binding generation via hs-bindgen: spec / generate
+
+Available options:
+  -h,--help                Show this help text
+
+Available commands:
+  spec                     Run the per-header chain and sync the binding-spec
+                           artifacts (steps 1-2)
+  generate                 Run the chain and emit the mpv-bindgen-sys package +
+                           spec artifacts (step 3)
 ```
 
-`--check` (on any `generate` or `spec`) diffs fresh output against the tree and
-writes nothing — the CI freshness gate.
+```
+$ lithon-codegen mpv spec --help
+Usage: lithon-codegen mpv spec [--check] [--yes]
+
+  Run the per-header chain and sync the binding-spec artifacts (steps 1-2)
+
+Available options:
+  --check                  Diff fresh output against the tree; write nothing
+  --yes                    Skip the output-directory confirmation
+  -h,--help                Show this help text
+
+$ lithon-codegen mpv generate --help
+Usage: lithon-codegen mpv generate [--out DIR] [--check] [--yes]
+
+  Run the chain and emit the mpv-bindgen-sys package + spec artifacts (step 3)
+
+Available options:
+  --out DIR                Target package directory (default: "mpv-bindgen-sys")
+  --check                  Diff fresh output against the tree; write nothing
+  --yes                    Skip the output-directory confirmation
+  -h,--help                Show this help text
+```
+
+</details>
+
+### Add a library
+
+1. Create `lithon-codegen/data/<key>/` with `static/`. Seed `aliases.json`,
+   `constants.json`, and `versions.json` with `{"naming": "camel-segments"}`,
+   `{"groups": {}}`, and `{}`.
+2. In `lithon-codegen/src/Lithon/Codegen/Bindgen/`, copy `Target/Mpv.hs` to
+   `Target/<Name>.hs`. Fill every field:
+   - names: `key`, `packageName`, `displayName`, `versionLabel`,
+     `namespace`, `functionPrefix`
+   - headers: `pkgConfig`, `headers`, `parse`
+   - versions: `versioning`, `gateStubs`
+   - output: `shims`, `widthTypedefs`, `docs`, `prose`
+3. Run `hpack lithon-codegen` to add the module to the `.cabal` file.
+4. Register the value in `bindgenTargets` (`Lithon.Codegen.Bindgen.Targets`)
+   for the `<key>` command and tests.
+5. Run `cabal run lithon-codegen -- <key> generate --yes`. Fix each error it
+   names, then rerun.
+6. Add the package to `cabal.project`, then run `cabal build <package>`.
+7. Run `cabal test lithon-codegen`. Review and commit the
+   `lithon-codegen/test/golden/<key>/census.golden` it creates.
+8. Wire the package into the repository:
+   - `scripts/check.sh`: freshness, hpack parity, the doc-regression grep,
+     haddock, and an example run.
+   - `flake.nix`: the devshell library, `libHook` calls, an
+     `extraPkgconfigMappings` entry, and a `<package>-docs` output. Set
+     `pc-version`, like `libmpv`, when the `.pc` version differs from nixpkgs.
+   - `.github/workflows/ci.yml`: a consumer job running
+     `.github/scripts/consumer-bindgen-sys.sh <package> <pkg-config-name>`.
+   - `lithon-examples`: an example executable needs a default-on cabal flag
+     like `mpv` (`buildable: false` when off), and the `sdl3-shmup-smoke`
+     job's `cabal.project.shmup` must pass `-<flag>`.
+
+### sdl3
+
+`sdl3` generates `sdl3-bindgen-sys`. Its floor is SDL 3.2.0, the oldest SDL
+with a stable ABI. Its annotations cover SDL's doc errors and gaps:
+
+- **Wrong `\since`.** `decls` corrects them: `SDL_ProgressState` claims 3.2.8
+  but first exists in 3.4.0.
+- **Members and constants.** The annotations date them, falling back to a
+  member's `(added in X.Y.Z)` note.
+- **Missing type names.** `prologue-typedefs` declares twelve names 3.4
+  signatures use but 3.2 headers lack.
+
+Below its gate, a wrapper reports the failure through `SDL_SetError`.
+
+### mpv
+
+`mpv` generates `mpv-bindgen-sys`. Its floor is client API 2.0 (mpv 0.35).
+Versions are two-part client API versions, not mpv releases.
+
+libmpv states availability only in prose, so its annotations are the whole
+set:
+
+| Function           | Since | Below the gate, the wrapper returns |
+| ------------------ | ----- | ----------------------------------- |
+| `mpv_del_property` | 2.1   | `MPV_ERROR_UNSUPPORTED`             |
+| `mpv_get_time_ns`  | 2.2   | `mpv_get_time_us(arg1) * 1000`      |
+
+libmpv has no error channel, so the return value is the only report.
 
 ## Running lithon-codegen
 
-Run the tool from the repository, via cabal:
+Run the tool from the repository through cabal:
 
 ```sh
 cabal run lithon-codegen -- <target> <command> ...
 ```
 
-- **Data directory.** Inputs (specs, registries, statics, the Vulkan-Docs
-  registry) resolve through the cabal data directory, which `cabal run`
-  points at `lithon-codegen/data/`. The package deliberately declares no
-  `data-files:`.
-- **Output-directory guard.** Write runs confirm the output directory
-  unless it already carries a `.lithon-manifest.json` and sits inside the
-  enclosing `cabal.project` root.
+Every command takes `--help`. The collapsed blocks in this README are that
+output.
+
+- **Data directory.** `cabal run` points the cabal data directory at
+  `lithon-codegen/data/`. The package declares no `data-files:`, so any other
+  invocation needs `lithon_codegen_datadir` set to `lithon-codegen/data`.
+- **Output-directory guard.** Writes overwrite the output directory and
+  delete stale files, so the tool confirms first. It skips that when the
+  directory has a `.lithon-manifest.json` and sits inside the enclosing
+  `cabal.project` root. Without a terminal it refuses; `--yes` answers yes in
+  advance.
+
+<details>
+<summary><code>--help</code> output: <code>lithon-codegen</code></summary>
+
+```
+$ lithon-codegen --help
+lithon-codegen - binding generators for lithon
+
+Usage: lithon-codegen COMMAND
+
+  Code generation tooling for lithon
+
+Available options:
+  -h,--help                Show this help text
+
+Available commands:
+  vulkan                   Vulkan registry pipeline: parse / check / resolve /
+                           curate / generate
+  sdl3                     SDL3 binding generation via hs-bindgen: spec /
+                           generate
+  mpv                      libmpv binding generation via hs-bindgen: spec /
+                           generate
+```
+
+</details>
 
 ## Development
 
-Golden tests pin the parse, resolve, and curate outputs against the pinned
-`Vulkan-Docs` submodule; regenerate after intended changes with
-`cabal test lithon-codegen --test-options=--accept`. `hpack` must be re-run
-whenever a module file is added.
+- Golden files in `lithon-codegen/test/golden/` pin the Vulkan outputs against
+  the `Vulkan-Docs` submodule. They also pin each bindgen-sys target's census.
+- Accept intended changes with
+  `cabal test lithon-codegen --test-options=--accept`.
+- Run `hpack lithon-codegen` after adding a module file.
 
 ## Reuse
 
-`lithon-codegen` is BSD-3-Clause (the repo-root `LICENSE`). You are welcome to:
+`lithon-codegen` is BSD-3-Clause, under the repo-root `LICENSE`. You are
+welcome to:
 
-- copy the tool, in whole or in part, with attribution; and
-- use it — and the [profile](#profiles) mechanism — to generate your own curated
-  binding set: a different Vulkan surface, or (through the SDL3 pipeline's
-  registries) a reshaped SDL3 layer.
+- copy the tool, in whole or in part, with attribution;
+- use it and its [profiles](#profiles) to generate your own curated bindings:
+  a different Vulkan surface, or a reshaped SDL3 or libmpv layer through a
+  target's data directory.
 
-If you build something with it, I'd be glad to hear about it — open an issue.
+If you build something with it, I'd be glad to hear about it. Open an issue.

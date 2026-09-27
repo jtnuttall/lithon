@@ -1,0 +1,13 @@
+{
+  "files": {
+    "spec/client.yaml": "rhv3:a2ea1f68cdabf820",
+    "spec/render.yaml": "rhv3:361ced992463fdae",
+    "spec/render_gl.yaml": "rhv3:e17015bec54e150a",
+    "spec/stream_cb.yaml": "rhv3:959dd69cbadb206a"
+  },
+  "generatorVersion": "0.1.1.0",
+  "meta": {
+    "headers": 4,
+    "libraryVersion": "2.5.0"
+  }
+}

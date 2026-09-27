@@ -4,12 +4,16 @@
 
 ### Added
 
+- The libmpv target: `lithon-codegen mpv spec|generate` emits
+  `mpv-bindgen-sys` from the libmpv client API headers
+  (`Lithon.Codegen.Bindgen.Target.Mpv`, `data/mpv/`), down to client API 2.0,
+  with `mpv_del_property` (2.1) and `mpv_get_time_ns` (2.2) version-gated.
 - SDL3 ABI assertions: a member's availability defaults to the
   `(added in X.Y.Z)` note in its doxygen comment.
 - `sdl3 generate`/`spec` validate the distilled layouts before writing:
   a struct whose gated trailing members imply it grew, with no
   `sizeof-since`/`before` recorded (or a recorded pair that contradicts the
-  offsets), is a hard error that prints the registry entry to add.
+  offsets), is a hard error that prints the `versions.json` entry to add.
 - SDL3 ABI assertions: a per-struct layout policy (`exact` | `prefix`).
   `prefix` keeps every field offset and the alignment exact and asserts
   `sizeof >=`; it is derived for every member type of a named union and
@@ -25,9 +29,32 @@
   `LITHON_ABI_EXACT` (the `sdl3-bindgen-sys` cabal flag
   `abi-assertions-exact`), so a maintainer build asserts every `sizeof`
   exactly.
-- Tests: `Sdl3.VersionsTest` (registry codec) and an extended
+- Tests: `Bindgen.VersionsTest` (the `versions.json` codec) and an extended
   `abi-toy-assertions` golden covering both policies, both override
   directions, and the pre-growth branch.
+- `versions.json`: `decls.<fn>.stub-return`, the C expression a gated
+  wrapper returns below its gate (default `0`; the parameters are
+  `arg1`…`argN`). A `stub-return` on a decl no header gates, or on a void
+  function, is an error.
+
+### Changed
+
+- The SDL3 layer is a generic bindgen-sys pipeline (`Lithon.Codegen.Bindgen.*`)
+  driven by a plain `BindgenTarget` record: a target is one module, one
+  `data/<key>/` directory, and an entry in `Lithon.Codegen.Bindgen.Targets`.
+- Versions have the target's number of parts (SDL: 3); `versions.json`
+  rejects any other count.
+- `versions.json`: every `prologue-typedefs` entry needs a `since` (one
+  guard block per release); `shape` is `opaque-struct`, `void-ptr`, or the
+  aliased C type as C spells it (`uint32` is now `Uint32`).
+- Package statics are read from `data/<key>/static/` at run time:
+  `package.yaml`, `README.md`, `CHANGELOG.md`, and every other file as a
+  license under its own name, which must be `LICENSE_<name>` (a non-empty
+  `<name>` of ASCII letters, digits, `_`, and `-`) and not one the
+  generator stages itself (`LICENSE_SDL3` moved to
+  `data/sdl3/static/LICENSE_SDL`).
+- Manifests record the library version as `libraryVersion` (was
+  `sdlVersion`).
 
 ## 0.1.1.0 - 2026-07-30
 

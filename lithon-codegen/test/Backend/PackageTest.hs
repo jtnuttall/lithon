@@ -2,7 +2,8 @@
 
 -- | Pure units over the shared package assembly: the root-file set every
 -- generated package stages (the cabal-drift invariant), the src-prefix
--- derivation, duplicate rejection, and extra-tree rooting.
+-- derivation, duplicate rejection (modules and root files), and extra-tree
+-- rooting.
 module Backend.PackageTest where
 
 import Data.Map.Strict qualified as Map
@@ -61,6 +62,14 @@ unit_assembleRejectsDuplicateModules =
   case assemblePackage baseSpec{modules = [(meta ["A"], "a\n"), (meta ["A"], "b\n")]} of
     Left _ -> pure ()
     Right _ -> assertFailure "expected duplicate-module rejection"
+
+-- | A license staged under a root file's name fails assembly instead of
+-- silently replacing the file.
+unit_assembleRejectsRootCollisions :: Assertion
+unit_assembleRejectsRootCollisions =
+  case assemblePackage baseSpec{extraLicenses = [("LICENSE", "not lithon's\n")]} of
+    Left _ -> pure ()
+    Right _ -> assertFailure "expected the LICENSE collision rejected"
 
 unit_extraTreesNotSrcPrefixed :: Assertion
 unit_extraTreesNotSrcPrefixed = do

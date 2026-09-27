@@ -26,7 +26,15 @@
           overlays = [
             haskellNix.overlay
             (final: prev: {
-              sdl3 = prev.callPackage "${nixpkgs-sdl3}/pkgs/by-name/sd/sdl3/package.nix" {};
+              # Built against another nixpkgs, so no binary cache has it and
+              # CI builds it from source. Its test suite has an intermittent
+              # timeout (testrwlock, libsdl-org/SDL#15346) that nixpkgs
+              # patches around but CI still hits, and it tests SDL, not
+              # this repo.
+              sdl3 =
+                (prev.callPackage "${nixpkgs-sdl3}/pkgs/by-name/sd/sdl3/package.nix" {}).overrideAttrs {
+                  doCheck = false;
+                };
             })
             (final: prev: {
               haskell-nix =
@@ -36,8 +44,26 @@
                     (prev.haskell-nix.extraPkgconfigMappings or {})
                     // {
                       "sdl3" = ["sdl3"];
+                      # haskell.nix maps `mpv` to the wrapped player (mpv
+                      # plus yt-dlp and its lua env); the bindings need only
+                      # the library.
+                      "mpv" = ["libmpv"];
                     };
                 };
+            })
+            # libmpv follows haskellNix's nixpkgs; pin it like sdl3 if needed.
+            (final: prev: {
+              libmpv = prev.mpv-unwrapped.overrideAttrs (old: {
+                # mpv.pc's Version is the client API version, not mpv's, and
+                # haskell.nix's plan reads it from pc-version (else .version).
+                passthru =
+                  (old.passthru or {})
+                  // {
+                    pc-version =
+                      {"0.41.0" = "2.5.0";}.${old.version}
+                      or (throw "flake.nix: record the client API version of mpv ${old.version} (the Version field of mpv.pc in the mpv-unwrapped dev output, or DOCS/client-api-changes.rst)");
+                  };
+              });
             })
           ];
         };
@@ -60,13 +86,16 @@
               (lib.getDev llvmPkgs.libclang)
             ];
           };
-          sdl3Hook = ''
-            BINDGEN_EXTRA_CLANG_ARGS="-isystem ${sdl3}/include ''${BINDGEN_EXTRA_CLANG_ARGS:-}"
+          # One include and library hook per bound C library: hs-bindgen and
+          # the C compiler see each library's headers (the dev output's
+          # include/, not the lib output's), and the loader finds each
+          # shared library.
+          libHook = libs: ''
+            BINDGEN_EXTRA_CLANG_ARGS="${lib.concatMapStringsSep " " (p: "-isystem ${lib.getDev p}/include") libs} ''${BINDGEN_EXTRA_CLANG_ARGS:-}"
             export BINDGEN_EXTRA_CLANG_ARGS
-            C_INCLUDE_PATH="${sdl3}/include''${C_INCLUDE_PATH:+:''${C_INCLUDE_PATH}}"
+            C_INCLUDE_PATH="${lib.concatMapStringsSep ":" (p: "${lib.getDev p}/include") libs}''${C_INCLUDE_PATH:+:''${C_INCLUDE_PATH}}"
             export C_INCLUDE_PATH
-            # Note the brackets around [ sdl3 ] here!
-            LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath [sdl3]}''${LD_LIBRARY_PATH:+:''${LD_LIBRARY_PATH}}"
+            LD_LIBRARY_PATH="${lib.makeLibraryPath libs}''${LD_LIBRARY_PATH:+:''${LD_LIBRARY_PATH}}"
             export LD_LIBRARY_PATH
           '';
         in
@@ -82,12 +111,17 @@
                       build-tools = [hsBindgenHook];
                     };
                     preBuild = ''
-                      ${sdl3Hook}
+                      ${libHook [sdl3 libmpv]}
                     '';
                   };
                   sdl3-bindgen-sys = {
                     preBuild = ''
-                      ${sdl3Hook}
+                      ${libHook [sdl3]}
+                    '';
+                  };
+                  mpv-bindgen-sys = {
+                    preBuild = ''
+                      ${libHook [libmpv]}
                     '';
                   };
                 };
@@ -140,6 +174,9 @@
                 # windowed demo (triangle-sdl, cabal flag `sdl`)
                 SDL2
 
+                # libmpv bindings (mpv-bindgen-sys, the mpv-headless example)
+                libmpv
+
                 # windowing dependencies
                 libx11
                 libxcursor
@@ -171,7 +208,7 @@
               ];
 
               shellHook = ''
-                ${sdl3Hook}
+                ${libHook [sdl3 libmpv]}
                 export LLVM_PATH="${libclangPrefix}"
                 export LD_LIBRARY_PATH="${lib.getLib llvmPkgs.libclang}/lib:${lib.makeLibraryPath buildInputs}''${LD_LIBRARY_PATH:+:''${LD_LIBRARY_PATH}}"
                 export VK_LAYER_PATH="${vulkan-validation-layers}/share/vulkan/explicit_layer.d"
@@ -191,6 +228,7 @@
             tests = flake.packages."lithon-codegen:test:lithon-codegen-test";
             "rapidhash-docs" = project.hsPkgs.rapidhash.components.library.doc;
             "sdl3-bindgen-sys-docs" = project.hsPkgs.sdl3-bindgen-sys.components.library.doc;
+            "mpv-bindgen-sys-docs" = project.hsPkgs.mpv-bindgen-sys.components.library.doc;
           };
 
           devShells =

@@ -1,340 +1,586 @@
-{-# LANGUAGE OverloadedLists #-}
+{-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE StrictData #-}
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE NoMonomorphismRestriction #-}
+{-# OPTIONS_GHC -fplugin=Effectful.Plugin #-}
 
--- | The target-agnostic bindgen driver: a fold over a library's public
--- headers with caller-provided visitors.
+-- | The @lithon-codegen \<key\>@ subcommands (@sdl3@, @mpv@, …): generating
+-- a @*-bindgen-sys@ package from one C library's headers, driven by the
+-- library's 'BindgenTarget'.
 --
--- A target describes its header universe as data ('HeaderPlan': include
--- roots, exclusions, module mangling) and hands the fold a 'Visitor': the
--- ordered edit sets to apply to each translated family ('Passes', a
--- 'Monoid' so orthogonal concern sets compose) plus a finalizer producing
--- the caller's per-header payload. The driver owns everything else —
--- preflight, dependency ordering, spec chaining, invocation, rendering —
--- so a new target supplies configuration and visitors, not a new driver.
+-- @spec@ runs hs-bindgen over every public header and syncs the resulting
+-- binding specifications into @lithon-codegen\/data\/\<key\>\/spec\/@. Each
+-- header's invocation consumes the specs of the headers it includes, so the
+-- committed specs are both the reviewable record of the generated type
+-- surface and the chaining medium between invocations.
 --
--- The scratch directory every invocation writes its binding spec into
--- lives in the 'Bindgen' effect; 'runBindgen' brackets it around the whole
--- generation (spec sync and probe compilation read it after the chain).
+-- @generate@ does the same, then plans the curated alias layer and emits
+-- the package.
+--
+-- Curation inputs live beside the specs: @overrides.yaml@ (the prescriptive
+-- hs-bindgen spec), @aliases.json@, @constants.json@, and @versions.json@.
 module Lithon.Codegen.Bindgen (
-  -- * Errors
   BindgenError (..),
-
-  -- * The effect
-  PackageInfo (..),
-  BindgenOpts (..),
-  Bindgen,
+  BindgenCmd (..),
+  bindgenCmdP,
+  bindgenCommand,
   runBindgen,
-  getScratchDirectory,
-  invokeBindgen,
 
-  -- * Planning
-  HeaderPlan (..),
-  defaultSpecFileName,
-  HeaderUnit (..),
-
-  -- * Visitors
-  Passes (..),
-  Visitor (..),
-  HeaderResult (..),
-
-  -- * The fold
-  preflightGraph,
-  planHeaders,
-  chainHeaders,
-  runHeaderChain,
+  -- * The per-header visitor
+  bindgenVisitor,
 ) where
 
-import Data.Aeson qualified as A
-import Data.Version (Version)
-import Effectful
-import Effectful.Dispatch.Static
-import Effectful.Error.Dynamic
+import Data.Aeson qualified as Aeson
+import Data.ByteString.Lazy qualified as LBS
+import Data.Conduit.Process.Typed (ProcessConfig)
+import Data.Hash.RapidHash
+import Data.Map.Strict qualified as Map
+import Data.Text.IO qualified as TIO
+import Effectful (Eff, IOE, (:>))
+import Effectful.Concurrent.Async (Concurrent)
+import Effectful.Console.ByteString (Console)
+import Effectful.Environment
+import Effectful.FileSystem.IO.ByteString qualified as EBS
+import Lithon.Effect.ClangEnv (ClangEnv)
+import Lithon.Effect.Error
+import Lithon.Effect.FileSystem
 import Lithon.Effect.Log
-import Lithon.Effect.Temporary (SystemTempDir (SystemTempDir), Temporary, withSystemTempDirectory)
-import Lithon.HsBindgen qualified as HB
+import Lithon.Effect.Temporary
 import Lithon.Prelude
-import System.FilePath ((<.>), (</>))
-import System.FilePath qualified as FilePath
+import Options.Applicative hiding (ParseError, asum)
+import System.FilePath ((</>))
 
-import Lithon.Codegen.Backend.Hs.Module qualified as Module
+import Lithon.Codegen.Backend.Emit (
+  EmitEffect (..),
+  EmitError,
+  EmitGuard (..),
+  EmitStrategy (..),
+  EmitTarget (..),
+  GuardCtx,
+  emitEffectOptP,
+  emitPackage,
+ )
+import Lithon.Codegen.Backend.Package.Emit (
+  PackageOut (..),
+  ProjectRoot,
+  assumeYesP,
+  emitHaskellPackage,
+  guardCtx,
+  packageOutP,
+ )
+import Lithon.Codegen.Bindgen.Abi (AbiMacroConst (..))
+import Lithon.Codegen.Bindgen.Abi.Validate (AbiProblem, LibraryRef (..), validateAbi)
+import Lithon.Codegen.Bindgen.Alias (
+  AliasModule (..),
+  FamilyDecls (..),
+  aliasRewriteMap,
+  functionCensus,
+  planAliasLayer,
+  renderAliasModule,
+  renderRuntimeModule,
+  renderUmbrella,
+ )
+import Lithon.Codegen.Bindgen.Alias.Config (
+  ValidatedAliasConfig (..),
+  decodeAliasConfig,
+  namingRuleText,
+  validateAliasConfig,
+ )
+import Lithon.Codegen.Bindgen.Alias.Constants (
+  ConstantError,
+  ConstantGroupPlan (..),
+  ConstantMember (..),
+  ConstantsConfig (..),
+  FamilyConstants (..),
+  decodeConstantsConfig,
+  enumerateMembers,
+  parseProbeOutput,
+  planConstants,
+  renderProbeSource,
+  scanObjectMacros,
+ )
+import Lithon.Codegen.Bindgen.Alias.Names (AliasError)
+import Lithon.Codegen.Bindgen.Driver (
+  Driver,
+  DriverError,
+  HeaderResult (..),
+  HeaderUnit (..),
+  Visitor (..),
+  chainHeaders,
+  getScratchDirectory,
+  planHeaders,
+  preflightGraph,
+  runDriver,
+ )
+import Lithon.Codegen.Bindgen.Env (
+  BindgenEnv (..),
+  BindgenGen,
+  BindgenPaths (..),
+  BindgenResolutionError (TargetInvalid),
+  Registry (..),
+  driverOpts,
+  getBindgenEnv,
+  loadStatics,
+  registryFile,
+  runBindgenGen,
+ )
+import Lithon.Codegen.Bindgen.Package (BindgenPackagingError, assembleBindgenPackage)
+import Lithon.Codegen.Bindgen.Payload (BindgenPayload (..), distillPayload)
+import Lithon.Codegen.Bindgen.Target (
+  BindgenTarget (..),
+  VersionScheme (..),
+  headerPlan,
+  includeArg,
+  registryDisplayPath,
+  validateTarget,
+ )
+import Lithon.Codegen.Bindgen.Versions (
+  Versioned (..),
+  VersionsRegistry (..),
+  decodeVersionsRegistry,
+ )
+import Lithon.Codegen.Bindgen.Versions.Guards (
+  UnusedStubReturn (..),
+  retypePrologue,
+  unusedStubReturns,
+  versionGates,
+ )
 
 data BindgenError
-  = DuplicateModules (Set Module.Meta)
-  | NoHeadersFound
-  | HsBindgenError Text HB.BindgenFailure
-  | ModuleShimFailed FilePath HB.TransformError
-  | FinalizeFailed FilePath Text
-  | ModuleMangleError Module.MangleError
-  | BindgenPanic Text
+  = -- | The target's display name, and why its environment did not resolve.
+    ResolutionFailed Text BindgenResolutionError
+  | -- | Which registry, the file read, and the decoder's complaint.
+    RegistryDecodeFailed Registry FilePath Text
+  | AliasesFailed (Errors AliasError)
+  | ConstantsFailed (Errors ConstantError)
+  | ConstantsProbeUnparseable Text
+  | ToolCallFailed Text (ProcessConfig () () ()) ProcessFailureCode ProcessStdout ProcessStderr
+  | BindgenFailed DriverError
+  | EmitFailed EmitError
+  | PackagingFailed BindgenPackagingError
+  | -- | The availability annotations to record the fixes in, and the problems.
+    AbiValidationFailed FilePath (Errors AbiProblem)
+  | -- | The availability annotations, and the decls whose @stub-return@ no
+    -- gated stub returns (and why).
+    StubReturnUnused FilePath [(Text, UnusedStubReturn)]
   deriving stock (Show)
 
+instance From (Errors AliasError) BindgenError where
+  from = AliasesFailed
+
+instance From (Errors ConstantError) BindgenError where
+  from = ConstantsFailed
+
+instance From DriverError BindgenError where
+  from = BindgenFailed
+
+instance From EmitError BindgenError where
+  from = EmitFailed
+
+-- TODO: Lower about half of these into aliases/constants modules
 instance Display BindgenError where
   displayBuilder = \case
-    DuplicateModules dupes ->
-      "module name collisions:" <> intercalateTB "\n - " (map displayBuilder . toList $ dupes)
-    NoHeadersFound -> "no headers found in the include graph"
-    HsBindgenError cxt err ->
-      let errd = display err
+    ResolutionFailed name err -> "Failed to resolve the " <> from name <> " environment: " <> from err
+    RegistryDecodeFailed registry path err ->
+      "Failed to decode the " <> displayBuilder registry <> " registry " <> from path <> ": " <> from err
+    AliasesFailed errs -> "Aliases failed: " <> from errs
+    ConstantsProbeUnparseable err -> "Failed to parse constants probe output: " <> from err
+    ToolCallFailed tag cfg (ProcessFailureCode code) (ProcessStdout out) (ProcessStderr err) ->
+      let coded = show code
+          cmd = show cfg
+          errd = toText err
        in from
             [trimmingQQ|
-              $cxt: hs-bindgen invokation failed:
+              $tag: $cmd failed with exit code $coded
 
-              $errd
-            |]
-    ModuleShimFailed header terr ->
-      let headerd = from header
-          detail = case terr of
-            HB.StubEditMissed label symbol target ->
-              "stub edit "
-                <> label
-                <> " landed on no wrapper of "
-                <> symbol
-                <> " (expected: "
-                <> target
-                <> ")"
-            HB.TextEditMissed label needle ->
-              "text edit " <> label <> " matched no module (needle=" <> needle <> ")"
-          detaild = detail
-       in from
-            [trimmingQQ|
-              $headerd: platform shim drifted: $detaild
-            |]
-    FinalizeFailed header reason ->
-      let headerd = from header
-       in from
-            [trimmingQQ|
-              $headerd: the target's finalizer failed.
+              Stdout:
+                $out
 
-              $reason
-            |]
-    ModuleMangleError err -> displayBuilder err
-    BindgenPanic what ->
-      from
-        [trimmingQQ|
-          panicked while trying to generate bindings via hs-bindgen:
+              Stderr:
+                $errd
+              |]
+    ConstantsFailed err -> "Constants failed: " <> from err
+    BindgenFailed err -> "Failed while invoking hs-bindgen: " <> from err
+    EmitFailed err -> "Failed to emit library: " <> from err
+    PackagingFailed err -> "Failed to emit library package: " <> from err
+    AbiValidationFailed registry errs ->
+      "ABI validation failed; nothing was written. Record the availability in "
+        <> from registry
+        <> " and rerun:\n\n"
+        <> intercalateTB "\n\n" (map displayBuilder (toList errs))
+    StubReturnUnused registry unused ->
+      "unused stub-return in "
+        <> from registry
+        <> " (no gated stub returns it); nothing was written:"
+        <> foldMap (\(name, why) -> "\n  - " <> from name <> ": " <> unusedStubReturn why) unused
+   where
+    unusedStubReturn = \case
+      NotGated ->
+        "no header gates it (its availability is at or below the baseline, or it is not a bound"
+          <> " function); remove the stub-return or correct the since"
+      ReturnsVoid -> "the function returns void, so its stub returns nothing; remove the stub-return"
 
-            $what
+data BindgenCmd
+  = CmdSpec SpecOpts
+  | CmdGenerate GenerateOpts
 
-          This is a bug in lithon-codegen; please open an issue upstream.
-        |]
+bindgenCmdP :: BindgenTarget -> Parser BindgenCmd
+bindgenCmdP target =
+  hsubparser
+    ( command
+        "spec"
+        ( info
+            (CmdSpec <$> specOptsP)
+            (progDesc "Run the per-header chain and sync the binding-spec artifacts (steps 1-2)")
+        )
+        <> command
+          "generate"
+          ( info
+              (CmdGenerate <$> generateOptsP target)
+              ( progDesc
+                  ( "Run the chain and emit the "
+                      <> toString target.packageName
+                      <> " package + spec artifacts (step 3)"
+                  )
+              )
+          )
+    )
 
--- | Provenance of the package being generated; the scratch directory is
--- templated on the name.
-data PackageInfo = PackageInfo
-  { name :: Text
-  , dataDir :: FilePath
-  , version :: Maybe Version
+-- | The target's subcommand (@lithon-codegen \<key\> spec|generate@).
+bindgenCommand :: (BindgenTarget -> BindgenCmd -> a) -> BindgenTarget -> Mod CommandFields a
+bindgenCommand wrap target =
+  command
+    (toString target.key)
+    ( info
+        (wrap target <$> bindgenCmdP target)
+        (progDesc (toString target.displayName <> " binding generation via hs-bindgen: spec / generate"))
+    )
+
+data SpecOpts = SpecOpts
+  { emitEffect :: EmitEffect
+  , assumeYes :: Bool
   }
-  deriving stock (Generic, Show)
-  deriving anyclass (A.ToJSON)
 
--- | Everything constant across a generation run. The include roots ride in
--- 'HB.InvocationEnv' — one include plumbing, not two.
-data BindgenOpts = BindgenOpts
-  { invocationEnv :: HB.InvocationEnv
-  , prescriptiveSpec :: Maybe FilePath
-  , packageInfo :: PackageInfo
+specOptsP :: Parser SpecOpts
+specOptsP = do
+  emitEffect <- emitEffectOptP
+  assumeYes <- assumeYesP
+  pure SpecOpts{..}
+
+newtype GenerateOpts = GenerateOpts
+  { out :: PackageOut
   }
 
-data Bindgen :: Effect
+generateOptsP :: BindgenTarget -> Parser GenerateOpts
+generateOptsP target = do
+  out <- packageOutP (toString target.packageName)
+  pure GenerateOpts{..}
 
-type instance DispatchOf Bindgen = Static WithSideEffects
-data instance StaticRep Bindgen = BindgenRep
-  { opts :: BindgenOpts
-  , scratchDir :: SystemTempDir
-  }
+runBindgen
+  :: ( IOE :> es
+     , Temporary :> es
+     , Environment :> es
+     , Concurrent :> es
+     , Log :> es
+     , Error BindgenError :> es
+     , ClangEnv :> es
+     , FileSystem :> es
+     , Console :> es
+     )
+  => BindgenTarget -> Maybe ProjectRoot -> BindgenCmd -> Eff es ()
+runBindgen target root cmd = runRethrow @BindgenResolutionError (ResolutionFailed target.displayName) do
+  either (throwError . TargetInvalid target.key) pure (validateTarget target)
+  runBindgenGen target do
+    env <- getBindgenEnv
+    runDriver (driverOpts target env) case cmd of
+      CmdSpec opts -> do
+        registry <- loadVersionsRegistry target
+        results <- runChain target registry
+        validateChain target registry results
+        syncSpecs (guardCtx root opts.assumeYes) opts.emitEffect results
+      CmdGenerate opts -> do
+        -- Before the chain: a missing README should not cost a full run.
+        statics <- loadStatics target env
+        registry <- loadVersionsRegistry target
+        results <- runChain target registry
+        validateChain target registry results
+        -- Specs and package come from the same chain run, so they can never
+        -- skew; both emits respect --check.
+        syncSpecs (guardCtx root opts.out.assumeYes) opts.out.emitEffect results
+        (aliasFiles, macroConsts, aliasMeta) <-
+          planAliases target registry results
+        tree <-
+          liftEither
+            . first PackagingFailed
+            $ assembleBindgenPackage target statics env.libraryVersion aliasFiles macroConsts results
+        manifestMeta <- chainMeta results
+        runErrorFrom @EmitError @BindgenError
+          $ emitHaskellPackage root opts.out (manifestMeta <> aliasMeta) tree
 
--- | Bracket a generation run: one scratch directory for the whole
--- lifetime, so spec artifacts survive until consumers (spec sync, probe
--- compilation) have read them.
-runBindgen :: (IOE :> es, Temporary :> es) => BindgenOpts -> Eff (Bindgen : es) a -> Eff es a
-runBindgen opts eff =
-  withSystemTempDirectory (toString opts.packageInfo.name) \scratchDir ->
-    evalStaticRep BindgenRep{opts, scratchDir} eff
-
-getScratchDirectory :: (Bindgen :> es) => Eff es SystemTempDir
-getScratchDirectory = (.scratchDir) <$> getStaticRep @Bindgen
-
--- | One seam invocation under the run's environment: base module, includes,
--- prior specs in, artefact ops out.
-invokeBindgen
-  :: (IOE :> es, Bindgen :> es, Error BindgenError :> es)
-  => [FilePath] -> Text -> [FilePath] -> HB.BindgenM a -> Eff es a
-invokeBindgen priorSpecs baseModule includes ops = do
-  rep <- getStaticRep @Bindgen
-  let spec =
-        HB.InvocationSpec
-          { baseModule
-          , includes
-          , priorSpecs
-          , prescriptiveSpec = rep.opts.prescriptiveSpec
+-- | Refuse to write (or @--check@) a layout whose growth story is
+-- incomplete, or a @stub-return@ annotation no gate uses: every struct is
+-- checked so one run reports them all, and it runs before 'syncSpecs' so
+-- a failing regeneration leaves the committed spec artifacts untouched.
+validateChain
+  :: (BindgenGen :> es, Error BindgenError :> es)
+  => BindgenTarget -> VersionsRegistry -> [HeaderResult BindgenPayload] -> Eff es ()
+validateChain target registry results = do
+  env <- getBindgenEnv
+  let library =
+        LibraryRef
+          { label = target.versionLabel
+          , version = env.libraryVersion
+          , registry = registryDisplayPath target (registryFile VersionsJson)
           }
-  res <- liftIO $ HB.runBindgen rep.opts.invocationEnv spec ops
-  either (throwError . HsBindgenError baseModule) pure res
-
--- | A target's header universe, as data: how headers are discovered,
--- filtered, and named. Planning is pure given the include graph.
-data HeaderPlan = HeaderPlan
-  { baseNamespace :: Module.Meta
-  -- ^ Root of the generated namespace, e.g. @SDL3.Sys.Bindgen@.
-  , mangle :: Module.MangleOpts
-  -- ^ Header basename -> module leaf (appended to 'baseNamespace').
-  , projectHeader :: FilePath -> Maybe FilePath
-  -- ^ Include-graph source path -> in-scope basename ('Nothing' for libc,
-  -- clang builtins, anything outside the target's include root).
-  , includeArg :: FilePath -> FilePath
-  -- ^ Basename -> the hash-include argument, e.g. @SDL3\/SDL_video.h@.
-  , excludedHeaders :: Set FilePath
-  -- ^ Basenames bound never (internal, umbrella, GL glue).
-  , mainIncludes :: [FilePath]
-  -- ^ The preflight include set: the umbrella plus any extras.
-  , specFileName :: FilePath -> FilePath
-  -- ^ Basename -> binding-spec artifact name.
-  }
-
--- | @SDL_video.h@ -> @SDL_video.yaml@.
-defaultSpecFileName :: FilePath -> FilePath
-defaultSpecFileName basename = FilePath.dropExtension basename <.> "yaml"
-
--- | One public header = one invocation = one module family.
-data HeaderUnit = HeaderUnit
-  { include :: FilePath
-  -- ^ The hash-include argument, e.g. @SDL3\/SDL_video.h@.
-  , headerName :: FilePath
-  -- ^ Basename, e.g. @SDL_video.h@ — the census\/artifact key.
-  , moduleName :: Module.Meta
-  -- ^ The types module, e.g. @SDL3.Sys.Bindgen.Video@; term categories
-  -- hang off it (@.Safe@, @.Unsafe@, @.FunPtr@, @.Global@).
-  , specFile :: FilePath
-  -- ^ Spec artifact basename, e.g. @SDL_video.yaml@.
-  }
-  deriving stock (Eq, Generic, Show)
-  deriving anyclass (A.ToJSON)
-
--- | The ordered edit sets a visitor applies to each translated family.
--- Providers see the header's unit and full artefact bundle, so an edit set
--- may key on the reified C declarations (version gates do).
---
--- The 'Semigroup' is pointwise; the LEFT operand's edits apply first, and
--- later edits see earlier edits' output — composition order is meaningful.
-data Passes = Passes
-  { stubEdits :: HeaderUnit -> HB.HeaderArtefacts -> [HB.StubEdit]
-  , textEdits :: HeaderUnit -> HB.HeaderArtefacts -> [HB.TextEdit]
-  }
-
-instance Semigroup Passes where
-  l <> r =
-    Passes
-      { stubEdits = \unit arts -> l.stubEdits unit arts <> r.stubEdits unit arts
-      , textEdits = \unit arts -> l.textEdits unit arts <> r.textEdits unit arts
-      }
-
-instance Monoid Passes where
-  mempty = Passes{stubEdits = \_ _ -> [], textEdits = \_ _ -> []}
-
--- | Everything a target asks the fold to do to each header: the edit sets,
--- then a finalizer distilling the caller's per-header payload from the
--- artefacts and the rendered family.
-data Visitor r = Visitor
-  { passes :: Passes
-  , finalize
-      :: HeaderUnit
-      -> HB.HeaderArtefacts
-      -> [HB.NameableModule HB.RenderedHsModule]
-      -> Either Text r
-  }
-
--- | One header's fold result: the rendered family every target needs, plus
--- the caller's payload.
-data HeaderResult r = HeaderResult
-  { unit :: HeaderUnit
-  , modules :: [HB.NameableModule HB.RenderedHsModule]
-  , payload :: r
-  }
-
--- | One boot+frontend run over the plan's main includes, returning the
--- include graph (dependency-ordered source paths) that orders the real
--- per-header chain.
-preflightGraph
-  :: (IOE :> es, Bindgen :> es, Error BindgenError :> es) => HeaderPlan -> Eff es [FilePath]
-preflightGraph plan = invokeBindgen [] "Preflight" plan.mainIncludes HB.sortedIncludeGraph
-
--- | Project the include graph onto the bound header set, in dependency
--- order, minting each unit's typed module name.
-planHeaders :: (Error BindgenError :> es) => HeaderPlan -> [FilePath] -> Eff es [HeaderUnit]
-planHeaders plan graph = do
-  let inScope =
-        [ basename
-        | path <- graph
-        , Just basename <- [plan.projectHeader path]
-        , basename `notElem` plan.excludedHeaders
-        ]
-  units <- traverse toUnit inScope
-
-  case duplicates (map (.moduleName) units) of
+  liftEither
+    . first (AbiValidationFailed library.registry)
+    . validationToEither
+    $ validateAbi target.versioning.baseline library (concatMap (.payload.abi) results)
+  case unusedStubReturns registry (concatMap (.payload.gated) results) of
     [] -> pass
-    collisions -> throwError $ DuplicateModules collisions
+    unused -> throwError (StubReturnUnused library.registry unused)
 
-  when (null units) $ throwError NoHeadersFound
-  pure units
- where
-  toUnit basename = do
-    mangled <-
-      liftEither . first ModuleMangleError $ Module.mangleHeader basename plan.mangle
+-- | Load, validate, plan, and render the target's curated layer.
+--
+-- Both registries are required: every callback-taking function must be
+-- classified (@aliases.json@) and the typed-constant groups are the
+-- deliberate record of macro↔newtype membership (@constants.json@) — a
+-- missing registry is a hard error with guidance, not a silent partial
+-- run.
+planAliases
+  :: ( HasCallStack
+     , IOE :> es
+     , Log :> es
+     , BindgenGen :> es
+     , Driver :> es
+     , Error BindgenError :> es
+     , FileSystem :> es
+     )
+  => BindgenTarget
+  -> VersionsRegistry
+  -> [HeaderResult BindgenPayload]
+  -> Eff es ([(Text, Text)], [AbiMacroConst], Map Text Aeson.Value)
+planAliases target registry headerResults = do
+  env <- getBindgenEnv
+  let families = map (.payload.facts) headerResults
+
+  registryBytes <- LBS.fromStrict <$> EBS.readFile env.paths.aliases
+  config <-
+    liftEither
+      . first (RegistryDecodeFailed AliasesJson env.paths.aliases)
+      $ decodeAliasConfig registryBytes
+  validated <-
+    liftEither
+      . first from
+      $ validateAliasConfig (functionCensus families) config
+
+  (constantPlans, constantsBytes) <- planConstantGroups target families
+  let plansByFamily =
+        Map.fromListWith
+          (flip (<>))
+          [(p.familyBase, [p]) | p <- constantPlans]
+      macroSinces = (.since) <$> registry.macroConstants
+      macroConsts =
+        [ AbiMacroConst
+            { name = m.cName
+            , value = m.value
+            , headerName = p.headerName
+            , since = Map.lookup m.cName macroSinces
+            }
+        | p <- constantPlans
+        , m <- p.members
+        ]
+
+  aliasModules <- liftEither . first from $ planAliasLayer target validated plansByFamily families
+  let rewriteMap = aliasRewriteMap aliasModules
+      rendered =
+        map (renderAliasModule target rewriteMap) aliasModules
+          <> [renderRuntimeModule target, renderUmbrella target aliasModules]
+  logInfo
+    $ "alias layer planned"
+    :# [ "modules" .= length rendered
+       , "aliases" .= sum [length m.bindings | m <- aliasModules]
+       , "constants" .= length macroConsts
+       ]
+  pure
+    ( rendered
+    , macroConsts
+    , Map.fromList
+        [ ("aliasNaming", Aeson.toJSON (namingRuleText validated.naming))
+        , ("aliasConfig", Aeson.toJSON (rapidhash (LBS.toStrict registryBytes)))
+        , ("constantsConfig", Aeson.toJSON (rapidhash (LBS.toStrict constantsBytes)))
+        , ("constants", Aeson.toJSON (length macroConsts))
+        ]
+    )
+
+-- |
+-- Load constants.json, enumerate memberships against the resolved
+-- headers, evaluate every value and group sizeof in a probe TU compiled
+-- against those same headers, and validate the lot.
+planConstantGroups
+  :: (IOE :> es, BindgenGen :> es, Driver :> es, Error BindgenError :> es, FileSystem :> es)
+  => BindgenTarget -> [FamilyDecls] -> Eff es ([ConstantGroupPlan], LByteString)
+planConstantGroups target families = do
+  env <- getBindgenEnv
+
+  constantsBytes <- LBS.fromStrict <$> EBS.readFile env.paths.constants
+  constantsConfig <-
+    liftEither
+      . first (RegistryDecodeFailed ConstantsJson env.paths.constants)
+      $ decodeConstantsConfig constantsBytes
+
+  familyConstants <- forM families \fd -> do
+    source <- decodeUtf8 <$> EBS.readFile (env.includeDir </> includeArg target fd.headerName)
     pure
-      HeaderUnit
-        { include = plan.includeArg basename
-        , headerName = basename
-        , moduleName = plan.baseNamespace <> view Module.metaL mangled
-        , specFile = plan.specFileName basename
+      FamilyConstants
+        { familyBase = fd.familyBase
+        , headerName = fd.headerName
+        , headerMacros = scanObjectMacros source
+        , newtypeConstrs = fd.newtypeConstrs
+        , takenNames = fd.takenNames
         }
 
--- | Fold the chain in dependency order: every invocation consumes the
--- specs generated by its predecessors as external binding specifications
--- and writes its own into the scratch directory.
-chainHeaders
-  :: (IOE :> es, Log :> es, Bindgen :> es, Error BindgenError :> es)
-  => Visitor r -> [HeaderUnit] -> Eff es [HeaderResult r]
-chainHeaders visitor = go []
- where
-  go _ [] = pure []
-  go priorSpecs (unit : rest) = do
-    SystemTempDir specDir <- getScratchDirectory
-    logInfo $ "processing header" :# ["unit" .= unit]
-    res <- runHeader visitor priorSpecs unit
-    (res :) <$> go ((specDir </> unit.specFile) : priorSpecs) rest
+  -- Successful enumerations feed the probe; rule failures resurface
+  -- identically (same pure inputs) from 'planConstants' below.
+  let probeInputs =
+        [ (typeName, names)
+        | (typeName, cgroup) <- Map.toAscList constantsConfig.groups
+        , fc : _ <-
+            [[f | f <- familyConstants, Map.member typeName f.newtypeConstrs]]
+        , Right names <-
+            [validationToEither (enumerateMembers typeName cgroup fc.headerMacros)]
+        ]
 
--- | One header through the fold: invoke (collecting the artefact bundle
--- and writing the binding spec), apply the visitor's stub edits at the AST
--- level, render with its text edits, finalize its payload.
-runHeader
-  :: (IOE :> es, Bindgen :> es, Error BindgenError :> es)
-  => Visitor r -> [FilePath] -> HeaderUnit -> Eff es (HeaderResult r)
-runHeader visitor priorSpecs unit = do
-  SystemTempDir specDir <- getScratchDirectory
-  arts <-
-    invokeBindgen priorSpecs (Module.hsName unit.moduleName) [unit.include]
-      $ HB.collectArtefacts <* HB.writeSpec (specDir </> unit.specFile)
-  shimmed <-
+  (sizeofs, values) <- probeConstants target probeInputs
+  plans <-
     liftEither
-      . first (ModuleShimFailed unit.headerName)
-      $ HB.applyStubEdits (visitor.passes.stubEdits unit arts) arts.family
-  modules <-
-    liftEither
-      . first (ModuleShimFailed unit.headerName)
-      $ HB.renderFamilyWith (visitor.passes.textEdits unit arts) shimmed
-  payload <-
-    liftEither . first (FinalizeFailed unit.headerName) $ visitor.finalize unit arts modules
-  pure HeaderResult{unit, modules, payload}
+      . first from
+      $ planConstants constantsConfig familyConstants sizeofs values
+  pure (plans, constantsBytes)
 
--- | preflight -> plan -> chain: the whole fold.
-runHeaderChain
-  :: (IOE :> es, Log :> es, Bindgen :> es, Error BindgenError :> es)
-  => HeaderPlan -> Visitor r -> Eff es [HeaderResult r]
-runHeaderChain plan visitor = do
+probeConstants
+  :: (IOE :> es, BindgenGen :> es, Driver :> es, Error BindgenError :> es)
+  => BindgenTarget -> [(Text, [Text])] -> Eff es (Map Text Int, Map Text Integer)
+probeConstants target probeInputs
+  | null probeInputs = pure (mempty, mempty)
+  | otherwise = do
+      SystemTempDir scratch <- getScratchDirectory
+
+      let probeC = scratch </> "lithon_constants_probe.c"
+          probeBin = scratch </> "lithon_constants_probe"
+
+      liftIO (TIO.writeFile probeC (renderProbeSource target probeInputs))
+
+      env <- getBindgenEnv
+      _ <-
+        readProcessStdoutOrError
+          (ToolCallFailed $ "Compiling " <> from probeC)
+          "cc"
+          ["-std=c17", "-I", from env.includeDir, from probeC, "-o", from probeBin]
+
+      runOut <-
+        readProcessStdoutOrError
+          (ToolCallFailed $ "Running " <> from probeBin)
+          (from probeBin)
+          []
+
+      liftEither . first ConstantsProbeUnparseable $ parseProbeOutput runOut
+
+loadVersionsRegistry
+  :: (BindgenGen :> es, Error BindgenError :> es, FileSystem :> es)
+  => BindgenTarget -> Eff es VersionsRegistry
+loadVersionsRegistry target = do
+  env <- getBindgenEnv
+  bytes <- LBS.fromStrict <$> EBS.readFile env.paths.versions
+  liftEither
+    . first (RegistryDecodeFailed VersionsJson env.paths.versions)
+    $ decodeVersionsRegistry target.versioning.arity bytes
+
+runChain
+  :: ( HasCallStack
+     , IOE :> es
+     , Environment :> es
+     , Log :> es
+     , BindgenGen :> es
+     , Driver :> es
+     , Error BindgenError :> es
+     )
+  => BindgenTarget -> VersionsRegistry -> Eff es [HeaderResult BindgenPayload]
+runChain target registry = runErrorFrom do
+  env <- getBindgenEnv
+  -- libc headers reach libclang only via BINDGEN_EXTRA_CLANG_ARGS (the
+  -- devshell's hs-bindgen hook populates it from the cc-wrapper's
+  -- cc-cflags + libc-cflags); without it the chain dies on <string.h>.
+  extraClangArgs <- lookupEnv "BINDGEN_EXTRA_CLANG_ARGS"
+  logInfo
+    $ "environment"
+    :# ["target" .= target.key, "env" .= env, "bindgenExtraClangArgs" .= isJust extraClangArgs]
+  when (isNothing extraClangArgs)
+    $ logWarn "BINDGEN_EXTRA_CLANG_ARGS is unset; libclang may fail to find libc headers."
+
+  let plan = headerPlan target
   graph <- preflightGraph plan
   units <- planHeaders plan graph
-  chainHeaders visitor units
+  logInfo $ "planned headers" :# ["count" .= length units]
+
+  results <- chainHeaders (bindgenVisitor target registry) units
+  logInfo
+    $ "chain complete"
+    :# [ "headers" .= length results
+       , "modules" .= sum [length r.modules | r <- results]
+       ]
+  pure results
+
+-- | The target's visitor: its shims, the retype prologue, and the version
+-- gates, in that order ("Lithon.Codegen.Bindgen.Versions.Guards"), then
+-- the payload distillation ("Lithon.Codegen.Bindgen.Payload"). The gate
+-- tests drive it header by header.
+bindgenVisitor :: BindgenTarget -> VersionsRegistry -> Visitor BindgenPayload
+bindgenVisitor target registry =
+  Visitor
+    { passes = target.shims <> retypePrologue target registry <> versionGates target registry
+    , finalize = distillPayload target registry
+    }
+
+-- | Sync the freshly generated specs (and the manifest recording them)
+-- into the artifact directory.
+syncSpecs
+  :: ( HasCallStack
+     , IOE :> es
+     , Log :> es
+     , BindgenGen :> es
+     , Concurrent :> es
+     , Error BindgenError :> es
+     , FileSystem :> es
+     , Console :> es
+     , Driver :> es
+     )
+  => GuardCtx -> EmitEffect -> [HeaderResult BindgenPayload] -> Eff es ()
+syncSpecs ctx effect results = do
+  env <- getBindgenEnv
+  SystemTempDir scratch <- getScratchDirectory
+  specMap <-
+    fmap Map.fromList . for results $ \r -> do
+      bytes <- EBS.readFile (scratch </> r.unit.specFile)
+      pure ("spec" </> r.unit.specFile, decodeUtf8 bytes)
+  manifestMeta <- chainMeta results
+  runErrorFrom
+    $ emitPackage
+      ArtifactsOnly
+      EmitTarget
+        { outDir = env.paths.dataDir
+        , guard = Guarded ctx
+        , ..
+        }
+      specMap
+
+-- | What every target's manifests record about the chain run.
+chainMeta :: (BindgenGen :> es) => [HeaderResult BindgenPayload] -> Eff es (Map Text Aeson.Value)
+chainMeta results = do
+  env <- getBindgenEnv
+  pure
+    $ Map.fromList
+      [ ("libraryVersion", Aeson.toJSON env.libraryVersion)
+      , ("headers", Aeson.toJSON (length results))
+      ]

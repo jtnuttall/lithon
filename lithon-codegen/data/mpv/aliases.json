@@ -1,0 +1,219 @@
+{
+  "naming": "camel-segments",
+  "functions": {
+    "mpv_abort_async_command": {
+      "safety": "both",
+      "rationale": "triggers cancellation synchronously; a custom stream the request opened runs its cancel_fn during the call"
+    },
+    "mpv_client_id": {
+      "safety": "unsafe-only",
+      "rationale": "reads a field of the handle; cannot block, lock, or call back"
+    },
+    "mpv_client_name": {
+      "safety": "unsafe-only",
+      "rationale": "reads a field of the handle; cannot block, lock, or call back"
+    },
+    "mpv_command": {
+      "safety": "both",
+      "rationale": "takes the core lock and runs the command on the calling thread, then waits for it to finish (unbounded); may run wakeup callbacks synchronously"
+    },
+    "mpv_command_async": {
+      "safety": "both",
+      "rationale": "returns without waiting for the core, but takes the handle's lock, which mpv holds while running the wakeup callback"
+    },
+    "mpv_command_node": {
+      "safety": "both",
+      "rationale": "takes the core lock and runs the command on the calling thread, then waits for it to finish (unbounded); may run wakeup callbacks synchronously"
+    },
+    "mpv_command_node_async": {
+      "safety": "both",
+      "rationale": "returns without waiting for the core, but takes the handle's lock, which mpv holds while running the wakeup callback"
+    },
+    "mpv_command_ret": {
+      "safety": "both",
+      "rationale": "takes the core lock and runs the command on the calling thread, then waits for it to finish (unbounded); may run wakeup callbacks synchronously"
+    },
+    "mpv_command_string": {
+      "safety": "both",
+      "rationale": "takes the core lock and runs the command on the calling thread, then waits for it to finish (unbounded); may run wakeup callbacks synchronously"
+    },
+    "mpv_create": {
+      "safety": "both",
+      "rationale": "allocates a whole player core and starts its thread; nothing can be registered yet, so it cannot call back"
+    },
+    "mpv_create_client": {
+      "safety": "both",
+      "rationale": "takes the client-list lock, which mpv holds while running wakeup callbacks for broadcast events"
+    },
+    "mpv_create_weak_client": {
+      "safety": "both",
+      "rationale": "takes the client-list lock, which mpv holds while running wakeup callbacks for broadcast events"
+    },
+    "mpv_del_property": {
+      "safety": "both",
+      "rationale": "runs the del command synchronously; blocks and calls back like mpv_command"
+    },
+    "mpv_destroy": {
+      "safety": "both",
+      "rationale": "blocks on pending async requests and, for the last strong handle, on core shutdown; prefer the Safe alias, an unsafe call stalls every capability and GC meanwhile"
+    },
+    "mpv_error_string": {
+      "safety": "unsafe-only",
+      "rationale": "returns a static string; cannot block, lock, or call back"
+    },
+    "mpv_event_name": {
+      "safety": "unsafe-only",
+      "rationale": "returns a static string; cannot block, lock, or call back"
+    },
+    "mpv_event_to_node": {
+      "safety": "unsafe-only",
+      "rationale": "converts the event into freshly allocated nodes (parts may point into the event); cannot block or call back"
+    },
+    "mpv_free": {
+      "safety": "unsafe-only",
+      "rationale": "frees memory the API returned; cannot block or call back"
+    },
+    "mpv_free_node_contents": {
+      "safety": "unsafe-only",
+      "rationale": "frees the memory a node references; cannot block or call back"
+    },
+    "mpv_get_property": {
+      "safety": "both",
+      "rationale": "takes the core lock (an unbounded wait, per client.h) and runs the getter on the calling thread; some getters wait on your render thread"
+    },
+    "mpv_get_property_async": {
+      "safety": "both",
+      "rationale": "returns without waiting for the core, but takes the handle's lock, which mpv holds while running the wakeup callback"
+    },
+    "mpv_get_property_osd_string": {
+      "safety": "both",
+      "rationale": "takes the core lock (an unbounded wait, per client.h) and runs the getter on the calling thread; some getters wait on your render thread"
+    },
+    "mpv_get_property_string": {
+      "safety": "both",
+      "rationale": "takes the core lock (an unbounded wait, per client.h) and runs the getter on the calling thread; some getters wait on your render thread"
+    },
+    "mpv_get_time_ns": {
+      "safety": "unsafe-only",
+      "rationale": "reads a monotonic clock value; cannot block, lock, or call back"
+    },
+    "mpv_get_time_us": {
+      "safety": "unsafe-only",
+      "rationale": "reads a monotonic clock value; cannot block, lock, or call back"
+    },
+    "mpv_get_wakeup_pipe": {
+      "safety": "both",
+      "rationale": "takes the wakeup lock, which mpv holds while running the wakeup callback; creates the pipe on first use"
+    },
+    "mpv_hook_add": {
+      "safety": "both",
+      "rationale": "takes the core lock (an unbounded wait, per client.h) to register the handler"
+    },
+    "mpv_hook_continue": {
+      "safety": "both",
+      "rationale": "takes the core lock, then sends MPV_EVENT_HOOK to the next handler, running its wakeup callback synchronously"
+    },
+    "mpv_initialize": {
+      "safety": "both",
+      "rationale": "initializes the player on the calling thread (config files, scripts, force-window); prefer the Safe alias, an unsafe call stalls every capability and GC meanwhile"
+    },
+    "mpv_load_config_file": {
+      "safety": "both",
+      "rationale": "takes the core lock and parses the file on the calling thread (blocking file I/O)"
+    },
+    "mpv_observe_property": {
+      "safety": "both",
+      "rationale": "takes the handle's lock, which mpv holds while running the wakeup callback; never waits for the core"
+    },
+    "mpv_render_context_create": {
+      "safety": "safe-only",
+      "rationale": "calls get_proc_address from mpv_opengl_init_params synchronously while loading OpenGL functions"
+    },
+    "mpv_render_context_free": {
+      "safety": "both",
+      "rationale": "if video is active, blocks until the core has torn down the video chain, serving the render queue meanwhile"
+    },
+    "mpv_render_context_get_info": {
+      "safety": "both",
+      "rationale": "reads the queued frame under the render context lock, which the VO thread holds only briefly"
+    },
+    "mpv_render_context_render": {
+      "safety": "both",
+      "rationale": "blocks until the frame's target display time unless MPV_RENDER_PARAM_BLOCK_FOR_TARGET_TIME is 0"
+    },
+    "mpv_render_context_report_swap": {
+      "safety": "both",
+      "rationale": "signals the VO thread under the render context lock, which the VO thread holds only briefly"
+    },
+    "mpv_render_context_set_parameter": {
+      "safety": "both",
+      "rationale": "a changed ICC profile reinitializes the renderer on the calling thread"
+    },
+    "mpv_render_context_set_update_callback": {
+      "safety": "safe-only",
+      "rationale": "invokes the callback once immediately"
+    },
+    "mpv_render_context_update": {
+      "safety": "both",
+      "rationale": "runs pending render-thread work on the calling thread, including decoder texture allocation with MPV_RENDER_PARAM_ADVANCED_CONTROL"
+    },
+    "mpv_request_event": {
+      "safety": "both",
+      "rationale": "takes the handle's lock, which mpv holds while running the wakeup callback; never waits for the core"
+    },
+    "mpv_request_log_messages": {
+      "safety": "both",
+      "rationale": "runs the registered wakeup callback synchronously"
+    },
+    "mpv_set_option": {
+      "safety": "both",
+      "rationale": "takes the core lock (an unbounded wait, per client.h) and applies the option on the calling thread"
+    },
+    "mpv_set_option_string": {
+      "safety": "both",
+      "rationale": "takes the core lock (an unbounded wait, per client.h) and applies the option on the calling thread"
+    },
+    "mpv_set_property": {
+      "safety": "both",
+      "rationale": "takes the core lock (an unbounded wait, per client.h) and runs the setter on the calling thread"
+    },
+    "mpv_set_property_async": {
+      "safety": "both",
+      "rationale": "returns without waiting for the core, but takes the handle's lock, which mpv holds while running the wakeup callback"
+    },
+    "mpv_set_property_string": {
+      "safety": "both",
+      "rationale": "takes the core lock (an unbounded wait, per client.h) and runs the setter on the calling thread"
+    },
+    "mpv_set_wakeup_callback": {
+      "safety": "safe-only",
+      "rationale": "invokes the callback once immediately"
+    },
+    "mpv_stream_cb_add_ro": {
+      "safety": "both",
+      "rationale": "registration; open_fn and the stream callbacks it installs fire later on mpv's threads; takes the client-list lock, like mpv_create_client"
+    },
+    "mpv_terminate_destroy": {
+      "safety": "both",
+      "rationale": "quits the player and blocks until every other handle and the core are gone; prefer the Safe alias, an unsafe call stalls every capability and GC meanwhile"
+    },
+    "mpv_unobserve_property": {
+      "safety": "both",
+      "rationale": "takes the handle's lock, which mpv holds while running the wakeup callback; never waits for the core"
+    },
+    "mpv_wait_async_requests": {
+      "safety": "both",
+      "rationale": "blocks until every async request has replied; prefer the Safe alias, an unsafe call stalls every capability and GC meanwhile"
+    },
+    "mpv_wait_event": {
+      "safety": "both",
+      "rationale": "blocks up to the timeout (negative waits forever); prefer the Safe alias, an unsafe call stalls every capability and GC meanwhile"
+    },
+    "mpv_wakeup": {
+      "safety": "both",
+      "rationale": "runs the registered wakeup callback synchronously"
+    }
+  },
+  "renames": {},
+  "skip": []
+}

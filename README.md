@@ -20,6 +20,12 @@ generated binding that is easier to maintain than the incumbent, manual
 `sdl2` binding. The bindings are built atop a (modified fork of) Well-Typed's
 pre-release `hs-bindgen`, without which they wouldn't have been possible.
 
+### libmpv
+
+The libmpv bindings are a complete, automatically generated binding of the
+client API of libmpv, the library behind the mpv media player. They come out
+of the same generator as the SDL3 bindings.
+
 ## Where to start?
 
 Take a look at any of the [published packages](#packages), each of which has a
@@ -52,9 +58,10 @@ follow the [PVP](https://pvp.haskell.org/). While they are below `0.1`,
 treat them as experimental and pin to the minor (e.g.,
 `>=0.0.0.1 && <0.0.1`):
 
-| Package                                 | Description                                             | Currently supported systems                                           |
-| --------------------------------------- | ------------------------------------------------------- | --------------------------------------------------------------------- |
-| [`sdl3-bindgen-sys`](sdl3-bindgen-sys/) | raw + curated SDL3 bindings, generated from the headers | 64-bit Linux, macOS, Windows (CI checks against all three); SDL ≥ 3.2 |
+| Package                                   | Description                                                          | Currently supported systems                                           |
+| ----------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [`sdl3-bindgen-sys`](sdl3-bindgen-sys/)   | raw + curated SDL3 bindings, generated from the headers              | 64-bit Linux, macOS, Windows (CI checks against all three); SDL ≥ 3.2 |
+| [`mpv-bindgen-sys`](mpv-bindgen-sys/)[^2] | raw + curated libmpv client API bindings, generated from the headers | 64-bit Linux, macOS, Windows; libmpv client API ≥ 2.0 (mpv ≥ 0.35)    |
 
 There are almost certainly bugs in this initial release; I have not validated
 the whole generated API surface by hand. If you run into anything, please open
@@ -70,7 +77,7 @@ willing to publish earlier than planned if there's enough interest.
 | ----------------------- | ----------------------------------------------------------- |
 | `lithon-vk`             | A modern Vulkan (1.3+) binding with a curated feature set   |
 | `lithon-core`           | The hand-written runtime for the Vulkan binding             |
-| `lithon-codegen`        | Codegen for vulkan/sdl bindings                             |
+| `lithon-codegen`        | Codegen for vulkan/sdl/mpv bindings                         |
 | `lithon-hs-bindgen`     | Vendored `hs-bindgen` fork with a curated re-export surface |
 | `lithon-prelude`        | Shared internal prelude used across the lithon packages     |
 | `lithon-examples`       | Examples                                                    |
@@ -81,22 +88,25 @@ willing to publish earlier than planned if there's enough interest.
 - Clone with `git clone --recursive` — the vendored `hs-bindgen` stack
   lives in git submodules that the build requires.
 - The devshell (`nix develop`, or direnv) provides GHC, libclang for
-  hs-bindgen, SDL3, and lavapipe.
+  hs-bindgen, SDL3, libmpv, and lavapipe.
 - `scripts/check.sh` encapsulates all release checks for now.
 - Codegen requires GHC 9.12+ (multiline string literals, etc.)
 
 ### Regenerating the bindings
 
 ```sh
-cabal run lithon-codegen -- vulkan generate lithon-codegen/Vulkan-Docs/xml/vk.xml \
-  --profile lithon-codegen/profiles/lithon-core.json
+cabal run lithon-codegen -- vulkan generate \
+  --profile lithon-codegen/data/vulkan/profiles/lithon-core.json
 cabal run lithon-codegen -- sdl3 generate
+cabal run lithon-codegen -- mpv generate
 ```
 
 ## Licensing
 
 - lithon itself is BSD-3-Clause (see `LICENSE`)
 - SDL3 is licensed under `zlib`, a copy of which is embedded in `sdl3-bindgen-sys`
+- libmpv's client API headers are ISC, a copy of which is embedded in
+  `mpv-bindgen-sys`; libmpv itself is GPLv2+ (see that package's README)
 - `hs-bindgen` and its attendant libraries are BSD-3-Clause (c) Well-Typed and
   Anduril.
 - The upstream `rapidhash.h` vendored in `rapidhash` is MIT (c) Nicolas De
@@ -108,3 +118,5 @@ See the per-package license files for further detail.
     /i/ as in the French v/i/te with /t/ as in /t/op. Declension intentionally
     left ambiguous between accusative and genitive; the why is left as an
     exercise for the (very bored, classics/LXX-inclined) reader.
+
+[^2]: Not on Hackage yet: its first release is pending.

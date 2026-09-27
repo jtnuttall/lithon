@@ -15,8 +15,10 @@ Not published; build from the repository devshell (`nix develop` — see the
 | `triangle-sdl`       | The same triangle presented in an SDL2 window via `VK_KHR_swapchain`        |
 | `sdl3-raw`           | A minimal `sdl3-bindgen-sys` triangle: window, event loop, `renderGeometry` |
 | `shmup`              | The apecs Shmup example, playable, running on and rendering through SDL3    |
+| `mpv-headless`       | A lavfi test clip played headless through `mpv-bindgen-sys`, EOF-asserted   |
 
 ```sh
+cabal run mpv-headless
 cabal run sdl3-raw
 cabal run shmup               # --frames N bounds the loop
 cabal run triangle-offscreen
@@ -24,8 +26,8 @@ cabal run triangle-sdl        # needs SDL2; disable with -f -sdl elsewhere
 ```
 
 On Windows without Nix, the SDL3 examples build natively from Git Bash
-against MSYS2 UCRT64 (install `mingw-w64-ucrt-x86_64-sdl3` and
-`mingw-w64-ucrt-x86_64-pkgconf` as in the
+against MSYS2 UCRT64 (install `mingw-w64-ucrt-x86_64-sdl3`,
+`mingw-w64-ucrt-x86_64-mpv`, and `mingw-w64-ucrt-x86_64-pkgconf` as in the
 [sdl3-bindgen-sys README](../sdl3-bindgen-sys/README.md#windows-set-up)):
 
 ```sh
@@ -38,6 +40,8 @@ cabal run --with-compiler=/c/ghcup/ghc/9.12.2/bin/ghc.exe \
 ```
 
 `-sdl` leaves out `triangle-sdl`, the one executable that needs SDL2.
+The root `cabal.project` lists `mpv-bindgen-sys`, whose `pkg-config`
+dependency the solver checks, so libmpv is needed even with `-mpv`.
 
 `sdl3-raw` and `shmup` run headless under `SDL_VIDEODRIVER=offscreen`,
 which is how `scripts/check.sh` probe-asserts their pixels; `triangle-sdl`

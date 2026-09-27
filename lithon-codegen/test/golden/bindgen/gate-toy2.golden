@@ -1,0 +1,243 @@
+/* gated: toy_remove toy_time_ns toy_pending toy_flush toy_attach toy_set_logger */
+/* ---- Toy2.Sys.Bindgen.ToyGate.FunPtr ---- */
+#include <toy2/toy_gate.h>
+/* lithongatetoy2_Toy2.Sys.Bindgen.ToyGate_get_toy_open */
+__attribute__ ((const))
+signed int (*hs_bindgen_c28064a7dcb82d14 (void)) (
+  toy_handle **arg1
+)
+{
+  return &toy_open;
+}
+/* lithongatetoy2_Toy2.Sys.Bindgen.ToyGate_get_toy_time_us */
+__attribute__ ((const))
+signed long long (*hs_bindgen_ec9f0a84b7b74cda (void)) (
+  toy_handle *arg1
+)
+{
+  return &toy_time_us;
+}
+#include <toy2/toy_version.h>
+#if TOY_API_VERSION < TOY_MAKE_VERSION(2, 1)
+typedef int toy_mode;
+#endif
+#if TOY_API_VERSION < TOY_MAKE_VERSION(2, 2)
+typedef void *toy_log_fn;
+typedef struct toy_node toy_node;
+#endif
+/* lithongatetoy2_Toy2.Sys.Bindgen.ToyGate_get_toy_set_mode */
+__attribute__ ((const))
+signed int (*hs_bindgen_a94461cda2410f40 (void)) (
+  toy_handle *arg1,
+  toy_mode arg2
+)
+{
+  return &toy_set_mode;
+}
+#include <toy2/toy_version.h>
+/* lithongatetoy2_Toy2.Sys.Bindgen.ToyGate_get_toy_remove */
+__attribute__ ((const))
+signed int (*hs_bindgen_6755f7ba2d47687e (void)) (
+  toy_handle *arg1,
+  char const *arg2
+)
+{
+#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 1)
+  return &toy_remove;
+#else
+  return 0;
+#endif
+}
+#include <toy2/toy_version.h>
+/* lithongatetoy2_Toy2.Sys.Bindgen.ToyGate_get_toy_time_ns */
+__attribute__ ((const))
+signed long long (*hs_bindgen_ce1a0be8a8e8c852 (void)) (
+  toy_handle *arg1
+)
+{
+#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 2)
+  return &toy_time_ns;
+#else
+  return 0;
+#endif
+}
+#include <toy2/toy_version.h>
+/* lithongatetoy2_Toy2.Sys.Bindgen.ToyGate_get_toy_pending */
+__attribute__ ((const))
+signed int (*hs_bindgen_e448292d75be8736 (void)) (void)
+{
+#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 2)
+  return &toy_pending;
+#else
+  return 0;
+#endif
+}
+#include <toy2/toy_version.h>
+/* lithongatetoy2_Toy2.Sys.Bindgen.ToyGate_get_toy_flush */
+__attribute__ ((const))
+void (*hs_bindgen_d502ccb8da63d95b (void)) (
+  toy_handle *arg1
+)
+{
+#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 2)
+  return &toy_flush;
+#else
+  return 0;
+#endif
+}
+#include <toy2/toy_version.h>
+#include <toy2/toy_version.h>
+#if TOY_API_VERSION < TOY_MAKE_VERSION(2, 1)
+typedef int toy_mode;
+#endif
+#if TOY_API_VERSION < TOY_MAKE_VERSION(2, 2)
+typedef void *toy_log_fn;
+typedef struct toy_node toy_node;
+#endif
+/* lithongatetoy2_Toy2.Sys.Bindgen.ToyGate_get_toy_attach */
+__attribute__ ((const))
+signed int (*hs_bindgen_32af9ffce84dbb66 (void)) (
+  toy_handle *arg1,
+  toy_node *arg2
+)
+{
+#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 2)
+  return &toy_attach;
+#else
+  return 0;
+#endif
+}
+#include <toy2/toy_version.h>
+#include <toy2/toy_version.h>
+#if TOY_API_VERSION < TOY_MAKE_VERSION(2, 1)
+typedef int toy_mode;
+#endif
+#if TOY_API_VERSION < TOY_MAKE_VERSION(2, 2)
+typedef void *toy_log_fn;
+typedef struct toy_node toy_node;
+#endif
+/* lithongatetoy2_Toy2.Sys.Bindgen.ToyGate_get_toy_set_logger */
+__attribute__ ((const))
+signed int (*hs_bindgen_f13f7d6915aeebce (void)) (
+  toy_handle *arg1,
+  toy_log_fn arg2
+)
+{
+#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 2)
+  return &toy_set_logger;
+#else
+  return 0;
+#endif
+}
+/* ---- Toy2.Sys.Bindgen.ToyGate.Unsafe ---- */
+#include <toy2/toy_gate.h>
+signed int hs_bindgen_fa6c37d070271f7b (
+  toy_handle **arg1
+)
+{
+  return (toy_open)(arg1);
+}
+signed long long hs_bindgen_b025382cbb194bdd (
+  toy_handle *arg1
+)
+{
+  return (toy_time_us)(arg1);
+}
+#include <toy2/toy_version.h>
+#if TOY_API_VERSION < TOY_MAKE_VERSION(2, 1)
+typedef int toy_mode;
+#endif
+#if TOY_API_VERSION < TOY_MAKE_VERSION(2, 2)
+typedef void *toy_log_fn;
+typedef struct toy_node toy_node;
+#endif
+signed int hs_bindgen_b37dd0f45fb92acc (
+  toy_handle *arg1,
+  toy_mode arg2
+)
+{
+  return (toy_set_mode)(arg1, arg2);
+}
+#include <toy2/toy_version.h>
+signed int hs_bindgen_609323190cc81223 (
+  toy_handle *arg1,
+  char const *arg2
+)
+{
+#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 1)
+  return (toy_remove)(arg1, arg2);
+#else
+  (void)arg1; (void)arg2; return TOY_ERROR_UNSUPPORTED;
+#endif
+}
+#include <toy2/toy_version.h>
+signed long long hs_bindgen_d67f2428fe7a60be (
+  toy_handle *arg1
+)
+{
+#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 2)
+  return (toy_time_ns)(arg1);
+#else
+  (void)arg1; return toy_time_us(arg1) * 1000;
+#endif
+}
+#include <toy2/toy_version.h>
+signed int hs_bindgen_217dd6780be33537 (void)
+{
+#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 2)
+  return (toy_pending)();
+#else
+  return 0;
+#endif
+}
+#include <toy2/toy_version.h>
+void hs_bindgen_9f9b864d0b8374fb (
+  toy_handle *arg1
+)
+{
+#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 2)
+  (toy_flush)(arg1);
+#else
+  (void)arg1;
+#endif
+}
+#include <toy2/toy_version.h>
+#include <toy2/toy_version.h>
+#if TOY_API_VERSION < TOY_MAKE_VERSION(2, 1)
+typedef int toy_mode;
+#endif
+#if TOY_API_VERSION < TOY_MAKE_VERSION(2, 2)
+typedef void *toy_log_fn;
+typedef struct toy_node toy_node;
+#endif
+signed int hs_bindgen_5eec88c5f063ad9a (
+  toy_handle *arg1,
+  toy_node *arg2
+)
+{
+#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 2)
+  return (toy_attach)(arg1, arg2);
+#else
+  (void)arg1; (void)arg2; return 0;
+#endif
+}
+#include <toy2/toy_version.h>
+#include <toy2/toy_version.h>
+#if TOY_API_VERSION < TOY_MAKE_VERSION(2, 1)
+typedef int toy_mode;
+#endif
+#if TOY_API_VERSION < TOY_MAKE_VERSION(2, 2)
+typedef void *toy_log_fn;
+typedef struct toy_node toy_node;
+#endif
+signed int hs_bindgen_2b38f3b61c781ec6 (
+  toy_handle *arg1,
+  toy_log_fn arg2
+)
+{
+#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 2)
+  return (toy_set_logger)(arg1, arg2);
+#else
+  (void)arg1; (void)arg2; return 0;
+#endif
+}

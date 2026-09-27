@@ -259,10 +259,10 @@ Declarations newer than your SDL still compile and link — their wrapper
 C is gated on SDL's own version macros, so calling one on an older SDL
 fails at the call site via `SDL_GetError` (exactly like the Linux-only
 functions off Linux). The wrapper gates and the ABI assertion layer are
-driven by an empirically verified availability registry rather than
+driven by empirically verified availability annotations rather than
 SDL's (occasionally wrong) `\since` annotations; a handful of haddock
-`@since` lines therefore repeat an upstream floor the registry
-corrects — where they disagree, the registry wins, and a gated call's
+`@since` lines therefore repeat an upstream floor that the annotations
+correct — where they disagree, the annotations win, and a gated call's
 `SDL_GetError` message states the true floor.
 
 Three semantic deltas to know when running against an older SDL:

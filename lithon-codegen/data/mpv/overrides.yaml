@@ -1,0 +1,21 @@
+# Curated prescriptive binding specification for mpv-bindgen-sys.
+#
+# Entries here override how hs-bindgen translates the types it generates.
+#
+# This allows us to introduce renames, alter representations, define
+# enums as open or closed, pick instances, omit something entirely, and
+# so forth.
+#
+# The generated per-header specs live in spec/ and are machine-owned
+# and refreshed by `lithon-codegen mpv spec`.
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+ctypes:
+  # Omitted for LLP64 portability: it returns unsigned long, and hs-bindgen
+  # bakes the raw foreign imports' FFI from the generation host (the same
+  # reason sdl3-bindgen-sys omits SDL's seven long-typed functions). The
+  # compile-time MPV_CLIENT_API_VERSION macro remains.
+  - omit:
+      headers: mpv/client.h
+      cname: mpv_client_api_version

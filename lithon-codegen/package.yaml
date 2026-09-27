@@ -7,14 +7,13 @@ maintainer: "jeremy@jeremy-nuttall.com"
 copyright: "(c) 2026 Jeremy Nuttall"
 category: Graphics
 
-synopsis: Code generator for lithon-vk and sdl3-bindgen-sys
+synopsis: Code generator for lithon-vk, sdl3-bindgen-sys, and mpv-bindgen-sys
 description: Lithon's code generation tool. Lithon aims to be a performant, modern Vulkan binding amenable to type-level programming.
 
 extra-source-files:
-  - data/sdl3/static/*
-  - data/sdl3/*.json
-  - data/sdl3/overrides.yaml
-  - data/vulkan/static/*
+  - data/*/static/*
+  - data/*/*.json
+  - data/*/overrides.yaml
 
 extra-doc-files:
   - README.md

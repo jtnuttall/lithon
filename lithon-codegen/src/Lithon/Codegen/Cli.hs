@@ -5,8 +5,9 @@
 -- | The lithon-codegen command line: a thin dispatcher over per-target
 -- subcommand trees.
 --
--- @vulkan@ is the registry pipeline (see "Lithon.Codegen.Vulkan"); @sdl3@
--- (the hs-bindgen-driven SDL3 generator) joins it as its milestones land.
+-- @vulkan@ is the registry pipeline (see "Lithon.Codegen.Vulkan"); every
+-- hs-bindgen-driven bindgen-sys target ("Lithon.Codegen.Bindgen.Targets", e.g.
+-- @sdl3@) contributes its own subcommand.
 module Lithon.Codegen.Cli (
   main,
 ) where
@@ -16,11 +17,11 @@ import Effectful (runEff)
 import Effectful.Concurrent.Async (runConcurrent)
 import Effectful.Console.ByteString.Lazy (runConsole)
 import Effectful.Environment (runEnvironment)
-import Lithon.Effect.FileSystem (runFileSystem)
 import Effectful.Resource (runResource)
 import Lithon.Effect.ClangEnv
 import Lithon.Effect.Clock (runClock)
 import Lithon.Effect.Error
+import Lithon.Effect.FileSystem (runFileSystem)
 import Lithon.Effect.Log
 import Lithon.Effect.PrettyPrint
 import Lithon.Effect.Temporary (runTemporary)
@@ -28,7 +29,9 @@ import Lithon.Prelude
 import Options.Applicative hiding (ParseError, asum)
 
 import Lithon.Codegen.Backend.Package.Emit (findProjectRoot)
-import Lithon.Codegen.Sdl3 (Sdl3Cmd, runSdl3, sdl3CmdP)
+import Lithon.Codegen.Bindgen (BindgenCmd, bindgenCommand, runBindgen)
+import Lithon.Codegen.Bindgen.Target (BindgenTarget)
+import Lithon.Codegen.Bindgen.Targets (bindgenTargets)
 import Lithon.Codegen.Vulkan (VulkanCmd, runVulkan, vulkanCmdP)
 
 newtype Opts = Opts
@@ -37,7 +40,7 @@ newtype Opts = Opts
 
 data Cmd
   = CmdVulkan VulkanCmd
-  | CmdSdl3 Sdl3Cmd
+  | CmdBindgen BindgenTarget BindgenCmd
 
 main :: IO ()
 main = do
@@ -58,11 +61,11 @@ main = do
           CmdVulkan cmd ->
             runErrorDisplay
               $ runVulkan root cmd
-          CmdSdl3 cmd ->
+          CmdBindgen target cmd ->
             runErrorDisplay
               . runClangEnv
               . runErrorDisplay
-              $ runSdl3 root cmd
+              $ runBindgen target root cmd
 
     case res of
       Right () -> pure ()
@@ -89,10 +92,5 @@ optsP =
               (CmdVulkan <$> vulkanCmdP)
               (progDesc "Vulkan registry pipeline: parse / check / resolve / curate / generate")
           )
-          <> command
-            "sdl3"
-            ( info
-                (CmdSdl3 <$> sdl3CmdP)
-                (progDesc "SDL3 binding generation via hs-bindgen: spec / generate")
-            )
+          <> foldMap (bindgenCommand CmdBindgen) bindgenTargets
       )

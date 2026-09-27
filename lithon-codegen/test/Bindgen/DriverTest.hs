@@ -6,40 +6,32 @@
 -- typed module names through the plan's mangle, 'HB.RequireHit' misses fail
 -- generation loudly, 'HB.AllowMiss' misses pass through untouched, text
 -- edits apply in list order (a later edit sees an earlier edit's output),
--- and the finalizer's payload arrives on the result.
+-- the finalizer's payload arrives on the result, and a header reaching
+-- another through a quoted include (libmpv's shape) chains after it and
+-- binds against its spec.
 module Bindgen.DriverTest (
   unit_driverFoldsToyHeader,
   unit_requireHitMissFails,
   unit_allowMissSkips,
   unit_editsApplyInOrder,
+  unit_quotedIncludeChains,
 ) where
 
 import Data.Text qualified as T
-import Data.Text.IO qualified as TIO
-import Effectful (runEff)
-import Lithon.Effect.Error
-import Lithon.Effect.Log (runLog)
-import Lithon.Effect.Temporary (runTemporary)
 import Lithon.HsBindgen qualified as HB
 import Lithon.Prelude
-import System.Directory (createDirectoryIfMissing)
-import System.FilePath (takeDirectory, (</>))
-import System.IO.Temp (withSystemTempDirectory)
+import System.FilePath ((</>))
 import Test.Tasty.HUnit (Assertion, assertBool, assertFailure, (@?=))
 
+import Bindgen.Support.Toy (ToyHeader (..), renderedPairs, runToyChain, toyEnv)
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
-import Lithon.Codegen.Bindgen (
-  BindgenError,
-  BindgenOpts (..),
+import Lithon.Codegen.Bindgen.Driver (
   HeaderPlan (..),
   HeaderResult (..),
   HeaderUnit (..),
-  PackageInfo (..),
   Passes (..),
   Visitor (..),
   defaultSpecFileName,
-  runBindgen,
-  runHeaderChain,
  )
 
 toyHeader :: Text
@@ -69,44 +61,19 @@ toyPlan =
     , specFileName = defaultSpecFileName
     }
 
-toyOpts :: FilePath -> BindgenOpts
-toyOpts dir =
-  BindgenOpts
-    { invocationEnv =
-        HB.InvocationEnv
-          { extraIncludeDirs = [dir]
-          , defineMacros = []
-          , doxygenAliases = []
-          , fieldNaming = HB.AddFieldPrefixes
-          , uniqueId = "lithon-driver-toy"
-          }
-    , prescriptiveSpec = Nothing
-    , packageInfo = PackageInfo{name = "driver-toy", dataDir = dir, version = Nothing}
-    }
-
 -- | Run one visitor over the toy universe under the real effect stack.
-runDriver :: Visitor r -> IO (Either Text [HeaderResult r])
-runDriver visitor = withSystemTempDirectory "lithon-driver-toy" \dir -> do
-  let headerPath = dir </> "toy" </> "toy_thing.h"
-  createDirectoryIfMissing True (takeDirectory headerPath)
-  TIO.writeFile headerPath toyHeader
-  fmap (first snd)
-    . runEff
-    . runLog "driver-test"
-    . runError @Text
-    . runErrorDisplay @BindgenError
-    . runTemporary
-    . runBindgen (toyOpts dir)
-    $ runHeaderChain toyPlan visitor
-
-renderedPairs :: [HB.NameableModule HB.RenderedHsModule] -> [(Text, Text)]
-renderedPairs = map \m -> (HB.moduleName m, m.hsModule.text)
+runToyDriver :: Visitor r -> IO (Either Text [HeaderResult r])
+runToyDriver =
+  runToyChain
+    (toyEnv "lithon-driver-toy")
+    [ToyHeader{include = "toy" </> "toy_thing.h", source = toyHeader}]
+    toyPlan
 
 unit_driverFoldsToyHeader :: Assertion
 unit_driverFoldsToyHeader = do
   results <-
     either (assertFailure . toString) pure
-      =<< runDriver Visitor{passes = mempty, finalize = \_ arts _ -> Right (length arts.cDecls)}
+      =<< runToyDriver Visitor{passes = mempty, finalize = \_ arts _ -> Right (length arts.cDecls)}
   case results of
     [r] -> do
       Module.hsName r.unit.moduleName @?= "Toy.Bindgen.Thing"
@@ -123,7 +90,7 @@ unit_driverFoldsToyHeader = do
 unit_requireHitMissFails :: Assertion
 unit_requireHitMissFails = do
   r <-
-    runDriver
+    runToyDriver
       Visitor
         { passes =
             mempty
@@ -140,7 +107,7 @@ unit_allowMissSkips :: Assertion
 unit_allowMissSkips = do
   results <-
     either (assertFailure . toString) pure
-      =<< runDriver
+      =<< runToyDriver
         Visitor
           { passes =
               mempty
@@ -168,7 +135,7 @@ unit_editsApplyInOrder :: Assertion
 unit_editsApplyInOrder = do
   results <-
     either (assertFailure . toString) pure
-      =<< runDriver
+      =<< runToyDriver
         Visitor
           { passes =
               Passes
@@ -196,3 +163,48 @@ unit_editsApplyInOrder = do
         "later edit saw the earlier edit's output"
         (any (T.isInfixOf "{- pass1 pass2 -}" . snd) (renderedPairs r.modules))
     _other -> assertFailure "expected exactly one header result"
+
+-- | @toy_b.h@ reaches @toy_a.h@ only through a quoted include (as
+-- libmpv's @render_gl.h@ reaches @render.h@) and is the only main
+-- include: the preflight graph still finds both, the chain runs them in
+-- dependency order, and the second invocation binds @toy_point@ through
+-- the first one's spec — it imports the defining module instead of
+-- declaring the type again.
+unit_quotedIncludeChains :: Assertion
+unit_quotedIncludeChains = do
+  results <-
+    either (assertFailure . toString) pure
+      =<< runToyChain
+        (toyEnv "lithon-driver-quoted")
+        [ ToyHeader{include = "toy" </> "toy_a.h", source = headerA}
+        , ToyHeader{include = "toy" </> "toy_b.h", source = headerB}
+        ]
+        toyPlan{mainIncludes = ["toy/toy_b.h"]}
+        Visitor{passes = mempty, finalize = \_ _ _ -> Right ()}
+  map (.unit.headerName) results @?= ["toy_a.h", "toy_b.h"]
+  case results of
+    [a, b] -> do
+      let declares r = any (T.isInfixOf "data Toy_point" . snd) (renderedPairs r.modules)
+      assertBool "toy_a.h declares toy_point" (declares a)
+      assertBool "toy_b.h does not redeclare toy_point" (not (declares b))
+      assertBool
+        "toy_b.h's family imports toy_a.h's types module"
+        (any (elem "Toy.Bindgen.A" . (.hsModule.importedModules)) b.modules)
+    _other -> assertFailure "expected two header results"
+ where
+  headerA =
+    unlines
+      [ "#ifndef TOY_A_H"
+      , "#define TOY_A_H"
+      , "typedef struct toy_point { int x; int y; } toy_point;"
+      , "int toy_a_origin(toy_point *out);"
+      , "#endif"
+      ]
+  headerB =
+    unlines
+      [ "#ifndef TOY_B_H"
+      , "#define TOY_B_H"
+      , "#include \"toy_a.h\""
+      , "int toy_b_norm(toy_point p);"
+      , "#endif"
+      ]

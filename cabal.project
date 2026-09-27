@@ -5,6 +5,7 @@ packages:
   lithon-examples
   lithon-hs-bindgen
   lithon-prelude
+  mpv-bindgen-sys
   rapidhash
   sdl3-bindgen-sys
   typed-product-builder
