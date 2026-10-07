@@ -50,7 +50,7 @@ import System.FilePath ((</>))
 
 import Lithon.Codegen.Backend.Env (DataDirError, targetDataDir)
 import Lithon.Codegen.Bindgen.Driver (DriverOpts (..), PackageInfo (..))
-import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), ParseEnv (..), defineArg)
+import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), ParseEnv (..))
 
 -- | The three registries every target's data directory carries.
 data Registry = VersionsJson | AliasesJson | ConstantsJson
@@ -264,7 +264,10 @@ invocationEnv :: BindgenTarget -> BindgenEnv -> HB.InvocationEnv
 invocationEnv target env =
   HB.InvocationEnv
     { extraIncludeDirs = [env.includeDir]
-    , defineMacros = map defineArg target.parse.defines
+    , defineMacros =
+        map
+          (\(name, bodyMay) -> HS.hashDefine (toString name) (toString (fromMaybe "" bodymay)))
+          target.parse.defines
     , doxygenAliases = target.parse.doxygenAliases
     , fieldNaming = HB.OmitFieldPrefixes
     , uniqueId = toString target.packageName

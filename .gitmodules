@@ -6,9 +6,6 @@
 	url = https://github.com/jtnuttall/hs-bindgen.git
 	ignore = untracked
 	branch = lithon/vendor-patches
-[submodule "lithon-hs-bindgen/vendor/libclang-bindings"]
-	path = lithon-hs-bindgen/vendor/libclang-bindings
-	url = https://github.com/well-typed/libclang-bindings.git
 [submodule "lithon-hs-bindgen/vendor/c-expr"]
 	path = lithon-hs-bindgen/vendor/c-expr
 	url = https://github.com/well-typed/c-expr.git

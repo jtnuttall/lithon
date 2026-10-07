@@ -42,7 +42,6 @@ module Lithon.Codegen.Bindgen.Target (
   includeArgLine,
   projectHeaderUnder,
   registryDisplayPath,
-  defineArg,
   defineLine,
 
   -- * The header plan
@@ -243,11 +242,6 @@ projectHeaderUnder root path =
 -- @lithon-codegen\/data\/sdl3\/versions.json@.
 registryDisplayPath :: BindgenTarget -> FilePath -> FilePath
 registryDisplayPath t file = "lithon-codegen/data/" <> toString t.key <> "/" <> file
-
--- | The define as a compiler argument (hs-bindgen's @-D@): @NAME@ or
--- @NAME=VALUE@.
-defineArg :: CDefine -> String
-defineArg d = toString (d.name <> maybe "" ("=" <>) d.value)
 
 -- | The define as a C source line.
 defineLine :: CDefine -> Text

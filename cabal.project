@@ -13,7 +13,6 @@ packages:
   -- Vendored via git submodules under lithon-hs-bindgen/vendor/
   lithon-hs-bindgen/vendor/hs-bindgen/hs-bindgen
   lithon-hs-bindgen/vendor/hs-bindgen/hs-bindgen-runtime
-  lithon-hs-bindgen/vendor/libclang-bindings/libclang-bindings
   lithon-hs-bindgen/vendor/c-expr/c-expr-runtime
   lithon-hs-bindgen/vendor/c-expr/c-expr-dsl
   lithon-hs-bindgen/vendor/doxygen-parser
@@ -48,3 +47,9 @@ package rapidhash
 -- hs-bindgen pins aeson <2.3.
 -- Scoped until the bound is widened on the vendor branch.
 allow-newer: hs-bindgen:aeson
+
+source-repository-package
+   type:     git
+   location: https://github.com/well-typed/libclang-bindings
+   tag:      d67fb98d54301f1ef1bce08c643808d704fec813
+   subdir:   libclang-bindings

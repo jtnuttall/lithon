@@ -72,8 +72,9 @@ import HsBindgen.Frontend.Pass.Final (Final)
 import HsBindgen.IR.C qualified as C
 import HsBindgen.Language.Haskell (ModuleName (..))
 import HsBindgen.Macro (CExpr, cExpr)
+import HsBindgen.TH qualified
 import HsBindgen.Util.Tracer
-import Lithon.Prelude ((&), (.~))
+import Lithon.Prelude (for_, toString, (&), (.~))
 import Lithon.Prelude.Display (Display (..))
 
 -- | Per-project invocation environment: everything lithon varies about
@@ -81,7 +82,7 @@ import Lithon.Prelude.Display (Display (..))
 -- domain data; the hs-bindgen configuration is assembled here.
 data InvocationEnv = InvocationEnv
   { extraIncludeDirs :: [FilePath]
-  , defineMacros :: [String]
+  , defineMacros :: [(Text, Text)]
   , doxygenAliases :: [(Text, Text)]
   -- ^ Doxyfile @ALIASES@ entries, for headers that use project-local
   -- doxygen commands (e.g. SDL's @\\threadsafety@).
@@ -94,7 +95,7 @@ data InvocationEnv = InvocationEnv
 data InvocationSpec = InvocationSpec
   { baseModule :: Text
   -- ^ The base module name; category modules hang off it.
-  , includes :: [FilePath]
+  , includes :: [C.UncheckedHashIncludeArg]
   -- ^ Hash-include arguments, e.g. @SDL3\/SDL_video.h@.
   , priorSpecs :: [FilePath]
   -- ^ External binding specifications consumed by this run.
@@ -116,14 +117,20 @@ newtype BindgenM a = BindgenM (Artefact CExpr a)
 
 -- | Run one hs-bindgen invocation.
 runBindgen :: InvocationEnv -> InvocationSpec -> BindgenM a -> IO (Either BindgenFailure a)
-runBindgen env spec (BindgenM artefacts) =
-  either (Left . toFailure) Right
-    <$> hsBindgenEMacroLang (pure . cExpr) quietTracer def bindgenConfig spec.includes artefacts
+runBindgen env spec (BindgenM artefact) = do
+  res <- hsBindgenEMacroLang (pure . cExpr) tracer def bindgenConfig rootDirectives artefact
+  pure $ either (Left . toFailure) Right res
  where
   toFailure e = BindgenFailure (T.pack (show (prettyForTrace e)))
 
   -- TODO: make verbosity configurable from InvocationEnv.
-  quietTracer = def{verbosity = Verbosity Error}
+  tracer = def{verbosity = Verbosity Warning}
+
+  rootDirectives =
+    map C.DirectiveHashInclude spec.includes
+      <> map
+        (\(name, body) -> C.DirectiveHashDefine (C.HashDefine (toString name) (toString body)))
+        env.defineMacros
 
   bindgenConfig =
     toBindgenConfig config (UniqueId env.uniqueId) (BaseModuleName spec.baseModule) def
@@ -133,9 +140,8 @@ runBindgen env spec (BindgenM artefacts) =
       { clang =
           (def :: ClangArgsConfig FilePath)
             & (#extraIncludeDirs .~ env.extraIncludeDirs)
-            & (#defineMacros .~ env.defineMacros)
       , fieldNamingStrategy = env.fieldNaming
-      , doxygenConfig = Doxy.defaultConfig{Doxy.aliases = env.doxygenAliases}
+      , doxygenConfig = setDoxyAliases env.doxygenAliases def
       , bindingSpec =
           def
             { extBindingSpecs = spec.priorSpecs
@@ -201,9 +207,9 @@ translatedFamily = BindgenM do
   decls <- FinalDecls
   tags <- getExportTags
   mdoc <- getModuleComment
-  when (all nullDecls decls) $
-    EmitTrace $
-      NoBindingsMultipleModules name
+  when (all nullDecls decls)
+    $ EmitTrace
+    $ NoBindingsMultipleModules name
   config <- getConfig
   let fns = config.frontend.fieldNamingStrategy
   pure . familyModules name $
