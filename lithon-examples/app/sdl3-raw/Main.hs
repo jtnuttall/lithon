@@ -8,10 +8,13 @@
 -- this example registers no Haskell callbacks, so they are the right
 -- default throughout. Windowed normally; headless with
 -- @SDL_VIDEODRIVER=offscreen@ (the gate), where the final frame is
--- probe-asserted via 'renderReadPixels' + 'readSurfacePixel'.
+-- probe-asserted via 'renderReadPixels' + 'readSurfacePixel', and so are a
+-- few of the package's C shims (SDL's variadic functions and function-like
+-- macros, bound through fixed-arity C functions).
 module Main (main) where
 
 import Control.Monad (unless, when, zipWithM_)
+import Data.Char (ord)
 import Data.Int (Int32)
 import Foreign.C.ConstPtr (ConstPtr (..))
 import Foreign.C.String (peekCString, withCString)
@@ -20,7 +23,8 @@ import Foreign.Marshal.Array (allocaArray)
 import Foreign.Ptr (Ptr, castPtr, nullPtr)
 import Foreign.Storable (peek, pokeElemOff)
 import GHC.Records (getField)
-import SDL3.Sys.Error (getError)
+import SDL3.Sys.Endian (swap16)
+import SDL3.Sys.Error (getError, setError)
 import SDL3.Sys.Events (
   SDL_Event,
   SDL_EventType,
@@ -30,7 +34,13 @@ import SDL3.Sys.Events (
   pattern SDL_EVENT_QUIT,
  )
 import SDL3.Sys.Init (init, quit, pattern SDL_INIT_VIDEO)
-import SDL3.Sys.Pixels (SDL_FColor (..))
+import SDL3.Sys.Pixels (
+  SDL_FColor (..),
+  SDL_PixelFormat (..),
+  bitsPerPixel,
+  pattern SDL_PIXELFORMAT_RGBA8888,
+  pattern SDL_PIXELFORMAT_YV12,
+ )
 import SDL3.Sys.Rect (SDL_FPoint (..))
 import SDL3.Sys.Render (
   SDL_Renderer,
@@ -43,8 +53,9 @@ import SDL3.Sys.Render (
   renderReadPixels,
   setRenderDrawColor,
  )
-import SDL3.Sys.Stdinc (Uint8)
-import SDL3.Sys.Surface (SDL_Surface, destroySurface, readSurfacePixel)
+import SDL3.Sys.Stdinc (Uint8, fourCC)
+import SDL3.Sys.Surface (SDL_Surface, destroySurface, mustLock, readSurfacePixel)
+import SDL3.Sys.Timer (msToNs)
 import SDL3.Sys.Version (getVersion)
 import SDL3.Sys.Video (createWindow, destroyWindow)
 import System.Environment (getArgs)
@@ -161,8 +172,45 @@ probeScene renderer = do
   let lum (pr, pg, pb) = pr + pg + pb
   unless (lum inside >= 60) (die "probe: triangle interior is not lit")
   unless (lum corner <= 24) (die "probe: background is not the clear color")
+  probeShims surface
   _ <- destroySurface surface
   putStrLn "sdl3-raw: all probes passed"
+
+-- | The C shims, which wrap what the FFI cannot call: the setError shim
+-- takes its message verbatim (a printf-style format would eat the @%@),
+-- and the macro shims compute what SDL's macros do.
+probeShims :: Ptr SDL_Surface -> IO ()
+probeShims surface = do
+  let message = "100% shim"
+  _ <- withCString message (setError . ConstPtr)
+  readBack <- peekCString . unConstPtr =<< getError
+  unless (readBack == message) (die ("probe: setError read back " <> show readBack))
+  bits <- bitsPerPixel SDL_PIXELFORMAT_RGBA8888
+  unless (bits == 32) (die ("probe: bitsPerPixel RGBA8888 is " <> show bits))
+  ns <- msToNs 1
+  unless (ns == 1000000) (die ("probe: msToNs 1 is " <> show ns))
+  swapped <- swap16 0x1234
+  unless (swapped == 0x3412) (die ("probe: swap16 0x1234 is " <> show swapped))
+  yv12 <- fourCC (ascii 'Y') (ascii 'V') (ascii '1') (ascii '2')
+  let SDL_PixelFormat yv12Format = SDL_PIXELFORMAT_YV12
+  unless (fromIntegral yv12 == yv12Format) (die ("probe: fourCC YV12 is " <> show yv12))
+  locks <- mustLock surface
+  putStrLn
+    ( "sdl3-raw: shims setError="
+        <> show readBack
+        <> " bitsPerPixel="
+        <> show bits
+        <> " msToNs="
+        <> show ns
+        <> " swap16="
+        <> show swapped
+        <> " fourCC="
+        <> show yv12
+        <> " mustLock="
+        <> show locks
+    )
+ where
+  ascii = fromIntegral . ord
 
 probePixel :: Ptr SDL_Surface -> Int32 -> Int32 -> IO (Int, Int, Int)
 probePixel surface px py =
