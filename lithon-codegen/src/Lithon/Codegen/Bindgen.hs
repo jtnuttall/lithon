@@ -22,7 +22,9 @@
 --
 -- Curation inputs live beside the specs: @overrides\/@ (the prescriptive
 -- hs-bindgen specs, one file per header), @aliases.json@, @constants.json@,
--- @unbound.json@, and @versions.json@.
+-- @unbound.json@, and @versions.json@; so do the C headers lithon authors
+-- for the target, in @include\/@, which the chain binds like the library's
+-- own ('Lithon.Codegen.Bindgen.Target.AuthoredHeaders').
 module Lithon.Codegen.Bindgen (
   BindgenError (..),
   BindgenCmd (..),
@@ -127,6 +129,8 @@ import Lithon.Codegen.Bindgen.Env (
   Registry (..),
   driverOpts,
   getBindgenEnv,
+  headerSourcePath,
+  loadAuthoredHeaders,
   loadStatics,
   registryFile,
   runBindgenGen,
@@ -137,7 +141,6 @@ import Lithon.Codegen.Bindgen.Target (
   BindgenTarget (..),
   VersionScheme (..),
   headerPlan,
-  includeArg,
   registryDisplayPath,
   validateTarget,
  )
@@ -335,6 +338,7 @@ runBindgen target root cmd = runRethrow @BindgenResolutionError (ResolutionFaile
       CmdGenerate opts -> do
         -- Before the chain: a missing README should not cost a full run.
         statics <- loadStatics target env
+        authoredHeaders <- loadAuthoredHeaders target env
         registry <- loadVersionsRegistry target
         results <- runChain target registry
         validateChain target registry results
@@ -355,7 +359,14 @@ runBindgen target root cmd = runRethrow @BindgenResolutionError (ResolutionFaile
         tree <-
           liftEither
             . first PackagingFailed
-            $ assembleBindgenPackage target statics env.libraryVersion aliasFiles macroConsts results
+            $ assembleBindgenPackage
+              target
+              statics
+              authoredHeaders
+              env.libraryVersion
+              aliasFiles
+              macroConsts
+              results
         manifestMeta <- chainMeta results
         runErrorFrom @EmitError @BindgenError
           $ emitHaskellPackage root opts.out (manifestMeta <> aliasMeta) tree
@@ -500,7 +511,7 @@ planConstantGroups target families = do
       $ decodeConstantsConfig constantsBytes
 
   familyConstants <- forM families \fd -> do
-    source <- decodeUtf8 <$> EBS.readFile (env.includeDir </> includeArg target fd.headerName)
+    source <- decodeUtf8 <$> EBS.readFile (headerSourcePath target env fd.headerName)
     pure
       FamilyConstants
         { familyBase = fd.familyBase

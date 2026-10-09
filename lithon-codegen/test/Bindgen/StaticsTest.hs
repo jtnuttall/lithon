@@ -6,12 +6,15 @@
 -- license, every file beyond the three required ones is a license staged
 -- by name, and a malformed directory fails loudly (a missing required
 -- file, a subdirectory, a dotfile, no directory at all, a file that is
--- not a @LICENSE_\<name\>@, a license name the generator stages itself).
+-- not a @LICENSE_\<name\>@, a license name the generator stages itself,
+-- and for a target that authors C headers, a @package.yaml@ that does not
+-- ship or reach them).
 module Bindgen.StaticsTest (
   unit_sdl3StaticsLoad,
   unit_staticsLicensesAreTheRest,
   unit_staticsRejectMalformed,
   unit_staticsRejectNonLicenses,
+  unit_staticsRejectUnwiredAuthoredHeaders,
 ) where
 
 import Data.FileEmbed (makeRelativeToProject)
@@ -29,24 +32,31 @@ import System.FilePath (takeFileName, (</>))
 import System.IO.Temp (withSystemTempDirectory)
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
+import Bindgen.Support.Targets (toy2Shims)
 import Lithon.Codegen.Bindgen.Env (
   BindgenEnv (..),
   BindgenPaths (..),
   BindgenResolutionError (..),
   PackageStatics (..),
   StaticRefusal (..),
+  WiringProblem (..),
   loadStatics,
  )
+import Lithon.Codegen.Bindgen.Target (BindgenTarget (..))
 import Lithon.Codegen.Bindgen.Target.Sdl3 (sdl3)
 
 sdl3StaticDir :: FilePath
 sdl3StaticDir = $(stringE =<< makeRelativeToProject "data/sdl3/static")
 
 -- | 'loadStatics' reads only the static directory; the rest of the
--- environment is inert here.
+-- environment is inert here. The target authors no C headers, so the
+-- @package.yaml@ is only read ('staticsFor' checks the authored case).
 statics :: FilePath -> IO (Either BindgenResolutionError PackageStatics)
-statics dir =
-  runEff . runLog "statics-test" . runFileSystem . runErrorNoCallStack $ loadStatics sdl3 env
+statics = staticsFor sdl3{authored = Nothing}
+
+staticsFor :: BindgenTarget -> FilePath -> IO (Either BindgenResolutionError PackageStatics)
+staticsFor target dir =
+  runEff . runLog "statics-test" . runFileSystem . runErrorNoCallStack $ loadStatics target env
  where
   env =
     BindgenEnv
@@ -62,12 +72,13 @@ statics dir =
             , unbound = dir </> "unbound.json"
             , static = dir
             , overrides = mempty
+            , include = Nothing
             }
       }
 
 unit_sdl3StaticsLoad :: IO ()
 unit_sdl3StaticsLoad = do
-  loaded <- either (assertFailure . toString . display) pure =<< statics sdl3StaticDir
+  loaded <- either (assertFailure . toString . display) pure =<< staticsFor sdl3 sdl3StaticDir
   map fst loaded.licenses @?= ["LICENSE_SDL"]
   assertBool
     "package.yaml names the package"
@@ -147,3 +158,46 @@ unit_staticsRejectNonLicenses = do
           (needle `T.isInfixOf` display err)
       Left err -> assertFailure (name <> ": expected it refused, got " <> toString (display err))
       Right _ -> assertFailure (name <> ": expected it refused, but the statics loaded")
+
+-- | A target that authors C headers ('toy2Shims':
+-- @include\/toy2-shims\/toy_thing_shims.h@) ships them and compiles its
+-- wrapper C against them, which only its @package.yaml@ can say: an
+-- @extra-source-files@ glob matching each (@cabal sdist@ drops them
+-- otherwise) and @include@ among the library's @include-dirs@ (or the top
+-- level's). The statics are copied verbatim, so one without either is
+-- refused, saying what to add, and so is one hpack cannot read.
+unit_staticsRejectUnwiredAuthoredHeaders :: IO ()
+unit_staticsRejectUnwiredAuthoredHeaders = do
+  wired "extra-source-files:\n  - include/*/*.h\nlibrary:\n  include-dirs: include\n"
+  wired "extra-source-files: include/**/*.h\ninclude-dirs:\n  - include/\n"
+  wired
+    "extra-source-files:\n  - include/toy2-shims/toy_thing_shims.h\nlibrary:\n  include-dirs: [cbits, include]\n"
+  unwired "library:\n  include-dirs: include\n" [notShipped] "cabal sdist would drop them"
+  unwired
+    "extra-source-files:\n  - include/*.h\n  - include/other/*.h\nlibrary:\n  include-dirs: include\n"
+    [notShipped]
+    "no extra-source-files glob matches include/toy2-shims/toy_thing_shims.h"
+  unwired
+    "extra-source-files:\n  - include/*/*.h\nlibrary:\n  include-dirs: cbits\n"
+    [IncludeDirMissing]
+    "include-dirs lacks include"
+  unwired "name: x\n" [notShipped, IncludeDirMissing] "copied verbatim"
+  withStatics [("package.yaml", "name: [x\n")] \dir ->
+    staticsFor toy2Shims dir >>= \case
+      Left (StaticUnwired _ (PackageYamlUnreadable _ :| [])) -> pass
+      other -> assertFailure ("expected the package.yaml unreadable, got " <> shown other)
+ where
+  notShipped = HeadersNotShipped ["include/toy2-shims/toy_thing_shims.h"]
+  wired yaml = withStatics [("package.yaml", yaml)] \dir ->
+    staticsFor toy2Shims dir >>= \case
+      Right loaded -> loaded.packageYaml @?= yaml
+      Left err -> assertFailure (toString yaml <> ": expected it loaded, got " <> toString (display err))
+  unwired yaml problems needle = withStatics [("package.yaml", yaml)] \dir ->
+    staticsFor toy2Shims dir >>= \case
+      Left err@(StaticUnwired path found) -> do
+        (takeFileName path, toList found) @?= ("package.yaml", problems)
+        assertBool
+          (toString yaml <> ": the message says what to add:\n" <> toString (display err))
+          (needle `T.isInfixOf` display err)
+      other -> assertFailure (toString yaml <> ": expected it refused, got " <> shown other)
+  shown = either (toString . display) (const "the statics loaded")

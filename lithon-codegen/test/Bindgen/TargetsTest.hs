@@ -4,18 +4,21 @@
 -- | Every registered bindgen-sys target is a well-formed record whose
 -- data directory decodes under its own version arity and holds prescriptive
 -- specs only for headers it generates specs for, and no two targets claim
--- the same key, package, or namespace; each malformation
--- 'validateTarget' guards against is rejected with a message naming it;
--- and the include-graph scope is exactly "the parent directory is the
--- include root".
+-- the same key, package, namespace, or authored include root; each
+-- malformation 'validateTarget' guards against is rejected with a message
+-- naming it; the include-graph scope is exactly "the parent directory is
+-- the include root"; and a target's authored headers join its plan under
+-- their own root.
 module Bindgen.TargetsTest (
   unit_targetsValidate,
   unit_toy2Validates,
   unit_registeredTargetsDataDecodes,
   unit_overridesNamePlannedHeaders,
   unit_malformedTargetsRejected,
+  unit_authoredExtendsExcludedRejected,
   unit_clashingTargetsRejected,
   unit_projectHeaderUnderScopesByParent,
+  unit_headerPlanProjectsAuthored,
 ) where
 
 import Data.ByteString.Lazy qualified as LBS
@@ -32,10 +35,13 @@ import Lithon.Prelude
 import System.FilePath ((</>))
 import Test.Tasty.HUnit (Assertion, assertBool, assertFailure, (@?=))
 
-import Bindgen.Support.Targets (toy2)
+import Bindgen.Support.Targets (toy2, toy2Shims)
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Bindgen.Alias.Config (decodeAliasConfig)
 import Lithon.Codegen.Bindgen.Alias.Constants (decodeConstantsConfig)
+-- Qualified: the plan's fields share names with the target's
+-- (@mainIncludes@).
+import Lithon.Codegen.Bindgen.Driver qualified as Driver
 import Lithon.Codegen.Bindgen.Env (
   BindgenEnv (..),
   BindgenPaths (..),
@@ -50,10 +56,19 @@ import Lithon.Codegen.Bindgen.Target (
   HeaderSpec (..),
   Prose (..),
   VersionScheme (..),
+  authoredExtends,
+  headerPlan,
+  isAuthored,
+  mainIncludeArgs,
   projectHeaderUnder,
   validateTarget,
   validateTargets,
+  wrappedName,
  )
+-- The authored-header records share field names with the target's own
+-- (@includeRoot@, @headers@): qualified, so the record updates here stay
+-- unambiguous.
+import Lithon.Codegen.Bindgen.Target qualified as Target
 import Lithon.Codegen.Bindgen.Target.Sdl3 (sdl3)
 import Lithon.Codegen.Bindgen.Targets (bindgenTargets)
 import Lithon.Codegen.Bindgen.Unbound (decodeUnboundConfig)
@@ -117,6 +132,7 @@ unit_registeredTargetsDataDecodes = for_ bindgenTargets \target -> do
             , unbound = dataDir </> "unbound.json"
             , static = dataDir </> "static"
             , overrides = mempty
+            , include = Nothing
             }
       }
 
@@ -208,16 +224,99 @@ unit_malformedTargetsRejected =
       )
     , ("zero arity", sdl3{versioning = sdl3.versioning{arity = 0}}, "arity must be positive")
     ]
+      <> [ (label, toy2Shims{authored = Just authored}, needle)
+         | (label, authored, needle) <- authoredCases
+         ]
+  authoredCases :: [(String, Target.AuthoredHeaders, Text)]
+  authoredCases =
+    [ ("multi-component authored root", authoredAt "a/b" [shims], "authored include root must be one")
+    , ("dot authored root", authoredAt ".." [shims], "authored include root must be one")
+    , ("authored root is the library's", authoredAt "toy2" [shims], "is the library's include root")
+    , ("no authored headers", authoredAt "toy2-shims" [], "no authored headers")
+    , ("empty name prefix", (authoredAt "toy2-shims" [shims]){Target.namePrefix = ""}, "C identifier")
+    ,
+      ( "digit-led name prefix"
+      , (authoredAt "toy2-shims" [shims]){Target.namePrefix = "9_"}
+      , "C identifier"
+      )
+    , ("non-header authored file", authoredAt "toy2-shims" [header "shims.c"], ".h basenames")
+    , ("nested authored file", authoredAt "toy2-shims" [header "sub/x_shims.h"], ".h basenames")
+    , ("authored file listed twice", authoredAt "toy2-shims" [shims, shims], "listed more than once")
+    ,
+      ( "authored file named like a main include"
+      , authoredAt "toy2-shims" [header "toy_thing.h"]
+      , "named like a library header"
+      )
+    ,
+      ( "authored file named like a guard include"
+      , authoredAt "toy2-shims" [header "toy_version.h"]
+      , "named like a library header"
+      )
+    , ("extends a non-header", authoredAt "toy2-shims" [extending "toy_thing"], "extends a non-header")
+    ,
+      ( "extends an authored header"
+      , authoredAt "toy2-shims" [shims, extending "toy_thing_shims.h"]
+      , "extends an authored header"
+      )
+    , ("unmangleable authored file", authoredAt "toy2-shims" [header "1x.h"], "does not mangle")
+    ]
+  authoredAt root headers =
+    Target.AuthoredHeaders
+      { Target.includeRoot = root
+      , Target.namePrefix = "lithon_"
+      , Target.headers = headers
+      }
+  shims = Target.AuthoredHeader{Target.file = "toy_thing_shims.h", Target.extends = Just "toy_thing.h"}
+  header file = Target.AuthoredHeader{Target.file = file, Target.extends = Nothing}
+  extending host = Target.AuthoredHeader{Target.file = "toy_more_shims.h", Target.extends = Just host}
 
--- | Two targets may not share a key, a package, or a curated namespace
--- (each would overwrite the other's data, package, or modules).
+-- | A header may not extend one the target excludes: its curated module
+-- does not exist.
+unit_authoredExtendsExcludedRejected :: Assertion
+unit_authoredExtendsExcludedRejected =
+  case validateTarget toy2Shims{headers = toy2Shims.headers{excluded = fromList ["toy_thing.h"]}} of
+    Right () -> assertFailure "accepted"
+    Left problems ->
+      assertBool
+        ("no problem mentions the excluded host in " <> show problems)
+        (any ("extends an excluded header" `T.isInfixOf`) problems)
+
+-- | Two targets may not share a key, a package, a curated namespace, or
+-- an authored include root (each would overwrite the other's data,
+-- package, or modules, or mix their headers in one directory). One target
+-- does not clash with itself.
 unit_clashingTargetsRejected :: Assertion
 unit_clashingTargetsRejected = do
   clash "key" toy2{key = sdl3.key}
   clash "package" toy2{packageName = sdl3.packageName}
   clash "namespace" toy2{namespace = sdl3.namespace}
+  -- An authored root another target claims, as its authored root or its
+  -- library's.
+  clashWith toy2Shims "authored include root" sdl3{authored = toy2Shims.authored}
+  clashWith
+    toy2Shims
+    "authored include root"
+    sdl3{headers = sdl3.headers{includeRoot = "toy2-shims"}}
+  -- A target whose authored root is its own library root has that problem
+  -- once, as its own: no other target claims the root.
+  case validateTargets [toy2Shims{authored = ownRoot <$> toy2Shims.authored}] of
+    Right () -> assertFailure "an authored root equal to the library's was accepted"
+    Left problems -> do
+      assertBool
+        ("the target's own problem is missing from " <> show problems)
+        (any ("is the library's include root" `T.isInfixOf`) problems)
+      assertBool
+        ("reported as a clash in " <> show problems)
+        (not (any ("more than one target" `T.isInfixOf`) problems))
  where
-  clash what other = case validateTargets [sdl3, other] of
+  ownRoot a =
+    Target.AuthoredHeaders
+      { Target.includeRoot = toy2.headers.includeRoot
+      , Target.namePrefix = a.namePrefix
+      , Target.headers = a.headers
+      }
+  clash = clashWith sdl3
+  clashWith claimant what other = case validateTargets [claimant, other] of
     Right () -> assertFailure ("a shared " <> toString what <> " was accepted")
     Left problems ->
       assertBool
@@ -236,3 +335,29 @@ unit_projectHeaderUnderScopesByParent = do
   projectHeaderUnder "SDL3" "/x/SDL3/include/a.h" @?= Nothing
   projectHeaderUnder "mpv" "/usr/include/mpv/client.h" @?= Just "client.h"
   projectHeaderUnder "mpv" "/usr/include/libmpv/client.h" @?= Nothing
+
+-- | A target's plan scopes the library root and, beside it, exactly the
+-- listed basenames under the authored root; authored units include by
+-- their own root and join the preflight, while 'mainIncludeArgs' (the ABI
+-- TU's and the constants probe's includes) stays the library's.
+unit_headerPlanProjectsAuthored :: Assertion
+unit_headerPlanProjectsAuthored = do
+  let plan :: Driver.HeaderPlan
+      plan = headerPlan toy2Shims
+  plan.projectHeader "/r/toy2-shims/toy_thing_shims.h" @?= Just "toy_thing_shims.h"
+  plan.projectHeader "/r/toy2-shims/unlisted_shims.h" @?= Nothing
+  plan.projectHeader "/r/toy2/toy_thing.h" @?= Just "toy_thing.h"
+  plan.projectHeader "/r/other/toy_thing_shims.h" @?= Nothing
+  plan.includeArg "toy_thing_shims.h" @?= "toy2-shims/toy_thing_shims.h"
+  plan.includeArg "toy_thing.h" @?= "toy2/toy_thing.h"
+  plan.mainIncludes @?= ["toy2/toy_thing.h", "toy2-shims/toy_thing_shims.h"]
+  mainIncludeArgs toy2Shims @?= ["toy2/toy_thing.h"]
+  -- Without authored headers, the authored root is out of scope.
+  (headerPlan toy2).projectHeader "/r/toy2-shims/toy_thing_shims.h" @?= Nothing
+  isAuthored toy2Shims "toy_thing_shims.h" @?= True
+  isAuthored toy2Shims "toy_thing.h" @?= False
+  authoredExtends toy2Shims "toy_thing_shims.h" @?= Just "toy_thing.h"
+  authoredExtends toy2Shims "toy_thing.h" @?= Nothing
+  wrappedName toy2Shims "lithon_toy_sum2" @?= Just "toy_sum2"
+  wrappedName toy2Shims "toy_open" @?= Nothing
+  wrappedName toy2 "lithon_toy_sum2" @?= Nothing

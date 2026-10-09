@@ -16,7 +16,8 @@
 --
 -- Deliberately not fields (the same contract for every target): the
 -- four registries are required, @overrides\/@ (one prescriptive spec per
--- header) is optional, the package statics live in @static\/@, record
+-- header) is optional, the package statics live in @static\/@, authored
+-- C headers live in @include\/@ (exactly those 'authored' lists), record
 -- fields omit their prefixes, the vendored runtime and facade set, the
 -- flavor rules, emission and manifest mechanics, and probe compilation.
 module Lithon.Codegen.Bindgen.Target (
@@ -34,6 +35,8 @@ module Lithon.Codegen.Bindgen.Target (
   nativeScalarSigned,
   DocHooks (..),
   Prose (..),
+  AuthoredHeaders (..),
+  AuthoredHeader (..),
 
   -- * Derived names
   bindgenNamespace,
@@ -45,6 +48,11 @@ module Lithon.Codegen.Bindgen.Target (
   includeArgLine,
   projectHeaderUnder,
   registryDisplayPath,
+  unitIncludeArg,
+  authoredIncludeArgs,
+  isAuthored,
+  authoredExtends,
+  wrappedName,
   defineLine,
   defineMacro,
 
@@ -59,12 +67,13 @@ module Lithon.Codegen.Bindgen.Target (
 
 import Data.Char (isAlpha, isAlphaNum, isAscii, isAsciiLower, isDigit)
 import Data.Map.Strict qualified as Map
+import Data.Set qualified as Set
 import Data.Text qualified as T
 import Lithon.Effect.ClangEnv (PkgName)
 import Lithon.HsBindgen.C qualified as C
 import Lithon.HsBindgen.HsDoc qualified as HsDoc
 import Lithon.Prelude
-import System.FilePath (isPathSeparator, splitDirectories, takeFileName, (</>))
+import System.FilePath (isPathSeparator, splitDirectories, takeExtension, takeFileName, (</>))
 
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Bindgen.Driver (HeaderPlan (..), Passes, defaultSpecFileName)
@@ -100,6 +109,9 @@ data BindgenTarget = BindgenTarget
   , widthTypedefs :: Maybe WidthTypedefs
   , docs :: DocHooks
   , prose :: Prose
+  , authored :: Maybe AuthoredHeaders
+  -- ^ C headers lithon writes for the target, bound like the library's
+  -- own; 'Nothing' for a target that authors none.
   }
 
 -- | The header universe.
@@ -243,6 +255,37 @@ data Prose = Prose
   -- element (rendered as @ * line@; an empty element as @ *@).
   }
 
+-- | C headers lithon authors and binds like the library's own: functions
+-- over what the FFI cannot call (variadic functions, function-like
+-- macros), each header one more unit of the chain.
+--
+-- They live in @data\/\<key\>\/include\/\<includeRoot\>\/@ and ship
+-- verbatim in the package's @include\/\<includeRoot\>\/@, whose
+-- @include-dirs@ the package's own wrapper C compiles against. Each one
+-- @#include@s the library header it builds on, so the include graph
+-- orders it after that header and its run reads that header's spec.
+data AuthoredHeaders = AuthoredHeaders
+  { includeRoot :: FilePath
+  -- ^ The single directory component the authored headers live under
+  -- (@sdl3-bindgen-sys@): their include argument's prefix, and their
+  -- include-graph scope beside the library's.
+  , namePrefix :: Text
+  -- ^ Prefixed to the name each function wraps, which it otherwise keeps:
+  -- @lithon_@ (@lithon_SDL_LogMessage@ wraps @SDL_LogMessage@). Stripped
+  -- when minting aliases and when linking documentation.
+  , headers :: [AuthoredHeader]
+  }
+
+-- | One authored header.
+data AuthoredHeader = AuthoredHeader
+  { file :: FilePath
+  -- ^ Basename: @SDL_log_shims.h@.
+  , extends :: Maybe FilePath
+  -- ^ The library header (basename) whose curated module exports this
+  -- header's functions, as a section of its own; 'Nothing' gives the
+  -- header a curated module of its own.
+  }
+
 -- | @SDL3.Sys.Bindgen@: the root of the raw families.
 bindgenNamespace :: BindgenTarget -> Module.Meta
 bindgenNamespace t = t.namespace <> $$(Module.metaLit ["Bindgen"])
@@ -272,6 +315,38 @@ includeLine t = includeArgLine . includeArg t
 includeArgLine :: FilePath -> Text
 includeArgLine arg = "#include <" <> toText arg <> ">"
 
+-- | A unit's hash-include argument: an authored header's under its own
+-- root (@sdl3-bindgen-sys\/SDL_log_shims.h@), any other one's under the
+-- library's ('includeArg').
+unitIncludeArg :: BindgenTarget -> FilePath -> FilePath
+unitIncludeArg t basename = case t.authored of
+  Just a | isAuthored t basename -> a.includeRoot </> basename
+  _library -> includeArg t basename
+
+-- | Every authored header's include argument, in the listed order.
+authoredIncludeArgs :: BindgenTarget -> [FilePath]
+authoredIncludeArgs t =
+  [a.includeRoot </> h.file | Just a <- [t.authored], h <- a.headers]
+
+-- | Whether a unit's basename is one of the target's authored headers.
+isAuthored :: BindgenTarget -> FilePath -> Bool
+isAuthored t basename = basename `elem` [h.file | Just a <- [t.authored], h <- a.headers]
+
+-- | The library header an authored header extends, if it is authored and
+-- extends one.
+authoredExtends :: BindgenTarget -> FilePath -> Maybe FilePath
+authoredExtends t basename =
+  safeHead
+    [host | Just a <- [t.authored], h <- a.headers, h.file == basename, Just host <- [h.extends]]
+
+-- | The name an authored function wraps: its C name without the
+-- 'namePrefix' (@lithon_SDL_LogMessage@ -> @SDL_LogMessage@). 'Nothing'
+-- for any other name, and for a target that authors no headers.
+wrappedName :: BindgenTarget -> Text -> Maybe Text
+wrappedName t cName = do
+  a <- t.authored
+  T.stripPrefix a.namePrefix cName
+
 -- | Include-graph real path (canonical, symlink-resolved) -> public-header
 -- basename: @Just@ exactly when the header's parent directory is the include
 -- root (libc, clang builtins, and nested directories are out of scope).
@@ -297,18 +372,29 @@ defineLine d = "#define " <> d.name <> maybe "" (" " <>) d.value
 defineMacro :: CDefine -> (Text, Text)
 defineMacro d = (d.name, fromMaybe "" d.value)
 
--- | The target's header universe, as data.
+-- | The target's header universe, as data: the library's public headers
+-- and the authored ones. Authored headers join the preflight (the include
+-- graph orders each after the library header it includes), and the graph
+-- scope takes exactly the listed basenames under their root; the ABI TU
+-- and the constants probe keep to the library's 'mainIncludeArgs'.
 headerPlan :: BindgenTarget -> HeaderPlan
 headerPlan target =
   HeaderPlan
     { baseNamespace = bindgenNamespace target
     , mangle = target.headers.mangle
-    , projectHeader = projectHeaderUnder target.headers.includeRoot
-    , includeArg = includeArg target
+    , projectHeader = \path ->
+        projectHeaderUnder target.headers.includeRoot path <|> authoredHeader path
+    , includeArg = unitIncludeArg target
     , excludedHeaders = target.headers.excluded
-    , mainIncludes = mainIncludeArgs target
+    , mainIncludes = mainIncludeArgs target <> authoredIncludeArgs target
     , specFileName = defaultSpecFileName
     }
+ where
+  authoredHeader path = do
+    a <- target.authored
+    basename <- projectHeaderUnder a.includeRoot path
+    guard (basename `elem` map (.file) a.headers)
+    pure basename
 
 -- | The full module name for one public-header basename (the census
 -- derives header->module rows through this, so it cannot drift from the
@@ -343,6 +429,16 @@ validateTargets ts = case perTarget <> clashes of
         ]
     , v <- toList (duplicates claims)
     ]
+      -- An authored root shared with another target, as its authored root or
+      -- as its library's, would mix two targets' headers in one directory.
+      -- Each target's roots count once: one equal to its own library root
+      -- is that target's problem ('targetProblems'), not a clash.
+      <> [ "authored include root " <> toText root <> " is claimed by more than one target"
+         | let authoredRoots = [a.includeRoot | t <- ts, Just a <- [t.authored]]
+               rootsOf t = nubOrd (t.headers.includeRoot : [a.includeRoot | Just a <- [t.authored]])
+         , root <- toList (duplicates (concatMap rootsOf ts))
+         , root `elem` authoredRoots
+         ]
 
 targetProblems :: BindgenTarget -> [Text]
 targetProblems t =
@@ -387,10 +483,63 @@ targetProblems t =
        , k <- ks
        , isLeft (Module.fromSegments [k])
        ]
+    <> maybe [] authoredProblems t.authored
  where
   root = t.headers.includeRoot
   scheme = t.versioning
   lastSegment = T.takeWhileEnd (/= '.') (Module.hsName t.namespace)
+  isBasename f = not (null f) && takeFileName f == f && f `notElem` [".", ".."]
+  isHeader f = isBasename f && takeExtension f == ".h"
+  libraryNames =
+    Set.fromList (t.headers.mainIncludes <> t.versioning.guardIncludes <> t.gateStubs.includes)
+      <> t.headers.excluded
+  authoredProblems a =
+    [ "the authored include root must be one directory component: " <> show a.includeRoot
+    | null a.includeRoot || any isPathSeparator a.includeRoot || a.includeRoot `elem` [".", ".."]
+    ]
+      <> [ "the authored include root is the library's include root: " <> show a.includeRoot
+         | a.includeRoot == root
+         ]
+      <> ["no authored headers" | null a.headers]
+      <> [ "the authored name prefix is not the start of a C identifier: " <> show a.namePrefix
+         | not (validCPrefix a.namePrefix)
+         ]
+      <> ["authored headers are .h basenames: " <> show f | f <- files, not (isHeader f)]
+      <> ["authored header listed more than once: " <> show f | f <- toList (duplicates files)]
+      <> [ "authored header " <> show f <> " is named like a library header"
+         | f <- files
+         , f `Set.member` libraryNames
+         ]
+      <> concat
+        [ [ "authored header " <> show h.file <> " extends a non-header: " <> show host
+          | not (isHeader host)
+          ]
+            <> [ "authored header " <> show h.file <> " extends an excluded header: " <> show host
+               | host `Set.member` t.headers.excluded
+               ]
+            <> [ "authored header " <> show h.file <> " extends an authored header: " <> show host
+               | host `elem` files
+               ]
+        | h <- a.headers
+        , Just host <- [h.extends]
+        ]
+      <> [ "authored header " <> show f <> " does not mangle to a module: " <> display err
+         | f <- files
+         , isHeader f
+         , Left err <- [Module.mangleHeader f t.headers.mangle]
+         ]
+   where
+    files = map (.file) a.headers
+
+-- | A C identifier's first characters: an ASCII letter or @_@, then ASCII
+-- letters, digits, and @_@.
+validCPrefix :: Text -> Bool
+validCPrefix prefix = case T.uncons prefix of
+  Nothing -> False
+  Just (c, rest) -> isIdentStart c && T.all isIdentChar rest
+ where
+  isIdentStart c = isAscii c && (isAlpha c || c == '_')
+  isIdentChar c = isAscii c && (isAlphaNum c || c == '_')
 
 -- | Cabal's rule: hyphen-separated ASCII-alphanumeric words, each with at
 -- least one letter.

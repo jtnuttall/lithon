@@ -84,6 +84,24 @@
   is whose, so the other header's half appears there even when its own
   header's unit binds it. Such a conflict used to vanish from the ledger.
   `SkipsTest.unit_crossHeaderConflictAttributed`.
+- Authored C headers: a target may list headers lithon writes for it
+  (`BindgenTarget.authored`: an include root, a function name prefix, and
+  the headers, each optionally extending a library header). They live in
+  `data/<key>/include/<root>/`, are bound as units of the header chain like
+  the library's own (the preflight includes them, so the include graph
+  orders each after the library header it includes and its run reads that
+  header's spec), and ship verbatim in the package's `include/<root>/`.
+  The ABI assertion unit and the constants probe keep to the library's
+  headers. `include/` must hold exactly the listed headers, and must not
+  exist for a target that authors none (`AuthoredMissing`,
+  `AuthoredUnexpected`); the static `package.yaml` must ship them (an
+  `extra-source-files` glob matching each, or `cabal sdist` drops them) and
+  reach them (`include` among the library's `include-dirs`), or
+  `loadStatics` refuses it (`StaticUnwired`); `validateTarget` checks the
+  root, the prefix, the file names, and what each header extends, and
+  `validateTargets` refuses an authored root another target claims. Tests:
+  `Bindgen.AuthoredTest`, `StaticsTest.unit_staticsRejectUnwiredAuthoredHeaders`,
+  `TargetsTest` (malformed `authored` fields, `unit_headerPlanProjectsAuthored`).
 
 ### Changed
 

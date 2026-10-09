@@ -9,14 +9,22 @@
 -- availability annotations are the only source), no width typedefs, no
 -- shims, and no doc rewrites. Nothing here is registered: it exists to
 -- prove the SDL configuration is data, not a hidden assumption.
+--
+-- 'toy2Shims' is the same target with an authored C header, shaped like
+-- SDL's shim headers.
 module Bindgen.Support.Targets (
   toy2,
+  toy2Shims,
 ) where
 
 import Lithon.Prelude
 
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
-import Lithon.Codegen.Bindgen.Target
+-- The authored-header records share field names with the target's own
+-- (@includeRoot@, @headers@); qualified, so updates of the target's stay
+-- unambiguous.
+import Lithon.Codegen.Bindgen.Target hiding (AuthoredHeader (..), AuthoredHeaders (..))
+import Lithon.Codegen.Bindgen.Target qualified as Target
 import Lithon.Codegen.Bindgen.Version (mkVersion, versionArgs)
 
 toy2 :: BindgenTarget
@@ -65,4 +73,22 @@ toy2 =
               , "#if guards come from the availability annotations alone."
               ]
           }
+    , authored = Nothing
+    }
+
+-- | 'toy2' binding @toy2\/toy_thing.h@ alone, plus the authored
+-- @toy2-shims\/toy_thing_shims.h@ extending it: functions named
+-- @lithon_@ and the name they wrap.
+toy2Shims :: BindgenTarget
+toy2Shims =
+  toy2
+    { headers = toy2.headers{mainIncludes = ["toy_thing.h"]}
+    , authored =
+        Just
+          Target.AuthoredHeaders
+            { Target.includeRoot = "toy2-shims"
+            , Target.namePrefix = "lithon_"
+            , Target.headers =
+                [Target.AuthoredHeader{Target.file = "toy_thing_shims.h", Target.extends = Just "toy_thing.h"}]
+            }
     }

@@ -133,6 +133,7 @@ sdl3 =
           , runtimeDoc
           , abiBanner
           }
+    , authored = Nothing
     }
 
 -- | SDL versions are MAJOR.MINOR.PATCH, in the annotations and in the docs.

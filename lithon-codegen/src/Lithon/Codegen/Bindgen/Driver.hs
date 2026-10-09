@@ -225,13 +225,15 @@ data HeaderPlan = HeaderPlan
   , projectHeader :: FilePath -> Maybe FilePath
   -- ^ Include-graph real path (canonical, symlink-resolved) -> in-scope
   -- basename ('Nothing' for libc, clang builtins, anything outside the
-  -- target's include root).
+  -- target's include roots: the library's and its authored headers').
   , includeArg :: FilePath -> FilePath
-  -- ^ Basename -> the hash-include argument, e.g. @SDL3\/SDL_video.h@.
+  -- ^ Basename -> the hash-include argument, e.g. @SDL3\/SDL_video.h@ or
+  -- @sdl3-bindgen-sys\/SDL_log_shims.h@.
   , excludedHeaders :: Set FilePath
   -- ^ Basenames bound never (internal, umbrella, GL glue).
   , mainIncludes :: [FilePath]
-  -- ^ The preflight include set: the umbrella plus any extras.
+  -- ^ The preflight include set: the umbrella plus any extras, and the
+  -- authored headers.
   , specFileName :: FilePath -> FilePath
   -- ^ Basename -> binding-spec artifact name.
   }

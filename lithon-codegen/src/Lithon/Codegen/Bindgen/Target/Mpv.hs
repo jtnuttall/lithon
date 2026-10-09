@@ -70,6 +70,7 @@ mpv =
           , runtimeDoc
           , abiBanner
           }
+    , authored = Nothing
     }
 
 -- | The family titles (libmpv's headers carry no category overview), as
