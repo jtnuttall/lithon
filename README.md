@@ -18,7 +18,7 @@ taken is a bit different.
 The SDL3 bindings are intended to serve as a complete, automatically
 generated binding that is easier to maintain than the incumbent, manual
 `sdl2` binding. The bindings are built atop a (modified fork of) Well-Typed's
-pre-release `hs-bindgen`, without which they wouldn't have been possible.
+`hs-bindgen` 1.0.0.0, without which they wouldn't have been possible.
 
 ### libmpv
 
