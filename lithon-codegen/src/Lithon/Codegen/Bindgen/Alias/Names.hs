@@ -181,18 +181,20 @@ instance Display AliasError where
 -- | Mint the alias surface for every function, validating identifiers and
 -- global (whole-library) uniqueness in one accumulating pass.
 --
--- @renames@ overrides the normalization rule per C name (the value is the
+-- @renames@ overrides the base-name rule per C name (the value is the
 -- unsuffixed shape; a @Safe@ variant derives from it). Callers validate the
 -- rename keys against the census before minting.
 mintAliasNames
-  :: Text
-  -- ^ The target's function prefix, stripped before normalizing.
+  :: (Text -> Text)
+  -- ^ The base-name rule: C name -> unsuffixed alias (for a target,
+  -- 'normalizeFunctionName' of its prefix, after stripping an authored
+  -- function's name prefix).
   -> Map Text Text
   -- ^ Renames: C name -> unsuffixed alias override.
   -> [(Text, Safety)]
   -- ^ The functions to alias, with their classified flavor surface.
   -> Validation (Errors AliasError) (Map Text MintedAlias)
-mintAliasNames prefix renames functions =
+mintAliasNames baseName renames functions =
   failUnlessEmpty (invalids <> collisions) (Map.fromList entries)
  where
   entries =
@@ -201,7 +203,7 @@ mintAliasNames prefix renames functions =
     ]
 
   mintOne cName safety =
-    let base = fromMaybe (normalizeFunctionName prefix cName) (Map.lookup cName renames)
+    let base = fromMaybe (baseName cName) (Map.lookup cName renames)
      in MintedAlias
           { unsafeName = case safety of
               SafeOnly -> Nothing

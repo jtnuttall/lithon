@@ -17,6 +17,10 @@
 --   module-qualified reference to the Bindgen name in the right flavor
 --   module, carrying the function's translated signature, per-parameter
 --   docs, and full header Haddock
+--
+-- - an authored header's functions (C shims,
+--   'Lithon.Codegen.Bindgen.Target.AuthoredHeaders') join the curated
+--   module of the library header it extends, in a section of their own
 module Lithon.Codegen.Bindgen.Alias (
   -- * Per-family distillation (consumed by the bindgen driver)
   FamilyDecls (..),
@@ -30,6 +34,7 @@ module Lithon.Codegen.Bindgen.Alias (
   AliasModule (..),
   AliasBinding (..),
   planAliasLayer,
+  aliasBaseName,
   aliasRewriteMap,
 
   -- * Rendering
@@ -40,6 +45,7 @@ module Lithon.Codegen.Bindgen.Alias (
 ) where
 
 import Data.Char (isAlphaNum)
+import Data.List qualified as L
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text qualified as T
@@ -66,17 +72,24 @@ import Lithon.Codegen.Bindgen.Alias.Names (
   Flavor (..),
   MintedAlias (..),
   mintAliasNames,
+  normalizeFunctionName,
   primaryAliasName,
  )
 import Lithon.Codegen.Bindgen.Target (
+  AuthoredHeader (..),
+  AuthoredHeaders (..),
   BindgenTarget (..),
   DocHooks (..),
   NativeScalar (..),
   Prose (..),
   WidthTypedefs (..),
+  authoredExtends,
   bindgenNamespaceText,
+  isAuthored,
+  moduleFor,
   nativeScalarName,
   runtimeModule,
+  wrappedName,
  )
 
 -- | One bound C function, as seen by the final C AST.
@@ -185,6 +198,9 @@ data AliasBinding = AliasBinding
   { aliasName :: Text
   , flavor :: Flavor
   , cName :: Text
+  , familyBase :: Text
+  -- ^ The raw family whose flavor modules hold the foreign import: the
+  -- module's own, or that of an authored header merged into it.
   , bindgenName :: Text
   , counterpart :: Maybe Text
   -- ^ The other flavor's alias, when the function has both.
@@ -197,6 +213,8 @@ data AliasBinding = AliasBinding
 data AliasModule = AliasModule
   { moduleName :: Text
   , familyBase :: Text
+  -- ^ The family the module curates. An authored header that extends it
+  -- adds bindings of its own family ('AliasBinding.familyBase').
   , headerName :: FilePath
   , baseModule :: Maybe Text
   , moduleDoc :: Maybe HsDoc.Comment
@@ -214,11 +232,12 @@ planAliasLayer
   -> [FamilyDecls]
   -> Either (Errors AliasError) [AliasModule]
 planAliasLayer target validated constantPlans families = validationToEither
-  case mintAliasNames target.functionPrefix validated.renames classified of
+  case mintAliasNames (aliasBaseName target) validated.renames classified of
     Failure errs -> Failure errs
     Success minted ->
-      reservedCheck minted
-        *> (filter keep <$> traverse (planFamily minted) families)
+      case reservedCheck minted *> authoredCheck *> traverse (planFamily minted) families of
+        Failure errs -> Failure errs
+        Success planned -> filter keep <$> mergeGuests planned
  where
   -- The umbrella re-exports every family AND the Runtime bridge module, so
   -- an alias reusing a bridge name would be a duplicate export downstream.
@@ -239,11 +258,55 @@ planAliasLayer target validated constantPlans families = validationToEither
 
   keep m = isJust m.baseModule || not (null m.bindings) || not (null m.constants)
 
-  planFamily minted family =
-    mkModule
-      <$> moduleNameV family
-      <*> (concat <$> traverse (bindingsOf minted family) family.functions)
+  -- An authored header declares functions only, each named for what it
+  -- wraps (the name prefix, then the function prefix): a types module or
+  -- another name is a malformed header.
+  authoredCheck =
+    failUnlessEmpty
+      ( [ AliasFamilyInvalid
+            { familyModule = family.familyBase
+            , reason =
+                "the authored header "
+                  <> toText family.headerName
+                  <> " declares types (hs-bindgen produced a types module); an authored header"
+                  <> " declares functions only"
+            }
+        | family <- authoredFamilies
+        , family.hasBaseModule
+        ]
+          <> [ AliasFamilyInvalid
+                 { familyModule = family.familyBase
+                 , reason =
+                     "the authored function "
+                       <> fn.cName
+                       <> " is not named "
+                       <> authoredPrefix
+                       <> "…: an authored function is named "
+                       <> namePrefix
+                       <> " and the name it wraps"
+                 }
+             | family <- authoredFamilies
+             , fn <- family.functions
+             , not (authoredPrefix `T.isPrefixOf` fn.cName)
+             ]
+      )
+      ()
    where
+    authoredFamilies = filter (isAuthored target . (.headerName)) families
+    namePrefix = maybe "" (.namePrefix) target.authored
+    authoredPrefix = namePrefix <> target.functionPrefix
+
+  -- An authored header that extends a library header is that header's
+  -- guest: its module takes the host's name, and 'mergeGuests' folds its
+  -- bindings into the host's module.
+  planFamily minted family =
+    (host,)
+      <$> ( mkModule
+              <$> maybe (moduleNameV family) (hostModuleNameV family) host
+              <*> (concat <$> traverse (bindingsOf minted family) family.functions)
+          )
+   where
+    host = authoredExtends target family.headerName
     mkModule moduleName bindings =
       AliasModule
         { moduleName
@@ -259,14 +322,42 @@ planAliasLayer target validated constantPlans families = validationToEither
         , bindings
         }
 
-  moduleNameV family =
+  moduleNameV family = sysModuleNameV family (sysModuleName target family.familyBase)
+
+  hostModuleNameV family host = sysModuleNameV family do
+    hostFamily <-
+      first
+        (\err -> "extends " <> toText host <> ", which does not mangle: " <> display err)
+        (moduleFor target host)
+    sysModuleName target (Module.hsName hostFamily)
+
+  sysModuleNameV family =
     either
       ( \reason ->
           Failure
             (errors1 AliasFamilyInvalid{familyModule = family.familyBase, reason})
       )
       Success
-      (sysModuleName target family.familyBase)
+
+  -- Each guest's bindings join its host's module, after the host's own; a
+  -- guest whose host no bound library header produced is an error.
+  mergeGuests planned =
+    failUnlessEmpty
+      [ AliasFamilyInvalid
+          { familyModule = guest.familyBase
+          , reason = "extends " <> toText host <> ", which no bound library header produces"
+          }
+      | (Just host, guest) <- planned
+      , guest.moduleName `Set.notMember` hosts
+      ]
+      [ m{bindings = m.bindings <> Map.findWithDefault [] m.moduleName guestBindings}
+      | (Nothing, m) <- planned
+      ]
+   where
+    hosts =
+      Set.fromList [m.moduleName | (Nothing, m) <- planned, not (isAuthored target m.headerName)]
+    guestBindings =
+      Map.fromListWith (flip (<>)) [(guest.moduleName, guest.bindings) | (Just _, guest) <- planned]
 
   bindingsOf minted family fn =
     case Map.lookup fn.cName validated.safeties of
@@ -274,11 +365,11 @@ planAliasLayer target validated constantPlans families = validationToEither
       Just _safety ->
         case (Map.lookup fn.cName minted, Map.lookup fn.hsName family.funDecls) of
           (Just mintedAlias, Just funDecl) ->
-            Success (bindingsFrom fn mintedAlias funDecl)
+            Success (bindingsFrom family fn mintedAlias funDecl)
           _missing ->
             Failure (errors1 AliasTranslationMissing{cName = fn.cName, hsName = fn.hsName})
 
-  bindingsFrom fn mintedAlias funDecl =
+  bindingsFrom family fn mintedAlias funDecl =
     [ mkBinding UnsafeFlavor unsafeName mintedAlias.safeName
     | Just unsafeName <- [mintedAlias.unsafeName]
     ]
@@ -291,39 +382,67 @@ planAliasLayer target validated constantPlans families = validationToEither
         { aliasName
         , flavor
         , cName = fn.cName
+        , familyBase = family.familyBase
         , bindgenName = fn.hsName
         , counterpart
         , rationale = Map.lookup fn.cName validated.rationales
         , funDecl
         }
 
+-- | The base-name rule 'planAliasLayer' mints with: an authored
+-- function's name prefix stripped ('wrappedName': @lithon_SDL_LogMessage@
+-- -> @SDL_LogMessage@), then the camel-segments rule
+-- ('normalizeFunctionName'), so a C shim is named like what it wraps
+-- (@logMessage@).
+aliasBaseName :: BindgenTarget -> Text -> Text
+aliasBaseName target cName =
+  normalizeFunctionName target.functionPrefix (fromMaybe cName (wrappedName target cName))
+
 -- | The documentation cross-reference map: mangled Bindgen name -> the
 -- defining alias module and primary alias name (unsuffixed when exported,
 -- @Safe@ otherwise). Carrying the module lets cross-family references
 -- render as qualified links instead of degrading to plain text.
-aliasRewriteMap :: [AliasModule] -> Map Text (Text, Text)
-aliasRewriteMap aliasModules =
-  Map.fromList
-    [ (key, (m.moduleName, alias))
-    | m <- aliasModules
-    , b <- m.bindings
-    , let alias = primaryAlias b
-    , -- Identifier nodes carry mangled names; bare-text mentions (doxygen
-    -- resolves references only within the single header it parses, so
-    -- cross-family ones never became refs) carry C names. Key both.
-    key <- [b.bindgenName, b.cName]
-    ]
+--
+-- An authored function is keyed by the name it wraps as well, so the
+-- library's own mentions of a variadic function or a macro
+-- (@SDL_CreateThread()@, @SDL_SetError@) link to its C shim; a bound
+-- function of that name wins.
+aliasRewriteMap :: BindgenTarget -> [AliasModule] -> Map Text (Text, Text)
+aliasRewriteMap target aliasModules =
+  Map.fromList bound `Map.union` Map.fromList wrapped
  where
-  primaryAlias b =
-    primaryAliasName
-      MintedAlias
-        { unsafeName = case b.flavor of
-            UnsafeFlavor -> Just b.aliasName
-            SafeFlavor -> b.counterpart
-        , safeName = case b.flavor of
-            SafeFlavor -> Just b.aliasName
-            UnsafeFlavor -> b.counterpart
-        }
+  links = [(b, (m.moduleName, bindingPrimaryAlias b)) | m <- aliasModules, b <- m.bindings]
+  -- Identifier nodes carry mangled names; bare-text mentions (doxygen
+  -- resolves references only within the single header it parses, so
+  -- cross-family ones never became refs) carry C names. Key both.
+  bound = [(key, link) | (b, link) <- links, key <- [b.bindgenName, b.cName]]
+  wrapped = [(name, link) | (b, link) <- links, Just name <- [wrappedName target b.cName]]
+
+-- | The alias documentation links to for a binding's function: the
+-- unsuffixed one when exported, the @Safe@ one otherwise.
+bindingPrimaryAlias :: AliasBinding -> Text
+bindingPrimaryAlias b =
+  primaryAliasName
+    MintedAlias
+      { unsafeName = case b.flavor of
+          UnsafeFlavor -> Just b.aliasName
+          SafeFlavor -> b.counterpart
+      , safeName = case b.flavor of
+          SafeFlavor -> Just b.aliasName
+          UnsafeFlavor -> b.counterpart
+      }
+
+-- | The raw families of the target's authored headers: a binding is a C
+-- shim when its foreign import lives in one of them
+-- ('AliasBinding.familyBase').
+authoredFamilyBases :: BindgenTarget -> Set Text
+authoredFamilyBases target =
+  Set.fromList
+    [ Module.hsName family
+    | Just authored <- [target.authored]
+    , h <- authored.headers
+    , Right family <- [moduleFor target h.file]
+    ]
 
 -- | @SDL3.Sys.Bindgen.Video@ -> @SDL3.Sys.Video@. Guards the namespace: the
 -- family segment may not shadow the @Bindgen@ or @Runtime@ siblings.
@@ -391,15 +510,21 @@ renderAliasModule target rewriteMap aliasModule =
               , member <- group.members
               ]
           ]
-      <> case aliasModule.bindings of
-        [] -> []
-        bindings ->
-          [ HsModule.ExportSection
-              [HsDoc.TextContent "Function aliases"]
-              [ HsModule.ExportEntry (HsModule.ExportName b.aliasName)
-              | b <- bindings
-              ]
+      <> functionSection "Function aliases" aliases
+      <> functionSection "C shims" shims
+
+  -- The module's own functions, then the authored ones it gained.
+  (shims, aliases) = L.partition ((`Set.member` shimFamilies) . (.familyBase)) aliasModule.bindings
+  shimFamilies = authoredFamilyBases target
+  functionSection title = \case
+    [] -> []
+    bindings ->
+      [ HsModule.ExportSection
+          [HsDoc.TextContent title]
+          [ HsModule.ExportEntry (HsModule.ExportName b.aliasName)
+          | b <- bindings
           ]
+      ]
 
   imports =
     Set.toAscList
@@ -436,17 +561,24 @@ renderAliasModule target rewriteMap aliasModule =
         | any isNativeGroup aliasModule.constants
         ]
 
-  declsWithScopes = map (bindingDecl target rewrite aliasModule.familyBase) aliasModule.bindings
+  declsWithScopes = map (\b -> bindingDecl target (rewriteFor b) b) aliasModule.bindings
+
+  -- A C shim's own documentation names what it wraps as text ("The
+  -- SDL_MUSTLOCK macro as a function"): linked, it would name the shim.
+  rewriteFor b = case wrappedName target b.cName of
+    Just wrapped
+      | Map.lookup wrapped rewriteMap == Just (aliasModule.moduleName, bindingPrimaryAlias b) ->
+          rewriteComment target (Map.delete wrapped rewriteMap) aliasModule.moduleName
+    _notAShim -> rewrite
   decls = map fst declsWithScopes
   ctorScopes = Set.unions (map snd declsWithScopes)
 
 bindingDecl
   :: BindgenTarget
   -> (HsDoc.Comment -> HsDoc.Comment)
-  -> Text
   -> AliasBinding
   -> (SHs.SDecl, Set CtorScope)
-bindingDecl target rewrite familyBase b =
+bindingDecl target rewrite b =
   ( SHs.DBinding
       SHs.Binding
         { name = Hs.ExportedName (Hs.UnsafeName b.aliasName)
@@ -459,7 +591,7 @@ bindingDecl target rewrite familyBase b =
         , pragmas = []
         , comment =
             Just
-              (annotatedComment target rewrite familyBase (isJust resultBridge || any isJust paramBridges) b)
+              (annotatedComment target rewrite (isJust resultBridge || any isJust paramBridges) b)
         }
   , Set.fromList
       [ scope
@@ -493,7 +625,7 @@ bindingDecl target rewrite familyBase b =
 
   flavorImport =
     Hs.QualifiedImport
-      (Hs.ModuleName (familyBase <> "." <> flavorSegment))
+      (Hs.ModuleName (b.familyBase <> "." <> flavorSegment))
       (Just (toString flavorSegment))
   flavorSegment :: Text
   flavorSegment = case b.flavor of
@@ -704,11 +836,10 @@ etaBody paramBridges resultBridge callee = go (zip [0 :: Int ..] paramBridges) [
 annotatedComment
   :: BindgenTarget
   -> (HsDoc.Comment -> HsDoc.Comment)
-  -> Text
   -> Bool
   -> AliasBinding
   -> HsDoc.Comment
-annotatedComment target rewrite familyBase bridged b =
+annotatedComment target rewrite bridged b =
   rewritten
     { HsDoc.children = rewritten.children <> sysNotes
     , HsDoc.origin = rewritten.origin <|> Just b.cName
@@ -794,7 +925,7 @@ annotatedComment target rewrite familyBase bridged b =
             If your callback is a non-Haskell function pointer that never
             re-enters the Haskell runtime, the unsafe import remains available as
           |]
-      , HsDoc.Monospace [HsDoc.TextContent (familyBase <> ".Unsafe." <> b.bindgenName)]
+      , HsDoc.Monospace [HsDoc.TextContent (b.familyBase <> ".Unsafe." <> b.bindgenName)]
       , HsDoc.TextContent "."
       ]
     _bothOrOptOut -> []
@@ -1186,13 +1317,31 @@ conventionsComment target aliasModule =
                 \one. Each alias's documentation records its flavor and \
                 \rationale."
             ]
-        , HsDoc.Paragraph
-            [ HsDoc.TextContent "Full conventions:"
-            , HsDoc.Module (Module.hsName target.namespace)
-            , HsDoc.TextContent "."
-            ]
         ]
+          <> shimsNote
+          <> [ HsDoc.Paragraph
+                 [ HsDoc.TextContent "Full conventions:"
+                 , HsDoc.Module (Module.hsName target.namespace)
+                 , HsDoc.TextContent "."
+                 ]
+             ]
     }
+ where
+  -- Only where the module exports C shims.
+  shimsNote = case nubOrd [b.familyBase | b <- aliasModule.bindings, b.familyBase `Set.member` shimFamilies] of
+    [] -> []
+    families ->
+      [ HsDoc.Paragraph
+          $ [ HsDoc.TextContent
+                "The C shims are functions this package defines in C over what the FFI \
+                \cannot call directly (variadic functions, function-like macros), each \
+                \named after what it wraps; the same flavor rules apply. Their raw imports \
+                \live under"
+            ]
+          <> L.intersperse (HsDoc.TextContent "and") [HsDoc.Module f | f <- families]
+          <> [HsDoc.TextContent "."]
+      ]
+  shimFamilies = authoredFamilyBases target
 
 -- | The target's per-family additions to the module header, keyed by the
 -- family segment: usage guidance that belongs at the point of need rather

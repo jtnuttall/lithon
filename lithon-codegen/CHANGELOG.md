@@ -102,6 +102,22 @@
   `validateTargets` refuses an authored root another target claims. Tests:
   `Bindgen.AuthoredTest`, `StaticsTest.unit_staticsRejectUnwiredAuthoredHeaders`,
   `TargetsTest` (malformed `authored` fields, `unit_headerPlanProjectsAuthored`).
+- The curated layer merges an authored header's functions into the module
+  of the library header it extends (one without `extends` gets a module of
+  its own), after the module's own functions, under a `C shims` export
+  section; a module without shims renders as before. Each alias binding
+  records its raw family (`AliasBinding.familyBase`), so a module imports
+  both families' flavor modules. Aliases mint from the name a function
+  wraps (`aliasBaseName`: the target's name prefix stripped, then the
+  camel-segments rule; `mintAliasNames` takes the base-name rule), and the
+  documentation links the library's mentions of a wrapped name
+  (`SDL_CreateThread()`) to its shim (`aliasRewriteMap` takes the target;
+  a bound function of that name wins), except in the shim's own docs. A
+  module with shims gains a conventions paragraph. An authored header whose
+  host is not bound, that declares types, or whose functions are not named
+  `<name prefix><function prefix>…` is an `AliasFamilyInvalid`. Tests:
+  `AuthoredTest` (the `alias-toy-shims-module` golden, the rejections),
+  `AliasNamesTest.unit_authoredNamesMint`.
 
 ### Changed
 

@@ -473,7 +473,7 @@ planAliases target registry headerResults (constantPlans, constantsBytes) = do
         ]
 
   aliasModules <- liftEither . first from $ planAliasLayer target validated plansByFamily families
-  let rewriteMap = aliasRewriteMap aliasModules
+  let rewriteMap = aliasRewriteMap target aliasModules
       rendered =
         map (renderAliasModule target rewriteMap) aliasModules
           <> [renderRuntimeModule target, renderUmbrella target aliasModules]

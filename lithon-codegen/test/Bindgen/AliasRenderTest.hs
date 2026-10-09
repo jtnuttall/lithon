@@ -289,7 +289,7 @@ test_aliasRenderGolden =
     aliasModules <-
       either (assertFailure . toString . display) pure
         $ planAliasLayer sdl3 validated plansByFamily [facts]
-    let rewriteMap = aliasRewriteMap aliasModules
+    let rewriteMap = aliasRewriteMap sdl3 aliasModules
         modules = map (renderAliasModule sdl3 rewriteMap) aliasModules
         umbrella = renderUmbrella sdl3 aliasModules
     case modules of
