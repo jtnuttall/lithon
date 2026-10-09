@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module Mpv.Sys.Bindgen.Render.Unsafe (
@@ -13,6 +15,8 @@ module Mpv.Sys.Bindgen.Render.Unsafe (
   Mpv.Sys.Bindgen.Render.Unsafe.mpv_render_context_free,
 )
 where
+
+import Prelude (IO, fmap)
 
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Support qualified as BG
@@ -88,7 +92,7 @@ foreign import ccall unsafe "hs_bindgen_c74de11d52806574"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Render_Unsafe_mpv_render_context_create@
 hs_bindgen_c74de11d52806574
@@ -97,7 +101,12 @@ hs_bindgen_c74de11d52806574
   -> BG.Ptr Mpv_render_param
   -> IO BG.CInt
 hs_bindgen_c74de11d52806574 =
-  BG.fromFFIType hs_bindgen_c74de11d52806574_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_c74de11d52806574_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Initialize the renderer state. Depending on the backend used, this will access the underlying GPU API and initialize its own objects.
 --
@@ -140,7 +149,7 @@ foreign import ccall unsafe "hs_bindgen_623eb65e22830e48"
   hs_bindgen_623eb65e22830e48_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Render_Unsafe_mpv_render_context_set_parameter@
 hs_bindgen_623eb65e22830e48
@@ -148,7 +157,9 @@ hs_bindgen_623eb65e22830e48
   -> BG.Ptr Mpv_render_param
   -> IO BG.CInt
 hs_bindgen_623eb65e22830e48 =
-  BG.fromFFIType hs_bindgen_623eb65e22830e48_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_623eb65e22830e48_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Attempt to change a single parameter. Not all backends and parameter types support all kinds of changes.
 --
@@ -179,7 +190,7 @@ foreign import ccall unsafe "hs_bindgen_a80e3b83695cc098"
   hs_bindgen_a80e3b83695cc098_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Render_Unsafe_mpv_render_context_get_info@
 hs_bindgen_a80e3b83695cc098
@@ -187,7 +198,9 @@ hs_bindgen_a80e3b83695cc098
   -> BG.Ptr Mpv_render_param
   -> IO BG.CInt
 hs_bindgen_a80e3b83695cc098 =
-  BG.fromFFIType hs_bindgen_a80e3b83695cc098_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_a80e3b83695cc098_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Retrieve information from the render context. This is NOT a counterpart to @mpv_render_context_set_parameter()@, because you generally can\'t read parameters set with it, and this function is not meant for this purpose. Instead, this is for communicating information from the renderer back to the user. See 'Mpv_render_param_type'; entries which support this function explicitly mention it, and for other entries you can assume it will fail.
 --
@@ -230,7 +243,10 @@ hs_bindgen_2e71f8b98ae7ea4e
   -> BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_2e71f8b98ae7ea4e =
-  BG.fromFFIType hs_bindgen_2e71f8b98ae7ea4e_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        hs_bindgen_2e71f8b98ae7ea4e_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2)
 
 -- | Set the callback that notifies you when a new video frame is available, or if the video display configuration somehow changed and requires a redraw. Similar to mpv_set_wakeup_callback(), you must not call any mpv API from the callback, and all the other listed restrictions apply (such as not exiting the callback by throwing exceptions).
 --
@@ -258,14 +274,15 @@ mpv_render_context_set_update_callback =
 foreign import ccall unsafe "hs_bindgen_9343f4b4aa974eea"
   hs_bindgen_9343f4b4aa974eea_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word64
+    -> IO HsBindgen.Runtime.LibC.Word64
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Render_Unsafe_mpv_render_context_update@
 hs_bindgen_9343f4b4aa974eea
   :: BG.Ptr Mpv_render_context
   -> IO HsBindgen.Runtime.LibC.Word64
 hs_bindgen_9343f4b4aa974eea =
-  BG.fromFFIType hs_bindgen_9343f4b4aa974eea_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9343f4b4aa974eea_base (BG.toFFIType x0))
 
 -- | The API user is supposed to call this when the update callback was invoked (like all mpv_render_* functions, this has to happen on the render thread, and /not/ from the update callback itself).
 --
@@ -290,7 +307,7 @@ foreign import ccall unsafe "hs_bindgen_fb3cdf8c9a411f8f"
   hs_bindgen_fb3cdf8c9a411f8f_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Render_Unsafe_mpv_render_context_render@
 hs_bindgen_fb3cdf8c9a411f8f
@@ -298,7 +315,9 @@ hs_bindgen_fb3cdf8c9a411f8f
   -> BG.Ptr Mpv_render_param
   -> IO BG.CInt
 hs_bindgen_fb3cdf8c9a411f8f =
-  BG.fromFFIType hs_bindgen_fb3cdf8c9a411f8f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_fb3cdf8c9a411f8f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Render video.
 --
@@ -343,7 +362,8 @@ hs_bindgen_cb0dff0a06981916
   :: BG.Ptr Mpv_render_context
   -> IO ()
 hs_bindgen_cb0dff0a06981916 =
-  BG.fromFFIType hs_bindgen_cb0dff0a06981916_base
+  \x0 ->
+    hs_bindgen_cb0dff0a06981916_base (BG.toFFIType x0)
 
 -- | Tell the renderer that a frame was flipped at the given time. This is optional, but can help the player to achieve better timing.
 --
@@ -372,7 +392,8 @@ hs_bindgen_02b379e3527aa5f1
   :: BG.Ptr Mpv_render_context
   -> IO ()
 hs_bindgen_02b379e3527aa5f1 =
-  BG.fromFFIType hs_bindgen_02b379e3527aa5f1_base
+  \x0 ->
+    hs_bindgen_02b379e3527aa5f1_base (BG.toFFIType x0)
 
 -- | Destroy the mpv renderer state.
 --

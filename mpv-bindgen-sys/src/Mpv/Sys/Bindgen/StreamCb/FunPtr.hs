@@ -1,11 +1,15 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module Mpv.Sys.Bindgen.StreamCb.FunPtr (
   Mpv.Sys.Bindgen.StreamCb.FunPtr.mpv_stream_cb_add_ro,
 )
 where
+
+import Prelude (IO, fmap)
 
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
@@ -48,7 +52,7 @@ hs_bindgen_8ac773ddcf93ffba
            )
        )
 hs_bindgen_8ac773ddcf93ffba =
-  BG.fromFFIType hs_bindgen_8ac773ddcf93ffba_base
+  fmap BG.fromFFIType hs_bindgen_8ac773ddcf93ffba_base
 
 {-# NOINLINE mpv_stream_cb_add_ro #-}
 

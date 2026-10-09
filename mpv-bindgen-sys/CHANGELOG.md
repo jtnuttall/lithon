@@ -2,6 +2,27 @@
 
 ## Unreleased
 
+### Changed
+
+- Regenerated with hs-bindgen 1.0.0.0.
+- Raw modules (`Mpv.Sys.Bindgen.*`): each foreign import sits behind a
+  wrapper that converts argument by argument through `HasFFIType` and keeps
+  the original C signature; structs gain `IsStruct` instances; every module
+  is `NoImplicitPrelude` with an explicit `Prelude` import list.
+- Writing a union member through `setField` of its
+  `GHC.Records.Compat.HasField` instance (`Mpv_node_u`, ...) now has
+  `payload -> union -> union` semantics: it copies the existing bytes, then
+  pokes the member. It used to write into a fresh uninitialised byte array.
+- The vendored runtime is updated to hs-bindgen-runtime 1.0.0.0, with
+  matching `Mpv.Sys.Bindgen.Runtime.*` facades. New modules: `HasFFIType`,
+  `Macro`, `Overloading`, `Struct`. Removed: `Support.FFIType`,
+  `Support.HasFFIType`. They were private (no facade), so no consumer could
+  import them.
+- `template-haskell >= 2.19` for the vendored runtime.
+- Exported names, signatures and export lists of all pre-existing modules are
+  unchanged, apart from names added to the runtime facades; the raw foreign
+  imports changed only internally.
+
 ## 0.0.0.1 - TBD
 
 Initial release: generated from libmpv client API 2.5.0 (mpv 0.41.0);

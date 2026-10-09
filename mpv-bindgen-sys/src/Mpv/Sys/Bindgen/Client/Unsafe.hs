@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module Mpv.Sys.Bindgen.Client.Unsafe (
@@ -49,6 +51,8 @@ module Mpv.Sys.Bindgen.Client.Unsafe (
   Mpv.Sys.Bindgen.Client.Unsafe.mpv_get_wakeup_pipe,
 )
 where
+
+import Prelude (IO, fmap)
 
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
@@ -392,7 +396,7 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_error_string@
 foreign import ccall unsafe "hs_bindgen_32db85362cc316e3"
   hs_bindgen_32db85362cc316e3_base
-    :: BG.Int32
+    :: BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_error_string@
@@ -400,7 +404,8 @@ hs_bindgen_32db85362cc316e3
   :: BG.CInt
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_32db85362cc316e3 =
-  BG.fromFFIType hs_bindgen_32db85362cc316e3_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_32db85362cc316e3_base (BG.toFFIType x0))
 
 -- | Return a string describing the error. For unknown errors, the string \"unknown error\" is returned.
 --
@@ -426,7 +431,8 @@ hs_bindgen_4ef159c82356c70c
   :: BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_4ef159c82356c70c =
-  BG.fromFFIType hs_bindgen_4ef159c82356c70c_base
+  \x0 ->
+    hs_bindgen_4ef159c82356c70c_base (BG.toFFIType x0)
 
 -- | General function to deallocate memory returned by some of the API functions. Call this only if it\'s explicitly documented as allowed. Calling this on mpv memory not owned by the caller will lead to undefined behavior.
 --
@@ -450,7 +456,8 @@ hs_bindgen_7aee0caaf0f8b306
   :: BG.Ptr Mpv_handle
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_7aee0caaf0f8b306 =
-  BG.fromFFIType hs_bindgen_7aee0caaf0f8b306_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_7aee0caaf0f8b306_base (BG.toFFIType x0))
 
 -- | Return the name of this client handle. Every client has its own unique name, which is mostly used for user interface purposes.
 --
@@ -467,14 +474,15 @@ mpv_client_name = hs_bindgen_7aee0caaf0f8b306
 foreign import ccall unsafe "hs_bindgen_4288d114a694bed3"
   hs_bindgen_4288d114a694bed3_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int64
+    -> IO HsBindgen.Runtime.LibC.Int64
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_client_id@
 hs_bindgen_4288d114a694bed3
   :: BG.Ptr Mpv_handle
   -> IO HsBindgen.Runtime.LibC.Int64
 hs_bindgen_4288d114a694bed3 =
-  BG.fromFFIType hs_bindgen_4288d114a694bed3_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4288d114a694bed3_base (BG.toFFIType x0))
 
 -- | Return the ID of this client handle. Every client has its own unique ID. This ID is never reused by the core, even if the 'Mpv_handle' at hand gets destroyed and new handles get allocated.
 --
@@ -499,7 +507,7 @@ foreign import ccall unsafe "hs_bindgen_1357ced1cdefb650"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_create@
 hs_bindgen_1357ced1cdefb650 :: IO (BG.Ptr Mpv_handle)
 hs_bindgen_1357ced1cdefb650 =
-  BG.fromFFIType hs_bindgen_1357ced1cdefb650_base
+  fmap BG.fromFFIType hs_bindgen_1357ced1cdefb650_base
 
 -- | Create a new mpv instance and an associated client API handle to control the mpv instance. This instance is in a pre-initialized state, and needs to be initialized to be actually used with most other API functions.
 --
@@ -537,14 +545,15 @@ mpv_create = hs_bindgen_1357ced1cdefb650
 foreign import ccall unsafe "hs_bindgen_e50955adec497452"
   hs_bindgen_e50955adec497452_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_initialize@
 hs_bindgen_e50955adec497452
   :: BG.Ptr Mpv_handle
   -> IO BG.CInt
 hs_bindgen_e50955adec497452 =
-  BG.fromFFIType hs_bindgen_e50955adec497452_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_e50955adec497452_base (BG.toFFIType x0))
 
 -- | Initialize an uninitialized mpv instance. If the mpv instance is already running, an error is returned.
 --
@@ -583,7 +592,8 @@ hs_bindgen_b127d4a8da62ecd4
   :: BG.Ptr Mpv_handle
   -> IO ()
 hs_bindgen_b127d4a8da62ecd4 =
-  BG.fromFFIType hs_bindgen_b127d4a8da62ecd4_base
+  \x0 ->
+    hs_bindgen_b127d4a8da62ecd4_base (BG.toFFIType x0)
 
 -- | Disconnect and destroy the 'Mpv_handle'. ctx will be deallocated with this API call.
 --
@@ -607,7 +617,8 @@ hs_bindgen_8aae6f95d20e2fa0
   :: BG.Ptr Mpv_handle
   -> IO ()
 hs_bindgen_8aae6f95d20e2fa0 =
-  BG.fromFFIType hs_bindgen_8aae6f95d20e2fa0_base
+  \x0 ->
+    hs_bindgen_8aae6f95d20e2fa0_base (BG.toFFIType x0)
 
 -- | Similar to @mpv_destroy()@, but brings the player and all clients down as well, and waits until all of them are destroyed. This function blocks. The advantage over @mpv_destroy()@ is that while @mpv_destroy()@ merely detaches the client handle from the player, this function quits the player, waits until all other clients are destroyed (i.e. all mpv_handles are detached), and also waits for the final termination of the player.
 --
@@ -637,7 +648,9 @@ hs_bindgen_76b6f20279405ac2
   -> PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr Mpv_handle)
 hs_bindgen_76b6f20279405ac2 =
-  BG.fromFFIType hs_bindgen_76b6f20279405ac2_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_76b6f20279405ac2_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Create a new client handle connected to the same player core as ctx. This context has its own event queue, its own @mpv_request_event()@ state, its own @mpv_request_log_messages()@ state, its own set of observed properties, and its own state for asynchronous operations. Otherwise, everything is shared.
 --
@@ -673,7 +686,9 @@ hs_bindgen_1e4791445d831f38
   -> PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr Mpv_handle)
 hs_bindgen_1e4791445d831f38 =
-  BG.fromFFIType hs_bindgen_1e4791445d831f38_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_1e4791445d831f38_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | This is the same as @mpv_create_client()@, but the created 'Mpv_handle' is treated as a weak reference. If all mpv_handles referencing a core are weak references, the core is automatically destroyed. (This still goes through normal uninit of course. Effectively, if the last non-weak 'Mpv_handle' is destroyed, then the weak mpv_handles receive MPV_EVENT_SHUTDOWN and are asked to terminate as well.)
 --
@@ -693,7 +708,7 @@ foreign import ccall unsafe "hs_bindgen_bbcfcb0dcf536f01"
   hs_bindgen_bbcfcb0dcf536f01_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_load_config_file@
 hs_bindgen_bbcfcb0dcf536f01
@@ -701,7 +716,9 @@ hs_bindgen_bbcfcb0dcf536f01
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CInt
 hs_bindgen_bbcfcb0dcf536f01 =
-  BG.fromFFIType hs_bindgen_bbcfcb0dcf536f01_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_bbcfcb0dcf536f01_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Load a config file. This loads and parses the file, and sets every entry in the config file\'s default section as if @mpv_set_option_string()@ is called.
 --
@@ -726,14 +743,15 @@ mpv_load_config_file = hs_bindgen_bbcfcb0dcf536f01
 foreign import ccall unsafe "hs_bindgen_9b47794b89d3b27e"
   hs_bindgen_9b47794b89d3b27e_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int64
+    -> IO HsBindgen.Runtime.LibC.Int64
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_get_time_ns@
 hs_bindgen_9b47794b89d3b27e
   :: BG.Ptr Mpv_handle
   -> IO HsBindgen.Runtime.LibC.Int64
 hs_bindgen_9b47794b89d3b27e =
-  BG.fromFFIType hs_bindgen_9b47794b89d3b27e_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9b47794b89d3b27e_base (BG.toFFIType x0))
 
 -- | Return the internal time in nanoseconds. This has an arbitrary start offset, but will never wrap or go backwards.
 --
@@ -754,14 +772,15 @@ mpv_get_time_ns = hs_bindgen_9b47794b89d3b27e
 foreign import ccall unsafe "hs_bindgen_2558123bfada4268"
   hs_bindgen_2558123bfada4268_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int64
+    -> IO HsBindgen.Runtime.LibC.Int64
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_get_time_us@
 hs_bindgen_2558123bfada4268
   :: BG.Ptr Mpv_handle
   -> IO HsBindgen.Runtime.LibC.Int64
 hs_bindgen_2558123bfada4268 =
-  BG.fromFFIType hs_bindgen_2558123bfada4268_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_2558123bfada4268_base (BG.toFFIType x0))
 
 -- | Same as mpv_get_time_ns but in microseconds.
 --
@@ -783,7 +802,8 @@ hs_bindgen_2954999f86410a41
   :: BG.Ptr Mpv_node
   -> IO ()
 hs_bindgen_2954999f86410a41 =
-  BG.fromFFIType hs_bindgen_2954999f86410a41_base
+  \x0 ->
+    hs_bindgen_2954999f86410a41_base (BG.toFFIType x0)
 
 -- | Frees any data referenced by the node. It doesn\'t free the node itself. Call this only if the mpv client API set the node. If you constructed the node yourself (manually), you have to free it yourself.
 --
@@ -801,9 +821,9 @@ foreign import ccall unsafe "hs_bindgen_16cdf5ffe4b1f933"
   hs_bindgen_16cdf5ffe4b1f933_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> BG.CUInt
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_set_option@
 hs_bindgen_16cdf5ffe4b1f933
@@ -813,7 +833,18 @@ hs_bindgen_16cdf5ffe4b1f933
   -> BG.Ptr BG.Void
   -> IO BG.CInt
 hs_bindgen_16cdf5ffe4b1f933 =
-  BG.fromFFIType hs_bindgen_16cdf5ffe4b1f933_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_16cdf5ffe4b1f933_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Set an option. Note that you can\'t normally set options during runtime. It works in uninitialized state (see @mpv_create()@), and in some cases in at runtime.
 --
@@ -849,7 +880,7 @@ foreign import ccall unsafe "hs_bindgen_493a127681ae4fdd"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_set_option_string@
 hs_bindgen_493a127681ae4fdd
@@ -858,7 +889,12 @@ hs_bindgen_493a127681ae4fdd
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CInt
 hs_bindgen_493a127681ae4fdd =
-  BG.fromFFIType hs_bindgen_493a127681ae4fdd_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_493a127681ae4fdd_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Convenience function to set an option to a string value. This is like calling @mpv_set_option()@ with MPV_FORMAT_STRING.
 --
@@ -880,7 +916,7 @@ foreign import ccall unsafe "hs_bindgen_f5b9328fc5f8ad47"
   hs_bindgen_f5b9328fc5f8ad47_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_command@
 hs_bindgen_f5b9328fc5f8ad47
@@ -888,7 +924,9 @@ hs_bindgen_f5b9328fc5f8ad47
   -> BG.Ptr (PtrConst.PtrConst BG.CChar)
   -> IO BG.CInt
 hs_bindgen_f5b9328fc5f8ad47 =
-  BG.fromFFIType hs_bindgen_f5b9328fc5f8ad47_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_f5b9328fc5f8ad47_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Send a command to the player. Commands are the same as those used in input.conf, except that this function takes parameters in a pre-split form.
 --
@@ -916,7 +954,7 @@ foreign import ccall unsafe "hs_bindgen_7828a365152b3b09"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_command_node@
 hs_bindgen_7828a365152b3b09
@@ -925,7 +963,12 @@ hs_bindgen_7828a365152b3b09
   -> BG.Ptr Mpv_node
   -> IO BG.CInt
 hs_bindgen_7828a365152b3b09 =
-  BG.fromFFIType hs_bindgen_7828a365152b3b09_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_7828a365152b3b09_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Same as @mpv_command()@, but allows passing structured data in any format. In particular, calling @mpv_command()@ is exactly like calling @mpv_command_node()@ with the format set to MPV_FORMAT_NODE_ARRAY, and every arg passed in order as MPV_FORMAT_STRING.
 --
@@ -962,7 +1005,7 @@ foreign import ccall unsafe "hs_bindgen_3b40170f65932217"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_command_ret@
 hs_bindgen_3b40170f65932217
@@ -971,7 +1014,12 @@ hs_bindgen_3b40170f65932217
   -> BG.Ptr Mpv_node
   -> IO BG.CInt
 hs_bindgen_3b40170f65932217 =
-  BG.fromFFIType hs_bindgen_3b40170f65932217_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_3b40170f65932217_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | This is essentially identical to @mpv_command()@ but it also returns a result.
 --
@@ -1001,7 +1049,7 @@ foreign import ccall unsafe "hs_bindgen_b1d5fa8e65e7feb3"
   hs_bindgen_b1d5fa8e65e7feb3_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_command_string@
 hs_bindgen_b1d5fa8e65e7feb3
@@ -1009,7 +1057,9 @@ hs_bindgen_b1d5fa8e65e7feb3
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CInt
 hs_bindgen_b1d5fa8e65e7feb3 =
-  BG.fromFFIType hs_bindgen_b1d5fa8e65e7feb3_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b1d5fa8e65e7feb3_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Same as mpv_command, but use input.conf parsing for splitting arguments. This is slightly simpler, but also more error prone, since arguments may need quoting\/escaping.
 --
@@ -1028,9 +1078,9 @@ mpv_command_string = hs_bindgen_b1d5fa8e65e7feb3
 foreign import ccall unsafe "hs_bindgen_a05bbf2b4ea76830"
   hs_bindgen_a05bbf2b4ea76830_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.Word64
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_command_async@
 hs_bindgen_a05bbf2b4ea76830
@@ -1039,7 +1089,12 @@ hs_bindgen_a05bbf2b4ea76830
   -> BG.Ptr (PtrConst.PtrConst BG.CChar)
   -> IO BG.CInt
 hs_bindgen_a05bbf2b4ea76830 =
-  BG.fromFFIType hs_bindgen_a05bbf2b4ea76830_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_a05bbf2b4ea76830_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Same as mpv_command, but run the command asynchronously.
 --
@@ -1070,9 +1125,9 @@ mpv_command_async = hs_bindgen_a05bbf2b4ea76830
 foreign import ccall unsafe "hs_bindgen_fae4d6cc014b1259"
   hs_bindgen_fae4d6cc014b1259_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.Word64
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_command_node_async@
 hs_bindgen_fae4d6cc014b1259
@@ -1081,7 +1136,12 @@ hs_bindgen_fae4d6cc014b1259
   -> BG.Ptr Mpv_node
   -> IO BG.CInt
 hs_bindgen_fae4d6cc014b1259 =
-  BG.fromFFIType hs_bindgen_fae4d6cc014b1259_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_fae4d6cc014b1259_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Same as @mpv_command_node()@, but run it asynchronously. Basically, this function is to @mpv_command_node()@ what @mpv_command_async()@ is to @mpv_command()@.
 --
@@ -1110,7 +1170,7 @@ mpv_command_node_async = hs_bindgen_fae4d6cc014b1259
 foreign import ccall unsafe "hs_bindgen_27e143e5edf1bd04"
   hs_bindgen_27e143e5edf1bd04_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.Word64
     -> IO ()
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_abort_async_command@
@@ -1119,7 +1179,9 @@ hs_bindgen_27e143e5edf1bd04
   -> HsBindgen.Runtime.LibC.Word64
   -> IO ()
 hs_bindgen_27e143e5edf1bd04 =
-  BG.fromFFIType hs_bindgen_27e143e5edf1bd04_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_27e143e5edf1bd04_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Signal to all async requests with the matching ID to abort. This affects the following API calls: mpv_command_async
 --  mpv_command_node_async
@@ -1148,9 +1210,9 @@ foreign import ccall unsafe "hs_bindgen_e978833d379bedd1"
   hs_bindgen_e978833d379bedd1_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> BG.CUInt
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_set_property@
 hs_bindgen_e978833d379bedd1
@@ -1160,7 +1222,18 @@ hs_bindgen_e978833d379bedd1
   -> BG.Ptr BG.Void
   -> IO BG.CInt
 hs_bindgen_e978833d379bedd1 =
-  BG.fromFFIType hs_bindgen_e978833d379bedd1_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_e978833d379bedd1_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Set a property to a given value. Properties are essentially variables which can be queried or set at runtime. For example, writing to the pause property will actually pause or unpause playback.
 --
@@ -1198,7 +1271,7 @@ foreign import ccall unsafe "hs_bindgen_c10b0f7366fa7abf"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_set_property_string@
 hs_bindgen_c10b0f7366fa7abf
@@ -1207,7 +1280,12 @@ hs_bindgen_c10b0f7366fa7abf
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CInt
 hs_bindgen_c10b0f7366fa7abf =
-  BG.fromFFIType hs_bindgen_c10b0f7366fa7abf_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_c10b0f7366fa7abf_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Convenience function to set a property to a string value.
 --
@@ -1229,7 +1307,7 @@ foreign import ccall unsafe "hs_bindgen_54cc056aa76f40a3"
   hs_bindgen_54cc056aa76f40a3_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_del_property@
 hs_bindgen_54cc056aa76f40a3
@@ -1237,7 +1315,9 @@ hs_bindgen_54cc056aa76f40a3
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CInt
 hs_bindgen_54cc056aa76f40a3 =
-  BG.fromFFIType hs_bindgen_54cc056aa76f40a3_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_54cc056aa76f40a3_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Convenience function to delete a property.
 --
@@ -1260,11 +1340,11 @@ mpv_del_property = hs_bindgen_54cc056aa76f40a3
 foreign import ccall unsafe "hs_bindgen_960e01fc1cfdb72f"
   hs_bindgen_960e01fc1cfdb72f_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.Word64
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> BG.CUInt
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_set_property_async@
 hs_bindgen_960e01fc1cfdb72f
@@ -1275,7 +1355,20 @@ hs_bindgen_960e01fc1cfdb72f
   -> BG.Ptr BG.Void
   -> IO BG.CInt
 hs_bindgen_960e01fc1cfdb72f =
-  BG.fromFFIType hs_bindgen_960e01fc1cfdb72f_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_960e01fc1cfdb72f_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Set a property asynchronously. You will receive the result of the operation as MPV_EVENT_SET_PROPERTY_REPLY event. The @mpv_event.error@ field will contain the result status of the operation. Otherwise, this function is similar to @mpv_set_property()@.
 --
@@ -1312,9 +1405,9 @@ foreign import ccall unsafe "hs_bindgen_5a278d34b9fe7def"
   hs_bindgen_5a278d34b9fe7def_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> BG.CUInt
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_get_property@
 hs_bindgen_5a278d34b9fe7def
@@ -1324,7 +1417,18 @@ hs_bindgen_5a278d34b9fe7def
   -> BG.Ptr BG.Void
   -> IO BG.CInt
 hs_bindgen_5a278d34b9fe7def =
-  BG.fromFFIType hs_bindgen_5a278d34b9fe7def_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_5a278d34b9fe7def_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Read the value of the given property.
 --
@@ -1365,7 +1469,9 @@ hs_bindgen_3062009358afa294
   -> PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_3062009358afa294 =
-  BG.fromFFIType hs_bindgen_3062009358afa294_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_3062009358afa294_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Return the value of the property with the given name as string. This is equivalent to @mpv_get_property()@ with MPV_FORMAT_STRING.
 --
@@ -1399,7 +1505,9 @@ hs_bindgen_699d1385d138a570
   -> PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_699d1385d138a570 =
-  BG.fromFFIType hs_bindgen_699d1385d138a570_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_699d1385d138a570_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Return the property as \"OSD\" formatted string. This is the same as mpv_get_property_string, but using MPV_FORMAT_OSD_STRING.
 --
@@ -1419,10 +1527,10 @@ mpv_get_property_osd_string =
 foreign import ccall unsafe "hs_bindgen_a2117576ab13794e"
   hs_bindgen_a2117576ab13794e_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.Word64
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Int32
+    -> BG.CUInt
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_get_property_async@
 hs_bindgen_a2117576ab13794e
@@ -1432,7 +1540,18 @@ hs_bindgen_a2117576ab13794e
   -> Mpv_format
   -> IO BG.CInt
 hs_bindgen_a2117576ab13794e =
-  BG.fromFFIType hs_bindgen_a2117576ab13794e_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_a2117576ab13794e_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Get a property asynchronously. You will receive the result of the operation as well as the property data with the MPV_EVENT_GET_PROPERTY_REPLY event. You should check the @mpv_event.error@ field on the reply event.
 --
@@ -1463,10 +1582,10 @@ mpv_get_property_async = hs_bindgen_a2117576ab13794e
 foreign import ccall unsafe "hs_bindgen_b486eab84e3e9fd6"
   hs_bindgen_b486eab84e3e9fd6_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.Word64
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Int32
+    -> BG.CUInt
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_observe_property@
 hs_bindgen_b486eab84e3e9fd6
@@ -1476,7 +1595,18 @@ hs_bindgen_b486eab84e3e9fd6
   -> Mpv_format
   -> IO BG.CInt
 hs_bindgen_b486eab84e3e9fd6 =
-  BG.fromFFIType hs_bindgen_b486eab84e3e9fd6_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_b486eab84e3e9fd6_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Get a notification whenever the given property changes. You will receive updates as MPV_EVENT_PROPERTY_CHANGE. Note that this is not very precise: for some properties, it may not send updates even if the property changed. This depends on the property, and it\'s a valid feature request to ask for better update handling of a specific property. (For some properties, like @clock@, which shows the wall clock, this mechanism doesn\'t make too much sense anyway.)
 --
@@ -1523,8 +1653,8 @@ mpv_observe_property = hs_bindgen_b486eab84e3e9fd6
 foreign import ccall unsafe "hs_bindgen_21fd95319ac5c236"
   hs_bindgen_21fd95319ac5c236_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.Word64
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_unobserve_property@
 hs_bindgen_21fd95319ac5c236
@@ -1532,7 +1662,9 @@ hs_bindgen_21fd95319ac5c236
   -> HsBindgen.Runtime.LibC.Word64
   -> IO BG.CInt
 hs_bindgen_21fd95319ac5c236 =
-  BG.fromFFIType hs_bindgen_21fd95319ac5c236_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_21fd95319ac5c236_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Undo @mpv_observe_property()@. This will remove all observed properties for which the given number was passed as reply_userdata to mpv_observe_property.
 --
@@ -1554,7 +1686,7 @@ mpv_unobserve_property = hs_bindgen_21fd95319ac5c236
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_event_name@
 foreign import ccall unsafe "hs_bindgen_4ebab0f5a101922f"
   hs_bindgen_4ebab0f5a101922f_base
-    :: BG.Word32
+    :: BG.CUInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_event_name@
@@ -1562,7 +1694,8 @@ hs_bindgen_4ebab0f5a101922f
   :: Mpv_event_id
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_4ebab0f5a101922f =
-  BG.fromFFIType hs_bindgen_4ebab0f5a101922f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4ebab0f5a101922f_base (BG.toFFIType x0))
 
 -- | Return a string describing the event. For unknown events, NULL is returned.
 --
@@ -1584,7 +1717,7 @@ foreign import ccall unsafe "hs_bindgen_bfdf82eab1fee1b4"
   hs_bindgen_bfdf82eab1fee1b4_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_event_to_node@
 hs_bindgen_bfdf82eab1fee1b4
@@ -1592,7 +1725,9 @@ hs_bindgen_bfdf82eab1fee1b4
   -> BG.Ptr Mpv_event
   -> IO BG.CInt
 hs_bindgen_bfdf82eab1fee1b4 =
-  BG.fromFFIType hs_bindgen_bfdf82eab1fee1b4_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_bfdf82eab1fee1b4_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Convert the given src event to a 'Mpv_node', and set /dst to the result. *dst is set to a MPV_FORMAT_NODE_MAP, with fields for corresponding 'Mpv_event' and @mpv_event.data@ \/mpv_event_/ fields.
 --
@@ -1621,9 +1756,9 @@ mpv_event_to_node = hs_bindgen_bfdf82eab1fee1b4
 foreign import ccall unsafe "hs_bindgen_38a484bf924cef88"
   hs_bindgen_38a484bf924cef88_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Int32
-    -> IO BG.Int32
+    -> BG.CUInt
+    -> BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_request_event@
 hs_bindgen_38a484bf924cef88
@@ -1632,7 +1767,12 @@ hs_bindgen_38a484bf924cef88
   -> BG.CInt
   -> IO BG.CInt
 hs_bindgen_38a484bf924cef88 =
-  BG.fromFFIType hs_bindgen_38a484bf924cef88_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_38a484bf924cef88_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Enable or disable the given event.
 --
@@ -1664,7 +1804,7 @@ foreign import ccall unsafe "hs_bindgen_4c254ac31c55d676"
   hs_bindgen_4c254ac31c55d676_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_request_log_messages@
 hs_bindgen_4c254ac31c55d676
@@ -1672,7 +1812,9 @@ hs_bindgen_4c254ac31c55d676
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CInt
 hs_bindgen_4c254ac31c55d676 =
-  BG.fromFFIType hs_bindgen_4c254ac31c55d676_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4c254ac31c55d676_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Enable or disable receiving of log messages. These are the messages the command line player prints to the terminal. This call sets the minimum required log level for a message to be received with MPV_EVENT_LOG_MESSAGE.
 --
@@ -1694,7 +1836,7 @@ mpv_request_log_messages =
 foreign import ccall unsafe "hs_bindgen_4c117b5bc26c3089"
   hs_bindgen_4c117b5bc26c3089_base
     :: BG.Ptr BG.Void
-    -> Double
+    -> BG.CDouble
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_wait_event@
@@ -1703,7 +1845,9 @@ hs_bindgen_4c117b5bc26c3089
   -> BG.CDouble
   -> IO (BG.Ptr Mpv_event)
 hs_bindgen_4c117b5bc26c3089 =
-  BG.fromFFIType hs_bindgen_4c117b5bc26c3089_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4c117b5bc26c3089_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Wait for the next event, or until the timeout expires, or if another thread makes a call to @mpv_wakeup()@. Passing 0 as timeout will never wait, and is suitable for polling.
 --
@@ -1737,7 +1881,8 @@ hs_bindgen_7bf721d6c5bba088
   :: BG.Ptr Mpv_handle
   -> IO ()
 hs_bindgen_7bf721d6c5bba088 =
-  BG.fromFFIType hs_bindgen_7bf721d6c5bba088_base
+  \x0 ->
+    hs_bindgen_7bf721d6c5bba088_base (BG.toFFIType x0)
 
 -- | Interrupt the current @mpv_wait_event()@ call. This will wake up the thread currently waiting in @mpv_wait_event()@. If no thread is waiting, the next @mpv_wait_event()@ call will return immediately (this is to avoid lost wakeups).
 --
@@ -1767,7 +1912,10 @@ hs_bindgen_1d6ab3a04d959898
   -> BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_1d6ab3a04d959898 =
-  BG.fromFFIType hs_bindgen_1d6ab3a04d959898_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        hs_bindgen_1d6ab3a04d959898_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2)
 
 -- | Set a custom function that should be called when there are new events. Use this if blocking in @mpv_wait_event()@ to wait for new events is not feasible.
 --
@@ -1807,7 +1955,8 @@ hs_bindgen_20c62d7df65142cb
   :: BG.Ptr Mpv_handle
   -> IO ()
 hs_bindgen_20c62d7df65142cb =
-  BG.fromFFIType hs_bindgen_20c62d7df65142cb_base
+  \x0 ->
+    hs_bindgen_20c62d7df65142cb_base (BG.toFFIType x0)
 
 -- | Block until all asynchronous requests are done. This affects functions like @mpv_command_async()@, which return immediately and return their result as events.
 --
@@ -1826,10 +1975,10 @@ mpv_wait_async_requests = hs_bindgen_20c62d7df65142cb
 foreign import ccall unsafe "hs_bindgen_be77aa3b0d0744ed"
   hs_bindgen_be77aa3b0d0744ed_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.Word64
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Int32
+    -> BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_hook_add@
 hs_bindgen_be77aa3b0d0744ed
@@ -1839,7 +1988,18 @@ hs_bindgen_be77aa3b0d0744ed
   -> BG.CInt
   -> IO BG.CInt
 hs_bindgen_be77aa3b0d0744ed =
-  BG.fromFFIType hs_bindgen_be77aa3b0d0744ed_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_be77aa3b0d0744ed_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | A hook is like a synchronous event that blocks the player. You register a hook handler with this function. You will get an event, which you need to handle, and once things are ready, you can let the player continue with @mpv_hook_continue()@.
 --
@@ -1878,8 +2038,8 @@ mpv_hook_add = hs_bindgen_be77aa3b0d0744ed
 foreign import ccall unsafe "hs_bindgen_5bd5ee97c2a0247c"
   hs_bindgen_5bd5ee97c2a0247c_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.Word64
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_hook_continue@
 hs_bindgen_5bd5ee97c2a0247c
@@ -1887,7 +2047,9 @@ hs_bindgen_5bd5ee97c2a0247c
   -> HsBindgen.Runtime.LibC.Word64
   -> IO BG.CInt
 hs_bindgen_5bd5ee97c2a0247c =
-  BG.fromFFIType hs_bindgen_5bd5ee97c2a0247c_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_5bd5ee97c2a0247c_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Respond to a MPV_EVENT_HOOK event. You must call this after you have handled the event. There is no way to \"cancel\" or \"stop\" the hook.
 --
@@ -1912,14 +2074,15 @@ mpv_hook_continue = hs_bindgen_5bd5ee97c2a0247c
 foreign import ccall unsafe "hs_bindgen_1c0bb997468473ec"
   hs_bindgen_1c0bb997468473ec_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_Unsafe_mpv_get_wakeup_pipe@
 hs_bindgen_1c0bb997468473ec
   :: BG.Ptr Mpv_handle
   -> IO BG.CInt
 hs_bindgen_1c0bb997468473ec =
-  BG.fromFFIType hs_bindgen_1c0bb997468473ec_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_1c0bb997468473ec_base (BG.toFFIType x0))
 
 -- | Return a UNIX file descriptor referring to the read end of a pipe. This pipe can be used to wake up a poll() based processing loop. The purpose of this function is very similar to @mpv_set_wakeup_callback()@, and provides a primitive mechanism to handle coordinating a foreign event loop and the libmpv event loop. The pipe is non-blocking. It\'s closed when the 'Mpv_handle' is destroyed. This function always returns the same value (on success).
 --

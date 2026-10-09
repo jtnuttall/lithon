@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module Mpv.Sys.Bindgen.Client.FunPtr (
@@ -49,6 +51,8 @@ module Mpv.Sys.Bindgen.Client.FunPtr (
   Mpv.Sys.Bindgen.Client.FunPtr.mpv_get_wakeup_pipe,
 )
 where
+
+import Prelude (IO, fmap)
 
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
@@ -485,7 +489,7 @@ foreign import ccall unsafe "hs_bindgen_e4db6cf8b03b668c"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_error_string@
 hs_bindgen_e4db6cf8b03b668c :: IO (BG.FunPtr (BG.CInt -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_e4db6cf8b03b668c =
-  BG.fromFFIType hs_bindgen_e4db6cf8b03b668c_base
+  fmap BG.fromFFIType hs_bindgen_e4db6cf8b03b668c_base
 
 {-# NOINLINE mpv_error_string #-}
 
@@ -508,7 +512,7 @@ foreign import ccall unsafe "hs_bindgen_c287f22cc152de5b"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_free@
 hs_bindgen_c287f22cc152de5b :: IO (BG.FunPtr (BG.Ptr BG.Void -> IO ()))
 hs_bindgen_c287f22cc152de5b =
-  BG.fromFFIType hs_bindgen_c287f22cc152de5b_base
+  fmap BG.fromFFIType hs_bindgen_c287f22cc152de5b_base
 
 {-# NOINLINE mpv_free #-}
 
@@ -529,7 +533,7 @@ foreign import ccall unsafe "hs_bindgen_6c747f31b6ccceea"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_client_name@
 hs_bindgen_6c747f31b6ccceea :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_6c747f31b6ccceea =
-  BG.fromFFIType hs_bindgen_6c747f31b6ccceea_base
+  fmap BG.fromFFIType hs_bindgen_6c747f31b6ccceea_base
 
 {-# NOINLINE mpv_client_name #-}
 
@@ -550,7 +554,7 @@ foreign import ccall unsafe "hs_bindgen_6cbde23774546dd4"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_client_id@
 hs_bindgen_6cbde23774546dd4 :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> IO HsBindgen.Runtime.LibC.Int64))
 hs_bindgen_6cbde23774546dd4 =
-  BG.fromFFIType hs_bindgen_6cbde23774546dd4_base
+  fmap BG.fromFFIType hs_bindgen_6cbde23774546dd4_base
 
 {-# NOINLINE mpv_client_id #-}
 
@@ -575,7 +579,7 @@ foreign import ccall unsafe "hs_bindgen_d1da8aba12aedf29"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_create@
 hs_bindgen_d1da8aba12aedf29 :: IO (BG.FunPtr (IO (BG.Ptr Mpv_handle)))
 hs_bindgen_d1da8aba12aedf29 =
-  BG.fromFFIType hs_bindgen_d1da8aba12aedf29_base
+  fmap BG.fromFFIType hs_bindgen_d1da8aba12aedf29_base
 
 {-# NOINLINE mpv_create #-}
 
@@ -620,7 +624,7 @@ foreign import ccall unsafe "hs_bindgen_3d3c99088133ce2d"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_initialize@
 hs_bindgen_3d3c99088133ce2d :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> IO BG.CInt))
 hs_bindgen_3d3c99088133ce2d =
-  BG.fromFFIType hs_bindgen_3d3c99088133ce2d_base
+  fmap BG.fromFFIType hs_bindgen_3d3c99088133ce2d_base
 
 {-# NOINLINE mpv_initialize #-}
 
@@ -656,7 +660,7 @@ foreign import ccall unsafe "hs_bindgen_afbd8c099116ca9a"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_destroy@
 hs_bindgen_afbd8c099116ca9a :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> IO ()))
 hs_bindgen_afbd8c099116ca9a =
-  BG.fromFFIType hs_bindgen_afbd8c099116ca9a_base
+  fmap BG.fromFFIType hs_bindgen_afbd8c099116ca9a_base
 
 {-# NOINLINE mpv_destroy #-}
 
@@ -677,7 +681,7 @@ foreign import ccall unsafe "hs_bindgen_f9b6bb3e638f3201"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_terminate_destroy@
 hs_bindgen_f9b6bb3e638f3201 :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> IO ()))
 hs_bindgen_f9b6bb3e638f3201 =
-  BG.fromFFIType hs_bindgen_f9b6bb3e638f3201_base
+  fmap BG.fromFFIType hs_bindgen_f9b6bb3e638f3201_base
 
 {-# NOINLINE mpv_terminate_destroy #-}
 
@@ -703,7 +707,7 @@ foreign import ccall unsafe "hs_bindgen_593f2845bb5c47f1"
 hs_bindgen_593f2845bb5c47f1
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> PtrConst.PtrConst BG.CChar -> IO (BG.Ptr Mpv_handle)))
 hs_bindgen_593f2845bb5c47f1 =
-  BG.fromFFIType hs_bindgen_593f2845bb5c47f1_base
+  fmap BG.fromFFIType hs_bindgen_593f2845bb5c47f1_base
 
 {-# NOINLINE mpv_create_client #-}
 
@@ -734,7 +738,7 @@ foreign import ccall unsafe "hs_bindgen_5ff7205dc19a4792"
 hs_bindgen_5ff7205dc19a4792
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> PtrConst.PtrConst BG.CChar -> IO (BG.Ptr Mpv_handle)))
 hs_bindgen_5ff7205dc19a4792 =
-  BG.fromFFIType hs_bindgen_5ff7205dc19a4792_base
+  fmap BG.fromFFIType hs_bindgen_5ff7205dc19a4792_base
 
 {-# NOINLINE mpv_create_weak_client #-}
 
@@ -757,7 +761,7 @@ foreign import ccall unsafe "hs_bindgen_c94ae9a2e2c3d7ff"
 hs_bindgen_c94ae9a2e2c3d7ff
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> PtrConst.PtrConst BG.CChar -> IO BG.CInt))
 hs_bindgen_c94ae9a2e2c3d7ff =
-  BG.fromFFIType hs_bindgen_c94ae9a2e2c3d7ff_base
+  fmap BG.fromFFIType hs_bindgen_c94ae9a2e2c3d7ff_base
 
 {-# NOINLINE mpv_load_config_file #-}
 
@@ -784,7 +788,7 @@ foreign import ccall unsafe "hs_bindgen_651221056d2e619a"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_get_time_ns@
 hs_bindgen_651221056d2e619a :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> IO HsBindgen.Runtime.LibC.Int64))
 hs_bindgen_651221056d2e619a =
-  BG.fromFFIType hs_bindgen_651221056d2e619a_base
+  fmap BG.fromFFIType hs_bindgen_651221056d2e619a_base
 
 {-# NOINLINE mpv_get_time_ns #-}
 
@@ -809,7 +813,7 @@ foreign import ccall unsafe "hs_bindgen_023ca386e91d99fb"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_get_time_us@
 hs_bindgen_023ca386e91d99fb :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> IO HsBindgen.Runtime.LibC.Int64))
 hs_bindgen_023ca386e91d99fb =
-  BG.fromFFIType hs_bindgen_023ca386e91d99fb_base
+  fmap BG.fromFFIType hs_bindgen_023ca386e91d99fb_base
 
 {-# NOINLINE mpv_get_time_us #-}
 
@@ -828,7 +832,7 @@ foreign import ccall unsafe "hs_bindgen_b002aa5add927b4c"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_free_node_contents@
 hs_bindgen_b002aa5add927b4c :: IO (BG.FunPtr (BG.Ptr Mpv_node -> IO ()))
 hs_bindgen_b002aa5add927b4c =
-  BG.fromFFIType hs_bindgen_b002aa5add927b4c_base
+  fmap BG.fromFFIType hs_bindgen_b002aa5add927b4c_base
 
 {-# NOINLINE mpv_free_node_contents #-}
 
@@ -853,7 +857,7 @@ hs_bindgen_c1fd2384d1c980dc
            (BG.Ptr Mpv_handle -> PtrConst.PtrConst BG.CChar -> Mpv_format -> BG.Ptr BG.Void -> IO BG.CInt)
        )
 hs_bindgen_c1fd2384d1c980dc =
-  BG.fromFFIType hs_bindgen_c1fd2384d1c980dc_base
+  fmap BG.fromFFIType hs_bindgen_c1fd2384d1c980dc_base
 
 {-# NOINLINE mpv_set_option #-}
 
@@ -891,7 +895,7 @@ hs_bindgen_73c92079dbf4d0ca
            (BG.Ptr Mpv_handle -> PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> IO BG.CInt)
        )
 hs_bindgen_73c92079dbf4d0ca =
-  BG.fromFFIType hs_bindgen_73c92079dbf4d0ca_base
+  fmap BG.fromFFIType hs_bindgen_73c92079dbf4d0ca_base
 
 {-# NOINLINE mpv_set_option_string #-}
 
@@ -915,7 +919,7 @@ foreign import ccall unsafe "hs_bindgen_e3ec6b54ccf6ab32"
 hs_bindgen_e3ec6b54ccf6ab32
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> BG.Ptr (PtrConst.PtrConst BG.CChar) -> IO BG.CInt))
 hs_bindgen_e3ec6b54ccf6ab32 =
-  BG.fromFFIType hs_bindgen_e3ec6b54ccf6ab32_base
+  fmap BG.fromFFIType hs_bindgen_e3ec6b54ccf6ab32_base
 
 {-# NOINLINE mpv_command #-}
 
@@ -944,7 +948,7 @@ foreign import ccall unsafe "hs_bindgen_5aaa232e69143889"
 hs_bindgen_5aaa232e69143889
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> BG.Ptr Mpv_node -> BG.Ptr Mpv_node -> IO BG.CInt))
 hs_bindgen_5aaa232e69143889 =
-  BG.fromFFIType hs_bindgen_5aaa232e69143889_base
+  fmap BG.fromFFIType hs_bindgen_5aaa232e69143889_base
 
 {-# NOINLINE mpv_command_node #-}
 
@@ -984,7 +988,7 @@ hs_bindgen_0deb52786a23a532
            (BG.Ptr Mpv_handle -> BG.Ptr (PtrConst.PtrConst BG.CChar) -> BG.Ptr Mpv_node -> IO BG.CInt)
        )
 hs_bindgen_0deb52786a23a532 =
-  BG.fromFFIType hs_bindgen_0deb52786a23a532_base
+  fmap BG.fromFFIType hs_bindgen_0deb52786a23a532_base
 
 {-# NOINLINE mpv_command_ret #-}
 
@@ -1016,7 +1020,7 @@ foreign import ccall unsafe "hs_bindgen_f856b885c8ea171c"
 hs_bindgen_f856b885c8ea171c
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> PtrConst.PtrConst BG.CChar -> IO BG.CInt))
 hs_bindgen_f856b885c8ea171c =
-  BG.fromFFIType hs_bindgen_f856b885c8ea171c_base
+  fmap BG.fromFFIType hs_bindgen_f856b885c8ea171c_base
 
 {-# NOINLINE mpv_command_string #-}
 
@@ -1045,7 +1049,7 @@ hs_bindgen_887ffa76a5de94eb
            )
        )
 hs_bindgen_887ffa76a5de94eb =
-  BG.fromFFIType hs_bindgen_887ffa76a5de94eb_base
+  fmap BG.fromFFIType hs_bindgen_887ffa76a5de94eb_base
 
 {-# NOINLINE mpv_command_async #-}
 
@@ -1083,7 +1087,7 @@ foreign import ccall unsafe "hs_bindgen_dc9afc85267e5695"
 hs_bindgen_dc9afc85267e5695
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> HsBindgen.Runtime.LibC.Word64 -> BG.Ptr Mpv_node -> IO BG.CInt))
 hs_bindgen_dc9afc85267e5695 =
-  BG.fromFFIType hs_bindgen_dc9afc85267e5695_base
+  fmap BG.fromFFIType hs_bindgen_dc9afc85267e5695_base
 
 {-# NOINLINE mpv_command_node_async #-}
 
@@ -1114,7 +1118,7 @@ foreign import ccall unsafe "hs_bindgen_34e4edd15d21c3fc"
 hs_bindgen_34e4edd15d21c3fc
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> HsBindgen.Runtime.LibC.Word64 -> IO ()))
 hs_bindgen_34e4edd15d21c3fc =
-  BG.fromFFIType hs_bindgen_34e4edd15d21c3fc_base
+  fmap BG.fromFFIType hs_bindgen_34e4edd15d21c3fc_base
 
 {-# NOINLINE mpv_abort_async_command #-}
 
@@ -1148,7 +1152,7 @@ hs_bindgen_9d182040b443f98d
            (BG.Ptr Mpv_handle -> PtrConst.PtrConst BG.CChar -> Mpv_format -> BG.Ptr BG.Void -> IO BG.CInt)
        )
 hs_bindgen_9d182040b443f98d =
-  BG.fromFFIType hs_bindgen_9d182040b443f98d_base
+  fmap BG.fromFFIType hs_bindgen_9d182040b443f98d_base
 
 {-# NOINLINE mpv_set_property #-}
 
@@ -1188,7 +1192,7 @@ hs_bindgen_bba8776a54a154c9
            (BG.Ptr Mpv_handle -> PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> IO BG.CInt)
        )
 hs_bindgen_bba8776a54a154c9 =
-  BG.fromFFIType hs_bindgen_bba8776a54a154c9_base
+  fmap BG.fromFFIType hs_bindgen_bba8776a54a154c9_base
 
 {-# NOINLINE mpv_set_property_string #-}
 
@@ -1212,7 +1216,7 @@ foreign import ccall unsafe "hs_bindgen_a5b312e8252b72cf"
 hs_bindgen_a5b312e8252b72cf
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> PtrConst.PtrConst BG.CChar -> IO BG.CInt))
 hs_bindgen_a5b312e8252b72cf =
-  BG.fromFFIType hs_bindgen_a5b312e8252b72cf_base
+  fmap BG.fromFFIType hs_bindgen_a5b312e8252b72cf_base
 
 {-# NOINLINE mpv_del_property #-}
 
@@ -1247,7 +1251,7 @@ hs_bindgen_d5c9b75bd8d4a749
            )
        )
 hs_bindgen_d5c9b75bd8d4a749 =
-  BG.fromFFIType hs_bindgen_d5c9b75bd8d4a749_base
+  fmap BG.fromFFIType hs_bindgen_d5c9b75bd8d4a749_base
 
 {-# NOINLINE mpv_set_property_async #-}
 
@@ -1291,7 +1295,7 @@ hs_bindgen_89dce700857d062e
            (BG.Ptr Mpv_handle -> PtrConst.PtrConst BG.CChar -> Mpv_format -> BG.Ptr BG.Void -> IO BG.CInt)
        )
 hs_bindgen_89dce700857d062e =
-  BG.fromFFIType hs_bindgen_89dce700857d062e_base
+  fmap BG.fromFFIType hs_bindgen_89dce700857d062e_base
 
 {-# NOINLINE mpv_get_property #-}
 
@@ -1324,7 +1328,7 @@ foreign import ccall unsafe "hs_bindgen_1d23dd8b31bd1f63"
 hs_bindgen_1d23dd8b31bd1f63
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> PtrConst.PtrConst BG.CChar -> IO (BG.Ptr BG.CChar)))
 hs_bindgen_1d23dd8b31bd1f63 =
-  BG.fromFFIType hs_bindgen_1d23dd8b31bd1f63_base
+  fmap BG.fromFFIType hs_bindgen_1d23dd8b31bd1f63_base
 
 {-# NOINLINE mpv_get_property_string #-}
 
@@ -1353,7 +1357,7 @@ foreign import ccall unsafe "hs_bindgen_a3dedf4c1e485ba9"
 hs_bindgen_a3dedf4c1e485ba9
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> PtrConst.PtrConst BG.CChar -> IO (BG.Ptr BG.CChar)))
 hs_bindgen_a3dedf4c1e485ba9 =
-  BG.fromFFIType hs_bindgen_a3dedf4c1e485ba9_base
+  fmap BG.fromFFIType hs_bindgen_a3dedf4c1e485ba9_base
 
 {-# NOINLINE mpv_get_property_osd_string #-}
 
@@ -1384,7 +1388,7 @@ hs_bindgen_4eec801becaf8e6e
            )
        )
 hs_bindgen_4eec801becaf8e6e =
-  BG.fromFFIType hs_bindgen_4eec801becaf8e6e_base
+  fmap BG.fromFFIType hs_bindgen_4eec801becaf8e6e_base
 
 {-# NOINLINE mpv_get_property_async #-}
 
@@ -1429,7 +1433,7 @@ hs_bindgen_bf4537aeaa969151
            )
        )
 hs_bindgen_bf4537aeaa969151 =
-  BG.fromFFIType hs_bindgen_bf4537aeaa969151_base
+  fmap BG.fromFFIType hs_bindgen_bf4537aeaa969151_base
 
 {-# NOINLINE mpv_observe_property #-}
 
@@ -1482,7 +1486,7 @@ foreign import ccall unsafe "hs_bindgen_7096d655a7275acc"
 hs_bindgen_7096d655a7275acc
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> HsBindgen.Runtime.LibC.Word64 -> IO BG.CInt))
 hs_bindgen_7096d655a7275acc =
-  BG.fromFFIType hs_bindgen_7096d655a7275acc_base
+  fmap BG.fromFFIType hs_bindgen_7096d655a7275acc_base
 
 {-# NOINLINE mpv_unobserve_property #-}
 
@@ -1508,7 +1512,7 @@ foreign import ccall unsafe "hs_bindgen_1857a83a197aea05"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_event_name@
 hs_bindgen_1857a83a197aea05 :: IO (BG.FunPtr (Mpv_event_id -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_1857a83a197aea05 =
-  BG.fromFFIType hs_bindgen_1857a83a197aea05_base
+  fmap BG.fromFFIType hs_bindgen_1857a83a197aea05_base
 
 {-# NOINLINE mpv_event_name #-}
 
@@ -1533,7 +1537,7 @@ foreign import ccall unsafe "hs_bindgen_233d1d141f540094"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_event_to_node@
 hs_bindgen_233d1d141f540094 :: IO (BG.FunPtr (BG.Ptr Mpv_node -> BG.Ptr Mpv_event -> IO BG.CInt))
 hs_bindgen_233d1d141f540094 =
-  BG.fromFFIType hs_bindgen_233d1d141f540094_base
+  fmap BG.fromFFIType hs_bindgen_233d1d141f540094_base
 
 {-# NOINLINE mpv_event_to_node #-}
 
@@ -1565,7 +1569,7 @@ foreign import ccall unsafe "hs_bindgen_9f65f136209adff9"
 hs_bindgen_9f65f136209adff9
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> Mpv_event_id -> BG.CInt -> IO BG.CInt))
 hs_bindgen_9f65f136209adff9 =
-  BG.fromFFIType hs_bindgen_9f65f136209adff9_base
+  fmap BG.fromFFIType hs_bindgen_9f65f136209adff9_base
 
 {-# NOINLINE mpv_request_event #-}
 
@@ -1597,7 +1601,7 @@ foreign import ccall unsafe "hs_bindgen_57cfe9d93ce070ca"
 hs_bindgen_57cfe9d93ce070ca
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> PtrConst.PtrConst BG.CChar -> IO BG.CInt))
 hs_bindgen_57cfe9d93ce070ca =
-  BG.fromFFIType hs_bindgen_57cfe9d93ce070ca_base
+  fmap BG.fromFFIType hs_bindgen_57cfe9d93ce070ca_base
 
 {-# NOINLINE mpv_request_log_messages #-}
 
@@ -1622,7 +1626,7 @@ foreign import ccall unsafe "hs_bindgen_99eab11e9895f600"
 hs_bindgen_99eab11e9895f600
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> BG.CDouble -> IO (BG.Ptr Mpv_event)))
 hs_bindgen_99eab11e9895f600 =
-  BG.fromFFIType hs_bindgen_99eab11e9895f600_base
+  fmap BG.fromFFIType hs_bindgen_99eab11e9895f600_base
 
 {-# NOINLINE mpv_wait_event #-}
 
@@ -1651,7 +1655,7 @@ foreign import ccall unsafe "hs_bindgen_fae19300cc8a2bd1"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_wakeup@
 hs_bindgen_fae19300cc8a2bd1 :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> IO ()))
 hs_bindgen_fae19300cc8a2bd1 =
-  BG.fromFFIType hs_bindgen_fae19300cc8a2bd1_base
+  fmap BG.fromFFIType hs_bindgen_fae19300cc8a2bd1_base
 
 {-# NOINLINE mpv_wakeup #-}
 
@@ -1675,7 +1679,7 @@ foreign import ccall unsafe "hs_bindgen_46224d63a95386bd"
 hs_bindgen_46224d63a95386bd
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> BG.FunPtr (BG.Ptr BG.Void -> IO ()) -> BG.Ptr BG.Void -> IO ()))
 hs_bindgen_46224d63a95386bd =
-  BG.fromFFIType hs_bindgen_46224d63a95386bd_base
+  fmap BG.fromFFIType hs_bindgen_46224d63a95386bd_base
 
 {-# NOINLINE mpv_set_wakeup_callback #-}
 
@@ -1709,7 +1713,7 @@ foreign import ccall unsafe "hs_bindgen_7d38686a69d22551"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_wait_async_requests@
 hs_bindgen_7d38686a69d22551 :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> IO ()))
 hs_bindgen_7d38686a69d22551 =
-  BG.fromFFIType hs_bindgen_7d38686a69d22551_base
+  fmap BG.fromFFIType hs_bindgen_7d38686a69d22551_base
 
 {-# NOINLINE mpv_wait_async_requests #-}
 
@@ -1741,7 +1745,7 @@ hs_bindgen_c604fcdadcfcee34
            )
        )
 hs_bindgen_c604fcdadcfcee34 =
-  BG.fromFFIType hs_bindgen_c604fcdadcfcee34_base
+  fmap BG.fromFFIType hs_bindgen_c604fcdadcfcee34_base
 
 {-# NOINLINE mpv_hook_add #-}
 
@@ -1786,7 +1790,7 @@ foreign import ccall unsafe "hs_bindgen_15f8b4010dc2f31f"
 hs_bindgen_15f8b4010dc2f31f
   :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> HsBindgen.Runtime.LibC.Word64 -> IO BG.CInt))
 hs_bindgen_15f8b4010dc2f31f =
-  BG.fromFFIType hs_bindgen_15f8b4010dc2f31f_base
+  fmap BG.fromFFIType hs_bindgen_15f8b4010dc2f31f_base
 
 {-# NOINLINE mpv_hook_continue #-}
 
@@ -1813,7 +1817,7 @@ foreign import ccall unsafe "hs_bindgen_9a8885ffe905d9ee"
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.Client_get_mpv_get_wakeup_pipe@
 hs_bindgen_9a8885ffe905d9ee :: IO (BG.FunPtr (BG.Ptr Mpv_handle -> IO BG.CInt))
 hs_bindgen_9a8885ffe905d9ee =
-  BG.fromFFIType hs_bindgen_9a8885ffe905d9ee_base
+  fmap BG.fromFFIType hs_bindgen_9a8885ffe905d9ee_base
 
 {-# NOINLINE mpv_get_wakeup_pipe #-}
 

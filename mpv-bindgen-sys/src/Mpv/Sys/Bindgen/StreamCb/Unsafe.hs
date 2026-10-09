@@ -1,11 +1,15 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module Mpv.Sys.Bindgen.StreamCb.Unsafe (
   Mpv.Sys.Bindgen.StreamCb.Unsafe.mpv_stream_cb_add_ro,
 )
 where
+
+import Prelude (IO, fmap)
 
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
@@ -36,7 +40,7 @@ foreign import ccall unsafe "hs_bindgen_e269f44daece4f0b"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.FunPtr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @mpvbindgensys_Mpv.Sys.Bindgen.StreamCb_Unsafe_mpv_stream_cb_add_ro@
 hs_bindgen_e269f44daece4f0b
@@ -46,7 +50,18 @@ hs_bindgen_e269f44daece4f0b
   -> Mpv_stream_cb_open_ro_fn
   -> IO BG.CInt
 hs_bindgen_e269f44daece4f0b =
-  BG.fromFFIType hs_bindgen_e269f44daece4f0b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_e269f44daece4f0b_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Add a custom stream protocol. This will register a protocol handler under the given protocol prefix, and invoke the given callbacks if an URI with the matching protocol prefix is opened.
 --

@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Core client API: handles, options, commands, properties, events.
 --
 --     == FFI conventions
@@ -95,6 +97,7 @@ module Mpv.Sys.Client (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Double, IO, fmap)
 
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst

@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | OpenGL backend parameters for the render API.
 --
 --     == FFI conventions

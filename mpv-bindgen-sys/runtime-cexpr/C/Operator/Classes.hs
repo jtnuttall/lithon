@@ -111,7 +111,7 @@ class Minus a where
   -- | Result type family of the C unary minus operator.
   type MinusRes a :: Type
 
-  -- | C unary plus minus.
+  -- | C unary minus operator.
   negate :: a -> MinusRes a
 
 infixl 2 +
@@ -138,7 +138,7 @@ class Sub a b where
 
 infixl 1 *
 
--- | Class for the C binary multiplication operator..
+-- | Class for the C binary multiplication operator.
 type Mult :: Type -> Type -> Constraint
 class Mult a b where
   -- | Result type family of the C binary multiplication operator.
@@ -160,7 +160,7 @@ class Div a b where
 
 infixl 1 %
 
--- | Class for the C binary remainder operator..
+-- | Class for the C binary remainder operator.
 type Rem :: Type -> Type -> Constraint
 class Rem a b where
   -- | Result type family of the C binary remainder operator.
@@ -192,13 +192,13 @@ class Bitwise a b where
   -- | Result type family of C binary bitwise logical operators.
   type BitsRes a b :: Type
 
-  -- | C binary bitwise *and* operator.
+  -- | C binary bitwise /and/ operator.
   (.&.) :: a -> b -> BitsRes a b
 
-  -- | C binary bitwise *or* operator.
+  -- | C binary bitwise /or/ operator.
   (.|.) :: a -> b -> BitsRes a b
 
-  -- | C binary bitwise *xor* operator.
+  -- | C binary bitwise /xor/ operator.
   (.^.) :: a -> b -> BitsRes a b
 
 infixl 3 <<
