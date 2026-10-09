@@ -16,6 +16,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL realtime clock and date\/time routines.
 --
@@ -36,9 +37,12 @@ module SDL3.Sys.Bindgen.Time (
 )
 where
 
+import Prelude (Eq, Int, Ord, Read, Show, pure, (<*>), (>>), type (~))
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 
@@ -129,6 +133,11 @@ instance Marshal.WriteRaw SDL_DateTime where
 
 deriving via Marshal.EquivStorable SDL_DateTime instance BG.Storable SDL_DateTime
 
+deriving via Struct.IsStructViaReadRaw SDL_DateTime instance Struct.IsStruct SDL_DateTime
+
+-- | Year
+--
+--     [C declaration]: @year@, defined at @SDL3\/SDL_time.h 56:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "year" SDL_DateTime ty
@@ -161,6 +170,9 @@ instance HasCField.HasCField SDL_DateTime "year" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Month [01-12]
+--
+--     [C declaration]: @month@, defined at @SDL3\/SDL_time.h 57:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "month" SDL_DateTime ty
@@ -193,6 +205,9 @@ instance HasCField.HasCField SDL_DateTime "month" where
 
   offset# = \_ -> \_ -> 4
 
+-- | Day of the month [01-31]
+--
+--     [C declaration]: @day@, defined at @SDL3\/SDL_time.h 58:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "day" SDL_DateTime ty
@@ -225,6 +240,9 @@ instance HasCField.HasCField SDL_DateTime "day" where
 
   offset# = \_ -> \_ -> 8
 
+-- | Hour [0-23]
+--
+--     [C declaration]: @hour@, defined at @SDL3\/SDL_time.h 59:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "hour" SDL_DateTime ty
@@ -257,6 +275,9 @@ instance HasCField.HasCField SDL_DateTime "hour" where
 
   offset# = \_ -> \_ -> 12
 
+-- | Minute [0-59]
+--
+--     [C declaration]: @minute@, defined at @SDL3\/SDL_time.h 60:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "minute" SDL_DateTime ty
@@ -289,6 +310,9 @@ instance HasCField.HasCField SDL_DateTime "minute" where
 
   offset# = \_ -> \_ -> 16
 
+-- | Seconds [0-60]
+--
+--     [C declaration]: @second@, defined at @SDL3\/SDL_time.h 61:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "second" SDL_DateTime ty
@@ -321,6 +345,9 @@ instance HasCField.HasCField SDL_DateTime "second" where
 
   offset# = \_ -> \_ -> 20
 
+-- | Nanoseconds [0-999999999]
+--
+--     [C declaration]: @nanosecond@, defined at @SDL3\/SDL_time.h 62:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "nanosecond" SDL_DateTime ty
@@ -353,6 +380,9 @@ instance HasCField.HasCField SDL_DateTime "nanosecond" where
 
   offset# = \_ -> \_ -> 24
 
+-- | Day of the week [0-6] (0 being Sunday)
+--
+--     [C declaration]: @day_of_week@, defined at @SDL3\/SDL_time.h 63:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "day_of_week" SDL_DateTime ty
@@ -386,6 +416,9 @@ instance HasCField.HasCField SDL_DateTime "day_of_week" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Seconds east of UTC
+--
+--     [C declaration]: @utc_offset@, defined at @SDL3\/SDL_time.h 64:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "utc_offset" SDL_DateTime ty

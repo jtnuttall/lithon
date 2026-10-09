@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Messagebox.Safe (
@@ -8,6 +10,9 @@ module SDL3.Sys.Bindgen.Messagebox.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -16,7 +21,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_messagebox.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_messagebox.h>"
          , "_Bool hs_bindgen_5fad9b7ef25350c1 ("
          , "  SDL_MessageBoxData const *arg1,"
          , "  signed int *arg2"
@@ -42,7 +48,7 @@ foreign import ccall safe "hs_bindgen_5fad9b7ef25350c1"
   hs_bindgen_5fad9b7ef25350c1_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Messagebox_Safe_SDL_ShowMessageBox@
 hs_bindgen_5fad9b7ef25350c1
@@ -50,7 +56,9 @@ hs_bindgen_5fad9b7ef25350c1
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_5fad9b7ef25350c1 =
-  BG.fromFFIType hs_bindgen_5fad9b7ef25350c1_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_5fad9b7ef25350c1_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Create a modal message box.
 --
@@ -88,11 +96,11 @@ sDL_ShowMessageBox = hs_bindgen_5fad9b7ef25350c1
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Messagebox_Safe_SDL_ShowSimpleMessageBox@
 foreign import ccall safe "hs_bindgen_3ea30834607f7eea"
   hs_bindgen_3ea30834607f7eea_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Messagebox_Safe_SDL_ShowSimpleMessageBox@
 hs_bindgen_3ea30834607f7eea
@@ -102,7 +110,18 @@ hs_bindgen_3ea30834607f7eea
   -> BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window
   -> IO BG.CBool
 hs_bindgen_3ea30834607f7eea =
-  BG.fromFFIType hs_bindgen_3ea30834607f7eea_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_3ea30834607f7eea_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Display a simple modal message box.
 --

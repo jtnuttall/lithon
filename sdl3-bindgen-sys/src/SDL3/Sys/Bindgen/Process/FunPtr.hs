@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Process.FunPtr (
@@ -15,6 +17,8 @@ module SDL3.Sys.Bindgen.Process.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
@@ -25,7 +29,8 @@ import SDL3.Sys.Bindgen.Properties qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_process.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_process.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Process_get_SDL_CreateProcess */"
          , "__attribute__ ((const))"
          , "SDL_Process *(*hs_bindgen_da17b0b856594376 (void)) ("
@@ -118,7 +123,7 @@ hs_bindgen_da17b0b856594376
   :: IO
        (BG.FunPtr (PtrConst.PtrConst (PtrConst.PtrConst BG.CChar) -> BG.CBool -> IO (BG.Ptr SDL_Process)))
 hs_bindgen_da17b0b856594376 =
-  BG.fromFFIType hs_bindgen_da17b0b856594376_base
+  fmap BG.fromFFIType hs_bindgen_da17b0b856594376_base
 
 {-# NOINLINE sDL_CreateProcess #-}
 
@@ -161,7 +166,7 @@ foreign import ccall unsafe "hs_bindgen_ca2af0d478f65779"
 hs_bindgen_ca2af0d478f65779
   :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Properties.SDL_PropertiesID -> IO (BG.Ptr SDL_Process)))
 hs_bindgen_ca2af0d478f65779 =
-  BG.fromFFIType hs_bindgen_ca2af0d478f65779_base
+  fmap BG.fromFFIType hs_bindgen_ca2af0d478f65779_base
 
 {-# NOINLINE sDL_CreateProcessWithProperties #-}
 
@@ -220,7 +225,7 @@ foreign import ccall unsafe "hs_bindgen_122575617d2f970a"
 hs_bindgen_122575617d2f970a
   :: IO (BG.FunPtr (BG.Ptr SDL_Process -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID))
 hs_bindgen_122575617d2f970a =
-  BG.fromFFIType hs_bindgen_122575617d2f970a_base
+  fmap BG.fromFFIType hs_bindgen_122575617d2f970a_base
 
 {-# NOINLINE sDL_GetProcessProperties #-}
 
@@ -266,7 +271,7 @@ hs_bindgen_366550f8901941a0
            (BG.Ptr SDL_Process -> BG.Ptr HsBindgen.Runtime.LibC.CSize -> BG.Ptr BG.CInt -> IO (BG.Ptr BG.Void))
        )
 hs_bindgen_366550f8901941a0 =
-  BG.fromFFIType hs_bindgen_366550f8901941a0_base
+  fmap BG.fromFFIType hs_bindgen_366550f8901941a0_base
 
 {-# NOINLINE sDL_ReadProcess #-}
 
@@ -308,7 +313,7 @@ foreign import ccall unsafe "hs_bindgen_6503613b26c58999"
 hs_bindgen_6503613b26c58999
   :: IO (BG.FunPtr (BG.Ptr SDL_Process -> IO (BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream)))
 hs_bindgen_6503613b26c58999 =
-  BG.fromFFIType hs_bindgen_6503613b26c58999_base
+  fmap BG.fromFFIType hs_bindgen_6503613b26c58999_base
 
 {-# NOINLINE sDL_GetProcessInput #-}
 
@@ -343,7 +348,7 @@ foreign import ccall unsafe "hs_bindgen_d9e2688fce87583b"
 hs_bindgen_d9e2688fce87583b
   :: IO (BG.FunPtr (BG.Ptr SDL_Process -> IO (BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream)))
 hs_bindgen_d9e2688fce87583b =
-  BG.fromFFIType hs_bindgen_d9e2688fce87583b_base
+  fmap BG.fromFFIType hs_bindgen_d9e2688fce87583b_base
 
 {-# NOINLINE sDL_GetProcessOutput #-}
 
@@ -377,7 +382,7 @@ foreign import ccall unsafe "hs_bindgen_66935b63f947a265"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Process_get_SDL_KillProcess@
 hs_bindgen_66935b63f947a265 :: IO (BG.FunPtr (BG.Ptr SDL_Process -> BG.CBool -> IO BG.CBool))
 hs_bindgen_66935b63f947a265 =
-  BG.fromFFIType hs_bindgen_66935b63f947a265_base
+  fmap BG.fromFFIType hs_bindgen_66935b63f947a265_base
 
 {-# NOINLINE sDL_KillProcess #-}
 
@@ -409,7 +414,7 @@ foreign import ccall unsafe "hs_bindgen_7ea62b336c3f5c4c"
 hs_bindgen_7ea62b336c3f5c4c
   :: IO (BG.FunPtr (BG.Ptr SDL_Process -> BG.CBool -> BG.Ptr BG.CInt -> IO BG.CBool))
 hs_bindgen_7ea62b336c3f5c4c =
-  BG.fromFFIType hs_bindgen_7ea62b336c3f5c4c_base
+  fmap BG.fromFFIType hs_bindgen_7ea62b336c3f5c4c_base
 
 {-# NOINLINE sDL_WaitProcess #-}
 
@@ -448,7 +453,7 @@ foreign import ccall unsafe "hs_bindgen_c5cffc00b0da9028"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Process_get_SDL_DestroyProcess@
 hs_bindgen_c5cffc00b0da9028 :: IO (BG.FunPtr (BG.Ptr SDL_Process -> IO ()))
 hs_bindgen_c5cffc00b0da9028 =
-  BG.fromFFIType hs_bindgen_c5cffc00b0da9028_base
+  fmap BG.fromFFIType hs_bindgen_c5cffc00b0da9028_base
 
 {-# NOINLINE sDL_DestroyProcess #-}
 

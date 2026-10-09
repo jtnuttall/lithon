@@ -6,6 +6,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -15,6 +16,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL offers a way to add items to the \"system tray\" (more correctly called the \"notification area\" on Windows). On platforms that offer this concept, an SDL app can add a tray icon, submenus, checkboxes, and clickable entries, and register a callback that is fired when the user clicks on these pieces. An opaque handle representing a toplevel system tray object.
 --
@@ -33,6 +35,8 @@ module SDL3.Sys.Bindgen.Tray (
   SDL3.Sys.Bindgen.Tray.SDL_TrayCallback (..),
 )
 where
+
+import Prelude (Bounded, Enum, Eq, IO, Integral, Num, Ord, Read, Real, Show, fmap, type (~))
 
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
@@ -149,7 +153,6 @@ newtype SDL_TrayCallback_Aux = SDL_TrayCallback_Aux
   { unwrap :: BG.Ptr BG.Void -> BG.Ptr SDL_TrayEntry -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_TrayCallback_Aux@
 foreign import ccall safe "wrapper"
@@ -163,7 +166,14 @@ hs_bindgen_6a8b13b7097ccaf5
   -> IO (BG.FunPtr SDL_TrayCallback_Aux)
 hs_bindgen_6a8b13b7097ccaf5 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_6a8b13b7097ccaf5_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_6a8b13b7097ccaf5_base
+          ( \x1 ->
+              \x2 ->
+                BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2)
+          )
+      )
 
 -- __unique:__ @fromSDL_TrayCallback_Aux@
 foreign import ccall safe "dynamic"
@@ -179,7 +189,11 @@ hs_bindgen_0aa010ee3dd2ffa9
   -> SDL_TrayCallback_Aux
 hs_bindgen_0aa010ee3dd2ffa9 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_0aa010ee3dd2ffa9_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_TrayCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            hs_bindgen_0aa010ee3dd2ffa9_base (BG.castFunPtr funPtr0) (BG.toFFIType x1) (BG.toFFIType x2)
+      )
 
 instance BG.ToFunPtr SDL_TrayCallback_Aux where
   toFunPtr = hs_bindgen_6a8b13b7097ccaf5

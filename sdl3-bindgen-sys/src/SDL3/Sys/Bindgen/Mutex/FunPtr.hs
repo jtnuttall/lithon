@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Mutex.FunPtr (
@@ -34,6 +36,8 @@ module SDL3.Sys.Bindgen.Mutex.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Mutex
@@ -41,7 +45,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_mutex.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_mutex.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_CreateMutex */"
          , "__attribute__ ((const))"
          , "SDL_Mutex *(*hs_bindgen_95a099535000d13d (void)) (void)"
@@ -277,7 +282,7 @@ foreign import ccall unsafe "hs_bindgen_95a099535000d13d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_CreateMutex@
 hs_bindgen_95a099535000d13d :: IO (BG.FunPtr (IO (BG.Ptr SDL_Mutex)))
 hs_bindgen_95a099535000d13d =
-  BG.fromFFIType hs_bindgen_95a099535000d13d_base
+  fmap BG.fromFFIType hs_bindgen_95a099535000d13d_base
 
 {-# NOINLINE sDL_CreateMutex #-}
 
@@ -310,7 +315,7 @@ foreign import ccall unsafe "hs_bindgen_df61bce804eff3b2"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_LockMutex@
 hs_bindgen_df61bce804eff3b2 :: IO (BG.FunPtr (BG.Ptr SDL_Mutex -> IO ()))
 hs_bindgen_df61bce804eff3b2 =
-  BG.fromFFIType hs_bindgen_df61bce804eff3b2_base
+  fmap BG.fromFFIType hs_bindgen_df61bce804eff3b2_base
 
 {-# NOINLINE sDL_LockMutex #-}
 
@@ -343,7 +348,7 @@ foreign import ccall unsafe "hs_bindgen_45c6ae563e57d83e"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_TryLockMutex@
 hs_bindgen_45c6ae563e57d83e :: IO (BG.FunPtr (BG.Ptr SDL_Mutex -> IO BG.CBool))
 hs_bindgen_45c6ae563e57d83e =
-  BG.fromFFIType hs_bindgen_45c6ae563e57d83e_base
+  fmap BG.fromFFIType hs_bindgen_45c6ae563e57d83e_base
 
 {-# NOINLINE sDL_TryLockMutex #-}
 
@@ -378,7 +383,7 @@ foreign import ccall unsafe "hs_bindgen_279301ff47dc6a1f"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_UnlockMutex@
 hs_bindgen_279301ff47dc6a1f :: IO (BG.FunPtr (BG.Ptr SDL_Mutex -> IO ()))
 hs_bindgen_279301ff47dc6a1f =
-  BG.fromFFIType hs_bindgen_279301ff47dc6a1f_base
+  fmap BG.fromFFIType hs_bindgen_279301ff47dc6a1f_base
 
 {-# NOINLINE sDL_UnlockMutex #-}
 
@@ -409,7 +414,7 @@ foreign import ccall unsafe "hs_bindgen_41ed6e14b48302a3"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_DestroyMutex@
 hs_bindgen_41ed6e14b48302a3 :: IO (BG.FunPtr (BG.Ptr SDL_Mutex -> IO ()))
 hs_bindgen_41ed6e14b48302a3 =
-  BG.fromFFIType hs_bindgen_41ed6e14b48302a3_base
+  fmap BG.fromFFIType hs_bindgen_41ed6e14b48302a3_base
 
 {-# NOINLINE sDL_DestroyMutex #-}
 
@@ -438,7 +443,7 @@ foreign import ccall unsafe "hs_bindgen_3eb0c1367593e404"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_CreateRWLock@
 hs_bindgen_3eb0c1367593e404 :: IO (BG.FunPtr (IO (BG.Ptr SDL_RWLock)))
 hs_bindgen_3eb0c1367593e404 =
-  BG.fromFFIType hs_bindgen_3eb0c1367593e404_base
+  fmap BG.fromFFIType hs_bindgen_3eb0c1367593e404_base
 
 {-# NOINLINE sDL_CreateRWLock #-}
 
@@ -475,7 +480,7 @@ foreign import ccall unsafe "hs_bindgen_1d6189a38a9e5f28"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_LockRWLockForReading@
 hs_bindgen_1d6189a38a9e5f28 :: IO (BG.FunPtr (BG.Ptr SDL_RWLock -> IO ()))
 hs_bindgen_1d6189a38a9e5f28 =
-  BG.fromFFIType hs_bindgen_1d6189a38a9e5f28_base
+  fmap BG.fromFFIType hs_bindgen_1d6189a38a9e5f28_base
 
 {-# NOINLINE sDL_LockRWLockForReading #-}
 
@@ -512,7 +517,7 @@ foreign import ccall unsafe "hs_bindgen_badbac25bb2ac3e5"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_LockRWLockForWriting@
 hs_bindgen_badbac25bb2ac3e5 :: IO (BG.FunPtr (BG.Ptr SDL_RWLock -> IO ()))
 hs_bindgen_badbac25bb2ac3e5 =
-  BG.fromFFIType hs_bindgen_badbac25bb2ac3e5_base
+  fmap BG.fromFFIType hs_bindgen_badbac25bb2ac3e5_base
 
 {-# NOINLINE sDL_LockRWLockForWriting #-}
 
@@ -547,7 +552,7 @@ foreign import ccall unsafe "hs_bindgen_1e5ea8850474c50f"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_TryLockRWLockForReading@
 hs_bindgen_1e5ea8850474c50f :: IO (BG.FunPtr (BG.Ptr SDL_RWLock -> IO BG.CBool))
 hs_bindgen_1e5ea8850474c50f =
-  BG.fromFFIType hs_bindgen_1e5ea8850474c50f_base
+  fmap BG.fromFFIType hs_bindgen_1e5ea8850474c50f_base
 
 {-# NOINLINE sDL_TryLockRWLockForReading #-}
 
@@ -584,7 +589,7 @@ foreign import ccall unsafe "hs_bindgen_a11f0d78039b31a7"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_TryLockRWLockForWriting@
 hs_bindgen_a11f0d78039b31a7 :: IO (BG.FunPtr (BG.Ptr SDL_RWLock -> IO BG.CBool))
 hs_bindgen_a11f0d78039b31a7 =
-  BG.fromFFIType hs_bindgen_a11f0d78039b31a7_base
+  fmap BG.fromFFIType hs_bindgen_a11f0d78039b31a7_base
 
 {-# NOINLINE sDL_TryLockRWLockForWriting #-}
 
@@ -623,7 +628,7 @@ foreign import ccall unsafe "hs_bindgen_769c3da328a63de5"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_UnlockRWLock@
 hs_bindgen_769c3da328a63de5 :: IO (BG.FunPtr (BG.Ptr SDL_RWLock -> IO ()))
 hs_bindgen_769c3da328a63de5 =
-  BG.fromFFIType hs_bindgen_769c3da328a63de5_base
+  fmap BG.fromFFIType hs_bindgen_769c3da328a63de5_base
 
 {-# NOINLINE sDL_UnlockRWLock #-}
 
@@ -656,7 +661,7 @@ foreign import ccall unsafe "hs_bindgen_7a7492595f34e502"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_DestroyRWLock@
 hs_bindgen_7a7492595f34e502 :: IO (BG.FunPtr (BG.Ptr SDL_RWLock -> IO ()))
 hs_bindgen_7a7492595f34e502 =
-  BG.fromFFIType hs_bindgen_7a7492595f34e502_base
+  fmap BG.fromFFIType hs_bindgen_7a7492595f34e502_base
 
 {-# NOINLINE sDL_DestroyRWLock #-}
 
@@ -686,7 +691,7 @@ foreign import ccall unsafe "hs_bindgen_22509b0bb44ec2c1"
 hs_bindgen_22509b0bb44ec2c1
   :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO (BG.Ptr SDL_Semaphore)))
 hs_bindgen_22509b0bb44ec2c1 =
-  BG.fromFFIType hs_bindgen_22509b0bb44ec2c1_base
+  fmap BG.fromFFIType hs_bindgen_22509b0bb44ec2c1_base
 
 {-# NOINLINE sDL_CreateSemaphore #-}
 
@@ -717,7 +722,7 @@ foreign import ccall unsafe "hs_bindgen_1f077a5303df061a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_DestroySemaphore@
 hs_bindgen_1f077a5303df061a :: IO (BG.FunPtr (BG.Ptr SDL_Semaphore -> IO ()))
 hs_bindgen_1f077a5303df061a =
-  BG.fromFFIType hs_bindgen_1f077a5303df061a_base
+  fmap BG.fromFFIType hs_bindgen_1f077a5303df061a_base
 
 {-# NOINLINE sDL_DestroySemaphore #-}
 
@@ -746,7 +751,7 @@ foreign import ccall unsafe "hs_bindgen_91a2349e7496eeae"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_WaitSemaphore@
 hs_bindgen_91a2349e7496eeae :: IO (BG.FunPtr (BG.Ptr SDL_Semaphore -> IO ()))
 hs_bindgen_91a2349e7496eeae =
-  BG.fromFFIType hs_bindgen_91a2349e7496eeae_base
+  fmap BG.fromFFIType hs_bindgen_91a2349e7496eeae_base
 
 {-# NOINLINE sDL_WaitSemaphore #-}
 
@@ -777,7 +782,7 @@ foreign import ccall unsafe "hs_bindgen_81872972bd3486d3"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_TryWaitSemaphore@
 hs_bindgen_81872972bd3486d3 :: IO (BG.FunPtr (BG.Ptr SDL_Semaphore -> IO BG.CBool))
 hs_bindgen_81872972bd3486d3 =
-  BG.fromFFIType hs_bindgen_81872972bd3486d3_base
+  fmap BG.fromFFIType hs_bindgen_81872972bd3486d3_base
 
 {-# NOINLINE sDL_TryWaitSemaphore #-}
 
@@ -809,7 +814,7 @@ foreign import ccall unsafe "hs_bindgen_0a26128dc146ea69"
 hs_bindgen_0a26128dc146ea69
   :: IO (BG.FunPtr (BG.Ptr SDL_Semaphore -> SDL3.Sys.Bindgen.Stdinc.Sint32 -> IO BG.CBool))
 hs_bindgen_0a26128dc146ea69 =
-  BG.fromFFIType hs_bindgen_0a26128dc146ea69_base
+  fmap BG.fromFFIType hs_bindgen_0a26128dc146ea69_base
 
 {-# NOINLINE sDL_WaitSemaphoreTimeout #-}
 
@@ -843,7 +848,7 @@ foreign import ccall unsafe "hs_bindgen_9af09ce180d458b9"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_SignalSemaphore@
 hs_bindgen_9af09ce180d458b9 :: IO (BG.FunPtr (BG.Ptr SDL_Semaphore -> IO ()))
 hs_bindgen_9af09ce180d458b9 =
-  BG.fromFFIType hs_bindgen_9af09ce180d458b9_base
+  fmap BG.fromFFIType hs_bindgen_9af09ce180d458b9_base
 
 {-# NOINLINE sDL_SignalSemaphore #-}
 
@@ -871,7 +876,7 @@ foreign import ccall unsafe "hs_bindgen_5ee888052e9adc81"
 hs_bindgen_5ee888052e9adc81
   :: IO (BG.FunPtr (BG.Ptr SDL_Semaphore -> IO SDL3.Sys.Bindgen.Stdinc.Uint32))
 hs_bindgen_5ee888052e9adc81 =
-  BG.fromFFIType hs_bindgen_5ee888052e9adc81_base
+  fmap BG.fromFFIType hs_bindgen_5ee888052e9adc81_base
 
 {-# NOINLINE sDL_GetSemaphoreValue #-}
 
@@ -898,7 +903,7 @@ foreign import ccall unsafe "hs_bindgen_07cf0a76ca2c83d0"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_CreateCondition@
 hs_bindgen_07cf0a76ca2c83d0 :: IO (BG.FunPtr (IO (BG.Ptr SDL_Condition)))
 hs_bindgen_07cf0a76ca2c83d0 =
-  BG.fromFFIType hs_bindgen_07cf0a76ca2c83d0_base
+  fmap BG.fromFFIType hs_bindgen_07cf0a76ca2c83d0_base
 
 {-# NOINLINE sDL_CreateCondition #-}
 
@@ -925,7 +930,7 @@ foreign import ccall unsafe "hs_bindgen_99bba06553492457"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_DestroyCondition@
 hs_bindgen_99bba06553492457 :: IO (BG.FunPtr (BG.Ptr SDL_Condition -> IO ()))
 hs_bindgen_99bba06553492457 =
-  BG.fromFFIType hs_bindgen_99bba06553492457_base
+  fmap BG.fromFFIType hs_bindgen_99bba06553492457_base
 
 {-# NOINLINE sDL_DestroyCondition #-}
 
@@ -952,7 +957,7 @@ foreign import ccall unsafe "hs_bindgen_a9b4bfe1c85d2caa"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_SignalCondition@
 hs_bindgen_a9b4bfe1c85d2caa :: IO (BG.FunPtr (BG.Ptr SDL_Condition -> IO ()))
 hs_bindgen_a9b4bfe1c85d2caa =
-  BG.fromFFIType hs_bindgen_a9b4bfe1c85d2caa_base
+  fmap BG.fromFFIType hs_bindgen_a9b4bfe1c85d2caa_base
 
 {-# NOINLINE sDL_SignalCondition #-}
 
@@ -979,7 +984,7 @@ foreign import ccall unsafe "hs_bindgen_26d1393d70aa1e21"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_BroadcastCondition@
 hs_bindgen_26d1393d70aa1e21 :: IO (BG.FunPtr (BG.Ptr SDL_Condition -> IO ()))
 hs_bindgen_26d1393d70aa1e21 =
-  BG.fromFFIType hs_bindgen_26d1393d70aa1e21_base
+  fmap BG.fromFFIType hs_bindgen_26d1393d70aa1e21_base
 
 {-# NOINLINE sDL_BroadcastCondition #-}
 
@@ -1006,7 +1011,7 @@ foreign import ccall unsafe "hs_bindgen_5c1581c6a748ae80"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_WaitCondition@
 hs_bindgen_5c1581c6a748ae80 :: IO (BG.FunPtr (BG.Ptr SDL_Condition -> BG.Ptr SDL_Mutex -> IO ()))
 hs_bindgen_5c1581c6a748ae80 =
-  BG.fromFFIType hs_bindgen_5c1581c6a748ae80_base
+  fmap BG.fromFFIType hs_bindgen_5c1581c6a748ae80_base
 
 {-# NOINLINE sDL_WaitCondition #-}
 
@@ -1045,7 +1050,7 @@ hs_bindgen_0498ed88d8c2daca
            (BG.Ptr SDL_Condition -> BG.Ptr SDL_Mutex -> SDL3.Sys.Bindgen.Stdinc.Sint32 -> IO BG.CBool)
        )
 hs_bindgen_0498ed88d8c2daca =
-  BG.fromFFIType hs_bindgen_0498ed88d8c2daca_base
+  fmap BG.fromFFIType hs_bindgen_0498ed88d8c2daca_base
 
 {-# NOINLINE sDL_WaitConditionTimeout #-}
 
@@ -1084,7 +1089,7 @@ foreign import ccall unsafe "hs_bindgen_4da27525ce560809"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_ShouldInit@
 hs_bindgen_4da27525ce560809 :: IO (BG.FunPtr (BG.Ptr SDL_InitState -> IO BG.CBool))
 hs_bindgen_4da27525ce560809 =
-  BG.fromFFIType hs_bindgen_4da27525ce560809_base
+  fmap BG.fromFFIType hs_bindgen_4da27525ce560809_base
 
 {-# NOINLINE sDL_ShouldInit #-}
 
@@ -1117,7 +1122,7 @@ foreign import ccall unsafe "hs_bindgen_6877992dc5bc2120"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_ShouldQuit@
 hs_bindgen_6877992dc5bc2120 :: IO (BG.FunPtr (BG.Ptr SDL_InitState -> IO BG.CBool))
 hs_bindgen_6877992dc5bc2120 =
-  BG.fromFFIType hs_bindgen_6877992dc5bc2120_base
+  fmap BG.fromFFIType hs_bindgen_6877992dc5bc2120_base
 
 {-# NOINLINE sDL_ShouldQuit #-}
 
@@ -1150,7 +1155,7 @@ foreign import ccall unsafe "hs_bindgen_d08e1c271251d0d2"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_get_SDL_SetInitialized@
 hs_bindgen_d08e1c271251d0d2 :: IO (BG.FunPtr (BG.Ptr SDL_InitState -> BG.CBool -> IO ()))
 hs_bindgen_d08e1c271251d0d2 =
-  BG.fromFFIType hs_bindgen_d08e1c271251d0d2_base
+  fmap BG.fromFFIType hs_bindgen_d08e1c271251d0d2_base
 
 {-# NOINLINE sDL_SetInitialized #-}
 

@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Dialog.Unsafe (
@@ -10,6 +12,9 @@ module SDL3.Sys.Bindgen.Dialog.Unsafe (
 )
 where
 
+import Prelude (IO)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -19,7 +24,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_dialog.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_dialog.h>"
          , "void hs_bindgen_fda0993ea7af1749 ("
          , "  SDL_DialogFileCallback arg1,"
          , "  void *arg2,"
@@ -73,9 +79,9 @@ foreign import ccall unsafe "hs_bindgen_fda0993ea7af1749"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Dialog_Unsafe_SDL_ShowOpenFileDialog@
@@ -89,7 +95,21 @@ hs_bindgen_fda0993ea7af1749
   -> BG.CBool
   -> IO ()
 hs_bindgen_fda0993ea7af1749 =
-  BG.fromFFIType hs_bindgen_fda0993ea7af1749_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                hs_bindgen_fda0993ea7af1749_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+                  (BG.toFFIType x5)
+                  (BG.toFFIType x6)
 
 -- | Displays a dialog that lets the user select a file on their filesystem.
 --
@@ -149,7 +169,7 @@ foreign import ccall unsafe "hs_bindgen_d0854a0f4506ac27"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
     -> IO ()
 
@@ -163,7 +183,19 @@ hs_bindgen_d0854a0f4506ac27
   -> PtrConst.PtrConst BG.CChar
   -> IO ()
 hs_bindgen_d0854a0f4506ac27 =
-  BG.fromFFIType hs_bindgen_d0854a0f4506ac27_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              hs_bindgen_d0854a0f4506ac27_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+                (BG.toFFIType x4)
+                (BG.toFFIType x5)
 
 -- | Displays a dialog that lets the user choose a new or existing file on their filesystem.
 --
@@ -219,7 +251,7 @@ foreign import ccall unsafe "hs_bindgen_ff283a0c567ee6a6"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Dialog_Unsafe_SDL_ShowOpenFolderDialog@
@@ -231,7 +263,17 @@ hs_bindgen_ff283a0c567ee6a6
   -> BG.CBool
   -> IO ()
 hs_bindgen_ff283a0c567ee6a6 =
-  BG.fromFFIType hs_bindgen_ff283a0c567ee6a6_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            hs_bindgen_ff283a0c567ee6a6_base
+              (BG.toFFIType x0)
+              (BG.toFFIType x1)
+              (BG.toFFIType x2)
+              (BG.toFFIType x3)
+              (BG.toFFIType x4)
 
 -- | Displays a dialog that lets the user select a folder on their filesystem.
 --
@@ -280,10 +322,10 @@ sDL_ShowOpenFolderDialog =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Dialog_Unsafe_SDL_ShowFileDialogWithProperties@
 foreign import ccall unsafe "hs_bindgen_18ab411c9e9de6d3"
   hs_bindgen_18ab411c9e9de6d3_base
-    :: BG.Word32
+    :: BG.CUInt
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Dialog_Unsafe_SDL_ShowFileDialogWithProperties@
@@ -294,7 +336,15 @@ hs_bindgen_18ab411c9e9de6d3
   -> SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -> IO ()
 hs_bindgen_18ab411c9e9de6d3 =
-  BG.fromFFIType hs_bindgen_18ab411c9e9de6d3_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_18ab411c9e9de6d3_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Create and launch a file dialog with the specified properties.
 --

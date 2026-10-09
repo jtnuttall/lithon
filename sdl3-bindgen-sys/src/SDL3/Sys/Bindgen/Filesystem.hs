@@ -6,6 +6,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -17,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL offers an API for examining and manipulating the system\'s filesystem. This covers most things one would need to do with directories, except for actual file I\/O (which is covered by [CategoryIOStream](CategoryIOStream) and [CategoryAsyncIO](CategoryAsyncIO) instead).
 --
@@ -94,11 +96,31 @@ module SDL3.Sys.Bindgen.Filesystem (
 )
 where
 
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  IO,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  fmap,
+  pure,
+  (<*>),
+  (>>),
+  type (~),
+ )
+
 import C.Expr.HostPlatform qualified
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -569,6 +591,11 @@ instance Marshal.WriteRaw SDL_PathInfo where
 
 deriving via Marshal.EquivStorable SDL_PathInfo instance BG.Storable SDL_PathInfo
 
+deriving via Struct.IsStructViaReadRaw SDL_PathInfo instance Struct.IsStruct SDL_PathInfo
+
+-- | the path type
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_filesystem.h 269:18@
 instance
   (ty ~ SDL_PathType)
   => BG.CompatHasField.HasField "type'" SDL_PathInfo ty
@@ -597,6 +624,9 @@ instance HasCField.HasCField SDL_PathInfo "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | the file size in bytes
+--
+--     [C declaration]: @size@, defined at @SDL3\/SDL_filesystem.h 270:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "size" SDL_PathInfo ty
@@ -627,6 +657,9 @@ instance HasCField.HasCField SDL_PathInfo "size" where
 
   offset# = \_ -> \_ -> 8
 
+-- | the time when the path was created
+--
+--     [C declaration]: @create_time@, defined at @SDL3\/SDL_filesystem.h 271:14@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.SDL_Time)
   => BG.CompatHasField.HasField "create_time" SDL_PathInfo ty
@@ -658,6 +691,9 @@ instance HasCField.HasCField SDL_PathInfo "create_time" where
 
   offset# = \_ -> \_ -> 16
 
+-- | the last time the path was modified
+--
+--     [C declaration]: @modify_time@, defined at @SDL3\/SDL_filesystem.h 272:14@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.SDL_Time)
   => BG.CompatHasField.HasField "modify_time" SDL_PathInfo ty
@@ -689,6 +725,9 @@ instance HasCField.HasCField SDL_PathInfo "modify_time" where
 
   offset# = \_ -> \_ -> 24
 
+-- | the last time the path was read
+--
+--     [C declaration]: @access_time@, defined at @SDL3\/SDL_filesystem.h 273:14@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.SDL_Time)
   => BG.CompatHasField.HasField "access_time" SDL_PathInfo ty
@@ -907,13 +946,12 @@ newtype SDL_EnumerateDirectoryCallback_Aux = SDL_EnumerateDirectoryCallback_Aux
       -> IO SDL_EnumerationResult
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_EnumerateDirectoryCallback_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_a7027a1d7d8836f6_base
-    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word32)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word32))
+    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CUInt)
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CUInt))
 
 -- __unique:__ @toSDL_EnumerateDirectoryCallback_Aux@
 hs_bindgen_a7027a1d7d8836f6
@@ -921,16 +959,26 @@ hs_bindgen_a7027a1d7d8836f6
   -> IO (BG.FunPtr SDL_EnumerateDirectoryCallback_Aux)
 hs_bindgen_a7027a1d7d8836f6 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_a7027a1d7d8836f6_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_a7027a1d7d8836f6_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  fmap
+                    BG.toFFIType
+                    (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2) (BG.fromFFIType x3))
+          )
+      )
 
 -- __unique:__ @fromSDL_EnumerateDirectoryCallback_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_62890ffdaab536a5_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word32)
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CUInt)
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @fromSDL_EnumerateDirectoryCallback_Aux@
 hs_bindgen_62890ffdaab536a5
@@ -938,7 +986,19 @@ hs_bindgen_62890ffdaab536a5
   -> SDL_EnumerateDirectoryCallback_Aux
 hs_bindgen_62890ffdaab536a5 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_62890ffdaab536a5_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_EnumerateDirectoryCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_62890ffdaab536a5_base
+                    (BG.castFunPtr funPtr0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                )
+      )
 
 instance BG.ToFunPtr SDL_EnumerateDirectoryCallback_Aux where
   toFunPtr = hs_bindgen_a7027a1d7d8836f6

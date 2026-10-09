@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Iostream.Safe (
@@ -52,6 +54,8 @@ module SDL3.Sys.Bindgen.Iostream.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
@@ -62,7 +66,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_iostream.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_iostream.h>"
          , "SDL_IOStream *hs_bindgen_34e479a8367942af ("
          , "  char const *arg1,"
          , "  char const *arg2"
@@ -400,7 +405,9 @@ hs_bindgen_34e479a8367942af
   -> PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr SDL_IOStream)
 hs_bindgen_34e479a8367942af =
-  BG.fromFFIType hs_bindgen_34e479a8367942af_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_34e479a8367942af_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to create a new 'SDL_IOStream' structure for reading from and\/or writing to a named file.
 --
@@ -467,7 +474,7 @@ sDL_IOFromFile = hs_bindgen_34e479a8367942af
 foreign import ccall safe "hs_bindgen_cf3ad24eb5c5fc0a"
   hs_bindgen_cf3ad24eb5c5fc0a_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_IOFromMem@
@@ -476,7 +483,9 @@ hs_bindgen_cf3ad24eb5c5fc0a
   -> HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr SDL_IOStream)
 hs_bindgen_cf3ad24eb5c5fc0a =
-  BG.fromFFIType hs_bindgen_cf3ad24eb5c5fc0a_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_cf3ad24eb5c5fc0a_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to prepare a read-write memory buffer for use with 'SDL_IOStream'.
 --
@@ -521,7 +530,7 @@ sDL_IOFromMem = hs_bindgen_cf3ad24eb5c5fc0a
 foreign import ccall safe "hs_bindgen_5e86d852c63fbcca"
   hs_bindgen_5e86d852c63fbcca_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_IOFromConstMem@
@@ -530,7 +539,9 @@ hs_bindgen_5e86d852c63fbcca
   -> HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr SDL_IOStream)
 hs_bindgen_5e86d852c63fbcca =
-  BG.fromFFIType hs_bindgen_5e86d852c63fbcca_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_5e86d852c63fbcca_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to prepare a read-only memory buffer for use with 'SDL_IOStream'.
 --
@@ -581,7 +592,7 @@ foreign import ccall safe "hs_bindgen_683cd141fd8245a6"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_IOFromDynamicMem@
 hs_bindgen_683cd141fd8245a6 :: IO (BG.Ptr SDL_IOStream)
 hs_bindgen_683cd141fd8245a6 =
-  BG.fromFFIType hs_bindgen_683cd141fd8245a6_base
+  fmap BG.fromFFIType hs_bindgen_683cd141fd8245a6_base
 
 -- | Use this function to create an 'SDL_IOStream' that is backed by dynamically allocated memory.
 --
@@ -616,7 +627,9 @@ hs_bindgen_03754d9f752b3672
   -> BG.Ptr BG.Void
   -> IO (BG.Ptr SDL_IOStream)
 hs_bindgen_03754d9f752b3672 =
-  BG.fromFFIType hs_bindgen_03754d9f752b3672_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_03754d9f752b3672_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Create a custom 'SDL_IOStream'.
 --
@@ -649,14 +662,15 @@ sDL_OpenIO = hs_bindgen_03754d9f752b3672
 foreign import ccall safe "hs_bindgen_3194e5e921bc697c"
   hs_bindgen_3194e5e921bc697c_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_CloseIO@
 hs_bindgen_3194e5e921bc697c
   :: BG.Ptr SDL_IOStream
   -> IO BG.CBool
 hs_bindgen_3194e5e921bc697c =
-  BG.fromFFIType hs_bindgen_3194e5e921bc697c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3194e5e921bc697c_base (BG.toFFIType x0))
 
 -- | Close and free an allocated 'SDL_IOStream' structure.
 --
@@ -687,14 +701,15 @@ sDL_CloseIO = hs_bindgen_3194e5e921bc697c
 foreign import ccall safe "hs_bindgen_16a31766d73c85ef"
   hs_bindgen_16a31766d73c85ef_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_GetIOProperties@
 hs_bindgen_16a31766d73c85ef
   :: BG.Ptr SDL_IOStream
   -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
 hs_bindgen_16a31766d73c85ef =
-  BG.fromFFIType hs_bindgen_16a31766d73c85ef_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_16a31766d73c85ef_base (BG.toFFIType x0))
 
 -- | Get the properties associated with an 'SDL_IOStream'.
 --
@@ -717,14 +732,15 @@ sDL_GetIOProperties = hs_bindgen_16a31766d73c85ef
 foreign import ccall safe "hs_bindgen_aa2e9a65d05ce21f"
   hs_bindgen_aa2e9a65d05ce21f_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_GetIOStatus@
 hs_bindgen_aa2e9a65d05ce21f
   :: BG.Ptr SDL_IOStream
   -> IO SDL_IOStatus
 hs_bindgen_aa2e9a65d05ce21f =
-  BG.fromFFIType hs_bindgen_aa2e9a65d05ce21f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_aa2e9a65d05ce21f_base (BG.toFFIType x0))
 
 -- | Query the stream status of an 'SDL_IOStream'.
 --
@@ -751,14 +767,15 @@ sDL_GetIOStatus = hs_bindgen_aa2e9a65d05ce21f
 foreign import ccall safe "hs_bindgen_54da1584c7a84cda"
   hs_bindgen_54da1584c7a84cda_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int64
+    -> IO HsBindgen.Runtime.LibC.Int64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_GetIOSize@
 hs_bindgen_54da1584c7a84cda
   :: BG.Ptr SDL_IOStream
   -> IO SDL3.Sys.Bindgen.Stdinc.Sint64
 hs_bindgen_54da1584c7a84cda =
-  BG.fromFFIType hs_bindgen_54da1584c7a84cda_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_54da1584c7a84cda_base (BG.toFFIType x0))
 
 -- | Use this function to get the size of the data stream in an 'SDL_IOStream'.
 --
@@ -781,9 +798,9 @@ sDL_GetIOSize = hs_bindgen_54da1584c7a84cda
 foreign import ccall safe "hs_bindgen_0c3b6f6c9596a5d8"
   hs_bindgen_0c3b6f6c9596a5d8_base
     :: BG.Ptr BG.Void
-    -> BG.Int64
-    -> BG.Word32
-    -> IO BG.Int64
+    -> HsBindgen.Runtime.LibC.Int64
+    -> BG.CUInt
+    -> IO HsBindgen.Runtime.LibC.Int64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_SeekIO@
 hs_bindgen_0c3b6f6c9596a5d8
@@ -792,7 +809,12 @@ hs_bindgen_0c3b6f6c9596a5d8
   -> SDL_IOWhence
   -> IO SDL3.Sys.Bindgen.Stdinc.Sint64
 hs_bindgen_0c3b6f6c9596a5d8 =
-  BG.fromFFIType hs_bindgen_0c3b6f6c9596a5d8_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_0c3b6f6c9596a5d8_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Seek within an 'SDL_IOStream' data stream.
 --
@@ -837,14 +859,15 @@ sDL_SeekIO = hs_bindgen_0c3b6f6c9596a5d8
 foreign import ccall safe "hs_bindgen_094df7d1bb2e26ac"
   hs_bindgen_094df7d1bb2e26ac_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int64
+    -> IO HsBindgen.Runtime.LibC.Int64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_TellIO@
 hs_bindgen_094df7d1bb2e26ac
   :: BG.Ptr SDL_IOStream
   -> IO SDL3.Sys.Bindgen.Stdinc.Sint64
 hs_bindgen_094df7d1bb2e26ac =
-  BG.fromFFIType hs_bindgen_094df7d1bb2e26ac_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_094df7d1bb2e26ac_base (BG.toFFIType x0))
 
 -- | Determine the current read\/write offset in an 'SDL_IOStream' data stream.
 --
@@ -872,8 +895,8 @@ foreign import ccall safe "hs_bindgen_04c1c6ca873e76fc"
   hs_bindgen_04c1c6ca873e76fc_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadIO@
 hs_bindgen_04c1c6ca873e76fc
@@ -882,7 +905,12 @@ hs_bindgen_04c1c6ca873e76fc
   -> HsBindgen.Runtime.LibC.CSize
   -> IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_04c1c6ca873e76fc =
-  BG.fromFFIType hs_bindgen_04c1c6ca873e76fc_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_04c1c6ca873e76fc_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Read from a data source.
 --
@@ -922,8 +950,8 @@ foreign import ccall safe "hs_bindgen_ec9c16b5e587afb8"
   hs_bindgen_ec9c16b5e587afb8_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteIO@
 hs_bindgen_ec9c16b5e587afb8
@@ -932,7 +960,12 @@ hs_bindgen_ec9c16b5e587afb8
   -> HsBindgen.Runtime.LibC.CSize
   -> IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_ec9c16b5e587afb8 =
-  BG.fromFFIType hs_bindgen_ec9c16b5e587afb8_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_ec9c16b5e587afb8_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Write to an 'SDL_IOStream' data stream.
 --
@@ -973,14 +1006,15 @@ sDL_WriteIO = hs_bindgen_ec9c16b5e587afb8
 foreign import ccall safe "hs_bindgen_bbb89fd7a1a95596"
   hs_bindgen_bbb89fd7a1a95596_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_FlushIO@
 hs_bindgen_bbb89fd7a1a95596
   :: BG.Ptr SDL_IOStream
   -> IO BG.CBool
 hs_bindgen_bbb89fd7a1a95596 =
-  BG.fromFFIType hs_bindgen_bbb89fd7a1a95596_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_bbb89fd7a1a95596_base (BG.toFFIType x0))
 
 -- | Flush any buffered data in the stream.
 --
@@ -1008,7 +1042,7 @@ foreign import ccall safe "hs_bindgen_8fefdb56bfbc407b"
   hs_bindgen_8fefdb56bfbc407b_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_LoadFile_IO@
@@ -1018,7 +1052,12 @@ hs_bindgen_8fefdb56bfbc407b
   -> BG.CBool
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_8fefdb56bfbc407b =
-  BG.fromFFIType hs_bindgen_8fefdb56bfbc407b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_8fefdb56bfbc407b_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Load all the data from an SDL data stream.
 --
@@ -1064,7 +1103,9 @@ hs_bindgen_3ffc176218094904
   -> BG.Ptr HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_3ffc176218094904 =
-  BG.fromFFIType hs_bindgen_3ffc176218094904_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_3ffc176218094904_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Load all the data from a file path.
 --
@@ -1098,9 +1139,9 @@ foreign import ccall safe "hs_bindgen_ee2bf39575dd56cd"
   hs_bindgen_ee2bf39575dd56cd_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> BG.Word8
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.CSize
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_SaveFile_IO@
 hs_bindgen_ee2bf39575dd56cd
@@ -1110,7 +1151,18 @@ hs_bindgen_ee2bf39575dd56cd
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_ee2bf39575dd56cd =
-  BG.fromFFIType hs_bindgen_ee2bf39575dd56cd_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_ee2bf39575dd56cd_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Save all the data into an SDL data stream.
 --
@@ -1148,8 +1200,8 @@ foreign import ccall safe "hs_bindgen_1157ae79ba240b92"
   hs_bindgen_1157ae79ba240b92_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_SaveFile@
 hs_bindgen_1157ae79ba240b92
@@ -1158,7 +1210,12 @@ hs_bindgen_1157ae79ba240b92
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CBool
 hs_bindgen_1157ae79ba240b92 =
-  BG.fromFFIType hs_bindgen_1157ae79ba240b92_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_1157ae79ba240b92_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Save all the data into a file path.
 --
@@ -1192,7 +1249,7 @@ foreign import ccall safe "hs_bindgen_9458dbc19d3102af"
   hs_bindgen_9458dbc19d3102af_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadU8@
 hs_bindgen_9458dbc19d3102af
@@ -1200,7 +1257,9 @@ hs_bindgen_9458dbc19d3102af
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_9458dbc19d3102af =
-  BG.fromFFIType hs_bindgen_9458dbc19d3102af_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_9458dbc19d3102af_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to read a byte from an 'SDL_IOStream'.
 --
@@ -1230,7 +1289,7 @@ foreign import ccall safe "hs_bindgen_9ef691b554f38735"
   hs_bindgen_9ef691b554f38735_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadS8@
 hs_bindgen_9ef691b554f38735
@@ -1238,7 +1297,9 @@ hs_bindgen_9ef691b554f38735
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Sint8
   -> IO BG.CBool
 hs_bindgen_9ef691b554f38735 =
-  BG.fromFFIType hs_bindgen_9ef691b554f38735_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_9ef691b554f38735_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to read a signed byte from an 'SDL_IOStream'.
 --
@@ -1268,7 +1329,7 @@ foreign import ccall safe "hs_bindgen_312b11f2676e3c2f"
   hs_bindgen_312b11f2676e3c2f_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadU16LE@
 hs_bindgen_312b11f2676e3c2f
@@ -1276,7 +1337,9 @@ hs_bindgen_312b11f2676e3c2f
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint16
   -> IO BG.CBool
 hs_bindgen_312b11f2676e3c2f =
-  BG.fromFFIType hs_bindgen_312b11f2676e3c2f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_312b11f2676e3c2f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to read 16 bits of little-endian data from an 'SDL_IOStream' and return in native format.
 --
@@ -1308,7 +1371,7 @@ foreign import ccall safe "hs_bindgen_bfc3c7dd523a2b73"
   hs_bindgen_bfc3c7dd523a2b73_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadS16LE@
 hs_bindgen_bfc3c7dd523a2b73
@@ -1316,7 +1379,9 @@ hs_bindgen_bfc3c7dd523a2b73
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Sint16
   -> IO BG.CBool
 hs_bindgen_bfc3c7dd523a2b73 =
-  BG.fromFFIType hs_bindgen_bfc3c7dd523a2b73_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_bfc3c7dd523a2b73_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to read 16 bits of little-endian data from an 'SDL_IOStream' and return in native format.
 --
@@ -1348,7 +1413,7 @@ foreign import ccall safe "hs_bindgen_9b3b157e729c0965"
   hs_bindgen_9b3b157e729c0965_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadU16BE@
 hs_bindgen_9b3b157e729c0965
@@ -1356,7 +1421,9 @@ hs_bindgen_9b3b157e729c0965
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint16
   -> IO BG.CBool
 hs_bindgen_9b3b157e729c0965 =
-  BG.fromFFIType hs_bindgen_9b3b157e729c0965_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_9b3b157e729c0965_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to read 16 bits of big-endian data from an 'SDL_IOStream' and return in native format.
 --
@@ -1388,7 +1455,7 @@ foreign import ccall safe "hs_bindgen_53f6414a33954d51"
   hs_bindgen_53f6414a33954d51_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadS16BE@
 hs_bindgen_53f6414a33954d51
@@ -1396,7 +1463,9 @@ hs_bindgen_53f6414a33954d51
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Sint16
   -> IO BG.CBool
 hs_bindgen_53f6414a33954d51 =
-  BG.fromFFIType hs_bindgen_53f6414a33954d51_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_53f6414a33954d51_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to read 16 bits of big-endian data from an 'SDL_IOStream' and return in native format.
 --
@@ -1428,7 +1497,7 @@ foreign import ccall safe "hs_bindgen_cf9bb68f7e8594b1"
   hs_bindgen_cf9bb68f7e8594b1_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadU32LE@
 hs_bindgen_cf9bb68f7e8594b1
@@ -1436,7 +1505,9 @@ hs_bindgen_cf9bb68f7e8594b1
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_cf9bb68f7e8594b1 =
-  BG.fromFFIType hs_bindgen_cf9bb68f7e8594b1_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_cf9bb68f7e8594b1_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to read 32 bits of little-endian data from an 'SDL_IOStream' and return in native format.
 --
@@ -1468,7 +1539,7 @@ foreign import ccall safe "hs_bindgen_e2c2855a2483a810"
   hs_bindgen_e2c2855a2483a810_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadS32LE@
 hs_bindgen_e2c2855a2483a810
@@ -1476,7 +1547,9 @@ hs_bindgen_e2c2855a2483a810
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Sint32
   -> IO BG.CBool
 hs_bindgen_e2c2855a2483a810 =
-  BG.fromFFIType hs_bindgen_e2c2855a2483a810_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_e2c2855a2483a810_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to read 32 bits of little-endian data from an 'SDL_IOStream' and return in native format.
 --
@@ -1508,7 +1581,7 @@ foreign import ccall safe "hs_bindgen_8cce948b1185d898"
   hs_bindgen_8cce948b1185d898_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadU32BE@
 hs_bindgen_8cce948b1185d898
@@ -1516,7 +1589,9 @@ hs_bindgen_8cce948b1185d898
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_8cce948b1185d898 =
-  BG.fromFFIType hs_bindgen_8cce948b1185d898_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_8cce948b1185d898_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to read 32 bits of big-endian data from an 'SDL_IOStream' and return in native format.
 --
@@ -1548,7 +1623,7 @@ foreign import ccall safe "hs_bindgen_74529309d09c0236"
   hs_bindgen_74529309d09c0236_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadS32BE@
 hs_bindgen_74529309d09c0236
@@ -1556,7 +1631,9 @@ hs_bindgen_74529309d09c0236
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Sint32
   -> IO BG.CBool
 hs_bindgen_74529309d09c0236 =
-  BG.fromFFIType hs_bindgen_74529309d09c0236_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_74529309d09c0236_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to read 32 bits of big-endian data from an 'SDL_IOStream' and return in native format.
 --
@@ -1588,7 +1665,7 @@ foreign import ccall safe "hs_bindgen_a50de42944661366"
   hs_bindgen_a50de42944661366_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadU64LE@
 hs_bindgen_a50de42944661366
@@ -1596,7 +1673,9 @@ hs_bindgen_a50de42944661366
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint64
   -> IO BG.CBool
 hs_bindgen_a50de42944661366 =
-  BG.fromFFIType hs_bindgen_a50de42944661366_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_a50de42944661366_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to read 64 bits of little-endian data from an 'SDL_IOStream' and return in native format.
 --
@@ -1628,7 +1707,7 @@ foreign import ccall safe "hs_bindgen_5dc23c0193ff348f"
   hs_bindgen_5dc23c0193ff348f_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadS64LE@
 hs_bindgen_5dc23c0193ff348f
@@ -1636,7 +1715,9 @@ hs_bindgen_5dc23c0193ff348f
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Sint64
   -> IO BG.CBool
 hs_bindgen_5dc23c0193ff348f =
-  BG.fromFFIType hs_bindgen_5dc23c0193ff348f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_5dc23c0193ff348f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to read 64 bits of little-endian data from an 'SDL_IOStream' and return in native format.
 --
@@ -1668,7 +1749,7 @@ foreign import ccall safe "hs_bindgen_5c7313fe19df3bc5"
   hs_bindgen_5c7313fe19df3bc5_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadU64BE@
 hs_bindgen_5c7313fe19df3bc5
@@ -1676,7 +1757,9 @@ hs_bindgen_5c7313fe19df3bc5
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint64
   -> IO BG.CBool
 hs_bindgen_5c7313fe19df3bc5 =
-  BG.fromFFIType hs_bindgen_5c7313fe19df3bc5_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_5c7313fe19df3bc5_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to read 64 bits of big-endian data from an 'SDL_IOStream' and return in native format.
 --
@@ -1708,7 +1791,7 @@ foreign import ccall safe "hs_bindgen_77cc43bf1b465b08"
   hs_bindgen_77cc43bf1b465b08_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_ReadS64BE@
 hs_bindgen_77cc43bf1b465b08
@@ -1716,7 +1799,9 @@ hs_bindgen_77cc43bf1b465b08
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Sint64
   -> IO BG.CBool
 hs_bindgen_77cc43bf1b465b08 =
-  BG.fromFFIType hs_bindgen_77cc43bf1b465b08_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_77cc43bf1b465b08_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to read 64 bits of big-endian data from an 'SDL_IOStream' and return in native format.
 --
@@ -1747,8 +1832,8 @@ sDL_ReadS64BE = hs_bindgen_77cc43bf1b465b08
 foreign import ccall safe "hs_bindgen_06be6eeabea4ef7e"
   hs_bindgen_06be6eeabea4ef7e_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteU8@
 hs_bindgen_06be6eeabea4ef7e
@@ -1756,7 +1841,9 @@ hs_bindgen_06be6eeabea4ef7e
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_06be6eeabea4ef7e =
-  BG.fromFFIType hs_bindgen_06be6eeabea4ef7e_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_06be6eeabea4ef7e_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to write a byte to an 'SDL_IOStream'.
 --
@@ -1783,8 +1870,8 @@ sDL_WriteU8 = hs_bindgen_06be6eeabea4ef7e
 foreign import ccall safe "hs_bindgen_b7f1551a531fd2e5"
   hs_bindgen_b7f1551a531fd2e5_base
     :: BG.Ptr BG.Void
-    -> BG.Int8
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Int8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteS8@
 hs_bindgen_b7f1551a531fd2e5
@@ -1792,7 +1879,9 @@ hs_bindgen_b7f1551a531fd2e5
   -> SDL3.Sys.Bindgen.Stdinc.Sint8
   -> IO BG.CBool
 hs_bindgen_b7f1551a531fd2e5 =
-  BG.fromFFIType hs_bindgen_b7f1551a531fd2e5_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b7f1551a531fd2e5_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to write a signed byte to an 'SDL_IOStream'.
 --
@@ -1819,8 +1908,8 @@ sDL_WriteS8 = hs_bindgen_b7f1551a531fd2e5
 foreign import ccall safe "hs_bindgen_dc258899c026cf6f"
   hs_bindgen_dc258899c026cf6f_base
     :: BG.Ptr BG.Void
-    -> BG.Word16
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word16
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteU16LE@
 hs_bindgen_dc258899c026cf6f
@@ -1828,7 +1917,9 @@ hs_bindgen_dc258899c026cf6f
   -> SDL3.Sys.Bindgen.Stdinc.Uint16
   -> IO BG.CBool
 hs_bindgen_dc258899c026cf6f =
-  BG.fromFFIType hs_bindgen_dc258899c026cf6f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_dc258899c026cf6f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to write 16 bits in native format to an 'SDL_IOStream' as little-endian data.
 --
@@ -1857,8 +1948,8 @@ sDL_WriteU16LE = hs_bindgen_dc258899c026cf6f
 foreign import ccall safe "hs_bindgen_a1111b4c96df3259"
   hs_bindgen_a1111b4c96df3259_base
     :: BG.Ptr BG.Void
-    -> BG.Int16
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Int16
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteS16LE@
 hs_bindgen_a1111b4c96df3259
@@ -1866,7 +1957,9 @@ hs_bindgen_a1111b4c96df3259
   -> SDL3.Sys.Bindgen.Stdinc.Sint16
   -> IO BG.CBool
 hs_bindgen_a1111b4c96df3259 =
-  BG.fromFFIType hs_bindgen_a1111b4c96df3259_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_a1111b4c96df3259_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to write 16 bits in native format to an 'SDL_IOStream' as little-endian data.
 --
@@ -1895,8 +1988,8 @@ sDL_WriteS16LE = hs_bindgen_a1111b4c96df3259
 foreign import ccall safe "hs_bindgen_a4cb3983fa64c5c7"
   hs_bindgen_a4cb3983fa64c5c7_base
     :: BG.Ptr BG.Void
-    -> BG.Word16
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word16
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteU16BE@
 hs_bindgen_a4cb3983fa64c5c7
@@ -1904,7 +1997,9 @@ hs_bindgen_a4cb3983fa64c5c7
   -> SDL3.Sys.Bindgen.Stdinc.Uint16
   -> IO BG.CBool
 hs_bindgen_a4cb3983fa64c5c7 =
-  BG.fromFFIType hs_bindgen_a4cb3983fa64c5c7_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_a4cb3983fa64c5c7_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to write 16 bits in native format to an 'SDL_IOStream' as big-endian data.
 --
@@ -1933,8 +2028,8 @@ sDL_WriteU16BE = hs_bindgen_a4cb3983fa64c5c7
 foreign import ccall safe "hs_bindgen_161a5c3e908403a2"
   hs_bindgen_161a5c3e908403a2_base
     :: BG.Ptr BG.Void
-    -> BG.Int16
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Int16
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteS16BE@
 hs_bindgen_161a5c3e908403a2
@@ -1942,7 +2037,9 @@ hs_bindgen_161a5c3e908403a2
   -> SDL3.Sys.Bindgen.Stdinc.Sint16
   -> IO BG.CBool
 hs_bindgen_161a5c3e908403a2 =
-  BG.fromFFIType hs_bindgen_161a5c3e908403a2_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_161a5c3e908403a2_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to write 16 bits in native format to an 'SDL_IOStream' as big-endian data.
 --
@@ -1971,8 +2068,8 @@ sDL_WriteS16BE = hs_bindgen_161a5c3e908403a2
 foreign import ccall safe "hs_bindgen_ae468e82155587e1"
   hs_bindgen_ae468e82155587e1_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteU32LE@
 hs_bindgen_ae468e82155587e1
@@ -1980,7 +2077,9 @@ hs_bindgen_ae468e82155587e1
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_ae468e82155587e1 =
-  BG.fromFFIType hs_bindgen_ae468e82155587e1_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_ae468e82155587e1_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to write 32 bits in native format to an 'SDL_IOStream' as little-endian data.
 --
@@ -2009,8 +2108,8 @@ sDL_WriteU32LE = hs_bindgen_ae468e82155587e1
 foreign import ccall safe "hs_bindgen_175539b403c6fd0c"
   hs_bindgen_175539b403c6fd0c_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Int32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteS32LE@
 hs_bindgen_175539b403c6fd0c
@@ -2018,7 +2117,9 @@ hs_bindgen_175539b403c6fd0c
   -> SDL3.Sys.Bindgen.Stdinc.Sint32
   -> IO BG.CBool
 hs_bindgen_175539b403c6fd0c =
-  BG.fromFFIType hs_bindgen_175539b403c6fd0c_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_175539b403c6fd0c_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to write 32 bits in native format to an 'SDL_IOStream' as little-endian data.
 --
@@ -2047,8 +2148,8 @@ sDL_WriteS32LE = hs_bindgen_175539b403c6fd0c
 foreign import ccall safe "hs_bindgen_f6e00995ced904a6"
   hs_bindgen_f6e00995ced904a6_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteU32BE@
 hs_bindgen_f6e00995ced904a6
@@ -2056,7 +2157,9 @@ hs_bindgen_f6e00995ced904a6
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_f6e00995ced904a6 =
-  BG.fromFFIType hs_bindgen_f6e00995ced904a6_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_f6e00995ced904a6_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to write 32 bits in native format to an 'SDL_IOStream' as big-endian data.
 --
@@ -2085,8 +2188,8 @@ sDL_WriteU32BE = hs_bindgen_f6e00995ced904a6
 foreign import ccall safe "hs_bindgen_7986b77b455fd8d4"
   hs_bindgen_7986b77b455fd8d4_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Int32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteS32BE@
 hs_bindgen_7986b77b455fd8d4
@@ -2094,7 +2197,9 @@ hs_bindgen_7986b77b455fd8d4
   -> SDL3.Sys.Bindgen.Stdinc.Sint32
   -> IO BG.CBool
 hs_bindgen_7986b77b455fd8d4 =
-  BG.fromFFIType hs_bindgen_7986b77b455fd8d4_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_7986b77b455fd8d4_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to write 32 bits in native format to an 'SDL_IOStream' as big-endian data.
 --
@@ -2123,8 +2228,8 @@ sDL_WriteS32BE = hs_bindgen_7986b77b455fd8d4
 foreign import ccall safe "hs_bindgen_065f64617e3e327c"
   hs_bindgen_065f64617e3e327c_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word64
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteU64LE@
 hs_bindgen_065f64617e3e327c
@@ -2132,7 +2237,9 @@ hs_bindgen_065f64617e3e327c
   -> SDL3.Sys.Bindgen.Stdinc.Uint64
   -> IO BG.CBool
 hs_bindgen_065f64617e3e327c =
-  BG.fromFFIType hs_bindgen_065f64617e3e327c_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_065f64617e3e327c_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to write 64 bits in native format to an 'SDL_IOStream' as little-endian data.
 --
@@ -2161,8 +2268,8 @@ sDL_WriteU64LE = hs_bindgen_065f64617e3e327c
 foreign import ccall safe "hs_bindgen_846e3f81a5b9c657"
   hs_bindgen_846e3f81a5b9c657_base
     :: BG.Ptr BG.Void
-    -> BG.Int64
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Int64
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteS64LE@
 hs_bindgen_846e3f81a5b9c657
@@ -2170,7 +2277,9 @@ hs_bindgen_846e3f81a5b9c657
   -> SDL3.Sys.Bindgen.Stdinc.Sint64
   -> IO BG.CBool
 hs_bindgen_846e3f81a5b9c657 =
-  BG.fromFFIType hs_bindgen_846e3f81a5b9c657_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_846e3f81a5b9c657_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to write 64 bits in native format to an 'SDL_IOStream' as little-endian data.
 --
@@ -2199,8 +2308,8 @@ sDL_WriteS64LE = hs_bindgen_846e3f81a5b9c657
 foreign import ccall safe "hs_bindgen_8f9d3f23bd1a20e7"
   hs_bindgen_8f9d3f23bd1a20e7_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word64
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteU64BE@
 hs_bindgen_8f9d3f23bd1a20e7
@@ -2208,7 +2317,9 @@ hs_bindgen_8f9d3f23bd1a20e7
   -> SDL3.Sys.Bindgen.Stdinc.Uint64
   -> IO BG.CBool
 hs_bindgen_8f9d3f23bd1a20e7 =
-  BG.fromFFIType hs_bindgen_8f9d3f23bd1a20e7_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_8f9d3f23bd1a20e7_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to write 64 bits in native format to an 'SDL_IOStream' as big-endian data.
 --
@@ -2237,8 +2348,8 @@ sDL_WriteU64BE = hs_bindgen_8f9d3f23bd1a20e7
 foreign import ccall safe "hs_bindgen_ef095eaa3e7cb9b4"
   hs_bindgen_ef095eaa3e7cb9b4_base
     :: BG.Ptr BG.Void
-    -> BG.Int64
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Int64
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Iostream_Safe_SDL_WriteS64BE@
 hs_bindgen_ef095eaa3e7cb9b4
@@ -2246,7 +2357,9 @@ hs_bindgen_ef095eaa3e7cb9b4
   -> SDL3.Sys.Bindgen.Stdinc.Sint64
   -> IO BG.CBool
 hs_bindgen_ef095eaa3e7cb9b4 =
-  BG.fromFFIType hs_bindgen_ef095eaa3e7cb9b4_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_ef095eaa3e7cb9b4_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to write 64 bits in native format to an 'SDL_IOStream' as big-endian data.
 --

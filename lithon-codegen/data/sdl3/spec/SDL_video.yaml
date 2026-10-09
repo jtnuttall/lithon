@@ -1,5 +1,5 @@
 version:
-  hs_bindgen: 0.1.0
+  hs_bindgen: 1.0.0.0
   binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Video
 ctypes:
@@ -142,6 +142,9 @@ hstypes:
         constructor: SDL_DisplayID
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word32
     instances:
       - Bitfield
       - Bits
@@ -188,6 +191,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -201,6 +205,9 @@ hstypes:
         constructor: SDL_DisplayOrientation
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -225,6 +232,9 @@ hstypes:
         constructor: SDL_EGLAttrib
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: CIntPtr
     instances:
       - Bitfield
       - Bits
@@ -256,6 +266,9 @@ hstypes:
         constructor: SDL_EGLAttribArrayCallback
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -276,6 +289,9 @@ hstypes:
         constructor: SDL_EGLConfig
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: PtrVoid
     instances:
       - Eq
       - Generic
@@ -296,6 +312,9 @@ hstypes:
         constructor: SDL_EGLDisplay
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: PtrVoid
     instances:
       - Eq
       - Generic
@@ -316,6 +335,9 @@ hstypes:
         constructor: SDL_EGLIntArrayCallback
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -336,6 +358,9 @@ hstypes:
         constructor: SDL_EGLSurface
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: PtrVoid
     instances:
       - Eq
       - Generic
@@ -356,6 +381,9 @@ hstypes:
         constructor: SDL_EGLint
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CInt
     instances:
       - Bitfield
       - Bits
@@ -387,6 +415,9 @@ hstypes:
         constructor: SDL_FlashOperation
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -411,6 +442,9 @@ hstypes:
         constructor: SDL_GLAttr
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -435,6 +469,9 @@ hstypes:
         constructor: SDL_GLContext
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: PtrVoid
     instances:
       - Eq
       - Generic
@@ -455,6 +492,9 @@ hstypes:
         constructor: SDL_GLContextFlag
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word32
     instances:
       - Bitfield
       - Bits
@@ -486,6 +526,9 @@ hstypes:
         constructor: SDL_GLContextReleaseFlag
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word32
     instances:
       - Bitfield
       - Bits
@@ -517,6 +560,9 @@ hstypes:
         constructor: SDL_GLContextResetNotification
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word32
     instances:
       - Bitfield
       - Bits
@@ -550,6 +596,9 @@ hstypes:
         constructor: SDL_GLProfile
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word32
     instances:
       - Bitfield
       - Bits
@@ -581,6 +630,9 @@ hstypes:
         constructor: SDL_HitTest
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -601,6 +653,9 @@ hstypes:
         constructor: SDL_HitTestResult
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -625,6 +680,9 @@ hstypes:
         constructor: SDL_ProgressState
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CInt
     instances:
       - CEnum
       - Eq
@@ -649,6 +707,9 @@ hstypes:
         constructor: SDL_SystemTheme
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -675,6 +736,9 @@ hstypes:
         constructor: SDL_WindowFlags
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word64
     instances:
       - Bitfield
       - Bits
@@ -706,6 +770,9 @@ hstypes:
         constructor: SDL_WindowID
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word32
     instances:
       - Bitfield
       - Bits

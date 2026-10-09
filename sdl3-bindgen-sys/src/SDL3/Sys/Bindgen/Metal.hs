@@ -12,6 +12,7 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Functions to creating Metal layers and views on SDL windows.
 --
@@ -22,6 +23,8 @@ module SDL3.Sys.Bindgen.Metal (
   SDL3.Sys.Bindgen.Metal.SDL_MetalView (..),
 )
 where
+
+import Prelude (Eq, Ord, Show, type (~))
 
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal

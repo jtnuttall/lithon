@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Assert.FunPtr (
@@ -12,6 +14,8 @@ module SDL3.Sys.Bindgen.Assert.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -19,7 +23,8 @@ import SDL3.Sys.Bindgen.Assert
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_assert.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_assert.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Assert_get_SDL_ReportAssertion */"
          , "__attribute__ ((const))"
          , "SDL_AssertState (*hs_bindgen_3242a9f392e3cbbb (void)) ("
@@ -87,7 +92,7 @@ hs_bindgen_3242a9f392e3cbbb
            )
        )
 hs_bindgen_3242a9f392e3cbbb =
-  BG.fromFFIType hs_bindgen_3242a9f392e3cbbb_base
+  fmap BG.fromFFIType hs_bindgen_3242a9f392e3cbbb_base
 
 {-# NOINLINE sDL_ReportAssertion #-}
 
@@ -129,7 +134,7 @@ foreign import ccall unsafe "hs_bindgen_d3c978a8cd9d0fb4"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Assert_get_SDL_SetAssertionHandler@
 hs_bindgen_d3c978a8cd9d0fb4 :: IO (BG.FunPtr (SDL_AssertionHandler -> BG.Ptr BG.Void -> IO ()))
 hs_bindgen_d3c978a8cd9d0fb4 =
-  BG.fromFFIType hs_bindgen_d3c978a8cd9d0fb4_base
+  fmap BG.fromFFIType hs_bindgen_d3c978a8cd9d0fb4_base
 
 {-# NOINLINE sDL_SetAssertionHandler #-}
 
@@ -164,7 +169,7 @@ foreign import ccall unsafe "hs_bindgen_9ee5171cfc759fff"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Assert_get_SDL_GetDefaultAssertionHandler@
 hs_bindgen_9ee5171cfc759fff :: IO (BG.FunPtr (IO SDL_AssertionHandler))
 hs_bindgen_9ee5171cfc759fff =
-  BG.fromFFIType hs_bindgen_9ee5171cfc759fff_base
+  fmap BG.fromFFIType hs_bindgen_9ee5171cfc759fff_base
 
 {-# NOINLINE sDL_GetDefaultAssertionHandler #-}
 
@@ -193,7 +198,7 @@ foreign import ccall unsafe "hs_bindgen_d86a645db34b2ab2"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Assert_get_SDL_GetAssertionHandler@
 hs_bindgen_d86a645db34b2ab2 :: IO (BG.FunPtr (BG.Ptr (BG.Ptr BG.Void) -> IO SDL_AssertionHandler))
 hs_bindgen_d86a645db34b2ab2 =
-  BG.fromFFIType hs_bindgen_d86a645db34b2ab2_base
+  fmap BG.fromFFIType hs_bindgen_d86a645db34b2ab2_base
 
 {-# NOINLINE sDL_GetAssertionHandler #-}
 
@@ -226,7 +231,7 @@ foreign import ccall unsafe "hs_bindgen_81f7661412c040b9"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Assert_get_SDL_GetAssertionReport@
 hs_bindgen_81f7661412c040b9 :: IO (BG.FunPtr (IO (PtrConst.PtrConst SDL_AssertData)))
 hs_bindgen_81f7661412c040b9 =
-  BG.fromFFIType hs_bindgen_81f7661412c040b9_base
+  fmap BG.fromFFIType hs_bindgen_81f7661412c040b9_base
 
 {-# NOINLINE sDL_GetAssertionReport #-}
 
@@ -268,7 +273,7 @@ foreign import ccall unsafe "hs_bindgen_d418f82b830fadaf"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Assert_get_SDL_ResetAssertionReport@
 hs_bindgen_d418f82b830fadaf :: IO (BG.FunPtr (IO ()))
 hs_bindgen_d418f82b830fadaf =
-  BG.fromFFIType hs_bindgen_d418f82b830fadaf_base
+  fmap BG.fromFFIType hs_bindgen_d418f82b830fadaf_base
 
 {-# NOINLINE sDL_ResetAssertionReport #-}
 

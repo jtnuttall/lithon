@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Pixels.FunPtr (
@@ -17,6 +19,8 @@ module SDL3.Sys.Bindgen.Pixels.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -25,7 +29,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_pixels.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_pixels.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_get_SDL_GetPixelFormatName */"
          , "__attribute__ ((const))"
          , "char const *(*hs_bindgen_eb0ec2b0946d454a (void)) ("
@@ -158,7 +163,7 @@ foreign import ccall unsafe "hs_bindgen_eb0ec2b0946d454a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_get_SDL_GetPixelFormatName@
 hs_bindgen_eb0ec2b0946d454a :: IO (BG.FunPtr (SDL_PixelFormat -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_eb0ec2b0946d454a =
-  BG.fromFFIType hs_bindgen_eb0ec2b0946d454a_base
+  fmap BG.fromFFIType hs_bindgen_eb0ec2b0946d454a_base
 
 {-# NOINLINE sDL_GetPixelFormatName #-}
 
@@ -196,7 +201,7 @@ hs_bindgen_f958323c6387c975
            )
        )
 hs_bindgen_f958323c6387c975 =
-  BG.fromFFIType hs_bindgen_f958323c6387c975_base
+  fmap BG.fromFFIType hs_bindgen_f958323c6387c975_base
 
 {-# NOINLINE sDL_GetMasksForPixelFormat #-}
 
@@ -254,7 +259,7 @@ hs_bindgen_e5bd7b32ad9023dc
            )
        )
 hs_bindgen_e5bd7b32ad9023dc =
-  BG.fromFFIType hs_bindgen_e5bd7b32ad9023dc_base
+  fmap BG.fromFFIType hs_bindgen_e5bd7b32ad9023dc_base
 
 {-# NOINLINE sDL_GetPixelFormatForMasks #-}
 
@@ -302,7 +307,7 @@ foreign import ccall unsafe "hs_bindgen_b5dfc5cc5c17c070"
 hs_bindgen_b5dfc5cc5c17c070
   :: IO (BG.FunPtr (SDL_PixelFormat -> IO (PtrConst.PtrConst SDL_PixelFormatDetails)))
 hs_bindgen_b5dfc5cc5c17c070 =
-  BG.fromFFIType hs_bindgen_b5dfc5cc5c17c070_base
+  fmap BG.fromFFIType hs_bindgen_b5dfc5cc5c17c070_base
 
 {-# NOINLINE sDL_GetPixelFormatDetails #-}
 
@@ -332,7 +337,7 @@ foreign import ccall unsafe "hs_bindgen_27546d5c6729ae26"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_get_SDL_CreatePalette@
 hs_bindgen_27546d5c6729ae26 :: IO (BG.FunPtr (BG.CInt -> IO (BG.Ptr SDL_Palette)))
 hs_bindgen_27546d5c6729ae26 =
-  BG.fromFFIType hs_bindgen_27546d5c6729ae26_base
+  fmap BG.fromFFIType hs_bindgen_27546d5c6729ae26_base
 
 {-# NOINLINE sDL_CreatePalette #-}
 
@@ -365,7 +370,7 @@ hs_bindgen_34f70d79b2ac1637
   :: IO
        (BG.FunPtr (BG.Ptr SDL_Palette -> PtrConst.PtrConst SDL_Color -> BG.CInt -> BG.CInt -> IO BG.CBool))
 hs_bindgen_34f70d79b2ac1637 =
-  BG.fromFFIType hs_bindgen_34f70d79b2ac1637_base
+  fmap BG.fromFFIType hs_bindgen_34f70d79b2ac1637_base
 
 {-# NOINLINE sDL_SetPaletteColors #-}
 
@@ -399,7 +404,7 @@ foreign import ccall unsafe "hs_bindgen_51f2b11ef08b8f0d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_get_SDL_DestroyPalette@
 hs_bindgen_51f2b11ef08b8f0d :: IO (BG.FunPtr (BG.Ptr SDL_Palette -> IO ()))
 hs_bindgen_51f2b11ef08b8f0d =
-  BG.fromFFIType hs_bindgen_51f2b11ef08b8f0d_base
+  fmap BG.fromFFIType hs_bindgen_51f2b11ef08b8f0d_base
 
 {-# NOINLINE sDL_DestroyPalette #-}
 
@@ -436,7 +441,7 @@ hs_bindgen_71913f7d8c1eefe0
            )
        )
 hs_bindgen_71913f7d8c1eefe0 =
-  BG.fromFFIType hs_bindgen_71913f7d8c1eefe0_base
+  fmap BG.fromFFIType hs_bindgen_71913f7d8c1eefe0_base
 
 {-# NOINLINE sDL_MapRGB #-}
 
@@ -500,7 +505,7 @@ hs_bindgen_357ad77f90e40db5
            )
        )
 hs_bindgen_357ad77f90e40db5 =
-  BG.fromFFIType hs_bindgen_357ad77f90e40db5_base
+  fmap BG.fromFFIType hs_bindgen_357ad77f90e40db5_base
 
 {-# NOINLINE sDL_MapRGBA #-}
 
@@ -567,7 +572,7 @@ hs_bindgen_b718a2f4b5ae6cf0
            )
        )
 hs_bindgen_b718a2f4b5ae6cf0 =
-  BG.fromFFIType hs_bindgen_b718a2f4b5ae6cf0_base
+  fmap BG.fromFFIType hs_bindgen_b718a2f4b5ae6cf0_base
 
 {-# NOINLINE sDL_GetRGB #-}
 
@@ -627,7 +632,7 @@ hs_bindgen_9f1939763a4ba969
            )
        )
 hs_bindgen_9f1939763a4ba969 =
-  BG.fromFFIType hs_bindgen_9f1939763a4ba969_base
+  fmap BG.fromFFIType hs_bindgen_9f1939763a4ba969_base
 
 {-# NOINLINE sDL_GetRGBA #-}
 

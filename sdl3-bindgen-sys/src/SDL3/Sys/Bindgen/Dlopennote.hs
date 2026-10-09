@@ -1,5 +1,6 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | This header allows you to annotate your code so external tools know about dynamic shared library dependencies.
 --

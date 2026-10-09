@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Loadso.FunPtr (
@@ -9,6 +11,8 @@ module SDL3.Sys.Bindgen.Loadso.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -17,7 +21,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_loadso.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_loadso.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Loadso_get_SDL_LoadObject */"
          , "__attribute__ ((const))"
          , "SDL_SharedObject *(*hs_bindgen_06ede04ef7bebd95 (void)) ("
@@ -56,7 +61,7 @@ foreign import ccall unsafe "hs_bindgen_06ede04ef7bebd95"
 hs_bindgen_06ede04ef7bebd95
   :: IO (BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO (BG.Ptr SDL_SharedObject)))
 hs_bindgen_06ede04ef7bebd95 =
-  BG.fromFFIType hs_bindgen_06ede04ef7bebd95_base
+  fmap BG.fromFFIType hs_bindgen_06ede04ef7bebd95_base
 
 {-# NOINLINE sDL_LoadObject #-}
 
@@ -92,7 +97,7 @@ hs_bindgen_c0b414522c89c9e2
            )
        )
 hs_bindgen_c0b414522c89c9e2 =
-  BG.fromFFIType hs_bindgen_c0b414522c89c9e2_base
+  fmap BG.fromFFIType hs_bindgen_c0b414522c89c9e2_base
 
 {-# NOINLINE sDL_LoadFunction #-}
 
@@ -136,7 +141,7 @@ foreign import ccall unsafe "hs_bindgen_a3520810bae0da07"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Loadso_get_SDL_UnloadObject@
 hs_bindgen_a3520810bae0da07 :: IO (BG.FunPtr (BG.Ptr SDL_SharedObject -> IO ()))
 hs_bindgen_a3520810bae0da07 =
-  BG.fromFFIType hs_bindgen_a3520810bae0da07_base
+  fmap BG.fromFFIType hs_bindgen_a3520810bae0da07_base
 
 {-# NOINLINE sDL_UnloadObject #-}
 

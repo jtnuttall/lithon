@@ -7,6 +7,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -18,6 +19,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL offers cross-platform thread management functions. These are mostly concerned with starting threads, setting their priority, and dealing with their termination.
 --
@@ -56,6 +58,24 @@ module SDL3.Sys.Bindgen.Thread (
   SDL3.Sys.Bindgen.Thread.SDL_TLSDestructorCallback (..),
 )
 where
+
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  IO,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  fmap,
+  pure,
+  (<*>),
+  type (~),
+ )
 
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
@@ -416,13 +436,12 @@ newtype SDL_ThreadFunction_Aux = SDL_ThreadFunction_Aux
   { unwrap :: BG.Ptr BG.Void -> IO BG.CInt
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_ThreadFunction_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_d53137dca60d82b1_base
-    :: (BG.Ptr BG.Void -> IO BG.Int32)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> IO BG.Int32))
+    :: (BG.Ptr BG.Void -> IO BG.CInt)
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> IO BG.CInt))
 
 -- __unique:__ @toSDL_ThreadFunction_Aux@
 hs_bindgen_d53137dca60d82b1
@@ -430,14 +449,20 @@ hs_bindgen_d53137dca60d82b1
   -> IO (BG.FunPtr SDL_ThreadFunction_Aux)
 hs_bindgen_d53137dca60d82b1 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_d53137dca60d82b1_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_d53137dca60d82b1_base
+          ( \x1 ->
+              fmap BG.toFFIType (BG.getField @"unwrap" fun0 (BG.fromFFIType x1))
+          )
+      )
 
 -- __unique:__ @fromSDL_ThreadFunction_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_67f38a19566426bd_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> IO BG.Int32)
+    :: BG.FunPtr (BG.Ptr BG.Void -> IO BG.CInt)
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @fromSDL_ThreadFunction_Aux@
 hs_bindgen_67f38a19566426bd
@@ -445,7 +470,10 @@ hs_bindgen_67f38a19566426bd
   -> SDL_ThreadFunction_Aux
 hs_bindgen_67f38a19566426bd =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_67f38a19566426bd_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_ThreadFunction_Aux
+      ( \x1 ->
+          fmap BG.fromFFIType (hs_bindgen_67f38a19566426bd_base (BG.castFunPtr funPtr0) (BG.toFFIType x1))
+      )
 
 instance BG.ToFunPtr SDL_ThreadFunction_Aux where
   toFunPtr = hs_bindgen_d53137dca60d82b1
@@ -660,7 +688,6 @@ newtype SDL_TLSDestructorCallback_Aux = SDL_TLSDestructorCallback_Aux
   { unwrap :: BG.Ptr BG.Void -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_TLSDestructorCallback_Aux@
 foreign import ccall safe "wrapper"
@@ -674,7 +701,13 @@ hs_bindgen_7c0725308cb75f6c
   -> IO (BG.FunPtr SDL_TLSDestructorCallback_Aux)
 hs_bindgen_7c0725308cb75f6c =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_7c0725308cb75f6c_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_7c0725308cb75f6c_base
+          ( \x1 ->
+              BG.getField @"unwrap" fun0 (BG.fromFFIType x1)
+          )
+      )
 
 -- __unique:__ @fromSDL_TLSDestructorCallback_Aux@
 foreign import ccall safe "dynamic"
@@ -689,7 +722,10 @@ hs_bindgen_bbd67b4f21094dd4
   -> SDL_TLSDestructorCallback_Aux
 hs_bindgen_bbd67b4f21094dd4 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_bbd67b4f21094dd4_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_TLSDestructorCallback_Aux
+      ( \x1 ->
+          hs_bindgen_bbd67b4f21094dd4_base (BG.castFunPtr funPtr0) (BG.toFFIType x1)
+      )
 
 instance BG.ToFunPtr SDL_TLSDestructorCallback_Aux where
   toFunPtr = hs_bindgen_7c0725308cb75f6c

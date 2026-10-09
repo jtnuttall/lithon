@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | App entry-point handling; SDL_main is not bound here.
 --
 --     == FFI conventions
@@ -19,6 +21,7 @@ module SDL3.Sys.Main (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (IO, fmap)
 
 import HsBindgen.Runtime.IncompleteArray qualified as IA
 import HsBindgen.Runtime.IsArray qualified as IsA

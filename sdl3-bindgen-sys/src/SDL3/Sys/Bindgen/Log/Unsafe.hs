@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Log.Unsafe (
@@ -14,6 +16,8 @@ module SDL3.Sys.Bindgen.Log.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -21,7 +25,8 @@ import SDL3.Sys.Bindgen.Log
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_log.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_log.h>"
          , "void hs_bindgen_f026d42937d04ed8 ("
          , "  SDL_LogPriority arg1"
          , ")"
@@ -77,7 +82,7 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_Unsafe_SDL_SetLogPriorities@
 foreign import ccall unsafe "hs_bindgen_f026d42937d04ed8"
   hs_bindgen_f026d42937d04ed8_base
-    :: BG.Word32
+    :: BG.CUInt
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_Unsafe_SDL_SetLogPriorities@
@@ -85,7 +90,8 @@ hs_bindgen_f026d42937d04ed8
   :: SDL_LogPriority
   -> IO ()
 hs_bindgen_f026d42937d04ed8 =
-  BG.fromFFIType hs_bindgen_f026d42937d04ed8_base
+  \x0 ->
+    hs_bindgen_f026d42937d04ed8_base (BG.toFFIType x0)
 
 -- | Set the priority of all log categories.
 --
@@ -107,8 +113,8 @@ sDL_SetLogPriorities = hs_bindgen_f026d42937d04ed8
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_Unsafe_SDL_SetLogPriority@
 foreign import ccall unsafe "hs_bindgen_e0acc30fc32ccc59"
   hs_bindgen_e0acc30fc32ccc59_base
-    :: BG.Int32
-    -> BG.Word32
+    :: BG.CInt
+    -> BG.CUInt
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_Unsafe_SDL_SetLogPriority@
@@ -117,7 +123,9 @@ hs_bindgen_e0acc30fc32ccc59
   -> SDL_LogPriority
   -> IO ()
 hs_bindgen_e0acc30fc32ccc59 =
-  BG.fromFFIType hs_bindgen_e0acc30fc32ccc59_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_e0acc30fc32ccc59_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Set the priority of a particular log category.
 --
@@ -143,15 +151,16 @@ sDL_SetLogPriority = hs_bindgen_e0acc30fc32ccc59
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_Unsafe_SDL_GetLogPriority@
 foreign import ccall unsafe "hs_bindgen_7b5c14a42af4d447"
   hs_bindgen_7b5c14a42af4d447_base
-    :: BG.Int32
-    -> IO BG.Word32
+    :: BG.CInt
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_Unsafe_SDL_GetLogPriority@
 hs_bindgen_7b5c14a42af4d447
   :: BG.CInt
   -> IO SDL_LogPriority
 hs_bindgen_7b5c14a42af4d447 =
-  BG.fromFFIType hs_bindgen_7b5c14a42af4d447_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_7b5c14a42af4d447_base (BG.toFFIType x0))
 
 -- | Get the priority of a particular log category.
 --
@@ -180,7 +189,7 @@ foreign import ccall unsafe "hs_bindgen_dea89eef989102db"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_Unsafe_SDL_ResetLogPriorities@
 hs_bindgen_dea89eef989102db :: IO ()
 hs_bindgen_dea89eef989102db =
-  BG.fromFFIType hs_bindgen_dea89eef989102db_base
+  hs_bindgen_dea89eef989102db_base
 
 -- | Reset all priorities to default.
 --
@@ -199,9 +208,9 @@ sDL_ResetLogPriorities = hs_bindgen_dea89eef989102db
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_Unsafe_SDL_SetLogPriorityPrefix@
 foreign import ccall unsafe "hs_bindgen_27cf84b222a7e17b"
   hs_bindgen_27cf84b222a7e17b_base
-    :: BG.Word32
+    :: BG.CUInt
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_Unsafe_SDL_SetLogPriorityPrefix@
 hs_bindgen_27cf84b222a7e17b
@@ -209,7 +218,9 @@ hs_bindgen_27cf84b222a7e17b
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_27cf84b222a7e17b =
-  BG.fromFFIType hs_bindgen_27cf84b222a7e17b_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_27cf84b222a7e17b_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the text prepended to log messages of a given priority.
 --
@@ -247,7 +258,7 @@ foreign import ccall unsafe "hs_bindgen_513e0ffa6c24153a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_Unsafe_SDL_GetDefaultLogOutputFunction@
 hs_bindgen_513e0ffa6c24153a :: IO SDL_LogOutputFunction
 hs_bindgen_513e0ffa6c24153a =
-  BG.fromFFIType hs_bindgen_513e0ffa6c24153a_base
+  fmap BG.fromFFIType hs_bindgen_513e0ffa6c24153a_base
 
 -- | Get the default log output function.
 --
@@ -277,7 +288,9 @@ hs_bindgen_acd55da6463a4da5
   -> BG.Ptr (BG.Ptr BG.Void)
   -> IO ()
 hs_bindgen_acd55da6463a4da5 =
-  BG.fromFFIType hs_bindgen_acd55da6463a4da5_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_acd55da6463a4da5_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Get the current log output function.
 --
@@ -314,7 +327,9 @@ hs_bindgen_70ca4187e3666373
   -> BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_70ca4187e3666373 =
-  BG.fromFFIType hs_bindgen_70ca4187e3666373_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_70ca4187e3666373_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Replace the default log output function with one of your own.
 --

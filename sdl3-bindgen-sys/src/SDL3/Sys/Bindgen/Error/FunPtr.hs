@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Error.FunPtr (
@@ -9,13 +11,16 @@ module SDL3.Sys.Bindgen.Error.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_error.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_error.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Error_get_SDL_OutOfMemory */"
          , "__attribute__ ((const))"
          , "_Bool (*hs_bindgen_c1c2f6095b18fb13 (void)) (void)"
@@ -46,7 +51,7 @@ foreign import ccall unsafe "hs_bindgen_c1c2f6095b18fb13"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Error_get_SDL_OutOfMemory@
 hs_bindgen_c1c2f6095b18fb13 :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_c1c2f6095b18fb13 =
-  BG.fromFFIType hs_bindgen_c1c2f6095b18fb13_base
+  fmap BG.fromFFIType hs_bindgen_c1c2f6095b18fb13_base
 
 {-# NOINLINE sDL_OutOfMemory #-}
 
@@ -73,7 +78,7 @@ foreign import ccall unsafe "hs_bindgen_030d67d7c033781b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Error_get_SDL_GetError@
 hs_bindgen_030d67d7c033781b :: IO (BG.FunPtr (IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_030d67d7c033781b =
-  BG.fromFFIType hs_bindgen_030d67d7c033781b_base
+  fmap BG.fromFFIType hs_bindgen_030d67d7c033781b_base
 
 {-# NOINLINE sDL_GetError #-}
 
@@ -110,7 +115,7 @@ foreign import ccall unsafe "hs_bindgen_000d9156b04d2f47"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Error_get_SDL_ClearError@
 hs_bindgen_000d9156b04d2f47 :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_000d9156b04d2f47 =
-  BG.fromFFIType hs_bindgen_000d9156b04d2f47_base
+  fmap BG.fromFFIType hs_bindgen_000d9156b04d2f47_base
 
 {-# NOINLINE sDL_ClearError #-}
 

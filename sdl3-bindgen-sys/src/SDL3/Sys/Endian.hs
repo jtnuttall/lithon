@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Functions for reading and writing endian-specific values.
 --
 --     == FFI conventions
@@ -14,6 +16,7 @@ module SDL3.Sys.Endian (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Float, IO, fmap)
 
 import HsBindgen.Runtime.LibC qualified
 import SDL3.Sys.Bindgen.Endian

@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Rect.FunPtr (
@@ -24,6 +26,8 @@ module SDL3.Sys.Bindgen.Rect.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -31,7 +35,8 @@ import SDL3.Sys.Bindgen.Rect
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_rect.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_rect.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Rect_get_SDL_RectToFRect */"
          , "__attribute__ ((const))"
          , "void (*hs_bindgen_81396927af8995d0 (void)) ("
@@ -220,7 +225,7 @@ foreign import ccall unsafe "hs_bindgen_81396927af8995d0"
 hs_bindgen_81396927af8995d0
   :: IO (BG.FunPtr (PtrConst.PtrConst SDL_Rect -> BG.Ptr SDL_FRect -> IO ()))
 hs_bindgen_81396927af8995d0 =
-  BG.fromFFIType hs_bindgen_81396927af8995d0_base
+  fmap BG.fromFFIType hs_bindgen_81396927af8995d0_base
 
 {-# NOINLINE sDL_RectToFRect #-}
 
@@ -248,7 +253,7 @@ foreign import ccall unsafe "hs_bindgen_8ad7f125172b6954"
 hs_bindgen_8ad7f125172b6954
   :: IO (BG.FunPtr (PtrConst.PtrConst SDL_Point -> PtrConst.PtrConst SDL_Rect -> IO BG.CBool))
 hs_bindgen_8ad7f125172b6954 =
-  BG.fromFFIType hs_bindgen_8ad7f125172b6954_base
+  fmap BG.fromFFIType hs_bindgen_8ad7f125172b6954_base
 
 {-# NOINLINE sDL_PointInRect #-}
 
@@ -282,7 +287,7 @@ foreign import ccall unsafe "hs_bindgen_423b3dd0cd8e3bd3"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_get_SDL_RectEmpty@
 hs_bindgen_423b3dd0cd8e3bd3 :: IO (BG.FunPtr (PtrConst.PtrConst SDL_Rect -> IO BG.CBool))
 hs_bindgen_423b3dd0cd8e3bd3 =
-  BG.fromFFIType hs_bindgen_423b3dd0cd8e3bd3_base
+  fmap BG.fromFFIType hs_bindgen_423b3dd0cd8e3bd3_base
 
 {-# NOINLINE sDL_RectEmpty #-}
 
@@ -314,7 +319,7 @@ foreign import ccall unsafe "hs_bindgen_8e6916371c8ddba4"
 hs_bindgen_8e6916371c8ddba4
   :: IO (BG.FunPtr (PtrConst.PtrConst SDL_Rect -> PtrConst.PtrConst SDL_Rect -> IO BG.CBool))
 hs_bindgen_8e6916371c8ddba4 =
-  BG.fromFFIType hs_bindgen_8e6916371c8ddba4_base
+  fmap BG.fromFFIType hs_bindgen_8e6916371c8ddba4_base
 
 {-# NOINLINE sDL_RectsEqual #-}
 
@@ -349,7 +354,7 @@ foreign import ccall unsafe "hs_bindgen_e6e10beddc2428e4"
 hs_bindgen_e6e10beddc2428e4
   :: IO (BG.FunPtr (PtrConst.PtrConst SDL_Rect -> PtrConst.PtrConst SDL_Rect -> IO BG.CBool))
 hs_bindgen_e6e10beddc2428e4 =
-  BG.fromFFIType hs_bindgen_e6e10beddc2428e4_base
+  fmap BG.fromFFIType hs_bindgen_e6e10beddc2428e4_base
 
 {-# NOINLINE sDL_HasRectIntersection #-}
 
@@ -387,7 +392,7 @@ hs_bindgen_b27ebfc7301ab58a
            (PtrConst.PtrConst SDL_Rect -> PtrConst.PtrConst SDL_Rect -> BG.Ptr SDL_Rect -> IO BG.CBool)
        )
 hs_bindgen_b27ebfc7301ab58a =
-  BG.fromFFIType hs_bindgen_b27ebfc7301ab58a_base
+  fmap BG.fromFFIType hs_bindgen_b27ebfc7301ab58a_base
 
 {-# NOINLINE sDL_GetRectIntersection #-}
 
@@ -428,7 +433,7 @@ hs_bindgen_f2cca914398431e6
            (PtrConst.PtrConst SDL_Rect -> PtrConst.PtrConst SDL_Rect -> BG.Ptr SDL_Rect -> IO BG.CBool)
        )
 hs_bindgen_f2cca914398431e6 =
-  BG.fromFFIType hs_bindgen_f2cca914398431e6_base
+  fmap BG.fromFFIType hs_bindgen_f2cca914398431e6_base
 
 {-# NOINLINE sDL_GetRectUnion #-}
 
@@ -470,7 +475,7 @@ hs_bindgen_9e30de5a15e6eb56
            )
        )
 hs_bindgen_9e30de5a15e6eb56 =
-  BG.fromFFIType hs_bindgen_9e30de5a15e6eb56_base
+  fmap BG.fromFFIType hs_bindgen_9e30de5a15e6eb56_base
 
 {-# NOINLINE sDL_GetRectEnclosingPoints #-}
 
@@ -522,7 +527,7 @@ hs_bindgen_8fb4c89870de38a5
            )
        )
 hs_bindgen_8fb4c89870de38a5 =
-  BG.fromFFIType hs_bindgen_8fb4c89870de38a5_base
+  fmap BG.fromFFIType hs_bindgen_8fb4c89870de38a5_base
 
 {-# NOINLINE sDL_GetRectAndLineIntersection #-}
 
@@ -568,7 +573,7 @@ foreign import ccall unsafe "hs_bindgen_092906727716778c"
 hs_bindgen_092906727716778c
   :: IO (BG.FunPtr (PtrConst.PtrConst SDL_FPoint -> PtrConst.PtrConst SDL_FRect -> IO BG.CBool))
 hs_bindgen_092906727716778c =
-  BG.fromFFIType hs_bindgen_092906727716778c_base
+  fmap BG.fromFFIType hs_bindgen_092906727716778c_base
 
 {-# NOINLINE sDL_PointInRectFloat #-}
 
@@ -602,7 +607,7 @@ foreign import ccall unsafe "hs_bindgen_31feb0e1be2327c4"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_get_SDL_RectEmptyFloat@
 hs_bindgen_31feb0e1be2327c4 :: IO (BG.FunPtr (PtrConst.PtrConst SDL_FRect -> IO BG.CBool))
 hs_bindgen_31feb0e1be2327c4 =
-  BG.fromFFIType hs_bindgen_31feb0e1be2327c4_base
+  fmap BG.fromFFIType hs_bindgen_31feb0e1be2327c4_base
 
 {-# NOINLINE sDL_RectEmptyFloat #-}
 
@@ -635,7 +640,7 @@ hs_bindgen_3b833d6a0ec61a00
   :: IO
        (BG.FunPtr (PtrConst.PtrConst SDL_FRect -> PtrConst.PtrConst SDL_FRect -> BG.CFloat -> IO BG.CBool))
 hs_bindgen_3b833d6a0ec61a00 =
-  BG.fromFFIType hs_bindgen_3b833d6a0ec61a00_base
+  fmap BG.fromFFIType hs_bindgen_3b833d6a0ec61a00_base
 
 {-# NOINLINE sDL_RectsEqualEpsilon #-}
 
@@ -674,7 +679,7 @@ foreign import ccall unsafe "hs_bindgen_6182b7c77941f68d"
 hs_bindgen_6182b7c77941f68d
   :: IO (BG.FunPtr (PtrConst.PtrConst SDL_FRect -> PtrConst.PtrConst SDL_FRect -> IO BG.CBool))
 hs_bindgen_6182b7c77941f68d =
-  BG.fromFFIType hs_bindgen_6182b7c77941f68d_base
+  fmap BG.fromFFIType hs_bindgen_6182b7c77941f68d_base
 
 {-# NOINLINE sDL_RectsEqualFloat #-}
 
@@ -711,7 +716,7 @@ foreign import ccall unsafe "hs_bindgen_3add038abafa0b81"
 hs_bindgen_3add038abafa0b81
   :: IO (BG.FunPtr (PtrConst.PtrConst SDL_FRect -> PtrConst.PtrConst SDL_FRect -> IO BG.CBool))
 hs_bindgen_3add038abafa0b81 =
-  BG.fromFFIType hs_bindgen_3add038abafa0b81_base
+  fmap BG.fromFFIType hs_bindgen_3add038abafa0b81_base
 
 {-# NOINLINE sDL_HasRectIntersectionFloat #-}
 
@@ -749,7 +754,7 @@ hs_bindgen_5458db9427cb15c2
            (PtrConst.PtrConst SDL_FRect -> PtrConst.PtrConst SDL_FRect -> BG.Ptr SDL_FRect -> IO BG.CBool)
        )
 hs_bindgen_5458db9427cb15c2 =
-  BG.fromFFIType hs_bindgen_5458db9427cb15c2_base
+  fmap BG.fromFFIType hs_bindgen_5458db9427cb15c2_base
 
 {-# NOINLINE sDL_GetRectIntersectionFloat #-}
 
@@ -790,7 +795,7 @@ hs_bindgen_937c1757d8b5c9a9
            (PtrConst.PtrConst SDL_FRect -> PtrConst.PtrConst SDL_FRect -> BG.Ptr SDL_FRect -> IO BG.CBool)
        )
 hs_bindgen_937c1757d8b5c9a9 =
-  BG.fromFFIType hs_bindgen_937c1757d8b5c9a9_base
+  fmap BG.fromFFIType hs_bindgen_937c1757d8b5c9a9_base
 
 {-# NOINLINE sDL_GetRectUnionFloat #-}
 
@@ -832,7 +837,7 @@ hs_bindgen_09f44777a8ae2968
            )
        )
 hs_bindgen_09f44777a8ae2968 =
-  BG.fromFFIType hs_bindgen_09f44777a8ae2968_base
+  fmap BG.fromFFIType hs_bindgen_09f44777a8ae2968_base
 
 {-# NOINLINE sDL_GetRectEnclosingPointsFloat #-}
 
@@ -884,7 +889,7 @@ hs_bindgen_0a7c277ad6063b14
            )
        )
 hs_bindgen_0a7c277ad6063b14 =
-  BG.fromFFIType hs_bindgen_0a7c277ad6063b14_base
+  fmap BG.fromFFIType hs_bindgen_0a7c277ad6063b14_base
 
 {-# NOINLINE sDL_GetRectAndLineIntersectionFloat #-}
 

@@ -6,6 +6,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -17,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | A property is a variable that can be created and retrieved by name at runtime.
 --
@@ -54,8 +56,27 @@ module SDL3.Sys.Bindgen.Properties (
 )
 where
 
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  IO,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  fmap,
+  pure,
+  (<*>),
+  type (~),
+ )
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
@@ -256,7 +277,6 @@ newtype SDL_CleanupPropertyCallback_Aux = SDL_CleanupPropertyCallback_Aux
   { unwrap :: BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_CleanupPropertyCallback_Aux@
 foreign import ccall safe "wrapper"
@@ -270,7 +290,14 @@ hs_bindgen_8958b9cfa7a05766
   -> IO (BG.FunPtr SDL_CleanupPropertyCallback_Aux)
 hs_bindgen_8958b9cfa7a05766 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_8958b9cfa7a05766_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_8958b9cfa7a05766_base
+          ( \x1 ->
+              \x2 ->
+                BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2)
+          )
+      )
 
 -- __unique:__ @fromSDL_CleanupPropertyCallback_Aux@
 foreign import ccall safe "dynamic"
@@ -286,7 +313,11 @@ hs_bindgen_c4ac4678b65d3d15
   -> SDL_CleanupPropertyCallback_Aux
 hs_bindgen_c4ac4678b65d3d15 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_c4ac4678b65d3d15_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_CleanupPropertyCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            hs_bindgen_c4ac4678b65d3d15_base (BG.castFunPtr funPtr0) (BG.toFFIType x1) (BG.toFFIType x2)
+      )
 
 instance BG.ToFunPtr SDL_CleanupPropertyCallback_Aux where
   toFunPtr = hs_bindgen_8958b9cfa7a05766
@@ -380,13 +411,12 @@ newtype SDL_EnumeratePropertiesCallback_Aux = SDL_EnumeratePropertiesCallback_Au
   { unwrap :: BG.Ptr BG.Void -> SDL_PropertiesID -> PtrConst.PtrConst BG.CChar -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_EnumeratePropertiesCallback_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_b271d6d6058a1326_base
-    :: (BG.Ptr BG.Void -> BG.Word32 -> BG.Ptr BG.Void -> IO ())
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Word32 -> BG.Ptr BG.Void -> IO ()))
+    :: (BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.Word32 -> BG.Ptr BG.Void -> IO ())
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.Word32 -> BG.Ptr BG.Void -> IO ()))
 
 -- __unique:__ @toSDL_EnumeratePropertiesCallback_Aux@
 hs_bindgen_b271d6d6058a1326
@@ -394,14 +424,22 @@ hs_bindgen_b271d6d6058a1326
   -> IO (BG.FunPtr SDL_EnumeratePropertiesCallback_Aux)
 hs_bindgen_b271d6d6058a1326 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_b271d6d6058a1326_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_b271d6d6058a1326_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2) (BG.fromFFIType x3)
+          )
+      )
 
 -- __unique:__ @fromSDL_EnumeratePropertiesCallback_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_89dc6b6814ba4336_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Word32 -> BG.Ptr BG.Void -> IO ())
+    :: BG.FunPtr (BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.Word32 -> BG.Ptr BG.Void -> IO ())
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> IO ()
 
@@ -411,7 +449,16 @@ hs_bindgen_89dc6b6814ba4336
   -> SDL_EnumeratePropertiesCallback_Aux
 hs_bindgen_89dc6b6814ba4336 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_89dc6b6814ba4336_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_EnumeratePropertiesCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              hs_bindgen_89dc6b6814ba4336_base
+                (BG.castFunPtr funPtr0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+      )
 
 instance BG.ToFunPtr SDL_EnumeratePropertiesCallback_Aux where
   toFunPtr = hs_bindgen_b271d6d6058a1326

@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Metal.FunPtr (
@@ -9,6 +11,8 @@ module SDL3.Sys.Bindgen.Metal.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Metal
@@ -16,7 +20,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_metal.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_metal.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Metal_get_SDL_Metal_CreateView */"
          , "__attribute__ ((const))"
          , "SDL_MetalView (*hs_bindgen_05e876f492f6e504 (void)) ("
@@ -54,7 +59,7 @@ foreign import ccall unsafe "hs_bindgen_05e876f492f6e504"
 hs_bindgen_05e876f492f6e504
   :: IO (BG.FunPtr (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window -> IO SDL_MetalView))
 hs_bindgen_05e876f492f6e504 =
-  BG.fromFFIType hs_bindgen_05e876f492f6e504_base
+  fmap BG.fromFFIType hs_bindgen_05e876f492f6e504_base
 
 {-# NOINLINE sDL_Metal_CreateView #-}
 
@@ -87,7 +92,7 @@ foreign import ccall unsafe "hs_bindgen_459e45a952bb1737"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Metal_get_SDL_Metal_DestroyView@
 hs_bindgen_459e45a952bb1737 :: IO (BG.FunPtr (SDL_MetalView -> IO ()))
 hs_bindgen_459e45a952bb1737 =
-  BG.fromFFIType hs_bindgen_459e45a952bb1737_base
+  fmap BG.fromFFIType hs_bindgen_459e45a952bb1737_base
 
 {-# NOINLINE sDL_Metal_DestroyView #-}
 
@@ -116,7 +121,7 @@ foreign import ccall unsafe "hs_bindgen_7141fdaf243ea8b9"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Metal_get_SDL_Metal_GetLayer@
 hs_bindgen_7141fdaf243ea8b9 :: IO (BG.FunPtr (SDL_MetalView -> IO (BG.Ptr BG.Void)))
 hs_bindgen_7141fdaf243ea8b9 =
-  BG.fromFFIType hs_bindgen_7141fdaf243ea8b9_base
+  fmap BG.fromFFIType hs_bindgen_7141fdaf243ea8b9_base
 
 {-# NOINLINE sDL_Metal_GetLayer #-}
 

@@ -1,4 +1,5 @@
 {-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL pen event handling.
 --
@@ -53,6 +54,8 @@ module SDL3.Sys.Pen (
   SDL3.Sys.Pen.getPenDeviceTypeSafe,
 )
 where
+
+import Prelude (IO)
 
 import SDL3.Sys.Bindgen.Pen
 import SDL3.Sys.Bindgen.Pen.Safe qualified as Safe

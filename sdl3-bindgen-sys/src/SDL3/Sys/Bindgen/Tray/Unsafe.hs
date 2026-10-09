@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Tray.Unsafe (
@@ -29,6 +31,9 @@ module SDL3.Sys.Bindgen.Tray.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -37,7 +42,8 @@ import SDL3.Sys.Bindgen.Tray
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_tray.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_tray.h>"
          , "SDL_Tray *hs_bindgen_e85818417f6c25aa ("
          , "  SDL_Surface *arg1,"
          , "  char const *arg2"
@@ -203,7 +209,9 @@ hs_bindgen_e85818417f6c25aa
   -> PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr SDL_Tray)
 hs_bindgen_e85818417f6c25aa =
-  BG.fromFFIType hs_bindgen_e85818417f6c25aa_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_e85818417f6c25aa_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Create an icon to be placed in the operating system\'s tray, or equivalent.
 --
@@ -245,7 +253,9 @@ hs_bindgen_9aff16c03b0f79a4
   -> BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface
   -> IO ()
 hs_bindgen_9aff16c03b0f79a4 =
-  BG.fromFFIType hs_bindgen_9aff16c03b0f79a4_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_9aff16c03b0f79a4_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Updates the system tray icon\'s icon.
 --
@@ -281,7 +291,9 @@ hs_bindgen_3a0f6abbabc3be43
   -> PtrConst.PtrConst BG.CChar
   -> IO ()
 hs_bindgen_3a0f6abbabc3be43 =
-  BG.fromFFIType hs_bindgen_3a0f6abbabc3be43_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_3a0f6abbabc3be43_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Updates the system tray icon\'s tooltip.
 --
@@ -315,7 +327,8 @@ hs_bindgen_bd35a68090435dd7
   :: BG.Ptr SDL_Tray
   -> IO (BG.Ptr SDL_TrayMenu)
 hs_bindgen_bd35a68090435dd7 =
-  BG.fromFFIType hs_bindgen_bd35a68090435dd7_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_bd35a68090435dd7_base (BG.toFFIType x0))
 
 -- | Create a menu for a system tray.
 --
@@ -353,7 +366,8 @@ hs_bindgen_c024bcab15166d09
   :: BG.Ptr SDL_TrayEntry
   -> IO (BG.Ptr SDL_TrayMenu)
 hs_bindgen_c024bcab15166d09 =
-  BG.fromFFIType hs_bindgen_c024bcab15166d09_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c024bcab15166d09_base (BG.toFFIType x0))
 
 -- | Create a submenu for a system tray entry.
 --
@@ -391,7 +405,8 @@ hs_bindgen_a75b79185593c812
   :: BG.Ptr SDL_Tray
   -> IO (BG.Ptr SDL_TrayMenu)
 hs_bindgen_a75b79185593c812 =
-  BG.fromFFIType hs_bindgen_a75b79185593c812_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a75b79185593c812_base (BG.toFFIType x0))
 
 -- | Gets a previously created tray menu.
 --
@@ -429,7 +444,8 @@ hs_bindgen_a4e00099ee20fd23
   :: BG.Ptr SDL_TrayEntry
   -> IO (BG.Ptr SDL_TrayMenu)
 hs_bindgen_a4e00099ee20fd23 =
-  BG.fromFFIType hs_bindgen_a4e00099ee20fd23_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a4e00099ee20fd23_base (BG.toFFIType x0))
 
 -- | Gets a previously created tray entry submenu.
 --
@@ -469,7 +485,9 @@ hs_bindgen_210fd2f6b416750d
   -> BG.Ptr BG.CInt
   -> IO (BG.Ptr (PtrConst.PtrConst SDL_TrayEntry))
 hs_bindgen_210fd2f6b416750d =
-  BG.fromFFIType hs_bindgen_210fd2f6b416750d_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_210fd2f6b416750d_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Returns a list of entries in the menu, in order.
 --
@@ -505,7 +523,8 @@ hs_bindgen_6b3503beb8dd3ba3
   :: BG.Ptr SDL_TrayEntry
   -> IO ()
 hs_bindgen_6b3503beb8dd3ba3 =
-  BG.fromFFIType hs_bindgen_6b3503beb8dd3ba3_base
+  \x0 ->
+    hs_bindgen_6b3503beb8dd3ba3_base (BG.toFFIType x0)
 
 -- | Removes a tray entry.
 --
@@ -528,9 +547,9 @@ sDL_RemoveTrayEntry = hs_bindgen_6b3503beb8dd3ba3
 foreign import ccall unsafe "hs_bindgen_cc14c44dbb0c78cb"
   hs_bindgen_cc14c44dbb0c78cb_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_Unsafe_SDL_InsertTrayEntryAt@
@@ -541,7 +560,18 @@ hs_bindgen_cc14c44dbb0c78cb
   -> SDL_TrayEntryFlags
   -> IO (BG.Ptr SDL_TrayEntry)
 hs_bindgen_cc14c44dbb0c78cb =
-  BG.fromFFIType hs_bindgen_cc14c44dbb0c78cb_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_cc14c44dbb0c78cb_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Insert a tray entry at a given position.
 --
@@ -591,7 +621,9 @@ hs_bindgen_504886286a699c39
   -> PtrConst.PtrConst BG.CChar
   -> IO ()
 hs_bindgen_504886286a699c39 =
-  BG.fromFFIType hs_bindgen_504886286a699c39_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_504886286a699c39_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Sets the label of an entry.
 --
@@ -627,7 +659,8 @@ hs_bindgen_9759e7e644805c7d
   :: BG.Ptr SDL_TrayEntry
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_9759e7e644805c7d =
-  BG.fromFFIType hs_bindgen_9759e7e644805c7d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9759e7e644805c7d_base (BG.toFFIType x0))
 
 -- | Gets the label of an entry.
 --
@@ -654,7 +687,7 @@ sDL_GetTrayEntryLabel = hs_bindgen_9759e7e644805c7d
 foreign import ccall unsafe "hs_bindgen_74cb41035d525059"
   hs_bindgen_74cb41035d525059_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_Unsafe_SDL_SetTrayEntryChecked@
@@ -663,7 +696,9 @@ hs_bindgen_74cb41035d525059
   -> BG.CBool
   -> IO ()
 hs_bindgen_74cb41035d525059 =
-  BG.fromFFIType hs_bindgen_74cb41035d525059_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_74cb41035d525059_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Sets whether or not an entry is checked.
 --
@@ -692,14 +727,15 @@ sDL_SetTrayEntryChecked = hs_bindgen_74cb41035d525059
 foreign import ccall unsafe "hs_bindgen_fe94492d1c67a601"
   hs_bindgen_fe94492d1c67a601_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_Unsafe_SDL_GetTrayEntryChecked@
 hs_bindgen_fe94492d1c67a601
   :: BG.Ptr SDL_TrayEntry
   -> IO BG.CBool
 hs_bindgen_fe94492d1c67a601 =
-  BG.fromFFIType hs_bindgen_fe94492d1c67a601_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_fe94492d1c67a601_base (BG.toFFIType x0))
 
 -- | Gets whether or not an entry is checked.
 --
@@ -726,7 +762,7 @@ sDL_GetTrayEntryChecked = hs_bindgen_fe94492d1c67a601
 foreign import ccall unsafe "hs_bindgen_5263a949bd152767"
   hs_bindgen_5263a949bd152767_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_Unsafe_SDL_SetTrayEntryEnabled@
@@ -735,7 +771,9 @@ hs_bindgen_5263a949bd152767
   -> BG.CBool
   -> IO ()
 hs_bindgen_5263a949bd152767 =
-  BG.fromFFIType hs_bindgen_5263a949bd152767_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_5263a949bd152767_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Sets whether or not an entry is enabled.
 --
@@ -762,14 +800,15 @@ sDL_SetTrayEntryEnabled = hs_bindgen_5263a949bd152767
 foreign import ccall unsafe "hs_bindgen_76a35c1dee9b4197"
   hs_bindgen_76a35c1dee9b4197_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_Unsafe_SDL_GetTrayEntryEnabled@
 hs_bindgen_76a35c1dee9b4197
   :: BG.Ptr SDL_TrayEntry
   -> IO BG.CBool
 hs_bindgen_76a35c1dee9b4197 =
-  BG.fromFFIType hs_bindgen_76a35c1dee9b4197_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_76a35c1dee9b4197_base (BG.toFFIType x0))
 
 -- | Gets whether or not an entry is enabled.
 --
@@ -805,7 +844,10 @@ hs_bindgen_3a82abfce11b4c94
   -> BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_3a82abfce11b4c94 =
-  BG.fromFFIType hs_bindgen_3a82abfce11b4c94_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        hs_bindgen_3a82abfce11b4c94_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2)
 
 -- | Sets a callback to be invoked when the entry is selected.
 --
@@ -844,7 +886,8 @@ hs_bindgen_a8a4d1df90923df2
   :: BG.Ptr SDL_TrayEntry
   -> IO ()
 hs_bindgen_a8a4d1df90923df2 =
-  BG.fromFFIType hs_bindgen_a8a4d1df90923df2_base
+  \x0 ->
+    hs_bindgen_a8a4d1df90923df2_base (BG.toFFIType x0)
 
 -- | Simulate a click on a tray entry.
 --
@@ -872,7 +915,8 @@ hs_bindgen_fe47cafa5c754a5a
   :: BG.Ptr SDL_Tray
   -> IO ()
 hs_bindgen_fe47cafa5c754a5a =
-  BG.fromFFIType hs_bindgen_fe47cafa5c754a5a_base
+  \x0 ->
+    hs_bindgen_fe47cafa5c754a5a_base (BG.toFFIType x0)
 
 -- | Destroys a tray object.
 --
@@ -904,7 +948,8 @@ hs_bindgen_3e7aeb66ff2f2f10
   :: BG.Ptr SDL_TrayEntry
   -> IO (BG.Ptr SDL_TrayMenu)
 hs_bindgen_3e7aeb66ff2f2f10 =
-  BG.fromFFIType hs_bindgen_3e7aeb66ff2f2f10_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3e7aeb66ff2f2f10_base (BG.toFFIType x0))
 
 -- | Gets the menu containing a certain tray entry.
 --
@@ -936,7 +981,8 @@ hs_bindgen_89d0a7d911ebcebd
   :: BG.Ptr SDL_TrayMenu
   -> IO (BG.Ptr SDL_TrayEntry)
 hs_bindgen_89d0a7d911ebcebd =
-  BG.fromFFIType hs_bindgen_89d0a7d911ebcebd_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_89d0a7d911ebcebd_base (BG.toFFIType x0))
 
 -- | Gets the entry for which the menu is a submenu, if the current menu is a submenu.
 --
@@ -971,7 +1017,8 @@ hs_bindgen_48fcf0bd7a472bcb
   :: BG.Ptr SDL_TrayMenu
   -> IO (BG.Ptr SDL_Tray)
 hs_bindgen_48fcf0bd7a472bcb =
-  BG.fromFFIType hs_bindgen_48fcf0bd7a472bcb_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_48fcf0bd7a472bcb_base (BG.toFFIType x0))
 
 -- | Gets the tray for which this menu is the first-level menu, if the current menu isn\'t a submenu.
 --
@@ -1003,7 +1050,7 @@ foreign import ccall unsafe "hs_bindgen_03e94a19f107d107"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_Unsafe_SDL_UpdateTrays@
 hs_bindgen_03e94a19f107d107 :: IO ()
 hs_bindgen_03e94a19f107d107 =
-  BG.fromFFIType hs_bindgen_03e94a19f107d107_base
+  hs_bindgen_03e94a19f107d107_base
 
 -- | Update the trays.
 --

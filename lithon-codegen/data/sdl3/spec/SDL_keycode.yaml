@@ -1,5 +1,5 @@
 version:
-  hs_bindgen: 0.1.0
+  hs_bindgen: 1.0.0.0
   binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Keycode
 ctypes:
@@ -37,6 +37,9 @@ hstypes:
         constructor: SDL_Keycode
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word32
     instances:
       - Bitfield
       - Bits
@@ -68,6 +71,9 @@ hstypes:
         constructor: SDL_Keymod
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word16
     instances:
       - Bitfield
       - Bits

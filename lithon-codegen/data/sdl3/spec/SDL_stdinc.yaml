@@ -1,5 +1,5 @@
 version:
-  hs_bindgen: 0.1.0
+  hs_bindgen: 1.0.0.0
   binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Stdinc
 ctypes:
@@ -104,6 +104,9 @@ hstypes:
         constructor: SDL_CompareCallback
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -124,6 +127,9 @@ hstypes:
         constructor: SDL_CompareCallback_r
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -144,6 +150,9 @@ hstypes:
         constructor: SDL_DUMMY_ENUM
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -170,6 +179,9 @@ hstypes:
         constructor: SDL_FunctionPointer
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -190,6 +202,9 @@ hstypes:
         constructor: SDL_Time
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Int64
     instances:
       - Bitfield
       - Bits
@@ -229,6 +244,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -240,6 +256,9 @@ hstypes:
         constructor: SDL_calloc_func
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -260,6 +279,9 @@ hstypes:
         constructor: SDL_free_func
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -282,6 +304,9 @@ hstypes:
         constructor: SDL_iconv_t
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: PtrVoid
     instances:
       - Eq
       - Generic
@@ -302,6 +327,9 @@ hstypes:
         constructor: SDL_malloc_func
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -322,6 +350,9 @@ hstypes:
         constructor: SDL_realloc_func
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -342,6 +373,9 @@ hstypes:
         constructor: Sint16
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Int16
     instances:
       - Bitfield
       - Bits
@@ -373,6 +407,9 @@ hstypes:
         constructor: Sint32
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Int32
     instances:
       - Bitfield
       - Bits
@@ -404,6 +441,9 @@ hstypes:
         constructor: Sint64
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Int64
     instances:
       - Bitfield
       - Bits
@@ -435,6 +475,9 @@ hstypes:
         constructor: Sint8
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Int8
     instances:
       - Bitfield
       - Bits
@@ -466,6 +509,9 @@ hstypes:
         constructor: Uint16
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word16
     instances:
       - Bitfield
       - Bits
@@ -497,6 +543,9 @@ hstypes:
         constructor: Uint32
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word32
     instances:
       - Bitfield
       - Bits
@@ -528,6 +577,9 @@ hstypes:
         constructor: Uint64
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word64
     instances:
       - Bitfield
       - Bits
@@ -559,6 +611,9 @@ hstypes:
         constructor: Uint8
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word8
     instances:
       - Bitfield
       - Bits

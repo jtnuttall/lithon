@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Locale.Unsafe (
@@ -7,13 +9,16 @@ module SDL3.Sys.Bindgen.Locale.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Locale
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_locale.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_locale.h>"
          , "SDL_Locale **hs_bindgen_ae8e008e79421b8c ("
          , "  signed int *arg1"
          , ")"
@@ -35,7 +40,8 @@ hs_bindgen_ae8e008e79421b8c
   :: BG.Ptr BG.CInt
   -> IO (BG.Ptr (BG.Ptr SDL_Locale))
 hs_bindgen_ae8e008e79421b8c =
-  BG.fromFFIType hs_bindgen_ae8e008e79421b8c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ae8e008e79421b8c_base (BG.toFFIType x0))
 
 -- | Report the user\'s preferred locale.
 --

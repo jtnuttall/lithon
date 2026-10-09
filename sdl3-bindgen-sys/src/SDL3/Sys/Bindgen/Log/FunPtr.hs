@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Log.FunPtr (
@@ -14,6 +16,8 @@ module SDL3.Sys.Bindgen.Log.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -21,7 +25,8 @@ import SDL3.Sys.Bindgen.Log
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_log.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_log.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Log_get_SDL_SetLogPriorities */"
          , "__attribute__ ((const))"
          , "void (*hs_bindgen_53f49172bb06fac5 (void)) ("
@@ -98,7 +103,7 @@ foreign import ccall unsafe "hs_bindgen_53f49172bb06fac5"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_get_SDL_SetLogPriorities@
 hs_bindgen_53f49172bb06fac5 :: IO (BG.FunPtr (SDL_LogPriority -> IO ()))
 hs_bindgen_53f49172bb06fac5 =
-  BG.fromFFIType hs_bindgen_53f49172bb06fac5_base
+  fmap BG.fromFFIType hs_bindgen_53f49172bb06fac5_base
 
 {-# NOINLINE sDL_SetLogPriorities #-}
 
@@ -125,7 +130,7 @@ foreign import ccall unsafe "hs_bindgen_efaec8fe88879163"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_get_SDL_SetLogPriority@
 hs_bindgen_efaec8fe88879163 :: IO (BG.FunPtr (BG.CInt -> SDL_LogPriority -> IO ()))
 hs_bindgen_efaec8fe88879163 =
-  BG.fromFFIType hs_bindgen_efaec8fe88879163_base
+  fmap BG.fromFFIType hs_bindgen_efaec8fe88879163_base
 
 {-# NOINLINE sDL_SetLogPriority #-}
 
@@ -154,7 +159,7 @@ foreign import ccall unsafe "hs_bindgen_0a5edd280b63c817"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_get_SDL_GetLogPriority@
 hs_bindgen_0a5edd280b63c817 :: IO (BG.FunPtr (BG.CInt -> IO SDL_LogPriority))
 hs_bindgen_0a5edd280b63c817 =
-  BG.fromFFIType hs_bindgen_0a5edd280b63c817_base
+  fmap BG.fromFFIType hs_bindgen_0a5edd280b63c817_base
 
 {-# NOINLINE sDL_GetLogPriority #-}
 
@@ -183,7 +188,7 @@ foreign import ccall unsafe "hs_bindgen_a50e52f5fe769c57"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_get_SDL_ResetLogPriorities@
 hs_bindgen_a50e52f5fe769c57 :: IO (BG.FunPtr (IO ()))
 hs_bindgen_a50e52f5fe769c57 =
-  BG.fromFFIType hs_bindgen_a50e52f5fe769c57_base
+  fmap BG.fromFFIType hs_bindgen_a50e52f5fe769c57_base
 
 {-# NOINLINE sDL_ResetLogPriorities #-}
 
@@ -211,7 +216,7 @@ foreign import ccall unsafe "hs_bindgen_69bb7de79ceb0d36"
 hs_bindgen_69bb7de79ceb0d36
   :: IO (BG.FunPtr (SDL_LogPriority -> PtrConst.PtrConst BG.CChar -> IO BG.CBool))
 hs_bindgen_69bb7de79ceb0d36 =
-  BG.fromFFIType hs_bindgen_69bb7de79ceb0d36_base
+  fmap BG.fromFFIType hs_bindgen_69bb7de79ceb0d36_base
 
 {-# NOINLINE sDL_SetLogPriorityPrefix #-}
 
@@ -246,7 +251,7 @@ foreign import ccall unsafe "hs_bindgen_48e509121cb8d650"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_get_SDL_GetDefaultLogOutputFunction@
 hs_bindgen_48e509121cb8d650 :: IO (BG.FunPtr (IO SDL_LogOutputFunction))
 hs_bindgen_48e509121cb8d650 =
-  BG.fromFFIType hs_bindgen_48e509121cb8d650_base
+  fmap BG.fromFFIType hs_bindgen_48e509121cb8d650_base
 
 {-# NOINLINE sDL_GetDefaultLogOutputFunction #-}
 
@@ -274,7 +279,7 @@ foreign import ccall unsafe "hs_bindgen_ae4995884c29f0d4"
 hs_bindgen_ae4995884c29f0d4
   :: IO (BG.FunPtr (BG.Ptr SDL_LogOutputFunction -> BG.Ptr (BG.Ptr BG.Void) -> IO ()))
 hs_bindgen_ae4995884c29f0d4 =
-  BG.fromFFIType hs_bindgen_ae4995884c29f0d4_base
+  fmap BG.fromFFIType hs_bindgen_ae4995884c29f0d4_base
 
 {-# NOINLINE sDL_GetLogOutputFunction #-}
 
@@ -304,7 +309,7 @@ foreign import ccall unsafe "hs_bindgen_b53e5cacb1899dae"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Log_get_SDL_SetLogOutputFunction@
 hs_bindgen_b53e5cacb1899dae :: IO (BG.FunPtr (SDL_LogOutputFunction -> BG.Ptr BG.Void -> IO ()))
 hs_bindgen_b53e5cacb1899dae =
-  BG.fromFFIType hs_bindgen_b53e5cacb1899dae_base
+  fmap BG.fromFFIType hs_bindgen_b53e5cacb1899dae_base
 
 {-# NOINLINE sDL_SetLogOutputFunction #-}
 

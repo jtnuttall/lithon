@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | The storage API is a high-level API designed to abstract away the portability issues that come up when using something lower-level (in SDL\'s case, this sits on top of the [Filesystem](https:\/\/wiki.libsdl.org\/SDL3\/CategoryFilesystem) and [IOStream](https:\/\/wiki.libsdl.org\/SDL3\/CategoryIOStream) subsystems). It is significantly more restrictive than a typical filesystem API, for a number of reasons:
 --
 --     1. __What to Access:__ A common pitfall with existing filesystem APIs is the assumption that all storage is monolithic. However, many other platforms (game consoles in particular) are more strict about what /type/ of filesystem is being accessed; for example, game content and user data are usually two separate storage devices with entirely different characteristics (and possibly different low-level APIs altogether!).
@@ -221,6 +223,7 @@ module SDL3.Sys.Storage (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.PtrConst qualified as PtrConst

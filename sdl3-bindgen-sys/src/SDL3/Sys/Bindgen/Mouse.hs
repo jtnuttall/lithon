@@ -7,6 +7,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -18,6 +19,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Any GUI application has to deal with the mouse, and SDL provides functions to manage mouse input and the displayed cursor.
 --
@@ -82,10 +84,31 @@ module SDL3.Sys.Bindgen.Mouse (
 )
 where
 
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  IO,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  fmap,
+  pure,
+  (<*>),
+  (>>),
+  type (~),
+ )
+
 import C.Expr.HostPlatform qualified
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -538,6 +561,14 @@ instance Marshal.WriteRaw SDL_CursorFrameInfo where
 
 deriving via Marshal.EquivStorable SDL_CursorFrameInfo instance BG.Storable SDL_CursorFrameInfo
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_CursorFrameInfo
+  instance
+    Struct.IsStruct SDL_CursorFrameInfo
+
+-- | The surface data for this frame
+--
+--     [C declaration]: @surface@, defined at @SDL3\/SDL_mouse.h 140:18@
 instance
   (ty ~ BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface)
   => BG.CompatHasField.HasField "surface" SDL_CursorFrameInfo ty
@@ -562,6 +593,9 @@ instance HasCField.HasCField SDL_CursorFrameInfo "surface" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The frame duration in milliseconds (a duration of 0 is infinite)
+--
+--     [C declaration]: @duration@, defined at @SDL3\/SDL_mouse.h 141:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "duration" SDL_CursorFrameInfo ty
@@ -713,15 +747,14 @@ newtype SDL_MouseMotionTransformCallback_Aux = SDL_MouseMotionTransformCallback_
       -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_MouseMotionTransformCallback_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_3e4a2d15fbbe81d6_base
     :: ( BG.Ptr BG.Void
-         -> BG.Word64
+         -> HsBindgen.Runtime.LibC.Word64
          -> BG.Ptr BG.Void
-         -> BG.Word32
+         -> HsBindgen.Runtime.LibC.Word32
          -> BG.Ptr BG.Void
          -> BG.Ptr BG.Void
          -> IO ()
@@ -729,9 +762,9 @@ foreign import ccall safe "wrapper"
     -> IO
          ( BG.FunPtr
              ( BG.Ptr BG.Void
-               -> BG.Word64
+               -> HsBindgen.Runtime.LibC.Word64
                -> BG.Ptr BG.Void
-               -> BG.Word32
+               -> HsBindgen.Runtime.LibC.Word32
                -> BG.Ptr BG.Void
                -> BG.Ptr BG.Void
                -> IO ()
@@ -744,24 +777,42 @@ hs_bindgen_3e4a2d15fbbe81d6
   -> IO (BG.FunPtr SDL_MouseMotionTransformCallback_Aux)
 hs_bindgen_3e4a2d15fbbe81d6 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_3e4a2d15fbbe81d6_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_3e4a2d15fbbe81d6_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  \x4 ->
+                    \x5 ->
+                      \x6 ->
+                        BG.getField @"unwrap"
+                          fun0
+                          (BG.fromFFIType x1)
+                          (BG.fromFFIType x2)
+                          (BG.fromFFIType x3)
+                          (BG.fromFFIType x4)
+                          (BG.fromFFIType x5)
+                          (BG.fromFFIType x6)
+          )
+      )
 
 -- __unique:__ @fromSDL_MouseMotionTransformCallback_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_97a29d76d0ffd06f_base
     :: BG.FunPtr
          ( BG.Ptr BG.Void
-           -> BG.Word64
+           -> HsBindgen.Runtime.LibC.Word64
            -> BG.Ptr BG.Void
-           -> BG.Word32
+           -> HsBindgen.Runtime.LibC.Word32
            -> BG.Ptr BG.Void
            -> BG.Ptr BG.Void
            -> IO ()
          )
     -> BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.Word64
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> IO ()
@@ -772,7 +823,22 @@ hs_bindgen_97a29d76d0ffd06f
   -> SDL_MouseMotionTransformCallback_Aux
 hs_bindgen_97a29d76d0ffd06f =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_97a29d76d0ffd06f_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_MouseMotionTransformCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              \x4 ->
+                \x5 ->
+                  \x6 ->
+                    hs_bindgen_97a29d76d0ffd06f_base
+                      (BG.castFunPtr funPtr0)
+                      (BG.toFFIType x1)
+                      (BG.toFFIType x2)
+                      (BG.toFFIType x3)
+                      (BG.toFFIType x4)
+                      (BG.toFFIType x5)
+                      (BG.toFFIType x6)
+      )
 
 instance BG.ToFunPtr SDL_MouseMotionTransformCallback_Aux where
   toFunPtr = hs_bindgen_3e4a2d15fbbe81d6

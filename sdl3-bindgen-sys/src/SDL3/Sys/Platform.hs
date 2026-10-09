@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL provides a means to identify the app\'s platform, both at compile time and runtime. Get the name of the platform.
 --
 --     Here are the names returned for some (but not all) supported platforms:
@@ -28,6 +30,8 @@ module SDL3.Sys.Platform (
   SDL3.Sys.Platform.getPlatform,
 )
 where
+
+import Prelude (IO)
 
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG

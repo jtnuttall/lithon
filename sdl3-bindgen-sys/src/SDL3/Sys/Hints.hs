@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | This file contains functions to set and get configuration hints, as well as listing each of them alphabetically.
 --
 --     The convention for naming hints is SDL_HINT_X, where \"SDL_X\" is the environment variable that can be used to override the default.
@@ -42,6 +44,8 @@ module SDL3.Sys.Hints (
   SDL3.Sys.Hints.removeHintCallbackSafe,
 )
 where
+
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.PtrConst qualified as PtrConst

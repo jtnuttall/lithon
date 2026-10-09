@@ -1,11 +1,11 @@
 namespace: SDL3.Sys.Bindgen
 curated namespace: SDL3.Sys
 headers (specs): 58
-modules: 291
+modules: 295
 curated modules: 59
 wrapper-splice modules: 162
 registry: both=104 safe-only=18 unsafe-only=133 renames=0 skip=0
-facades: SDL3.Sys.Bindgen.Runtime SDL3.Sys.Bindgen.Runtime.BitfieldPtr SDL3.Sys.Bindgen.Runtime.Block SDL3.Sys.Bindgen.Runtime.CBool SDL3.Sys.Bindgen.Runtime.CEnum SDL3.Sys.Bindgen.Runtime.CExpr SDL3.Sys.Bindgen.Runtime.ConstantArray SDL3.Sys.Bindgen.Runtime.FLAM SDL3.Sys.Bindgen.Runtime.HasCBitfield SDL3.Sys.Bindgen.Runtime.HasCField SDL3.Sys.Bindgen.Runtime.IncompleteArray SDL3.Sys.Bindgen.Runtime.IsArray SDL3.Sys.Bindgen.Runtime.Marshal SDL3.Sys.Bindgen.Runtime.PtrConst SDL3.Sys.Bindgen.Runtime.Union SDL3.Sys.Runtime
+facades: SDL3.Sys.Bindgen.Runtime SDL3.Sys.Bindgen.Runtime.BitfieldPtr SDL3.Sys.Bindgen.Runtime.Block SDL3.Sys.Bindgen.Runtime.CBool SDL3.Sys.Bindgen.Runtime.CEnum SDL3.Sys.Bindgen.Runtime.CExpr SDL3.Sys.Bindgen.Runtime.ConstantArray SDL3.Sys.Bindgen.Runtime.FLAM SDL3.Sys.Bindgen.Runtime.HasCBitfield SDL3.Sys.Bindgen.Runtime.HasCField SDL3.Sys.Bindgen.Runtime.HasFFIType SDL3.Sys.Bindgen.Runtime.IncompleteArray SDL3.Sys.Bindgen.Runtime.IsArray SDL3.Sys.Bindgen.Runtime.Macro SDL3.Sys.Bindgen.Runtime.Marshal SDL3.Sys.Bindgen.Runtime.Overloading SDL3.Sys.Bindgen.Runtime.PtrConst SDL3.Sys.Bindgen.Runtime.Struct SDL3.Sys.Bindgen.Runtime.Union SDL3.Sys.Runtime
 per-header:
   SDL_assert.h: types safe unsafe funptr sys
   SDL_asyncio.h: types safe unsafe funptr sys

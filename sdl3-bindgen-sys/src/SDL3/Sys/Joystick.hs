@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL joystick support.
 --
 --     This is the lower-level joystick handling. If you want the simpler option, where what each button does is well-defined, you should use the gamepad API instead.
@@ -147,6 +149,7 @@ module SDL3.Sys.Joystick (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, Float, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

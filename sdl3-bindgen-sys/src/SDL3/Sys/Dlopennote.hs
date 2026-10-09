@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | This header allows you to annotate your code so external tools know about dynamic shared library dependencies.
 --
 --     If you determine that your toolchain doesn\'t support dlopen notes, you can disable this feature by defining @SDL_DISABLE_DLOPEN_NOTES@. You can use this CMake snippet to check for support:

@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Storage.FunPtr (
@@ -23,6 +25,8 @@ module SDL3.Sys.Bindgen.Storage.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -33,7 +37,8 @@ import SDL3.Sys.Bindgen.Storage
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_storage.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_storage.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Storage_get_SDL_OpenTitleStorage */"
          , "__attribute__ ((const))"
          , "SDL_Storage *(*hs_bindgen_41dc0d42da3c13fb (void)) ("
@@ -216,7 +221,7 @@ hs_bindgen_41dc0d42da3c13fb
            )
        )
 hs_bindgen_41dc0d42da3c13fb =
-  BG.fromFFIType hs_bindgen_41dc0d42da3c13fb_base
+  fmap BG.fromFFIType hs_bindgen_41dc0d42da3c13fb_base
 
 {-# NOINLINE sDL_OpenTitleStorage #-}
 
@@ -260,7 +265,7 @@ hs_bindgen_12c55994171bb882
            )
        )
 hs_bindgen_12c55994171bb882 =
-  BG.fromFFIType hs_bindgen_12c55994171bb882_base
+  fmap BG.fromFFIType hs_bindgen_12c55994171bb882_base
 
 {-# NOINLINE sDL_OpenUserStorage #-}
 
@@ -300,7 +305,7 @@ foreign import ccall unsafe "hs_bindgen_fef879e18b533feb"
 hs_bindgen_fef879e18b533feb
   :: IO (BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO (BG.Ptr SDL_Storage)))
 hs_bindgen_fef879e18b533feb =
-  BG.fromFFIType hs_bindgen_fef879e18b533feb_base
+  fmap BG.fromFFIType hs_bindgen_fef879e18b533feb_base
 
 {-# NOINLINE sDL_OpenFileStorage #-}
 
@@ -330,7 +335,7 @@ foreign import ccall unsafe "hs_bindgen_21801b8b233def48"
 hs_bindgen_21801b8b233def48
   :: IO (BG.FunPtr (PtrConst.PtrConst SDL_StorageInterface -> BG.Ptr BG.Void -> IO (BG.Ptr SDL_Storage)))
 hs_bindgen_21801b8b233def48 =
-  BG.fromFFIType hs_bindgen_21801b8b233def48_base
+  fmap BG.fromFFIType hs_bindgen_21801b8b233def48_base
 
 {-# NOINLINE sDL_OpenStorage #-}
 
@@ -364,7 +369,7 @@ foreign import ccall unsafe "hs_bindgen_df81ee6f0c32e051"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_get_SDL_CloseStorage@
 hs_bindgen_df81ee6f0c32e051 :: IO (BG.FunPtr (BG.Ptr SDL_Storage -> IO BG.CBool))
 hs_bindgen_df81ee6f0c32e051 =
-  BG.fromFFIType hs_bindgen_df81ee6f0c32e051_base
+  fmap BG.fromFFIType hs_bindgen_df81ee6f0c32e051_base
 
 {-# NOINLINE sDL_CloseStorage #-}
 
@@ -391,7 +396,7 @@ foreign import ccall unsafe "hs_bindgen_026acf35472ecd32"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_get_SDL_StorageReady@
 hs_bindgen_026acf35472ecd32 :: IO (BG.FunPtr (BG.Ptr SDL_Storage -> IO BG.CBool))
 hs_bindgen_026acf35472ecd32 =
-  BG.fromFFIType hs_bindgen_026acf35472ecd32_base
+  fmap BG.fromFFIType hs_bindgen_026acf35472ecd32_base
 
 {-# NOINLINE sDL_StorageReady #-}
 
@@ -426,7 +431,7 @@ hs_bindgen_24ba0ea421ce2ba3
            )
        )
 hs_bindgen_24ba0ea421ce2ba3 =
-  BG.fromFFIType hs_bindgen_24ba0ea421ce2ba3_base
+  fmap BG.fromFFIType hs_bindgen_24ba0ea421ce2ba3_base
 
 {-# NOINLINE sDL_GetStorageFileSize #-}
 
@@ -472,7 +477,7 @@ hs_bindgen_1b79f3ffe3c4acb4
            )
        )
 hs_bindgen_1b79f3ffe3c4acb4 =
-  BG.fromFFIType hs_bindgen_1b79f3ffe3c4acb4_base
+  fmap BG.fromFFIType hs_bindgen_1b79f3ffe3c4acb4_base
 
 {-# NOINLINE sDL_ReadStorageFile #-}
 
@@ -523,7 +528,7 @@ hs_bindgen_cf1d254ac8e06322
            )
        )
 hs_bindgen_cf1d254ac8e06322 =
-  BG.fromFFIType hs_bindgen_cf1d254ac8e06322_base
+  fmap BG.fromFFIType hs_bindgen_cf1d254ac8e06322_base
 
 {-# NOINLINE sDL_WriteStorageFile #-}
 
@@ -564,7 +569,7 @@ foreign import ccall unsafe "hs_bindgen_1ccf47e38725aac9"
 hs_bindgen_1ccf47e38725aac9
   :: IO (BG.FunPtr (BG.Ptr SDL_Storage -> PtrConst.PtrConst BG.CChar -> IO BG.CBool))
 hs_bindgen_1ccf47e38725aac9 =
-  BG.fromFFIType hs_bindgen_1ccf47e38725aac9_base
+  fmap BG.fromFFIType hs_bindgen_1ccf47e38725aac9_base
 
 {-# NOINLINE sDL_CreateStorageDirectory #-}
 
@@ -603,7 +608,7 @@ hs_bindgen_c662a58224242e1a
            )
        )
 hs_bindgen_c662a58224242e1a =
-  BG.fromFFIType hs_bindgen_c662a58224242e1a_base
+  fmap BG.fromFFIType hs_bindgen_c662a58224242e1a_base
 
 {-# NOINLINE sDL_EnumerateStorageDirectory #-}
 
@@ -650,7 +655,7 @@ foreign import ccall unsafe "hs_bindgen_6e74dd5d268a0290"
 hs_bindgen_6e74dd5d268a0290
   :: IO (BG.FunPtr (BG.Ptr SDL_Storage -> PtrConst.PtrConst BG.CChar -> IO BG.CBool))
 hs_bindgen_6e74dd5d268a0290 =
-  BG.fromFFIType hs_bindgen_6e74dd5d268a0290_base
+  fmap BG.fromFFIType hs_bindgen_6e74dd5d268a0290_base
 
 {-# NOINLINE sDL_RemoveStoragePath #-}
 
@@ -683,7 +688,7 @@ hs_bindgen_d9c1fb4dbd31bb7f
            (BG.Ptr SDL_Storage -> PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> IO BG.CBool)
        )
 hs_bindgen_d9c1fb4dbd31bb7f =
-  BG.fromFFIType hs_bindgen_d9c1fb4dbd31bb7f_base
+  fmap BG.fromFFIType hs_bindgen_d9c1fb4dbd31bb7f_base
 
 {-# NOINLINE sDL_RenameStoragePath #-}
 
@@ -720,7 +725,7 @@ hs_bindgen_af4030dd32ec02ae
            (BG.Ptr SDL_Storage -> PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> IO BG.CBool)
        )
 hs_bindgen_af4030dd32ec02ae =
-  BG.fromFFIType hs_bindgen_af4030dd32ec02ae_base
+  fmap BG.fromFFIType hs_bindgen_af4030dd32ec02ae_base
 
 {-# NOINLINE sDL_CopyStorageFile #-}
 
@@ -761,7 +766,7 @@ hs_bindgen_5eb9dbc0d85e32f2
            )
        )
 hs_bindgen_5eb9dbc0d85e32f2 =
-  BG.fromFFIType hs_bindgen_5eb9dbc0d85e32f2_base
+  fmap BG.fromFFIType hs_bindgen_5eb9dbc0d85e32f2_base
 
 {-# NOINLINE sDL_GetStoragePathInfo #-}
 
@@ -799,7 +804,7 @@ foreign import ccall unsafe "hs_bindgen_848d4258c8d4d64e"
 hs_bindgen_848d4258c8d4d64e
   :: IO (BG.FunPtr (BG.Ptr SDL_Storage -> IO SDL3.Sys.Bindgen.Stdinc.Uint64))
 hs_bindgen_848d4258c8d4d64e =
-  BG.fromFFIType hs_bindgen_848d4258c8d4d64e_base
+  fmap BG.fromFFIType hs_bindgen_848d4258c8d4d64e_base
 
 {-# NOINLINE sDL_GetStorageSpaceRemaining #-}
 
@@ -836,7 +841,7 @@ hs_bindgen_d50b8834aa3490cc
            )
        )
 hs_bindgen_d50b8834aa3490cc =
-  BG.fromFFIType hs_bindgen_d50b8834aa3490cc_base
+  fmap BG.fromFFIType hs_bindgen_d50b8834aa3490cc_base
 
 {-# NOINLINE sDL_GlobStorageDirectory #-}
 

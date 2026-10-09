@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL provides access to the system clipboard, both for reading information from other processes and publishing information of its own.
 --
 --     This is not just text! SDL apps can access and publish data by mimetype.
@@ -64,6 +66,7 @@ module SDL3.Sys.Clipboard (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

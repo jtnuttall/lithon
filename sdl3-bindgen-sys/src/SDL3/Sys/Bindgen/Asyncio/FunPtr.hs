@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Asyncio.FunPtr (
@@ -17,6 +19,8 @@ module SDL3.Sys.Bindgen.Asyncio.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -25,7 +29,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_asyncio.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_asyncio.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Asyncio_get_SDL_AsyncIOFromFile */"
          , "__attribute__ ((const))"
          , "SDL_AsyncIO *(*hs_bindgen_1df76789789f6d0b (void)) ("
@@ -144,7 +149,7 @@ foreign import ccall unsafe "hs_bindgen_1df76789789f6d0b"
 hs_bindgen_1df76789789f6d0b
   :: IO (BG.FunPtr (PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> IO (BG.Ptr SDL_AsyncIO)))
 hs_bindgen_1df76789789f6d0b =
-  BG.fromFFIType hs_bindgen_1df76789789f6d0b_base
+  fmap BG.fromFFIType hs_bindgen_1df76789789f6d0b_base
 
 {-# NOINLINE sDL_AsyncIOFromFile #-}
 
@@ -193,7 +198,7 @@ foreign import ccall unsafe "hs_bindgen_2873a0d4a88e3a7b"
 hs_bindgen_2873a0d4a88e3a7b
   :: IO (BG.FunPtr (BG.Ptr SDL_AsyncIO -> IO SDL3.Sys.Bindgen.Stdinc.Sint64))
 hs_bindgen_2873a0d4a88e3a7b =
-  BG.fromFFIType hs_bindgen_2873a0d4a88e3a7b_base
+  fmap BG.fromFFIType hs_bindgen_2873a0d4a88e3a7b_base
 
 {-# NOINLINE sDL_GetAsyncIOSize #-}
 
@@ -233,7 +238,7 @@ hs_bindgen_c870b15855ed63f1
            )
        )
 hs_bindgen_c870b15855ed63f1 =
-  BG.fromFFIType hs_bindgen_c870b15855ed63f1_base
+  fmap BG.fromFFIType hs_bindgen_c870b15855ed63f1_base
 
 {-# NOINLINE sDL_ReadAsyncIO #-}
 
@@ -300,7 +305,7 @@ hs_bindgen_9a68985237acc0c3
            )
        )
 hs_bindgen_9a68985237acc0c3 =
-  BG.fromFFIType hs_bindgen_9a68985237acc0c3_base
+  fmap BG.fromFFIType hs_bindgen_9a68985237acc0c3_base
 
 {-# NOINLINE sDL_WriteAsyncIO #-}
 
@@ -360,7 +365,7 @@ hs_bindgen_e5791205836e93d4
            (BG.Ptr SDL_AsyncIO -> BG.CBool -> BG.Ptr SDL_AsyncIOQueue -> BG.Ptr BG.Void -> IO BG.CBool)
        )
 hs_bindgen_e5791205836e93d4 =
-  BG.fromFFIType hs_bindgen_e5791205836e93d4_base
+  fmap BG.fromFFIType hs_bindgen_e5791205836e93d4_base
 
 {-# NOINLINE sDL_CloseAsyncIO #-}
 
@@ -407,7 +412,7 @@ foreign import ccall unsafe "hs_bindgen_bad5a1c7bbfc4f36"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Asyncio_get_SDL_CreateAsyncIOQueue@
 hs_bindgen_bad5a1c7bbfc4f36 :: IO (BG.FunPtr (IO (BG.Ptr SDL_AsyncIOQueue)))
 hs_bindgen_bad5a1c7bbfc4f36 =
-  BG.fromFFIType hs_bindgen_bad5a1c7bbfc4f36_base
+  fmap BG.fromFFIType hs_bindgen_bad5a1c7bbfc4f36_base
 
 {-# NOINLINE sDL_CreateAsyncIOQueue #-}
 
@@ -436,7 +441,7 @@ foreign import ccall unsafe "hs_bindgen_f1f3445924531218"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Asyncio_get_SDL_DestroyAsyncIOQueue@
 hs_bindgen_f1f3445924531218 :: IO (BG.FunPtr (BG.Ptr SDL_AsyncIOQueue -> IO ()))
 hs_bindgen_f1f3445924531218 =
-  BG.fromFFIType hs_bindgen_f1f3445924531218_base
+  fmap BG.fromFFIType hs_bindgen_f1f3445924531218_base
 
 {-# NOINLINE sDL_DestroyAsyncIOQueue #-}
 
@@ -470,7 +475,7 @@ foreign import ccall unsafe "hs_bindgen_a377aedfcfda7243"
 hs_bindgen_a377aedfcfda7243
   :: IO (BG.FunPtr (BG.Ptr SDL_AsyncIOQueue -> BG.Ptr SDL_AsyncIOOutcome -> IO BG.CBool))
 hs_bindgen_a377aedfcfda7243 =
-  BG.fromFFIType hs_bindgen_a377aedfcfda7243_base
+  fmap BG.fromFFIType hs_bindgen_a377aedfcfda7243_base
 
 {-# NOINLINE sDL_GetAsyncIOResult #-}
 
@@ -516,7 +521,7 @@ hs_bindgen_1b55fd087de307a9
            )
        )
 hs_bindgen_1b55fd087de307a9 =
-  BG.fromFFIType hs_bindgen_1b55fd087de307a9_base
+  fmap BG.fromFFIType hs_bindgen_1b55fd087de307a9_base
 
 {-# NOINLINE sDL_WaitAsyncIOResult #-}
 
@@ -569,7 +574,7 @@ foreign import ccall unsafe "hs_bindgen_094baddfb7dfcf9e"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Asyncio_get_SDL_SignalAsyncIOQueue@
 hs_bindgen_094baddfb7dfcf9e :: IO (BG.FunPtr (BG.Ptr SDL_AsyncIOQueue -> IO ()))
 hs_bindgen_094baddfb7dfcf9e =
-  BG.fromFFIType hs_bindgen_094baddfb7dfcf9e_base
+  fmap BG.fromFFIType hs_bindgen_094baddfb7dfcf9e_base
 
 {-# NOINLINE sDL_SignalAsyncIOQueue #-}
 
@@ -602,7 +607,7 @@ hs_bindgen_f844da257a66f6c5
   :: IO
        (BG.FunPtr (PtrConst.PtrConst BG.CChar -> BG.Ptr SDL_AsyncIOQueue -> BG.Ptr BG.Void -> IO BG.CBool))
 hs_bindgen_f844da257a66f6c5 =
-  BG.fromFFIType hs_bindgen_f844da257a66f6c5_base
+  fmap BG.fromFFIType hs_bindgen_f844da257a66f6c5_base
 
 {-# NOINLINE sDL_LoadFileAsync #-}
 

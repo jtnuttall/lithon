@@ -16,6 +16,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL offers touch input, on platforms that support it. It can manage multiple touch devices and track multiple fingers on those devices.
 --
@@ -40,9 +41,27 @@ module SDL3.Sys.Bindgen.Touch (
 )
 where
 
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  pure,
+  (<*>),
+  (>>),
+  type (~),
+ )
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -326,6 +345,11 @@ instance Marshal.WriteRaw SDL_Finger where
 
 deriving via Marshal.EquivStorable SDL_Finger instance BG.Storable SDL_Finger
 
+deriving via Struct.IsStructViaReadRaw SDL_Finger instance Struct.IsStruct SDL_Finger
+
+-- | the finger ID
+--
+--     [C declaration]: @id@, defined at @SDL3\/SDL_touch.h 104:18@
 instance
   (ty ~ SDL_FingerID)
   => BG.CompatHasField.HasField "id" SDL_Finger ty
@@ -353,6 +377,9 @@ instance HasCField.HasCField SDL_Finger "id" where
 
   offset# = \_ -> \_ -> 0
 
+-- | the x-axis location of the touch event, normalized (0...1)
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_touch.h 105:11@
 instance (ty ~ BG.CFloat) => BG.CompatHasField.HasField "x" SDL_Finger ty where
   hasField =
     \x0 ->
@@ -377,6 +404,9 @@ instance HasCField.HasCField SDL_Finger "x" where
 
   offset# = \_ -> \_ -> 8
 
+-- | the y-axis location of the touch event, normalized (0...1)
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_touch.h 106:11@
 instance (ty ~ BG.CFloat) => BG.CompatHasField.HasField "y" SDL_Finger ty where
   hasField =
     \x0 ->
@@ -401,6 +431,9 @@ instance HasCField.HasCField SDL_Finger "y" where
 
   offset# = \_ -> \_ -> 12
 
+-- | the quantity of pressure applied, normalized (0...1)
+--
+--     [C declaration]: @pressure@, defined at @SDL3\/SDL_touch.h 107:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "pressure" SDL_Finger ty

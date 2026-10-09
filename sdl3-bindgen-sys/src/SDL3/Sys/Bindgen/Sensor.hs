@@ -18,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL sensor management.
 --
@@ -42,6 +43,8 @@ module SDL3.Sys.Bindgen.Sensor (
   pattern SDL3.Sys.Bindgen.Sensor.SDL_SENSOR_COUNT,
 )
 where
+
+import Prelude (Bounded, Enum, Eq, Int, Integral, Num, Ord, Read, Real, Show, pure, (<*>), type (~))
 
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField

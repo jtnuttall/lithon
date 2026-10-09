@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Gamepad.Unsafe (
@@ -79,7 +81,11 @@ module SDL3.Sys.Bindgen.Gamepad.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Support qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Gamepad
@@ -93,7 +99,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_gamepad.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_gamepad.h>"
          , "signed int hs_bindgen_36135983181db04c ("
          , "  char const *arg1"
          , ")"
@@ -572,14 +579,15 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 foreign import ccall unsafe "hs_bindgen_36135983181db04c"
   hs_bindgen_36135983181db04c_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_AddGamepadMapping@
 hs_bindgen_36135983181db04c
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CInt
 hs_bindgen_36135983181db04c =
-  BG.fromFFIType hs_bindgen_36135983181db04c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_36135983181db04c_base (BG.toFFIType x0))
 
 -- | Add support for gamepads that SDL is unaware of or change the binding of an existing gamepad.
 --
@@ -622,8 +630,8 @@ sDL_AddGamepadMapping = hs_bindgen_36135983181db04c
 foreign import ccall unsafe "hs_bindgen_7bcfa7483bb6c304"
   hs_bindgen_7bcfa7483bb6c304_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Int32
+    -> BG.CBool
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_AddGamepadMappingsFromIO@
 hs_bindgen_7bcfa7483bb6c304
@@ -631,7 +639,9 @@ hs_bindgen_7bcfa7483bb6c304
   -> BG.CBool
   -> IO BG.CInt
 hs_bindgen_7bcfa7483bb6c304 =
-  BG.fromFFIType hs_bindgen_7bcfa7483bb6c304_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_7bcfa7483bb6c304_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Load a set of gamepad mappings from an SDL_IOStream.
 --
@@ -671,14 +681,15 @@ sDL_AddGamepadMappingsFromIO =
 foreign import ccall unsafe "hs_bindgen_183e11c34dd8b81f"
   hs_bindgen_183e11c34dd8b81f_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_AddGamepadMappingsFromFile@
 hs_bindgen_183e11c34dd8b81f
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CInt
 hs_bindgen_183e11c34dd8b81f =
-  BG.fromFFIType hs_bindgen_183e11c34dd8b81f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_183e11c34dd8b81f_base (BG.toFFIType x0))
 
 -- | Load a set of gamepad mappings from a file.
 --
@@ -711,12 +722,12 @@ sDL_AddGamepadMappingsFromFile =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_ReloadGamepadMappings@
 foreign import ccall unsafe "hs_bindgen_779c89fdca5b9a0e"
   hs_bindgen_779c89fdca5b9a0e_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_ReloadGamepadMappings@
 hs_bindgen_779c89fdca5b9a0e :: IO BG.CBool
 hs_bindgen_779c89fdca5b9a0e =
-  BG.fromFFIType hs_bindgen_779c89fdca5b9a0e_base
+  fmap BG.fromFFIType hs_bindgen_779c89fdca5b9a0e_base
 
 -- | Reinitialize the SDL mapping database to its initial state.
 --
@@ -744,7 +755,8 @@ hs_bindgen_d561ea70cab1346c
   :: BG.Ptr BG.CInt
   -> IO (BG.Ptr (BG.Ptr BG.CChar))
 hs_bindgen_d561ea70cab1346c =
-  BG.fromFFIType hs_bindgen_d561ea70cab1346c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_d561ea70cab1346c_base (BG.toFFIType x0))
 
 -- | Get the current gamepad mappings.
 --
@@ -774,7 +786,8 @@ hs_bindgen_a9d84a5aab18bd61
   :: BG.Ptr SDL3.Sys.Bindgen.Guid.SDL_GUID
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_a9d84a5aab18bd61 =
-  BG.fromFFIType hs_bindgen_a9d84a5aab18bd61_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a9d84a5aab18bd61_base (BG.toFFIType x0))
 
 -- | Get the gamepad mapping string for a given GUID.
 --
@@ -812,7 +825,8 @@ hs_bindgen_094250e7cd4814e2
   :: BG.Ptr SDL_Gamepad
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_094250e7cd4814e2 =
-  BG.fromFFIType hs_bindgen_094250e7cd4814e2_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_094250e7cd4814e2_base (BG.toFFIType x0))
 
 -- | Get the current mapping of a gamepad.
 --
@@ -838,9 +852,9 @@ sDL_GetGamepadMapping = hs_bindgen_094250e7cd4814e2
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_SetGamepadMapping@
 foreign import ccall unsafe "hs_bindgen_cf9c12a3e0081cba"
   hs_bindgen_cf9c12a3e0081cba_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_SetGamepadMapping@
 hs_bindgen_cf9c12a3e0081cba
@@ -848,7 +862,9 @@ hs_bindgen_cf9c12a3e0081cba
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_cf9c12a3e0081cba =
-  BG.fromFFIType hs_bindgen_cf9c12a3e0081cba_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_cf9c12a3e0081cba_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the current mapping of a joystick or gamepad.
 --
@@ -878,12 +894,12 @@ sDL_SetGamepadMapping = hs_bindgen_cf9c12a3e0081cba
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_HasGamepad@
 foreign import ccall unsafe "hs_bindgen_5b29afb080773dd8"
   hs_bindgen_5b29afb080773dd8_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_HasGamepad@
 hs_bindgen_5b29afb080773dd8 :: IO BG.CBool
 hs_bindgen_5b29afb080773dd8 =
-  BG.fromFFIType hs_bindgen_5b29afb080773dd8_base
+  fmap BG.fromFFIType hs_bindgen_5b29afb080773dd8_base
 
 -- | Return whether a gamepad is currently connected.
 --
@@ -910,7 +926,8 @@ hs_bindgen_e99c053042181461
   :: BG.Ptr BG.CInt
   -> IO (BG.Ptr SDL3.Sys.Bindgen.Joystick.SDL_JoystickID)
 hs_bindgen_e99c053042181461 =
-  BG.fromFFIType hs_bindgen_e99c053042181461_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_e99c053042181461_base (BG.toFFIType x0))
 
 -- | Get a list of currently connected gamepads.
 --
@@ -934,15 +951,16 @@ sDL_GetGamepads = hs_bindgen_e99c053042181461
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_IsGamepad@
 foreign import ccall unsafe "hs_bindgen_48b133a0a1a04fee"
   hs_bindgen_48b133a0a1a04fee_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_IsGamepad@
 hs_bindgen_48b133a0a1a04fee
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -> IO BG.CBool
 hs_bindgen_48b133a0a1a04fee =
-  BG.fromFFIType hs_bindgen_48b133a0a1a04fee_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_48b133a0a1a04fee_base (BG.toFFIType x0))
 
 -- | Check if the given joystick is supported by the gamepad interface.
 --
@@ -966,7 +984,7 @@ sDL_IsGamepad = hs_bindgen_48b133a0a1a04fee
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadNameForID@
 foreign import ccall unsafe "hs_bindgen_51b0ed9ede139ced"
   hs_bindgen_51b0ed9ede139ced_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadNameForID@
@@ -974,7 +992,8 @@ hs_bindgen_51b0ed9ede139ced
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_51b0ed9ede139ced =
-  BG.fromFFIType hs_bindgen_51b0ed9ede139ced_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_51b0ed9ede139ced_base (BG.toFFIType x0))
 
 -- | Get the implementation dependent name of a gamepad.
 --
@@ -1000,7 +1019,7 @@ sDL_GetGamepadNameForID = hs_bindgen_51b0ed9ede139ced
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadPathForID@
 foreign import ccall unsafe "hs_bindgen_c1fe082501f756ae"
   hs_bindgen_c1fe082501f756ae_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadPathForID@
@@ -1008,7 +1027,8 @@ hs_bindgen_c1fe082501f756ae
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_c1fe082501f756ae =
-  BG.fromFFIType hs_bindgen_c1fe082501f756ae_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c1fe082501f756ae_base (BG.toFFIType x0))
 
 -- | Get the implementation dependent path of a gamepad.
 --
@@ -1034,15 +1054,16 @@ sDL_GetGamepadPathForID = hs_bindgen_c1fe082501f756ae
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadPlayerIndexForID@
 foreign import ccall unsafe "hs_bindgen_9dac07bb4aa4a0e0"
   hs_bindgen_9dac07bb4aa4a0e0_base
-    :: BG.Word32
-    -> IO BG.Int32
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadPlayerIndexForID@
 hs_bindgen_9dac07bb4aa4a0e0
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -> IO BG.CInt
 hs_bindgen_9dac07bb4aa4a0e0 =
-  BG.fromFFIType hs_bindgen_9dac07bb4aa4a0e0_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9dac07bb4aa4a0e0_base (BG.toFFIType x0))
 
 -- | Get the player index of a gamepad.
 --
@@ -1069,7 +1090,7 @@ sDL_GetGamepadPlayerIndexForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadGUIDForID@
 foreign import ccall unsafe "hs_bindgen_2280985bb32deb1f"
   hs_bindgen_2280985bb32deb1f_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> IO ()
 
@@ -1079,7 +1100,9 @@ hs_bindgen_2280985bb32deb1f
   -> BG.Ptr SDL3.Sys.Bindgen.Guid.SDL_GUID
   -> IO ()
 hs_bindgen_2280985bb32deb1f =
-  BG.fromFFIType hs_bindgen_2280985bb32deb1f_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_2280985bb32deb1f_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Get the implementation-dependent GUID of a gamepad.
 --
@@ -1110,15 +1133,16 @@ sDL_GetGamepadGUIDForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadVendorForID@
 foreign import ccall unsafe "hs_bindgen_1702db5431a9f4d5"
   hs_bindgen_1702db5431a9f4d5_base
-    :: BG.Word32
-    -> IO BG.Word16
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadVendorForID@
 hs_bindgen_1702db5431a9f4d5
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint16
 hs_bindgen_1702db5431a9f4d5 =
-  BG.fromFFIType hs_bindgen_1702db5431a9f4d5_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_1702db5431a9f4d5_base (BG.toFFIType x0))
 
 -- | Get the USB vendor ID of a gamepad, if available.
 --
@@ -1145,15 +1169,16 @@ sDL_GetGamepadVendorForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadProductForID@
 foreign import ccall unsafe "hs_bindgen_c6d0670cd6f1d312"
   hs_bindgen_c6d0670cd6f1d312_base
-    :: BG.Word32
-    -> IO BG.Word16
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadProductForID@
 hs_bindgen_c6d0670cd6f1d312
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint16
 hs_bindgen_c6d0670cd6f1d312 =
-  BG.fromFFIType hs_bindgen_c6d0670cd6f1d312_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c6d0670cd6f1d312_base (BG.toFFIType x0))
 
 -- | Get the USB product ID of a gamepad, if available.
 --
@@ -1180,15 +1205,16 @@ sDL_GetGamepadProductForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadProductVersionForID@
 foreign import ccall unsafe "hs_bindgen_c5762d27fdb0fe20"
   hs_bindgen_c5762d27fdb0fe20_base
-    :: BG.Word32
-    -> IO BG.Word16
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadProductVersionForID@
 hs_bindgen_c5762d27fdb0fe20
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint16
 hs_bindgen_c5762d27fdb0fe20 =
-  BG.fromFFIType hs_bindgen_c5762d27fdb0fe20_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c5762d27fdb0fe20_base (BG.toFFIType x0))
 
 -- | Get the product version of a gamepad, if available.
 --
@@ -1215,15 +1241,16 @@ sDL_GetGamepadProductVersionForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadTypeForID@
 foreign import ccall unsafe "hs_bindgen_ab8ba638efb36686"
   hs_bindgen_ab8ba638efb36686_base
-    :: BG.Word32
-    -> IO BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadTypeForID@
 hs_bindgen_ab8ba638efb36686
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -> IO SDL_GamepadType
 hs_bindgen_ab8ba638efb36686 =
-  BG.fromFFIType hs_bindgen_ab8ba638efb36686_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ab8ba638efb36686_base (BG.toFFIType x0))
 
 -- | Get the type of a gamepad.
 --
@@ -1249,15 +1276,16 @@ sDL_GetGamepadTypeForID = hs_bindgen_ab8ba638efb36686
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetRealGamepadTypeForID@
 foreign import ccall unsafe "hs_bindgen_dbd35ae44acef0c3"
   hs_bindgen_dbd35ae44acef0c3_base
-    :: BG.Word32
-    -> IO BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetRealGamepadTypeForID@
 hs_bindgen_dbd35ae44acef0c3
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -> IO SDL_GamepadType
 hs_bindgen_dbd35ae44acef0c3 =
-  BG.fromFFIType hs_bindgen_dbd35ae44acef0c3_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_dbd35ae44acef0c3_base (BG.toFFIType x0))
 
 -- | Get the type of a gamepad, ignoring any mapping override.
 --
@@ -1284,7 +1312,7 @@ sDL_GetRealGamepadTypeForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadMappingForID@
 foreign import ccall unsafe "hs_bindgen_70db76a3c7fda9bd"
   hs_bindgen_70db76a3c7fda9bd_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadMappingForID@
@@ -1292,7 +1320,8 @@ hs_bindgen_70db76a3c7fda9bd
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_70db76a3c7fda9bd =
-  BG.fromFFIType hs_bindgen_70db76a3c7fda9bd_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_70db76a3c7fda9bd_base (BG.toFFIType x0))
 
 -- | Get the mapping of a gamepad.
 --
@@ -1319,7 +1348,7 @@ sDL_GetGamepadMappingForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_OpenGamepad@
 foreign import ccall unsafe "hs_bindgen_cbd487a8a2440863"
   hs_bindgen_cbd487a8a2440863_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_OpenGamepad@
@@ -1327,7 +1356,8 @@ hs_bindgen_cbd487a8a2440863
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -> IO (BG.Ptr SDL_Gamepad)
 hs_bindgen_cbd487a8a2440863 =
-  BG.fromFFIType hs_bindgen_cbd487a8a2440863_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_cbd487a8a2440863_base (BG.toFFIType x0))
 
 -- | Open a gamepad for use.
 --
@@ -1351,7 +1381,7 @@ sDL_OpenGamepad = hs_bindgen_cbd487a8a2440863
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadFromID@
 foreign import ccall unsafe "hs_bindgen_a76618005d317dbe"
   hs_bindgen_a76618005d317dbe_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadFromID@
@@ -1359,7 +1389,8 @@ hs_bindgen_a76618005d317dbe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -> IO (BG.Ptr SDL_Gamepad)
 hs_bindgen_a76618005d317dbe =
-  BG.fromFFIType hs_bindgen_a76618005d317dbe_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a76618005d317dbe_base (BG.toFFIType x0))
 
 -- | Get the 'SDL_Gamepad' associated with a joystick instance ID, if it has been opened.
 --
@@ -1381,7 +1412,7 @@ sDL_GetGamepadFromID = hs_bindgen_a76618005d317dbe
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadFromPlayerIndex@
 foreign import ccall unsafe "hs_bindgen_23e0c7566ddc098f"
   hs_bindgen_23e0c7566ddc098f_base
-    :: BG.Int32
+    :: BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadFromPlayerIndex@
@@ -1389,7 +1420,8 @@ hs_bindgen_23e0c7566ddc098f
   :: BG.CInt
   -> IO (BG.Ptr SDL_Gamepad)
 hs_bindgen_23e0c7566ddc098f =
-  BG.fromFFIType hs_bindgen_23e0c7566ddc098f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_23e0c7566ddc098f_base (BG.toFFIType x0))
 
 -- | Get the 'SDL_Gamepad' associated with a player index.
 --
@@ -1415,14 +1447,15 @@ sDL_GetGamepadFromPlayerIndex =
 foreign import ccall unsafe "hs_bindgen_e986873f08423af3"
   hs_bindgen_e986873f08423af3_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadProperties@
 hs_bindgen_e986873f08423af3
   :: BG.Ptr SDL_Gamepad
   -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
 hs_bindgen_e986873f08423af3 =
-  BG.fromFFIType hs_bindgen_e986873f08423af3_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_e986873f08423af3_base (BG.toFFIType x0))
 
 -- | Get the properties associated with an opened gamepad.
 --
@@ -1460,14 +1493,15 @@ sDL_GetGamepadProperties =
 foreign import ccall unsafe "hs_bindgen_e2d0c689bb9fdafb"
   hs_bindgen_e2d0c689bb9fdafb_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadID@
 hs_bindgen_e2d0c689bb9fdafb
   :: BG.Ptr SDL_Gamepad
   -> IO SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
 hs_bindgen_e2d0c689bb9fdafb =
-  BG.fromFFIType hs_bindgen_e2d0c689bb9fdafb_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_e2d0c689bb9fdafb_base (BG.toFFIType x0))
 
 -- | Get the instance ID of an opened gamepad.
 --
@@ -1497,7 +1531,8 @@ hs_bindgen_9d53319611fb7b21
   :: BG.Ptr SDL_Gamepad
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_9d53319611fb7b21 =
-  BG.fromFFIType hs_bindgen_9d53319611fb7b21_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9d53319611fb7b21_base (BG.toFFIType x0))
 
 -- | Get the implementation-dependent name for an opened gamepad.
 --
@@ -1529,7 +1564,8 @@ hs_bindgen_d7698305b32d2548
   :: BG.Ptr SDL_Gamepad
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_d7698305b32d2548 =
-  BG.fromFFIType hs_bindgen_d7698305b32d2548_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_d7698305b32d2548_base (BG.toFFIType x0))
 
 -- | Get the implementation-dependent path for an opened gamepad.
 --
@@ -1554,14 +1590,15 @@ sDL_GetGamepadPath = hs_bindgen_d7698305b32d2548
 foreign import ccall unsafe "hs_bindgen_e2d440eeb9de4199"
   hs_bindgen_e2d440eeb9de4199_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadType@
 hs_bindgen_e2d440eeb9de4199
   :: BG.Ptr SDL_Gamepad
   -> IO SDL_GamepadType
 hs_bindgen_e2d440eeb9de4199 =
-  BG.fromFFIType hs_bindgen_e2d440eeb9de4199_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_e2d440eeb9de4199_base (BG.toFFIType x0))
 
 -- | Get the type of an opened gamepad.
 --
@@ -1586,14 +1623,15 @@ sDL_GetGamepadType = hs_bindgen_e2d440eeb9de4199
 foreign import ccall unsafe "hs_bindgen_ee5c3fd3f0de744f"
   hs_bindgen_ee5c3fd3f0de744f_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetRealGamepadType@
 hs_bindgen_ee5c3fd3f0de744f
   :: BG.Ptr SDL_Gamepad
   -> IO SDL_GamepadType
 hs_bindgen_ee5c3fd3f0de744f =
-  BG.fromFFIType hs_bindgen_ee5c3fd3f0de744f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ee5c3fd3f0de744f_base (BG.toFFIType x0))
 
 -- | Get the type of an opened gamepad, ignoring any mapping override.
 --
@@ -1618,14 +1656,15 @@ sDL_GetRealGamepadType = hs_bindgen_ee5c3fd3f0de744f
 foreign import ccall unsafe "hs_bindgen_8457d3ba6fab74fd"
   hs_bindgen_8457d3ba6fab74fd_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadPlayerIndex@
 hs_bindgen_8457d3ba6fab74fd
   :: BG.Ptr SDL_Gamepad
   -> IO BG.CInt
 hs_bindgen_8457d3ba6fab74fd =
-  BG.fromFFIType hs_bindgen_8457d3ba6fab74fd_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_8457d3ba6fab74fd_base (BG.toFFIType x0))
 
 -- | Get the player index of an opened gamepad.
 --
@@ -1653,8 +1692,8 @@ sDL_GetGamepadPlayerIndex =
 foreign import ccall unsafe "hs_bindgen_c7a0bcec2cc038f5"
   hs_bindgen_c7a0bcec2cc038f5_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_SetGamepadPlayerIndex@
 hs_bindgen_c7a0bcec2cc038f5
@@ -1662,7 +1701,9 @@ hs_bindgen_c7a0bcec2cc038f5
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_c7a0bcec2cc038f5 =
-  BG.fromFFIType hs_bindgen_c7a0bcec2cc038f5_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_c7a0bcec2cc038f5_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the player index of an opened gamepad.
 --
@@ -1692,14 +1733,15 @@ sDL_SetGamepadPlayerIndex =
 foreign import ccall unsafe "hs_bindgen_2552182f80b54cf6"
   hs_bindgen_2552182f80b54cf6_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word16
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadVendor@
 hs_bindgen_2552182f80b54cf6
   :: BG.Ptr SDL_Gamepad
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint16
 hs_bindgen_2552182f80b54cf6 =
-  BG.fromFFIType hs_bindgen_2552182f80b54cf6_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_2552182f80b54cf6_base (BG.toFFIType x0))
 
 -- | Get the USB vendor ID of an opened gamepad, if available.
 --
@@ -1726,14 +1768,15 @@ sDL_GetGamepadVendor = hs_bindgen_2552182f80b54cf6
 foreign import ccall unsafe "hs_bindgen_5aa969efd1bc8f50"
   hs_bindgen_5aa969efd1bc8f50_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word16
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadProduct@
 hs_bindgen_5aa969efd1bc8f50
   :: BG.Ptr SDL_Gamepad
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint16
 hs_bindgen_5aa969efd1bc8f50 =
-  BG.fromFFIType hs_bindgen_5aa969efd1bc8f50_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_5aa969efd1bc8f50_base (BG.toFFIType x0))
 
 -- | Get the USB product ID of an opened gamepad, if available.
 --
@@ -1760,14 +1803,15 @@ sDL_GetGamepadProduct = hs_bindgen_5aa969efd1bc8f50
 foreign import ccall unsafe "hs_bindgen_becbadc225729788"
   hs_bindgen_becbadc225729788_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word16
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadProductVersion@
 hs_bindgen_becbadc225729788
   :: BG.Ptr SDL_Gamepad
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint16
 hs_bindgen_becbadc225729788 =
-  BG.fromFFIType hs_bindgen_becbadc225729788_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_becbadc225729788_base (BG.toFFIType x0))
 
 -- | Get the product version of an opened gamepad, if available.
 --
@@ -1795,14 +1839,15 @@ sDL_GetGamepadProductVersion =
 foreign import ccall unsafe "hs_bindgen_d97e9cb9945dd63f"
   hs_bindgen_d97e9cb9945dd63f_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word16
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadFirmwareVersion@
 hs_bindgen_d97e9cb9945dd63f
   :: BG.Ptr SDL_Gamepad
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint16
 hs_bindgen_d97e9cb9945dd63f =
-  BG.fromFFIType hs_bindgen_d97e9cb9945dd63f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_d97e9cb9945dd63f_base (BG.toFFIType x0))
 
 -- | Get the firmware version of an opened gamepad, if available.
 --
@@ -1835,7 +1880,8 @@ hs_bindgen_c119e40b53da3b69
   :: BG.Ptr SDL_Gamepad
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_c119e40b53da3b69 =
-  BG.fromFFIType hs_bindgen_c119e40b53da3b69_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c119e40b53da3b69_base (BG.toFFIType x0))
 
 -- | Get the serial number of an opened gamepad, if available.
 --
@@ -1860,14 +1906,15 @@ sDL_GetGamepadSerial = hs_bindgen_c119e40b53da3b69
 foreign import ccall unsafe "hs_bindgen_d965293df8f905d5"
   hs_bindgen_d965293df8f905d5_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word64
+    -> IO HsBindgen.Runtime.LibC.Word64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadSteamHandle@
 hs_bindgen_d965293df8f905d5
   :: BG.Ptr SDL_Gamepad
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint64
 hs_bindgen_d965293df8f905d5 =
-  BG.fromFFIType hs_bindgen_d965293df8f905d5_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_d965293df8f905d5_base (BG.toFFIType x0))
 
 -- | Get the Steam Input handle of an opened gamepad, if available.
 --
@@ -1893,14 +1940,15 @@ sDL_GetGamepadSteamHandle =
 foreign import ccall unsafe "hs_bindgen_4d7b7d6dc4affab6"
   hs_bindgen_4d7b7d6dc4affab6_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO HsBindgen.Runtime.Support.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadConnectionState@
 hs_bindgen_4d7b7d6dc4affab6
   :: BG.Ptr SDL_Gamepad
   -> IO SDL3.Sys.Bindgen.Joystick.SDL_JoystickConnectionState
 hs_bindgen_4d7b7d6dc4affab6 =
-  BG.fromFFIType hs_bindgen_4d7b7d6dc4affab6_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4d7b7d6dc4affab6_base (BG.toFFIType x0))
 
 -- | Get the connection state of a gamepad.
 --
@@ -1925,7 +1973,7 @@ foreign import ccall unsafe "hs_bindgen_440cd7470f43f8b7"
   hs_bindgen_440cd7470f43f8b7_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO HsBindgen.Runtime.Support.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadPowerInfo@
 hs_bindgen_440cd7470f43f8b7
@@ -1933,7 +1981,9 @@ hs_bindgen_440cd7470f43f8b7
   -> BG.Ptr BG.CInt
   -> IO SDL3.Sys.Bindgen.Power.SDL_PowerState
 hs_bindgen_440cd7470f43f8b7 =
-  BG.fromFFIType hs_bindgen_440cd7470f43f8b7_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_440cd7470f43f8b7_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the battery state of a gamepad.
 --
@@ -1962,14 +2012,15 @@ sDL_GetGamepadPowerInfo = hs_bindgen_440cd7470f43f8b7
 foreign import ccall unsafe "hs_bindgen_73bf6a166bb6fc05"
   hs_bindgen_73bf6a166bb6fc05_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GamepadConnected@
 hs_bindgen_73bf6a166bb6fc05
   :: BG.Ptr SDL_Gamepad
   -> IO BG.CBool
 hs_bindgen_73bf6a166bb6fc05 =
-  BG.fromFFIType hs_bindgen_73bf6a166bb6fc05_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_73bf6a166bb6fc05_base (BG.toFFIType x0))
 
 -- | Check if a gamepad has been opened and is currently connected.
 --
@@ -1999,7 +2050,8 @@ hs_bindgen_cfa9e14aa308a355
   :: BG.Ptr SDL_Gamepad
   -> IO (BG.Ptr SDL3.Sys.Bindgen.Joystick.SDL_Joystick)
 hs_bindgen_cfa9e14aa308a355 =
-  BG.fromFFIType hs_bindgen_cfa9e14aa308a355_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_cfa9e14aa308a355_base (BG.toFFIType x0))
 
 -- | Get the underlying joystick from a gamepad.
 --
@@ -2025,7 +2077,7 @@ sDL_GetGamepadJoystick = hs_bindgen_cfa9e14aa308a355
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_SetGamepadEventsEnabled@
 foreign import ccall unsafe "hs_bindgen_bfc8618e24183771"
   hs_bindgen_bfc8618e24183771_base
-    :: BG.Word8
+    :: BG.CBool
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_SetGamepadEventsEnabled@
@@ -2033,7 +2085,8 @@ hs_bindgen_bfc8618e24183771
   :: BG.CBool
   -> IO ()
 hs_bindgen_bfc8618e24183771 =
-  BG.fromFFIType hs_bindgen_bfc8618e24183771_base
+  \x0 ->
+    hs_bindgen_bfc8618e24183771_base (BG.toFFIType x0)
 
 -- | Set the state of gamepad event processing.
 --
@@ -2058,12 +2111,12 @@ sDL_SetGamepadEventsEnabled =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GamepadEventsEnabled@
 foreign import ccall unsafe "hs_bindgen_5871c031639ba44f"
   hs_bindgen_5871c031639ba44f_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GamepadEventsEnabled@
 hs_bindgen_5871c031639ba44f :: IO BG.CBool
 hs_bindgen_5871c031639ba44f =
-  BG.fromFFIType hs_bindgen_5871c031639ba44f_base
+  fmap BG.fromFFIType hs_bindgen_5871c031639ba44f_base
 
 -- | Query the state of gamepad event processing.
 --
@@ -2095,7 +2148,9 @@ hs_bindgen_5bc2e24705268e1e
   -> BG.Ptr BG.CInt
   -> IO (BG.Ptr (BG.Ptr SDL_GamepadBinding))
 hs_bindgen_5bc2e24705268e1e =
-  BG.fromFFIType hs_bindgen_5bc2e24705268e1e_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_5bc2e24705268e1e_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the SDL joystick layer bindings for a gamepad.
 --
@@ -2126,7 +2181,7 @@ foreign import ccall unsafe "hs_bindgen_0cb5e97304f01ed4"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_UpdateGamepads@
 hs_bindgen_0cb5e97304f01ed4 :: IO ()
 hs_bindgen_0cb5e97304f01ed4 =
-  BG.fromFFIType hs_bindgen_0cb5e97304f01ed4_base
+  hs_bindgen_0cb5e97304f01ed4_base
 
 -- | Manually pump gamepad updates if not using the loop.
 --
@@ -2144,14 +2199,15 @@ sDL_UpdateGamepads = hs_bindgen_0cb5e97304f01ed4
 foreign import ccall unsafe "hs_bindgen_ff738f26b34db99d"
   hs_bindgen_ff738f26b34db99d_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadTypeFromString@
 hs_bindgen_ff738f26b34db99d
   :: PtrConst.PtrConst BG.CChar
   -> IO SDL_GamepadType
 hs_bindgen_ff738f26b34db99d =
-  BG.fromFFIType hs_bindgen_ff738f26b34db99d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ff738f26b34db99d_base (BG.toFFIType x0))
 
 -- | Convert a string into 'SDL_GamepadType' enum.
 --
@@ -2178,7 +2234,7 @@ sDL_GetGamepadTypeFromString =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadStringForType@
 foreign import ccall unsafe "hs_bindgen_aeff65b0b5fbbe2f"
   hs_bindgen_aeff65b0b5fbbe2f_base
-    :: BG.Word32
+    :: BG.CUInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadStringForType@
@@ -2186,7 +2242,8 @@ hs_bindgen_aeff65b0b5fbbe2f
   :: SDL_GamepadType
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_aeff65b0b5fbbe2f =
-  BG.fromFFIType hs_bindgen_aeff65b0b5fbbe2f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_aeff65b0b5fbbe2f_base (BG.toFFIType x0))
 
 -- | Convert from an 'SDL_GamepadType' enum to a string.
 --
@@ -2212,14 +2269,15 @@ sDL_GetGamepadStringForType =
 foreign import ccall unsafe "hs_bindgen_9c4d3cd24f36df1d"
   hs_bindgen_9c4d3cd24f36df1d_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadAxisFromString@
 hs_bindgen_9c4d3cd24f36df1d
   :: PtrConst.PtrConst BG.CChar
   -> IO SDL_GamepadAxis
 hs_bindgen_9c4d3cd24f36df1d =
-  BG.fromFFIType hs_bindgen_9c4d3cd24f36df1d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9c4d3cd24f36df1d_base (BG.toFFIType x0))
 
 -- | Convert a string into 'SDL_GamepadAxis' enum.
 --
@@ -2248,7 +2306,7 @@ sDL_GetGamepadAxisFromString =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadStringForAxis@
 foreign import ccall unsafe "hs_bindgen_23a85badb8b28574"
   hs_bindgen_23a85badb8b28574_base
-    :: BG.Int32
+    :: BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadStringForAxis@
@@ -2256,7 +2314,8 @@ hs_bindgen_23a85badb8b28574
   :: SDL_GamepadAxis
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_23a85badb8b28574 =
-  BG.fromFFIType hs_bindgen_23a85badb8b28574_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_23a85badb8b28574_base (BG.toFFIType x0))
 
 -- | Convert from an 'SDL_GamepadAxis' enum to a string.
 --
@@ -2282,8 +2341,8 @@ sDL_GetGamepadStringForAxis =
 foreign import ccall unsafe "hs_bindgen_25802ce0c34b6a29"
   hs_bindgen_25802ce0c34b6a29_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GamepadHasAxis@
 hs_bindgen_25802ce0c34b6a29
@@ -2291,7 +2350,9 @@ hs_bindgen_25802ce0c34b6a29
   -> SDL_GamepadAxis
   -> IO BG.CBool
 hs_bindgen_25802ce0c34b6a29 =
-  BG.fromFFIType hs_bindgen_25802ce0c34b6a29_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_25802ce0c34b6a29_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Query whether a gamepad has a given axis.
 --
@@ -2322,8 +2383,8 @@ sDL_GamepadHasAxis = hs_bindgen_25802ce0c34b6a29
 foreign import ccall unsafe "hs_bindgen_68503ad7a0b89c08"
   hs_bindgen_68503ad7a0b89c08_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Int16
+    -> BG.CInt
+    -> IO HsBindgen.Runtime.LibC.Int16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadAxis@
 hs_bindgen_68503ad7a0b89c08
@@ -2331,7 +2392,9 @@ hs_bindgen_68503ad7a0b89c08
   -> SDL_GamepadAxis
   -> IO SDL3.Sys.Bindgen.Stdinc.Sint16
 hs_bindgen_68503ad7a0b89c08 =
-  BG.fromFFIType hs_bindgen_68503ad7a0b89c08_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_68503ad7a0b89c08_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the current state of an axis control on a gamepad.
 --
@@ -2368,14 +2431,15 @@ sDL_GetGamepadAxis = hs_bindgen_68503ad7a0b89c08
 foreign import ccall unsafe "hs_bindgen_cecec50fb2b3f9c0"
   hs_bindgen_cecec50fb2b3f9c0_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadButtonFromString@
 hs_bindgen_cecec50fb2b3f9c0
   :: PtrConst.PtrConst BG.CChar
   -> IO SDL_GamepadButton
 hs_bindgen_cecec50fb2b3f9c0 =
-  BG.fromFFIType hs_bindgen_cecec50fb2b3f9c0_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_cecec50fb2b3f9c0_base (BG.toFFIType x0))
 
 -- | Convert a string into an 'SDL_GamepadButton' enum.
 --
@@ -2402,7 +2466,7 @@ sDL_GetGamepadButtonFromString =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadStringForButton@
 foreign import ccall unsafe "hs_bindgen_65d07695662b7e7c"
   hs_bindgen_65d07695662b7e7c_base
-    :: BG.Int32
+    :: BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadStringForButton@
@@ -2410,7 +2474,8 @@ hs_bindgen_65d07695662b7e7c
   :: SDL_GamepadButton
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_65d07695662b7e7c =
-  BG.fromFFIType hs_bindgen_65d07695662b7e7c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_65d07695662b7e7c_base (BG.toFFIType x0))
 
 -- | Convert from an 'SDL_GamepadButton' enum to a string.
 --
@@ -2436,8 +2501,8 @@ sDL_GetGamepadStringForButton =
 foreign import ccall unsafe "hs_bindgen_05064f987387bd45"
   hs_bindgen_05064f987387bd45_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GamepadHasButton@
 hs_bindgen_05064f987387bd45
@@ -2445,7 +2510,9 @@ hs_bindgen_05064f987387bd45
   -> SDL_GamepadButton
   -> IO BG.CBool
 hs_bindgen_05064f987387bd45 =
-  BG.fromFFIType hs_bindgen_05064f987387bd45_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_05064f987387bd45_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Query whether a gamepad has a given button.
 --
@@ -2476,8 +2543,8 @@ sDL_GamepadHasButton = hs_bindgen_05064f987387bd45
 foreign import ccall unsafe "hs_bindgen_a672f55d7740b70a"
   hs_bindgen_a672f55d7740b70a_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadButton@
 hs_bindgen_a672f55d7740b70a
@@ -2485,7 +2552,9 @@ hs_bindgen_a672f55d7740b70a
   -> SDL_GamepadButton
   -> IO BG.CBool
 hs_bindgen_a672f55d7740b70a =
-  BG.fromFFIType hs_bindgen_a672f55d7740b70a_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_a672f55d7740b70a_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the current state of a button on a gamepad.
 --
@@ -2513,9 +2582,9 @@ sDL_GetGamepadButton = hs_bindgen_a672f55d7740b70a
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadButtonLabelForType@
 foreign import ccall unsafe "hs_bindgen_6a6a621cfd450022"
   hs_bindgen_6a6a621cfd450022_base
-    :: BG.Word32
-    -> BG.Int32
-    -> IO BG.Word32
+    :: BG.CUInt
+    -> BG.CInt
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadButtonLabelForType@
 hs_bindgen_6a6a621cfd450022
@@ -2523,7 +2592,9 @@ hs_bindgen_6a6a621cfd450022
   -> SDL_GamepadButton
   -> IO SDL_GamepadButtonLabel
 hs_bindgen_6a6a621cfd450022 =
-  BG.fromFFIType hs_bindgen_6a6a621cfd450022_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_6a6a621cfd450022_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the label of a button on a gamepad.
 --
@@ -2553,8 +2624,8 @@ sDL_GetGamepadButtonLabelForType =
 foreign import ccall unsafe "hs_bindgen_ea461caaa5e77e3a"
   hs_bindgen_ea461caaa5e77e3a_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word32
+    -> BG.CInt
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadButtonLabel@
 hs_bindgen_ea461caaa5e77e3a
@@ -2562,7 +2633,9 @@ hs_bindgen_ea461caaa5e77e3a
   -> SDL_GamepadButton
   -> IO SDL_GamepadButtonLabel
 hs_bindgen_ea461caaa5e77e3a =
-  BG.fromFFIType hs_bindgen_ea461caaa5e77e3a_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_ea461caaa5e77e3a_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the label of a button on a gamepad.
 --
@@ -2592,14 +2665,15 @@ sDL_GetGamepadButtonLabel =
 foreign import ccall unsafe "hs_bindgen_2d66738e85627648"
   hs_bindgen_2d66738e85627648_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetNumGamepadTouchpads@
 hs_bindgen_2d66738e85627648
   :: BG.Ptr SDL_Gamepad
   -> IO BG.CInt
 hs_bindgen_2d66738e85627648 =
-  BG.fromFFIType hs_bindgen_2d66738e85627648_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_2d66738e85627648_base (BG.toFFIType x0))
 
 -- | Get the number of touchpads on a gamepad.
 --
@@ -2625,8 +2699,8 @@ sDL_GetNumGamepadTouchpads =
 foreign import ccall unsafe "hs_bindgen_741e82f074f3aae4"
   hs_bindgen_741e82f074f3aae4_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Int32
+    -> BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetNumGamepadTouchpadFingers@
 hs_bindgen_741e82f074f3aae4
@@ -2634,7 +2708,9 @@ hs_bindgen_741e82f074f3aae4
   -> BG.CInt
   -> IO BG.CInt
 hs_bindgen_741e82f074f3aae4 =
-  BG.fromFFIType hs_bindgen_741e82f074f3aae4_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_741e82f074f3aae4_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the number of supported simultaneous fingers on a touchpad on a game gamepad.
 --
@@ -2664,13 +2740,13 @@ sDL_GetNumGamepadTouchpadFingers =
 foreign import ccall unsafe "hs_bindgen_1b8db5e7a78bcf2a"
   hs_bindgen_1b8db5e7a78bcf2a_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
+    -> BG.CInt
+    -> BG.CInt
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadTouchpadFinger@
 hs_bindgen_1b8db5e7a78bcf2a
@@ -2683,7 +2759,24 @@ hs_bindgen_1b8db5e7a78bcf2a
   -> BG.Ptr BG.CFloat
   -> IO BG.CBool
 hs_bindgen_1b8db5e7a78bcf2a =
-  BG.fromFFIType hs_bindgen_1b8db5e7a78bcf2a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                fmap
+                  BG.fromFFIType
+                  ( hs_bindgen_1b8db5e7a78bcf2a_base
+                      (BG.toFFIType x0)
+                      (BG.toFFIType x1)
+                      (BG.toFFIType x2)
+                      (BG.toFFIType x3)
+                      (BG.toFFIType x4)
+                      (BG.toFFIType x5)
+                      (BG.toFFIType x6)
+                  )
 
 -- | Get the current state of a finger on a touchpad on a gamepad.
 --
@@ -2733,8 +2826,8 @@ sDL_GetGamepadTouchpadFinger =
 foreign import ccall unsafe "hs_bindgen_d58388fe9017bfd7"
   hs_bindgen_d58388fe9017bfd7_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.Support.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GamepadHasSensor@
 hs_bindgen_d58388fe9017bfd7
@@ -2742,7 +2835,9 @@ hs_bindgen_d58388fe9017bfd7
   -> SDL3.Sys.Bindgen.Sensor.SDL_SensorType
   -> IO BG.CBool
 hs_bindgen_d58388fe9017bfd7 =
-  BG.fromFFIType hs_bindgen_d58388fe9017bfd7_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_d58388fe9017bfd7_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Return whether a gamepad has a particular sensor.
 --
@@ -2771,9 +2866,9 @@ sDL_GamepadHasSensor = hs_bindgen_d58388fe9017bfd7
 foreign import ccall unsafe "hs_bindgen_5229480da62895d3"
   hs_bindgen_5229480da62895d3_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Word8
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.Support.CInt
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_SetGamepadSensorEnabled@
 hs_bindgen_5229480da62895d3
@@ -2782,7 +2877,12 @@ hs_bindgen_5229480da62895d3
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_5229480da62895d3 =
-  BG.fromFFIType hs_bindgen_5229480da62895d3_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_5229480da62895d3_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set whether data reporting for a gamepad sensor is enabled.
 --
@@ -2816,8 +2916,8 @@ sDL_SetGamepadSensorEnabled =
 foreign import ccall unsafe "hs_bindgen_cf910522abc1f0a2"
   hs_bindgen_cf910522abc1f0a2_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.Support.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GamepadSensorEnabled@
 hs_bindgen_cf910522abc1f0a2
@@ -2825,7 +2925,9 @@ hs_bindgen_cf910522abc1f0a2
   -> SDL3.Sys.Bindgen.Sensor.SDL_SensorType
   -> IO BG.CBool
 hs_bindgen_cf910522abc1f0a2 =
-  BG.fromFFIType hs_bindgen_cf910522abc1f0a2_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_cf910522abc1f0a2_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Query whether sensor data reporting is enabled for a gamepad.
 --
@@ -2855,8 +2957,8 @@ sDL_GamepadSensorEnabled =
 foreign import ccall unsafe "hs_bindgen_523e72497fe70de7"
   hs_bindgen_523e72497fe70de7_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO Float
+    -> HsBindgen.Runtime.Support.CInt
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadSensorDataRate@
 hs_bindgen_523e72497fe70de7
@@ -2864,7 +2966,9 @@ hs_bindgen_523e72497fe70de7
   -> SDL3.Sys.Bindgen.Sensor.SDL_SensorType
   -> IO BG.CFloat
 hs_bindgen_523e72497fe70de7 =
-  BG.fromFFIType hs_bindgen_523e72497fe70de7_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_523e72497fe70de7_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the data rate (number of events per second) of a gamepad sensor.
 --
@@ -2892,10 +2996,10 @@ sDL_GetGamepadSensorDataRate =
 foreign import ccall unsafe "hs_bindgen_772b88104300cbe9"
   hs_bindgen_772b88104300cbe9_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
+    -> HsBindgen.Runtime.Support.CInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadSensorData@
 hs_bindgen_772b88104300cbe9
@@ -2905,7 +3009,18 @@ hs_bindgen_772b88104300cbe9
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_772b88104300cbe9 =
-  BG.fromFFIType hs_bindgen_772b88104300cbe9_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_772b88104300cbe9_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Get the current state of a gamepad sensor.
 --
@@ -2943,10 +3058,10 @@ sDL_GetGamepadSensorData =
 foreign import ccall unsafe "hs_bindgen_8a8a058abd787e14"
   hs_bindgen_8a8a058abd787e14_base
     :: BG.Ptr BG.Void
-    -> BG.Word16
-    -> BG.Word16
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word16
+    -> HsBindgen.Runtime.LibC.Word16
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_RumbleGamepad@
 hs_bindgen_8a8a058abd787e14
@@ -2956,7 +3071,18 @@ hs_bindgen_8a8a058abd787e14
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_8a8a058abd787e14 =
-  BG.fromFFIType hs_bindgen_8a8a058abd787e14_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_8a8a058abd787e14_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Start a rumble effect on a gamepad.
 --
@@ -2995,10 +3121,10 @@ sDL_RumbleGamepad = hs_bindgen_8a8a058abd787e14
 foreign import ccall unsafe "hs_bindgen_70ab0a767dbce57a"
   hs_bindgen_70ab0a767dbce57a_base
     :: BG.Ptr BG.Void
-    -> BG.Word16
-    -> BG.Word16
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word16
+    -> HsBindgen.Runtime.LibC.Word16
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_RumbleGamepadTriggers@
 hs_bindgen_70ab0a767dbce57a
@@ -3008,7 +3134,18 @@ hs_bindgen_70ab0a767dbce57a
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_70ab0a767dbce57a =
-  BG.fromFFIType hs_bindgen_70ab0a767dbce57a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_70ab0a767dbce57a_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Start a rumble effect in the gamepad\'s triggers.
 --
@@ -3052,10 +3189,10 @@ sDL_RumbleGamepadTriggers =
 foreign import ccall unsafe "hs_bindgen_2ae54d3de778ff13"
   hs_bindgen_2ae54d3de778ff13_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> BG.Word8
-    -> BG.Word8
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_SetGamepadLED@
 hs_bindgen_2ae54d3de778ff13
@@ -3065,7 +3202,18 @@ hs_bindgen_2ae54d3de778ff13
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_2ae54d3de778ff13 =
-  BG.fromFFIType hs_bindgen_2ae54d3de778ff13_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_2ae54d3de778ff13_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Update a gamepad\'s LED color.
 --
@@ -3105,8 +3253,8 @@ foreign import ccall unsafe "hs_bindgen_d29e9a9cdc821a93"
   hs_bindgen_d29e9a9cdc821a93_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_SendGamepadEffect@
 hs_bindgen_d29e9a9cdc821a93
@@ -3115,7 +3263,12 @@ hs_bindgen_d29e9a9cdc821a93
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_d29e9a9cdc821a93 =
-  BG.fromFFIType hs_bindgen_d29e9a9cdc821a93_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_d29e9a9cdc821a93_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Send a gamepad specific effect packet.
 --
@@ -3153,7 +3306,8 @@ hs_bindgen_49ebda4983cdcbad
   :: BG.Ptr SDL_Gamepad
   -> IO ()
 hs_bindgen_49ebda4983cdcbad =
-  BG.fromFFIType hs_bindgen_49ebda4983cdcbad_base
+  \x0 ->
+    hs_bindgen_49ebda4983cdcbad_base (BG.toFFIType x0)
 
 -- | Close a gamepad previously opened with @SDL_OpenGamepad()@.
 --
@@ -3176,7 +3330,7 @@ sDL_CloseGamepad = hs_bindgen_49ebda4983cdcbad
 foreign import ccall unsafe "hs_bindgen_3b3870e2dc35c94a"
   hs_bindgen_3b3870e2dc35c94a_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadAppleSFSymbolsNameForButton@
@@ -3185,7 +3339,9 @@ hs_bindgen_3b3870e2dc35c94a
   -> SDL_GamepadButton
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_3b3870e2dc35c94a =
-  BG.fromFFIType hs_bindgen_3b3870e2dc35c94a_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_3b3870e2dc35c94a_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Return the sfSymbolsName for a given button on a gamepad on Apple platforms.
 --
@@ -3215,7 +3371,7 @@ sDL_GetGamepadAppleSFSymbolsNameForButton =
 foreign import ccall unsafe "hs_bindgen_d904c8d057a68120"
   hs_bindgen_d904c8d057a68120_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gamepad_Unsafe_SDL_GetGamepadAppleSFSymbolsNameForAxis@
@@ -3224,7 +3380,9 @@ hs_bindgen_d904c8d057a68120
   -> SDL_GamepadAxis
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_d904c8d057a68120 =
-  BG.fromFFIType hs_bindgen_d904c8d057a68120_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_d904c8d057a68120_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Return the sfSymbolsName for a given axis on a gamepad on Apple platforms.
 --

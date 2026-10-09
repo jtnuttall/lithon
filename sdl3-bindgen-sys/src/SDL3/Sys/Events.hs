@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Event queue management.
 --
 --     It\'s extremely common often required that an app deal with SDL\'s event queue. Almost all useful information about interactions with the real world flow through here: the user interacting with the computer and app, hardware coming and going, the system changing in some way, etc.
@@ -66,6 +68,7 @@ module SDL3.Sys.Events (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

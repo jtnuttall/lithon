@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Locale.FunPtr (
@@ -7,13 +9,16 @@ module SDL3.Sys.Bindgen.Locale.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Locale
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_locale.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_locale.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Locale_get_SDL_GetPreferredLocales */"
          , "__attribute__ ((const))"
          , "SDL_Locale **(*hs_bindgen_85c70d4968252352 (void)) ("
@@ -34,7 +39,7 @@ foreign import ccall unsafe "hs_bindgen_85c70d4968252352"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Locale_get_SDL_GetPreferredLocales@
 hs_bindgen_85c70d4968252352 :: IO (BG.FunPtr (BG.Ptr BG.CInt -> IO (BG.Ptr (BG.Ptr SDL_Locale))))
 hs_bindgen_85c70d4968252352 =
-  BG.fromFFIType hs_bindgen_85c70d4968252352_base
+  fmap BG.fromFFIType hs_bindgen_85c70d4968252352_base
 
 {-# NOINLINE sDL_GetPreferredLocales #-}
 

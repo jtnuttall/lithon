@@ -18,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL joystick support.
 --
@@ -80,12 +81,31 @@ module SDL3.Sys.Bindgen.Joystick (
 )
 where
 
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  IO,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  pure,
+  (<*>),
+  (>>),
+  type (~),
+ )
+
 import C.Expr.HostPlatform qualified
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.ConstantArray qualified as CA
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Sensor qualified
@@ -489,6 +509,14 @@ deriving via
   instance
     BG.Storable SDL_VirtualJoystickTouchpadDesc
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_VirtualJoystickTouchpadDesc
+  instance
+    Struct.IsStruct SDL_VirtualJoystickTouchpadDesc
+
+-- | the number of simultaneous fingers on this touchpad
+--
+--     [C declaration]: @nfingers@, defined at @SDL3\/SDL_joystick.h 435:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "nfingers" SDL_VirtualJoystickTouchpadDesc ty
@@ -513,6 +541,7 @@ instance HasCField.HasCField SDL_VirtualJoystickTouchpadDesc "nfingers" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @padding@, defined at @SDL3\/SDL_joystick.h 436:12@
 instance
   (ty ~ CA.ConstantArray 3 SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "padding" SDL_VirtualJoystickTouchpadDesc ty
@@ -582,6 +611,14 @@ deriving via
   instance
     BG.Storable SDL_VirtualJoystickSensorDesc
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_VirtualJoystickSensorDesc
+  instance
+    Struct.IsStruct SDL_VirtualJoystickSensorDesc
+
+-- | the type of this sensor
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_joystick.h 448:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Sensor.SDL_SensorType)
   => BG.CompatHasField.HasField "type'" SDL_VirtualJoystickSensorDesc ty
@@ -606,6 +643,9 @@ instance HasCField.HasCField SDL_VirtualJoystickSensorDesc "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | the update frequency of this sensor, may be 0.0f
+--
+--     [C declaration]: @rate@, defined at @SDL3\/SDL_joystick.h 449:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "rate" SDL_VirtualJoystickSensorDesc ty
@@ -842,6 +882,14 @@ deriving via
   instance
     BG.Storable SDL_VirtualJoystickDesc
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_VirtualJoystickDesc
+  instance
+    Struct.IsStruct SDL_VirtualJoystickDesc
+
+-- | the version of this interface
+--
+--     [C declaration]: @version@, defined at @SDL3\/SDL_joystick.h 467:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "version" SDL_VirtualJoystickDesc ty
@@ -893,6 +941,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "version" where
 
   offset# = \_ -> \_ -> 0
 
+-- | @'SDL_JoystickType'@
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_joystick.h 468:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "type'" SDL_VirtualJoystickDesc ty
@@ -944,6 +995,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "type'" where
 
   offset# = \_ -> \_ -> 4
 
+-- | unused
+--
+--     [C declaration]: @padding@, defined at @SDL3\/SDL_joystick.h 469:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "padding" SDL_VirtualJoystickDesc ty
@@ -995,6 +1049,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "padding" where
 
   offset# = \_ -> \_ -> 6
 
+-- | the USB vendor ID of this joystick
+--
+--     [C declaration]: @vendor_id@, defined at @SDL3\/SDL_joystick.h 470:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "vendor_id" SDL_VirtualJoystickDesc ty
@@ -1046,6 +1103,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "vendor_id" where
 
   offset# = \_ -> \_ -> 8
 
+-- | the USB product ID of this joystick
+--
+--     [C declaration]: @product_id@, defined at @SDL3\/SDL_joystick.h 471:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "product_id" SDL_VirtualJoystickDesc ty
@@ -1097,6 +1157,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "product_id" where
 
   offset# = \_ -> \_ -> 10
 
+-- | the number of axes on this joystick
+--
+--     [C declaration]: @naxes@, defined at @SDL3\/SDL_joystick.h 472:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "naxes" SDL_VirtualJoystickDesc ty
@@ -1148,6 +1211,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "naxes" where
 
   offset# = \_ -> \_ -> 12
 
+-- | the number of buttons on this joystick
+--
+--     [C declaration]: @nbuttons@, defined at @SDL3\/SDL_joystick.h 473:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "nbuttons" SDL_VirtualJoystickDesc ty
@@ -1199,6 +1265,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "nbuttons" where
 
   offset# = \_ -> \_ -> 14
 
+-- | the number of balls on this joystick
+--
+--     [C declaration]: @nballs@, defined at @SDL3\/SDL_joystick.h 474:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "nballs" SDL_VirtualJoystickDesc ty
@@ -1250,6 +1319,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "nballs" where
 
   offset# = \_ -> \_ -> 16
 
+-- | the number of hats on this joystick
+--
+--     [C declaration]: @nhats@, defined at @SDL3\/SDL_joystick.h 475:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "nhats" SDL_VirtualJoystickDesc ty
@@ -1301,6 +1373,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "nhats" where
 
   offset# = \_ -> \_ -> 18
 
+-- | the number of touchpads on this joystick, requires @touchpads@ to point at valid descriptions
+--
+--     [C declaration]: @ntouchpads@, defined at @SDL3\/SDL_joystick.h 476:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "ntouchpads" SDL_VirtualJoystickDesc ty
@@ -1352,6 +1427,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "ntouchpads" where
 
   offset# = \_ -> \_ -> 20
 
+-- | the number of sensors on this joystick, requires @sensors@ to point at valid descriptions
+--
+--     [C declaration]: @nsensors@, defined at @SDL3\/SDL_joystick.h 477:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "nsensors" SDL_VirtualJoystickDesc ty
@@ -1403,6 +1481,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "nsensors" where
 
   offset# = \_ -> \_ -> 22
 
+-- | unused
+--
+--     [C declaration]: @padding2@, defined at @SDL3\/SDL_joystick.h 478:12@
 instance
   (ty ~ CA.ConstantArray 2 SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "padding2" SDL_VirtualJoystickDesc ty
@@ -1454,6 +1535,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "padding2" where
 
   offset# = \_ -> \_ -> 24
 
+-- | A mask of which buttons are valid for this controller e.g. (1 \<\< SDL_GAMEPAD_BUTTON_SOUTH)
+--
+--     [C declaration]: @button_mask@, defined at @SDL3\/SDL_joystick.h 479:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "button_mask" SDL_VirtualJoystickDesc ty
@@ -1506,6 +1590,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "button_mask" where
 
   offset# = \_ -> \_ -> 28
 
+-- | A mask of which axes are valid for this controller e.g. (1 \<\< SDL_GAMEPAD_AXIS_LEFTX)
+--
+--     [C declaration]: @axis_mask@, defined at @SDL3\/SDL_joystick.h 481:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "axis_mask" SDL_VirtualJoystickDesc ty
@@ -1557,6 +1644,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "axis_mask" where
 
   offset# = \_ -> \_ -> 32
 
+-- | the name of the joystick
+--
+--     [C declaration]: @name@, defined at @SDL3\/SDL_joystick.h 483:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "name" SDL_VirtualJoystickDesc ty
@@ -1608,6 +1698,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "name" where
 
   offset# = \_ -> \_ -> 40
 
+-- | A pointer to an array of touchpad descriptions, required if @ntouchpads@ is > 0
+--
+--     [C declaration]: @touchpads@, defined at @SDL3\/SDL_joystick.h 484:44@
 instance
   (ty ~ PtrConst.PtrConst SDL_VirtualJoystickTouchpadDesc)
   => BG.CompatHasField.HasField "touchpads" SDL_VirtualJoystickDesc ty
@@ -1659,6 +1752,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "touchpads" where
 
   offset# = \_ -> \_ -> 48
 
+-- | A pointer to an array of sensor descriptions, required if @nsensors@ is > 0
+--
+--     [C declaration]: @sensors@, defined at @SDL3\/SDL_joystick.h 485:42@
 instance
   (ty ~ PtrConst.PtrConst SDL_VirtualJoystickSensorDesc)
   => BG.CompatHasField.HasField "sensors" SDL_VirtualJoystickDesc ty
@@ -1710,6 +1806,9 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "sensors" where
 
   offset# = \_ -> \_ -> 56
 
+-- | User data pointer passed to callbacks
+--
+--     [C declaration]: @userdata@, defined at @SDL3\/SDL_joystick.h 487:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "userdata" SDL_VirtualJoystickDesc ty
@@ -1761,6 +1860,7 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "userdata" where
 
   offset# = \_ -> \_ -> 64
 
+-- | [C declaration]: @Update@, defined at @SDL3\/SDL_joystick.h 488:20@
 instance
   (ty ~ BG.FunPtr (BG.Ptr BG.Void -> IO ()))
   => BG.CompatHasField.HasField "update" SDL_VirtualJoystickDesc ty
@@ -1812,6 +1912,7 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "update" where
 
   offset# = \_ -> \_ -> 72
 
+-- | [C declaration]: @SetPlayerIndex@, defined at @SDL3\/SDL_joystick.h 489:20@
 instance
   (ty ~ BG.FunPtr (BG.Ptr BG.Void -> BG.CInt -> IO ()))
   => BG.CompatHasField.HasField "setPlayerIndex" SDL_VirtualJoystickDesc ty
@@ -1864,6 +1965,7 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "setPlayerIndex" where
 
   offset# = \_ -> \_ -> 80
 
+-- | [C declaration]: @Rumble@, defined at @SDL3\/SDL_joystick.h 490:20@
 instance
   ( ty
       ~ BG.FunPtr
@@ -1922,6 +2024,7 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "rumble" where
 
   offset# = \_ -> \_ -> 88
 
+-- | [C declaration]: @RumbleTriggers@, defined at @SDL3\/SDL_joystick.h 491:20@
 instance
   ( ty
       ~ BG.FunPtr
@@ -1981,6 +2084,7 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "rumbleTriggers" where
 
   offset# = \_ -> \_ -> 96
 
+-- | [C declaration]: @SetLED@, defined at @SDL3\/SDL_joystick.h 492:20@
 instance
   ( ty
       ~ BG.FunPtr
@@ -2054,6 +2158,7 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "setLED" where
 
   offset# = \_ -> \_ -> 104
 
+-- | [C declaration]: @SendEffect@, defined at @SDL3\/SDL_joystick.h 493:20@
 instance
   (ty ~ BG.FunPtr (BG.Ptr BG.Void -> PtrConst.PtrConst BG.Void -> BG.CInt -> IO BG.CBool))
   => BG.CompatHasField.HasField "sendEffect" SDL_VirtualJoystickDesc ty
@@ -2105,6 +2210,7 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "sendEffect" where
 
   offset# = \_ -> \_ -> 112
 
+-- | [C declaration]: @SetSensorsEnabled@, defined at @SDL3\/SDL_joystick.h 494:20@
 instance
   (ty ~ BG.FunPtr (BG.Ptr BG.Void -> BG.CBool -> IO BG.CBool))
   => BG.CompatHasField.HasField "setSensorsEnabled" SDL_VirtualJoystickDesc ty
@@ -2157,6 +2263,7 @@ instance HasCField.HasCField SDL_VirtualJoystickDesc "setSensorsEnabled" where
 
   offset# = \_ -> \_ -> 120
 
+-- | [C declaration]: @Cleanup@, defined at @SDL3\/SDL_joystick.h 495:20@
 instance
   (ty ~ BG.FunPtr (BG.Ptr BG.Void -> IO ()))
   => BG.CompatHasField.HasField "cleanup" SDL_VirtualJoystickDesc ty

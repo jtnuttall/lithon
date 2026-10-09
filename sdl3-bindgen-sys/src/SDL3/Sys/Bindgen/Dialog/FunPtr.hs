@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Dialog.FunPtr (
@@ -10,6 +12,8 @@ module SDL3.Sys.Bindgen.Dialog.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -19,7 +23,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_dialog.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_dialog.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Dialog_get_SDL_ShowOpenFileDialog */"
          , "__attribute__ ((const))"
          , "void (*hs_bindgen_6641ec3e92287ca2 (void)) ("
@@ -94,7 +99,7 @@ hs_bindgen_6641ec3e92287ca2
            )
        )
 hs_bindgen_6641ec3e92287ca2 =
-  BG.fromFFIType hs_bindgen_6641ec3e92287ca2_base
+  fmap BG.fromFFIType hs_bindgen_6641ec3e92287ca2_base
 
 {-# NOINLINE sDL_ShowOpenFileDialog #-}
 
@@ -164,7 +169,7 @@ hs_bindgen_a4a801b9d3bede11
            )
        )
 hs_bindgen_a4a801b9d3bede11 =
-  BG.fromFFIType hs_bindgen_a4a801b9d3bede11_base
+  fmap BG.fromFFIType hs_bindgen_a4a801b9d3bede11_base
 
 {-# NOINLINE sDL_ShowSaveFileDialog #-}
 
@@ -230,7 +235,7 @@ hs_bindgen_87c736a1fcfa392e
            )
        )
 hs_bindgen_87c736a1fcfa392e =
-  BG.fromFFIType hs_bindgen_87c736a1fcfa392e_base
+  fmap BG.fromFFIType hs_bindgen_87c736a1fcfa392e_base
 
 {-# NOINLINE sDL_ShowOpenFolderDialog #-}
 
@@ -292,7 +297,7 @@ hs_bindgen_f3b5f0c530765109
            )
        )
 hs_bindgen_f3b5f0c530765109 =
-  BG.fromFFIType hs_bindgen_f3b5f0c530765109_base
+  fmap BG.fromFFIType hs_bindgen_f3b5f0c530765109_base
 
 {-# NOINLINE sDL_ShowFileDialogWithProperties #-}
 

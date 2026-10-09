@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Gpu.Unsafe (
@@ -101,7 +103,11 @@ module SDL3.Sys.Bindgen.Gpu.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Support qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Gpu
@@ -113,7 +119,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_gpu.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_gpu.h>"
          , "_Bool hs_bindgen_e2f3f6a8de0de73c ("
          , "  SDL_GPUShaderFormat arg1,"
          , "  char const *arg2"
@@ -862,9 +869,9 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GPUSupportsShaderFormats@
 foreign import ccall unsafe "hs_bindgen_e2f3f6a8de0de73c"
   hs_bindgen_e2f3f6a8de0de73c_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GPUSupportsShaderFormats@
 hs_bindgen_e2f3f6a8de0de73c
@@ -872,7 +879,9 @@ hs_bindgen_e2f3f6a8de0de73c
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_e2f3f6a8de0de73c =
-  BG.fromFFIType hs_bindgen_e2f3f6a8de0de73c_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_e2f3f6a8de0de73c_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Checks for GPU runtime support.
 --
@@ -899,15 +908,16 @@ sDL_GPUSupportsShaderFormats =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GPUSupportsProperties@
 foreign import ccall unsafe "hs_bindgen_c9ca417a5f641e3f"
   hs_bindgen_c9ca417a5f641e3f_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GPUSupportsProperties@
 hs_bindgen_c9ca417a5f641e3f
   :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -> IO BG.CBool
 hs_bindgen_c9ca417a5f641e3f =
-  BG.fromFFIType hs_bindgen_c9ca417a5f641e3f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c9ca417a5f641e3f_base (BG.toFFIType x0))
 
 -- | Checks for GPU runtime support.
 --
@@ -930,8 +940,8 @@ sDL_GPUSupportsProperties =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_CreateGPUDevice@
 foreign import ccall unsafe "hs_bindgen_b51ca46a4251feb8"
   hs_bindgen_b51ca46a4251feb8_base
-    :: BG.Word32
-    -> BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> BG.CBool
     -> BG.Ptr BG.Void
     -> IO (BG.Ptr BG.Void)
 
@@ -942,7 +952,12 @@ hs_bindgen_b51ca46a4251feb8
   -> PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr SDL_GPUDevice)
 hs_bindgen_b51ca46a4251feb8 =
-  BG.fromFFIType hs_bindgen_b51ca46a4251feb8_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_b51ca46a4251feb8_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Creates a GPU context.
 --
@@ -982,7 +997,7 @@ sDL_CreateGPUDevice = hs_bindgen_b51ca46a4251feb8
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_CreateGPUDeviceWithProperties@
 foreign import ccall unsafe "hs_bindgen_376515fb91ec90e3"
   hs_bindgen_376515fb91ec90e3_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_CreateGPUDeviceWithProperties@
@@ -990,7 +1005,8 @@ hs_bindgen_376515fb91ec90e3
   :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -> IO (BG.Ptr SDL_GPUDevice)
 hs_bindgen_376515fb91ec90e3 =
-  BG.fromFFIType hs_bindgen_376515fb91ec90e3_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_376515fb91ec90e3_base (BG.toFFIType x0))
 
 -- | Creates a GPU context.
 --
@@ -1071,7 +1087,8 @@ hs_bindgen_7ff5a8cdf38e3bf0
   :: BG.Ptr SDL_GPUDevice
   -> IO ()
 hs_bindgen_7ff5a8cdf38e3bf0 =
-  BG.fromFFIType hs_bindgen_7ff5a8cdf38e3bf0_base
+  \x0 ->
+    hs_bindgen_7ff5a8cdf38e3bf0_base (BG.toFFIType x0)
 
 -- | Destroys a GPU context previously returned by SDL_CreateGPUDevice.
 --
@@ -1091,12 +1108,12 @@ sDL_DestroyGPUDevice = hs_bindgen_7ff5a8cdf38e3bf0
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GetNumGPUDrivers@
 foreign import ccall unsafe "hs_bindgen_6011a5df785dd689"
   hs_bindgen_6011a5df785dd689_base
-    :: IO BG.Int32
+    :: IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GetNumGPUDrivers@
 hs_bindgen_6011a5df785dd689 :: IO BG.CInt
 hs_bindgen_6011a5df785dd689 =
-  BG.fromFFIType hs_bindgen_6011a5df785dd689_base
+  fmap BG.fromFFIType hs_bindgen_6011a5df785dd689_base
 
 -- | Get the number of GPU drivers compiled into SDL.
 --
@@ -1113,7 +1130,7 @@ sDL_GetNumGPUDrivers = hs_bindgen_6011a5df785dd689
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GetGPUDriver@
 foreign import ccall unsafe "hs_bindgen_5bd47cd4296c5cf8"
   hs_bindgen_5bd47cd4296c5cf8_base
-    :: BG.Int32
+    :: BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GetGPUDriver@
@@ -1121,7 +1138,8 @@ hs_bindgen_5bd47cd4296c5cf8
   :: BG.CInt
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_5bd47cd4296c5cf8 =
-  BG.fromFFIType hs_bindgen_5bd47cd4296c5cf8_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_5bd47cd4296c5cf8_base (BG.toFFIType x0))
 
 -- | Get the name of a built in GPU driver.
 --
@@ -1155,7 +1173,8 @@ hs_bindgen_bf49abcda2b24803
   :: BG.Ptr SDL_GPUDevice
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_bf49abcda2b24803 =
-  BG.fromFFIType hs_bindgen_bf49abcda2b24803_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_bf49abcda2b24803_base (BG.toFFIType x0))
 
 -- | Returns the name of the backend used to create this GPU context.
 --
@@ -1176,14 +1195,15 @@ sDL_GetGPUDeviceDriver = hs_bindgen_bf49abcda2b24803
 foreign import ccall unsafe "hs_bindgen_20513b344f1e3b64"
   hs_bindgen_20513b344f1e3b64_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GetGPUShaderFormats@
 hs_bindgen_20513b344f1e3b64
   :: BG.Ptr SDL_GPUDevice
   -> IO SDL_GPUShaderFormat
 hs_bindgen_20513b344f1e3b64 =
-  BG.fromFFIType hs_bindgen_20513b344f1e3b64_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_20513b344f1e3b64_base (BG.toFFIType x0))
 
 -- | Returns the supported shader formats for this GPU context.
 --
@@ -1204,14 +1224,15 @@ sDL_GetGPUShaderFormats = hs_bindgen_20513b344f1e3b64
 foreign import ccall unsafe "hs_bindgen_caf8299b42e53b94"
   hs_bindgen_caf8299b42e53b94_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GetGPUDeviceProperties@
 hs_bindgen_caf8299b42e53b94
   :: BG.Ptr SDL_GPUDevice
   -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
 hs_bindgen_caf8299b42e53b94 =
-  BG.fromFFIType hs_bindgen_caf8299b42e53b94_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_caf8299b42e53b94_base (BG.toFFIType x0))
 
 -- | Get the properties associated with a GPU device.
 --
@@ -1337,7 +1358,9 @@ hs_bindgen_47c9f4418564565f
   -> PtrConst.PtrConst SDL_GPUComputePipelineCreateInfo
   -> IO (BG.Ptr SDL_GPUComputePipeline)
 hs_bindgen_47c9f4418564565f =
-  BG.fromFFIType hs_bindgen_47c9f4418564565f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_47c9f4418564565f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Creates a pipeline object to be used in a compute workflow.
 --
@@ -1402,7 +1425,9 @@ hs_bindgen_18c5db2a0d02cde2
   -> PtrConst.PtrConst SDL_GPUGraphicsPipelineCreateInfo
   -> IO (BG.Ptr SDL_GPUGraphicsPipeline)
 hs_bindgen_18c5db2a0d02cde2 =
-  BG.fromFFIType hs_bindgen_18c5db2a0d02cde2_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_18c5db2a0d02cde2_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Creates a pipeline object to be used in a graphics workflow.
 --
@@ -1443,7 +1468,9 @@ hs_bindgen_a1a95a3f30be0f83
   -> PtrConst.PtrConst SDL_GPUSamplerCreateInfo
   -> IO (BG.Ptr SDL_GPUSampler)
 hs_bindgen_a1a95a3f30be0f83 =
-  BG.fromFFIType hs_bindgen_a1a95a3f30be0f83_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_a1a95a3f30be0f83_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Creates a sampler object to be used when binding textures in a graphics workflow.
 --
@@ -1483,7 +1510,9 @@ hs_bindgen_9bba04f484907a46
   -> PtrConst.PtrConst SDL_GPUShaderCreateInfo
   -> IO (BG.Ptr SDL_GPUShader)
 hs_bindgen_9bba04f484907a46 =
-  BG.fromFFIType hs_bindgen_9bba04f484907a46_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_9bba04f484907a46_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Creates a shader to be used when creating a graphics pipeline.
 --
@@ -1567,7 +1596,9 @@ hs_bindgen_e954a5b015dea03b
   -> PtrConst.PtrConst SDL_GPUTextureCreateInfo
   -> IO (BG.Ptr SDL_GPUTexture)
 hs_bindgen_e954a5b015dea03b =
-  BG.fromFFIType hs_bindgen_e954a5b015dea03b_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_e954a5b015dea03b_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Creates a texture object to be used in graphics or compute workflows.
 --
@@ -1625,7 +1656,9 @@ hs_bindgen_ed280f9c2dd5b278
   -> PtrConst.PtrConst SDL_GPUBufferCreateInfo
   -> IO (BG.Ptr SDL_GPUBuffer)
 hs_bindgen_ed280f9c2dd5b278 =
-  BG.fromFFIType hs_bindgen_ed280f9c2dd5b278_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_ed280f9c2dd5b278_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Creates a buffer object to be used in graphics or compute workflows.
 --
@@ -1671,7 +1704,9 @@ hs_bindgen_848522e8bdb350b2
   -> PtrConst.PtrConst SDL_GPUTransferBufferCreateInfo
   -> IO (BG.Ptr SDL_GPUTransferBuffer)
 hs_bindgen_848522e8bdb350b2 =
-  BG.fromFFIType hs_bindgen_848522e8bdb350b2_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_848522e8bdb350b2_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Creates a transfer buffer to be used when uploading to or downloading from graphics resources.
 --
@@ -1716,7 +1751,10 @@ hs_bindgen_b8e2db9733a08cbe
   -> PtrConst.PtrConst BG.CChar
   -> IO ()
 hs_bindgen_b8e2db9733a08cbe =
-  BG.fromFFIType hs_bindgen_b8e2db9733a08cbe_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        hs_bindgen_b8e2db9733a08cbe_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2)
 
 -- | Sets an arbitrary string constant to label a buffer.
 --
@@ -1760,7 +1798,10 @@ hs_bindgen_6831ff7e87614fc1
   -> PtrConst.PtrConst BG.CChar
   -> IO ()
 hs_bindgen_6831ff7e87614fc1 =
-  BG.fromFFIType hs_bindgen_6831ff7e87614fc1_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        hs_bindgen_6831ff7e87614fc1_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2)
 
 -- | Sets an arbitrary string constant to label a texture.
 --
@@ -1802,7 +1843,9 @@ hs_bindgen_56a7e36b3e8524dd
   -> PtrConst.PtrConst BG.CChar
   -> IO ()
 hs_bindgen_56a7e36b3e8524dd =
-  BG.fromFFIType hs_bindgen_56a7e36b3e8524dd_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_56a7e36b3e8524dd_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Inserts an arbitrary string label into the command buffer callstream.
 --
@@ -1838,7 +1881,9 @@ hs_bindgen_41af45d04529f84d
   -> PtrConst.PtrConst BG.CChar
   -> IO ()
 hs_bindgen_41af45d04529f84d =
-  BG.fromFFIType hs_bindgen_41af45d04529f84d_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_41af45d04529f84d_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Begins a debug group with an arbitrary name.
 --
@@ -1878,7 +1923,8 @@ hs_bindgen_5dae404b2ebaa08b
   :: BG.Ptr SDL_GPUCommandBuffer
   -> IO ()
 hs_bindgen_5dae404b2ebaa08b =
-  BG.fromFFIType hs_bindgen_5dae404b2ebaa08b_base
+  \x0 ->
+    hs_bindgen_5dae404b2ebaa08b_base (BG.toFFIType x0)
 
 -- | Ends the most-recently pushed debug group.
 --
@@ -1910,7 +1956,9 @@ hs_bindgen_64db5410128eae2d
   -> BG.Ptr SDL_GPUTexture
   -> IO ()
 hs_bindgen_64db5410128eae2d =
-  BG.fromFFIType hs_bindgen_64db5410128eae2d_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_64db5410128eae2d_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Frees the given texture as soon as it is safe to do so.
 --
@@ -1944,7 +1992,9 @@ hs_bindgen_13cdb1700ceeed7f
   -> BG.Ptr SDL_GPUSampler
   -> IO ()
 hs_bindgen_13cdb1700ceeed7f =
-  BG.fromFFIType hs_bindgen_13cdb1700ceeed7f_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_13cdb1700ceeed7f_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Frees the given sampler as soon as it is safe to do so.
 --
@@ -1978,7 +2028,9 @@ hs_bindgen_fcdfc18ed875a278
   -> BG.Ptr SDL_GPUBuffer
   -> IO ()
 hs_bindgen_fcdfc18ed875a278 =
-  BG.fromFFIType hs_bindgen_fcdfc18ed875a278_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_fcdfc18ed875a278_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Frees the given buffer as soon as it is safe to do so.
 --
@@ -2012,7 +2064,9 @@ hs_bindgen_e731b5deaeeee3c1
   -> BG.Ptr SDL_GPUTransferBuffer
   -> IO ()
 hs_bindgen_e731b5deaeeee3c1 =
-  BG.fromFFIType hs_bindgen_e731b5deaeeee3c1_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_e731b5deaeeee3c1_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Frees the given transfer buffer as soon as it is safe to do so.
 --
@@ -2047,7 +2101,9 @@ hs_bindgen_f9bd20900c9e4080
   -> BG.Ptr SDL_GPUComputePipeline
   -> IO ()
 hs_bindgen_f9bd20900c9e4080 =
-  BG.fromFFIType hs_bindgen_f9bd20900c9e4080_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_f9bd20900c9e4080_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Frees the given compute pipeline as soon as it is safe to do so.
 --
@@ -2082,7 +2138,9 @@ hs_bindgen_e516abeced8d372b
   -> BG.Ptr SDL_GPUShader
   -> IO ()
 hs_bindgen_e516abeced8d372b =
-  BG.fromFFIType hs_bindgen_e516abeced8d372b_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_e516abeced8d372b_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Frees the given shader as soon as it is safe to do so.
 --
@@ -2116,7 +2174,9 @@ hs_bindgen_9c01a03b4ad6f8be
   -> BG.Ptr SDL_GPUGraphicsPipeline
   -> IO ()
 hs_bindgen_9c01a03b4ad6f8be =
-  BG.fromFFIType hs_bindgen_9c01a03b4ad6f8be_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_9c01a03b4ad6f8be_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Frees the given graphics pipeline as soon as it is safe to do so.
 --
@@ -2149,7 +2209,8 @@ hs_bindgen_27337c63b7093b75
   :: BG.Ptr SDL_GPUDevice
   -> IO (BG.Ptr SDL_GPUCommandBuffer)
 hs_bindgen_27337c63b7093b75 =
-  BG.fromFFIType hs_bindgen_27337c63b7093b75_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_27337c63b7093b75_base (BG.toFFIType x0))
 
 -- | Acquire a command buffer.
 --
@@ -2177,9 +2238,9 @@ sDL_AcquireGPUCommandBuffer =
 foreign import ccall unsafe "hs_bindgen_a5504d727b5181e0"
   hs_bindgen_a5504d727b5181e0_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_PushGPUVertexUniformData@
@@ -2190,7 +2251,15 @@ hs_bindgen_a5504d727b5181e0
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_a5504d727b5181e0 =
-  BG.fromFFIType hs_bindgen_a5504d727b5181e0_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_a5504d727b5181e0_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Pushes data to a vertex uniform slot on the command buffer.
 --
@@ -2228,9 +2297,9 @@ sDL_PushGPUVertexUniformData =
 foreign import ccall unsafe "hs_bindgen_c1b93561fe6f3eb8"
   hs_bindgen_c1b93561fe6f3eb8_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_PushGPUFragmentUniformData@
@@ -2241,7 +2310,15 @@ hs_bindgen_c1b93561fe6f3eb8
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_c1b93561fe6f3eb8 =
-  BG.fromFFIType hs_bindgen_c1b93561fe6f3eb8_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_c1b93561fe6f3eb8_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Pushes data to a fragment uniform slot on the command buffer.
 --
@@ -2277,9 +2354,9 @@ sDL_PushGPUFragmentUniformData =
 foreign import ccall unsafe "hs_bindgen_267be67577031d05"
   hs_bindgen_267be67577031d05_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_PushGPUComputeUniformData@
@@ -2290,7 +2367,15 @@ hs_bindgen_267be67577031d05
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_267be67577031d05 =
-  BG.fromFFIType hs_bindgen_267be67577031d05_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_267be67577031d05_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Pushes data to a uniform slot on the command buffer.
 --
@@ -2327,7 +2412,7 @@ foreign import ccall unsafe "hs_bindgen_b04297da6f821242"
   hs_bindgen_b04297da6f821242_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> IO (BG.Ptr BG.Void)
 
@@ -2339,7 +2424,18 @@ hs_bindgen_b04297da6f821242
   -> PtrConst.PtrConst SDL_GPUDepthStencilTargetInfo
   -> IO (BG.Ptr SDL_GPURenderPass)
 hs_bindgen_b04297da6f821242 =
-  BG.fromFFIType hs_bindgen_b04297da6f821242_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_b04297da6f821242_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Begins a render pass on a command buffer.
 --
@@ -2387,7 +2483,9 @@ hs_bindgen_a6ebeaec23a3eebc
   -> BG.Ptr SDL_GPUGraphicsPipeline
   -> IO ()
 hs_bindgen_a6ebeaec23a3eebc =
-  BG.fromFFIType hs_bindgen_a6ebeaec23a3eebc_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_a6ebeaec23a3eebc_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Binds a graphics pipeline on a render pass to be used in rendering.
 --
@@ -2422,7 +2520,9 @@ hs_bindgen_f53e27fd1f10bfea
   -> PtrConst.PtrConst SDL_GPUViewport
   -> IO ()
 hs_bindgen_f53e27fd1f10bfea =
-  BG.fromFFIType hs_bindgen_f53e27fd1f10bfea_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_f53e27fd1f10bfea_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Sets the current viewport state on a command buffer.
 --
@@ -2454,7 +2554,9 @@ hs_bindgen_bc8dd2f3086d94d5
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO ()
 hs_bindgen_bc8dd2f3086d94d5 =
-  BG.fromFFIType hs_bindgen_bc8dd2f3086d94d5_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_bc8dd2f3086d94d5_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Sets the current scissor state on a command buffer.
 --
@@ -2486,7 +2588,9 @@ hs_bindgen_85e648c31f1fcb70
   -> BG.Ptr SDL3.Sys.Bindgen.Pixels.SDL_FColor
   -> IO ()
 hs_bindgen_85e648c31f1fcb70 =
-  BG.fromFFIType hs_bindgen_85e648c31f1fcb70_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_85e648c31f1fcb70_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Sets the current blend constants on a command buffer.
 --
@@ -2518,7 +2622,7 @@ sDL_SetGPUBlendConstants =
 foreign import ccall unsafe "hs_bindgen_142400b7edd5f15e"
   hs_bindgen_142400b7edd5f15e_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
+    -> HsBindgen.Runtime.LibC.Word8
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_SetGPUStencilReference@
@@ -2527,7 +2631,9 @@ hs_bindgen_142400b7edd5f15e
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO ()
 hs_bindgen_142400b7edd5f15e =
-  BG.fromFFIType hs_bindgen_142400b7edd5f15e_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_142400b7edd5f15e_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Sets the current stencil reference value on a command buffer.
 --
@@ -2551,9 +2657,9 @@ sDL_SetGPUStencilReference =
 foreign import ccall unsafe "hs_bindgen_049713abad47ef65"
   hs_bindgen_049713abad47ef65_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_BindGPUVertexBuffers@
@@ -2564,7 +2670,15 @@ hs_bindgen_049713abad47ef65
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_049713abad47ef65 =
-  BG.fromFFIType hs_bindgen_049713abad47ef65_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_049713abad47ef65_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Binds vertex buffers on a command buffer for use with subsequent draw calls.
 --
@@ -2597,7 +2711,7 @@ foreign import ccall unsafe "hs_bindgen_eebac58434b8d6c1"
   hs_bindgen_eebac58434b8d6c1_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> BG.CUInt
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_BindGPUIndexBuffer@
@@ -2607,7 +2721,10 @@ hs_bindgen_eebac58434b8d6c1
   -> SDL_GPUIndexElementSize
   -> IO ()
 hs_bindgen_eebac58434b8d6c1 =
-  BG.fromFFIType hs_bindgen_eebac58434b8d6c1_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        hs_bindgen_eebac58434b8d6c1_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2)
 
 -- | Binds an index buffer on a command buffer for use with subsequent draw calls.
 --
@@ -2634,9 +2751,9 @@ sDL_BindGPUIndexBuffer = hs_bindgen_eebac58434b8d6c1
 foreign import ccall unsafe "hs_bindgen_466757558b7a4998"
   hs_bindgen_466757558b7a4998_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_BindGPUVertexSamplers@
@@ -2647,7 +2764,15 @@ hs_bindgen_466757558b7a4998
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_466757558b7a4998 =
-  BG.fromFFIType hs_bindgen_466757558b7a4998_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_466757558b7a4998_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Binds texture-sampler pairs for use on the vertex shader.
 --
@@ -2685,9 +2810,9 @@ sDL_BindGPUVertexSamplers =
 foreign import ccall unsafe "hs_bindgen_3099fb36563a23bf"
   hs_bindgen_3099fb36563a23bf_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_BindGPUVertexStorageTextures@
@@ -2698,7 +2823,15 @@ hs_bindgen_3099fb36563a23bf
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_3099fb36563a23bf =
-  BG.fromFFIType hs_bindgen_3099fb36563a23bf_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_3099fb36563a23bf_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Binds storage textures for use on the vertex shader.
 --
@@ -2736,9 +2869,9 @@ sDL_BindGPUVertexStorageTextures =
 foreign import ccall unsafe "hs_bindgen_114f1ec46d1c4ca1"
   hs_bindgen_114f1ec46d1c4ca1_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_BindGPUVertexStorageBuffers@
@@ -2749,7 +2882,15 @@ hs_bindgen_114f1ec46d1c4ca1
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_114f1ec46d1c4ca1 =
-  BG.fromFFIType hs_bindgen_114f1ec46d1c4ca1_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_114f1ec46d1c4ca1_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Binds storage buffers for use on the vertex shader.
 --
@@ -2787,9 +2928,9 @@ sDL_BindGPUVertexStorageBuffers =
 foreign import ccall unsafe "hs_bindgen_6120c617bd5f9a53"
   hs_bindgen_6120c617bd5f9a53_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_BindGPUFragmentSamplers@
@@ -2800,7 +2941,15 @@ hs_bindgen_6120c617bd5f9a53
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_6120c617bd5f9a53 =
-  BG.fromFFIType hs_bindgen_6120c617bd5f9a53_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_6120c617bd5f9a53_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Binds texture-sampler pairs for use on the fragment shader.
 --
@@ -2838,9 +2987,9 @@ sDL_BindGPUFragmentSamplers =
 foreign import ccall unsafe "hs_bindgen_a5741f59885921f3"
   hs_bindgen_a5741f59885921f3_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_BindGPUFragmentStorageTextures@
@@ -2851,7 +3000,15 @@ hs_bindgen_a5741f59885921f3
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_a5741f59885921f3 =
-  BG.fromFFIType hs_bindgen_a5741f59885921f3_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_a5741f59885921f3_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Binds storage textures for use on the fragment shader.
 --
@@ -2889,9 +3046,9 @@ sDL_BindGPUFragmentStorageTextures =
 foreign import ccall unsafe "hs_bindgen_2cc12141ee4494d6"
   hs_bindgen_2cc12141ee4494d6_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_BindGPUFragmentStorageBuffers@
@@ -2902,7 +3059,15 @@ hs_bindgen_2cc12141ee4494d6
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_2cc12141ee4494d6 =
-  BG.fromFFIType hs_bindgen_2cc12141ee4494d6_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_2cc12141ee4494d6_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Binds storage buffers for use on the fragment shader.
 --
@@ -2940,11 +3105,11 @@ sDL_BindGPUFragmentStorageBuffers =
 foreign import ccall unsafe "hs_bindgen_87e007a9ec36edc3"
   hs_bindgen_87e007a9ec36edc3_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Int32
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Int32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_DrawGPUIndexedPrimitives@
@@ -2957,7 +3122,19 @@ hs_bindgen_87e007a9ec36edc3
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_87e007a9ec36edc3 =
-  BG.fromFFIType hs_bindgen_87e007a9ec36edc3_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              hs_bindgen_87e007a9ec36edc3_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+                (BG.toFFIType x4)
+                (BG.toFFIType x5)
 
 -- | Draws data using bound graphics state with an index buffer and instancing enabled.
 --
@@ -3001,10 +3178,10 @@ sDL_DrawGPUIndexedPrimitives =
 foreign import ccall unsafe "hs_bindgen_7b242b637f0074d8"
   hs_bindgen_7b242b637f0074d8_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_DrawGPUPrimitives@
@@ -3016,7 +3193,17 @@ hs_bindgen_7b242b637f0074d8
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_7b242b637f0074d8 =
-  BG.fromFFIType hs_bindgen_7b242b637f0074d8_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            hs_bindgen_7b242b637f0074d8_base
+              (BG.toFFIType x0)
+              (BG.toFFIType x1)
+              (BG.toFFIType x2)
+              (BG.toFFIType x3)
+              (BG.toFFIType x4)
 
 -- | Draws data using bound graphics state.
 --
@@ -3056,8 +3243,8 @@ foreign import ccall unsafe "hs_bindgen_38685ef53cdffb5f"
   hs_bindgen_38685ef53cdffb5f_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_DrawGPUPrimitivesIndirect@
@@ -3068,7 +3255,15 @@ hs_bindgen_38685ef53cdffb5f
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_38685ef53cdffb5f =
-  BG.fromFFIType hs_bindgen_38685ef53cdffb5f_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_38685ef53cdffb5f_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Draws data using bound graphics state and with draw parameters set from a buffer.
 --
@@ -3103,8 +3298,8 @@ foreign import ccall unsafe "hs_bindgen_04835577dd24b594"
   hs_bindgen_04835577dd24b594_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_DrawGPUIndexedPrimitivesIndirect@
@@ -3115,7 +3310,15 @@ hs_bindgen_04835577dd24b594
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_04835577dd24b594 =
-  BG.fromFFIType hs_bindgen_04835577dd24b594_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_04835577dd24b594_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Draws data using bound graphics state with an index buffer enabled and with draw parameters set from a buffer.
 --
@@ -3156,7 +3359,8 @@ hs_bindgen_cd298cdaadbf367d
   :: BG.Ptr SDL_GPURenderPass
   -> IO ()
 hs_bindgen_cd298cdaadbf367d =
-  BG.fromFFIType hs_bindgen_cd298cdaadbf367d_base
+  \x0 ->
+    hs_bindgen_cd298cdaadbf367d_base (BG.toFFIType x0)
 
 -- | Ends the given render pass.
 --
@@ -3178,9 +3382,9 @@ foreign import ccall unsafe "hs_bindgen_7e4922a40e945137"
   hs_bindgen_7e4922a40e945137_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_BeginGPUComputePass@
@@ -3192,7 +3396,20 @@ hs_bindgen_7e4922a40e945137
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO (BG.Ptr SDL_GPUComputePass)
 hs_bindgen_7e4922a40e945137 =
-  BG.fromFFIType hs_bindgen_7e4922a40e945137_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_7e4922a40e945137_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Begins a compute pass on a command buffer.
 --
@@ -3244,7 +3461,9 @@ hs_bindgen_3d4216ca508a9022
   -> BG.Ptr SDL_GPUComputePipeline
   -> IO ()
 hs_bindgen_3d4216ca508a9022 =
-  BG.fromFFIType hs_bindgen_3d4216ca508a9022_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_3d4216ca508a9022_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Binds a compute pipeline on a command buffer for use in compute dispatch.
 --
@@ -3268,9 +3487,9 @@ sDL_BindGPUComputePipeline =
 foreign import ccall unsafe "hs_bindgen_2a02bb807885f88d"
   hs_bindgen_2a02bb807885f88d_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_BindGPUComputeSamplers@
@@ -3281,7 +3500,15 @@ hs_bindgen_2a02bb807885f88d
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_2a02bb807885f88d =
-  BG.fromFFIType hs_bindgen_2a02bb807885f88d_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_2a02bb807885f88d_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Binds texture-sampler pairs for use on the compute shader.
 --
@@ -3319,9 +3546,9 @@ sDL_BindGPUComputeSamplers =
 foreign import ccall unsafe "hs_bindgen_a743533e288c69f5"
   hs_bindgen_a743533e288c69f5_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_BindGPUComputeStorageTextures@
@@ -3332,7 +3559,15 @@ hs_bindgen_a743533e288c69f5
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_a743533e288c69f5 =
-  BG.fromFFIType hs_bindgen_a743533e288c69f5_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_a743533e288c69f5_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Binds storage textures as readonly for use on the compute pipeline.
 --
@@ -3370,9 +3605,9 @@ sDL_BindGPUComputeStorageTextures =
 foreign import ccall unsafe "hs_bindgen_1be365d38addb5cf"
   hs_bindgen_1be365d38addb5cf_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_BindGPUComputeStorageBuffers@
@@ -3383,7 +3618,15 @@ hs_bindgen_1be365d38addb5cf
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_1be365d38addb5cf =
-  BG.fromFFIType hs_bindgen_1be365d38addb5cf_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_1be365d38addb5cf_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Binds storage buffers as readonly for use on the compute pipeline.
 --
@@ -3421,9 +3664,9 @@ sDL_BindGPUComputeStorageBuffers =
 foreign import ccall unsafe "hs_bindgen_08d7249b66bd0658"
   hs_bindgen_08d7249b66bd0658_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_DispatchGPUCompute@
@@ -3434,7 +3677,15 @@ hs_bindgen_08d7249b66bd0658
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_08d7249b66bd0658 =
-  BG.fromFFIType hs_bindgen_08d7249b66bd0658_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_08d7249b66bd0658_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Dispatches compute work.
 --
@@ -3470,7 +3721,7 @@ foreign import ccall unsafe "hs_bindgen_9b425608a854a4f5"
   hs_bindgen_9b425608a854a4f5_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_DispatchGPUComputeIndirect@
@@ -3480,7 +3731,10 @@ hs_bindgen_9b425608a854a4f5
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_9b425608a854a4f5 =
-  BG.fromFFIType hs_bindgen_9b425608a854a4f5_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        hs_bindgen_9b425608a854a4f5_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2)
 
 -- | Dispatches compute work with parameters set from a buffer.
 --
@@ -3519,7 +3773,8 @@ hs_bindgen_bf20561443153c08
   :: BG.Ptr SDL_GPUComputePass
   -> IO ()
 hs_bindgen_bf20561443153c08 =
-  BG.fromFFIType hs_bindgen_bf20561443153c08_base
+  \x0 ->
+    hs_bindgen_bf20561443153c08_base (BG.toFFIType x0)
 
 -- | Ends the current compute pass.
 --
@@ -3541,7 +3796,7 @@ foreign import ccall unsafe "hs_bindgen_075892bcba4ad890"
   hs_bindgen_075892bcba4ad890_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_MapGPUTransferBuffer@
@@ -3551,7 +3806,12 @@ hs_bindgen_075892bcba4ad890
   -> BG.CBool
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_075892bcba4ad890 =
-  BG.fromFFIType hs_bindgen_075892bcba4ad890_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_075892bcba4ad890_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Maps a transfer buffer into application address space.
 --
@@ -3592,7 +3852,9 @@ hs_bindgen_8721518ac51d5884
   -> BG.Ptr SDL_GPUTransferBuffer
   -> IO ()
 hs_bindgen_8721518ac51d5884 =
-  BG.fromFFIType hs_bindgen_8721518ac51d5884_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_8721518ac51d5884_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Unmaps a previously mapped transfer buffer.
 --
@@ -3623,7 +3885,8 @@ hs_bindgen_7990c88447a637d9
   :: BG.Ptr SDL_GPUCommandBuffer
   -> IO (BG.Ptr SDL_GPUCopyPass)
 hs_bindgen_7990c88447a637d9 =
-  BG.fromFFIType hs_bindgen_7990c88447a637d9_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_7990c88447a637d9_base (BG.toFFIType x0))
 
 -- | Begins a copy pass on a command buffer.
 --
@@ -3650,7 +3913,7 @@ foreign import ccall unsafe "hs_bindgen_7dc2e64aebecaf47"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_UploadToGPUTexture@
@@ -3661,7 +3924,15 @@ hs_bindgen_7dc2e64aebecaf47
   -> BG.CBool
   -> IO ()
 hs_bindgen_7dc2e64aebecaf47 =
-  BG.fromFFIType hs_bindgen_7dc2e64aebecaf47_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_7dc2e64aebecaf47_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Uploads data from a transfer buffer to a texture.
 --
@@ -3698,7 +3969,7 @@ foreign import ccall unsafe "hs_bindgen_c8311e817b0149e1"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_UploadToGPUBuffer@
@@ -3709,7 +3980,15 @@ hs_bindgen_c8311e817b0149e1
   -> BG.CBool
   -> IO ()
 hs_bindgen_c8311e817b0149e1 =
-  BG.fromFFIType hs_bindgen_c8311e817b0149e1_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_c8311e817b0149e1_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Uploads data from a transfer buffer to a buffer.
 --
@@ -3744,10 +4023,10 @@ foreign import ccall unsafe "hs_bindgen_8d76c446224fa54a"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> BG.CBool
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_CopyGPUTextureToTexture@
@@ -3761,7 +4040,21 @@ hs_bindgen_8d76c446224fa54a
   -> BG.CBool
   -> IO ()
 hs_bindgen_8d76c446224fa54a =
-  BG.fromFFIType hs_bindgen_8d76c446224fa54a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                hs_bindgen_8d76c446224fa54a_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+                  (BG.toFFIType x5)
+                  (BG.toFFIType x6)
 
 -- | Performs a texture-to-texture copy.
 --
@@ -3811,8 +4104,8 @@ foreign import ccall unsafe "hs_bindgen_72560eca0be1bbd9"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> BG.CBool
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_CopyGPUBufferToBuffer@
@@ -3824,7 +4117,17 @@ hs_bindgen_72560eca0be1bbd9
   -> BG.CBool
   -> IO ()
 hs_bindgen_72560eca0be1bbd9 =
-  BG.fromFFIType hs_bindgen_72560eca0be1bbd9_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            hs_bindgen_72560eca0be1bbd9_base
+              (BG.toFFIType x0)
+              (BG.toFFIType x1)
+              (BG.toFFIType x2)
+              (BG.toFFIType x3)
+              (BG.toFFIType x4)
 
 -- | Performs a buffer-to-buffer copy.
 --
@@ -3873,7 +4176,10 @@ hs_bindgen_f583e024c47915e6
   -> PtrConst.PtrConst SDL_GPUTextureTransferInfo
   -> IO ()
 hs_bindgen_f583e024c47915e6 =
-  BG.fromFFIType hs_bindgen_f583e024c47915e6_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        hs_bindgen_f583e024c47915e6_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2)
 
 -- | Copies data from a texture to a transfer buffer on the GPU timeline.
 --
@@ -3914,7 +4220,10 @@ hs_bindgen_d1604453e77cbbd9
   -> PtrConst.PtrConst SDL_GPUTransferBufferLocation
   -> IO ()
 hs_bindgen_d1604453e77cbbd9 =
-  BG.fromFFIType hs_bindgen_d1604453e77cbbd9_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        hs_bindgen_d1604453e77cbbd9_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2)
 
 -- | Copies data from a buffer to a transfer buffer on the GPU timeline.
 --
@@ -3951,7 +4260,8 @@ hs_bindgen_37f1aba920cf70df
   :: BG.Ptr SDL_GPUCopyPass
   -> IO ()
 hs_bindgen_37f1aba920cf70df =
-  BG.fromFFIType hs_bindgen_37f1aba920cf70df_base
+  \x0 ->
+    hs_bindgen_37f1aba920cf70df_base (BG.toFFIType x0)
 
 -- | Ends the current copy pass.
 --
@@ -3979,7 +4289,9 @@ hs_bindgen_487b5d55898cb8c9
   -> BG.Ptr SDL_GPUTexture
   -> IO ()
 hs_bindgen_487b5d55898cb8c9 =
-  BG.fromFFIType hs_bindgen_487b5d55898cb8c9_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_487b5d55898cb8c9_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Generates mipmaps for the given texture.
 --
@@ -4014,7 +4326,9 @@ hs_bindgen_5ea32ac13985443b
   -> PtrConst.PtrConst SDL_GPUBlitInfo
   -> IO ()
 hs_bindgen_5ea32ac13985443b =
-  BG.fromFFIType hs_bindgen_5ea32ac13985443b_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_5ea32ac13985443b_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Blits from a source texture region to a destination texture region.
 --
@@ -4040,8 +4354,8 @@ foreign import ccall unsafe "hs_bindgen_7874a69b9fb7574a"
   hs_bindgen_7874a69b9fb7574a_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> BG.CUInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_WindowSupportsGPUSwapchainComposition@
 hs_bindgen_7874a69b9fb7574a
@@ -4050,7 +4364,12 @@ hs_bindgen_7874a69b9fb7574a
   -> SDL_GPUSwapchainComposition
   -> IO BG.CBool
 hs_bindgen_7874a69b9fb7574a =
-  BG.fromFFIType hs_bindgen_7874a69b9fb7574a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_7874a69b9fb7574a_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Determines whether a swapchain composition is supported by the window.
 --
@@ -4085,8 +4404,8 @@ foreign import ccall unsafe "hs_bindgen_e7e69a1723f7ad13"
   hs_bindgen_e7e69a1723f7ad13_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> BG.CUInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_WindowSupportsGPUPresentMode@
 hs_bindgen_e7e69a1723f7ad13
@@ -4095,7 +4414,12 @@ hs_bindgen_e7e69a1723f7ad13
   -> SDL_GPUPresentMode
   -> IO BG.CBool
 hs_bindgen_e7e69a1723f7ad13 =
-  BG.fromFFIType hs_bindgen_e7e69a1723f7ad13_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_e7e69a1723f7ad13_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Determines whether a presentation mode is supported by the window.
 --
@@ -4130,7 +4454,7 @@ foreign import ccall unsafe "hs_bindgen_709c34298cd845c0"
   hs_bindgen_709c34298cd845c0_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_ClaimWindowForGPUDevice@
 hs_bindgen_709c34298cd845c0
@@ -4138,7 +4462,9 @@ hs_bindgen_709c34298cd845c0
   -> BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window
   -> IO BG.CBool
 hs_bindgen_709c34298cd845c0 =
-  BG.fromFFIType hs_bindgen_709c34298cd845c0_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_709c34298cd845c0_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Claims a window, creating a swapchain structure for it.
 --
@@ -4181,7 +4507,9 @@ hs_bindgen_5580ffa5115be31a
   -> BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window
   -> IO ()
 hs_bindgen_5580ffa5115be31a =
-  BG.fromFFIType hs_bindgen_5580ffa5115be31a_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_5580ffa5115be31a_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Unclaims a window, destroying its swapchain structure.
 --
@@ -4208,9 +4536,9 @@ foreign import ccall unsafe "hs_bindgen_dd5044a4ed37551c"
   hs_bindgen_dd5044a4ed37551c_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word32
-    -> IO BG.Word8
+    -> BG.CUInt
+    -> BG.CUInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_SetGPUSwapchainParameters@
 hs_bindgen_dd5044a4ed37551c
@@ -4220,7 +4548,18 @@ hs_bindgen_dd5044a4ed37551c
   -> SDL_GPUPresentMode
   -> IO BG.CBool
 hs_bindgen_dd5044a4ed37551c =
-  BG.fromFFIType hs_bindgen_dd5044a4ed37551c_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_dd5044a4ed37551c_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Changes the swapchain parameters for the given claimed window.
 --
@@ -4260,8 +4599,8 @@ sDL_SetGPUSwapchainParameters =
 foreign import ccall unsafe "hs_bindgen_376c36f4c99e1f9a"
   hs_bindgen_376c36f4c99e1f9a_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_SetGPUAllowedFramesInFlight@
 hs_bindgen_376c36f4c99e1f9a
@@ -4269,7 +4608,9 @@ hs_bindgen_376c36f4c99e1f9a
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_376c36f4c99e1f9a =
-  BG.fromFFIType hs_bindgen_376c36f4c99e1f9a_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_376c36f4c99e1f9a_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Configures the maximum allowed number of frames in flight.
 --
@@ -4304,7 +4645,7 @@ foreign import ccall unsafe "hs_bindgen_4dd16ea5d2d75e5c"
   hs_bindgen_4dd16ea5d2d75e5c_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GetGPUSwapchainTextureFormat@
 hs_bindgen_4dd16ea5d2d75e5c
@@ -4312,7 +4653,9 @@ hs_bindgen_4dd16ea5d2d75e5c
   -> BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window
   -> IO SDL_GPUTextureFormat
 hs_bindgen_4dd16ea5d2d75e5c =
-  BG.fromFFIType hs_bindgen_4dd16ea5d2d75e5c_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4dd16ea5d2d75e5c_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Obtains the texture format of the swapchain for the given window.
 --
@@ -4344,7 +4687,7 @@ foreign import ccall unsafe "hs_bindgen_458d79c8728f00ab"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_AcquireGPUSwapchainTexture@
 hs_bindgen_458d79c8728f00ab
@@ -4355,7 +4698,20 @@ hs_bindgen_458d79c8728f00ab
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_458d79c8728f00ab =
-  BG.fromFFIType hs_bindgen_458d79c8728f00ab_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_458d79c8728f00ab_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Acquire a texture to use in presentation.
 --
@@ -4406,7 +4762,7 @@ foreign import ccall unsafe "hs_bindgen_fb018ba3fc209740"
   hs_bindgen_fb018ba3fc209740_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_WaitForGPUSwapchain@
 hs_bindgen_fb018ba3fc209740
@@ -4414,7 +4770,9 @@ hs_bindgen_fb018ba3fc209740
   -> BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window
   -> IO BG.CBool
 hs_bindgen_fb018ba3fc209740 =
-  BG.fromFFIType hs_bindgen_fb018ba3fc209740_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_fb018ba3fc209740_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Blocks the thread until a swapchain texture is available to be acquired.
 --
@@ -4447,7 +4805,7 @@ foreign import ccall unsafe "hs_bindgen_a454f9124adeea81"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_WaitAndAcquireGPUSwapchainTexture@
 hs_bindgen_a454f9124adeea81
@@ -4458,7 +4816,20 @@ hs_bindgen_a454f9124adeea81
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_a454f9124adeea81 =
-  BG.fromFFIType hs_bindgen_a454f9124adeea81_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_a454f9124adeea81_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Blocks the thread until a swapchain texture is available to be acquired, and then acquires it.
 --
@@ -4508,14 +4879,15 @@ sDL_WaitAndAcquireGPUSwapchainTexture =
 foreign import ccall unsafe "hs_bindgen_82bac871c3cbe3e4"
   hs_bindgen_82bac871c3cbe3e4_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_SubmitGPUCommandBuffer@
 hs_bindgen_82bac871c3cbe3e4
   :: BG.Ptr SDL_GPUCommandBuffer
   -> IO BG.CBool
 hs_bindgen_82bac871c3cbe3e4 =
-  BG.fromFFIType hs_bindgen_82bac871c3cbe3e4_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_82bac871c3cbe3e4_base (BG.toFFIType x0))
 
 -- | Submits a command buffer so its commands can be processed on the GPU.
 --
@@ -4552,7 +4924,8 @@ hs_bindgen_34bbe24268d3620c
   :: BG.Ptr SDL_GPUCommandBuffer
   -> IO (BG.Ptr SDL_GPUFence)
 hs_bindgen_34bbe24268d3620c =
-  BG.fromFFIType hs_bindgen_34bbe24268d3620c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_34bbe24268d3620c_base (BG.toFFIType x0))
 
 -- | Submits a command buffer so its commands can be processed on the GPU, and acquires a fence associated with the command buffer.
 --
@@ -4582,14 +4955,15 @@ sDL_SubmitGPUCommandBufferAndAcquireFence =
 foreign import ccall unsafe "hs_bindgen_34c4d8861fe9ae5b"
   hs_bindgen_34c4d8861fe9ae5b_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_CancelGPUCommandBuffer@
 hs_bindgen_34c4d8861fe9ae5b
   :: BG.Ptr SDL_GPUCommandBuffer
   -> IO BG.CBool
 hs_bindgen_34c4d8861fe9ae5b =
-  BG.fromFFIType hs_bindgen_34c4d8861fe9ae5b_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_34c4d8861fe9ae5b_base (BG.toFFIType x0))
 
 -- | Cancels a command buffer.
 --
@@ -4621,14 +4995,15 @@ sDL_CancelGPUCommandBuffer =
 foreign import ccall unsafe "hs_bindgen_2cf574d324b28e44"
   hs_bindgen_2cf574d324b28e44_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_WaitForGPUIdle@
 hs_bindgen_2cf574d324b28e44
   :: BG.Ptr SDL_GPUDevice
   -> IO BG.CBool
 hs_bindgen_2cf574d324b28e44 =
-  BG.fromFFIType hs_bindgen_2cf574d324b28e44_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_2cf574d324b28e44_base (BG.toFFIType x0))
 
 -- | Blocks the thread until the GPU is completely idle.
 --
@@ -4651,10 +5026,10 @@ sDL_WaitForGPUIdle = hs_bindgen_2cf574d324b28e44
 foreign import ccall unsafe "hs_bindgen_90c7f8f4aae22e6a"
   hs_bindgen_90c7f8f4aae22e6a_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_WaitForGPUFences@
 hs_bindgen_90c7f8f4aae22e6a
@@ -4664,7 +5039,18 @@ hs_bindgen_90c7f8f4aae22e6a
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_90c7f8f4aae22e6a =
-  BG.fromFFIType hs_bindgen_90c7f8f4aae22e6a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_90c7f8f4aae22e6a_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Blocks the thread until the given fences are signaled.
 --
@@ -4700,7 +5086,7 @@ foreign import ccall unsafe "hs_bindgen_09f80c8e0b395d04"
   hs_bindgen_09f80c8e0b395d04_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_QueryGPUFence@
 hs_bindgen_09f80c8e0b395d04
@@ -4708,7 +5094,9 @@ hs_bindgen_09f80c8e0b395d04
   -> BG.Ptr SDL_GPUFence
   -> IO BG.CBool
 hs_bindgen_09f80c8e0b395d04 =
-  BG.fromFFIType hs_bindgen_09f80c8e0b395d04_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_09f80c8e0b395d04_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Checks the status of a fence.
 --
@@ -4744,7 +5132,9 @@ hs_bindgen_97087dbb893b61af
   -> BG.Ptr SDL_GPUFence
   -> IO ()
 hs_bindgen_97087dbb893b61af =
-  BG.fromFFIType hs_bindgen_97087dbb893b61af_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_97087dbb893b61af_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Releases a fence obtained from SDL_SubmitGPUCommandBufferAndAcquireFence.
 --
@@ -4770,15 +5160,16 @@ sDL_ReleaseGPUFence = hs_bindgen_97087dbb893b61af
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GPUTextureFormatTexelBlockSize@
 foreign import ccall unsafe "hs_bindgen_121bf00d55a1a113"
   hs_bindgen_121bf00d55a1a113_base
-    :: BG.Word32
-    -> IO BG.Word32
+    :: BG.CUInt
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GPUTextureFormatTexelBlockSize@
 hs_bindgen_121bf00d55a1a113
   :: SDL_GPUTextureFormat
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint32
 hs_bindgen_121bf00d55a1a113 =
-  BG.fromFFIType hs_bindgen_121bf00d55a1a113_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_121bf00d55a1a113_base (BG.toFFIType x0))
 
 -- | Obtains the texel block size for a texture format.
 --
@@ -4802,10 +5193,10 @@ sDL_GPUTextureFormatTexelBlockSize =
 foreign import ccall unsafe "hs_bindgen_0c3c275a5e945ebd"
   hs_bindgen_0c3c275a5e945ebd_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
-    -> IO BG.Word8
+    -> BG.CUInt
+    -> BG.CUInt
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GPUTextureSupportsFormat@
 hs_bindgen_0c3c275a5e945ebd
@@ -4815,7 +5206,18 @@ hs_bindgen_0c3c275a5e945ebd
   -> SDL_GPUTextureUsageFlags
   -> IO BG.CBool
 hs_bindgen_0c3c275a5e945ebd =
-  BG.fromFFIType hs_bindgen_0c3c275a5e945ebd_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_0c3c275a5e945ebd_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Determines whether a texture format is supported for a given type and usage.
 --
@@ -4849,9 +5251,9 @@ sDL_GPUTextureSupportsFormat =
 foreign import ccall unsafe "hs_bindgen_0870889673874577"
   hs_bindgen_0870889673874577_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word32
-    -> IO BG.Word8
+    -> BG.CUInt
+    -> BG.CUInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GPUTextureSupportsSampleCount@
 hs_bindgen_0870889673874577
@@ -4860,7 +5262,12 @@ hs_bindgen_0870889673874577
   -> SDL_GPUSampleCount
   -> IO BG.CBool
 hs_bindgen_0870889673874577 =
-  BG.fromFFIType hs_bindgen_0870889673874577_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_0870889673874577_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Determines if a sample count for a texture format is supported.
 --
@@ -4889,11 +5296,11 @@ sDL_GPUTextureSupportsSampleCount =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_CalculateGPUTextureFormatSize@
 foreign import ccall unsafe "hs_bindgen_222b65bb58cce08e"
   hs_bindgen_222b65bb58cce08e_base
-    :: BG.Word32
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
-    -> IO BG.Word32
+    :: BG.CUInt
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_CalculateGPUTextureFormatSize@
 hs_bindgen_222b65bb58cce08e
@@ -4903,7 +5310,18 @@ hs_bindgen_222b65bb58cce08e
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint32
 hs_bindgen_222b65bb58cce08e =
-  BG.fromFFIType hs_bindgen_222b65bb58cce08e_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_222b65bb58cce08e_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Calculate the size in bytes of a texture format with dimensions.
 --
@@ -4936,15 +5354,16 @@ sDL_CalculateGPUTextureFormatSize =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GetPixelFormatFromGPUTextureFormat@
 foreign import ccall unsafe "hs_bindgen_3a8763f112daa871"
   hs_bindgen_3a8763f112daa871_base
-    :: BG.Word32
-    -> IO BG.Word32
+    :: BG.CUInt
+    -> IO HsBindgen.Runtime.Support.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GetPixelFormatFromGPUTextureFormat@
 hs_bindgen_3a8763f112daa871
   :: SDL_GPUTextureFormat
   -> IO SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
 hs_bindgen_3a8763f112daa871 =
-  BG.fromFFIType hs_bindgen_3a8763f112daa871_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3a8763f112daa871_base (BG.toFFIType x0))
 
 -- | Get the SDL pixel format corresponding to a GPU texture format.
 --
@@ -4965,15 +5384,16 @@ sDL_GetPixelFormatFromGPUTextureFormat =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GetGPUTextureFormatFromPixelFormat@
 foreign import ccall unsafe "hs_bindgen_77c5ed2882b80ff3"
   hs_bindgen_77c5ed2882b80ff3_base
-    :: BG.Word32
-    -> IO BG.Word32
+    :: HsBindgen.Runtime.Support.CUInt
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_Unsafe_SDL_GetGPUTextureFormatFromPixelFormat@
 hs_bindgen_77c5ed2882b80ff3
   :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
   -> IO SDL_GPUTextureFormat
 hs_bindgen_77c5ed2882b80ff3 =
-  BG.fromFFIType hs_bindgen_77c5ed2882b80ff3_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_77c5ed2882b80ff3_base (BG.toFFIType x0))
 
 -- | Get the GPU texture format corresponding to an SDL pixel format.
 --

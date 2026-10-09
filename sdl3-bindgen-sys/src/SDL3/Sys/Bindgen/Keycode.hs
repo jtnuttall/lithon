@@ -14,6 +14,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Defines constants which identify keyboard keys and modifiers.
 --
@@ -314,6 +315,8 @@ module SDL3.Sys.Bindgen.Keycode (
   SDL3.Sys.Bindgen.Keycode.sDL_KMOD_GUI,
 )
 where
+
+import Prelude (Bounded, Enum, Eq, Integral, Num, Ord, Read, Real, Show, type (~))
 
 import C.Expr.HostPlatform qualified
 import HsBindgen.Runtime.HasCField qualified as HasCField

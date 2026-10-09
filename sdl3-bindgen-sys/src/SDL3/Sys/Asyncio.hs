@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL offers a way to perform I\/O asynchronously. This allows an app to read or write files without waiting for data to actually transfer; the functions that request I\/O never block while the request is fulfilled.
 --
 --     Instead, the data moves in the background and the app can check for results at their leisure.
@@ -77,6 +79,7 @@ module SDL3.Sys.Asyncio (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.PtrConst qualified as PtrConst

@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Mutex.Safe (
@@ -34,6 +36,9 @@ module SDL3.Sys.Bindgen.Mutex.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Mutex
@@ -41,7 +46,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_mutex.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_mutex.h>"
          , "SDL_Mutex *hs_bindgen_8e29ae5aabbda111 (void)"
          , "{"
          , "  return (SDL_CreateMutex)();"
@@ -221,7 +227,7 @@ foreign import ccall safe "hs_bindgen_8e29ae5aabbda111"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_CreateMutex@
 hs_bindgen_8e29ae5aabbda111 :: IO (BG.Ptr SDL_Mutex)
 hs_bindgen_8e29ae5aabbda111 =
-  BG.fromFFIType hs_bindgen_8e29ae5aabbda111_base
+  fmap BG.fromFFIType hs_bindgen_8e29ae5aabbda111_base
 
 -- | Create a new mutex.
 --
@@ -254,7 +260,8 @@ hs_bindgen_ee717c25894777dd
   :: BG.Ptr SDL_Mutex
   -> IO ()
 hs_bindgen_ee717c25894777dd =
-  BG.fromFFIType hs_bindgen_ee717c25894777dd_base
+  \x0 ->
+    hs_bindgen_ee717c25894777dd_base (BG.toFFIType x0)
 
 -- | Lock the mutex.
 --
@@ -283,14 +290,15 @@ sDL_LockMutex = hs_bindgen_ee717c25894777dd
 foreign import ccall safe "hs_bindgen_08c66a65371e794c"
   hs_bindgen_08c66a65371e794c_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_TryLockMutex@
 hs_bindgen_08c66a65371e794c
   :: BG.Ptr SDL_Mutex
   -> IO BG.CBool
 hs_bindgen_08c66a65371e794c =
-  BG.fromFFIType hs_bindgen_08c66a65371e794c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_08c66a65371e794c_base (BG.toFFIType x0))
 
 -- | Try to lock a mutex without blocking.
 --
@@ -328,7 +336,8 @@ hs_bindgen_0080eb2473efd4c0
   :: BG.Ptr SDL_Mutex
   -> IO ()
 hs_bindgen_0080eb2473efd4c0 =
-  BG.fromFFIType hs_bindgen_0080eb2473efd4c0_base
+  \x0 ->
+    hs_bindgen_0080eb2473efd4c0_base (BG.toFFIType x0)
 
 -- | Unlock the mutex.
 --
@@ -362,7 +371,8 @@ hs_bindgen_0848f2dbc2ab9299
   :: BG.Ptr SDL_Mutex
   -> IO ()
 hs_bindgen_0848f2dbc2ab9299 =
-  BG.fromFFIType hs_bindgen_0848f2dbc2ab9299_base
+  \x0 ->
+    hs_bindgen_0848f2dbc2ab9299_base (BG.toFFIType x0)
 
 -- | Destroy a mutex created with @SDL_CreateMutex()@.
 --
@@ -391,7 +401,7 @@ foreign import ccall safe "hs_bindgen_305069c9512cb61a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_CreateRWLock@
 hs_bindgen_305069c9512cb61a :: IO (BG.Ptr SDL_RWLock)
 hs_bindgen_305069c9512cb61a =
-  BG.fromFFIType hs_bindgen_305069c9512cb61a_base
+  fmap BG.fromFFIType hs_bindgen_305069c9512cb61a_base
 
 -- | Create a new read\/write lock.
 --
@@ -428,7 +438,8 @@ hs_bindgen_88156cb9c069d7ae
   :: BG.Ptr SDL_RWLock
   -> IO ()
 hs_bindgen_88156cb9c069d7ae =
-  BG.fromFFIType hs_bindgen_88156cb9c069d7ae_base
+  \x0 ->
+    hs_bindgen_88156cb9c069d7ae_base (BG.toFFIType x0)
 
 -- | Lock the read\/write lock for /read only/ operations.
 --
@@ -469,7 +480,8 @@ hs_bindgen_65b1a554927b8f99
   :: BG.Ptr SDL_RWLock
   -> IO ()
 hs_bindgen_65b1a554927b8f99 =
-  BG.fromFFIType hs_bindgen_65b1a554927b8f99_base
+  \x0 ->
+    hs_bindgen_65b1a554927b8f99_base (BG.toFFIType x0)
 
 -- | Lock the read\/write lock for /write/ operations.
 --
@@ -501,14 +513,15 @@ sDL_LockRWLockForWriting =
 foreign import ccall safe "hs_bindgen_287956a25f4fabba"
   hs_bindgen_287956a25f4fabba_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_TryLockRWLockForReading@
 hs_bindgen_287956a25f4fabba
   :: BG.Ptr SDL_RWLock
   -> IO BG.CBool
 hs_bindgen_287956a25f4fabba =
-  BG.fromFFIType hs_bindgen_287956a25f4fabba_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_287956a25f4fabba_base (BG.toFFIType x0))
 
 -- | Try to lock a read\/write lock /for reading/ without blocking.
 --
@@ -542,14 +555,15 @@ sDL_TryLockRWLockForReading =
 foreign import ccall safe "hs_bindgen_99a3ed9a28ed75f7"
   hs_bindgen_99a3ed9a28ed75f7_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_TryLockRWLockForWriting@
 hs_bindgen_99a3ed9a28ed75f7
   :: BG.Ptr SDL_RWLock
   -> IO BG.CBool
 hs_bindgen_99a3ed9a28ed75f7 =
-  BG.fromFFIType hs_bindgen_99a3ed9a28ed75f7_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_99a3ed9a28ed75f7_base (BG.toFFIType x0))
 
 -- | Try to lock a read\/write lock /for writing/ without blocking.
 --
@@ -592,7 +606,8 @@ hs_bindgen_c9284c30c938f332
   :: BG.Ptr SDL_RWLock
   -> IO ()
 hs_bindgen_c9284c30c938f332 =
-  BG.fromFFIType hs_bindgen_c9284c30c938f332_base
+  \x0 ->
+    hs_bindgen_c9284c30c938f332_base (BG.toFFIType x0)
 
 -- | Unlock the read\/write lock.
 --
@@ -628,7 +643,8 @@ hs_bindgen_743dbdcc7c185970
   :: BG.Ptr SDL_RWLock
   -> IO ()
 hs_bindgen_743dbdcc7c185970 =
-  BG.fromFFIType hs_bindgen_743dbdcc7c185970_base
+  \x0 ->
+    hs_bindgen_743dbdcc7c185970_base (BG.toFFIType x0)
 
 -- | Destroy a read\/write lock created with @SDL_CreateRWLock()@.
 --
@@ -652,7 +668,7 @@ sDL_DestroyRWLock = hs_bindgen_743dbdcc7c185970
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_CreateSemaphore@
 foreign import ccall safe "hs_bindgen_d1200eed8ae4acf8"
   hs_bindgen_d1200eed8ae4acf8_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_CreateSemaphore@
@@ -660,7 +676,8 @@ hs_bindgen_d1200eed8ae4acf8
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO (BG.Ptr SDL_Semaphore)
 hs_bindgen_d1200eed8ae4acf8 =
-  BG.fromFFIType hs_bindgen_d1200eed8ae4acf8_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_d1200eed8ae4acf8_base (BG.toFFIType x0))
 
 -- | Create a semaphore.
 --
@@ -694,7 +711,8 @@ hs_bindgen_d167c0d86f5bfae4
   :: BG.Ptr SDL_Semaphore
   -> IO ()
 hs_bindgen_d167c0d86f5bfae4 =
-  BG.fromFFIType hs_bindgen_d167c0d86f5bfae4_base
+  \x0 ->
+    hs_bindgen_d167c0d86f5bfae4_base (BG.toFFIType x0)
 
 -- | Destroy a semaphore.
 --
@@ -726,7 +744,8 @@ hs_bindgen_0c536dc844c53556
   :: BG.Ptr SDL_Semaphore
   -> IO ()
 hs_bindgen_0c536dc844c53556 =
-  BG.fromFFIType hs_bindgen_0c536dc844c53556_base
+  \x0 ->
+    hs_bindgen_0c536dc844c53556_base (BG.toFFIType x0)
 
 -- | Wait until a semaphore has a positive value and then decrements it.
 --
@@ -753,14 +772,15 @@ sDL_WaitSemaphore = hs_bindgen_0c536dc844c53556
 foreign import ccall safe "hs_bindgen_8460788ee6bb642a"
   hs_bindgen_8460788ee6bb642a_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_TryWaitSemaphore@
 hs_bindgen_8460788ee6bb642a
   :: BG.Ptr SDL_Semaphore
   -> IO BG.CBool
 hs_bindgen_8460788ee6bb642a =
-  BG.fromFFIType hs_bindgen_8460788ee6bb642a_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_8460788ee6bb642a_base (BG.toFFIType x0))
 
 -- | See if a semaphore has a positive value and decrement it if it does.
 --
@@ -787,8 +807,8 @@ sDL_TryWaitSemaphore = hs_bindgen_8460788ee6bb642a
 foreign import ccall safe "hs_bindgen_73158966e18c69df"
   hs_bindgen_73158966e18c69df_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Int32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_WaitSemaphoreTimeout@
 hs_bindgen_73158966e18c69df
@@ -796,7 +816,9 @@ hs_bindgen_73158966e18c69df
   -> SDL3.Sys.Bindgen.Stdinc.Sint32
   -> IO BG.CBool
 hs_bindgen_73158966e18c69df =
-  BG.fromFFIType hs_bindgen_73158966e18c69df_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_73158966e18c69df_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Wait until a semaphore has a positive value and then decrements it.
 --
@@ -835,7 +857,8 @@ hs_bindgen_ad3ea5b998b9b02a
   :: BG.Ptr SDL_Semaphore
   -> IO ()
 hs_bindgen_ad3ea5b998b9b02a =
-  BG.fromFFIType hs_bindgen_ad3ea5b998b9b02a_base
+  \x0 ->
+    hs_bindgen_ad3ea5b998b9b02a_base (BG.toFFIType x0)
 
 -- | Atomically increment a semaphore\'s value and wake waiting threads.
 --
@@ -858,14 +881,15 @@ sDL_SignalSemaphore = hs_bindgen_ad3ea5b998b9b02a
 foreign import ccall safe "hs_bindgen_d7d8abceae459dc4"
   hs_bindgen_d7d8abceae459dc4_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_GetSemaphoreValue@
 hs_bindgen_d7d8abceae459dc4
   :: BG.Ptr SDL_Semaphore
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint32
 hs_bindgen_d7d8abceae459dc4 =
-  BG.fromFFIType hs_bindgen_d7d8abceae459dc4_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_d7d8abceae459dc4_base (BG.toFFIType x0))
 
 -- | Get the current value of a semaphore.
 --
@@ -892,7 +916,7 @@ foreign import ccall safe "hs_bindgen_f051c9d83065c51e"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_CreateCondition@
 hs_bindgen_f051c9d83065c51e :: IO (BG.Ptr SDL_Condition)
 hs_bindgen_f051c9d83065c51e =
-  BG.fromFFIType hs_bindgen_f051c9d83065c51e_base
+  fmap BG.fromFFIType hs_bindgen_f051c9d83065c51e_base
 
 -- | Create a condition variable.
 --
@@ -919,7 +943,8 @@ hs_bindgen_284001adc7a8e944
   :: BG.Ptr SDL_Condition
   -> IO ()
 hs_bindgen_284001adc7a8e944 =
-  BG.fromFFIType hs_bindgen_284001adc7a8e944_base
+  \x0 ->
+    hs_bindgen_284001adc7a8e944_base (BG.toFFIType x0)
 
 -- | Destroy a condition variable.
 --
@@ -949,7 +974,8 @@ hs_bindgen_8e6408554c791aa2
   :: BG.Ptr SDL_Condition
   -> IO ()
 hs_bindgen_8e6408554c791aa2 =
-  BG.fromFFIType hs_bindgen_8e6408554c791aa2_base
+  \x0 ->
+    hs_bindgen_8e6408554c791aa2_base (BG.toFFIType x0)
 
 -- | Restart one of the threads that are waiting on the condition variable.
 --
@@ -979,7 +1005,8 @@ hs_bindgen_1377f08bc73a7c85
   :: BG.Ptr SDL_Condition
   -> IO ()
 hs_bindgen_1377f08bc73a7c85 =
-  BG.fromFFIType hs_bindgen_1377f08bc73a7c85_base
+  \x0 ->
+    hs_bindgen_1377f08bc73a7c85_base (BG.toFFIType x0)
 
 -- | Restart all threads that are waiting on the condition variable.
 --
@@ -1011,7 +1038,9 @@ hs_bindgen_2c9c00769b6253d6
   -> BG.Ptr SDL_Mutex
   -> IO ()
 hs_bindgen_2c9c00769b6253d6 =
-  BG.fromFFIType hs_bindgen_2c9c00769b6253d6_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_2c9c00769b6253d6_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Wait until a condition variable is signaled.
 --
@@ -1045,8 +1074,8 @@ foreign import ccall safe "hs_bindgen_158c5dc74b7f6a6d"
   hs_bindgen_158c5dc74b7f6a6d_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Int32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_WaitConditionTimeout@
 hs_bindgen_158c5dc74b7f6a6d
@@ -1055,7 +1084,12 @@ hs_bindgen_158c5dc74b7f6a6d
   -> SDL3.Sys.Bindgen.Stdinc.Sint32
   -> IO BG.CBool
 hs_bindgen_158c5dc74b7f6a6d =
-  BG.fromFFIType hs_bindgen_158c5dc74b7f6a6d_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_158c5dc74b7f6a6d_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Wait until a condition variable is signaled or a certain time has passed.
 --
@@ -1093,14 +1127,15 @@ sDL_WaitConditionTimeout =
 foreign import ccall safe "hs_bindgen_c32bbe3119c28451"
   hs_bindgen_c32bbe3119c28451_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_ShouldInit@
 hs_bindgen_c32bbe3119c28451
   :: BG.Ptr SDL_InitState
   -> IO BG.CBool
 hs_bindgen_c32bbe3119c28451 =
-  BG.fromFFIType hs_bindgen_c32bbe3119c28451_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c32bbe3119c28451_base (BG.toFFIType x0))
 
 -- | Return whether initialization should be done.
 --
@@ -1129,14 +1164,15 @@ sDL_ShouldInit = hs_bindgen_c32bbe3119c28451
 foreign import ccall safe "hs_bindgen_edbe1140979f28da"
   hs_bindgen_edbe1140979f28da_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_ShouldQuit@
 hs_bindgen_edbe1140979f28da
   :: BG.Ptr SDL_InitState
   -> IO BG.CBool
 hs_bindgen_edbe1140979f28da =
-  BG.fromFFIType hs_bindgen_edbe1140979f28da_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_edbe1140979f28da_base (BG.toFFIType x0))
 
 -- | Return whether cleanup should be done.
 --
@@ -1165,7 +1201,7 @@ sDL_ShouldQuit = hs_bindgen_edbe1140979f28da
 foreign import ccall safe "hs_bindgen_5708550ac643317a"
   hs_bindgen_5708550ac643317a_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mutex_Safe_SDL_SetInitialized@
@@ -1174,7 +1210,9 @@ hs_bindgen_5708550ac643317a
   -> BG.CBool
   -> IO ()
 hs_bindgen_5708550ac643317a =
-  BG.fromFFIType hs_bindgen_5708550ac643317a_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_5708550ac643317a_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Finish an initialization state transition.
 --

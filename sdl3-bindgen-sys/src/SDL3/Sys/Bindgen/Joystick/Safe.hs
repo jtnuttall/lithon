@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Joystick.Safe (
@@ -64,7 +66,11 @@ module SDL3.Sys.Bindgen.Joystick.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Support qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Guid qualified
@@ -76,7 +82,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_joystick.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_joystick.h>"
          , "void hs_bindgen_19b2fb0e1aa23b4e (void)"
          , "{"
          , "  (SDL_LockJoysticks)();"
@@ -473,7 +480,7 @@ foreign import ccall safe "hs_bindgen_19b2fb0e1aa23b4e"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_LockJoysticks@
 hs_bindgen_19b2fb0e1aa23b4e :: IO ()
 hs_bindgen_19b2fb0e1aa23b4e =
-  BG.fromFFIType hs_bindgen_19b2fb0e1aa23b4e_base
+  hs_bindgen_19b2fb0e1aa23b4e_base
 
 -- | Locking for atomic access to the joystick API.
 --
@@ -495,7 +502,7 @@ foreign import ccall safe "hs_bindgen_1e385ec73db339ad"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_UnlockJoysticks@
 hs_bindgen_1e385ec73db339ad :: IO ()
 hs_bindgen_1e385ec73db339ad =
-  BG.fromFFIType hs_bindgen_1e385ec73db339ad_base
+  hs_bindgen_1e385ec73db339ad_base
 
 -- | Unlocking for atomic access to the joystick API.
 --
@@ -510,12 +517,12 @@ sDL_UnlockJoysticks = hs_bindgen_1e385ec73db339ad
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_HasJoystick@
 foreign import ccall safe "hs_bindgen_35e62bce1113cd99"
   hs_bindgen_35e62bce1113cd99_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_HasJoystick@
 hs_bindgen_35e62bce1113cd99 :: IO BG.CBool
 hs_bindgen_35e62bce1113cd99 =
-  BG.fromFFIType hs_bindgen_35e62bce1113cd99_base
+  fmap BG.fromFFIType hs_bindgen_35e62bce1113cd99_base
 
 -- | Return whether a joystick is currently connected.
 --
@@ -542,7 +549,8 @@ hs_bindgen_a648e48d15a7195e
   :: BG.Ptr BG.CInt
   -> IO (BG.Ptr SDL_JoystickID)
 hs_bindgen_a648e48d15a7195e =
-  BG.fromFFIType hs_bindgen_a648e48d15a7195e_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a648e48d15a7195e_base (BG.toFFIType x0))
 
 -- | Get a list of currently connected joysticks.
 --
@@ -566,7 +574,7 @@ sDL_GetJoysticks = hs_bindgen_a648e48d15a7195e
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickNameForID@
 foreign import ccall safe "hs_bindgen_25173d20a8c29264"
   hs_bindgen_25173d20a8c29264_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickNameForID@
@@ -574,7 +582,8 @@ hs_bindgen_25173d20a8c29264
   :: SDL_JoystickID
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_25173d20a8c29264 =
-  BG.fromFFIType hs_bindgen_25173d20a8c29264_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_25173d20a8c29264_base (BG.toFFIType x0))
 
 -- | Get the implementation dependent name of a joystick.
 --
@@ -601,7 +610,7 @@ sDL_GetJoystickNameForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickPathForID@
 foreign import ccall safe "hs_bindgen_bdd23d794dc05a80"
   hs_bindgen_bdd23d794dc05a80_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickPathForID@
@@ -609,7 +618,8 @@ hs_bindgen_bdd23d794dc05a80
   :: SDL_JoystickID
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_bdd23d794dc05a80 =
-  BG.fromFFIType hs_bindgen_bdd23d794dc05a80_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_bdd23d794dc05a80_base (BG.toFFIType x0))
 
 -- | Get the implementation dependent path of a joystick.
 --
@@ -636,15 +646,16 @@ sDL_GetJoystickPathForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickPlayerIndexForID@
 foreign import ccall safe "hs_bindgen_79f42832d2cd073a"
   hs_bindgen_79f42832d2cd073a_base
-    :: BG.Word32
-    -> IO BG.Int32
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickPlayerIndexForID@
 hs_bindgen_79f42832d2cd073a
   :: SDL_JoystickID
   -> IO BG.CInt
 hs_bindgen_79f42832d2cd073a =
-  BG.fromFFIType hs_bindgen_79f42832d2cd073a_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_79f42832d2cd073a_base (BG.toFFIType x0))
 
 -- | Get the player index of a joystick.
 --
@@ -671,7 +682,7 @@ sDL_GetJoystickPlayerIndexForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickGUIDForID@
 foreign import ccall safe "hs_bindgen_f9a989144ab124be"
   hs_bindgen_f9a989144ab124be_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> IO ()
 
@@ -681,7 +692,9 @@ hs_bindgen_f9a989144ab124be
   -> BG.Ptr SDL3.Sys.Bindgen.Guid.SDL_GUID
   -> IO ()
 hs_bindgen_f9a989144ab124be =
-  BG.fromFFIType hs_bindgen_f9a989144ab124be_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_f9a989144ab124be_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Get the implementation-dependent GUID of a joystick.
 --
@@ -712,15 +725,16 @@ sDL_GetJoystickGUIDForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickVendorForID@
 foreign import ccall safe "hs_bindgen_eadbde2ef191eb5b"
   hs_bindgen_eadbde2ef191eb5b_base
-    :: BG.Word32
-    -> IO BG.Word16
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickVendorForID@
 hs_bindgen_eadbde2ef191eb5b
   :: SDL_JoystickID
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint16
 hs_bindgen_eadbde2ef191eb5b =
-  BG.fromFFIType hs_bindgen_eadbde2ef191eb5b_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_eadbde2ef191eb5b_base (BG.toFFIType x0))
 
 -- | Get the USB vendor ID of a joystick, if available.
 --
@@ -747,15 +761,16 @@ sDL_GetJoystickVendorForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickProductForID@
 foreign import ccall safe "hs_bindgen_bb593396127cd149"
   hs_bindgen_bb593396127cd149_base
-    :: BG.Word32
-    -> IO BG.Word16
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickProductForID@
 hs_bindgen_bb593396127cd149
   :: SDL_JoystickID
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint16
 hs_bindgen_bb593396127cd149 =
-  BG.fromFFIType hs_bindgen_bb593396127cd149_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_bb593396127cd149_base (BG.toFFIType x0))
 
 -- | Get the USB product ID of a joystick, if available.
 --
@@ -782,15 +797,16 @@ sDL_GetJoystickProductForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickProductVersionForID@
 foreign import ccall safe "hs_bindgen_44e1a599dadd0805"
   hs_bindgen_44e1a599dadd0805_base
-    :: BG.Word32
-    -> IO BG.Word16
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickProductVersionForID@
 hs_bindgen_44e1a599dadd0805
   :: SDL_JoystickID
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint16
 hs_bindgen_44e1a599dadd0805 =
-  BG.fromFFIType hs_bindgen_44e1a599dadd0805_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_44e1a599dadd0805_base (BG.toFFIType x0))
 
 -- | Get the product version of a joystick, if available.
 --
@@ -817,15 +833,16 @@ sDL_GetJoystickProductVersionForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickTypeForID@
 foreign import ccall safe "hs_bindgen_336781da50ffa73f"
   hs_bindgen_336781da50ffa73f_base
-    :: BG.Word32
-    -> IO BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickTypeForID@
 hs_bindgen_336781da50ffa73f
   :: SDL_JoystickID
   -> IO SDL_JoystickType
 hs_bindgen_336781da50ffa73f =
-  BG.fromFFIType hs_bindgen_336781da50ffa73f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_336781da50ffa73f_base (BG.toFFIType x0))
 
 -- | Get the type of a joystick, if available.
 --
@@ -852,7 +869,7 @@ sDL_GetJoystickTypeForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_OpenJoystick@
 foreign import ccall safe "hs_bindgen_a95f6ee451f3128f"
   hs_bindgen_a95f6ee451f3128f_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_OpenJoystick@
@@ -860,7 +877,8 @@ hs_bindgen_a95f6ee451f3128f
   :: SDL_JoystickID
   -> IO (BG.Ptr SDL_Joystick)
 hs_bindgen_a95f6ee451f3128f =
-  BG.fromFFIType hs_bindgen_a95f6ee451f3128f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a95f6ee451f3128f_base (BG.toFFIType x0))
 
 -- | Open a joystick for use.
 --
@@ -886,7 +904,7 @@ sDL_OpenJoystick = hs_bindgen_a95f6ee451f3128f
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickFromID@
 foreign import ccall safe "hs_bindgen_8b8e060d989b32c5"
   hs_bindgen_8b8e060d989b32c5_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickFromID@
@@ -894,7 +912,8 @@ hs_bindgen_8b8e060d989b32c5
   :: SDL_JoystickID
   -> IO (BG.Ptr SDL_Joystick)
 hs_bindgen_8b8e060d989b32c5 =
-  BG.fromFFIType hs_bindgen_8b8e060d989b32c5_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_8b8e060d989b32c5_base (BG.toFFIType x0))
 
 -- | Get the 'SDL_Joystick' associated with an instance ID, if it has been opened.
 --
@@ -916,7 +935,7 @@ sDL_GetJoystickFromID = hs_bindgen_8b8e060d989b32c5
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickFromPlayerIndex@
 foreign import ccall safe "hs_bindgen_435b2937a9d773b0"
   hs_bindgen_435b2937a9d773b0_base
-    :: BG.Int32
+    :: BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickFromPlayerIndex@
@@ -924,7 +943,8 @@ hs_bindgen_435b2937a9d773b0
   :: BG.CInt
   -> IO (BG.Ptr SDL_Joystick)
 hs_bindgen_435b2937a9d773b0 =
-  BG.fromFFIType hs_bindgen_435b2937a9d773b0_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_435b2937a9d773b0_base (BG.toFFIType x0))
 
 -- | Get the 'SDL_Joystick' associated with a player index.
 --
@@ -950,14 +970,15 @@ sDL_GetJoystickFromPlayerIndex =
 foreign import ccall safe "hs_bindgen_9b992b621bc9d228"
   hs_bindgen_9b992b621bc9d228_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_AttachVirtualJoystick@
 hs_bindgen_9b992b621bc9d228
   :: PtrConst.PtrConst SDL_VirtualJoystickDesc
   -> IO SDL_JoystickID
 hs_bindgen_9b992b621bc9d228 =
-  BG.fromFFIType hs_bindgen_9b992b621bc9d228_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9b992b621bc9d228_base (BG.toFFIType x0))
 
 -- | Attach a new virtual joystick.
 --
@@ -988,15 +1009,16 @@ sDL_AttachVirtualJoystick =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_DetachVirtualJoystick@
 foreign import ccall safe "hs_bindgen_95f96ae58c7060c5"
   hs_bindgen_95f96ae58c7060c5_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_DetachVirtualJoystick@
 hs_bindgen_95f96ae58c7060c5
   :: SDL_JoystickID
   -> IO BG.CBool
 hs_bindgen_95f96ae58c7060c5 =
-  BG.fromFFIType hs_bindgen_95f96ae58c7060c5_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_95f96ae58c7060c5_base (BG.toFFIType x0))
 
 -- | Detach a virtual joystick.
 --
@@ -1021,15 +1043,16 @@ sDL_DetachVirtualJoystick =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_IsJoystickVirtual@
 foreign import ccall safe "hs_bindgen_b4d6fc0d358b2610"
   hs_bindgen_b4d6fc0d358b2610_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_IsJoystickVirtual@
 hs_bindgen_b4d6fc0d358b2610
   :: SDL_JoystickID
   -> IO BG.CBool
 hs_bindgen_b4d6fc0d358b2610 =
-  BG.fromFFIType hs_bindgen_b4d6fc0d358b2610_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b4d6fc0d358b2610_base (BG.toFFIType x0))
 
 -- | Query whether or not a joystick is virtual.
 --
@@ -1052,9 +1075,9 @@ sDL_IsJoystickVirtual = hs_bindgen_b4d6fc0d358b2610
 foreign import ccall safe "hs_bindgen_950280d1c0af9b76"
   hs_bindgen_950280d1c0af9b76_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int16
-    -> IO BG.Word8
+    -> BG.CInt
+    -> HsBindgen.Runtime.LibC.Int16
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_SetJoystickVirtualAxis@
 hs_bindgen_950280d1c0af9b76
@@ -1063,7 +1086,12 @@ hs_bindgen_950280d1c0af9b76
   -> SDL3.Sys.Bindgen.Stdinc.Sint16
   -> IO BG.CBool
 hs_bindgen_950280d1c0af9b76 =
-  BG.fromFFIType hs_bindgen_950280d1c0af9b76_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_950280d1c0af9b76_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set the state of an axis on an opened virtual joystick.
 --
@@ -1101,10 +1129,10 @@ sDL_SetJoystickVirtualAxis =
 foreign import ccall safe "hs_bindgen_ebe45871302400bf"
   hs_bindgen_ebe45871302400bf_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int16
-    -> BG.Int16
-    -> IO BG.Word8
+    -> BG.CInt
+    -> HsBindgen.Runtime.LibC.Int16
+    -> HsBindgen.Runtime.LibC.Int16
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_SetJoystickVirtualBall@
 hs_bindgen_ebe45871302400bf
@@ -1114,7 +1142,18 @@ hs_bindgen_ebe45871302400bf
   -> SDL3.Sys.Bindgen.Stdinc.Sint16
   -> IO BG.CBool
 hs_bindgen_ebe45871302400bf =
-  BG.fromFFIType hs_bindgen_ebe45871302400bf_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_ebe45871302400bf_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Generate ball motion on an opened virtual joystick.
 --
@@ -1154,9 +1193,9 @@ sDL_SetJoystickVirtualBall =
 foreign import ccall safe "hs_bindgen_943b4ea8f02f7dfb"
   hs_bindgen_943b4ea8f02f7dfb_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_SetJoystickVirtualButton@
 hs_bindgen_943b4ea8f02f7dfb
@@ -1165,7 +1204,12 @@ hs_bindgen_943b4ea8f02f7dfb
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_943b4ea8f02f7dfb =
-  BG.fromFFIType hs_bindgen_943b4ea8f02f7dfb_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_943b4ea8f02f7dfb_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set the state of a button on an opened virtual joystick.
 --
@@ -1201,9 +1245,9 @@ sDL_SetJoystickVirtualButton =
 foreign import ccall safe "hs_bindgen_466a950a48c1bafe"
   hs_bindgen_466a950a48c1bafe_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CInt
+    -> HsBindgen.Runtime.LibC.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_SetJoystickVirtualHat@
 hs_bindgen_466a950a48c1bafe
@@ -1212,7 +1256,12 @@ hs_bindgen_466a950a48c1bafe
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_466a950a48c1bafe =
-  BG.fromFFIType hs_bindgen_466a950a48c1bafe_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_466a950a48c1bafe_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set the state of a hat on an opened virtual joystick.
 --
@@ -1248,13 +1297,13 @@ sDL_SetJoystickVirtualHat =
 foreign import ccall safe "hs_bindgen_520069e80ffda161"
   hs_bindgen_520069e80ffda161_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> BG.Word8
-    -> Float
-    -> Float
-    -> Float
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CInt
+    -> BG.CBool
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_SetJoystickVirtualTouchpad@
 hs_bindgen_520069e80ffda161
@@ -1267,7 +1316,24 @@ hs_bindgen_520069e80ffda161
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_520069e80ffda161 =
-  BG.fromFFIType hs_bindgen_520069e80ffda161_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                fmap
+                  BG.fromFFIType
+                  ( hs_bindgen_520069e80ffda161_base
+                      (BG.toFFIType x0)
+                      (BG.toFFIType x1)
+                      (BG.toFFIType x2)
+                      (BG.toFFIType x3)
+                      (BG.toFFIType x4)
+                      (BG.toFFIType x5)
+                      (BG.toFFIType x6)
+                  )
 
 -- | Set touchpad finger state on an opened virtual joystick.
 --
@@ -1319,11 +1385,11 @@ sDL_SetJoystickVirtualTouchpad =
 foreign import ccall safe "hs_bindgen_502da6838ce8a4f8"
   hs_bindgen_502da6838ce8a4f8_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Word64
+    -> HsBindgen.Runtime.Support.CInt
+    -> HsBindgen.Runtime.LibC.Word64
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_SendJoystickVirtualSensorData@
 hs_bindgen_502da6838ce8a4f8
@@ -1334,7 +1400,20 @@ hs_bindgen_502da6838ce8a4f8
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_502da6838ce8a4f8 =
-  BG.fromFFIType hs_bindgen_502da6838ce8a4f8_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_502da6838ce8a4f8_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Send a sensor update for an opened virtual joystick.
 --
@@ -1378,14 +1457,15 @@ sDL_SendJoystickVirtualSensorData =
 foreign import ccall safe "hs_bindgen_0e41310a58070b5c"
   hs_bindgen_0e41310a58070b5c_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickProperties@
 hs_bindgen_0e41310a58070b5c
   :: BG.Ptr SDL_Joystick
   -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
 hs_bindgen_0e41310a58070b5c =
-  BG.fromFFIType hs_bindgen_0e41310a58070b5c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_0e41310a58070b5c_base (BG.toFFIType x0))
 
 -- | Get the properties associated with a joystick.
 --
@@ -1428,7 +1508,8 @@ hs_bindgen_a9e087059d7ddd66
   :: BG.Ptr SDL_Joystick
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_a9e087059d7ddd66 =
-  BG.fromFFIType hs_bindgen_a9e087059d7ddd66_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a9e087059d7ddd66_base (BG.toFFIType x0))
 
 -- | Get the implementation dependent name of a joystick.
 --
@@ -1460,7 +1541,8 @@ hs_bindgen_33ba12816518ab07
   :: BG.Ptr SDL_Joystick
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_33ba12816518ab07 =
-  BG.fromFFIType hs_bindgen_33ba12816518ab07_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_33ba12816518ab07_base (BG.toFFIType x0))
 
 -- | Get the implementation dependent path of a joystick.
 --
@@ -1485,14 +1567,15 @@ sDL_GetJoystickPath = hs_bindgen_33ba12816518ab07
 foreign import ccall safe "hs_bindgen_3f3bef7e45cb79c2"
   hs_bindgen_3f3bef7e45cb79c2_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickPlayerIndex@
 hs_bindgen_3f3bef7e45cb79c2
   :: BG.Ptr SDL_Joystick
   -> IO BG.CInt
 hs_bindgen_3f3bef7e45cb79c2 =
-  BG.fromFFIType hs_bindgen_3f3bef7e45cb79c2_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3f3bef7e45cb79c2_base (BG.toFFIType x0))
 
 -- | Get the player index of an opened joystick.
 --
@@ -1520,8 +1603,8 @@ sDL_GetJoystickPlayerIndex =
 foreign import ccall safe "hs_bindgen_24bf75158e208f66"
   hs_bindgen_24bf75158e208f66_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_SetJoystickPlayerIndex@
 hs_bindgen_24bf75158e208f66
@@ -1529,7 +1612,9 @@ hs_bindgen_24bf75158e208f66
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_24bf75158e208f66 =
-  BG.fromFFIType hs_bindgen_24bf75158e208f66_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_24bf75158e208f66_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the player index of an opened joystick.
 --
@@ -1568,7 +1653,9 @@ hs_bindgen_9d48edfe80deea21
   -> BG.Ptr SDL3.Sys.Bindgen.Guid.SDL_GUID
   -> IO ()
 hs_bindgen_9d48edfe80deea21 =
-  BG.fromFFIType hs_bindgen_9d48edfe80deea21_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_9d48edfe80deea21_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Get the implementation-dependent GUID for the joystick.
 --
@@ -1600,14 +1687,15 @@ sDL_GetJoystickGUID =
 foreign import ccall safe "hs_bindgen_58e23abd1321767d"
   hs_bindgen_58e23abd1321767d_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word16
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickVendor@
 hs_bindgen_58e23abd1321767d
   :: BG.Ptr SDL_Joystick
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint16
 hs_bindgen_58e23abd1321767d =
-  BG.fromFFIType hs_bindgen_58e23abd1321767d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_58e23abd1321767d_base (BG.toFFIType x0))
 
 -- | Get the USB vendor ID of an opened joystick, if available.
 --
@@ -1634,14 +1722,15 @@ sDL_GetJoystickVendor = hs_bindgen_58e23abd1321767d
 foreign import ccall safe "hs_bindgen_a1a810fac491b03c"
   hs_bindgen_a1a810fac491b03c_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word16
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickProduct@
 hs_bindgen_a1a810fac491b03c
   :: BG.Ptr SDL_Joystick
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint16
 hs_bindgen_a1a810fac491b03c =
-  BG.fromFFIType hs_bindgen_a1a810fac491b03c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a1a810fac491b03c_base (BG.toFFIType x0))
 
 -- | Get the USB product ID of an opened joystick, if available.
 --
@@ -1668,14 +1757,15 @@ sDL_GetJoystickProduct = hs_bindgen_a1a810fac491b03c
 foreign import ccall safe "hs_bindgen_ffcb72c6f02c76c7"
   hs_bindgen_ffcb72c6f02c76c7_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word16
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickProductVersion@
 hs_bindgen_ffcb72c6f02c76c7
   :: BG.Ptr SDL_Joystick
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint16
 hs_bindgen_ffcb72c6f02c76c7 =
-  BG.fromFFIType hs_bindgen_ffcb72c6f02c76c7_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ffcb72c6f02c76c7_base (BG.toFFIType x0))
 
 -- | Get the product version of an opened joystick, if available.
 --
@@ -1703,14 +1793,15 @@ sDL_GetJoystickProductVersion =
 foreign import ccall safe "hs_bindgen_990e53211d186662"
   hs_bindgen_990e53211d186662_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word16
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickFirmwareVersion@
 hs_bindgen_990e53211d186662
   :: BG.Ptr SDL_Joystick
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint16
 hs_bindgen_990e53211d186662 =
-  BG.fromFFIType hs_bindgen_990e53211d186662_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_990e53211d186662_base (BG.toFFIType x0))
 
 -- | Get the firmware version of an opened joystick, if available.
 --
@@ -1743,7 +1834,8 @@ hs_bindgen_b1bfb007ec57169c
   :: BG.Ptr SDL_Joystick
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_b1bfb007ec57169c =
-  BG.fromFFIType hs_bindgen_b1bfb007ec57169c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b1bfb007ec57169c_base (BG.toFFIType x0))
 
 -- | Get the serial number of an opened joystick, if available.
 --
@@ -1768,14 +1860,15 @@ sDL_GetJoystickSerial = hs_bindgen_b1bfb007ec57169c
 foreign import ccall safe "hs_bindgen_4bbfdbe521ae4448"
   hs_bindgen_4bbfdbe521ae4448_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickType@
 hs_bindgen_4bbfdbe521ae4448
   :: BG.Ptr SDL_Joystick
   -> IO SDL_JoystickType
 hs_bindgen_4bbfdbe521ae4448 =
-  BG.fromFFIType hs_bindgen_4bbfdbe521ae4448_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4bbfdbe521ae4448_base (BG.toFFIType x0))
 
 -- | Get the type of an opened joystick.
 --
@@ -1815,7 +1908,17 @@ hs_bindgen_ac4457e1668303cb
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint16
   -> IO ()
 hs_bindgen_ac4457e1668303cb =
-  BG.fromFFIType hs_bindgen_ac4457e1668303cb_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            hs_bindgen_ac4457e1668303cb_base
+              (BG.toFFIType x0)
+              (BG.toFFIType x1)
+              (BG.toFFIType x2)
+              (BG.toFFIType x3)
+              (BG.toFFIType x4)
 
 -- | Get the device information encoded in a SDL_GUID structure.
 --
@@ -1864,14 +1967,15 @@ sDL_GetJoystickGUIDInfo =
 foreign import ccall safe "hs_bindgen_fd1547f6643cd55d"
   hs_bindgen_fd1547f6643cd55d_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_JoystickConnected@
 hs_bindgen_fd1547f6643cd55d
   :: BG.Ptr SDL_Joystick
   -> IO BG.CBool
 hs_bindgen_fd1547f6643cd55d =
-  BG.fromFFIType hs_bindgen_fd1547f6643cd55d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_fd1547f6643cd55d_base (BG.toFFIType x0))
 
 -- | Get the status of a specified joystick.
 --
@@ -1894,14 +1998,15 @@ sDL_JoystickConnected = hs_bindgen_fd1547f6643cd55d
 foreign import ccall safe "hs_bindgen_e792f601776227ad"
   hs_bindgen_e792f601776227ad_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickID@
 hs_bindgen_e792f601776227ad
   :: BG.Ptr SDL_Joystick
   -> IO SDL_JoystickID
 hs_bindgen_e792f601776227ad =
-  BG.fromFFIType hs_bindgen_e792f601776227ad_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_e792f601776227ad_base (BG.toFFIType x0))
 
 -- | Get the instance ID of an opened joystick.
 --
@@ -1924,14 +2029,15 @@ sDL_GetJoystickID = hs_bindgen_e792f601776227ad
 foreign import ccall safe "hs_bindgen_eb5cf1b5a80cb490"
   hs_bindgen_eb5cf1b5a80cb490_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetNumJoystickAxes@
 hs_bindgen_eb5cf1b5a80cb490
   :: BG.Ptr SDL_Joystick
   -> IO BG.CInt
 hs_bindgen_eb5cf1b5a80cb490 =
-  BG.fromFFIType hs_bindgen_eb5cf1b5a80cb490_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_eb5cf1b5a80cb490_base (BG.toFFIType x0))
 
 -- | Get the number of general axis controls on a joystick.
 --
@@ -1958,14 +2064,15 @@ sDL_GetNumJoystickAxes = hs_bindgen_eb5cf1b5a80cb490
 foreign import ccall safe "hs_bindgen_e856e95bf561b58f"
   hs_bindgen_e856e95bf561b58f_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetNumJoystickBalls@
 hs_bindgen_e856e95bf561b58f
   :: BG.Ptr SDL_Joystick
   -> IO BG.CInt
 hs_bindgen_e856e95bf561b58f =
-  BG.fromFFIType hs_bindgen_e856e95bf561b58f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_e856e95bf561b58f_base (BG.toFFIType x0))
 
 -- | Get the number of trackballs on a joystick.
 --
@@ -1994,14 +2101,15 @@ sDL_GetNumJoystickBalls = hs_bindgen_e856e95bf561b58f
 foreign import ccall safe "hs_bindgen_14f7806c41b802cb"
   hs_bindgen_14f7806c41b802cb_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetNumJoystickHats@
 hs_bindgen_14f7806c41b802cb
   :: BG.Ptr SDL_Joystick
   -> IO BG.CInt
 hs_bindgen_14f7806c41b802cb =
-  BG.fromFFIType hs_bindgen_14f7806c41b802cb_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_14f7806c41b802cb_base (BG.toFFIType x0))
 
 -- | Get the number of POV hats on a joystick.
 --
@@ -2026,14 +2134,15 @@ sDL_GetNumJoystickHats = hs_bindgen_14f7806c41b802cb
 foreign import ccall safe "hs_bindgen_737397e3a398beb9"
   hs_bindgen_737397e3a398beb9_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetNumJoystickButtons@
 hs_bindgen_737397e3a398beb9
   :: BG.Ptr SDL_Joystick
   -> IO BG.CInt
 hs_bindgen_737397e3a398beb9 =
-  BG.fromFFIType hs_bindgen_737397e3a398beb9_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_737397e3a398beb9_base (BG.toFFIType x0))
 
 -- | Get the number of buttons on a joystick.
 --
@@ -2058,7 +2167,7 @@ sDL_GetNumJoystickButtons =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_SetJoystickEventsEnabled@
 foreign import ccall safe "hs_bindgen_ed51a1754ff9d6c7"
   hs_bindgen_ed51a1754ff9d6c7_base
-    :: BG.Word8
+    :: BG.CBool
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_SetJoystickEventsEnabled@
@@ -2066,7 +2175,8 @@ hs_bindgen_ed51a1754ff9d6c7
   :: BG.CBool
   -> IO ()
 hs_bindgen_ed51a1754ff9d6c7 =
-  BG.fromFFIType hs_bindgen_ed51a1754ff9d6c7_base
+  \x0 ->
+    hs_bindgen_ed51a1754ff9d6c7_base (BG.toFFIType x0)
 
 -- | Set the state of joystick event processing.
 --
@@ -2091,12 +2201,12 @@ sDL_SetJoystickEventsEnabled =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_JoystickEventsEnabled@
 foreign import ccall safe "hs_bindgen_86ece04390ea5953"
   hs_bindgen_86ece04390ea5953_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_JoystickEventsEnabled@
 hs_bindgen_86ece04390ea5953 :: IO BG.CBool
 hs_bindgen_86ece04390ea5953 =
-  BG.fromFFIType hs_bindgen_86ece04390ea5953_base
+  fmap BG.fromFFIType hs_bindgen_86ece04390ea5953_base
 
 -- | Query the state of joystick event processing.
 --
@@ -2123,7 +2233,7 @@ foreign import ccall safe "hs_bindgen_277bf35db967cb76"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_UpdateJoysticks@
 hs_bindgen_277bf35db967cb76 :: IO ()
 hs_bindgen_277bf35db967cb76 =
-  BG.fromFFIType hs_bindgen_277bf35db967cb76_base
+  hs_bindgen_277bf35db967cb76_base
 
 -- | Update the current state of the open joysticks.
 --
@@ -2141,8 +2251,8 @@ sDL_UpdateJoysticks = hs_bindgen_277bf35db967cb76
 foreign import ccall safe "hs_bindgen_5ffa383d290b6a82"
   hs_bindgen_5ffa383d290b6a82_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Int16
+    -> BG.CInt
+    -> IO HsBindgen.Runtime.LibC.Int16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickAxis@
 hs_bindgen_5ffa383d290b6a82
@@ -2150,7 +2260,9 @@ hs_bindgen_5ffa383d290b6a82
   -> BG.CInt
   -> IO SDL3.Sys.Bindgen.Stdinc.Sint16
 hs_bindgen_5ffa383d290b6a82 =
-  BG.fromFFIType hs_bindgen_5ffa383d290b6a82_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_5ffa383d290b6a82_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the current state of an axis control on a joystick.
 --
@@ -2183,9 +2295,9 @@ sDL_GetJoystickAxis = hs_bindgen_5ffa383d290b6a82
 foreign import ccall safe "hs_bindgen_427de097dfec8d31"
   hs_bindgen_427de097dfec8d31_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickAxisInitialState@
 hs_bindgen_427de097dfec8d31
@@ -2194,7 +2306,12 @@ hs_bindgen_427de097dfec8d31
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Sint16
   -> IO BG.CBool
 hs_bindgen_427de097dfec8d31 =
-  BG.fromFFIType hs_bindgen_427de097dfec8d31_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_427de097dfec8d31_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the initial state of an axis control on a joystick.
 --
@@ -2230,10 +2347,10 @@ sDL_GetJoystickAxisInitialState =
 foreign import ccall safe "hs_bindgen_aee21b71d3004e03"
   hs_bindgen_aee21b71d3004e03_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickBall@
 hs_bindgen_aee21b71d3004e03
@@ -2243,7 +2360,18 @@ hs_bindgen_aee21b71d3004e03
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_aee21b71d3004e03 =
-  BG.fromFFIType hs_bindgen_aee21b71d3004e03_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_aee21b71d3004e03_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Get the ball axis change since the last poll.
 --
@@ -2284,8 +2412,8 @@ sDL_GetJoystickBall = hs_bindgen_aee21b71d3004e03
 foreign import ccall safe "hs_bindgen_03a81f7b52479c1f"
   hs_bindgen_03a81f7b52479c1f_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO HsBindgen.Runtime.LibC.Word8
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickHat@
 hs_bindgen_03a81f7b52479c1f
@@ -2293,7 +2421,9 @@ hs_bindgen_03a81f7b52479c1f
   -> BG.CInt
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint8
 hs_bindgen_03a81f7b52479c1f =
-  BG.fromFFIType hs_bindgen_03a81f7b52479c1f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_03a81f7b52479c1f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the current state of a POV hat on a joystick.
 --
@@ -2324,8 +2454,8 @@ sDL_GetJoystickHat = hs_bindgen_03a81f7b52479c1f
 foreign import ccall safe "hs_bindgen_066ace0739b36572"
   hs_bindgen_066ace0739b36572_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickButton@
 hs_bindgen_066ace0739b36572
@@ -2333,7 +2463,9 @@ hs_bindgen_066ace0739b36572
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_066ace0739b36572 =
-  BG.fromFFIType hs_bindgen_066ace0739b36572_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_066ace0739b36572_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the current state of a button on a joystick.
 --
@@ -2362,10 +2494,10 @@ sDL_GetJoystickButton = hs_bindgen_066ace0739b36572
 foreign import ccall safe "hs_bindgen_7e8a72caa95f2c2b"
   hs_bindgen_7e8a72caa95f2c2b_base
     :: BG.Ptr BG.Void
-    -> BG.Word16
-    -> BG.Word16
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word16
+    -> HsBindgen.Runtime.LibC.Word16
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_RumbleJoystick@
 hs_bindgen_7e8a72caa95f2c2b
@@ -2375,7 +2507,18 @@ hs_bindgen_7e8a72caa95f2c2b
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_7e8a72caa95f2c2b =
-  BG.fromFFIType hs_bindgen_7e8a72caa95f2c2b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_7e8a72caa95f2c2b_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Start a rumble effect.
 --
@@ -2414,10 +2557,10 @@ sDL_RumbleJoystick = hs_bindgen_7e8a72caa95f2c2b
 foreign import ccall safe "hs_bindgen_301092a71603b81a"
   hs_bindgen_301092a71603b81a_base
     :: BG.Ptr BG.Void
-    -> BG.Word16
-    -> BG.Word16
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word16
+    -> HsBindgen.Runtime.LibC.Word16
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_RumbleJoystickTriggers@
 hs_bindgen_301092a71603b81a
@@ -2427,7 +2570,18 @@ hs_bindgen_301092a71603b81a
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_301092a71603b81a =
-  BG.fromFFIType hs_bindgen_301092a71603b81a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_301092a71603b81a_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Start a rumble effect in the joystick\'s triggers.
 --
@@ -2471,10 +2625,10 @@ sDL_RumbleJoystickTriggers =
 foreign import ccall safe "hs_bindgen_8b94c1cbb487385b"
   hs_bindgen_8b94c1cbb487385b_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> BG.Word8
-    -> BG.Word8
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_SetJoystickLED@
 hs_bindgen_8b94c1cbb487385b
@@ -2484,7 +2638,18 @@ hs_bindgen_8b94c1cbb487385b
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_8b94c1cbb487385b =
-  BG.fromFFIType hs_bindgen_8b94c1cbb487385b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_8b94c1cbb487385b_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Update a joystick\'s LED color.
 --
@@ -2524,8 +2689,8 @@ foreign import ccall safe "hs_bindgen_f7e59a6e5bb608fe"
   hs_bindgen_f7e59a6e5bb608fe_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_SendJoystickEffect@
 hs_bindgen_f7e59a6e5bb608fe
@@ -2534,7 +2699,12 @@ hs_bindgen_f7e59a6e5bb608fe
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_f7e59a6e5bb608fe =
-  BG.fromFFIType hs_bindgen_f7e59a6e5bb608fe_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_f7e59a6e5bb608fe_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Send a joystick specific effect packet.
 --
@@ -2572,7 +2742,8 @@ hs_bindgen_ea0c624f184dccba
   :: BG.Ptr SDL_Joystick
   -> IO ()
 hs_bindgen_ea0c624f184dccba =
-  BG.fromFFIType hs_bindgen_ea0c624f184dccba_base
+  \x0 ->
+    hs_bindgen_ea0c624f184dccba_base (BG.toFFIType x0)
 
 -- | Close a joystick previously opened with @SDL_OpenJoystick()@.
 --
@@ -2595,14 +2766,15 @@ sDL_CloseJoystick = hs_bindgen_ea0c624f184dccba
 foreign import ccall safe "hs_bindgen_08992afe945eb606"
   hs_bindgen_08992afe945eb606_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickConnectionState@
 hs_bindgen_08992afe945eb606
   :: BG.Ptr SDL_Joystick
   -> IO SDL_JoystickConnectionState
 hs_bindgen_08992afe945eb606 =
-  BG.fromFFIType hs_bindgen_08992afe945eb606_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_08992afe945eb606_base (BG.toFFIType x0))
 
 -- | Get the connection state of a joystick.
 --
@@ -2627,7 +2799,7 @@ foreign import ccall safe "hs_bindgen_8bfbd5889037e579"
   hs_bindgen_8bfbd5889037e579_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO HsBindgen.Runtime.Support.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_Safe_SDL_GetJoystickPowerInfo@
 hs_bindgen_8bfbd5889037e579
@@ -2635,7 +2807,9 @@ hs_bindgen_8bfbd5889037e579
   -> BG.Ptr BG.CInt
   -> IO SDL3.Sys.Bindgen.Power.SDL_PowerState
 hs_bindgen_8bfbd5889037e579 =
-  BG.fromFFIType hs_bindgen_8bfbd5889037e579_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_8bfbd5889037e579_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the battery state of a joystick.
 --

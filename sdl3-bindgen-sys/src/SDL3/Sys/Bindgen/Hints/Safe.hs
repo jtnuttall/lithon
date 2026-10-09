@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Hints.Safe (
@@ -14,6 +16,8 @@ module SDL3.Sys.Bindgen.Hints.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -21,7 +25,8 @@ import SDL3.Sys.Bindgen.Hints
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_hints.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_hints.h>"
          , "_Bool hs_bindgen_0d58d8e15d9ee871 ("
          , "  char const *arg1,"
          , "  char const *arg2,"
@@ -85,8 +90,8 @@ foreign import ccall safe "hs_bindgen_0d58d8e15d9ee871"
   hs_bindgen_0d58d8e15d9ee871_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> BG.CUInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hints_Safe_SDL_SetHintWithPriority@
 hs_bindgen_0d58d8e15d9ee871
@@ -95,7 +100,12 @@ hs_bindgen_0d58d8e15d9ee871
   -> SDL_HintPriority
   -> IO BG.CBool
 hs_bindgen_0d58d8e15d9ee871 =
-  BG.fromFFIType hs_bindgen_0d58d8e15d9ee871_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_0d58d8e15d9ee871_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set a hint with a specific priority.
 --
@@ -131,7 +141,7 @@ foreign import ccall safe "hs_bindgen_eab3698ef04ccc46"
   hs_bindgen_eab3698ef04ccc46_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hints_Safe_SDL_SetHint@
 hs_bindgen_eab3698ef04ccc46
@@ -139,7 +149,9 @@ hs_bindgen_eab3698ef04ccc46
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_eab3698ef04ccc46 =
-  BG.fromFFIType hs_bindgen_eab3698ef04ccc46_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_eab3698ef04ccc46_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set a hint with normal priority.
 --
@@ -170,14 +182,15 @@ sDL_SetHint = hs_bindgen_eab3698ef04ccc46
 foreign import ccall safe "hs_bindgen_f97886c40bcfbc20"
   hs_bindgen_f97886c40bcfbc20_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hints_Safe_SDL_ResetHint@
 hs_bindgen_f97886c40bcfbc20
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_f97886c40bcfbc20 =
-  BG.fromFFIType hs_bindgen_f97886c40bcfbc20_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_f97886c40bcfbc20_base (BG.toFFIType x0))
 
 -- | Reset a hint to the default value.
 --
@@ -208,7 +221,7 @@ foreign import ccall safe "hs_bindgen_fd2e64a782ded6df"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hints_Safe_SDL_ResetHints@
 hs_bindgen_fd2e64a782ded6df :: IO ()
 hs_bindgen_fd2e64a782ded6df =
-  BG.fromFFIType hs_bindgen_fd2e64a782ded6df_base
+  hs_bindgen_fd2e64a782ded6df_base
 
 -- | Reset all hints to the default values.
 --
@@ -235,7 +248,8 @@ hs_bindgen_9ee7b58437f0684a
   :: PtrConst.PtrConst BG.CChar
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_9ee7b58437f0684a =
-  BG.fromFFIType hs_bindgen_9ee7b58437f0684a_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9ee7b58437f0684a_base (BG.toFFIType x0))
 
 -- | Get the value of a hint.
 --
@@ -260,8 +274,8 @@ sDL_GetHint = hs_bindgen_9ee7b58437f0684a
 foreign import ccall safe "hs_bindgen_5a0b364272f99749"
   hs_bindgen_5a0b364272f99749_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hints_Safe_SDL_GetHintBoolean@
 hs_bindgen_5a0b364272f99749
@@ -269,7 +283,9 @@ hs_bindgen_5a0b364272f99749
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_5a0b364272f99749 =
-  BG.fromFFIType hs_bindgen_5a0b364272f99749_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_5a0b364272f99749_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the boolean value of a hint variable.
 --
@@ -300,7 +316,7 @@ foreign import ccall safe "hs_bindgen_d78b382b71fb1c63"
     :: BG.Ptr BG.Void
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hints_Safe_SDL_AddHintCallback@
 hs_bindgen_d78b382b71fb1c63
@@ -309,7 +325,12 @@ hs_bindgen_d78b382b71fb1c63
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_d78b382b71fb1c63 =
-  BG.fromFFIType hs_bindgen_d78b382b71fb1c63_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_d78b382b71fb1c63_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Add a function to watch a particular hint.
 --
@@ -355,7 +376,10 @@ hs_bindgen_c51a1a939bae0509
   -> BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_c51a1a939bae0509 =
-  BG.fromFFIType hs_bindgen_c51a1a939bae0509_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        hs_bindgen_c51a1a939bae0509_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2)
 
 -- | Remove a function watching a particular hint.
 --

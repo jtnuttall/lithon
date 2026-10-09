@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Video.Unsafe (
@@ -120,8 +122,11 @@ module SDL3.Sys.Bindgen.Video.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Support qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Pixels qualified
@@ -133,7 +138,8 @@ import SDL3.Sys.Bindgen.Video
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_video.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_video.h>"
          , "signed int hs_bindgen_5592dffe201a625d (void)"
          , "{"
          , "  return (SDL_GetNumVideoDrivers)();"
@@ -912,12 +918,12 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetNumVideoDrivers@
 foreign import ccall unsafe "hs_bindgen_5592dffe201a625d"
   hs_bindgen_5592dffe201a625d_base
-    :: IO BG.Int32
+    :: IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetNumVideoDrivers@
 hs_bindgen_5592dffe201a625d :: IO BG.CInt
 hs_bindgen_5592dffe201a625d =
-  BG.fromFFIType hs_bindgen_5592dffe201a625d_base
+  fmap BG.fromFFIType hs_bindgen_5592dffe201a625d_base
 
 -- | Get the number of video drivers compiled into SDL.
 --
@@ -936,7 +942,7 @@ sDL_GetNumVideoDrivers = hs_bindgen_5592dffe201a625d
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetVideoDriver@
 foreign import ccall unsafe "hs_bindgen_85f4e358bde66c9a"
   hs_bindgen_85f4e358bde66c9a_base
-    :: BG.Int32
+    :: BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetVideoDriver@
@@ -944,7 +950,8 @@ hs_bindgen_85f4e358bde66c9a
   :: BG.CInt
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_85f4e358bde66c9a =
-  BG.fromFFIType hs_bindgen_85f4e358bde66c9a_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_85f4e358bde66c9a_base (BG.toFFIType x0))
 
 -- | Get the name of a built in video driver.
 --
@@ -977,7 +984,7 @@ foreign import ccall unsafe "hs_bindgen_63fbce696f1ed5a6"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetCurrentVideoDriver@
 hs_bindgen_63fbce696f1ed5a6 :: IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_63fbce696f1ed5a6 =
-  BG.fromFFIType hs_bindgen_63fbce696f1ed5a6_base
+  fmap BG.fromFFIType hs_bindgen_63fbce696f1ed5a6_base
 
 -- | Get the name of the currently initialized video driver.
 --
@@ -999,12 +1006,12 @@ sDL_GetCurrentVideoDriver =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetSystemTheme@
 foreign import ccall unsafe "hs_bindgen_c80ec935a539ddd8"
   hs_bindgen_c80ec935a539ddd8_base
-    :: IO BG.Word32
+    :: IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetSystemTheme@
 hs_bindgen_c80ec935a539ddd8 :: IO SDL_SystemTheme
 hs_bindgen_c80ec935a539ddd8 =
-  BG.fromFFIType hs_bindgen_c80ec935a539ddd8_base
+  fmap BG.fromFFIType hs_bindgen_c80ec935a539ddd8_base
 
 -- | Get the current system theme.
 --
@@ -1029,7 +1036,8 @@ hs_bindgen_d0c686e8303409e7
   :: BG.Ptr BG.CInt
   -> IO (BG.Ptr SDL_DisplayID)
 hs_bindgen_d0c686e8303409e7 =
-  BG.fromFFIType hs_bindgen_d0c686e8303409e7_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_d0c686e8303409e7_base (BG.toFFIType x0))
 
 -- | Get a list of currently connected displays.
 --
@@ -1051,12 +1059,12 @@ sDL_GetDisplays = hs_bindgen_d0c686e8303409e7
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetPrimaryDisplay@
 foreign import ccall unsafe "hs_bindgen_6b2fa2820b978e45"
   hs_bindgen_6b2fa2820b978e45_base
-    :: IO BG.Word32
+    :: IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetPrimaryDisplay@
 hs_bindgen_6b2fa2820b978e45 :: IO SDL_DisplayID
 hs_bindgen_6b2fa2820b978e45 =
-  BG.fromFFIType hs_bindgen_6b2fa2820b978e45_base
+  fmap BG.fromFFIType hs_bindgen_6b2fa2820b978e45_base
 
 -- | Return the primary display.
 --
@@ -1075,15 +1083,16 @@ sDL_GetPrimaryDisplay = hs_bindgen_6b2fa2820b978e45
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDisplayProperties@
 foreign import ccall unsafe "hs_bindgen_2811399c7688084b"
   hs_bindgen_2811399c7688084b_base
-    :: BG.Word32
-    -> IO BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDisplayProperties@
 hs_bindgen_2811399c7688084b
   :: SDL_DisplayID
   -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
 hs_bindgen_2811399c7688084b =
-  BG.fromFFIType hs_bindgen_2811399c7688084b_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_2811399c7688084b_base (BG.toFFIType x0))
 
 -- | Get the properties associated with a display.
 --
@@ -1122,7 +1131,7 @@ sDL_GetDisplayProperties =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDisplayName@
 foreign import ccall unsafe "hs_bindgen_348f75329e6ce8d9"
   hs_bindgen_348f75329e6ce8d9_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDisplayName@
@@ -1130,7 +1139,8 @@ hs_bindgen_348f75329e6ce8d9
   :: SDL_DisplayID
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_348f75329e6ce8d9 =
-  BG.fromFFIType hs_bindgen_348f75329e6ce8d9_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_348f75329e6ce8d9_base (BG.toFFIType x0))
 
 -- | Get the name of a display in UTF-8 encoding.
 --
@@ -1154,9 +1164,9 @@ sDL_GetDisplayName = hs_bindgen_348f75329e6ce8d9
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDisplayBounds@
 foreign import ccall unsafe "hs_bindgen_ef8f0d981192b3f9"
   hs_bindgen_ef8f0d981192b3f9_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDisplayBounds@
 hs_bindgen_ef8f0d981192b3f9
@@ -1164,7 +1174,9 @@ hs_bindgen_ef8f0d981192b3f9
   -> BG.Ptr SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_ef8f0d981192b3f9 =
-  BG.fromFFIType hs_bindgen_ef8f0d981192b3f9_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_ef8f0d981192b3f9_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the desktop area represented by a display.
 --
@@ -1194,9 +1206,9 @@ sDL_GetDisplayBounds = hs_bindgen_ef8f0d981192b3f9
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDisplayUsableBounds@
 foreign import ccall unsafe "hs_bindgen_c49b6c7690711e0a"
   hs_bindgen_c49b6c7690711e0a_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDisplayUsableBounds@
 hs_bindgen_c49b6c7690711e0a
@@ -1204,7 +1216,9 @@ hs_bindgen_c49b6c7690711e0a
   -> BG.Ptr SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_c49b6c7690711e0a =
-  BG.fromFFIType hs_bindgen_c49b6c7690711e0a_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_c49b6c7690711e0a_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the usable desktop area represented by a display, in screen coordinates.
 --
@@ -1237,15 +1251,16 @@ sDL_GetDisplayUsableBounds =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetNaturalDisplayOrientation@
 foreign import ccall unsafe "hs_bindgen_57dcd89da18e0a7a"
   hs_bindgen_57dcd89da18e0a7a_base
-    :: BG.Word32
-    -> IO BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetNaturalDisplayOrientation@
 hs_bindgen_57dcd89da18e0a7a
   :: SDL_DisplayID
   -> IO SDL_DisplayOrientation
 hs_bindgen_57dcd89da18e0a7a =
-  BG.fromFFIType hs_bindgen_57dcd89da18e0a7a_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_57dcd89da18e0a7a_base (BG.toFFIType x0))
 
 -- | Get the orientation of a display when it is unrotated.
 --
@@ -1270,15 +1285,16 @@ sDL_GetNaturalDisplayOrientation =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetCurrentDisplayOrientation@
 foreign import ccall unsafe "hs_bindgen_c8c1a7af21e9840d"
   hs_bindgen_c8c1a7af21e9840d_base
-    :: BG.Word32
-    -> IO BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetCurrentDisplayOrientation@
 hs_bindgen_c8c1a7af21e9840d
   :: SDL_DisplayID
   -> IO SDL_DisplayOrientation
 hs_bindgen_c8c1a7af21e9840d =
-  BG.fromFFIType hs_bindgen_c8c1a7af21e9840d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c8c1a7af21e9840d_base (BG.toFFIType x0))
 
 -- | Get the orientation of a display.
 --
@@ -1303,15 +1319,16 @@ sDL_GetCurrentDisplayOrientation =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDisplayContentScale@
 foreign import ccall unsafe "hs_bindgen_84541dd84a5f8bf5"
   hs_bindgen_84541dd84a5f8bf5_base
-    :: BG.Word32
-    -> IO Float
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDisplayContentScale@
 hs_bindgen_84541dd84a5f8bf5
   :: SDL_DisplayID
   -> IO BG.CFloat
 hs_bindgen_84541dd84a5f8bf5 =
-  BG.fromFFIType hs_bindgen_84541dd84a5f8bf5_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_84541dd84a5f8bf5_base (BG.toFFIType x0))
 
 -- | Get the content scale of a display.
 --
@@ -1340,7 +1357,7 @@ sDL_GetDisplayContentScale =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetFullscreenDisplayModes@
 foreign import ccall unsafe "hs_bindgen_7fcb2edb01c8f735"
   hs_bindgen_7fcb2edb01c8f735_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> IO (BG.Ptr BG.Void)
 
@@ -1350,7 +1367,9 @@ hs_bindgen_7fcb2edb01c8f735
   -> BG.Ptr BG.CInt
   -> IO (BG.Ptr (BG.Ptr SDL_DisplayMode))
 hs_bindgen_7fcb2edb01c8f735 =
-  BG.fromFFIType hs_bindgen_7fcb2edb01c8f735_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_7fcb2edb01c8f735_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get a list of fullscreen display modes available on a display.
 --
@@ -1393,13 +1412,13 @@ sDL_GetFullscreenDisplayModes =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetClosestFullscreenDisplayMode@
 foreign import ccall unsafe "hs_bindgen_4d4a115b24dc1a8a"
   hs_bindgen_4d4a115b24dc1a8a_base
-    :: BG.Word32
-    -> BG.Int32
-    -> BG.Int32
-    -> Float
-    -> BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> BG.CInt
+    -> BG.CInt
+    -> BG.CFloat
+    -> BG.CBool
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetClosestFullscreenDisplayMode@
 hs_bindgen_4d4a115b24dc1a8a
@@ -1411,7 +1430,22 @@ hs_bindgen_4d4a115b24dc1a8a
   -> BG.Ptr SDL_DisplayMode
   -> IO BG.CBool
 hs_bindgen_4d4a115b24dc1a8a =
-  BG.fromFFIType hs_bindgen_4d4a115b24dc1a8a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_4d4a115b24dc1a8a_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Get the closest match to the requested display mode.
 --
@@ -1458,7 +1492,7 @@ sDL_GetClosestFullscreenDisplayMode =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDesktopDisplayMode@
 foreign import ccall unsafe "hs_bindgen_f150e56ed07c3071"
   hs_bindgen_f150e56ed07c3071_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDesktopDisplayMode@
@@ -1466,7 +1500,8 @@ hs_bindgen_f150e56ed07c3071
   :: SDL_DisplayID
   -> IO (PtrConst.PtrConst SDL_DisplayMode)
 hs_bindgen_f150e56ed07c3071 =
-  BG.fromFFIType hs_bindgen_f150e56ed07c3071_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_f150e56ed07c3071_base (BG.toFFIType x0))
 
 -- | Get information about the desktop\'s display mode.
 --
@@ -1493,7 +1528,7 @@ sDL_GetDesktopDisplayMode =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetCurrentDisplayMode@
 foreign import ccall unsafe "hs_bindgen_090c1ea46d46ae35"
   hs_bindgen_090c1ea46d46ae35_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetCurrentDisplayMode@
@@ -1501,7 +1536,8 @@ hs_bindgen_090c1ea46d46ae35
   :: SDL_DisplayID
   -> IO (PtrConst.PtrConst SDL_DisplayMode)
 hs_bindgen_090c1ea46d46ae35 =
-  BG.fromFFIType hs_bindgen_090c1ea46d46ae35_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_090c1ea46d46ae35_base (BG.toFFIType x0))
 
 -- | Get information about the current display mode.
 --
@@ -1529,14 +1565,15 @@ sDL_GetCurrentDisplayMode =
 foreign import ccall unsafe "hs_bindgen_c4ca0071d547fe4e"
   hs_bindgen_c4ca0071d547fe4e_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDisplayForPoint@
 hs_bindgen_c4ca0071d547fe4e
   :: PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Point
   -> IO SDL_DisplayID
 hs_bindgen_c4ca0071d547fe4e =
-  BG.fromFFIType hs_bindgen_c4ca0071d547fe4e_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c4ca0071d547fe4e_base (BG.toFFIType x0))
 
 -- | Get the display containing a point.
 --
@@ -1561,14 +1598,15 @@ sDL_GetDisplayForPoint = hs_bindgen_c4ca0071d547fe4e
 foreign import ccall unsafe "hs_bindgen_53772eb32f15250a"
   hs_bindgen_53772eb32f15250a_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDisplayForRect@
 hs_bindgen_53772eb32f15250a
   :: PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO SDL_DisplayID
 hs_bindgen_53772eb32f15250a =
-  BG.fromFFIType hs_bindgen_53772eb32f15250a_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_53772eb32f15250a_base (BG.toFFIType x0))
 
 -- | Get the display primarily containing a rect.
 --
@@ -1593,14 +1631,15 @@ sDL_GetDisplayForRect = hs_bindgen_53772eb32f15250a
 foreign import ccall unsafe "hs_bindgen_b5e8747042982325"
   hs_bindgen_b5e8747042982325_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetDisplayForWindow@
 hs_bindgen_b5e8747042982325
   :: BG.Ptr SDL_Window
   -> IO SDL_DisplayID
 hs_bindgen_b5e8747042982325 =
-  BG.fromFFIType hs_bindgen_b5e8747042982325_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b5e8747042982325_base (BG.toFFIType x0))
 
 -- | Get the display associated with a window.
 --
@@ -1625,14 +1664,15 @@ sDL_GetDisplayForWindow = hs_bindgen_b5e8747042982325
 foreign import ccall unsafe "hs_bindgen_37fb7f14d8ab4245"
   hs_bindgen_37fb7f14d8ab4245_base
     :: BG.Ptr BG.Void
-    -> IO Float
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowPixelDensity@
 hs_bindgen_37fb7f14d8ab4245
   :: BG.Ptr SDL_Window
   -> IO BG.CFloat
 hs_bindgen_37fb7f14d8ab4245 =
-  BG.fromFFIType hs_bindgen_37fb7f14d8ab4245_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_37fb7f14d8ab4245_base (BG.toFFIType x0))
 
 -- | Get the pixel density of a window.
 --
@@ -1660,14 +1700,15 @@ sDL_GetWindowPixelDensity =
 foreign import ccall unsafe "hs_bindgen_f51393abfbd8d0f1"
   hs_bindgen_f51393abfbd8d0f1_base
     :: BG.Ptr BG.Void
-    -> IO Float
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowDisplayScale@
 hs_bindgen_f51393abfbd8d0f1
   :: BG.Ptr SDL_Window
   -> IO BG.CFloat
 hs_bindgen_f51393abfbd8d0f1 =
-  BG.fromFFIType hs_bindgen_f51393abfbd8d0f1_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_f51393abfbd8d0f1_base (BG.toFFIType x0))
 
 -- | Get the content display scale relative to a window\'s pixel size.
 --
@@ -1696,7 +1737,7 @@ foreign import ccall unsafe "hs_bindgen_13b017b8b715b141"
   hs_bindgen_13b017b8b715b141_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowFullscreenMode@
 hs_bindgen_13b017b8b715b141
@@ -1704,7 +1745,9 @@ hs_bindgen_13b017b8b715b141
   -> PtrConst.PtrConst SDL_DisplayMode
   -> IO BG.CBool
 hs_bindgen_13b017b8b715b141 =
-  BG.fromFFIType hs_bindgen_13b017b8b715b141_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_13b017b8b715b141_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the display mode to use when a window is visible and fullscreen.
 --
@@ -1747,7 +1790,8 @@ hs_bindgen_3d833d32498da130
   :: BG.Ptr SDL_Window
   -> IO (PtrConst.PtrConst SDL_DisplayMode)
 hs_bindgen_3d833d32498da130 =
-  BG.fromFFIType hs_bindgen_3d833d32498da130_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3d833d32498da130_base (BG.toFFIType x0))
 
 -- | Query the display mode to use when a window is visible at fullscreen.
 --
@@ -1782,7 +1826,9 @@ hs_bindgen_c8fc95a50e802a12
   -> BG.Ptr HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_c8fc95a50e802a12 =
-  BG.fromFFIType hs_bindgen_c8fc95a50e802a12_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_c8fc95a50e802a12_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the raw ICC profile data for the screen the window is currently on.
 --
@@ -1809,14 +1855,15 @@ sDL_GetWindowICCProfile = hs_bindgen_c8fc95a50e802a12
 foreign import ccall unsafe "hs_bindgen_90e43d0f5b0c1797"
   hs_bindgen_90e43d0f5b0c1797_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.Support.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowPixelFormat@
 hs_bindgen_90e43d0f5b0c1797
   :: BG.Ptr SDL_Window
   -> IO SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
 hs_bindgen_90e43d0f5b0c1797 =
-  BG.fromFFIType hs_bindgen_90e43d0f5b0c1797_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_90e43d0f5b0c1797_base (BG.toFFIType x0))
 
 -- | Get the pixel format associated with the window.
 --
@@ -1847,7 +1894,8 @@ hs_bindgen_37819cd7ef5a283c
   :: BG.Ptr BG.CInt
   -> IO (BG.Ptr (BG.Ptr SDL_Window))
 hs_bindgen_37819cd7ef5a283c =
-  BG.fromFFIType hs_bindgen_37819cd7ef5a283c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_37819cd7ef5a283c_base (BG.toFFIType x0))
 
 -- | Get a list of valid windows.
 --
@@ -1870,9 +1918,9 @@ sDL_GetWindows = hs_bindgen_37819cd7ef5a283c
 foreign import ccall unsafe "hs_bindgen_c104a86e94d91733"
   hs_bindgen_c104a86e94d91733_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> BG.Word64
+    -> BG.CInt
+    -> BG.CInt
+    -> HsBindgen.Runtime.LibC.Word64
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_CreateWindow@
@@ -1883,7 +1931,18 @@ hs_bindgen_c104a86e94d91733
   -> SDL_WindowFlags
   -> IO (BG.Ptr SDL_Window)
 hs_bindgen_c104a86e94d91733 =
-  BG.fromFFIType hs_bindgen_c104a86e94d91733_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_c104a86e94d91733_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Create a window with the specified dimensions and flags.
 --
@@ -1986,11 +2045,11 @@ sDL_CreateWindow = hs_bindgen_c104a86e94d91733
 foreign import ccall unsafe "hs_bindgen_f8de823bce00580d"
   hs_bindgen_f8de823bce00580d_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> BG.Int32
-    -> BG.Int32
-    -> BG.Word64
+    -> BG.CInt
+    -> BG.CInt
+    -> BG.CInt
+    -> BG.CInt
+    -> HsBindgen.Runtime.LibC.Word64
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_CreatePopupWindow@
@@ -2003,7 +2062,22 @@ hs_bindgen_f8de823bce00580d
   -> SDL_WindowFlags
   -> IO (BG.Ptr SDL_Window)
 hs_bindgen_f8de823bce00580d =
-  BG.fromFFIType hs_bindgen_f8de823bce00580d_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_f8de823bce00580d_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Create a child popup window of the specified parent window.
 --
@@ -2083,7 +2157,7 @@ sDL_CreatePopupWindow = hs_bindgen_f8de823bce00580d
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_CreateWindowWithProperties@
 foreign import ccall unsafe "hs_bindgen_397cd16b0ee4c2c1"
   hs_bindgen_397cd16b0ee4c2c1_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_CreateWindowWithProperties@
@@ -2091,7 +2165,8 @@ hs_bindgen_397cd16b0ee4c2c1
   :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -> IO (BG.Ptr SDL_Window)
 hs_bindgen_397cd16b0ee4c2c1 =
-  BG.fromFFIType hs_bindgen_397cd16b0ee4c2c1_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_397cd16b0ee4c2c1_base (BG.toFFIType x0))
 
 -- | Create a window with the specified properties.
 --
@@ -2223,14 +2298,15 @@ sDL_CreateWindowWithProperties =
 foreign import ccall unsafe "hs_bindgen_4cd31f508a882913"
   hs_bindgen_4cd31f508a882913_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowID@
 hs_bindgen_4cd31f508a882913
   :: BG.Ptr SDL_Window
   -> IO SDL_WindowID
 hs_bindgen_4cd31f508a882913 =
-  BG.fromFFIType hs_bindgen_4cd31f508a882913_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4cd31f508a882913_base (BG.toFFIType x0))
 
 -- | Get the numeric ID of a window.
 --
@@ -2256,7 +2332,7 @@ sDL_GetWindowID = hs_bindgen_4cd31f508a882913
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowFromID@
 foreign import ccall unsafe "hs_bindgen_9a86d1e90d48506e"
   hs_bindgen_9a86d1e90d48506e_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowFromID@
@@ -2264,7 +2340,8 @@ hs_bindgen_9a86d1e90d48506e
   :: SDL_WindowID
   -> IO (BG.Ptr SDL_Window)
 hs_bindgen_9a86d1e90d48506e =
-  BG.fromFFIType hs_bindgen_9a86d1e90d48506e_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9a86d1e90d48506e_base (BG.toFFIType x0))
 
 -- | Get a window from a stored ID.
 --
@@ -2298,7 +2375,8 @@ hs_bindgen_de155dd6392c018c
   :: BG.Ptr SDL_Window
   -> IO (BG.Ptr SDL_Window)
 hs_bindgen_de155dd6392c018c =
-  BG.fromFFIType hs_bindgen_de155dd6392c018c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_de155dd6392c018c_base (BG.toFFIType x0))
 
 -- | Get parent of a window.
 --
@@ -2323,14 +2401,15 @@ sDL_GetWindowParent = hs_bindgen_de155dd6392c018c
 foreign import ccall unsafe "hs_bindgen_354b9a2ce76470de"
   hs_bindgen_354b9a2ce76470de_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowProperties@
 hs_bindgen_354b9a2ce76470de
   :: BG.Ptr SDL_Window
   -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
 hs_bindgen_354b9a2ce76470de =
-  BG.fromFFIType hs_bindgen_354b9a2ce76470de_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_354b9a2ce76470de_base (BG.toFFIType x0))
 
 -- | Get the properties associated with a window.
 --
@@ -2451,14 +2530,15 @@ sDL_GetWindowProperties = hs_bindgen_354b9a2ce76470de
 foreign import ccall unsafe "hs_bindgen_c7a6fd0b395c141b"
   hs_bindgen_c7a6fd0b395c141b_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word64
+    -> IO HsBindgen.Runtime.LibC.Word64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowFlags@
 hs_bindgen_c7a6fd0b395c141b
   :: BG.Ptr SDL_Window
   -> IO SDL_WindowFlags
 hs_bindgen_c7a6fd0b395c141b =
-  BG.fromFFIType hs_bindgen_c7a6fd0b395c141b_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c7a6fd0b395c141b_base (BG.toFFIType x0))
 
 -- | Get the window flags.
 --
@@ -2484,7 +2564,7 @@ foreign import ccall unsafe "hs_bindgen_fb8782aef9af1e58"
   hs_bindgen_fb8782aef9af1e58_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowTitle@
 hs_bindgen_fb8782aef9af1e58
@@ -2492,7 +2572,9 @@ hs_bindgen_fb8782aef9af1e58
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_fb8782aef9af1e58 =
-  BG.fromFFIType hs_bindgen_fb8782aef9af1e58_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_fb8782aef9af1e58_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the title of a window.
 --
@@ -2530,7 +2612,8 @@ hs_bindgen_b46de7aa720113f3
   :: BG.Ptr SDL_Window
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_b46de7aa720113f3 =
-  BG.fromFFIType hs_bindgen_b46de7aa720113f3_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b46de7aa720113f3_base (BG.toFFIType x0))
 
 -- | Get the title of a window.
 --
@@ -2556,7 +2639,7 @@ foreign import ccall unsafe "hs_bindgen_dcfd86c373d614de"
   hs_bindgen_dcfd86c373d614de_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowIcon@
 hs_bindgen_dcfd86c373d614de
@@ -2564,7 +2647,9 @@ hs_bindgen_dcfd86c373d614de
   -> BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface
   -> IO BG.CBool
 hs_bindgen_dcfd86c373d614de =
-  BG.fromFFIType hs_bindgen_dcfd86c373d614de_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_dcfd86c373d614de_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the icon for a window.
 --
@@ -2595,9 +2680,9 @@ sDL_SetWindowIcon = hs_bindgen_dcfd86c373d614de
 foreign import ccall unsafe "hs_bindgen_2778939bf2a03cc0"
   hs_bindgen_2778939bf2a03cc0_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowPosition@
 hs_bindgen_2778939bf2a03cc0
@@ -2606,7 +2691,12 @@ hs_bindgen_2778939bf2a03cc0
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_2778939bf2a03cc0 =
-  BG.fromFFIType hs_bindgen_2778939bf2a03cc0_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_2778939bf2a03cc0_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Request that the window\'s position be set.
 --
@@ -2649,7 +2739,7 @@ foreign import ccall unsafe "hs_bindgen_0dd4bcea36c16a31"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowPosition@
 hs_bindgen_0dd4bcea36c16a31
@@ -2658,7 +2748,12 @@ hs_bindgen_0dd4bcea36c16a31
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_0dd4bcea36c16a31 =
-  BG.fromFFIType hs_bindgen_0dd4bcea36c16a31_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_0dd4bcea36c16a31_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the position of a window.
 --
@@ -2695,9 +2790,9 @@ sDL_GetWindowPosition = hs_bindgen_0dd4bcea36c16a31
 foreign import ccall unsafe "hs_bindgen_057ef11fd12bbeb6"
   hs_bindgen_057ef11fd12bbeb6_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowSize@
 hs_bindgen_057ef11fd12bbeb6
@@ -2706,7 +2801,12 @@ hs_bindgen_057ef11fd12bbeb6
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_057ef11fd12bbeb6 =
-  BG.fromFFIType hs_bindgen_057ef11fd12bbeb6_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_057ef11fd12bbeb6_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Request that the size of a window\'s client area be set.
 --
@@ -2749,7 +2849,7 @@ foreign import ccall unsafe "hs_bindgen_f812f66416921726"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowSize@
 hs_bindgen_f812f66416921726
@@ -2758,7 +2858,12 @@ hs_bindgen_f812f66416921726
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_f812f66416921726 =
-  BG.fromFFIType hs_bindgen_f812f66416921726_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_f812f66416921726_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the size of a window\'s client area.
 --
@@ -2794,7 +2899,7 @@ foreign import ccall unsafe "hs_bindgen_212ea87435c7ebb9"
   hs_bindgen_212ea87435c7ebb9_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowSafeArea@
 hs_bindgen_212ea87435c7ebb9
@@ -2802,7 +2907,9 @@ hs_bindgen_212ea87435c7ebb9
   -> BG.Ptr SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_212ea87435c7ebb9 =
-  BG.fromFFIType hs_bindgen_212ea87435c7ebb9_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_212ea87435c7ebb9_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the safe area for this window.
 --
@@ -2831,9 +2938,9 @@ sDL_GetWindowSafeArea = hs_bindgen_212ea87435c7ebb9
 foreign import ccall unsafe "hs_bindgen_a97676f9d3d5cacb"
   hs_bindgen_a97676f9d3d5cacb_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowAspectRatio@
 hs_bindgen_a97676f9d3d5cacb
@@ -2842,7 +2949,12 @@ hs_bindgen_a97676f9d3d5cacb
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_a97676f9d3d5cacb =
-  BG.fromFFIType hs_bindgen_a97676f9d3d5cacb_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_a97676f9d3d5cacb_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Request that the aspect ratio of a window\'s client area be set.
 --
@@ -2886,7 +2998,7 @@ foreign import ccall unsafe "hs_bindgen_c4fcb6be51b89962"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowAspectRatio@
 hs_bindgen_c4fcb6be51b89962
@@ -2895,7 +3007,12 @@ hs_bindgen_c4fcb6be51b89962
   -> BG.Ptr BG.CFloat
   -> IO BG.CBool
 hs_bindgen_c4fcb6be51b89962 =
-  BG.fromFFIType hs_bindgen_c4fcb6be51b89962_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_c4fcb6be51b89962_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the aspect ratio of a window\'s client area.
 --
@@ -2933,7 +3050,7 @@ foreign import ccall unsafe "hs_bindgen_fe9fa856ca0ad8ba"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowBordersSize@
 hs_bindgen_fe9fa856ca0ad8ba
@@ -2944,7 +3061,20 @@ hs_bindgen_fe9fa856ca0ad8ba
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_fe9fa856ca0ad8ba =
-  BG.fromFFIType hs_bindgen_fe9fa856ca0ad8ba_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_fe9fa856ca0ad8ba_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Get the size of a window\'s borders (decorations) around the client area.
 --
@@ -2994,7 +3124,7 @@ foreign import ccall unsafe "hs_bindgen_0bdc369c35af7209"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowSizeInPixels@
 hs_bindgen_0bdc369c35af7209
@@ -3003,7 +3133,12 @@ hs_bindgen_0bdc369c35af7209
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_0bdc369c35af7209 =
-  BG.fromFFIType hs_bindgen_0bdc369c35af7209_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_0bdc369c35af7209_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the size of a window\'s client area, in pixels.
 --
@@ -3037,9 +3172,9 @@ sDL_GetWindowSizeInPixels =
 foreign import ccall unsafe "hs_bindgen_4a83221f1efbc09f"
   hs_bindgen_4a83221f1efbc09f_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowMinimumSize@
 hs_bindgen_4a83221f1efbc09f
@@ -3048,7 +3183,12 @@ hs_bindgen_4a83221f1efbc09f
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_4a83221f1efbc09f =
-  BG.fromFFIType hs_bindgen_4a83221f1efbc09f_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_4a83221f1efbc09f_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set the minimum size of a window\'s client area.
 --
@@ -3084,7 +3224,7 @@ foreign import ccall unsafe "hs_bindgen_9492964d5df1add3"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowMinimumSize@
 hs_bindgen_9492964d5df1add3
@@ -3093,7 +3233,12 @@ hs_bindgen_9492964d5df1add3
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_9492964d5df1add3 =
-  BG.fromFFIType hs_bindgen_9492964d5df1add3_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_9492964d5df1add3_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the minimum size of a window\'s client area.
 --
@@ -3127,9 +3272,9 @@ sDL_GetWindowMinimumSize =
 foreign import ccall unsafe "hs_bindgen_70ec3985e428bdd2"
   hs_bindgen_70ec3985e428bdd2_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowMaximumSize@
 hs_bindgen_70ec3985e428bdd2
@@ -3138,7 +3283,12 @@ hs_bindgen_70ec3985e428bdd2
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_70ec3985e428bdd2 =
-  BG.fromFFIType hs_bindgen_70ec3985e428bdd2_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_70ec3985e428bdd2_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set the maximum size of a window\'s client area.
 --
@@ -3174,7 +3324,7 @@ foreign import ccall unsafe "hs_bindgen_948d13442e6065ab"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowMaximumSize@
 hs_bindgen_948d13442e6065ab
@@ -3183,7 +3333,12 @@ hs_bindgen_948d13442e6065ab
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_948d13442e6065ab =
-  BG.fromFFIType hs_bindgen_948d13442e6065ab_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_948d13442e6065ab_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the maximum size of a window\'s client area.
 --
@@ -3217,8 +3372,8 @@ sDL_GetWindowMaximumSize =
 foreign import ccall unsafe "hs_bindgen_6289af3cb8f93407"
   hs_bindgen_6289af3cb8f93407_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowBordered@
 hs_bindgen_6289af3cb8f93407
@@ -3226,7 +3381,9 @@ hs_bindgen_6289af3cb8f93407
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_6289af3cb8f93407 =
-  BG.fromFFIType hs_bindgen_6289af3cb8f93407_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_6289af3cb8f93407_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the border state of a window.
 --
@@ -3259,8 +3416,8 @@ sDL_SetWindowBordered = hs_bindgen_6289af3cb8f93407
 foreign import ccall unsafe "hs_bindgen_46aff2e1cb31d53c"
   hs_bindgen_46aff2e1cb31d53c_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowResizable@
 hs_bindgen_46aff2e1cb31d53c
@@ -3268,7 +3425,9 @@ hs_bindgen_46aff2e1cb31d53c
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_46aff2e1cb31d53c =
-  BG.fromFFIType hs_bindgen_46aff2e1cb31d53c_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_46aff2e1cb31d53c_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the user-resizable state of a window.
 --
@@ -3301,8 +3460,8 @@ sDL_SetWindowResizable = hs_bindgen_46aff2e1cb31d53c
 foreign import ccall unsafe "hs_bindgen_745fd81846537dd7"
   hs_bindgen_745fd81846537dd7_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowAlwaysOnTop@
 hs_bindgen_745fd81846537dd7
@@ -3310,7 +3469,9 @@ hs_bindgen_745fd81846537dd7
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_745fd81846537dd7 =
-  BG.fromFFIType hs_bindgen_745fd81846537dd7_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_745fd81846537dd7_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the window to always be above the others.
 --
@@ -3342,8 +3503,8 @@ sDL_SetWindowAlwaysOnTop =
 foreign import ccall unsafe "hs_bindgen_51036b434b8a9d9a"
   hs_bindgen_51036b434b8a9d9a_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowFillDocument@
 hs_bindgen_51036b434b8a9d9a
@@ -3351,7 +3512,9 @@ hs_bindgen_51036b434b8a9d9a
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_51036b434b8a9d9a =
-  BG.fromFFIType hs_bindgen_51036b434b8a9d9a_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_51036b434b8a9d9a_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the window to fill the current document space (Emscripten only).
 --
@@ -3389,14 +3552,15 @@ sDL_SetWindowFillDocument =
 foreign import ccall unsafe "hs_bindgen_7fdf198ee1ca7f92"
   hs_bindgen_7fdf198ee1ca7f92_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_ShowWindow@
 hs_bindgen_7fdf198ee1ca7f92
   :: BG.Ptr SDL_Window
   -> IO BG.CBool
 hs_bindgen_7fdf198ee1ca7f92 =
-  BG.fromFFIType hs_bindgen_7fdf198ee1ca7f92_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_7fdf198ee1ca7f92_base (BG.toFFIType x0))
 
 -- | Show a window.
 --
@@ -3421,14 +3585,15 @@ sDL_ShowWindow = hs_bindgen_7fdf198ee1ca7f92
 foreign import ccall unsafe "hs_bindgen_2764604bcb0dc3ca"
   hs_bindgen_2764604bcb0dc3ca_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_HideWindow@
 hs_bindgen_2764604bcb0dc3ca
   :: BG.Ptr SDL_Window
   -> IO BG.CBool
 hs_bindgen_2764604bcb0dc3ca =
-  BG.fromFFIType hs_bindgen_2764604bcb0dc3ca_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_2764604bcb0dc3ca_base (BG.toFFIType x0))
 
 -- | Hide a window.
 --
@@ -3453,14 +3618,15 @@ sDL_HideWindow = hs_bindgen_2764604bcb0dc3ca
 foreign import ccall unsafe "hs_bindgen_655550628b940a03"
   hs_bindgen_655550628b940a03_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_RaiseWindow@
 hs_bindgen_655550628b940a03
   :: BG.Ptr SDL_Window
   -> IO BG.CBool
 hs_bindgen_655550628b940a03 =
-  BG.fromFFIType hs_bindgen_655550628b940a03_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_655550628b940a03_base (BG.toFFIType x0))
 
 -- | Request that a window be raised above other windows and gain the input focus.
 --
@@ -3485,14 +3651,15 @@ sDL_RaiseWindow = hs_bindgen_655550628b940a03
 foreign import ccall unsafe "hs_bindgen_080d71419d89f8ac"
   hs_bindgen_080d71419d89f8ac_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_MaximizeWindow@
 hs_bindgen_080d71419d89f8ac
   :: BG.Ptr SDL_Window
   -> IO BG.CBool
 hs_bindgen_080d71419d89f8ac =
-  BG.fromFFIType hs_bindgen_080d71419d89f8ac_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_080d71419d89f8ac_base (BG.toFFIType x0))
 
 -- | Request that the window be made as large as possible.
 --
@@ -3525,14 +3692,15 @@ sDL_MaximizeWindow = hs_bindgen_080d71419d89f8ac
 foreign import ccall unsafe "hs_bindgen_e1f35d0dbc3b4400"
   hs_bindgen_e1f35d0dbc3b4400_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_MinimizeWindow@
 hs_bindgen_e1f35d0dbc3b4400
   :: BG.Ptr SDL_Window
   -> IO BG.CBool
 hs_bindgen_e1f35d0dbc3b4400 =
-  BG.fromFFIType hs_bindgen_e1f35d0dbc3b4400_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_e1f35d0dbc3b4400_base (BG.toFFIType x0))
 
 -- | Request that the window be minimized to an iconic representation.
 --
@@ -3563,14 +3731,15 @@ sDL_MinimizeWindow = hs_bindgen_e1f35d0dbc3b4400
 foreign import ccall unsafe "hs_bindgen_e090b304456b95d1"
   hs_bindgen_e090b304456b95d1_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_RestoreWindow@
 hs_bindgen_e090b304456b95d1
   :: BG.Ptr SDL_Window
   -> IO BG.CBool
 hs_bindgen_e090b304456b95d1 =
-  BG.fromFFIType hs_bindgen_e090b304456b95d1_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_e090b304456b95d1_base (BG.toFFIType x0))
 
 -- | Request that the size and position of a minimized or maximized window be restored.
 --
@@ -3601,8 +3770,8 @@ sDL_RestoreWindow = hs_bindgen_e090b304456b95d1
 foreign import ccall unsafe "hs_bindgen_b1dbd6c7bf42bc68"
   hs_bindgen_b1dbd6c7bf42bc68_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowFullscreen@
 hs_bindgen_b1dbd6c7bf42bc68
@@ -3610,7 +3779,9 @@ hs_bindgen_b1dbd6c7bf42bc68
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_b1dbd6c7bf42bc68 =
-  BG.fromFFIType hs_bindgen_b1dbd6c7bf42bc68_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b1dbd6c7bf42bc68_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Request that the window\'s fullscreen state be changed.
 --
@@ -3645,14 +3816,15 @@ sDL_SetWindowFullscreen = hs_bindgen_b1dbd6c7bf42bc68
 foreign import ccall unsafe "hs_bindgen_ce8bade87de24cec"
   hs_bindgen_ce8bade87de24cec_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SyncWindow@
 hs_bindgen_ce8bade87de24cec
   :: BG.Ptr SDL_Window
   -> IO BG.CBool
 hs_bindgen_ce8bade87de24cec =
-  BG.fromFFIType hs_bindgen_ce8bade87de24cec_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ce8bade87de24cec_base (BG.toFFIType x0))
 
 -- | Block until any pending window state is finalized.
 --
@@ -3681,14 +3853,15 @@ sDL_SyncWindow = hs_bindgen_ce8bade87de24cec
 foreign import ccall unsafe "hs_bindgen_60a31e841c25b5c2"
   hs_bindgen_60a31e841c25b5c2_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_WindowHasSurface@
 hs_bindgen_60a31e841c25b5c2
   :: BG.Ptr SDL_Window
   -> IO BG.CBool
 hs_bindgen_60a31e841c25b5c2 =
-  BG.fromFFIType hs_bindgen_60a31e841c25b5c2_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_60a31e841c25b5c2_base (BG.toFFIType x0))
 
 -- | Return whether the window has a surface associated with it.
 --
@@ -3720,7 +3893,8 @@ hs_bindgen_b27ac903c03a4dfa
   :: BG.Ptr SDL_Window
   -> IO (BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface)
 hs_bindgen_b27ac903c03a4dfa =
-  BG.fromFFIType hs_bindgen_b27ac903c03a4dfa_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b27ac903c03a4dfa_base (BG.toFFIType x0))
 
 -- | Get the SDL surface associated with the window.
 --
@@ -3753,8 +3927,8 @@ sDL_GetWindowSurface = hs_bindgen_b27ac903c03a4dfa
 foreign import ccall unsafe "hs_bindgen_507572e10b7f7b5d"
   hs_bindgen_507572e10b7f7b5d_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowSurfaceVSync@
 hs_bindgen_507572e10b7f7b5d
@@ -3762,7 +3936,9 @@ hs_bindgen_507572e10b7f7b5d
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_507572e10b7f7b5d =
-  BG.fromFFIType hs_bindgen_507572e10b7f7b5d_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_507572e10b7f7b5d_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Toggle VSync for the window surface.
 --
@@ -3797,7 +3973,7 @@ foreign import ccall unsafe "hs_bindgen_b6f4ee5ffa664900"
   hs_bindgen_b6f4ee5ffa664900_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowSurfaceVSync@
 hs_bindgen_b6f4ee5ffa664900
@@ -3805,7 +3981,9 @@ hs_bindgen_b6f4ee5ffa664900
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_b6f4ee5ffa664900 =
-  BG.fromFFIType hs_bindgen_b6f4ee5ffa664900_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b6f4ee5ffa664900_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get VSync for the window surface.
 --
@@ -3835,14 +4013,15 @@ sDL_GetWindowSurfaceVSync =
 foreign import ccall unsafe "hs_bindgen_0647ceba715b9468"
   hs_bindgen_0647ceba715b9468_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_UpdateWindowSurface@
 hs_bindgen_0647ceba715b9468
   :: BG.Ptr SDL_Window
   -> IO BG.CBool
 hs_bindgen_0647ceba715b9468 =
-  BG.fromFFIType hs_bindgen_0647ceba715b9468_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_0647ceba715b9468_base (BG.toFFIType x0))
 
 -- | Copy the window surface to the screen.
 --
@@ -3872,8 +4051,8 @@ foreign import ccall unsafe "hs_bindgen_99ad341567ec7dd7"
   hs_bindgen_99ad341567ec7dd7_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_UpdateWindowSurfaceRects@
 hs_bindgen_99ad341567ec7dd7
@@ -3882,7 +4061,12 @@ hs_bindgen_99ad341567ec7dd7
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_99ad341567ec7dd7 =
-  BG.fromFFIType hs_bindgen_99ad341567ec7dd7_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_99ad341567ec7dd7_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Copy areas of the window surface to the screen.
 --
@@ -3922,14 +4106,15 @@ sDL_UpdateWindowSurfaceRects =
 foreign import ccall unsafe "hs_bindgen_7c381c64250e8266"
   hs_bindgen_7c381c64250e8266_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_DestroyWindowSurface@
 hs_bindgen_7c381c64250e8266
   :: BG.Ptr SDL_Window
   -> IO BG.CBool
 hs_bindgen_7c381c64250e8266 =
-  BG.fromFFIType hs_bindgen_7c381c64250e8266_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_7c381c64250e8266_base (BG.toFFIType x0))
 
 -- | Destroy the surface associated with the window.
 --
@@ -3955,8 +4140,8 @@ sDL_DestroyWindowSurface =
 foreign import ccall unsafe "hs_bindgen_088757457073c51d"
   hs_bindgen_088757457073c51d_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowKeyboardGrab@
 hs_bindgen_088757457073c51d
@@ -3964,7 +4149,9 @@ hs_bindgen_088757457073c51d
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_088757457073c51d =
-  BG.fromFFIType hs_bindgen_088757457073c51d_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_088757457073c51d_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set a window\'s keyboard grab mode.
 --
@@ -4002,8 +4189,8 @@ sDL_SetWindowKeyboardGrab =
 foreign import ccall unsafe "hs_bindgen_fcca3f67a0285f40"
   hs_bindgen_fcca3f67a0285f40_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowMouseGrab@
 hs_bindgen_fcca3f67a0285f40
@@ -4011,7 +4198,9 @@ hs_bindgen_fcca3f67a0285f40
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_fcca3f67a0285f40 =
-  BG.fromFFIType hs_bindgen_fcca3f67a0285f40_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_fcca3f67a0285f40_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set a window\'s mouse grab mode.
 --
@@ -4042,14 +4231,15 @@ sDL_SetWindowMouseGrab = hs_bindgen_fcca3f67a0285f40
 foreign import ccall unsafe "hs_bindgen_cda2cd2af79b5ca6"
   hs_bindgen_cda2cd2af79b5ca6_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowKeyboardGrab@
 hs_bindgen_cda2cd2af79b5ca6
   :: BG.Ptr SDL_Window
   -> IO BG.CBool
 hs_bindgen_cda2cd2af79b5ca6 =
-  BG.fromFFIType hs_bindgen_cda2cd2af79b5ca6_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_cda2cd2af79b5ca6_base (BG.toFFIType x0))
 
 -- | Get a window\'s keyboard grab mode.
 --
@@ -4075,14 +4265,15 @@ sDL_GetWindowKeyboardGrab =
 foreign import ccall unsafe "hs_bindgen_3d8a4df5806b21ff"
   hs_bindgen_3d8a4df5806b21ff_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowMouseGrab@
 hs_bindgen_3d8a4df5806b21ff
   :: BG.Ptr SDL_Window
   -> IO BG.CBool
 hs_bindgen_3d8a4df5806b21ff =
-  BG.fromFFIType hs_bindgen_3d8a4df5806b21ff_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3d8a4df5806b21ff_base (BG.toFFIType x0))
 
 -- | Get a window\'s mouse grab mode.
 --
@@ -4111,7 +4302,7 @@ foreign import ccall unsafe "hs_bindgen_63a195963286004a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetGrabbedWindow@
 hs_bindgen_63a195963286004a :: IO (BG.Ptr SDL_Window)
 hs_bindgen_63a195963286004a =
-  BG.fromFFIType hs_bindgen_63a195963286004a_base
+  fmap BG.fromFFIType hs_bindgen_63a195963286004a_base
 
 -- | Get the window that currently has an input grab enabled.
 --
@@ -4132,7 +4323,7 @@ foreign import ccall unsafe "hs_bindgen_3da85ada2677f1fd"
   hs_bindgen_3da85ada2677f1fd_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowMouseRect@
 hs_bindgen_3da85ada2677f1fd
@@ -4140,7 +4331,9 @@ hs_bindgen_3da85ada2677f1fd
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_3da85ada2677f1fd =
-  BG.fromFFIType hs_bindgen_3da85ada2677f1fd_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_3da85ada2677f1fd_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Confines the cursor to the specified area of a window.
 --
@@ -4178,7 +4371,8 @@ hs_bindgen_45c2c94bf4760d8a
   :: BG.Ptr SDL_Window
   -> IO (PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect)
 hs_bindgen_45c2c94bf4760d8a =
-  BG.fromFFIType hs_bindgen_45c2c94bf4760d8a_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_45c2c94bf4760d8a_base (BG.toFFIType x0))
 
 -- | Get the mouse confinement rectangle of a window.
 --
@@ -4203,8 +4397,8 @@ sDL_GetWindowMouseRect = hs_bindgen_45c2c94bf4760d8a
 foreign import ccall unsafe "hs_bindgen_019c9148c0aa4e8f"
   hs_bindgen_019c9148c0aa4e8f_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowOpacity@
 hs_bindgen_019c9148c0aa4e8f
@@ -4212,7 +4406,9 @@ hs_bindgen_019c9148c0aa4e8f
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_019c9148c0aa4e8f =
-  BG.fromFFIType hs_bindgen_019c9148c0aa4e8f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_019c9148c0aa4e8f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the opacity for a window.
 --
@@ -4245,14 +4441,15 @@ sDL_SetWindowOpacity = hs_bindgen_019c9148c0aa4e8f
 foreign import ccall unsafe "hs_bindgen_744325d9009c4077"
   hs_bindgen_744325d9009c4077_base
     :: BG.Ptr BG.Void
-    -> IO Float
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowOpacity@
 hs_bindgen_744325d9009c4077
   :: BG.Ptr SDL_Window
   -> IO BG.CFloat
 hs_bindgen_744325d9009c4077 =
-  BG.fromFFIType hs_bindgen_744325d9009c4077_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_744325d9009c4077_base (BG.toFFIType x0))
 
 -- | Get the opacity of a window.
 --
@@ -4280,7 +4477,7 @@ foreign import ccall unsafe "hs_bindgen_effc3e47de752f57"
   hs_bindgen_effc3e47de752f57_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowParent@
 hs_bindgen_effc3e47de752f57
@@ -4288,7 +4485,9 @@ hs_bindgen_effc3e47de752f57
   -> BG.Ptr SDL_Window
   -> IO BG.CBool
 hs_bindgen_effc3e47de752f57 =
-  BG.fromFFIType hs_bindgen_effc3e47de752f57_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_effc3e47de752f57_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the window as a child of a parent window.
 --
@@ -4327,8 +4526,8 @@ sDL_SetWindowParent = hs_bindgen_effc3e47de752f57
 foreign import ccall unsafe "hs_bindgen_d48e7b0b38e32483"
   hs_bindgen_d48e7b0b38e32483_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowModal@
 hs_bindgen_d48e7b0b38e32483
@@ -4336,7 +4535,9 @@ hs_bindgen_d48e7b0b38e32483
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_d48e7b0b38e32483 =
-  BG.fromFFIType hs_bindgen_d48e7b0b38e32483_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_d48e7b0b38e32483_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Toggle the state of the window as modal.
 --
@@ -4367,8 +4568,8 @@ sDL_SetWindowModal = hs_bindgen_d48e7b0b38e32483
 foreign import ccall unsafe "hs_bindgen_45029d07ea1d3a4d"
   hs_bindgen_45029d07ea1d3a4d_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowFocusable@
 hs_bindgen_45029d07ea1d3a4d
@@ -4376,7 +4577,9 @@ hs_bindgen_45029d07ea1d3a4d
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_45029d07ea1d3a4d =
-  BG.fromFFIType hs_bindgen_45029d07ea1d3a4d_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_45029d07ea1d3a4d_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set whether the window may have input focus.
 --
@@ -4403,9 +4606,9 @@ sDL_SetWindowFocusable = hs_bindgen_45029d07ea1d3a4d
 foreign import ccall unsafe "hs_bindgen_839b36668059a297"
   hs_bindgen_839b36668059a297_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_ShowWindowSystemMenu@
 hs_bindgen_839b36668059a297
@@ -4414,7 +4617,12 @@ hs_bindgen_839b36668059a297
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_839b36668059a297 =
-  BG.fromFFIType hs_bindgen_839b36668059a297_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_839b36668059a297_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Display the system-level window menu.
 --
@@ -4452,7 +4660,7 @@ foreign import ccall unsafe "hs_bindgen_b4659f0d8b06588e"
     :: BG.Ptr BG.Void
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowHitTest@
 hs_bindgen_b4659f0d8b06588e
@@ -4461,7 +4669,12 @@ hs_bindgen_b4659f0d8b06588e
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_b4659f0d8b06588e =
-  BG.fromFFIType hs_bindgen_b4659f0d8b06588e_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_b4659f0d8b06588e_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Provide a callback that decides if a window region has special properties.
 --
@@ -4505,7 +4718,7 @@ foreign import ccall unsafe "hs_bindgen_e671b0b9ca790520"
   hs_bindgen_e671b0b9ca790520_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowShape@
 hs_bindgen_e671b0b9ca790520
@@ -4513,7 +4726,9 @@ hs_bindgen_e671b0b9ca790520
   -> BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface
   -> IO BG.CBool
 hs_bindgen_e671b0b9ca790520 =
-  BG.fromFFIType hs_bindgen_e671b0b9ca790520_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_e671b0b9ca790520_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the shape of a transparent window.
 --
@@ -4546,8 +4761,8 @@ sDL_SetWindowShape = hs_bindgen_e671b0b9ca790520
 foreign import ccall unsafe "hs_bindgen_631082dd3b92af79"
   hs_bindgen_631082dd3b92af79_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> BG.CUInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_FlashWindow@
 hs_bindgen_631082dd3b92af79
@@ -4555,7 +4770,9 @@ hs_bindgen_631082dd3b92af79
   -> SDL_FlashOperation
   -> IO BG.CBool
 hs_bindgen_631082dd3b92af79 =
-  BG.fromFFIType hs_bindgen_631082dd3b92af79_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_631082dd3b92af79_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Request a window to demand attention from the user.
 --
@@ -4582,8 +4799,8 @@ sDL_FlashWindow = hs_bindgen_631082dd3b92af79
 foreign import ccall unsafe "hs_bindgen_24d52be2d578e3a6"
   hs_bindgen_24d52be2d578e3a6_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowProgressState@
 hs_bindgen_24d52be2d578e3a6
@@ -4591,7 +4808,9 @@ hs_bindgen_24d52be2d578e3a6
   -> SDL_ProgressState
   -> IO BG.CBool
 hs_bindgen_24d52be2d578e3a6 =
-  BG.fromFFIType hs_bindgen_24d52be2d578e3a6_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_24d52be2d578e3a6_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Sets the state of the progress bar for the given window’s taskbar icon.
 --
@@ -4619,14 +4838,15 @@ sDL_SetWindowProgressState =
 foreign import ccall unsafe "hs_bindgen_d7a642f9cea765c4"
   hs_bindgen_d7a642f9cea765c4_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowProgressState@
 hs_bindgen_d7a642f9cea765c4
   :: BG.Ptr SDL_Window
   -> IO SDL_ProgressState
 hs_bindgen_d7a642f9cea765c4 =
-  BG.fromFFIType hs_bindgen_d7a642f9cea765c4_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_d7a642f9cea765c4_base (BG.toFFIType x0))
 
 -- | Get the state of the progress bar for the given window’s taskbar icon.
 --
@@ -4650,8 +4870,8 @@ sDL_GetWindowProgressState =
 foreign import ccall unsafe "hs_bindgen_0a7984bb3f923d56"
   hs_bindgen_0a7984bb3f923d56_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_SetWindowProgressValue@
 hs_bindgen_0a7984bb3f923d56
@@ -4659,7 +4879,9 @@ hs_bindgen_0a7984bb3f923d56
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_0a7984bb3f923d56 =
-  BG.fromFFIType hs_bindgen_0a7984bb3f923d56_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_0a7984bb3f923d56_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Sets the value of the progress bar for the given window’s taskbar icon.
 --
@@ -4687,14 +4909,15 @@ sDL_SetWindowProgressValue =
 foreign import ccall unsafe "hs_bindgen_936a487daf968843"
   hs_bindgen_936a487daf968843_base
     :: BG.Ptr BG.Void
-    -> IO Float
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GetWindowProgressValue@
 hs_bindgen_936a487daf968843
   :: BG.Ptr SDL_Window
   -> IO BG.CFloat
 hs_bindgen_936a487daf968843 =
-  BG.fromFFIType hs_bindgen_936a487daf968843_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_936a487daf968843_base (BG.toFFIType x0))
 
 -- | Get the value of the progress bar for the given window’s taskbar icon.
 --
@@ -4725,7 +4948,8 @@ hs_bindgen_c66377fe72053eef
   :: BG.Ptr SDL_Window
   -> IO ()
 hs_bindgen_c66377fe72053eef =
-  BG.fromFFIType hs_bindgen_c66377fe72053eef_base
+  \x0 ->
+    hs_bindgen_c66377fe72053eef_base (BG.toFFIType x0)
 
 -- | Destroy a window.
 --
@@ -4751,12 +4975,12 @@ sDL_DestroyWindow = hs_bindgen_c66377fe72053eef
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_ScreenSaverEnabled@
 foreign import ccall unsafe "hs_bindgen_8d4460920f35fe23"
   hs_bindgen_8d4460920f35fe23_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_ScreenSaverEnabled@
 hs_bindgen_8d4460920f35fe23 :: IO BG.CBool
 hs_bindgen_8d4460920f35fe23 =
-  BG.fromFFIType hs_bindgen_8d4460920f35fe23_base
+  fmap BG.fromFFIType hs_bindgen_8d4460920f35fe23_base
 
 -- | Check whether the screensaver is currently enabled.
 --
@@ -4779,12 +5003,12 @@ sDL_ScreenSaverEnabled = hs_bindgen_8d4460920f35fe23
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_EnableScreenSaver@
 foreign import ccall unsafe "hs_bindgen_b0634b88ba5dac7b"
   hs_bindgen_b0634b88ba5dac7b_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_EnableScreenSaver@
 hs_bindgen_b0634b88ba5dac7b :: IO BG.CBool
 hs_bindgen_b0634b88ba5dac7b =
-  BG.fromFFIType hs_bindgen_b0634b88ba5dac7b_base
+  fmap BG.fromFFIType hs_bindgen_b0634b88ba5dac7b_base
 
 -- | Allow the screen to be blanked by a screen saver.
 --
@@ -4803,12 +5027,12 @@ sDL_EnableScreenSaver = hs_bindgen_b0634b88ba5dac7b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_DisableScreenSaver@
 foreign import ccall unsafe "hs_bindgen_2a05f306113c76cb"
   hs_bindgen_2a05f306113c76cb_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_DisableScreenSaver@
 hs_bindgen_2a05f306113c76cb :: IO BG.CBool
 hs_bindgen_2a05f306113c76cb =
-  BG.fromFFIType hs_bindgen_2a05f306113c76cb_base
+  fmap BG.fromFFIType hs_bindgen_2a05f306113c76cb_base
 
 -- | Prevent the screen from being blanked by a screen saver.
 --
@@ -4832,14 +5056,15 @@ sDL_DisableScreenSaver = hs_bindgen_2a05f306113c76cb
 foreign import ccall unsafe "hs_bindgen_80ecb7f912f6a101"
   hs_bindgen_80ecb7f912f6a101_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_LoadLibrary@
 hs_bindgen_80ecb7f912f6a101
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_80ecb7f912f6a101 =
-  BG.fromFFIType hs_bindgen_80ecb7f912f6a101_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_80ecb7f912f6a101_base (BG.toFFIType x0))
 
 -- | Dynamically load an OpenGL library.
 --
@@ -4868,14 +5093,15 @@ sDL_GL_LoadLibrary = hs_bindgen_80ecb7f912f6a101
 foreign import ccall unsafe "hs_bindgen_45ec5c45b7aeecbc"
   hs_bindgen_45ec5c45b7aeecbc_base
     :: BG.Ptr BG.Void
-    -> IO (BG.FunPtr BG.Void)
+    -> IO HsBindgen.Runtime.Support.FunPtrVoid
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_GetProcAddress@
 hs_bindgen_45ec5c45b7aeecbc
   :: PtrConst.PtrConst BG.CChar
   -> IO SDL3.Sys.Bindgen.Stdinc.SDL_FunctionPointer
 hs_bindgen_45ec5c45b7aeecbc =
-  BG.fromFFIType hs_bindgen_45ec5c45b7aeecbc_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_45ec5c45b7aeecbc_base (BG.toFFIType x0))
 
 -- | Get an OpenGL function by name.
 --
@@ -4914,14 +5140,15 @@ sDL_GL_GetProcAddress = hs_bindgen_45ec5c45b7aeecbc
 foreign import ccall unsafe "hs_bindgen_fecd43d56eba918e"
   hs_bindgen_fecd43d56eba918e_base
     :: BG.Ptr BG.Void
-    -> IO (BG.FunPtr BG.Void)
+    -> IO HsBindgen.Runtime.Support.FunPtrVoid
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_EGL_GetProcAddress@
 hs_bindgen_fecd43d56eba918e
   :: PtrConst.PtrConst BG.CChar
   -> IO SDL3.Sys.Bindgen.Stdinc.SDL_FunctionPointer
 hs_bindgen_fecd43d56eba918e =
-  BG.fromFFIType hs_bindgen_fecd43d56eba918e_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_fecd43d56eba918e_base (BG.toFFIType x0))
 
 -- | Get an EGL library function by name.
 --
@@ -4952,7 +5179,7 @@ foreign import ccall unsafe "hs_bindgen_86d08bc666c9f566"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_UnloadLibrary@
 hs_bindgen_86d08bc666c9f566 :: IO ()
 hs_bindgen_86d08bc666c9f566 =
-  BG.fromFFIType hs_bindgen_86d08bc666c9f566_base
+  hs_bindgen_86d08bc666c9f566_base
 
 -- | Unload the OpenGL library previously loaded by @SDL_GL_LoadLibrary()@.
 --
@@ -4970,14 +5197,15 @@ sDL_GL_UnloadLibrary = hs_bindgen_86d08bc666c9f566
 foreign import ccall unsafe "hs_bindgen_8c89c426b6cd15de"
   hs_bindgen_8c89c426b6cd15de_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_ExtensionSupported@
 hs_bindgen_8c89c426b6cd15de
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_8c89c426b6cd15de =
-  BG.fromFFIType hs_bindgen_8c89c426b6cd15de_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_8c89c426b6cd15de_base (BG.toFFIType x0))
 
 -- | Check if an OpenGL extension is supported for the current context.
 --
@@ -5009,7 +5237,7 @@ foreign import ccall unsafe "hs_bindgen_c0ef2cbb30166af5"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_ResetAttributes@
 hs_bindgen_c0ef2cbb30166af5 :: IO ()
 hs_bindgen_c0ef2cbb30166af5 =
-  BG.fromFFIType hs_bindgen_c0ef2cbb30166af5_base
+  hs_bindgen_c0ef2cbb30166af5_base
 
 -- | Reset all previously set OpenGL context attributes to their default values.
 --
@@ -5026,9 +5254,9 @@ sDL_GL_ResetAttributes = hs_bindgen_c0ef2cbb30166af5
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_SetAttribute@
 foreign import ccall unsafe "hs_bindgen_dfea3fa025830d75"
   hs_bindgen_dfea3fa025830d75_base
-    :: BG.Word32
-    -> BG.Int32
-    -> IO BG.Word8
+    :: BG.CUInt
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_SetAttribute@
 hs_bindgen_dfea3fa025830d75
@@ -5036,7 +5264,9 @@ hs_bindgen_dfea3fa025830d75
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_dfea3fa025830d75 =
-  BG.fromFFIType hs_bindgen_dfea3fa025830d75_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_dfea3fa025830d75_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set an OpenGL window attribute before window creation.
 --
@@ -5066,9 +5296,9 @@ sDL_GL_SetAttribute = hs_bindgen_dfea3fa025830d75
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_GetAttribute@
 foreign import ccall unsafe "hs_bindgen_b4ec3aa42353470f"
   hs_bindgen_b4ec3aa42353470f_base
-    :: BG.Word32
+    :: BG.CUInt
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_GetAttribute@
 hs_bindgen_b4ec3aa42353470f
@@ -5076,7 +5306,9 @@ hs_bindgen_b4ec3aa42353470f
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_b4ec3aa42353470f =
-  BG.fromFFIType hs_bindgen_b4ec3aa42353470f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b4ec3aa42353470f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the actual value for an attribute from the current context.
 --
@@ -5112,7 +5344,8 @@ hs_bindgen_02589eafe594e5ce
   :: BG.Ptr SDL_Window
   -> IO SDL_GLContext
 hs_bindgen_02589eafe594e5ce =
-  BG.fromFFIType hs_bindgen_02589eafe594e5ce_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_02589eafe594e5ce_base (BG.toFFIType x0))
 
 -- | Create an OpenGL context for an OpenGL window, and make it current.
 --
@@ -5146,7 +5379,7 @@ foreign import ccall unsafe "hs_bindgen_d986b780d1ccac33"
   hs_bindgen_d986b780d1ccac33_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_MakeCurrent@
 hs_bindgen_d986b780d1ccac33
@@ -5154,7 +5387,9 @@ hs_bindgen_d986b780d1ccac33
   -> SDL_GLContext
   -> IO BG.CBool
 hs_bindgen_d986b780d1ccac33 =
-  BG.fromFFIType hs_bindgen_d986b780d1ccac33_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_d986b780d1ccac33_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set up an OpenGL context for rendering into an OpenGL window.
 --
@@ -5189,7 +5424,7 @@ foreign import ccall unsafe "hs_bindgen_24a0284995e8a74e"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_GetCurrentWindow@
 hs_bindgen_24a0284995e8a74e :: IO (BG.Ptr SDL_Window)
 hs_bindgen_24a0284995e8a74e =
-  BG.fromFFIType hs_bindgen_24a0284995e8a74e_base
+  fmap BG.fromFFIType hs_bindgen_24a0284995e8a74e_base
 
 -- | Get the currently active OpenGL window.
 --
@@ -5211,7 +5446,7 @@ foreign import ccall unsafe "hs_bindgen_cb9ceaede20b4208"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_GetCurrentContext@
 hs_bindgen_cb9ceaede20b4208 :: IO SDL_GLContext
 hs_bindgen_cb9ceaede20b4208 =
-  BG.fromFFIType hs_bindgen_cb9ceaede20b4208_base
+  fmap BG.fromFFIType hs_bindgen_cb9ceaede20b4208_base
 
 -- | Get the currently active OpenGL context.
 --
@@ -5236,7 +5471,7 @@ foreign import ccall unsafe "hs_bindgen_709f1c4141e36bd4"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_EGL_GetCurrentDisplay@
 hs_bindgen_709f1c4141e36bd4 :: IO SDL_EGLDisplay
 hs_bindgen_709f1c4141e36bd4 =
-  BG.fromFFIType hs_bindgen_709f1c4141e36bd4_base
+  fmap BG.fromFFIType hs_bindgen_709f1c4141e36bd4_base
 
 -- | Get the currently active EGL display.
 --
@@ -5259,7 +5494,7 @@ foreign import ccall unsafe "hs_bindgen_1a495e63c24b9e1d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_EGL_GetCurrentConfig@
 hs_bindgen_1a495e63c24b9e1d :: IO SDL_EGLConfig
 hs_bindgen_1a495e63c24b9e1d =
-  BG.fromFFIType hs_bindgen_1a495e63c24b9e1d_base
+  fmap BG.fromFFIType hs_bindgen_1a495e63c24b9e1d_base
 
 -- | Get the currently active EGL config.
 --
@@ -5285,7 +5520,8 @@ hs_bindgen_2dc2976e346931c2
   :: BG.Ptr SDL_Window
   -> IO SDL_EGLSurface
 hs_bindgen_2dc2976e346931c2 =
-  BG.fromFFIType hs_bindgen_2dc2976e346931c2_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_2dc2976e346931c2_base (BG.toFFIType x0))
 
 -- | Get the EGL surface associated with the window.
 --
@@ -5322,7 +5558,15 @@ hs_bindgen_6f6c52b23bae7a50
   -> BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_6f6c52b23bae7a50 =
-  BG.fromFFIType hs_bindgen_6f6c52b23bae7a50_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_6f6c52b23bae7a50_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Sets the callbacks for defining custom EGLAttrib arrays for EGL initialization.
 --
@@ -5359,15 +5603,16 @@ sDL_EGL_SetAttributeCallbacks =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_SetSwapInterval@
 foreign import ccall unsafe "hs_bindgen_9fcc7f15d61d9182"
   hs_bindgen_9fcc7f15d61d9182_base
-    :: BG.Int32
-    -> IO BG.Word8
+    :: BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_SetSwapInterval@
 hs_bindgen_9fcc7f15d61d9182
   :: BG.CInt
   -> IO BG.CBool
 hs_bindgen_9fcc7f15d61d9182 =
-  BG.fromFFIType hs_bindgen_9fcc7f15d61d9182_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9fcc7f15d61d9182_base (BG.toFFIType x0))
 
 -- | Set the swap interval for the current OpenGL context.
 --
@@ -5398,14 +5643,15 @@ sDL_GL_SetSwapInterval = hs_bindgen_9fcc7f15d61d9182
 foreign import ccall unsafe "hs_bindgen_d23bd762103b2805"
   hs_bindgen_d23bd762103b2805_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_GetSwapInterval@
 hs_bindgen_d23bd762103b2805
   :: BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_d23bd762103b2805 =
-  BG.fromFFIType hs_bindgen_d23bd762103b2805_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_d23bd762103b2805_base (BG.toFFIType x0))
 
 -- | Get the swap interval for the current OpenGL context.
 --
@@ -5432,14 +5678,15 @@ sDL_GL_GetSwapInterval = hs_bindgen_d23bd762103b2805
 foreign import ccall unsafe "hs_bindgen_0142b6de91fcc321"
   hs_bindgen_0142b6de91fcc321_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_SwapWindow@
 hs_bindgen_0142b6de91fcc321
   :: BG.Ptr SDL_Window
   -> IO BG.CBool
 hs_bindgen_0142b6de91fcc321 =
-  BG.fromFFIType hs_bindgen_0142b6de91fcc321_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_0142b6de91fcc321_base (BG.toFFIType x0))
 
 -- | Update a window with OpenGL rendering.
 --
@@ -5466,14 +5713,15 @@ sDL_GL_SwapWindow = hs_bindgen_0142b6de91fcc321
 foreign import ccall unsafe "hs_bindgen_efe95fa2c1c2690c"
   hs_bindgen_efe95fa2c1c2690c_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Video_Unsafe_SDL_GL_DestroyContext@
 hs_bindgen_efe95fa2c1c2690c
   :: SDL_GLContext
   -> IO BG.CBool
 hs_bindgen_efe95fa2c1c2690c =
-  BG.fromFFIType hs_bindgen_efe95fa2c1c2690c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_efe95fa2c1c2690c_base (BG.toFFIType x0))
 
 -- | Delete an OpenGL context.
 --

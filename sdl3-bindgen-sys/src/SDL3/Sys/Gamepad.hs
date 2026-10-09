@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL provides a low-level joystick API, which just treats joysticks as an arbitrary pile of buttons, axes, and hat switches. If you\'re planning to write your own control configuration screen, this can give you a lot of flexibility, but that\'s a lot of work, and most things that we consider \"joysticks\" now are actually console-style gamepads. So SDL provides the gamepad API on top of the lower-level joystick functionality.
 --
 --     The difference between a joystick and a gamepad is that a gamepad tells you /where/ a button or axis is on the device. You don\'t speak to gamepads in terms of arbitrary numbers like \"button 3\" or \"axis 2\" but in standard locations: the d-pad, the shoulder buttons, triggers, A\/B\/X\/Y (or X\/O\/Square\/Triangle, if you will).
@@ -179,6 +181,7 @@ module SDL3.Sys.Gamepad (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, Float, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

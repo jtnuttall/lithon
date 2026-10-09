@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Metal.Safe (
@@ -9,6 +11,8 @@ module SDL3.Sys.Bindgen.Metal.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Metal
@@ -16,7 +20,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_metal.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_metal.h>"
          , "SDL_MetalView hs_bindgen_04ce5ab1408c911d ("
          , "  SDL_Window *arg1"
          , ")"
@@ -50,7 +55,8 @@ hs_bindgen_04ce5ab1408c911d
   :: BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window
   -> IO SDL_MetalView
 hs_bindgen_04ce5ab1408c911d =
-  BG.fromFFIType hs_bindgen_04ce5ab1408c911d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_04ce5ab1408c911d_base (BG.toFFIType x0))
 
 -- | Create a CAMetalLayer-backed NSView\/UIView and attach it to the specified window.
 --
@@ -86,7 +92,8 @@ hs_bindgen_b00215ead799e6c0
   :: SDL_MetalView
   -> IO ()
 hs_bindgen_b00215ead799e6c0 =
-  BG.fromFFIType hs_bindgen_b00215ead799e6c0_base
+  \x0 ->
+    hs_bindgen_b00215ead799e6c0_base (BG.toFFIType x0)
 
 -- | Destroy an existing 'SDL_MetalView' object.
 --
@@ -118,7 +125,8 @@ hs_bindgen_4ce54bd94800c4e9
   :: SDL_MetalView
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_4ce54bd94800c4e9 =
-  BG.fromFFIType hs_bindgen_4ce54bd94800c4e9_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4ce54bd94800c4e9_base (BG.toFFIType x0))
 
 -- | Get a pointer to the backing CAMetalLayer for the given view.
 --

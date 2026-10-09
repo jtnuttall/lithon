@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Vulkan.Safe (
@@ -13,7 +15,11 @@ module SDL3.Sys.Bindgen.Vulkan.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Support qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -22,7 +28,8 @@ import SDL3.Sys.Bindgen.Vulkan
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_vulkan.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_vulkan.h>"
          , "_Bool hs_bindgen_ef9e83627c649a75 ("
          , "  char const *arg1"
          , ")"
@@ -76,14 +83,15 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 foreign import ccall safe "hs_bindgen_ef9e83627c649a75"
   hs_bindgen_ef9e83627c649a75_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Vulkan_Safe_SDL_Vulkan_LoadLibrary@
 hs_bindgen_ef9e83627c649a75
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_ef9e83627c649a75 =
-  BG.fromFFIType hs_bindgen_ef9e83627c649a75_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ef9e83627c649a75_base (BG.toFFIType x0))
 
 -- | Dynamically load the Vulkan loader library.
 --
@@ -119,12 +127,12 @@ sDL_Vulkan_LoadLibrary = hs_bindgen_ef9e83627c649a75
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Vulkan_Safe_SDL_Vulkan_GetVkGetInstanceProcAddr@
 foreign import ccall safe "hs_bindgen_eda99f289265681d"
   hs_bindgen_eda99f289265681d_base
-    :: IO (BG.FunPtr BG.Void)
+    :: IO HsBindgen.Runtime.Support.FunPtrVoid
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Vulkan_Safe_SDL_Vulkan_GetVkGetInstanceProcAddr@
 hs_bindgen_eda99f289265681d :: IO SDL3.Sys.Bindgen.Stdinc.SDL_FunctionPointer
 hs_bindgen_eda99f289265681d =
-  BG.fromFFIType hs_bindgen_eda99f289265681d_base
+  fmap BG.fromFFIType hs_bindgen_eda99f289265681d_base
 
 -- | Get the address of the @vkGetInstanceProcAddr@ function.
 --
@@ -151,7 +159,7 @@ foreign import ccall safe "hs_bindgen_ba0b6a1db50d1914"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Vulkan_Safe_SDL_Vulkan_UnloadLibrary@
 hs_bindgen_ba0b6a1db50d1914 :: IO ()
 hs_bindgen_ba0b6a1db50d1914 =
-  BG.fromFFIType hs_bindgen_ba0b6a1db50d1914_base
+  hs_bindgen_ba0b6a1db50d1914_base
 
 -- | Unload the Vulkan library previously loaded by @SDL_Vulkan_LoadLibrary()@.
 --
@@ -181,7 +189,8 @@ hs_bindgen_282c9f5ce4ea1600
   :: BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO (PtrConst.PtrConst (PtrConst.PtrConst BG.CChar))
 hs_bindgen_282c9f5ce4ea1600 =
-  BG.fromFFIType hs_bindgen_282c9f5ce4ea1600_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_282c9f5ce4ea1600_base (BG.toFFIType x0))
 
 -- | Get the Vulkan instance extensions needed for vkCreateInstance.
 --
@@ -214,7 +223,7 @@ foreign import ccall safe "hs_bindgen_6e90d5d762dab7a4"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Vulkan_Safe_SDL_Vulkan_CreateSurface@
 hs_bindgen_6e90d5d762dab7a4
@@ -224,7 +233,18 @@ hs_bindgen_6e90d5d762dab7a4
   -> BG.Ptr VkSurfaceKHR
   -> IO BG.CBool
 hs_bindgen_6e90d5d762dab7a4 =
-  BG.fromFFIType hs_bindgen_6e90d5d762dab7a4_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_6e90d5d762dab7a4_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Create a Vulkan rendering surface for a window.
 --
@@ -275,7 +295,10 @@ hs_bindgen_584b3250cc77055d
   -> PtrConst.PtrConst VkAllocationCallbacks
   -> IO ()
 hs_bindgen_584b3250cc77055d =
-  BG.fromFFIType hs_bindgen_584b3250cc77055d_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        hs_bindgen_584b3250cc77055d_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2)
 
 -- | Destroy the Vulkan rendering surface of a window.
 --
@@ -312,8 +335,8 @@ foreign import ccall safe "hs_bindgen_861d49977f9c657e"
   hs_bindgen_861d49977f9c657e_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Vulkan_Safe_SDL_Vulkan_GetPresentationSupport@
 hs_bindgen_861d49977f9c657e
@@ -322,7 +345,12 @@ hs_bindgen_861d49977f9c657e
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_861d49977f9c657e =
-  BG.fromFFIType hs_bindgen_861d49977f9c657e_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_861d49977f9c657e_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Query support for presentation via a given physical device and queue family.
 --

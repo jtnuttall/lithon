@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Simple error message routines for SDL.
 --
 --     == FFI conventions
@@ -12,6 +14,8 @@ module SDL3.Sys.Error (
   SDL3.Sys.Error.clearError,
 )
 where
+
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.PtrConst qualified as PtrConst

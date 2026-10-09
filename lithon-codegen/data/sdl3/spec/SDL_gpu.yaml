@@ -1,5 +1,5 @@
 version:
-  hs_bindgen: 0.1.0
+  hs_bindgen: 1.0.0.0
   binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Gpu
 ctypes:
@@ -505,6 +505,9 @@ hstypes:
         constructor: SDL_GPUBlendFactor
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -529,6 +532,9 @@ hstypes:
         constructor: SDL_GPUBlendOp
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -569,6 +575,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -593,6 +600,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -614,6 +622,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -634,6 +643,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -653,6 +663,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -673,6 +684,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -684,6 +696,9 @@ hstypes:
         constructor: SDL_GPUBufferUsageFlags
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word32
     instances:
       - Bitfield
       - Bits
@@ -715,6 +730,9 @@ hstypes:
         constructor: SDL_GPUColorComponentFlags
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word8
     instances:
       - Bitfield
       - Bits
@@ -763,6 +781,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -782,6 +801,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -812,6 +832,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -825,6 +846,9 @@ hstypes:
         constructor: SDL_GPUCompareOp
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -873,6 +897,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -886,6 +911,9 @@ hstypes:
         constructor: SDL_GPUCubeMapFace
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -910,6 +938,9 @@ hstypes:
         constructor: SDL_GPUCullMode
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -951,6 +982,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -978,6 +1010,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -993,6 +1026,9 @@ hstypes:
         constructor: SDL_GPUFillMode
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1017,6 +1053,9 @@ hstypes:
         constructor: SDL_GPUFilter
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1041,6 +1080,9 @@ hstypes:
         constructor: SDL_GPUFrontFace
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1082,6 +1124,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1106,6 +1149,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1117,6 +1161,9 @@ hstypes:
         constructor: SDL_GPUIndexElementSize
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1152,6 +1199,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1172,6 +1220,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1193,6 +1242,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1204,6 +1254,9 @@ hstypes:
         constructor: SDL_GPULoadOp
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1240,6 +1293,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1251,6 +1305,9 @@ hstypes:
         constructor: SDL_GPUPresentMode
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1275,6 +1332,9 @@ hstypes:
         constructor: SDL_GPUPrimitiveType
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1315,6 +1375,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1328,6 +1389,9 @@ hstypes:
         constructor: SDL_GPUSampleCount
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1354,6 +1418,9 @@ hstypes:
         constructor: SDL_GPUSamplerAddressMode
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1400,6 +1467,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1411,6 +1479,9 @@ hstypes:
         constructor: SDL_GPUSamplerMipmapMode
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1453,6 +1524,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1464,6 +1536,9 @@ hstypes:
         constructor: SDL_GPUShaderFormat
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word32
     instances:
       - Bitfield
       - Bits
@@ -1495,6 +1570,9 @@ hstypes:
         constructor: SDL_GPUShaderStage
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1519,6 +1597,9 @@ hstypes:
         constructor: SDL_GPUStencilOp
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1553,6 +1634,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1575,6 +1657,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1599,6 +1682,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1610,6 +1694,9 @@ hstypes:
         constructor: SDL_GPUStoreOp
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1634,6 +1721,9 @@ hstypes:
         constructor: SDL_GPUSwapchainComposition
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1675,6 +1765,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1686,6 +1777,9 @@ hstypes:
         constructor: SDL_GPUTextureFormat
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1722,6 +1816,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1748,6 +1843,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1767,6 +1863,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1788,6 +1885,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1799,6 +1897,9 @@ hstypes:
         constructor: SDL_GPUTextureType
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1823,6 +1924,9 @@ hstypes:
         constructor: SDL_GPUTextureUsageFlags
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word32
     instances:
       - Bitfield
       - Bits
@@ -1865,6 +1969,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1884,6 +1989,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1895,6 +2001,9 @@ hstypes:
         constructor: SDL_GPUTransferBufferUsage
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1929,6 +2038,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1950,6 +2060,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -1961,6 +2072,9 @@ hstypes:
         constructor: SDL_GPUVertexElementFormat
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -1985,6 +2099,9 @@ hstypes:
         constructor: SDL_GPUVertexInputRate
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -2019,6 +2136,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -2042,6 +2160,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -2066,6 +2185,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize

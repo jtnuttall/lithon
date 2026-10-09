@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | A GUID is a 128-bit value that represents something that is uniquely identifiable by this value: \"globally unique.\"
 --
 --     SDL provides functions to convert a GUID to\/from a string. An 'SDL_GUID' is a 128-bit identifier for an input device that identifies that device across runs of SDL programs on the same platform.
@@ -27,6 +29,7 @@ module SDL3.Sys.Guid (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (IO)
 
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst

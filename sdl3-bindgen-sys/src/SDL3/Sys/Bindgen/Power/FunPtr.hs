@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Power.FunPtr (
@@ -7,13 +9,16 @@ module SDL3.Sys.Bindgen.Power.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Power
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_power.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_power.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Power_get_SDL_GetPowerInfo */"
          , "__attribute__ ((const))"
          , "SDL_PowerState (*hs_bindgen_ccc542a5396280c2 (void)) ("
@@ -36,7 +41,7 @@ foreign import ccall unsafe "hs_bindgen_ccc542a5396280c2"
 hs_bindgen_ccc542a5396280c2
   :: IO (BG.FunPtr (BG.Ptr BG.CInt -> BG.Ptr BG.CInt -> IO SDL_PowerState))
 hs_bindgen_ccc542a5396280c2 =
-  BG.fromFFIType hs_bindgen_ccc542a5396280c2_base
+  fmap BG.fromFFIType hs_bindgen_ccc542a5396280c2_base
 
 {-# NOINLINE sDL_GetPowerInfo #-}
 

@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Error.Unsafe (
@@ -9,13 +11,16 @@ module SDL3.Sys.Bindgen.Error.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_error.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_error.h>"
          , "_Bool hs_bindgen_bdcf7fcfe4f61e9a (void)"
          , "{"
          , "  return (SDL_OutOfMemory)();"
@@ -35,12 +40,12 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Error_Unsafe_SDL_OutOfMemory@
 foreign import ccall unsafe "hs_bindgen_bdcf7fcfe4f61e9a"
   hs_bindgen_bdcf7fcfe4f61e9a_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Error_Unsafe_SDL_OutOfMemory@
 hs_bindgen_bdcf7fcfe4f61e9a :: IO BG.CBool
 hs_bindgen_bdcf7fcfe4f61e9a =
-  BG.fromFFIType hs_bindgen_bdcf7fcfe4f61e9a_base
+  fmap BG.fromFFIType hs_bindgen_bdcf7fcfe4f61e9a_base
 
 -- | Set an error indicating that memory allocation failed.
 --
@@ -64,7 +69,7 @@ foreign import ccall unsafe "hs_bindgen_f0d75ef957ae5815"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Error_Unsafe_SDL_GetError@
 hs_bindgen_f0d75ef957ae5815 :: IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_f0d75ef957ae5815 =
-  BG.fromFFIType hs_bindgen_f0d75ef957ae5815_base
+  fmap BG.fromFFIType hs_bindgen_f0d75ef957ae5815_base
 
 -- | Retrieve a message about the last error that occurred on the current thread.
 --
@@ -93,12 +98,12 @@ sDL_GetError = hs_bindgen_f0d75ef957ae5815
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Error_Unsafe_SDL_ClearError@
 foreign import ccall unsafe "hs_bindgen_c7e60181e6f1a240"
   hs_bindgen_c7e60181e6f1a240_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Error_Unsafe_SDL_ClearError@
 hs_bindgen_c7e60181e6f1a240 :: IO BG.CBool
 hs_bindgen_c7e60181e6f1a240 =
-  BG.fromFFIType hs_bindgen_c7e60181e6f1a240_base
+  fmap BG.fromFFIType hs_bindgen_c7e60181e6f1a240_base
 
 -- | Clear any previous error message for this thread.
 --

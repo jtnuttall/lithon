@@ -4,6 +4,7 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -12,12 +13,15 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module SDL3.Sys.Bindgen.Main (
   SDL3.Sys.Bindgen.Main.SDL_main_func_Aux (..),
   SDL3.Sys.Bindgen.Main.SDL_main_func (..),
 )
 where
+
+import Prelude (Eq, IO, Ord, Show, fmap, type (~))
 
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.IncompleteArray qualified as IA
@@ -33,13 +37,12 @@ newtype SDL_main_func_Aux = SDL_main_func_Aux
   { unwrap :: BG.CInt -> BG.Ptr (IsA.Elem (IA.IncompleteArray (BG.Ptr BG.CChar))) -> IO BG.CInt
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_main_func_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_637d4c26522acb68_base
-    :: (BG.Int32 -> BG.Ptr BG.Void -> IO BG.Int32)
-    -> IO (BG.FunPtr (BG.Int32 -> BG.Ptr BG.Void -> IO BG.Int32))
+    :: (BG.CInt -> BG.Ptr BG.Void -> IO BG.CInt)
+    -> IO (BG.FunPtr (BG.CInt -> BG.Ptr BG.Void -> IO BG.CInt))
 
 -- __unique:__ @toSDL_main_func_Aux@
 hs_bindgen_637d4c26522acb68
@@ -47,15 +50,22 @@ hs_bindgen_637d4c26522acb68
   -> IO (BG.FunPtr SDL_main_func_Aux)
 hs_bindgen_637d4c26522acb68 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_637d4c26522acb68_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_637d4c26522acb68_base
+          ( \x1 ->
+              \x2 ->
+                fmap BG.toFFIType (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2))
+          )
+      )
 
 -- __unique:__ @fromSDL_main_func_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_7875a01662c70189_base
-    :: BG.FunPtr (BG.Int32 -> BG.Ptr BG.Void -> IO BG.Int32)
-    -> BG.Int32
+    :: BG.FunPtr (BG.CInt -> BG.Ptr BG.Void -> IO BG.CInt)
+    -> BG.CInt
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @fromSDL_main_func_Aux@
 hs_bindgen_7875a01662c70189
@@ -63,7 +73,13 @@ hs_bindgen_7875a01662c70189
   -> SDL_main_func_Aux
 hs_bindgen_7875a01662c70189 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_7875a01662c70189_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_main_func_Aux
+      ( \x1 ->
+          \x2 ->
+            fmap
+              BG.fromFFIType
+              (hs_bindgen_7875a01662c70189_base (BG.castFunPtr funPtr0) (BG.toFFIType x1) (BG.toFFIType x2))
+      )
 
 instance BG.ToFunPtr SDL_main_func_Aux where
   toFunPtr = hs_bindgen_637d4c26522acb68

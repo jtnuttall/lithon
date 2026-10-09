@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Mouse.Unsafe (
@@ -30,6 +32,9 @@ module SDL3.Sys.Bindgen.Mouse.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -40,7 +45,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_mouse.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_mouse.h>"
          , "_Bool hs_bindgen_769b74d7836fe340 (void)"
          , "{"
          , "  return (SDL_HasMouse)();"
@@ -218,12 +224,12 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_HasMouse@
 foreign import ccall unsafe "hs_bindgen_769b74d7836fe340"
   hs_bindgen_769b74d7836fe340_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_HasMouse@
 hs_bindgen_769b74d7836fe340 :: IO BG.CBool
 hs_bindgen_769b74d7836fe340 =
-  BG.fromFFIType hs_bindgen_769b74d7836fe340_base
+  fmap BG.fromFFIType hs_bindgen_769b74d7836fe340_base
 
 -- | Return whether a mouse is currently connected.
 --
@@ -250,7 +256,8 @@ hs_bindgen_a1009b511ca2df84
   :: BG.Ptr BG.CInt
   -> IO (BG.Ptr SDL_MouseID)
 hs_bindgen_a1009b511ca2df84 =
-  BG.fromFFIType hs_bindgen_a1009b511ca2df84_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a1009b511ca2df84_base (BG.toFFIType x0))
 
 -- | Get a list of currently connected mice.
 --
@@ -276,7 +283,7 @@ sDL_GetMice = hs_bindgen_a1009b511ca2df84
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_GetMouseNameForID@
 foreign import ccall unsafe "hs_bindgen_47cea9780ae3c106"
   hs_bindgen_47cea9780ae3c106_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_GetMouseNameForID@
@@ -284,7 +291,8 @@ hs_bindgen_47cea9780ae3c106
   :: SDL_MouseID
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_47cea9780ae3c106 =
-  BG.fromFFIType hs_bindgen_47cea9780ae3c106_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_47cea9780ae3c106_base (BG.toFFIType x0))
 
 -- | Get the name of a mouse.
 --
@@ -315,7 +323,7 @@ foreign import ccall unsafe "hs_bindgen_053bab05e16f443e"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_GetMouseFocus@
 hs_bindgen_053bab05e16f443e :: IO (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window)
 hs_bindgen_053bab05e16f443e =
-  BG.fromFFIType hs_bindgen_053bab05e16f443e_base
+  fmap BG.fromFFIType hs_bindgen_053bab05e16f443e_base
 
 -- | Get the window which currently has mouse focus.
 --
@@ -334,7 +342,7 @@ foreign import ccall unsafe "hs_bindgen_f18a766f4a177029"
   hs_bindgen_f18a766f4a177029_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_GetMouseState@
 hs_bindgen_f18a766f4a177029
@@ -342,7 +350,9 @@ hs_bindgen_f18a766f4a177029
   -> BG.Ptr BG.CFloat
   -> IO SDL_MouseButtonFlags
 hs_bindgen_f18a766f4a177029 =
-  BG.fromFFIType hs_bindgen_f18a766f4a177029_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_f18a766f4a177029_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Query SDL\'s cache for the synchronous mouse button state and the window-relative SDL-cursor position.
 --
@@ -380,7 +390,7 @@ foreign import ccall unsafe "hs_bindgen_4b743c0e1b7fc8fc"
   hs_bindgen_4b743c0e1b7fc8fc_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_GetGlobalMouseState@
 hs_bindgen_4b743c0e1b7fc8fc
@@ -388,7 +398,9 @@ hs_bindgen_4b743c0e1b7fc8fc
   -> BG.Ptr BG.CFloat
   -> IO SDL_MouseButtonFlags
 hs_bindgen_4b743c0e1b7fc8fc =
-  BG.fromFFIType hs_bindgen_4b743c0e1b7fc8fc_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4b743c0e1b7fc8fc_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Query the platform for the asynchronous mouse button state and the desktop-relative platform-cursor position.
 --
@@ -426,7 +438,7 @@ foreign import ccall unsafe "hs_bindgen_d841c68d1482079a"
   hs_bindgen_d841c68d1482079a_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_GetRelativeMouseState@
 hs_bindgen_d841c68d1482079a
@@ -434,7 +446,9 @@ hs_bindgen_d841c68d1482079a
   -> BG.Ptr BG.CFloat
   -> IO SDL_MouseButtonFlags
 hs_bindgen_d841c68d1482079a =
-  BG.fromFFIType hs_bindgen_d841c68d1482079a_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_d841c68d1482079a_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Query SDL\'s cache for the synchronous mouse button state and accumulated mouse delta since last call.
 --
@@ -472,8 +486,8 @@ sDL_GetRelativeMouseState =
 foreign import ccall unsafe "hs_bindgen_0b73aa8f6d98f018"
   hs_bindgen_0b73aa8f6d98f018_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> Float
+    -> BG.CFloat
+    -> BG.CFloat
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_WarpMouseInWindow@
@@ -483,7 +497,10 @@ hs_bindgen_0b73aa8f6d98f018
   -> BG.CFloat
   -> IO ()
 hs_bindgen_0b73aa8f6d98f018 =
-  BG.fromFFIType hs_bindgen_0b73aa8f6d98f018_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        hs_bindgen_0b73aa8f6d98f018_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2)
 
 -- | Move the mouse cursor to the given position within the window.
 --
@@ -517,9 +534,9 @@ sDL_WarpMouseInWindow = hs_bindgen_0b73aa8f6d98f018
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_WarpMouseGlobal@
 foreign import ccall unsafe "hs_bindgen_42c0ada5af2a75a6"
   hs_bindgen_42c0ada5af2a75a6_base
-    :: Float
-    -> Float
-    -> IO BG.Word8
+    :: BG.CFloat
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_WarpMouseGlobal@
 hs_bindgen_42c0ada5af2a75a6
@@ -527,7 +544,9 @@ hs_bindgen_42c0ada5af2a75a6
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_42c0ada5af2a75a6 =
-  BG.fromFFIType hs_bindgen_42c0ada5af2a75a6_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_42c0ada5af2a75a6_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Move the mouse to the given position in global screen space.
 --
@@ -563,7 +582,7 @@ foreign import ccall unsafe "hs_bindgen_3431374e48384d8c"
   hs_bindgen_3431374e48384d8c_base
     :: BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_SetRelativeMouseTransform@
 hs_bindgen_3431374e48384d8c
@@ -571,7 +590,9 @@ hs_bindgen_3431374e48384d8c
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_3431374e48384d8c =
-  BG.fromFFIType hs_bindgen_3431374e48384d8c_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_3431374e48384d8c_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set a user-defined function by which to transform relative mouse inputs.
 --
@@ -601,8 +622,8 @@ sDL_SetRelativeMouseTransform =
 foreign import ccall unsafe "hs_bindgen_df14f3a2272073d3"
   hs_bindgen_df14f3a2272073d3_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_SetWindowRelativeMouseMode@
 hs_bindgen_df14f3a2272073d3
@@ -610,7 +631,9 @@ hs_bindgen_df14f3a2272073d3
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_df14f3a2272073d3 =
-  BG.fromFFIType hs_bindgen_df14f3a2272073d3_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_df14f3a2272073d3_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set relative mouse mode for a window.
 --
@@ -646,14 +669,15 @@ sDL_SetWindowRelativeMouseMode =
 foreign import ccall unsafe "hs_bindgen_60e1427dc7059277"
   hs_bindgen_60e1427dc7059277_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_GetWindowRelativeMouseMode@
 hs_bindgen_60e1427dc7059277
   :: BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window
   -> IO BG.CBool
 hs_bindgen_60e1427dc7059277 =
-  BG.fromFFIType hs_bindgen_60e1427dc7059277_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_60e1427dc7059277_base (BG.toFFIType x0))
 
 -- | Query whether relative mouse mode is enabled for a window.
 --
@@ -678,15 +702,16 @@ sDL_GetWindowRelativeMouseMode =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_CaptureMouse@
 foreign import ccall unsafe "hs_bindgen_61b615e5f17d45b5"
   hs_bindgen_61b615e5f17d45b5_base
-    :: BG.Word8
-    -> IO BG.Word8
+    :: BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_CaptureMouse@
 hs_bindgen_61b615e5f17d45b5
   :: BG.CBool
   -> IO BG.CBool
 hs_bindgen_61b615e5f17d45b5 =
-  BG.fromFFIType hs_bindgen_61b615e5f17d45b5_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_61b615e5f17d45b5_base (BG.toFFIType x0))
 
 -- | Capture the mouse and to track input outside an SDL window.
 --
@@ -722,10 +747,10 @@ foreign import ccall unsafe "hs_bindgen_14364d58f2a5fb7e"
   hs_bindgen_14364d58f2a5fb7e_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> BG.Int32
-    -> BG.Int32
+    -> BG.CInt
+    -> BG.CInt
+    -> BG.CInt
+    -> BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_CreateCursor@
@@ -738,7 +763,22 @@ hs_bindgen_14364d58f2a5fb7e
   -> BG.CInt
   -> IO (BG.Ptr SDL_Cursor)
 hs_bindgen_14364d58f2a5fb7e =
-  BG.fromFFIType hs_bindgen_14364d58f2a5fb7e_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_14364d58f2a5fb7e_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Create a cursor using the specified bitmap data and mask (in MSB format).
 --
@@ -803,8 +843,8 @@ sDL_CreateCursor = hs_bindgen_14364d58f2a5fb7e
 foreign import ccall unsafe "hs_bindgen_fa20cf5972b0b3ea"
   hs_bindgen_fa20cf5972b0b3ea_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
+    -> BG.CInt
+    -> BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_CreateColorCursor@
@@ -814,7 +854,12 @@ hs_bindgen_fa20cf5972b0b3ea
   -> BG.CInt
   -> IO (BG.Ptr SDL_Cursor)
 hs_bindgen_fa20cf5972b0b3ea =
-  BG.fromFFIType hs_bindgen_fa20cf5972b0b3ea_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_fa20cf5972b0b3ea_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Create a color cursor.
 --
@@ -849,9 +894,9 @@ sDL_CreateColorCursor = hs_bindgen_fa20cf5972b0b3ea
 foreign import ccall unsafe "hs_bindgen_d361ef168725ef94"
   hs_bindgen_d361ef168725ef94_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> BG.Int32
+    -> BG.CInt
+    -> BG.CInt
+    -> BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_CreateAnimatedCursor@
@@ -862,7 +907,18 @@ hs_bindgen_d361ef168725ef94
   -> BG.CInt
   -> IO (BG.Ptr SDL_Cursor)
 hs_bindgen_d361ef168725ef94 =
-  BG.fromFFIType hs_bindgen_d361ef168725ef94_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_d361ef168725ef94_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Create an animated color cursor.
 --
@@ -907,7 +963,7 @@ sDL_CreateAnimatedCursor =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_CreateSystemCursor@
 foreign import ccall unsafe "hs_bindgen_c34ca154a7bf13af"
   hs_bindgen_c34ca154a7bf13af_base
-    :: BG.Word32
+    :: BG.CUInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_CreateSystemCursor@
@@ -915,7 +971,8 @@ hs_bindgen_c34ca154a7bf13af
   :: SDL_SystemCursor
   -> IO (BG.Ptr SDL_Cursor)
 hs_bindgen_c34ca154a7bf13af =
-  BG.fromFFIType hs_bindgen_c34ca154a7bf13af_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c34ca154a7bf13af_base (BG.toFFIType x0))
 
 -- | Create a system cursor.
 --
@@ -940,14 +997,15 @@ sDL_CreateSystemCursor = hs_bindgen_c34ca154a7bf13af
 foreign import ccall unsafe "hs_bindgen_c79cfea2c2a40f90"
   hs_bindgen_c79cfea2c2a40f90_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_SetCursor@
 hs_bindgen_c79cfea2c2a40f90
   :: BG.Ptr SDL_Cursor
   -> IO BG.CBool
 hs_bindgen_c79cfea2c2a40f90 =
-  BG.fromFFIType hs_bindgen_c79cfea2c2a40f90_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c79cfea2c2a40f90_base (BG.toFFIType x0))
 
 -- | Set the active cursor.
 --
@@ -978,7 +1036,7 @@ foreign import ccall unsafe "hs_bindgen_9e2eefba89a09501"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_GetCursor@
 hs_bindgen_9e2eefba89a09501 :: IO (BG.Ptr SDL_Cursor)
 hs_bindgen_9e2eefba89a09501 =
-  BG.fromFFIType hs_bindgen_9e2eefba89a09501_base
+  fmap BG.fromFFIType hs_bindgen_9e2eefba89a09501_base
 
 -- | Get the active cursor.
 --
@@ -1004,7 +1062,7 @@ foreign import ccall unsafe "hs_bindgen_b81cd185a7b75943"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_GetDefaultCursor@
 hs_bindgen_b81cd185a7b75943 :: IO (BG.Ptr SDL_Cursor)
 hs_bindgen_b81cd185a7b75943 =
-  BG.fromFFIType hs_bindgen_b81cd185a7b75943_base
+  fmap BG.fromFFIType hs_bindgen_b81cd185a7b75943_base
 
 -- | Get the default cursor.
 --
@@ -1031,7 +1089,8 @@ hs_bindgen_fd4d057091dc9dcc
   :: BG.Ptr SDL_Cursor
   -> IO ()
 hs_bindgen_fd4d057091dc9dcc =
-  BG.fromFFIType hs_bindgen_fd4d057091dc9dcc_base
+  \x0 ->
+    hs_bindgen_fd4d057091dc9dcc_base (BG.toFFIType x0)
 
 -- | Free a previously-created cursor.
 --
@@ -1055,12 +1114,12 @@ sDL_DestroyCursor = hs_bindgen_fd4d057091dc9dcc
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_ShowCursor@
 foreign import ccall unsafe "hs_bindgen_79db044ed9d49e1d"
   hs_bindgen_79db044ed9d49e1d_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_ShowCursor@
 hs_bindgen_79db044ed9d49e1d :: IO BG.CBool
 hs_bindgen_79db044ed9d49e1d =
-  BG.fromFFIType hs_bindgen_79db044ed9d49e1d_base
+  fmap BG.fromFFIType hs_bindgen_79db044ed9d49e1d_base
 
 -- | Show the cursor.
 --
@@ -1079,12 +1138,12 @@ sDL_ShowCursor = hs_bindgen_79db044ed9d49e1d
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_HideCursor@
 foreign import ccall unsafe "hs_bindgen_f07aff8d3a047b77"
   hs_bindgen_f07aff8d3a047b77_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_HideCursor@
 hs_bindgen_f07aff8d3a047b77 :: IO BG.CBool
 hs_bindgen_f07aff8d3a047b77 =
-  BG.fromFFIType hs_bindgen_f07aff8d3a047b77_base
+  fmap BG.fromFFIType hs_bindgen_f07aff8d3a047b77_base
 
 -- | Hide the cursor.
 --
@@ -1103,12 +1162,12 @@ sDL_HideCursor = hs_bindgen_f07aff8d3a047b77
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_CursorVisible@
 foreign import ccall unsafe "hs_bindgen_1d7b9f91212450ba"
   hs_bindgen_1d7b9f91212450ba_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_Unsafe_SDL_CursorVisible@
 hs_bindgen_1d7b9f91212450ba :: IO BG.CBool
 hs_bindgen_1d7b9f91212450ba =
-  BG.fromFFIType hs_bindgen_1d7b9f91212450ba_base
+  fmap BG.fromFFIType hs_bindgen_1d7b9f91212450ba_base
 
 -- | Return whether the cursor is currently being shown.
 --

@@ -18,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Process control support.
 --
@@ -58,6 +59,8 @@ module SDL3.Sys.Bindgen.Process (
   SDL3.Sys.Bindgen.Process.sDL_PROP_PROCESS_BACKGROUND_BOOLEAN,
 )
 where
+
+import Prelude (Eq, Int, Ord, Read, Show, pure, (<*>), type (~))
 
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField

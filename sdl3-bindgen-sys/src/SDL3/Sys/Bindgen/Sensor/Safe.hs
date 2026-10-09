@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Sensor.Safe (
@@ -20,6 +22,9 @@ module SDL3.Sys.Bindgen.Sensor.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -28,7 +33,8 @@ import SDL3.Sys.Bindgen.Sensor
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_sensor.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_sensor.h>"
          , "SDL_SensorID *hs_bindgen_b61dd178746c7ddb ("
          , "  signed int *arg1"
          , ")"
@@ -128,7 +134,8 @@ hs_bindgen_b61dd178746c7ddb
   :: BG.Ptr BG.CInt
   -> IO (BG.Ptr SDL_SensorID)
 hs_bindgen_b61dd178746c7ddb =
-  BG.fromFFIType hs_bindgen_b61dd178746c7ddb_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b61dd178746c7ddb_base (BG.toFFIType x0))
 
 -- | Get a list of currently connected sensors.
 --
@@ -148,7 +155,7 @@ sDL_GetSensors = hs_bindgen_b61dd178746c7ddb
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_GetSensorNameForID@
 foreign import ccall safe "hs_bindgen_bcad5852f7430e0f"
   hs_bindgen_bcad5852f7430e0f_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_GetSensorNameForID@
@@ -156,7 +163,8 @@ hs_bindgen_bcad5852f7430e0f
   :: SDL_SensorID
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_bcad5852f7430e0f =
-  BG.fromFFIType hs_bindgen_bcad5852f7430e0f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_bcad5852f7430e0f_base (BG.toFFIType x0))
 
 -- | Get the implementation dependent name of a sensor.
 --
@@ -178,15 +186,16 @@ sDL_GetSensorNameForID = hs_bindgen_bcad5852f7430e0f
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_GetSensorTypeForID@
 foreign import ccall safe "hs_bindgen_d24575268bab12e0"
   hs_bindgen_d24575268bab12e0_base
-    :: BG.Word32
-    -> IO BG.Int32
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_GetSensorTypeForID@
 hs_bindgen_d24575268bab12e0
   :: SDL_SensorID
   -> IO SDL_SensorType
 hs_bindgen_d24575268bab12e0 =
-  BG.fromFFIType hs_bindgen_d24575268bab12e0_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_d24575268bab12e0_base (BG.toFFIType x0))
 
 -- | Get the type of a sensor.
 --
@@ -208,15 +217,16 @@ sDL_GetSensorTypeForID = hs_bindgen_d24575268bab12e0
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_GetSensorNonPortableTypeForID@
 foreign import ccall safe "hs_bindgen_0cc7e36b2b816613"
   hs_bindgen_0cc7e36b2b816613_base
-    :: BG.Word32
-    -> IO BG.Int32
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_GetSensorNonPortableTypeForID@
 hs_bindgen_0cc7e36b2b816613
   :: SDL_SensorID
   -> IO BG.CInt
 hs_bindgen_0cc7e36b2b816613 =
-  BG.fromFFIType hs_bindgen_0cc7e36b2b816613_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_0cc7e36b2b816613_base (BG.toFFIType x0))
 
 -- | Get the platform dependent type of a sensor.
 --
@@ -239,7 +249,7 @@ sDL_GetSensorNonPortableTypeForID =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_OpenSensor@
 foreign import ccall safe "hs_bindgen_ca89770aec33d403"
   hs_bindgen_ca89770aec33d403_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_OpenSensor@
@@ -247,7 +257,8 @@ hs_bindgen_ca89770aec33d403
   :: SDL_SensorID
   -> IO (BG.Ptr SDL_Sensor)
 hs_bindgen_ca89770aec33d403 =
-  BG.fromFFIType hs_bindgen_ca89770aec33d403_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ca89770aec33d403_base (BG.toFFIType x0))
 
 -- | Open a sensor for use.
 --
@@ -267,7 +278,7 @@ sDL_OpenSensor = hs_bindgen_ca89770aec33d403
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_GetSensorFromID@
 foreign import ccall safe "hs_bindgen_c02f722bb2e6edde"
   hs_bindgen_c02f722bb2e6edde_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_GetSensorFromID@
@@ -275,7 +286,8 @@ hs_bindgen_c02f722bb2e6edde
   :: SDL_SensorID
   -> IO (BG.Ptr SDL_Sensor)
 hs_bindgen_c02f722bb2e6edde =
-  BG.fromFFIType hs_bindgen_c02f722bb2e6edde_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c02f722bb2e6edde_base (BG.toFFIType x0))
 
 -- | Return the 'SDL_Sensor' associated with an instance ID.
 --
@@ -296,14 +308,15 @@ sDL_GetSensorFromID = hs_bindgen_c02f722bb2e6edde
 foreign import ccall safe "hs_bindgen_635e63e84138735f"
   hs_bindgen_635e63e84138735f_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_GetSensorProperties@
 hs_bindgen_635e63e84138735f
   :: BG.Ptr SDL_Sensor
   -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
 hs_bindgen_635e63e84138735f =
-  BG.fromFFIType hs_bindgen_635e63e84138735f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_635e63e84138735f_base (BG.toFFIType x0))
 
 -- | Get the properties associated with a sensor.
 --
@@ -331,7 +344,8 @@ hs_bindgen_ecdd3ba2245007fb
   :: BG.Ptr SDL_Sensor
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_ecdd3ba2245007fb =
-  BG.fromFFIType hs_bindgen_ecdd3ba2245007fb_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ecdd3ba2245007fb_base (BG.toFFIType x0))
 
 -- | Get the implementation dependent name of a sensor.
 --
@@ -352,14 +366,15 @@ sDL_GetSensorName = hs_bindgen_ecdd3ba2245007fb
 foreign import ccall safe "hs_bindgen_6493367408e25f83"
   hs_bindgen_6493367408e25f83_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_GetSensorType@
 hs_bindgen_6493367408e25f83
   :: BG.Ptr SDL_Sensor
   -> IO SDL_SensorType
 hs_bindgen_6493367408e25f83 =
-  BG.fromFFIType hs_bindgen_6493367408e25f83_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_6493367408e25f83_base (BG.toFFIType x0))
 
 -- | Get the type of a sensor.
 --
@@ -380,14 +395,15 @@ sDL_GetSensorType = hs_bindgen_6493367408e25f83
 foreign import ccall safe "hs_bindgen_a88558880074a522"
   hs_bindgen_a88558880074a522_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_GetSensorNonPortableType@
 hs_bindgen_a88558880074a522
   :: BG.Ptr SDL_Sensor
   -> IO BG.CInt
 hs_bindgen_a88558880074a522 =
-  BG.fromFFIType hs_bindgen_a88558880074a522_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a88558880074a522_base (BG.toFFIType x0))
 
 -- | Get the platform dependent type of a sensor.
 --
@@ -409,14 +425,15 @@ sDL_GetSensorNonPortableType =
 foreign import ccall safe "hs_bindgen_de19e07a9cb2bdf7"
   hs_bindgen_de19e07a9cb2bdf7_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_GetSensorID@
 hs_bindgen_de19e07a9cb2bdf7
   :: BG.Ptr SDL_Sensor
   -> IO SDL_SensorID
 hs_bindgen_de19e07a9cb2bdf7 =
-  BG.fromFFIType hs_bindgen_de19e07a9cb2bdf7_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_de19e07a9cb2bdf7_base (BG.toFFIType x0))
 
 -- | Get the instance ID of a sensor.
 --
@@ -438,8 +455,8 @@ foreign import ccall safe "hs_bindgen_67086d7531309dea"
   hs_bindgen_67086d7531309dea_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_GetSensorData@
 hs_bindgen_67086d7531309dea
@@ -448,7 +465,12 @@ hs_bindgen_67086d7531309dea
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_67086d7531309dea =
-  BG.fromFFIType hs_bindgen_67086d7531309dea_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_67086d7531309dea_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the current state of an opened sensor.
 --
@@ -486,7 +508,8 @@ hs_bindgen_8ac47026ac2650df
   :: BG.Ptr SDL_Sensor
   -> IO ()
 hs_bindgen_8ac47026ac2650df =
-  BG.fromFFIType hs_bindgen_8ac47026ac2650df_base
+  \x0 ->
+    hs_bindgen_8ac47026ac2650df_base (BG.toFFIType x0)
 
 -- | Close a sensor previously opened with @SDL_OpenSensor()@.
 --
@@ -509,7 +532,7 @@ foreign import ccall safe "hs_bindgen_bcad9e8be73cbb74"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Sensor_Safe_SDL_UpdateSensors@
 hs_bindgen_bcad9e8be73cbb74 :: IO ()
 hs_bindgen_bcad9e8be73cbb74 =
-  BG.fromFFIType hs_bindgen_bcad9e8be73cbb74_base
+  hs_bindgen_bcad9e8be73cbb74_base
 
 -- | Update the current state of the open sensors.
 --

@@ -13,6 +13,7 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL locale services.
 --
@@ -28,9 +29,12 @@ module SDL3.Sys.Bindgen.Locale (
 )
 where
 
+import Prelude (Eq, Int, Show, pure, (<*>), (>>), type (~))
+
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 
@@ -70,6 +74,11 @@ instance Marshal.WriteRaw SDL_Locale where
 
 deriving via Marshal.EquivStorable SDL_Locale instance BG.Storable SDL_Locale
 
+deriving via Struct.IsStructViaReadRaw SDL_Locale instance Struct.IsStruct SDL_Locale
+
+-- | A language name, like \"en\" for English.
+--
+--     [C declaration]: @language@, defined at @SDL3\/SDL_locale.h 62:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "language" SDL_Locale ty
@@ -94,6 +103,9 @@ instance HasCField.HasCField SDL_Locale "language" where
 
   offset# = \_ -> \_ -> 0
 
+-- | A country, like \"US\" for America. Can be NULL.
+--
+--     [C declaration]: @country@, defined at @SDL3\/SDL_locale.h 63:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "country" SDL_Locale ty

@@ -6,6 +6,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -17,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | A helpful assertion macro!
 --
@@ -62,10 +64,13 @@ module SDL3.Sys.Bindgen.Assert (
 )
 where
 
+import Prelude (Eq, IO, Int, Ord, Read, Show, fmap, pure, (<*>), (>>), type (~))
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 
@@ -288,6 +293,11 @@ instance Marshal.WriteRaw SDL_AssertData where
 
 deriving via Marshal.EquivStorable SDL_AssertData instance BG.Storable SDL_AssertData
 
+deriving via Struct.IsStructViaReadRaw SDL_AssertData instance Struct.IsStruct SDL_AssertData
+
+-- | true if app should always continue when assertion is triggered.
+--
+--     [C declaration]: @always_ignore@, defined at @SDL3\/SDL_assert.h 334:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "always_ignore" SDL_AssertData ty
@@ -321,6 +331,9 @@ instance HasCField.HasCField SDL_AssertData "always_ignore" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Number of times this assertion has been triggered.
+--
+--     [C declaration]: @trigger_count@, defined at @SDL3\/SDL_assert.h 335:18@
 instance
   (ty ~ BG.CUInt)
   => BG.CompatHasField.HasField "trigger_count" SDL_AssertData ty
@@ -354,6 +367,9 @@ instance HasCField.HasCField SDL_AssertData "trigger_count" where
 
   offset# = \_ -> \_ -> 4
 
+-- | A string of this assert\'s test code.
+--
+--     [C declaration]: @condition@, defined at @SDL3\/SDL_assert.h 336:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "condition" SDL_AssertData ty
@@ -386,6 +402,9 @@ instance HasCField.HasCField SDL_AssertData "condition" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The source file where this assert lives.
+--
+--     [C declaration]: @filename@, defined at @SDL3\/SDL_assert.h 337:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "filename" SDL_AssertData ty
@@ -418,6 +437,9 @@ instance HasCField.HasCField SDL_AssertData "filename" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The line in @filename@ where this assert lives.
+--
+--     [C declaration]: @linenum@, defined at @SDL3\/SDL_assert.h 338:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "linenum" SDL_AssertData ty
@@ -448,6 +470,9 @@ instance HasCField.HasCField SDL_AssertData "linenum" where
 
   offset# = \_ -> \_ -> 24
 
+-- | The name of the function where this assert lives.
+--
+--     [C declaration]: @function@, defined at @SDL3\/SDL_assert.h 339:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "function" SDL_AssertData ty
@@ -480,6 +505,9 @@ instance HasCField.HasCField SDL_AssertData "function" where
 
   offset# = \_ -> \_ -> 32
 
+-- | next item in the linked list.
+--
+--     [C declaration]: @next@, defined at @SDL3\/SDL_assert.h 340:34@
 instance
   (ty ~ PtrConst.PtrConst SDL_AssertData)
   => BG.CompatHasField.HasField "next" SDL_AssertData ty
@@ -519,13 +547,12 @@ newtype SDL_AssertionHandler_Aux = SDL_AssertionHandler_Aux
   { unwrap :: PtrConst.PtrConst SDL_AssertData -> BG.Ptr BG.Void -> IO SDL_AssertState
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_AssertionHandler_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_4cf4facc2fb068b6_base
-    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word32)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word32))
+    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CUInt)
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CUInt))
 
 -- __unique:__ @toSDL_AssertionHandler_Aux@
 hs_bindgen_4cf4facc2fb068b6
@@ -533,15 +560,22 @@ hs_bindgen_4cf4facc2fb068b6
   -> IO (BG.FunPtr SDL_AssertionHandler_Aux)
 hs_bindgen_4cf4facc2fb068b6 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_4cf4facc2fb068b6_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_4cf4facc2fb068b6_base
+          ( \x1 ->
+              \x2 ->
+                fmap BG.toFFIType (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2))
+          )
+      )
 
 -- __unique:__ @fromSDL_AssertionHandler_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_a1f4d13109856a1b_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word32)
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CUInt)
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @fromSDL_AssertionHandler_Aux@
 hs_bindgen_a1f4d13109856a1b
@@ -549,7 +583,13 @@ hs_bindgen_a1f4d13109856a1b
   -> SDL_AssertionHandler_Aux
 hs_bindgen_a1f4d13109856a1b =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_a1f4d13109856a1b_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_AssertionHandler_Aux
+      ( \x1 ->
+          \x2 ->
+            fmap
+              BG.fromFFIType
+              (hs_bindgen_a1f4d13109856a1b_base (BG.castFunPtr funPtr0) (BG.toFFIType x1) (BG.toFFIType x2))
+      )
 
 instance BG.ToFunPtr SDL_AssertionHandler_Aux where
   toFunPtr = hs_bindgen_4cf4facc2fb068b6

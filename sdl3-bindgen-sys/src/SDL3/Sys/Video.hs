@@ -1,4 +1,5 @@
 {-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL\'s video subsystem is largely interested in abstracting window management from the underlying operating system. You can create windows, manage them in various ways, set them fullscreen, and get events when interesting things happen with them, such as the mouse or keyboard interacting with a window.
 --
@@ -292,6 +293,7 @@ module SDL3.Sys.Video (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, Float, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Some helper functions for managing rectangles and 2D points, in both integer and floating point versions. The structure that defines a point (using integers).
 --
 --     @since 3.2.0
@@ -35,6 +37,7 @@ module SDL3.Sys.Rect (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, Float, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

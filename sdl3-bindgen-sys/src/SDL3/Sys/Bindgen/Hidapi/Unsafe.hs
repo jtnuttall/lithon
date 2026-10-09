@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Hidapi.Unsafe (
@@ -29,6 +31,8 @@ module SDL3.Sys.Bindgen.Hidapi.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
@@ -39,7 +43,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_hidapi.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_hidapi.h>"
          , "signed int hs_bindgen_dcb8375e747bb624 (void)"
          , "{"
          , "  return (SDL_hid_init)();"
@@ -217,12 +222,12 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_init@
 foreign import ccall unsafe "hs_bindgen_dcb8375e747bb624"
   hs_bindgen_dcb8375e747bb624_base
-    :: IO BG.Int32
+    :: IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_init@
 hs_bindgen_dcb8375e747bb624 :: IO BG.CInt
 hs_bindgen_dcb8375e747bb624 =
-  BG.fromFFIType hs_bindgen_dcb8375e747bb624_base
+  fmap BG.fromFFIType hs_bindgen_dcb8375e747bb624_base
 
 -- | Initialize the HIDAPI library.
 --
@@ -243,12 +248,12 @@ sDL_hid_init = hs_bindgen_dcb8375e747bb624
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_exit@
 foreign import ccall unsafe "hs_bindgen_e6649bca54c7158a"
   hs_bindgen_e6649bca54c7158a_base
-    :: IO BG.Int32
+    :: IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_exit@
 hs_bindgen_e6649bca54c7158a :: IO BG.CInt
 hs_bindgen_e6649bca54c7158a =
-  BG.fromFFIType hs_bindgen_e6649bca54c7158a_base
+  fmap BG.fromFFIType hs_bindgen_e6649bca54c7158a_base
 
 -- | Finalize the HIDAPI library.
 --
@@ -267,12 +272,12 @@ sDL_hid_exit = hs_bindgen_e6649bca54c7158a
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_device_change_count@
 foreign import ccall unsafe "hs_bindgen_8428495b7bd2b7e5"
   hs_bindgen_8428495b7bd2b7e5_base
-    :: IO BG.Word32
+    :: IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_device_change_count@
 hs_bindgen_8428495b7bd2b7e5 :: IO SDL3.Sys.Bindgen.Stdinc.Uint32
 hs_bindgen_8428495b7bd2b7e5 =
-  BG.fromFFIType hs_bindgen_8428495b7bd2b7e5_base
+  fmap BG.fromFFIType hs_bindgen_8428495b7bd2b7e5_base
 
 -- | Check to see if devices may have been added or removed.
 --
@@ -294,8 +299,8 @@ sDL_hid_device_change_count =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_enumerate@
 foreign import ccall unsafe "hs_bindgen_c80fee489024b2f6"
   hs_bindgen_c80fee489024b2f6_base
-    :: BG.Word16
-    -> BG.Word16
+    :: BG.CUShort
+    -> BG.CUShort
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_enumerate@
@@ -304,7 +309,9 @@ hs_bindgen_c80fee489024b2f6
   -> BG.CUShort
   -> IO (BG.Ptr SDL_hid_device_info)
 hs_bindgen_c80fee489024b2f6 =
-  BG.fromFFIType hs_bindgen_c80fee489024b2f6_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_c80fee489024b2f6_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Enumerate the HID Devices.
 --
@@ -342,7 +349,8 @@ hs_bindgen_576ebef2d717239d
   :: BG.Ptr SDL_hid_device_info
   -> IO ()
 hs_bindgen_576ebef2d717239d =
-  BG.fromFFIType hs_bindgen_576ebef2d717239d_base
+  \x0 ->
+    hs_bindgen_576ebef2d717239d_base (BG.toFFIType x0)
 
 -- | Free an enumeration linked list.
 --
@@ -363,8 +371,8 @@ sDL_hid_free_enumeration =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_open@
 foreign import ccall unsafe "hs_bindgen_1acfa083bac0fefe"
   hs_bindgen_1acfa083bac0fefe_base
-    :: BG.Word16
-    -> BG.Word16
+    :: BG.CUShort
+    -> BG.CUShort
     -> BG.Ptr BG.Void
     -> IO (BG.Ptr BG.Void)
 
@@ -375,7 +383,12 @@ hs_bindgen_1acfa083bac0fefe
   -> PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -> IO (BG.Ptr SDL_hid_device)
 hs_bindgen_1acfa083bac0fefe =
-  BG.fromFFIType hs_bindgen_1acfa083bac0fefe_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_1acfa083bac0fefe_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Open a HID device using a Vendor ID (VID), Product ID (PID) and optionally a serial number.
 --
@@ -413,7 +426,8 @@ hs_bindgen_3c5436d1ddca078c
   :: PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr SDL_hid_device)
 hs_bindgen_3c5436d1ddca078c =
-  BG.fromFFIType hs_bindgen_3c5436d1ddca078c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3c5436d1ddca078c_base (BG.toFFIType x0))
 
 -- | Open a HID device by its path name.
 --
@@ -436,14 +450,15 @@ sDL_hid_open_path = hs_bindgen_3c5436d1ddca078c
 foreign import ccall unsafe "hs_bindgen_e9b48243d3f24ba7"
   hs_bindgen_e9b48243d3f24ba7_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_get_properties@
 hs_bindgen_e9b48243d3f24ba7
   :: BG.Ptr SDL_hid_device
   -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
 hs_bindgen_e9b48243d3f24ba7 =
-  BG.fromFFIType hs_bindgen_e9b48243d3f24ba7_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_e9b48243d3f24ba7_base (BG.toFFIType x0))
 
 -- | Get the properties associated with an 'SDL_hid_device'.
 --
@@ -469,8 +484,8 @@ foreign import ccall unsafe "hs_bindgen_224530f741f7e012"
   hs_bindgen_224530f741f7e012_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_write@
 hs_bindgen_224530f741f7e012
@@ -479,7 +494,12 @@ hs_bindgen_224530f741f7e012
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_224530f741f7e012 =
-  BG.fromFFIType hs_bindgen_224530f741f7e012_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_224530f741f7e012_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Write an Output report to a HID device.
 --
@@ -513,9 +533,9 @@ foreign import ccall unsafe "hs_bindgen_7989f96f3123402c"
   hs_bindgen_7989f96f3123402c_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> BG.Int32
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_read_timeout@
 hs_bindgen_7989f96f3123402c
@@ -525,7 +545,18 @@ hs_bindgen_7989f96f3123402c
   -> BG.CInt
   -> IO BG.CInt
 hs_bindgen_7989f96f3123402c =
-  BG.fromFFIType hs_bindgen_7989f96f3123402c_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_7989f96f3123402c_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Read an Input report from a HID device with timeout.
 --
@@ -561,8 +592,8 @@ foreign import ccall unsafe "hs_bindgen_67f9e2c762f1f561"
   hs_bindgen_67f9e2c762f1f561_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_read@
 hs_bindgen_67f9e2c762f1f561
@@ -571,7 +602,12 @@ hs_bindgen_67f9e2c762f1f561
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_67f9e2c762f1f561 =
-  BG.fromFFIType hs_bindgen_67f9e2c762f1f561_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_67f9e2c762f1f561_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Read an Input report from a HID device.
 --
@@ -602,8 +638,8 @@ sDL_hid_read = hs_bindgen_67f9e2c762f1f561
 foreign import ccall unsafe "hs_bindgen_461a1d4ecaa70f7b"
   hs_bindgen_461a1d4ecaa70f7b_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Int32
+    -> BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_set_nonblocking@
 hs_bindgen_461a1d4ecaa70f7b
@@ -611,7 +647,9 @@ hs_bindgen_461a1d4ecaa70f7b
   -> BG.CInt
   -> IO BG.CInt
 hs_bindgen_461a1d4ecaa70f7b =
-  BG.fromFFIType hs_bindgen_461a1d4ecaa70f7b_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_461a1d4ecaa70f7b_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the device handle to be non-blocking.
 --
@@ -641,8 +679,8 @@ foreign import ccall unsafe "hs_bindgen_e2bc17c282363a0a"
   hs_bindgen_e2bc17c282363a0a_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_send_feature_report@
 hs_bindgen_e2bc17c282363a0a
@@ -651,7 +689,12 @@ hs_bindgen_e2bc17c282363a0a
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_e2bc17c282363a0a =
-  BG.fromFFIType hs_bindgen_e2bc17c282363a0a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_e2bc17c282363a0a_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Send a Feature report to the device.
 --
@@ -684,8 +727,8 @@ foreign import ccall unsafe "hs_bindgen_9a50cca655a383d6"
   hs_bindgen_9a50cca655a383d6_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_get_feature_report@
 hs_bindgen_9a50cca655a383d6
@@ -694,7 +737,12 @@ hs_bindgen_9a50cca655a383d6
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_9a50cca655a383d6 =
-  BG.fromFFIType hs_bindgen_9a50cca655a383d6_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_9a50cca655a383d6_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get a feature report from a HID device.
 --
@@ -727,8 +775,8 @@ foreign import ccall unsafe "hs_bindgen_69c42f891dcf07ec"
   hs_bindgen_69c42f891dcf07ec_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_get_input_report@
 hs_bindgen_69c42f891dcf07ec
@@ -737,7 +785,12 @@ hs_bindgen_69c42f891dcf07ec
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_69c42f891dcf07ec =
-  BG.fromFFIType hs_bindgen_69c42f891dcf07ec_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_69c42f891dcf07ec_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get an input report from a HID device.
 --
@@ -769,14 +822,15 @@ sDL_hid_get_input_report =
 foreign import ccall unsafe "hs_bindgen_f1b65245de342510"
   hs_bindgen_f1b65245de342510_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_close@
 hs_bindgen_f1b65245de342510
   :: BG.Ptr SDL_hid_device
   -> IO BG.CInt
 hs_bindgen_f1b65245de342510 =
-  BG.fromFFIType hs_bindgen_f1b65245de342510_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_f1b65245de342510_base (BG.toFFIType x0))
 
 -- | Close a HID device.
 --
@@ -798,8 +852,8 @@ foreign import ccall unsafe "hs_bindgen_618b34900d079096"
   hs_bindgen_618b34900d079096_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_get_manufacturer_string@
 hs_bindgen_618b34900d079096
@@ -808,7 +862,12 @@ hs_bindgen_618b34900d079096
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_618b34900d079096 =
-  BG.fromFFIType hs_bindgen_618b34900d079096_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_618b34900d079096_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get The Manufacturer String from a HID device.
 --
@@ -839,8 +898,8 @@ foreign import ccall unsafe "hs_bindgen_56bf4b52bb0ee8a4"
   hs_bindgen_56bf4b52bb0ee8a4_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_get_product_string@
 hs_bindgen_56bf4b52bb0ee8a4
@@ -849,7 +908,12 @@ hs_bindgen_56bf4b52bb0ee8a4
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_56bf4b52bb0ee8a4 =
-  BG.fromFFIType hs_bindgen_56bf4b52bb0ee8a4_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_56bf4b52bb0ee8a4_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get The Product String from a HID device.
 --
@@ -880,8 +944,8 @@ foreign import ccall unsafe "hs_bindgen_dec4af789ee01ecf"
   hs_bindgen_dec4af789ee01ecf_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_get_serial_number_string@
 hs_bindgen_dec4af789ee01ecf
@@ -890,7 +954,12 @@ hs_bindgen_dec4af789ee01ecf
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_dec4af789ee01ecf =
-  BG.fromFFIType hs_bindgen_dec4af789ee01ecf_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_dec4af789ee01ecf_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get The Serial Number String from a HID device.
 --
@@ -920,10 +989,10 @@ sDL_hid_get_serial_number_string =
 foreign import ccall unsafe "hs_bindgen_4ec0bddefa08ebea"
   hs_bindgen_4ec0bddefa08ebea_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_get_indexed_string@
 hs_bindgen_4ec0bddefa08ebea
@@ -933,7 +1002,18 @@ hs_bindgen_4ec0bddefa08ebea
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_4ec0bddefa08ebea =
-  BG.fromFFIType hs_bindgen_4ec0bddefa08ebea_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_4ec0bddefa08ebea_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Get a string from a HID device, based on its string index.
 --
@@ -974,7 +1054,8 @@ hs_bindgen_48075159cccbc3cd
   :: BG.Ptr SDL_hid_device
   -> IO (BG.Ptr SDL_hid_device_info)
 hs_bindgen_48075159cccbc3cd =
-  BG.fromFFIType hs_bindgen_48075159cccbc3cd_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_48075159cccbc3cd_base (BG.toFFIType x0))
 
 -- | Get the device info from a HID device.
 --
@@ -996,8 +1077,8 @@ foreign import ccall unsafe "hs_bindgen_682cc2cefec05416"
   hs_bindgen_682cc2cefec05416_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_get_report_descriptor@
 hs_bindgen_682cc2cefec05416
@@ -1006,7 +1087,12 @@ hs_bindgen_682cc2cefec05416
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_682cc2cefec05416 =
-  BG.fromFFIType hs_bindgen_682cc2cefec05416_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_682cc2cefec05416_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get a report descriptor from a HID device.
 --
@@ -1037,7 +1123,7 @@ sDL_hid_get_report_descriptor =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_ble_scan@
 foreign import ccall unsafe "hs_bindgen_5c88299056af21de"
   hs_bindgen_5c88299056af21de_base
-    :: BG.Word8
+    :: BG.CBool
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Hidapi_Unsafe_SDL_hid_ble_scan@
@@ -1045,7 +1131,8 @@ hs_bindgen_5c88299056af21de
   :: BG.CBool
   -> IO ()
 hs_bindgen_5c88299056af21de =
-  BG.fromFFIType hs_bindgen_5c88299056af21de_base
+  \x0 ->
+    hs_bindgen_5c88299056af21de_base (BG.toFFIType x0)
 
 -- | Start or stop a BLE scan on iOS and tvOS to pair Steam Controllers.
 --

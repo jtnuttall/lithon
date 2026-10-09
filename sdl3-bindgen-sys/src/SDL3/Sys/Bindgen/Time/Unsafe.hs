@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Time.Unsafe (
@@ -15,6 +17,9 @@ module SDL3.Sys.Bindgen.Time.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -23,7 +28,8 @@ import SDL3.Sys.Bindgen.Time
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_time.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_time.h>"
          , "_Bool hs_bindgen_3432fa094bde3d31 ("
          , "  SDL_DateFormat *arg1,"
          , "  SDL_TimeFormat *arg2"
@@ -99,7 +105,7 @@ foreign import ccall unsafe "hs_bindgen_3432fa094bde3d31"
   hs_bindgen_3432fa094bde3d31_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_Unsafe_SDL_GetDateTimeLocalePreferences@
 hs_bindgen_3432fa094bde3d31
@@ -107,7 +113,9 @@ hs_bindgen_3432fa094bde3d31
   -> BG.Ptr SDL_TimeFormat
   -> IO BG.CBool
 hs_bindgen_3432fa094bde3d31 =
-  BG.fromFFIType hs_bindgen_3432fa094bde3d31_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_3432fa094bde3d31_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Gets the current preferred date and time format for the system locale.
 --
@@ -137,14 +145,15 @@ sDL_GetDateTimeLocalePreferences =
 foreign import ccall unsafe "hs_bindgen_8783e8faf159e5f6"
   hs_bindgen_8783e8faf159e5f6_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_Unsafe_SDL_GetCurrentTime@
 hs_bindgen_8783e8faf159e5f6
   :: BG.Ptr SDL3.Sys.Bindgen.Stdinc.SDL_Time
   -> IO BG.CBool
 hs_bindgen_8783e8faf159e5f6 =
-  BG.fromFFIType hs_bindgen_8783e8faf159e5f6_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_8783e8faf159e5f6_base (BG.toFFIType x0))
 
 -- | Gets the current value of the system realtime clock in nanoseconds since Jan 1, 1970 in Universal Coordinated Time (UTC).
 --
@@ -166,10 +175,10 @@ sDL_GetCurrentTime = hs_bindgen_8783e8faf159e5f6
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_Unsafe_SDL_TimeToDateTime@
 foreign import ccall unsafe "hs_bindgen_fd32d59b7aff0779"
   hs_bindgen_fd32d59b7aff0779_base
-    :: BG.Int64
+    :: HsBindgen.Runtime.LibC.Int64
     -> BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_Unsafe_SDL_TimeToDateTime@
 hs_bindgen_fd32d59b7aff0779
@@ -178,7 +187,12 @@ hs_bindgen_fd32d59b7aff0779
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_fd32d59b7aff0779 =
-  BG.fromFFIType hs_bindgen_fd32d59b7aff0779_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_fd32d59b7aff0779_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Converts an SDL_Time in nanoseconds since the epoch to a calendar time in the 'SDL_DateTime' format.
 --
@@ -210,7 +224,7 @@ foreign import ccall unsafe "hs_bindgen_f67b5047c1f40868"
   hs_bindgen_f67b5047c1f40868_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_Unsafe_SDL_DateTimeToTime@
 hs_bindgen_f67b5047c1f40868
@@ -218,7 +232,9 @@ hs_bindgen_f67b5047c1f40868
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.SDL_Time
   -> IO BG.CBool
 hs_bindgen_f67b5047c1f40868 =
-  BG.fromFFIType hs_bindgen_f67b5047c1f40868_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_f67b5047c1f40868_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Converts a calendar time to an SDL_Time in nanoseconds since the epoch.
 --
@@ -246,7 +262,7 @@ sDL_DateTimeToTime = hs_bindgen_f67b5047c1f40868
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_Unsafe_SDL_TimeToWindows@
 foreign import ccall unsafe "hs_bindgen_073c7d3a9fd7c54d"
   hs_bindgen_073c7d3a9fd7c54d_base
-    :: BG.Int64
+    :: HsBindgen.Runtime.LibC.Int64
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> IO ()
@@ -258,7 +274,10 @@ hs_bindgen_073c7d3a9fd7c54d
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_073c7d3a9fd7c54d =
-  BG.fromFFIType hs_bindgen_073c7d3a9fd7c54d_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        hs_bindgen_073c7d3a9fd7c54d_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2)
 
 -- | Converts an SDL time into a Windows FILETIME (100-nanosecond intervals since January 1, 1601).
 --
@@ -288,9 +307,9 @@ sDL_TimeToWindows = hs_bindgen_073c7d3a9fd7c54d
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_Unsafe_SDL_TimeFromWindows@
 foreign import ccall unsafe "hs_bindgen_450903725dfdb0ee"
   hs_bindgen_450903725dfdb0ee_base
-    :: BG.Word32
-    -> BG.Word32
-    -> IO BG.Int64
+    :: HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO HsBindgen.Runtime.LibC.Int64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_Unsafe_SDL_TimeFromWindows@
 hs_bindgen_450903725dfdb0ee
@@ -298,7 +317,9 @@ hs_bindgen_450903725dfdb0ee
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO SDL3.Sys.Bindgen.Stdinc.SDL_Time
 hs_bindgen_450903725dfdb0ee =
-  BG.fromFFIType hs_bindgen_450903725dfdb0ee_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_450903725dfdb0ee_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Converts a Windows FILETIME (100-nanosecond intervals since January 1, 1601) to an SDL time.
 --
@@ -326,9 +347,9 @@ sDL_TimeFromWindows = hs_bindgen_450903725dfdb0ee
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_Unsafe_SDL_GetDaysInMonth@
 foreign import ccall unsafe "hs_bindgen_81cc8f2d17acfd75"
   hs_bindgen_81cc8f2d17acfd75_base
-    :: BG.Int32
-    -> BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_Unsafe_SDL_GetDaysInMonth@
 hs_bindgen_81cc8f2d17acfd75
@@ -336,7 +357,9 @@ hs_bindgen_81cc8f2d17acfd75
   -> BG.CInt
   -> IO BG.CInt
 hs_bindgen_81cc8f2d17acfd75 =
-  BG.fromFFIType hs_bindgen_81cc8f2d17acfd75_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_81cc8f2d17acfd75_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the number of days in a month for a given year.
 --
@@ -362,10 +385,10 @@ sDL_GetDaysInMonth = hs_bindgen_81cc8f2d17acfd75
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_Unsafe_SDL_GetDayOfYear@
 foreign import ccall unsafe "hs_bindgen_02c2e878757c0925"
   hs_bindgen_02c2e878757c0925_base
-    :: BG.Int32
-    -> BG.Int32
-    -> BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> BG.CInt
+    -> BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_Unsafe_SDL_GetDayOfYear@
 hs_bindgen_02c2e878757c0925
@@ -374,7 +397,12 @@ hs_bindgen_02c2e878757c0925
   -> BG.CInt
   -> IO BG.CInt
 hs_bindgen_02c2e878757c0925 =
-  BG.fromFFIType hs_bindgen_02c2e878757c0925_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_02c2e878757c0925_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the day of year for a calendar date.
 --
@@ -404,10 +432,10 @@ sDL_GetDayOfYear = hs_bindgen_02c2e878757c0925
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_Unsafe_SDL_GetDayOfWeek@
 foreign import ccall unsafe "hs_bindgen_9583fd9571c78f9c"
   hs_bindgen_9583fd9571c78f9c_base
-    :: BG.Int32
-    -> BG.Int32
-    -> BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> BG.CInt
+    -> BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_Unsafe_SDL_GetDayOfWeek@
 hs_bindgen_9583fd9571c78f9c
@@ -416,7 +444,12 @@ hs_bindgen_9583fd9571c78f9c
   -> BG.CInt
   -> IO BG.CInt
 hs_bindgen_9583fd9571c78f9c =
-  BG.fromFFIType hs_bindgen_9583fd9571c78f9c_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_9583fd9571c78f9c_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the day of week for a calendar date.
 --

@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | A helpful assertion macro!
 --
 --     SDL assertions operate like your usual @assert@ macro, but with some added features:
@@ -53,6 +55,7 @@ module SDL3.Sys.Assert (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (IO)
 
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst

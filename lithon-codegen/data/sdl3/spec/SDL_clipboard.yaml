@@ -1,5 +1,5 @@
 version:
-  hs_bindgen: 0.1.0
+  hs_bindgen: 1.0.0.0
   binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Clipboard
 ctypes:
@@ -37,6 +37,9 @@ hstypes:
         constructor: SDL_ClipboardCleanupCallback
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -57,6 +60,9 @@ hstypes:
         constructor: SDL_ClipboardDataCallback
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic

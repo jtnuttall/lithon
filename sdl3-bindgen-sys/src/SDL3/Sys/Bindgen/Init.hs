@@ -6,6 +6,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -17,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | All SDL programs need to initialize the library before starting to work with it.
 --
@@ -64,6 +66,24 @@ module SDL3.Sys.Bindgen.Init (
   SDL3.Sys.Bindgen.Init.sDL_PROP_APP_METADATA_TYPE_STRING,
 )
 where
+
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  IO,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  fmap,
+  pure,
+  (<*>),
+  type (~),
+ )
 
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
@@ -297,13 +317,12 @@ newtype SDL_AppInit_func_Aux = SDL_AppInit_func_Aux
       -> IO SDL_AppResult
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_AppInit_func_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_c9f12691f8f9f34d_base
-    :: (BG.Ptr BG.Void -> BG.Int32 -> BG.Ptr BG.Void -> IO BG.Word32)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Int32 -> BG.Ptr BG.Void -> IO BG.Word32))
+    :: (BG.Ptr BG.Void -> BG.CInt -> BG.Ptr BG.Void -> IO BG.CUInt)
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.CInt -> BG.Ptr BG.Void -> IO BG.CUInt))
 
 -- __unique:__ @toSDL_AppInit_func_Aux@
 hs_bindgen_c9f12691f8f9f34d
@@ -311,16 +330,26 @@ hs_bindgen_c9f12691f8f9f34d
   -> IO (BG.FunPtr SDL_AppInit_func_Aux)
 hs_bindgen_c9f12691f8f9f34d =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_c9f12691f8f9f34d_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_c9f12691f8f9f34d_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  fmap
+                    BG.toFFIType
+                    (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2) (BG.fromFFIType x3))
+          )
+      )
 
 -- __unique:__ @fromSDL_AppInit_func_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_1ceb806dcbf0a04a_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Int32 -> BG.Ptr BG.Void -> IO BG.Word32)
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.CInt -> BG.Ptr BG.Void -> IO BG.CUInt)
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @fromSDL_AppInit_func_Aux@
 hs_bindgen_1ceb806dcbf0a04a
@@ -328,7 +357,19 @@ hs_bindgen_1ceb806dcbf0a04a
   -> SDL_AppInit_func_Aux
 hs_bindgen_1ceb806dcbf0a04a =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_1ceb806dcbf0a04a_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_AppInit_func_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_1ceb806dcbf0a04a_base
+                    (BG.castFunPtr funPtr0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                )
+      )
 
 instance BG.ToFunPtr SDL_AppInit_func_Aux where
   toFunPtr = hs_bindgen_c9f12691f8f9f34d
@@ -433,13 +474,12 @@ newtype SDL_AppIterate_func_Aux = SDL_AppIterate_func_Aux
   { unwrap :: BG.Ptr BG.Void -> IO SDL_AppResult
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_AppIterate_func_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_8620c17cf1102621_base
-    :: (BG.Ptr BG.Void -> IO BG.Word32)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> IO BG.Word32))
+    :: (BG.Ptr BG.Void -> IO BG.CUInt)
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> IO BG.CUInt))
 
 -- __unique:__ @toSDL_AppIterate_func_Aux@
 hs_bindgen_8620c17cf1102621
@@ -447,14 +487,20 @@ hs_bindgen_8620c17cf1102621
   -> IO (BG.FunPtr SDL_AppIterate_func_Aux)
 hs_bindgen_8620c17cf1102621 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_8620c17cf1102621_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_8620c17cf1102621_base
+          ( \x1 ->
+              fmap BG.toFFIType (BG.getField @"unwrap" fun0 (BG.fromFFIType x1))
+          )
+      )
 
 -- __unique:__ @fromSDL_AppIterate_func_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_eafa84799a5f2ef1_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> IO BG.Word32)
+    :: BG.FunPtr (BG.Ptr BG.Void -> IO BG.CUInt)
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @fromSDL_AppIterate_func_Aux@
 hs_bindgen_eafa84799a5f2ef1
@@ -462,7 +508,10 @@ hs_bindgen_eafa84799a5f2ef1
   -> SDL_AppIterate_func_Aux
 hs_bindgen_eafa84799a5f2ef1 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_eafa84799a5f2ef1_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_AppIterate_func_Aux
+      ( \x1 ->
+          fmap BG.fromFFIType (hs_bindgen_eafa84799a5f2ef1_base (BG.castFunPtr funPtr0) (BG.toFFIType x1))
+      )
 
 instance BG.ToFunPtr SDL_AppIterate_func_Aux where
   toFunPtr = hs_bindgen_8620c17cf1102621
@@ -548,13 +597,12 @@ newtype SDL_AppEvent_func_Aux = SDL_AppEvent_func_Aux
   { unwrap :: BG.Ptr BG.Void -> BG.Ptr SDL3.Sys.Bindgen.Events.SDL_Event -> IO SDL_AppResult
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_AppEvent_func_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_2b9dfae6ab23e116_base
-    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word32)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word32))
+    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CUInt)
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CUInt))
 
 -- __unique:__ @toSDL_AppEvent_func_Aux@
 hs_bindgen_2b9dfae6ab23e116
@@ -562,15 +610,22 @@ hs_bindgen_2b9dfae6ab23e116
   -> IO (BG.FunPtr SDL_AppEvent_func_Aux)
 hs_bindgen_2b9dfae6ab23e116 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_2b9dfae6ab23e116_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_2b9dfae6ab23e116_base
+          ( \x1 ->
+              \x2 ->
+                fmap BG.toFFIType (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2))
+          )
+      )
 
 -- __unique:__ @fromSDL_AppEvent_func_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_5d33518a4254e343_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word32)
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CUInt)
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @fromSDL_AppEvent_func_Aux@
 hs_bindgen_5d33518a4254e343
@@ -578,7 +633,13 @@ hs_bindgen_5d33518a4254e343
   -> SDL_AppEvent_func_Aux
 hs_bindgen_5d33518a4254e343 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_5d33518a4254e343_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_AppEvent_func_Aux
+      ( \x1 ->
+          \x2 ->
+            fmap
+              BG.fromFFIType
+              (hs_bindgen_5d33518a4254e343_base (BG.castFunPtr funPtr0) (BG.toFFIType x1) (BG.toFFIType x2))
+      )
 
 instance BG.ToFunPtr SDL_AppEvent_func_Aux where
   toFunPtr = hs_bindgen_2b9dfae6ab23e116
@@ -666,13 +727,12 @@ newtype SDL_AppQuit_func_Aux = SDL_AppQuit_func_Aux
   { unwrap :: BG.Ptr BG.Void -> SDL_AppResult -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_AppQuit_func_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_fabdaa4c4e54b1de_base
-    :: (BG.Ptr BG.Void -> BG.Word32 -> IO ())
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Word32 -> IO ()))
+    :: (BG.Ptr BG.Void -> BG.CUInt -> IO ())
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.CUInt -> IO ()))
 
 -- __unique:__ @toSDL_AppQuit_func_Aux@
 hs_bindgen_fabdaa4c4e54b1de
@@ -680,14 +740,21 @@ hs_bindgen_fabdaa4c4e54b1de
   -> IO (BG.FunPtr SDL_AppQuit_func_Aux)
 hs_bindgen_fabdaa4c4e54b1de =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_fabdaa4c4e54b1de_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_fabdaa4c4e54b1de_base
+          ( \x1 ->
+              \x2 ->
+                BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2)
+          )
+      )
 
 -- __unique:__ @fromSDL_AppQuit_func_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_7021ade2d0ddec93_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Word32 -> IO ())
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.CUInt -> IO ())
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> BG.CUInt
     -> IO ()
 
 -- __unique:__ @fromSDL_AppQuit_func_Aux@
@@ -696,7 +763,11 @@ hs_bindgen_7021ade2d0ddec93
   -> SDL_AppQuit_func_Aux
 hs_bindgen_7021ade2d0ddec93 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_7021ade2d0ddec93_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_AppQuit_func_Aux
+      ( \x1 ->
+          \x2 ->
+            hs_bindgen_7021ade2d0ddec93_base (BG.castFunPtr funPtr0) (BG.toFFIType x1) (BG.toFFIType x2)
+      )
 
 instance BG.ToFunPtr SDL_AppQuit_func_Aux where
   toFunPtr = hs_bindgen_fabdaa4c4e54b1de
@@ -782,7 +853,6 @@ newtype SDL_MainThreadCallback_Aux = SDL_MainThreadCallback_Aux
   { unwrap :: BG.Ptr BG.Void -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_MainThreadCallback_Aux@
 foreign import ccall safe "wrapper"
@@ -796,7 +866,13 @@ hs_bindgen_0ddfb0aab2235e28
   -> IO (BG.FunPtr SDL_MainThreadCallback_Aux)
 hs_bindgen_0ddfb0aab2235e28 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_0ddfb0aab2235e28_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_0ddfb0aab2235e28_base
+          ( \x1 ->
+              BG.getField @"unwrap" fun0 (BG.fromFFIType x1)
+          )
+      )
 
 -- __unique:__ @fromSDL_MainThreadCallback_Aux@
 foreign import ccall safe "dynamic"
@@ -811,7 +887,10 @@ hs_bindgen_b1a0621ae55dc01c
   -> SDL_MainThreadCallback_Aux
 hs_bindgen_b1a0621ae55dc01c =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_b1a0621ae55dc01c_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_MainThreadCallback_Aux
+      ( \x1 ->
+          hs_bindgen_b1a0621ae55dc01c_base (BG.castFunPtr funPtr0) (BG.toFFIType x1)
+      )
 
 instance BG.ToFunPtr SDL_MainThreadCallback_Aux where
   toFunPtr = hs_bindgen_0ddfb0aab2235e28

@@ -16,6 +16,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Defines keyboard scancodes.
 --
@@ -283,6 +284,8 @@ module SDL3.Sys.Bindgen.Scancode (
   pattern SDL3.Sys.Bindgen.Scancode.SDL_SCANCODE_COUNT,
 )
 where
+
+import Prelude (Eq, Int, Ord, Read, Show, pure, (<*>), type (~))
 
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField

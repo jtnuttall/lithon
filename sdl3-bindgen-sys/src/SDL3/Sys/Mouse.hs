@@ -1,4 +1,5 @@
 {-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Any GUI application has to deal with the mouse, and SDL provides functions to manage mouse input and the displayed cursor.
 --
@@ -86,6 +87,7 @@ module SDL3.Sys.Mouse (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, Float, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

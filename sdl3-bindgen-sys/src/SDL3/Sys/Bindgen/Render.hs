@@ -18,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Header file for SDL 2D rendering functions.
 --
@@ -170,11 +171,14 @@ module SDL3.Sys.Bindgen.Render (
 )
 where
 
+import Prelude (Eq, Int, Ord, Read, Show, pure, (<*>), (>>), type (~))
+
 import C.Expr.HostPlatform qualified
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Gpu qualified
@@ -242,6 +246,11 @@ instance Marshal.WriteRaw SDL_Vertex where
 
 deriving via Marshal.EquivStorable SDL_Vertex instance BG.Storable SDL_Vertex
 
+deriving via Struct.IsStructViaReadRaw SDL_Vertex instance Struct.IsStruct SDL_Vertex
+
+-- | Vertex position, in 'SDL_Renderer' coordinates
+--
+--     [C declaration]: @position@, defined at @SDL3\/SDL_render.h 91:16@
 instance
   (ty ~ SDL3.Sys.Bindgen.Rect.SDL_FPoint)
   => BG.CompatHasField.HasField "position" SDL_Vertex ty
@@ -270,6 +279,9 @@ instance HasCField.HasCField SDL_Vertex "position" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Vertex color
+--
+--     [C declaration]: @color@, defined at @SDL3\/SDL_render.h 92:16@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pixels.SDL_FColor)
   => BG.CompatHasField.HasField "color" SDL_Vertex ty
@@ -298,6 +310,9 @@ instance HasCField.HasCField SDL_Vertex "color" where
 
   offset# = \_ -> \_ -> 8
 
+-- | Normalized texture coordinates, if needed
+--
+--     [C declaration]: @tex_coord@, defined at @SDL3\/SDL_render.h 93:16@
 instance
   (ty ~ SDL3.Sys.Bindgen.Rect.SDL_FPoint)
   => BG.CompatHasField.HasField "tex_coord" SDL_Vertex ty
@@ -765,6 +780,11 @@ instance Marshal.WriteRaw SDL_Texture where
 
 deriving via Marshal.EquivStorable SDL_Texture instance BG.Storable SDL_Texture
 
+deriving via Struct.IsStructViaReadRaw SDL_Texture instance Struct.IsStruct SDL_Texture
+
+-- | The format of the texture, read-only
+--
+--     [C declaration]: @format@, defined at @SDL3\/SDL_render.h 162:21@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat)
   => BG.CompatHasField.HasField "format" SDL_Texture ty
@@ -794,6 +814,9 @@ instance HasCField.HasCField SDL_Texture "format" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The width of the texture, read-only.
+--
+--     [C declaration]: @w@, defined at @SDL3\/SDL_render.h 163:9@
 instance (ty ~ BG.CInt) => BG.CompatHasField.HasField "w" SDL_Texture ty where
   hasField =
     \x0 ->
@@ -818,6 +841,9 @@ instance HasCField.HasCField SDL_Texture "w" where
 
   offset# = \_ -> \_ -> 4
 
+-- | The height of the texture, read-only.
+--
+--     [C declaration]: @h@, defined at @SDL3\/SDL_render.h 164:9@
 instance (ty ~ BG.CInt) => BG.CompatHasField.HasField "h" SDL_Texture ty where
   hasField =
     \x0 ->
@@ -842,6 +868,9 @@ instance HasCField.HasCField SDL_Texture "h" where
 
   offset# = \_ -> \_ -> 8
 
+-- | Application reference count, used when freeing texture
+--
+--     [C declaration]: @refcount@, defined at @SDL3\/SDL_render.h 166:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "refcount" SDL_Texture ty
@@ -4512,6 +4541,14 @@ deriving via
   instance
     BG.Storable SDL_GPURenderStateCreateInfo
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPURenderStateCreateInfo
+  instance
+    Struct.IsStruct SDL_GPURenderStateCreateInfo
+
+-- | The fragment shader to use when this render state is active
+--
+--     [C declaration]: @fragment_shader@, defined at @SDL3\/SDL_render.h 2931:20@
 instance
   (ty ~ BG.Ptr SDL3.Sys.Bindgen.Gpu.SDL_GPUShader)
   => BG.CompatHasField.HasField "fragment_shader" SDL_GPURenderStateCreateInfo ty
@@ -4546,6 +4583,9 @@ instance HasCField.HasCField SDL_GPURenderStateCreateInfo "fragment_shader" wher
 
   offset# = \_ -> \_ -> 0
 
+-- | The number of additional fragment samplers to bind when this render state is active
+--
+--     [C declaration]: @num_sampler_bindings@, defined at @SDL3\/SDL_render.h 2933:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "num_sampler_bindings" SDL_GPURenderStateCreateInfo ty
@@ -4580,6 +4620,9 @@ instance HasCField.HasCField SDL_GPURenderStateCreateInfo "num_sampler_bindings"
 
   offset# = \_ -> \_ -> 8
 
+-- | Additional fragment samplers to bind when this render state is active
+--
+--     [C declaration]: @sampler_bindings@, defined at @SDL3\/SDL_render.h 2934:41@
 instance
   (ty ~ PtrConst.PtrConst SDL3.Sys.Bindgen.Gpu.SDL_GPUTextureSamplerBinding)
   => BG.CompatHasField.HasField "sampler_bindings" SDL_GPURenderStateCreateInfo ty
@@ -4614,6 +4657,9 @@ instance HasCField.HasCField SDL_GPURenderStateCreateInfo "sampler_bindings" whe
 
   offset# = \_ -> \_ -> 16
 
+-- | The number of storage textures to bind when this render state is active
+--
+--     [C declaration]: @num_storage_textures@, defined at @SDL3\/SDL_render.h 2936:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "num_storage_textures" SDL_GPURenderStateCreateInfo ty
@@ -4648,6 +4694,9 @@ instance HasCField.HasCField SDL_GPURenderStateCreateInfo "num_storage_textures"
 
   offset# = \_ -> \_ -> 24
 
+-- | Storage textures to bind when this render state is active
+--
+--     [C declaration]: @storage_textures@, defined at @SDL3\/SDL_render.h 2937:28@
 instance
   (ty ~ PtrConst.PtrConst (BG.Ptr SDL3.Sys.Bindgen.Gpu.SDL_GPUTexture))
   => BG.CompatHasField.HasField "storage_textures" SDL_GPURenderStateCreateInfo ty
@@ -4682,6 +4731,9 @@ instance HasCField.HasCField SDL_GPURenderStateCreateInfo "storage_textures" whe
 
   offset# = \_ -> \_ -> 32
 
+-- | The number of storage buffers to bind when this render state is active
+--
+--     [C declaration]: @num_storage_buffers@, defined at @SDL3\/SDL_render.h 2939:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "num_storage_buffers" SDL_GPURenderStateCreateInfo ty
@@ -4716,6 +4768,9 @@ instance HasCField.HasCField SDL_GPURenderStateCreateInfo "num_storage_buffers" 
 
   offset# = \_ -> \_ -> 40
 
+-- | Storage buffers to bind when this render state is active
+--
+--     [C declaration]: @storage_buffers@, defined at @SDL3\/SDL_render.h 2940:27@
 instance
   (ty ~ PtrConst.PtrConst (BG.Ptr SDL3.Sys.Bindgen.Gpu.SDL_GPUBuffer))
   => BG.CompatHasField.HasField "storage_buffers" SDL_GPURenderStateCreateInfo ty
@@ -4750,6 +4805,9 @@ instance HasCField.HasCField SDL_GPURenderStateCreateInfo "storage_buffers" wher
 
   offset# = \_ -> \_ -> 48
 
+-- | A properties ID for extensions. Should be 0 if no extensions are needed.
+--
+--     [C declaration]: @props@, defined at @SDL3\/SDL_render.h 2942:22@
 instance
   (ty ~ SDL3.Sys.Bindgen.Properties.SDL_PropertiesID)
   => BG.CompatHasField.HasField "props" SDL_GPURenderStateCreateInfo ty

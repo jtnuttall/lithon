@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | File dialog support.
 --
 --     SDL offers file dialogs, to let users select files with native GUI interfaces. There are \"open\" dialogs, \"save\" dialogs, and folder selection dialogs. The app can control some details, such as filtering to specific files, or whether multiple files can be selected by the user.
@@ -29,6 +31,7 @@ module SDL3.Sys.Dialog (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Messagebox.FunPtr (
@@ -7,6 +9,8 @@ module SDL3.Sys.Bindgen.Messagebox.FunPtr (
   SDL3.Sys.Bindgen.Messagebox.FunPtr.sDL_ShowSimpleMessageBox,
 )
 where
+
+import Prelude (IO, fmap)
 
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
@@ -16,7 +20,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_messagebox.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_messagebox.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Messagebox_get_SDL_ShowMessageBox */"
          , "__attribute__ ((const))"
          , "_Bool (*hs_bindgen_fdad2a984a763ae0 (void)) ("
@@ -50,7 +55,7 @@ foreign import ccall unsafe "hs_bindgen_fdad2a984a763ae0"
 hs_bindgen_fdad2a984a763ae0
   :: IO (BG.FunPtr (PtrConst.PtrConst SDL_MessageBoxData -> BG.Ptr BG.CInt -> IO BG.CBool))
 hs_bindgen_fdad2a984a763ae0 =
-  BG.fromFFIType hs_bindgen_fdad2a984a763ae0_base
+  fmap BG.fromFFIType hs_bindgen_fdad2a984a763ae0_base
 
 {-# NOINLINE sDL_ShowMessageBox #-}
 
@@ -101,7 +106,7 @@ hs_bindgen_059be268606e6ea4
            )
        )
 hs_bindgen_059be268606e6ea4 =
-  BG.fromFFIType hs_bindgen_059be268606e6ea4_base
+  fmap BG.fromFFIType hs_bindgen_059be268606e6ea4_base
 
 {-# NOINLINE sDL_ShowSimpleMessageBox #-}
 

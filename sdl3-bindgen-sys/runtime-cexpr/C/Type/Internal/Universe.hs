@@ -1,6 +1,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
--- | **Internal** module listing out all n-tuples of types
+-- | __Internal__ module listing out all n-tuples of types
 -- for the purposes of generating code with Template Haskell
 -- and for testing.
 module C.Type.Internal.Universe (

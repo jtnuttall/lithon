@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Stdinc.Safe (
@@ -156,6 +158,8 @@ module SDL3.Sys.Bindgen.Stdinc.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
@@ -164,7 +168,8 @@ import SDL3.Sys.Bindgen.Stdinc
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_stdinc.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_stdinc.h>"
          , "void *hs_bindgen_0fa0437465ff2e3b ("
          , "  size_t arg1"
          , ")"
@@ -1188,7 +1193,7 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_malloc@
 foreign import ccall safe "hs_bindgen_0fa0437465ff2e3b"
   hs_bindgen_0fa0437465ff2e3b_base
-    :: BG.Word64
+    :: HsBindgen.Runtime.LibC.CSize
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_malloc@
@@ -1196,7 +1201,8 @@ hs_bindgen_0fa0437465ff2e3b
   :: HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_0fa0437465ff2e3b =
-  BG.fromFFIType hs_bindgen_0fa0437465ff2e3b_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_0fa0437465ff2e3b_base (BG.toFFIType x0))
 
 -- | Allocate uninitialized memory.
 --
@@ -1226,8 +1232,8 @@ sDL_malloc = hs_bindgen_0fa0437465ff2e3b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_calloc@
 foreign import ccall safe "hs_bindgen_12a69b8549cd3a89"
   hs_bindgen_12a69b8549cd3a89_base
-    :: BG.Word64
-    -> BG.Word64
+    :: HsBindgen.Runtime.LibC.CSize
+    -> HsBindgen.Runtime.LibC.CSize
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_calloc@
@@ -1236,7 +1242,9 @@ hs_bindgen_12a69b8549cd3a89
   -> HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_12a69b8549cd3a89 =
-  BG.fromFFIType hs_bindgen_12a69b8549cd3a89_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_12a69b8549cd3a89_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | [C declaration]: @SDL_calloc@, defined at @SDL3\/SDL_stdinc.h 1367:69@
 sDL_calloc
@@ -1251,7 +1259,7 @@ sDL_calloc = hs_bindgen_12a69b8549cd3a89
 foreign import ccall safe "hs_bindgen_749e3624b605eca6"
   hs_bindgen_749e3624b605eca6_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_realloc@
@@ -1260,7 +1268,9 @@ hs_bindgen_749e3624b605eca6
   -> HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_749e3624b605eca6 =
-  BG.fromFFIType hs_bindgen_749e3624b605eca6_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_749e3624b605eca6_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | [C declaration]: @SDL_realloc@, defined at @SDL3\/SDL_stdinc.h 1407:54@
 sDL_realloc
@@ -1282,7 +1292,8 @@ hs_bindgen_090b04617f4cc6c8
   :: BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_090b04617f4cc6c8 =
-  BG.fromFFIType hs_bindgen_090b04617f4cc6c8_base
+  \x0 ->
+    hs_bindgen_090b04617f4cc6c8_base (BG.toFFIType x0)
 
 -- | Free allocated memory.
 --
@@ -1322,7 +1333,15 @@ hs_bindgen_8ba528e1d8cc4754
   -> BG.Ptr SDL_free_func
   -> IO ()
 hs_bindgen_8ba528e1d8cc4754 =
-  BG.fromFFIType hs_bindgen_8ba528e1d8cc4754_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_8ba528e1d8cc4754_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Get the original set of SDL memory functions.
 --
@@ -1371,7 +1390,15 @@ hs_bindgen_ad8799017bc65037
   -> BG.Ptr SDL_free_func
   -> IO ()
 hs_bindgen_ad8799017bc65037 =
-  BG.fromFFIType hs_bindgen_ad8799017bc65037_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_ad8799017bc65037_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Get the current set of SDL memory functions.
 --
@@ -1409,7 +1436,7 @@ foreign import ccall safe "hs_bindgen_0320414e5ec49d1b"
     -> BG.FunPtr BG.Void
     -> BG.FunPtr BG.Void
     -> BG.FunPtr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_SetMemoryFunctions@
 hs_bindgen_0320414e5ec49d1b
@@ -1419,7 +1446,18 @@ hs_bindgen_0320414e5ec49d1b
   -> SDL_free_func
   -> IO BG.CBool
 hs_bindgen_0320414e5ec49d1b =
-  BG.fromFFIType hs_bindgen_0320414e5ec49d1b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_0320414e5ec49d1b_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Replace SDL\'s memory allocation functions with a custom set.
 --
@@ -1459,8 +1497,8 @@ sDL_SetMemoryFunctions = hs_bindgen_0320414e5ec49d1b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_aligned_alloc@
 foreign import ccall safe "hs_bindgen_f88d3921cd5e4163"
   hs_bindgen_f88d3921cd5e4163_base
-    :: BG.Word64
-    -> BG.Word64
+    :: HsBindgen.Runtime.LibC.CSize
+    -> HsBindgen.Runtime.LibC.CSize
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_aligned_alloc@
@@ -1469,7 +1507,9 @@ hs_bindgen_f88d3921cd5e4163
   -> HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_f88d3921cd5e4163 =
-  BG.fromFFIType hs_bindgen_f88d3921cd5e4163_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_f88d3921cd5e4163_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Allocate memory aligned to a specific alignment.
 --
@@ -1511,7 +1551,8 @@ hs_bindgen_d2d698681f3145f2
   :: BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_d2d698681f3145f2 =
-  BG.fromFFIType hs_bindgen_d2d698681f3145f2_base
+  \x0 ->
+    hs_bindgen_d2d698681f3145f2_base (BG.toFFIType x0)
 
 -- | Free memory allocated by @SDL_aligned_alloc()@.
 --
@@ -1537,12 +1578,12 @@ sDL_aligned_free = hs_bindgen_d2d698681f3145f2
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_GetNumAllocations@
 foreign import ccall safe "hs_bindgen_f0e7f10898be7ba4"
   hs_bindgen_f0e7f10898be7ba4_base
-    :: IO BG.Int32
+    :: IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_GetNumAllocations@
 hs_bindgen_f0e7f10898be7ba4 :: IO BG.CInt
 hs_bindgen_f0e7f10898be7ba4 =
-  BG.fromFFIType hs_bindgen_f0e7f10898be7ba4_base
+  fmap BG.fromFFIType hs_bindgen_f0e7f10898be7ba4_base
 
 -- | Get the number of outstanding (unfreed) allocations.
 --
@@ -1564,7 +1605,7 @@ foreign import ccall safe "hs_bindgen_e44727dd9f944e0a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_GetEnvironment@
 hs_bindgen_e44727dd9f944e0a :: IO (BG.Ptr SDL_Environment)
 hs_bindgen_e44727dd9f944e0a =
-  BG.fromFFIType hs_bindgen_e44727dd9f944e0a_base
+  fmap BG.fromFFIType hs_bindgen_e44727dd9f944e0a_base
 
 -- | Get the process environment.
 --
@@ -1585,7 +1626,7 @@ sDL_GetEnvironment = hs_bindgen_e44727dd9f944e0a
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_CreateEnvironment@
 foreign import ccall safe "hs_bindgen_5c62fc7482159de0"
   hs_bindgen_5c62fc7482159de0_base
-    :: BG.Word8
+    :: BG.CBool
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_CreateEnvironment@
@@ -1593,7 +1634,8 @@ hs_bindgen_5c62fc7482159de0
   :: BG.CBool
   -> IO (BG.Ptr SDL_Environment)
 hs_bindgen_5c62fc7482159de0 =
-  BG.fromFFIType hs_bindgen_5c62fc7482159de0_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_5c62fc7482159de0_base (BG.toFFIType x0))
 
 -- | Create a set of environment variables
 --
@@ -1627,7 +1669,9 @@ hs_bindgen_4da0ee2273bc4013
   -> PtrConst.PtrConst BG.CChar
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_4da0ee2273bc4013 =
-  BG.fromFFIType hs_bindgen_4da0ee2273bc4013_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4da0ee2273bc4013_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the value of a variable in the environment.
 --
@@ -1664,7 +1708,8 @@ hs_bindgen_4c1189e55e8583bb
   :: BG.Ptr SDL_Environment
   -> IO (BG.Ptr (BG.Ptr BG.CChar))
 hs_bindgen_4c1189e55e8583bb =
-  BG.fromFFIType hs_bindgen_4c1189e55e8583bb_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4c1189e55e8583bb_base (BG.toFFIType x0))
 
 -- | Get all variables in the environment.
 --
@@ -1692,8 +1737,8 @@ foreign import ccall safe "hs_bindgen_5824ff8a221d07c0"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_SetEnvironmentVariable@
 hs_bindgen_5824ff8a221d07c0
@@ -1703,7 +1748,18 @@ hs_bindgen_5824ff8a221d07c0
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_5824ff8a221d07c0 =
-  BG.fromFFIType hs_bindgen_5824ff8a221d07c0_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_5824ff8a221d07c0_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Set the value of a variable in the environment.
 --
@@ -1742,7 +1798,7 @@ foreign import ccall safe "hs_bindgen_f695a3f593331aff"
   hs_bindgen_f695a3f593331aff_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_UnsetEnvironmentVariable@
 hs_bindgen_f695a3f593331aff
@@ -1750,7 +1806,9 @@ hs_bindgen_f695a3f593331aff
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_f695a3f593331aff =
-  BG.fromFFIType hs_bindgen_f695a3f593331aff_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_f695a3f593331aff_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Clear a variable from the environment.
 --
@@ -1787,7 +1845,8 @@ hs_bindgen_1dd67a4722131c01
   :: BG.Ptr SDL_Environment
   -> IO ()
 hs_bindgen_1dd67a4722131c01 =
-  BG.fromFFIType hs_bindgen_1dd67a4722131c01_base
+  \x0 ->
+    hs_bindgen_1dd67a4722131c01_base (BG.toFFIType x0)
 
 -- | Destroy a set of environment variables.
 --
@@ -1817,7 +1876,8 @@ hs_bindgen_1af31e6913adf6ff
   :: PtrConst.PtrConst BG.CChar
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_1af31e6913adf6ff =
-  BG.fromFFIType hs_bindgen_1af31e6913adf6ff_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_1af31e6913adf6ff_base (BG.toFFIType x0))
 
 -- | Get the value of a variable in the environment.
 --
@@ -1851,7 +1911,8 @@ hs_bindgen_5a7e5c07a3b52c7c
   :: PtrConst.PtrConst BG.CChar
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_5a7e5c07a3b52c7c =
-  BG.fromFFIType hs_bindgen_5a7e5c07a3b52c7c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_5a7e5c07a3b52c7c_base (BG.toFFIType x0))
 
 -- | Get the value of a variable in the environment.
 --
@@ -1881,8 +1942,8 @@ foreign import ccall safe "hs_bindgen_e57ac980835e41db"
   hs_bindgen_e57ac980835e41db_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Int32
+    -> BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_setenv_unsafe@
 hs_bindgen_e57ac980835e41db
@@ -1891,7 +1952,12 @@ hs_bindgen_e57ac980835e41db
   -> BG.CInt
   -> IO BG.CInt
 hs_bindgen_e57ac980835e41db =
-  BG.fromFFIType hs_bindgen_e57ac980835e41db_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_e57ac980835e41db_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set the value of a variable in the environment.
 --
@@ -1924,14 +1990,15 @@ sDL_setenv_unsafe = hs_bindgen_e57ac980835e41db
 foreign import ccall safe "hs_bindgen_6237b0757e59fa37"
   hs_bindgen_6237b0757e59fa37_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_unsetenv_unsafe@
 hs_bindgen_6237b0757e59fa37
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CInt
 hs_bindgen_6237b0757e59fa37 =
-  BG.fromFFIType hs_bindgen_6237b0757e59fa37_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_6237b0757e59fa37_base (BG.toFFIType x0))
 
 -- | Clear a variable from the environment.
 --
@@ -1956,8 +2023,8 @@ sDL_unsetenv_unsafe = hs_bindgen_6237b0757e59fa37
 foreign import ccall safe "hs_bindgen_b81d78a311d44f46"
   hs_bindgen_b81d78a311d44f46_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
+    -> HsBindgen.Runtime.LibC.CSize
     -> BG.FunPtr BG.Void
     -> IO ()
 
@@ -1969,7 +2036,15 @@ hs_bindgen_b81d78a311d44f46
   -> SDL_CompareCallback
   -> IO ()
 hs_bindgen_b81d78a311d44f46 =
-  BG.fromFFIType hs_bindgen_b81d78a311d44f46_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          hs_bindgen_b81d78a311d44f46_base
+            (BG.toFFIType x0)
+            (BG.toFFIType x1)
+            (BG.toFFIType x2)
+            (BG.toFFIType x3)
 
 -- | Sort an array.
 --
@@ -2034,8 +2109,8 @@ foreign import ccall safe "hs_bindgen_8c9a76f991574084"
   hs_bindgen_8c9a76f991574084_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
+    -> HsBindgen.Runtime.LibC.CSize
     -> BG.FunPtr BG.Void
     -> IO (BG.Ptr BG.Void)
 
@@ -2048,7 +2123,20 @@ hs_bindgen_8c9a76f991574084
   -> SDL_CompareCallback
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_8c9a76f991574084 =
-  BG.fromFFIType hs_bindgen_8c9a76f991574084_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_8c9a76f991574084_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Perform a binary search on a previously sorted array.
 --
@@ -2119,8 +2207,8 @@ sDL_bsearch = hs_bindgen_8c9a76f991574084
 foreign import ccall safe "hs_bindgen_d22a2fabdcd748eb"
   hs_bindgen_d22a2fabdcd748eb_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
+    -> HsBindgen.Runtime.LibC.CSize
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
     -> IO ()
@@ -2134,7 +2222,17 @@ hs_bindgen_d22a2fabdcd748eb
   -> BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_d22a2fabdcd748eb =
-  BG.fromFFIType hs_bindgen_d22a2fabdcd748eb_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            hs_bindgen_d22a2fabdcd748eb_base
+              (BG.toFFIType x0)
+              (BG.toFFIType x1)
+              (BG.toFFIType x2)
+              (BG.toFFIType x3)
+              (BG.toFFIType x4)
 
 -- | Sort an array, passing a userdata pointer to the compare function.
 --
@@ -2209,8 +2307,8 @@ foreign import ccall safe "hs_bindgen_9cce970e9842407b"
   hs_bindgen_9cce970e9842407b_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
+    -> HsBindgen.Runtime.LibC.CSize
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
     -> IO (BG.Ptr BG.Void)
@@ -2225,7 +2323,22 @@ hs_bindgen_9cce970e9842407b
   -> BG.Ptr BG.Void
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_9cce970e9842407b =
-  BG.fromFFIType hs_bindgen_9cce970e9842407b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_9cce970e9842407b_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Perform a binary search on a previously sorted array, passing a userdata pointer to the compare function.
 --
@@ -2305,15 +2418,16 @@ sDL_bsearch_r = hs_bindgen_9cce970e9842407b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_abs@
 foreign import ccall safe "hs_bindgen_3b7f43f8c476ee06"
   hs_bindgen_3b7f43f8c476ee06_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_abs@
 hs_bindgen_3b7f43f8c476ee06
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_3b7f43f8c476ee06 =
-  BG.fromFFIType hs_bindgen_3b7f43f8c476ee06_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3b7f43f8c476ee06_base (BG.toFFIType x0))
 
 -- | Compute the absolute value of @x@.
 --
@@ -2335,15 +2449,16 @@ sDL_abs = hs_bindgen_3b7f43f8c476ee06
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isalpha@
 foreign import ccall safe "hs_bindgen_9a00314812b7b060"
   hs_bindgen_9a00314812b7b060_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isalpha@
 hs_bindgen_9a00314812b7b060
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_9a00314812b7b060 =
-  BG.fromFFIType hs_bindgen_9a00314812b7b060_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9a00314812b7b060_base (BG.toFFIType x0))
 
 -- | Query if a character is alphabetic (a letter).
 --
@@ -2367,15 +2482,16 @@ sDL_isalpha = hs_bindgen_9a00314812b7b060
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isalnum@
 foreign import ccall safe "hs_bindgen_f2e3b47d308f6330"
   hs_bindgen_f2e3b47d308f6330_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isalnum@
 hs_bindgen_f2e3b47d308f6330
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_f2e3b47d308f6330 =
-  BG.fromFFIType hs_bindgen_f2e3b47d308f6330_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_f2e3b47d308f6330_base (BG.toFFIType x0))
 
 -- | Query if a character is alphabetic (a letter) or a number.
 --
@@ -2399,15 +2515,16 @@ sDL_isalnum = hs_bindgen_f2e3b47d308f6330
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isblank@
 foreign import ccall safe "hs_bindgen_94e1edfbd7c1b6fd"
   hs_bindgen_94e1edfbd7c1b6fd_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isblank@
 hs_bindgen_94e1edfbd7c1b6fd
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_94e1edfbd7c1b6fd =
-  BG.fromFFIType hs_bindgen_94e1edfbd7c1b6fd_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_94e1edfbd7c1b6fd_base (BG.toFFIType x0))
 
 -- | Report if a character is blank (a space or tab).
 --
@@ -2431,15 +2548,16 @@ sDL_isblank = hs_bindgen_94e1edfbd7c1b6fd
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_iscntrl@
 foreign import ccall safe "hs_bindgen_f4e70f258fc0cd31"
   hs_bindgen_f4e70f258fc0cd31_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_iscntrl@
 hs_bindgen_f4e70f258fc0cd31
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_f4e70f258fc0cd31 =
-  BG.fromFFIType hs_bindgen_f4e70f258fc0cd31_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_f4e70f258fc0cd31_base (BG.toFFIType x0))
 
 -- | Report if a character is a control character.
 --
@@ -2463,15 +2581,16 @@ sDL_iscntrl = hs_bindgen_f4e70f258fc0cd31
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isdigit@
 foreign import ccall safe "hs_bindgen_a92ce90ddf0e012f"
   hs_bindgen_a92ce90ddf0e012f_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isdigit@
 hs_bindgen_a92ce90ddf0e012f
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_a92ce90ddf0e012f =
-  BG.fromFFIType hs_bindgen_a92ce90ddf0e012f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a92ce90ddf0e012f_base (BG.toFFIType x0))
 
 -- | Report if a character is a numeric digit.
 --
@@ -2495,15 +2614,16 @@ sDL_isdigit = hs_bindgen_a92ce90ddf0e012f
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isxdigit@
 foreign import ccall safe "hs_bindgen_c2fe92c140d522e3"
   hs_bindgen_c2fe92c140d522e3_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isxdigit@
 hs_bindgen_c2fe92c140d522e3
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_c2fe92c140d522e3 =
-  BG.fromFFIType hs_bindgen_c2fe92c140d522e3_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c2fe92c140d522e3_base (BG.toFFIType x0))
 
 -- | Report if a character is a hexadecimal digit.
 --
@@ -2527,15 +2647,16 @@ sDL_isxdigit = hs_bindgen_c2fe92c140d522e3
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_ispunct@
 foreign import ccall safe "hs_bindgen_abdf0b7703d7ef7b"
   hs_bindgen_abdf0b7703d7ef7b_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_ispunct@
 hs_bindgen_abdf0b7703d7ef7b
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_abdf0b7703d7ef7b =
-  BG.fromFFIType hs_bindgen_abdf0b7703d7ef7b_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_abdf0b7703d7ef7b_base (BG.toFFIType x0))
 
 -- | Report if a character is a punctuation mark.
 --
@@ -2561,15 +2682,16 @@ sDL_ispunct = hs_bindgen_abdf0b7703d7ef7b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isspace@
 foreign import ccall safe "hs_bindgen_b0c62a95d4008bcb"
   hs_bindgen_b0c62a95d4008bcb_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isspace@
 hs_bindgen_b0c62a95d4008bcb
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_b0c62a95d4008bcb =
-  BG.fromFFIType hs_bindgen_b0c62a95d4008bcb_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b0c62a95d4008bcb_base (BG.toFFIType x0))
 
 -- | Report if a character is whitespace.
 --
@@ -2605,15 +2727,16 @@ sDL_isspace = hs_bindgen_b0c62a95d4008bcb
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isupper@
 foreign import ccall safe "hs_bindgen_dbe8ad5b2415f52b"
   hs_bindgen_dbe8ad5b2415f52b_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isupper@
 hs_bindgen_dbe8ad5b2415f52b
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_dbe8ad5b2415f52b =
-  BG.fromFFIType hs_bindgen_dbe8ad5b2415f52b_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_dbe8ad5b2415f52b_base (BG.toFFIType x0))
 
 -- | Report if a character is upper case.
 --
@@ -2637,15 +2760,16 @@ sDL_isupper = hs_bindgen_dbe8ad5b2415f52b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_islower@
 foreign import ccall safe "hs_bindgen_4f1c801e2ffe74d9"
   hs_bindgen_4f1c801e2ffe74d9_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_islower@
 hs_bindgen_4f1c801e2ffe74d9
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_4f1c801e2ffe74d9 =
-  BG.fromFFIType hs_bindgen_4f1c801e2ffe74d9_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4f1c801e2ffe74d9_base (BG.toFFIType x0))
 
 -- | Report if a character is lower case.
 --
@@ -2669,15 +2793,16 @@ sDL_islower = hs_bindgen_4f1c801e2ffe74d9
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isprint@
 foreign import ccall safe "hs_bindgen_1de66809f06ec2cf"
   hs_bindgen_1de66809f06ec2cf_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isprint@
 hs_bindgen_1de66809f06ec2cf
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_1de66809f06ec2cf =
-  BG.fromFFIType hs_bindgen_1de66809f06ec2cf_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_1de66809f06ec2cf_base (BG.toFFIType x0))
 
 -- | Report if a character is \"printable\".
 --
@@ -2703,15 +2828,16 @@ sDL_isprint = hs_bindgen_1de66809f06ec2cf
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isgraph@
 foreign import ccall safe "hs_bindgen_7cecb757f16ce85d"
   hs_bindgen_7cecb757f16ce85d_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isgraph@
 hs_bindgen_7cecb757f16ce85d
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_7cecb757f16ce85d =
-  BG.fromFFIType hs_bindgen_7cecb757f16ce85d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_7cecb757f16ce85d_base (BG.toFFIType x0))
 
 -- | Report if a character is any \"printable\" except space.
 --
@@ -2739,15 +2865,16 @@ sDL_isgraph = hs_bindgen_7cecb757f16ce85d
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_toupper@
 foreign import ccall safe "hs_bindgen_799fe4e6fc639bc0"
   hs_bindgen_799fe4e6fc639bc0_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_toupper@
 hs_bindgen_799fe4e6fc639bc0
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_799fe4e6fc639bc0 =
-  BG.fromFFIType hs_bindgen_799fe4e6fc639bc0_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_799fe4e6fc639bc0_base (BG.toFFIType x0))
 
 -- | Convert low-ASCII English letters to uppercase.
 --
@@ -2773,15 +2900,16 @@ sDL_toupper = hs_bindgen_799fe4e6fc639bc0
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_tolower@
 foreign import ccall safe "hs_bindgen_af600e5bb74004b2"
   hs_bindgen_af600e5bb74004b2_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_tolower@
 hs_bindgen_af600e5bb74004b2
   :: BG.CInt
   -> IO BG.CInt
 hs_bindgen_af600e5bb74004b2 =
-  BG.fromFFIType hs_bindgen_af600e5bb74004b2_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_af600e5bb74004b2_base (BG.toFFIType x0))
 
 -- | Convert low-ASCII English letters to lowercase.
 --
@@ -2807,10 +2935,10 @@ sDL_tolower = hs_bindgen_af600e5bb74004b2
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_crc16@
 foreign import ccall safe "hs_bindgen_8b9d7fd6e4874342"
   hs_bindgen_8b9d7fd6e4874342_base
-    :: BG.Word16
+    :: HsBindgen.Runtime.LibC.Word16
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word16
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_crc16@
 hs_bindgen_8b9d7fd6e4874342
@@ -2819,7 +2947,12 @@ hs_bindgen_8b9d7fd6e4874342
   -> HsBindgen.Runtime.LibC.CSize
   -> IO Uint16
 hs_bindgen_8b9d7fd6e4874342 =
-  BG.fromFFIType hs_bindgen_8b9d7fd6e4874342_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_8b9d7fd6e4874342_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Calculate a CRC-16 value.
 --
@@ -2853,10 +2986,10 @@ sDL_crc16 = hs_bindgen_8b9d7fd6e4874342
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_crc32@
 foreign import ccall safe "hs_bindgen_20e1e20820f9c17a"
   hs_bindgen_20e1e20820f9c17a_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_crc32@
 hs_bindgen_20e1e20820f9c17a
@@ -2865,7 +2998,12 @@ hs_bindgen_20e1e20820f9c17a
   -> HsBindgen.Runtime.LibC.CSize
   -> IO Uint32
 hs_bindgen_20e1e20820f9c17a =
-  BG.fromFFIType hs_bindgen_20e1e20820f9c17a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_20e1e20820f9c17a_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Calculate a CRC-32 value.
 --
@@ -2900,9 +3038,9 @@ sDL_crc32 = hs_bindgen_20e1e20820f9c17a
 foreign import ccall safe "hs_bindgen_e26385eb1b169df1"
   hs_bindgen_e26385eb1b169df1_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
-    -> BG.Word32
-    -> IO BG.Word32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_murmur3_32@
 hs_bindgen_e26385eb1b169df1
@@ -2911,7 +3049,12 @@ hs_bindgen_e26385eb1b169df1
   -> Uint32
   -> IO Uint32
 hs_bindgen_e26385eb1b169df1 =
-  BG.fromFFIType hs_bindgen_e26385eb1b169df1_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_e26385eb1b169df1_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Calculate a 32-bit MurmurHash3 value for a block of data.
 --
@@ -2948,8 +3091,8 @@ sDL_murmur3_32 = hs_bindgen_e26385eb1b169df1
 foreign import ccall safe "hs_bindgen_39f43c1520a45f57"
   hs_bindgen_39f43c1520a45f57_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.CSize
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_memset4@
@@ -2959,7 +3102,12 @@ hs_bindgen_39f43c1520a45f57
   -> HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_39f43c1520a45f57 =
-  BG.fromFFIType hs_bindgen_39f43c1520a45f57_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_39f43c1520a45f57_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Initialize all 32-bit words of buffer of memory to a specific value.
 --
@@ -2995,8 +3143,8 @@ foreign import ccall safe "hs_bindgen_1386d72429f6b9cb"
   hs_bindgen_1386d72429f6b9cb_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_memcmp@
 hs_bindgen_1386d72429f6b9cb
@@ -3005,7 +3153,12 @@ hs_bindgen_1386d72429f6b9cb
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_1386d72429f6b9cb =
-  BG.fromFFIType hs_bindgen_1386d72429f6b9cb_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_1386d72429f6b9cb_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Compare two buffers of memory.
 --
@@ -3036,14 +3189,15 @@ sDL_memcmp = hs_bindgen_1386d72429f6b9cb
 foreign import ccall safe "hs_bindgen_e6c3253fb4b72427"
   hs_bindgen_e6c3253fb4b72427_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word64
+    -> IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_wcslen@
 hs_bindgen_e6c3253fb4b72427
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -> IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_e6c3253fb4b72427 =
-  BG.fromFFIType hs_bindgen_e6c3253fb4b72427_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_e6c3253fb4b72427_base (BG.toFFIType x0))
 
 -- | This works exactly like wcslen() but doesn\'t require access to a C runtime.
 --
@@ -3074,8 +3228,8 @@ sDL_wcslen = hs_bindgen_e6c3253fb4b72427
 foreign import ccall safe "hs_bindgen_da04478d43043c90"
   hs_bindgen_da04478d43043c90_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_wcsnlen@
 hs_bindgen_da04478d43043c90
@@ -3083,7 +3237,9 @@ hs_bindgen_da04478d43043c90
   -> HsBindgen.Runtime.LibC.CSize
   -> IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_da04478d43043c90 =
-  BG.fromFFIType hs_bindgen_da04478d43043c90_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_da04478d43043c90_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | This works exactly like wcsnlen() but doesn\'t require access to a C runtime.
 --
@@ -3121,8 +3277,8 @@ foreign import ccall safe "hs_bindgen_82a9094f0d522cdf"
   hs_bindgen_82a9094f0d522cdf_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_wcslcpy@
 hs_bindgen_82a9094f0d522cdf
@@ -3131,7 +3287,12 @@ hs_bindgen_82a9094f0d522cdf
   -> HsBindgen.Runtime.LibC.CSize
   -> IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_82a9094f0d522cdf =
-  BG.fromFFIType hs_bindgen_82a9094f0d522cdf_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_82a9094f0d522cdf_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Copy a wide string.
 --
@@ -3171,8 +3332,8 @@ foreign import ccall safe "hs_bindgen_c85ef13eabbd96dd"
   hs_bindgen_c85ef13eabbd96dd_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_wcslcat@
 hs_bindgen_c85ef13eabbd96dd
@@ -3181,7 +3342,12 @@ hs_bindgen_c85ef13eabbd96dd
   -> HsBindgen.Runtime.LibC.CSize
   -> IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_c85ef13eabbd96dd =
-  BG.fromFFIType hs_bindgen_c85ef13eabbd96dd_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_c85ef13eabbd96dd_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Concatenate wide strings.
 --
@@ -3227,7 +3393,8 @@ hs_bindgen_9a5bf9db9506735d
   :: PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -> IO (BG.Ptr HsBindgen.Runtime.LibC.CWchar)
 hs_bindgen_9a5bf9db9506735d =
-  BG.fromFFIType hs_bindgen_9a5bf9db9506735d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9a5bf9db9506735d_base (BG.toFFIType x0))
 
 -- | Allocate a copy of a wide string.
 --
@@ -3263,7 +3430,9 @@ hs_bindgen_8807485ad58a476c
   -> PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -> IO (BG.Ptr HsBindgen.Runtime.LibC.CWchar)
 hs_bindgen_8807485ad58a476c =
-  BG.fromFFIType hs_bindgen_8807485ad58a476c_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_8807485ad58a476c_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Search a wide string for the first instance of a specific substring.
 --
@@ -3295,7 +3464,7 @@ foreign import ccall safe "hs_bindgen_0f95369992d6076d"
   hs_bindgen_0f95369992d6076d_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_wcsnstr@
@@ -3305,7 +3474,12 @@ hs_bindgen_0f95369992d6076d
   -> HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr HsBindgen.Runtime.LibC.CWchar)
 hs_bindgen_0f95369992d6076d =
-  BG.fromFFIType hs_bindgen_0f95369992d6076d_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_0f95369992d6076d_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Search a wide string, up to n wide chars, for the first instance of a specific substring.
 --
@@ -3341,7 +3515,7 @@ foreign import ccall safe "hs_bindgen_a56659eded1129eb"
   hs_bindgen_a56659eded1129eb_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_wcscmp@
 hs_bindgen_a56659eded1129eb
@@ -3349,7 +3523,9 @@ hs_bindgen_a56659eded1129eb
   -> PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -> IO BG.CInt
 hs_bindgen_a56659eded1129eb =
-  BG.fromFFIType hs_bindgen_a56659eded1129eb_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_a56659eded1129eb_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Compare two null-terminated wide strings.
 --
@@ -3379,8 +3555,8 @@ foreign import ccall safe "hs_bindgen_f249ec61a8d5978a"
   hs_bindgen_f249ec61a8d5978a_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_wcsncmp@
 hs_bindgen_f249ec61a8d5978a
@@ -3389,7 +3565,12 @@ hs_bindgen_f249ec61a8d5978a
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_f249ec61a8d5978a =
-  BG.fromFFIType hs_bindgen_f249ec61a8d5978a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_f249ec61a8d5978a_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Compare two wide strings up to a number of wchar_t values.
 --
@@ -3427,7 +3608,7 @@ foreign import ccall safe "hs_bindgen_0e487d7f98097b0d"
   hs_bindgen_0e487d7f98097b0d_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_wcscasecmp@
 hs_bindgen_0e487d7f98097b0d
@@ -3435,7 +3616,9 @@ hs_bindgen_0e487d7f98097b0d
   -> PtrConst.PtrConst HsBindgen.Runtime.LibC.CWchar
   -> IO BG.CInt
 hs_bindgen_0e487d7f98097b0d =
-  BG.fromFFIType hs_bindgen_0e487d7f98097b0d_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_0e487d7f98097b0d_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Compare two null-terminated wide strings, case-insensitively.
 --
@@ -3467,8 +3650,8 @@ foreign import ccall safe "hs_bindgen_9a4ad44438974867"
   hs_bindgen_9a4ad44438974867_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_wcsncasecmp@
 hs_bindgen_9a4ad44438974867
@@ -3477,7 +3660,12 @@ hs_bindgen_9a4ad44438974867
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_9a4ad44438974867 =
-  BG.fromFFIType hs_bindgen_9a4ad44438974867_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_9a4ad44438974867_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Compare two wide strings, case-insensitively, up to a number of wchar_t.
 --
@@ -3516,14 +3704,15 @@ sDL_wcsncasecmp = hs_bindgen_9a4ad44438974867
 foreign import ccall safe "hs_bindgen_574becd3bb71e7b9"
   hs_bindgen_574becd3bb71e7b9_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word64
+    -> IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strlen@
 hs_bindgen_574becd3bb71e7b9
   :: PtrConst.PtrConst BG.CChar
   -> IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_574becd3bb71e7b9 =
-  BG.fromFFIType hs_bindgen_574becd3bb71e7b9_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_574becd3bb71e7b9_base (BG.toFFIType x0))
 
 -- | This works exactly like strlen() but doesn\'t require access to a C runtime.
 --
@@ -3552,8 +3741,8 @@ sDL_strlen = hs_bindgen_574becd3bb71e7b9
 foreign import ccall safe "hs_bindgen_9232c1cbf65df9e5"
   hs_bindgen_9232c1cbf65df9e5_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strnlen@
 hs_bindgen_9232c1cbf65df9e5
@@ -3561,7 +3750,9 @@ hs_bindgen_9232c1cbf65df9e5
   -> HsBindgen.Runtime.LibC.CSize
   -> IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_9232c1cbf65df9e5 =
-  BG.fromFFIType hs_bindgen_9232c1cbf65df9e5_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_9232c1cbf65df9e5_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | This works exactly like strnlen() but doesn\'t require access to a C runtime.
 --
@@ -3595,8 +3786,8 @@ foreign import ccall safe "hs_bindgen_1a460cf112b7fd68"
   hs_bindgen_1a460cf112b7fd68_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strlcpy@
 hs_bindgen_1a460cf112b7fd68
@@ -3605,7 +3796,12 @@ hs_bindgen_1a460cf112b7fd68
   -> HsBindgen.Runtime.LibC.CSize
   -> IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_1a460cf112b7fd68 =
-  BG.fromFFIType hs_bindgen_1a460cf112b7fd68_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_1a460cf112b7fd68_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Copy a string.
 --
@@ -3645,8 +3841,8 @@ foreign import ccall safe "hs_bindgen_10b5c948dc68c882"
   hs_bindgen_10b5c948dc68c882_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_utf8strlcpy@
 hs_bindgen_10b5c948dc68c882
@@ -3655,7 +3851,12 @@ hs_bindgen_10b5c948dc68c882
   -> HsBindgen.Runtime.LibC.CSize
   -> IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_10b5c948dc68c882 =
-  BG.fromFFIType hs_bindgen_10b5c948dc68c882_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_10b5c948dc68c882_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Copy an UTF-8 string.
 --
@@ -3695,8 +3896,8 @@ foreign import ccall safe "hs_bindgen_8132fc050b3dda62"
   hs_bindgen_8132fc050b3dda62_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strlcat@
 hs_bindgen_8132fc050b3dda62
@@ -3705,7 +3906,12 @@ hs_bindgen_8132fc050b3dda62
   -> HsBindgen.Runtime.LibC.CSize
   -> IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_8132fc050b3dda62 =
-  BG.fromFFIType hs_bindgen_8132fc050b3dda62_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_8132fc050b3dda62_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Concatenate strings.
 --
@@ -3751,7 +3957,8 @@ hs_bindgen_e91dd28c0e034753
   :: PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_e91dd28c0e034753 =
-  BG.fromFFIType hs_bindgen_e91dd28c0e034753_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_e91dd28c0e034753_base (BG.toFFIType x0))
 
 -- | Allocate a copy of a string.
 --
@@ -3778,7 +3985,7 @@ sDL_strdup = hs_bindgen_e91dd28c0e034753
 foreign import ccall safe "hs_bindgen_9f484a433e6fd1be"
   hs_bindgen_9f484a433e6fd1be_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strndup@
@@ -3787,7 +3994,9 @@ hs_bindgen_9f484a433e6fd1be
   -> HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_9f484a433e6fd1be =
-  BG.fromFFIType hs_bindgen_9f484a433e6fd1be_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_9f484a433e6fd1be_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Allocate a copy of a string, up to n characters.
 --
@@ -3827,7 +4036,8 @@ hs_bindgen_fd83e6da8cdd54dc
   :: BG.Ptr BG.CChar
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_fd83e6da8cdd54dc =
-  BG.fromFFIType hs_bindgen_fd83e6da8cdd54dc_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_fd83e6da8cdd54dc_base (BG.toFFIType x0))
 
 -- | Reverse a string\'s contents.
 --
@@ -3861,7 +4071,8 @@ hs_bindgen_4821ca9fe328d7f0
   :: BG.Ptr BG.CChar
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_4821ca9fe328d7f0 =
-  BG.fromFFIType hs_bindgen_4821ca9fe328d7f0_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4821ca9fe328d7f0_base (BG.toFFIType x0))
 
 -- | Convert a string to uppercase.
 --
@@ -3897,7 +4108,8 @@ hs_bindgen_b313d67572ea455e
   :: BG.Ptr BG.CChar
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_b313d67572ea455e =
-  BG.fromFFIType hs_bindgen_b313d67572ea455e_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b313d67572ea455e_base (BG.toFFIType x0))
 
 -- | Convert a string to lowercase.
 --
@@ -3926,7 +4138,7 @@ sDL_strlwr = hs_bindgen_b313d67572ea455e
 foreign import ccall safe "hs_bindgen_9b8b80f67620d0c0"
   hs_bindgen_9b8b80f67620d0c0_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strchr@
@@ -3935,7 +4147,9 @@ hs_bindgen_9b8b80f67620d0c0
   -> BG.CInt
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_9b8b80f67620d0c0 =
-  BG.fromFFIType hs_bindgen_9b8b80f67620d0c0_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_9b8b80f67620d0c0_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Search a string for the first instance of a specific byte.
 --
@@ -3966,7 +4180,7 @@ sDL_strchr = hs_bindgen_9b8b80f67620d0c0
 foreign import ccall safe "hs_bindgen_61eb1646e2706ec9"
   hs_bindgen_61eb1646e2706ec9_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strrchr@
@@ -3975,7 +4189,9 @@ hs_bindgen_61eb1646e2706ec9
   -> BG.CInt
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_61eb1646e2706ec9 =
-  BG.fromFFIType hs_bindgen_61eb1646e2706ec9_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_61eb1646e2706ec9_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Search a string for the last instance of a specific byte.
 --
@@ -4015,7 +4231,9 @@ hs_bindgen_09dae8bc6d27bfa7
   -> PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_09dae8bc6d27bfa7 =
-  BG.fromFFIType hs_bindgen_09dae8bc6d27bfa7_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_09dae8bc6d27bfa7_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Search a string for the first instance of a specific substring.
 --
@@ -4047,7 +4265,7 @@ foreign import ccall safe "hs_bindgen_b253d6195ad29db6"
   hs_bindgen_b253d6195ad29db6_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strnstr@
@@ -4057,7 +4275,12 @@ hs_bindgen_b253d6195ad29db6
   -> HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_b253d6195ad29db6 =
-  BG.fromFFIType hs_bindgen_b253d6195ad29db6_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_b253d6195ad29db6_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Search a string, up to n bytes, for the first instance of a specific substring.
 --
@@ -4101,7 +4324,9 @@ hs_bindgen_845c9ada7f0145b4
   -> PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_845c9ada7f0145b4 =
-  BG.fromFFIType hs_bindgen_845c9ada7f0145b4_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_845c9ada7f0145b4_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Search a UTF-8 string for the first instance of a specific substring, case-insensitively.
 --
@@ -4143,7 +4368,12 @@ hs_bindgen_92aad5310bed80bf
   -> BG.Ptr (BG.Ptr BG.CChar)
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_92aad5310bed80bf =
-  BG.fromFFIType hs_bindgen_92aad5310bed80bf_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_92aad5310bed80bf_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | This works exactly like strtok_r() but doesn\'t require access to a C runtime.
 --
@@ -4182,14 +4412,15 @@ sDL_strtok_r = hs_bindgen_92aad5310bed80bf
 foreign import ccall safe "hs_bindgen_2fe9c3d14ead61fa"
   hs_bindgen_2fe9c3d14ead61fa_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word64
+    -> IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_utf8strlen@
 hs_bindgen_2fe9c3d14ead61fa
   :: PtrConst.PtrConst BG.CChar
   -> IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_2fe9c3d14ead61fa =
-  BG.fromFFIType hs_bindgen_2fe9c3d14ead61fa_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_2fe9c3d14ead61fa_base (BG.toFFIType x0))
 
 -- | Count the number of codepoints in a UTF-8 string.
 --
@@ -4220,8 +4451,8 @@ sDL_utf8strlen = hs_bindgen_2fe9c3d14ead61fa
 foreign import ccall safe "hs_bindgen_7e1dc736bb92cf02"
   hs_bindgen_7e1dc736bb92cf02_base
     :: BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_utf8strnlen@
 hs_bindgen_7e1dc736bb92cf02
@@ -4229,7 +4460,9 @@ hs_bindgen_7e1dc736bb92cf02
   -> HsBindgen.Runtime.LibC.CSize
   -> IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_7e1dc736bb92cf02 =
-  BG.fromFFIType hs_bindgen_7e1dc736bb92cf02_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_7e1dc736bb92cf02_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Count the number of codepoints in a UTF-8 string, up to n bytes.
 --
@@ -4265,9 +4498,9 @@ sDL_utf8strnlen = hs_bindgen_7e1dc736bb92cf02
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_itoa@
 foreign import ccall safe "hs_bindgen_5e87f4eb430750ff"
   hs_bindgen_5e87f4eb430750ff_base
-    :: BG.Int32
+    :: BG.CInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_itoa@
@@ -4277,7 +4510,12 @@ hs_bindgen_5e87f4eb430750ff
   -> BG.CInt
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_5e87f4eb430750ff =
-  BG.fromFFIType hs_bindgen_5e87f4eb430750ff_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_5e87f4eb430750ff_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Convert an integer into a string.
 --
@@ -4313,9 +4551,9 @@ sDL_itoa = hs_bindgen_5e87f4eb430750ff
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_uitoa@
 foreign import ccall safe "hs_bindgen_6593301ad3b87e96"
   hs_bindgen_6593301ad3b87e96_base
-    :: BG.Word32
+    :: BG.CUInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_uitoa@
@@ -4325,7 +4563,12 @@ hs_bindgen_6593301ad3b87e96
   -> BG.CInt
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_6593301ad3b87e96 =
-  BG.fromFFIType hs_bindgen_6593301ad3b87e96_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_6593301ad3b87e96_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Convert an unsigned integer into a string.
 --
@@ -4361,9 +4604,9 @@ sDL_uitoa = hs_bindgen_6593301ad3b87e96
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_lltoa@
 foreign import ccall safe "hs_bindgen_49dab071ddd94418"
   hs_bindgen_49dab071ddd94418_base
-    :: BG.Int64
+    :: BG.CLLong
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_lltoa@
@@ -4373,7 +4616,12 @@ hs_bindgen_49dab071ddd94418
   -> BG.CInt
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_49dab071ddd94418 =
-  BG.fromFFIType hs_bindgen_49dab071ddd94418_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_49dab071ddd94418_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Convert a long long integer into a string.
 --
@@ -4409,9 +4657,9 @@ sDL_lltoa = hs_bindgen_49dab071ddd94418
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_ulltoa@
 foreign import ccall safe "hs_bindgen_8c172a64279b6c99"
   hs_bindgen_8c172a64279b6c99_base
-    :: BG.Word64
+    :: BG.CULLong
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_ulltoa@
@@ -4421,7 +4669,12 @@ hs_bindgen_8c172a64279b6c99
   -> BG.CInt
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_8c172a64279b6c99 =
-  BG.fromFFIType hs_bindgen_8c172a64279b6c99_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_8c172a64279b6c99_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Convert an unsigned long long integer into a string.
 --
@@ -4458,14 +4711,15 @@ sDL_ulltoa = hs_bindgen_8c172a64279b6c99
 foreign import ccall safe "hs_bindgen_7ec5dbb16b1ec441"
   hs_bindgen_7ec5dbb16b1ec441_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_atoi@
 hs_bindgen_7ec5dbb16b1ec441
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CInt
 hs_bindgen_7ec5dbb16b1ec441 =
-  BG.fromFFIType hs_bindgen_7ec5dbb16b1ec441_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_7ec5dbb16b1ec441_base (BG.toFFIType x0))
 
 -- | Parse an @int@ from a string.
 --
@@ -4492,14 +4746,15 @@ sDL_atoi = hs_bindgen_7ec5dbb16b1ec441
 foreign import ccall safe "hs_bindgen_3da67c3a67185baf"
   hs_bindgen_3da67c3a67185baf_base
     :: BG.Ptr BG.Void
-    -> IO Double
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_atof@
 hs_bindgen_3da67c3a67185baf
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CDouble
 hs_bindgen_3da67c3a67185baf =
-  BG.fromFFIType hs_bindgen_3da67c3a67185baf_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3da67c3a67185baf_base (BG.toFFIType x0))
 
 -- | Parse a @double@ from a string.
 --
@@ -4527,8 +4782,8 @@ foreign import ccall safe "hs_bindgen_2d4f949f38ae668c"
   hs_bindgen_2d4f949f38ae668c_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Int64
+    -> BG.CInt
+    -> IO BG.CLLong
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strtoll@
 hs_bindgen_2d4f949f38ae668c
@@ -4537,7 +4792,12 @@ hs_bindgen_2d4f949f38ae668c
   -> BG.CInt
   -> IO BG.CLLong
 hs_bindgen_2d4f949f38ae668c =
-  BG.fromFFIType hs_bindgen_2d4f949f38ae668c_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_2d4f949f38ae668c_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Parse a @long long@ from a string.
 --
@@ -4575,8 +4835,8 @@ foreign import ccall safe "hs_bindgen_af470a839fcf6fbd"
   hs_bindgen_af470a839fcf6fbd_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word64
+    -> BG.CInt
+    -> IO BG.CULLong
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strtoull@
 hs_bindgen_af470a839fcf6fbd
@@ -4585,7 +4845,12 @@ hs_bindgen_af470a839fcf6fbd
   -> BG.CInt
   -> IO BG.CULLong
 hs_bindgen_af470a839fcf6fbd =
-  BG.fromFFIType hs_bindgen_af470a839fcf6fbd_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_af470a839fcf6fbd_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Parse an @unsigned long long@ from a string.
 --
@@ -4623,7 +4888,7 @@ foreign import ccall safe "hs_bindgen_717e481bd213c968"
   hs_bindgen_717e481bd213c968_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO Double
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strtod@
 hs_bindgen_717e481bd213c968
@@ -4631,7 +4896,9 @@ hs_bindgen_717e481bd213c968
   -> BG.Ptr (BG.Ptr BG.CChar)
   -> IO BG.CDouble
 hs_bindgen_717e481bd213c968 =
-  BG.fromFFIType hs_bindgen_717e481bd213c968_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_717e481bd213c968_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Parse a @double@ from a string.
 --
@@ -4669,7 +4936,7 @@ foreign import ccall safe "hs_bindgen_114ae5114f0f2f61"
   hs_bindgen_114ae5114f0f2f61_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strcmp@
 hs_bindgen_114ae5114f0f2f61
@@ -4677,7 +4944,9 @@ hs_bindgen_114ae5114f0f2f61
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CInt
 hs_bindgen_114ae5114f0f2f61 =
-  BG.fromFFIType hs_bindgen_114ae5114f0f2f61_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_114ae5114f0f2f61_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Compare two null-terminated UTF-8 strings.
 --
@@ -4707,8 +4976,8 @@ foreign import ccall safe "hs_bindgen_07f412ca6ac64bca"
   hs_bindgen_07f412ca6ac64bca_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strncmp@
 hs_bindgen_07f412ca6ac64bca
@@ -4717,7 +4986,12 @@ hs_bindgen_07f412ca6ac64bca
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_07f412ca6ac64bca =
-  BG.fromFFIType hs_bindgen_07f412ca6ac64bca_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_07f412ca6ac64bca_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Compare two UTF-8 strings up to a number of bytes.
 --
@@ -4755,7 +5029,7 @@ foreign import ccall safe "hs_bindgen_931c05e65f298770"
   hs_bindgen_931c05e65f298770_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strcasecmp@
 hs_bindgen_931c05e65f298770
@@ -4763,7 +5037,9 @@ hs_bindgen_931c05e65f298770
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CInt
 hs_bindgen_931c05e65f298770 =
-  BG.fromFFIType hs_bindgen_931c05e65f298770_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_931c05e65f298770_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Compare two null-terminated UTF-8 strings, case-insensitively.
 --
@@ -4795,8 +5071,8 @@ foreign import ccall safe "hs_bindgen_974c20bb6f7b7d03"
   hs_bindgen_974c20bb6f7b7d03_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_strncasecmp@
 hs_bindgen_974c20bb6f7b7d03
@@ -4805,7 +5081,12 @@ hs_bindgen_974c20bb6f7b7d03
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CInt
 hs_bindgen_974c20bb6f7b7d03 =
-  BG.fromFFIType hs_bindgen_974c20bb6f7b7d03_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_974c20bb6f7b7d03_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Compare two UTF-8 strings, case-insensitively, up to a number of bytes.
 --
@@ -4853,7 +5134,9 @@ hs_bindgen_50473abaffb3417e
   -> PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_50473abaffb3417e =
-  BG.fromFFIType hs_bindgen_50473abaffb3417e_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_50473abaffb3417e_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Searches a string for the first occurrence of any character contained in a breakset, and returns a pointer from the string to that character.
 --
@@ -4881,7 +5164,7 @@ foreign import ccall safe "hs_bindgen_e49242de1cec91d5"
   hs_bindgen_e49242de1cec91d5_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_StepUTF8@
 hs_bindgen_e49242de1cec91d5
@@ -4889,7 +5172,9 @@ hs_bindgen_e49242de1cec91d5
   -> BG.Ptr HsBindgen.Runtime.LibC.CSize
   -> IO Uint32
 hs_bindgen_e49242de1cec91d5 =
-  BG.fromFFIType hs_bindgen_e49242de1cec91d5_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_e49242de1cec91d5_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Decode a UTF-8 string, one Unicode codepoint at a time.
 --
@@ -4933,7 +5218,7 @@ foreign import ccall safe "hs_bindgen_0346c467944ee189"
   hs_bindgen_0346c467944ee189_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_StepBackUTF8@
 hs_bindgen_0346c467944ee189
@@ -4941,7 +5226,9 @@ hs_bindgen_0346c467944ee189
   -> BG.Ptr (PtrConst.PtrConst BG.CChar)
   -> IO Uint32
 hs_bindgen_0346c467944ee189 =
-  BG.fromFFIType hs_bindgen_0346c467944ee189_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_0346c467944ee189_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Decode a UTF-8 string in reverse, one Unicode codepoint at a time.
 --
@@ -4977,7 +5264,7 @@ sDL_StepBackUTF8 = hs_bindgen_0346c467944ee189
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_UCS4ToUTF8@
 foreign import ccall safe "hs_bindgen_bdc98e385efc6ab7"
   hs_bindgen_bdc98e385efc6ab7_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> IO (BG.Ptr BG.Void)
 
@@ -4987,7 +5274,9 @@ hs_bindgen_bdc98e385efc6ab7
   -> BG.Ptr BG.CChar
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_bdc98e385efc6ab7 =
-  BG.fromFFIType hs_bindgen_bdc98e385efc6ab7_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_bdc98e385efc6ab7_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Convert a single Unicode codepoint to UTF-8.
 --
@@ -5021,7 +5310,7 @@ sDL_UCS4ToUTF8 = hs_bindgen_bdc98e385efc6ab7
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_srand@
 foreign import ccall safe "hs_bindgen_bd195a3a2b34e483"
   hs_bindgen_bd195a3a2b34e483_base
-    :: BG.Word64
+    :: HsBindgen.Runtime.LibC.Word64
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_srand@
@@ -5029,7 +5318,8 @@ hs_bindgen_bd195a3a2b34e483
   :: Uint64
   -> IO ()
 hs_bindgen_bd195a3a2b34e483 =
-  BG.fromFFIType hs_bindgen_bd195a3a2b34e483_base
+  \x0 ->
+    hs_bindgen_bd195a3a2b34e483_base (BG.toFFIType x0)
 
 -- | Seeds the pseudo-random number generator.
 --
@@ -5053,15 +5343,16 @@ sDL_srand = hs_bindgen_bd195a3a2b34e483
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_rand@
 foreign import ccall safe "hs_bindgen_4b2da7e53b63ed17"
   hs_bindgen_4b2da7e53b63ed17_base
-    :: BG.Int32
-    -> IO BG.Int32
+    :: HsBindgen.Runtime.LibC.Int32
+    -> IO HsBindgen.Runtime.LibC.Int32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_rand@
 hs_bindgen_4b2da7e53b63ed17
   :: Sint32
   -> IO Sint32
 hs_bindgen_4b2da7e53b63ed17 =
-  BG.fromFFIType hs_bindgen_4b2da7e53b63ed17_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4b2da7e53b63ed17_base (BG.toFFIType x0))
 
 -- | Generate a pseudo-random number less than n for positive n
 --
@@ -5095,12 +5386,12 @@ sDL_rand = hs_bindgen_4b2da7e53b63ed17
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_randf@
 foreign import ccall safe "hs_bindgen_91fe5edd016e0570"
   hs_bindgen_91fe5edd016e0570_base
-    :: IO Float
+    :: IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_randf@
 hs_bindgen_91fe5edd016e0570 :: IO BG.CFloat
 hs_bindgen_91fe5edd016e0570 =
-  BG.fromFFIType hs_bindgen_91fe5edd016e0570_base
+  fmap BG.fromFFIType hs_bindgen_91fe5edd016e0570_base
 
 -- | Generate a uniform pseudo-random floating point number less than 1.0
 --
@@ -5123,12 +5414,12 @@ sDL_randf = hs_bindgen_91fe5edd016e0570
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_rand_bits@
 foreign import ccall safe "hs_bindgen_5d81c1c12775308d"
   hs_bindgen_5d81c1c12775308d_base
-    :: IO BG.Word32
+    :: IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_rand_bits@
 hs_bindgen_5d81c1c12775308d :: IO Uint32
 hs_bindgen_5d81c1c12775308d =
-  BG.fromFFIType hs_bindgen_5d81c1c12775308d_base
+  fmap BG.fromFFIType hs_bindgen_5d81c1c12775308d_base
 
 -- | Generate 32 pseudo-random bits.
 --
@@ -5152,8 +5443,8 @@ sDL_rand_bits = hs_bindgen_5d81c1c12775308d
 foreign import ccall safe "hs_bindgen_59abfd01a8d7b8f7"
   hs_bindgen_59abfd01a8d7b8f7_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.LibC.Int32
+    -> IO HsBindgen.Runtime.LibC.Int32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_rand_r@
 hs_bindgen_59abfd01a8d7b8f7
@@ -5161,7 +5452,9 @@ hs_bindgen_59abfd01a8d7b8f7
   -> Sint32
   -> IO Sint32
 hs_bindgen_59abfd01a8d7b8f7 =
-  BG.fromFFIType hs_bindgen_59abfd01a8d7b8f7_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_59abfd01a8d7b8f7_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Generate a pseudo-random number less than n for positive n
 --
@@ -5198,14 +5491,15 @@ sDL_rand_r = hs_bindgen_59abfd01a8d7b8f7
 foreign import ccall safe "hs_bindgen_5da60fff1ce7873d"
   hs_bindgen_5da60fff1ce7873d_base
     :: BG.Ptr BG.Void
-    -> IO Float
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_randf_r@
 hs_bindgen_5da60fff1ce7873d
   :: BG.Ptr Uint64
   -> IO BG.CFloat
 hs_bindgen_5da60fff1ce7873d =
-  BG.fromFFIType hs_bindgen_5da60fff1ce7873d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_5da60fff1ce7873d_base (BG.toFFIType x0))
 
 -- | Generate a uniform pseudo-random floating point number less than 1.0
 --
@@ -5234,14 +5528,15 @@ sDL_randf_r = hs_bindgen_5da60fff1ce7873d
 foreign import ccall safe "hs_bindgen_23de01659ed6ba6b"
   hs_bindgen_23de01659ed6ba6b_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_rand_bits_r@
 hs_bindgen_23de01659ed6ba6b
   :: BG.Ptr Uint64
   -> IO Uint32
 hs_bindgen_23de01659ed6ba6b =
-  BG.fromFFIType hs_bindgen_23de01659ed6ba6b_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_23de01659ed6ba6b_base (BG.toFFIType x0))
 
 -- | Generate 32 pseudo-random bits.
 --
@@ -5269,15 +5564,16 @@ sDL_rand_bits_r = hs_bindgen_23de01659ed6ba6b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_acos@
 foreign import ccall safe "hs_bindgen_217308a0a788520d"
   hs_bindgen_217308a0a788520d_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_acos@
 hs_bindgen_217308a0a788520d
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_217308a0a788520d =
-  BG.fromFFIType hs_bindgen_217308a0a788520d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_217308a0a788520d_base (BG.toFFIType x0))
 
 -- | Compute the arc cosine of @x@.
 --
@@ -5311,15 +5607,16 @@ sDL_acos = hs_bindgen_217308a0a788520d
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_acosf@
 foreign import ccall safe "hs_bindgen_f093db4bb5e8e494"
   hs_bindgen_f093db4bb5e8e494_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_acosf@
 hs_bindgen_f093db4bb5e8e494
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_f093db4bb5e8e494 =
-  BG.fromFFIType hs_bindgen_f093db4bb5e8e494_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_f093db4bb5e8e494_base (BG.toFFIType x0))
 
 -- | Compute the arc cosine of @x@.
 --
@@ -5353,15 +5650,16 @@ sDL_acosf = hs_bindgen_f093db4bb5e8e494
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_asin@
 foreign import ccall safe "hs_bindgen_205d9f923dff59cd"
   hs_bindgen_205d9f923dff59cd_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_asin@
 hs_bindgen_205d9f923dff59cd
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_205d9f923dff59cd =
-  BG.fromFFIType hs_bindgen_205d9f923dff59cd_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_205d9f923dff59cd_base (BG.toFFIType x0))
 
 -- | Compute the arc sine of @x@.
 --
@@ -5395,15 +5693,16 @@ sDL_asin = hs_bindgen_205d9f923dff59cd
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_asinf@
 foreign import ccall safe "hs_bindgen_79771d582742f165"
   hs_bindgen_79771d582742f165_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_asinf@
 hs_bindgen_79771d582742f165
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_79771d582742f165 =
-  BG.fromFFIType hs_bindgen_79771d582742f165_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_79771d582742f165_base (BG.toFFIType x0))
 
 -- | Compute the arc sine of @x@.
 --
@@ -5437,15 +5736,16 @@ sDL_asinf = hs_bindgen_79771d582742f165
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_atan@
 foreign import ccall safe "hs_bindgen_3051cbc85bd5efba"
   hs_bindgen_3051cbc85bd5efba_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_atan@
 hs_bindgen_3051cbc85bd5efba
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_3051cbc85bd5efba =
-  BG.fromFFIType hs_bindgen_3051cbc85bd5efba_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3051cbc85bd5efba_base (BG.toFFIType x0))
 
 -- | Compute the arc tangent of @x@.
 --
@@ -5481,15 +5781,16 @@ sDL_atan = hs_bindgen_3051cbc85bd5efba
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_atanf@
 foreign import ccall safe "hs_bindgen_7d0bcd6030adfae6"
   hs_bindgen_7d0bcd6030adfae6_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_atanf@
 hs_bindgen_7d0bcd6030adfae6
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_7d0bcd6030adfae6 =
-  BG.fromFFIType hs_bindgen_7d0bcd6030adfae6_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_7d0bcd6030adfae6_base (BG.toFFIType x0))
 
 -- | Compute the arc tangent of @x@.
 --
@@ -5525,9 +5826,9 @@ sDL_atanf = hs_bindgen_7d0bcd6030adfae6
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_atan2@
 foreign import ccall safe "hs_bindgen_9ae010b5b4d9f553"
   hs_bindgen_9ae010b5b4d9f553_base
-    :: Double
-    -> Double
-    -> IO Double
+    :: BG.CDouble
+    -> BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_atan2@
 hs_bindgen_9ae010b5b4d9f553
@@ -5535,7 +5836,9 @@ hs_bindgen_9ae010b5b4d9f553
   -> BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_9ae010b5b4d9f553 =
-  BG.fromFFIType hs_bindgen_9ae010b5b4d9f553_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_9ae010b5b4d9f553_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Compute the arc tangent of @y \/ x@, using the signs of x and y to adjust the result\'s quadrant.
 --
@@ -5575,9 +5878,9 @@ sDL_atan2 = hs_bindgen_9ae010b5b4d9f553
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_atan2f@
 foreign import ccall safe "hs_bindgen_3eac4b1bfc5aff58"
   hs_bindgen_3eac4b1bfc5aff58_base
-    :: Float
-    -> Float
-    -> IO Float
+    :: BG.CFloat
+    -> BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_atan2f@
 hs_bindgen_3eac4b1bfc5aff58
@@ -5585,7 +5888,9 @@ hs_bindgen_3eac4b1bfc5aff58
   -> BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_3eac4b1bfc5aff58 =
-  BG.fromFFIType hs_bindgen_3eac4b1bfc5aff58_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_3eac4b1bfc5aff58_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Compute the arc tangent of @y \/ x@, using the signs of x and y to adjust the result\'s quadrant.
 --
@@ -5625,15 +5930,16 @@ sDL_atan2f = hs_bindgen_3eac4b1bfc5aff58
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_ceil@
 foreign import ccall safe "hs_bindgen_1630cb0e3a004beb"
   hs_bindgen_1630cb0e3a004beb_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_ceil@
 hs_bindgen_1630cb0e3a004beb
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_1630cb0e3a004beb =
-  BG.fromFFIType hs_bindgen_1630cb0e3a004beb_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_1630cb0e3a004beb_base (BG.toFFIType x0))
 
 -- | Compute the ceiling of @x@.
 --
@@ -5665,15 +5971,16 @@ sDL_ceil = hs_bindgen_1630cb0e3a004beb
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_ceilf@
 foreign import ccall safe "hs_bindgen_04a706bfcc971297"
   hs_bindgen_04a706bfcc971297_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_ceilf@
 hs_bindgen_04a706bfcc971297
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_04a706bfcc971297 =
-  BG.fromFFIType hs_bindgen_04a706bfcc971297_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_04a706bfcc971297_base (BG.toFFIType x0))
 
 -- | Compute the ceiling of @x@.
 --
@@ -5705,9 +6012,9 @@ sDL_ceilf = hs_bindgen_04a706bfcc971297
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_copysign@
 foreign import ccall safe "hs_bindgen_fed0484ab850ee6a"
   hs_bindgen_fed0484ab850ee6a_base
-    :: Double
-    -> Double
-    -> IO Double
+    :: BG.CDouble
+    -> BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_copysign@
 hs_bindgen_fed0484ab850ee6a
@@ -5715,7 +6022,9 @@ hs_bindgen_fed0484ab850ee6a
   -> BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_fed0484ab850ee6a =
-  BG.fromFFIType hs_bindgen_fed0484ab850ee6a_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_fed0484ab850ee6a_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Copy the sign of one floating-point value to another.
 --
@@ -5751,9 +6060,9 @@ sDL_copysign = hs_bindgen_fed0484ab850ee6a
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_copysignf@
 foreign import ccall safe "hs_bindgen_d21fe858af73dd98"
   hs_bindgen_d21fe858af73dd98_base
-    :: Float
-    -> Float
-    -> IO Float
+    :: BG.CFloat
+    -> BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_copysignf@
 hs_bindgen_d21fe858af73dd98
@@ -5761,7 +6070,9 @@ hs_bindgen_d21fe858af73dd98
   -> BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_d21fe858af73dd98 =
-  BG.fromFFIType hs_bindgen_d21fe858af73dd98_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_d21fe858af73dd98_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Copy the sign of one floating-point value to another.
 --
@@ -5797,15 +6108,16 @@ sDL_copysignf = hs_bindgen_d21fe858af73dd98
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_cos@
 foreign import ccall safe "hs_bindgen_a4c38d6732d22ffb"
   hs_bindgen_a4c38d6732d22ffb_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_cos@
 hs_bindgen_a4c38d6732d22ffb
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_a4c38d6732d22ffb =
-  BG.fromFFIType hs_bindgen_a4c38d6732d22ffb_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a4c38d6732d22ffb_base (BG.toFFIType x0))
 
 -- | Compute the cosine of @x@.
 --
@@ -5837,15 +6149,16 @@ sDL_cos = hs_bindgen_a4c38d6732d22ffb
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_cosf@
 foreign import ccall safe "hs_bindgen_ad11505e8fd49060"
   hs_bindgen_ad11505e8fd49060_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_cosf@
 hs_bindgen_ad11505e8fd49060
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_ad11505e8fd49060 =
-  BG.fromFFIType hs_bindgen_ad11505e8fd49060_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ad11505e8fd49060_base (BG.toFFIType x0))
 
 -- | Compute the cosine of @x@.
 --
@@ -5877,15 +6190,16 @@ sDL_cosf = hs_bindgen_ad11505e8fd49060
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_exp@
 foreign import ccall safe "hs_bindgen_ffaa0913f3d0c63c"
   hs_bindgen_ffaa0913f3d0c63c_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_exp@
 hs_bindgen_ffaa0913f3d0c63c
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_ffaa0913f3d0c63c =
-  BG.fromFFIType hs_bindgen_ffaa0913f3d0c63c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ffaa0913f3d0c63c_base (BG.toFFIType x0))
 
 -- | Compute the exponential of @x@.
 --
@@ -5921,15 +6235,16 @@ sDL_exp = hs_bindgen_ffaa0913f3d0c63c
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_expf@
 foreign import ccall safe "hs_bindgen_4d5e3977a4eb4c12"
   hs_bindgen_4d5e3977a4eb4c12_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_expf@
 hs_bindgen_4d5e3977a4eb4c12
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_4d5e3977a4eb4c12 =
-  BG.fromFFIType hs_bindgen_4d5e3977a4eb4c12_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4d5e3977a4eb4c12_base (BG.toFFIType x0))
 
 -- | Compute the exponential of @x@.
 --
@@ -5965,15 +6280,16 @@ sDL_expf = hs_bindgen_4d5e3977a4eb4c12
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_fabs@
 foreign import ccall safe "hs_bindgen_89730ae2b638ee61"
   hs_bindgen_89730ae2b638ee61_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_fabs@
 hs_bindgen_89730ae2b638ee61
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_89730ae2b638ee61 =
-  BG.fromFFIType hs_bindgen_89730ae2b638ee61_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_89730ae2b638ee61_base (BG.toFFIType x0))
 
 -- | Compute the absolute value of @x@
 --
@@ -6003,15 +6319,16 @@ sDL_fabs = hs_bindgen_89730ae2b638ee61
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_fabsf@
 foreign import ccall safe "hs_bindgen_4e76324c9b8f7453"
   hs_bindgen_4e76324c9b8f7453_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_fabsf@
 hs_bindgen_4e76324c9b8f7453
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_4e76324c9b8f7453 =
-  BG.fromFFIType hs_bindgen_4e76324c9b8f7453_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4e76324c9b8f7453_base (BG.toFFIType x0))
 
 -- | Compute the absolute value of @x@
 --
@@ -6041,15 +6358,16 @@ sDL_fabsf = hs_bindgen_4e76324c9b8f7453
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_floor@
 foreign import ccall safe "hs_bindgen_4c646d1d6b7e922f"
   hs_bindgen_4c646d1d6b7e922f_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_floor@
 hs_bindgen_4c646d1d6b7e922f
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_4c646d1d6b7e922f =
-  BG.fromFFIType hs_bindgen_4c646d1d6b7e922f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4c646d1d6b7e922f_base (BG.toFFIType x0))
 
 -- | Compute the floor of @x@.
 --
@@ -6081,15 +6399,16 @@ sDL_floor = hs_bindgen_4c646d1d6b7e922f
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_floorf@
 foreign import ccall safe "hs_bindgen_db6fbb0a591a2804"
   hs_bindgen_db6fbb0a591a2804_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_floorf@
 hs_bindgen_db6fbb0a591a2804
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_db6fbb0a591a2804 =
-  BG.fromFFIType hs_bindgen_db6fbb0a591a2804_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_db6fbb0a591a2804_base (BG.toFFIType x0))
 
 -- | Compute the floor of @x@.
 --
@@ -6121,15 +6440,16 @@ sDL_floorf = hs_bindgen_db6fbb0a591a2804
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_trunc@
 foreign import ccall safe "hs_bindgen_2b4f0ab682c421b7"
   hs_bindgen_2b4f0ab682c421b7_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_trunc@
 hs_bindgen_2b4f0ab682c421b7
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_2b4f0ab682c421b7 =
-  BG.fromFFIType hs_bindgen_2b4f0ab682c421b7_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_2b4f0ab682c421b7_base (BG.toFFIType x0))
 
 -- | Truncate @x@ to an integer.
 --
@@ -6161,15 +6481,16 @@ sDL_trunc = hs_bindgen_2b4f0ab682c421b7
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_truncf@
 foreign import ccall safe "hs_bindgen_afe8ddb39d52a293"
   hs_bindgen_afe8ddb39d52a293_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_truncf@
 hs_bindgen_afe8ddb39d52a293
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_afe8ddb39d52a293 =
-  BG.fromFFIType hs_bindgen_afe8ddb39d52a293_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_afe8ddb39d52a293_base (BG.toFFIType x0))
 
 -- | Truncate @x@ to an integer.
 --
@@ -6201,9 +6522,9 @@ sDL_truncf = hs_bindgen_afe8ddb39d52a293
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_fmod@
 foreign import ccall safe "hs_bindgen_f1fc4d1a8a6fd613"
   hs_bindgen_f1fc4d1a8a6fd613_base
-    :: Double
-    -> Double
-    -> IO Double
+    :: BG.CDouble
+    -> BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_fmod@
 hs_bindgen_f1fc4d1a8a6fd613
@@ -6211,7 +6532,9 @@ hs_bindgen_f1fc4d1a8a6fd613
   -> BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_f1fc4d1a8a6fd613 =
-  BG.fromFFIType hs_bindgen_f1fc4d1a8a6fd613_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_f1fc4d1a8a6fd613_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Return the floating-point remainder of @x \/ y@
 --
@@ -6247,9 +6570,9 @@ sDL_fmod = hs_bindgen_f1fc4d1a8a6fd613
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_fmodf@
 foreign import ccall safe "hs_bindgen_19c2a30dd6614c51"
   hs_bindgen_19c2a30dd6614c51_base
-    :: Float
-    -> Float
-    -> IO Float
+    :: BG.CFloat
+    -> BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_fmodf@
 hs_bindgen_19c2a30dd6614c51
@@ -6257,7 +6580,9 @@ hs_bindgen_19c2a30dd6614c51
   -> BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_19c2a30dd6614c51 =
-  BG.fromFFIType hs_bindgen_19c2a30dd6614c51_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_19c2a30dd6614c51_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Return the floating-point remainder of @x \/ y@
 --
@@ -6293,15 +6618,16 @@ sDL_fmodf = hs_bindgen_19c2a30dd6614c51
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isinf@
 foreign import ccall safe "hs_bindgen_9be13530739c3139"
   hs_bindgen_9be13530739c3139_base
-    :: Double
-    -> IO BG.Int32
+    :: BG.CDouble
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isinf@
 hs_bindgen_9be13530739c3139
   :: BG.CDouble
   -> IO BG.CInt
 hs_bindgen_9be13530739c3139 =
-  BG.fromFFIType hs_bindgen_9be13530739c3139_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9be13530739c3139_base (BG.toFFIType x0))
 
 -- | Return whether the value is infinity.
 --
@@ -6325,15 +6651,16 @@ sDL_isinf = hs_bindgen_9be13530739c3139
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isinff@
 foreign import ccall safe "hs_bindgen_d063ada15b71ed19"
   hs_bindgen_d063ada15b71ed19_base
-    :: Float
-    -> IO BG.Int32
+    :: BG.CFloat
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isinff@
 hs_bindgen_d063ada15b71ed19
   :: BG.CFloat
   -> IO BG.CInt
 hs_bindgen_d063ada15b71ed19 =
-  BG.fromFFIType hs_bindgen_d063ada15b71ed19_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_d063ada15b71ed19_base (BG.toFFIType x0))
 
 -- | Return whether the value is infinity.
 --
@@ -6357,15 +6684,16 @@ sDL_isinff = hs_bindgen_d063ada15b71ed19
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isnan@
 foreign import ccall safe "hs_bindgen_bb4d9f6611f2a512"
   hs_bindgen_bb4d9f6611f2a512_base
-    :: Double
-    -> IO BG.Int32
+    :: BG.CDouble
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isnan@
 hs_bindgen_bb4d9f6611f2a512
   :: BG.CDouble
   -> IO BG.CInt
 hs_bindgen_bb4d9f6611f2a512 =
-  BG.fromFFIType hs_bindgen_bb4d9f6611f2a512_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_bb4d9f6611f2a512_base (BG.toFFIType x0))
 
 -- | Return whether the value is NaN.
 --
@@ -6389,15 +6717,16 @@ sDL_isnan = hs_bindgen_bb4d9f6611f2a512
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isnanf@
 foreign import ccall safe "hs_bindgen_48e10ed50de37991"
   hs_bindgen_48e10ed50de37991_base
-    :: Float
-    -> IO BG.Int32
+    :: BG.CFloat
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_isnanf@
 hs_bindgen_48e10ed50de37991
   :: BG.CFloat
   -> IO BG.CInt
 hs_bindgen_48e10ed50de37991 =
-  BG.fromFFIType hs_bindgen_48e10ed50de37991_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_48e10ed50de37991_base (BG.toFFIType x0))
 
 -- | Return whether the value is NaN.
 --
@@ -6421,15 +6750,16 @@ sDL_isnanf = hs_bindgen_48e10ed50de37991
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_log@
 foreign import ccall safe "hs_bindgen_46922ccc470e92e0"
   hs_bindgen_46922ccc470e92e0_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_log@
 hs_bindgen_46922ccc470e92e0
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_46922ccc470e92e0 =
-  BG.fromFFIType hs_bindgen_46922ccc470e92e0_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_46922ccc470e92e0_base (BG.toFFIType x0))
 
 -- | Compute the natural logarithm of @x@.
 --
@@ -6463,15 +6793,16 @@ sDL_log = hs_bindgen_46922ccc470e92e0
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_logf@
 foreign import ccall safe "hs_bindgen_7ef0b9f4239eb37e"
   hs_bindgen_7ef0b9f4239eb37e_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_logf@
 hs_bindgen_7ef0b9f4239eb37e
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_7ef0b9f4239eb37e =
-  BG.fromFFIType hs_bindgen_7ef0b9f4239eb37e_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_7ef0b9f4239eb37e_base (BG.toFFIType x0))
 
 -- | Compute the natural logarithm of @x@.
 --
@@ -6505,15 +6836,16 @@ sDL_logf = hs_bindgen_7ef0b9f4239eb37e
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_log10@
 foreign import ccall safe "hs_bindgen_bc1ad316da1b3bbc"
   hs_bindgen_bc1ad316da1b3bbc_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_log10@
 hs_bindgen_bc1ad316da1b3bbc
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_bc1ad316da1b3bbc =
-  BG.fromFFIType hs_bindgen_bc1ad316da1b3bbc_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_bc1ad316da1b3bbc_base (BG.toFFIType x0))
 
 -- | Compute the base-10 logarithm of @x@.
 --
@@ -6547,15 +6879,16 @@ sDL_log10 = hs_bindgen_bc1ad316da1b3bbc
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_log10f@
 foreign import ccall safe "hs_bindgen_310aebbf28df3250"
   hs_bindgen_310aebbf28df3250_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_log10f@
 hs_bindgen_310aebbf28df3250
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_310aebbf28df3250 =
-  BG.fromFFIType hs_bindgen_310aebbf28df3250_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_310aebbf28df3250_base (BG.toFFIType x0))
 
 -- | Compute the base-10 logarithm of @x@.
 --
@@ -6589,9 +6922,9 @@ sDL_log10f = hs_bindgen_310aebbf28df3250
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_modf@
 foreign import ccall safe "hs_bindgen_93a468f91c55ba99"
   hs_bindgen_93a468f91c55ba99_base
-    :: Double
+    :: BG.CDouble
     -> BG.Ptr BG.Void
-    -> IO Double
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_modf@
 hs_bindgen_93a468f91c55ba99
@@ -6599,7 +6932,9 @@ hs_bindgen_93a468f91c55ba99
   -> BG.Ptr BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_93a468f91c55ba99 =
-  BG.fromFFIType hs_bindgen_93a468f91c55ba99_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_93a468f91c55ba99_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Split @x@ into integer and fractional parts
 --
@@ -6629,9 +6964,9 @@ sDL_modf = hs_bindgen_93a468f91c55ba99
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_modff@
 foreign import ccall safe "hs_bindgen_76a18e33bbbed6ee"
   hs_bindgen_76a18e33bbbed6ee_base
-    :: Float
+    :: BG.CFloat
     -> BG.Ptr BG.Void
-    -> IO Float
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_modff@
 hs_bindgen_76a18e33bbbed6ee
@@ -6639,7 +6974,9 @@ hs_bindgen_76a18e33bbbed6ee
   -> BG.Ptr BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_76a18e33bbbed6ee =
-  BG.fromFFIType hs_bindgen_76a18e33bbbed6ee_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_76a18e33bbbed6ee_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Split @x@ into integer and fractional parts
 --
@@ -6669,9 +7006,9 @@ sDL_modff = hs_bindgen_76a18e33bbbed6ee
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_pow@
 foreign import ccall safe "hs_bindgen_b8c28ba00815fbb9"
   hs_bindgen_b8c28ba00815fbb9_base
-    :: Double
-    -> Double
-    -> IO Double
+    :: BG.CDouble
+    -> BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_pow@
 hs_bindgen_b8c28ba00815fbb9
@@ -6679,7 +7016,9 @@ hs_bindgen_b8c28ba00815fbb9
   -> BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_b8c28ba00815fbb9 =
-  BG.fromFFIType hs_bindgen_b8c28ba00815fbb9_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b8c28ba00815fbb9_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Raise @x@ to the power @y@
 --
@@ -6717,9 +7056,9 @@ sDL_pow = hs_bindgen_b8c28ba00815fbb9
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_powf@
 foreign import ccall safe "hs_bindgen_d853802a7561099f"
   hs_bindgen_d853802a7561099f_base
-    :: Float
-    -> Float
-    -> IO Float
+    :: BG.CFloat
+    -> BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_powf@
 hs_bindgen_d853802a7561099f
@@ -6727,7 +7066,9 @@ hs_bindgen_d853802a7561099f
   -> BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_d853802a7561099f =
-  BG.fromFFIType hs_bindgen_d853802a7561099f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_d853802a7561099f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Raise @x@ to the power @y@
 --
@@ -6765,15 +7106,16 @@ sDL_powf = hs_bindgen_d853802a7561099f
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_round@
 foreign import ccall safe "hs_bindgen_097e1eceb090a078"
   hs_bindgen_097e1eceb090a078_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_round@
 hs_bindgen_097e1eceb090a078
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_097e1eceb090a078 =
-  BG.fromFFIType hs_bindgen_097e1eceb090a078_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_097e1eceb090a078_base (BG.toFFIType x0))
 
 -- | Round @x@ to the nearest integer.
 --
@@ -6805,15 +7147,16 @@ sDL_round = hs_bindgen_097e1eceb090a078
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_roundf@
 foreign import ccall safe "hs_bindgen_5b677097112f1617"
   hs_bindgen_5b677097112f1617_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_roundf@
 hs_bindgen_5b677097112f1617
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_5b677097112f1617 =
-  BG.fromFFIType hs_bindgen_5b677097112f1617_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_5b677097112f1617_base (BG.toFFIType x0))
 
 -- | Round @x@ to the nearest integer.
 --
@@ -6845,9 +7188,9 @@ sDL_roundf = hs_bindgen_5b677097112f1617
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_scalbn@
 foreign import ccall safe "hs_bindgen_8038e0526522260c"
   hs_bindgen_8038e0526522260c_base
-    :: Double
-    -> BG.Int32
-    -> IO Double
+    :: BG.CDouble
+    -> BG.CInt
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_scalbn@
 hs_bindgen_8038e0526522260c
@@ -6855,7 +7198,9 @@ hs_bindgen_8038e0526522260c
   -> BG.CInt
   -> IO BG.CDouble
 hs_bindgen_8038e0526522260c =
-  BG.fromFFIType hs_bindgen_8038e0526522260c_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_8038e0526522260c_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Scale @x@ by an integer power of two.
 --
@@ -6891,9 +7236,9 @@ sDL_scalbn = hs_bindgen_8038e0526522260c
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_scalbnf@
 foreign import ccall safe "hs_bindgen_fc0cb80cec8a11b0"
   hs_bindgen_fc0cb80cec8a11b0_base
-    :: Float
-    -> BG.Int32
-    -> IO Float
+    :: BG.CFloat
+    -> BG.CInt
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_scalbnf@
 hs_bindgen_fc0cb80cec8a11b0
@@ -6901,7 +7246,9 @@ hs_bindgen_fc0cb80cec8a11b0
   -> BG.CInt
   -> IO BG.CFloat
 hs_bindgen_fc0cb80cec8a11b0 =
-  BG.fromFFIType hs_bindgen_fc0cb80cec8a11b0_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_fc0cb80cec8a11b0_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Scale @x@ by an integer power of two.
 --
@@ -6937,15 +7284,16 @@ sDL_scalbnf = hs_bindgen_fc0cb80cec8a11b0
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_sin@
 foreign import ccall safe "hs_bindgen_d062c0d717121757"
   hs_bindgen_d062c0d717121757_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_sin@
 hs_bindgen_d062c0d717121757
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_d062c0d717121757 =
-  BG.fromFFIType hs_bindgen_d062c0d717121757_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_d062c0d717121757_base (BG.toFFIType x0))
 
 -- | Compute the sine of @x@.
 --
@@ -6977,15 +7325,16 @@ sDL_sin = hs_bindgen_d062c0d717121757
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_sinf@
 foreign import ccall safe "hs_bindgen_4ee3ee787bd19e91"
   hs_bindgen_4ee3ee787bd19e91_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_sinf@
 hs_bindgen_4ee3ee787bd19e91
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_4ee3ee787bd19e91 =
-  BG.fromFFIType hs_bindgen_4ee3ee787bd19e91_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4ee3ee787bd19e91_base (BG.toFFIType x0))
 
 -- | Compute the sine of @x@.
 --
@@ -7017,15 +7366,16 @@ sDL_sinf = hs_bindgen_4ee3ee787bd19e91
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_sqrt@
 foreign import ccall safe "hs_bindgen_45b7bf5fa33e3269"
   hs_bindgen_45b7bf5fa33e3269_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_sqrt@
 hs_bindgen_45b7bf5fa33e3269
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_45b7bf5fa33e3269 =
-  BG.fromFFIType hs_bindgen_45b7bf5fa33e3269_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_45b7bf5fa33e3269_base (BG.toFFIType x0))
 
 -- | Compute the square root of @x@.
 --
@@ -7057,15 +7407,16 @@ sDL_sqrt = hs_bindgen_45b7bf5fa33e3269
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_sqrtf@
 foreign import ccall safe "hs_bindgen_da05b17837e5fa68"
   hs_bindgen_da05b17837e5fa68_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_sqrtf@
 hs_bindgen_da05b17837e5fa68
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_da05b17837e5fa68 =
-  BG.fromFFIType hs_bindgen_da05b17837e5fa68_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_da05b17837e5fa68_base (BG.toFFIType x0))
 
 -- | Compute the square root of @x@.
 --
@@ -7097,15 +7448,16 @@ sDL_sqrtf = hs_bindgen_da05b17837e5fa68
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_tan@
 foreign import ccall safe "hs_bindgen_8e3c4624ada8d754"
   hs_bindgen_8e3c4624ada8d754_base
-    :: Double
-    -> IO Double
+    :: BG.CDouble
+    -> IO BG.CDouble
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_tan@
 hs_bindgen_8e3c4624ada8d754
   :: BG.CDouble
   -> IO BG.CDouble
 hs_bindgen_8e3c4624ada8d754 =
-  BG.fromFFIType hs_bindgen_8e3c4624ada8d754_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_8e3c4624ada8d754_base (BG.toFFIType x0))
 
 -- | Compute the tangent of @x@.
 --
@@ -7137,15 +7489,16 @@ sDL_tan = hs_bindgen_8e3c4624ada8d754
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_tanf@
 foreign import ccall safe "hs_bindgen_b4a5a33f270aeb8d"
   hs_bindgen_b4a5a33f270aeb8d_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_tanf@
 hs_bindgen_b4a5a33f270aeb8d
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_b4a5a33f270aeb8d =
-  BG.fromFFIType hs_bindgen_b4a5a33f270aeb8d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b4a5a33f270aeb8d_base (BG.toFFIType x0))
 
 -- | Compute the tangent of @x@.
 --
@@ -7187,7 +7540,9 @@ hs_bindgen_4c58e728caad9aa3
   -> PtrConst.PtrConst BG.CChar
   -> IO SDL_iconv_t
 hs_bindgen_4c58e728caad9aa3 =
-  BG.fromFFIType hs_bindgen_4c58e728caad9aa3_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4c58e728caad9aa3_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | This function allocates a context for the specified character set conversion.
 --
@@ -7216,14 +7571,15 @@ sDL_iconv_open = hs_bindgen_4c58e728caad9aa3
 foreign import ccall safe "hs_bindgen_85fcb2de02d7791f"
   hs_bindgen_85fcb2de02d7791f_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_iconv_close@
 hs_bindgen_85fcb2de02d7791f
   :: SDL_iconv_t
   -> IO BG.CInt
 hs_bindgen_85fcb2de02d7791f =
-  BG.fromFFIType hs_bindgen_85fcb2de02d7791f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_85fcb2de02d7791f_base (BG.toFFIType x0))
 
 -- | This function frees a context used for character set conversion.
 --
@@ -7252,7 +7608,7 @@ foreign import ccall safe "hs_bindgen_73663c44fcaa8f9d"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word64
+    -> IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_iconv@
 hs_bindgen_73663c44fcaa8f9d
@@ -7263,7 +7619,20 @@ hs_bindgen_73663c44fcaa8f9d
   -> BG.Ptr HsBindgen.Runtime.LibC.CSize
   -> IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_73663c44fcaa8f9d =
-  BG.fromFFIType hs_bindgen_73663c44fcaa8f9d_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_73663c44fcaa8f9d_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | This function converts text between encodings, reading from and writing to a buffer.
 --
@@ -7318,7 +7687,7 @@ foreign import ccall safe "hs_bindgen_066c0e98a41d1c6b"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_iconv_string@
@@ -7329,7 +7698,18 @@ hs_bindgen_066c0e98a41d1c6b
   -> HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_066c0e98a41d1c6b =
-  BG.fromFFIType hs_bindgen_066c0e98a41d1c6b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_066c0e98a41d1c6b_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Helper function to convert a string\'s encoding in one call.
 --
@@ -7371,10 +7751,10 @@ sDL_iconv_string = hs_bindgen_066c0e98a41d1c6b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_size_mul_check_overflow_builtin@
 foreign import ccall safe "hs_bindgen_cb7ffceaa134d628"
   hs_bindgen_cb7ffceaa134d628_base
-    :: BG.Word64
-    -> BG.Word64
+    :: HsBindgen.Runtime.LibC.CSize
+    -> HsBindgen.Runtime.LibC.CSize
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_size_mul_check_overflow_builtin@
 hs_bindgen_cb7ffceaa134d628
@@ -7383,7 +7763,12 @@ hs_bindgen_cb7ffceaa134d628
   -> BG.Ptr HsBindgen.Runtime.LibC.CSize
   -> IO BG.CBool
 hs_bindgen_cb7ffceaa134d628 =
-  BG.fromFFIType hs_bindgen_cb7ffceaa134d628_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_cb7ffceaa134d628_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | [C declaration]: @SDL_size_mul_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6109:23@
 sDL_size_mul_check_overflow_builtin
@@ -7400,10 +7785,10 @@ sDL_size_mul_check_overflow_builtin =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_size_add_check_overflow_builtin@
 foreign import ccall safe "hs_bindgen_ca88dcdcdddd2954"
   hs_bindgen_ca88dcdcdddd2954_base
-    :: BG.Word64
-    -> BG.Word64
+    :: HsBindgen.Runtime.LibC.CSize
+    -> HsBindgen.Runtime.LibC.CSize
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_Safe_SDL_size_add_check_overflow_builtin@
 hs_bindgen_ca88dcdcdddd2954
@@ -7412,7 +7797,12 @@ hs_bindgen_ca88dcdcdddd2954
   -> BG.Ptr HsBindgen.Runtime.LibC.CSize
   -> IO BG.CBool
 hs_bindgen_ca88dcdcdddd2954 =
-  BG.fromFFIType hs_bindgen_ca88dcdcdddd2954_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_ca88dcdcdddd2954_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | [C declaration]: @SDL_size_add_check_overflow_builtin@, defined at @SDL3\/SDL_stdinc.h 6147:23@
 sDL_size_add_check_overflow_builtin

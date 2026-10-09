@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Thread.FunPtr (
@@ -18,6 +20,8 @@ module SDL3.Sys.Bindgen.Thread.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -27,7 +31,8 @@ import SDL3.Sys.Bindgen.Thread
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_thread.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_thread.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Thread_get_SDL_CreateThreadRuntime */"
          , "__attribute__ ((const))"
          , "SDL_Thread *(*hs_bindgen_079d67764828e8ca (void)) ("
@@ -151,7 +156,7 @@ hs_bindgen_079d67764828e8ca
            )
        )
 hs_bindgen_079d67764828e8ca =
-  BG.fromFFIType hs_bindgen_079d67764828e8ca_base
+  fmap BG.fromFFIType hs_bindgen_079d67764828e8ca_base
 
 {-# NOINLINE sDL_CreateThreadRuntime #-}
 
@@ -202,7 +207,7 @@ hs_bindgen_fbbbbe860e54a81b
            )
        )
 hs_bindgen_fbbbbe860e54a81b =
-  BG.fromFFIType hs_bindgen_fbbbbe860e54a81b_base
+  fmap BG.fromFFIType hs_bindgen_fbbbbe860e54a81b_base
 
 {-# NOINLINE sDL_CreateThreadWithPropertiesRuntime #-}
 
@@ -239,7 +244,7 @@ foreign import ccall unsafe "hs_bindgen_e563c48c050c310f"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_get_SDL_GetThreadName@
 hs_bindgen_e563c48c050c310f :: IO (BG.FunPtr (BG.Ptr SDL_Thread -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_e563c48c050c310f =
-  BG.fromFFIType hs_bindgen_e563c48c050c310f_base
+  fmap BG.fromFFIType hs_bindgen_e563c48c050c310f_base
 
 {-# NOINLINE sDL_GetThreadName #-}
 
@@ -266,7 +271,7 @@ foreign import ccall unsafe "hs_bindgen_effa8645fe390420"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_get_SDL_GetCurrentThreadID@
 hs_bindgen_effa8645fe390420 :: IO (BG.FunPtr (IO SDL_ThreadID))
 hs_bindgen_effa8645fe390420 =
-  BG.fromFFIType hs_bindgen_effa8645fe390420_base
+  fmap BG.fromFFIType hs_bindgen_effa8645fe390420_base
 
 {-# NOINLINE sDL_GetCurrentThreadID #-}
 
@@ -297,7 +302,7 @@ foreign import ccall unsafe "hs_bindgen_c6b2baacca9ccf65"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_get_SDL_GetThreadID@
 hs_bindgen_c6b2baacca9ccf65 :: IO (BG.FunPtr (BG.Ptr SDL_Thread -> IO SDL_ThreadID))
 hs_bindgen_c6b2baacca9ccf65 =
-  BG.fromFFIType hs_bindgen_c6b2baacca9ccf65_base
+  fmap BG.fromFFIType hs_bindgen_c6b2baacca9ccf65_base
 
 {-# NOINLINE sDL_GetThreadID #-}
 
@@ -328,7 +333,7 @@ foreign import ccall unsafe "hs_bindgen_a168059a22478eba"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_get_SDL_SetCurrentThreadPriority@
 hs_bindgen_a168059a22478eba :: IO (BG.FunPtr (SDL_ThreadPriority -> IO BG.CBool))
 hs_bindgen_a168059a22478eba =
-  BG.fromFFIType hs_bindgen_a168059a22478eba_base
+  fmap BG.fromFFIType hs_bindgen_a168059a22478eba_base
 
 {-# NOINLINE sDL_SetCurrentThreadPriority #-}
 
@@ -357,7 +362,7 @@ foreign import ccall unsafe "hs_bindgen_cfb548a191eb099e"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_get_SDL_WaitThread@
 hs_bindgen_cfb548a191eb099e :: IO (BG.FunPtr (BG.Ptr SDL_Thread -> BG.Ptr BG.CInt -> IO ()))
 hs_bindgen_cfb548a191eb099e =
-  BG.fromFFIType hs_bindgen_cfb548a191eb099e_base
+  fmap BG.fromFFIType hs_bindgen_cfb548a191eb099e_base
 
 {-# NOINLINE sDL_WaitThread #-}
 
@@ -398,7 +403,7 @@ foreign import ccall unsafe "hs_bindgen_f7f587323d3bdf2a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_get_SDL_GetThreadState@
 hs_bindgen_f7f587323d3bdf2a :: IO (BG.FunPtr (BG.Ptr SDL_Thread -> IO SDL_ThreadState))
 hs_bindgen_f7f587323d3bdf2a =
-  BG.fromFFIType hs_bindgen_f7f587323d3bdf2a_base
+  fmap BG.fromFFIType hs_bindgen_f7f587323d3bdf2a_base
 
 {-# NOINLINE sDL_GetThreadState #-}
 
@@ -427,7 +432,7 @@ foreign import ccall unsafe "hs_bindgen_aaa3526a91b1159b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_get_SDL_DetachThread@
 hs_bindgen_aaa3526a91b1159b :: IO (BG.FunPtr (BG.Ptr SDL_Thread -> IO ()))
 hs_bindgen_aaa3526a91b1159b =
-  BG.fromFFIType hs_bindgen_aaa3526a91b1159b_base
+  fmap BG.fromFFIType hs_bindgen_aaa3526a91b1159b_base
 
 {-# NOINLINE sDL_DetachThread #-}
 
@@ -466,7 +471,7 @@ foreign import ccall unsafe "hs_bindgen_306c7e1462be621b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_get_SDL_GetTLS@
 hs_bindgen_306c7e1462be621b :: IO (BG.FunPtr (BG.Ptr SDL_TLSID -> IO (BG.Ptr BG.Void)))
 hs_bindgen_306c7e1462be621b =
-  BG.fromFFIType hs_bindgen_306c7e1462be621b_base
+  fmap BG.fromFFIType hs_bindgen_306c7e1462be621b_base
 
 {-# NOINLINE sDL_GetTLS #-}
 
@@ -499,7 +504,7 @@ hs_bindgen_aeaff0a42fc0a797
            (BG.Ptr SDL_TLSID -> PtrConst.PtrConst BG.Void -> SDL_TLSDestructorCallback -> IO BG.CBool)
        )
 hs_bindgen_aeaff0a42fc0a797 =
-  BG.fromFFIType hs_bindgen_aeaff0a42fc0a797_base
+  fmap BG.fromFFIType hs_bindgen_aeaff0a42fc0a797_base
 
 {-# NOINLINE sDL_SetTLS #-}
 
@@ -540,7 +545,7 @@ foreign import ccall unsafe "hs_bindgen_624951e26d725434"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_get_SDL_CleanupTLS@
 hs_bindgen_624951e26d725434 :: IO (BG.FunPtr (IO ()))
 hs_bindgen_624951e26d725434 =
-  BG.fromFFIType hs_bindgen_624951e26d725434_base
+  fmap BG.fromFFIType hs_bindgen_624951e26d725434_base
 
 {-# NOINLINE sDL_CleanupTLS #-}
 

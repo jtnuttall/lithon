@@ -14,6 +14,7 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | The storage API is a high-level API designed to abstract away the portability issues that come up when using something lower-level (in SDL\'s case, this sits on top of the [Filesystem](CategoryFilesystem) and [IOStream](CategoryIOStream) subsystems). It is significantly more restrictive than a typical filesystem API, for a number of reasons:
 --
@@ -197,9 +198,12 @@ module SDL3.Sys.Bindgen.Storage (
 )
 where
 
+import Prelude (Eq, IO, Int, Show, pure, (<*>), (>>), type (~))
+
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Filesystem qualified
@@ -320,6 +324,12 @@ instance Marshal.WriteRaw SDL_StorageInterface where
 
 deriving via Marshal.EquivStorable SDL_StorageInterface instance BG.Storable SDL_StorageInterface
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_StorageInterface
+  instance
+    Struct.IsStruct SDL_StorageInterface
+
+-- | [C declaration]: @version@, defined at @SDL3\/SDL_storage.h 277:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "version" SDL_StorageInterface ty
@@ -357,6 +367,7 @@ instance HasCField.HasCField SDL_StorageInterface "version" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @close@, defined at @SDL3\/SDL_storage.h 280:20@
 instance
   (ty ~ BG.FunPtr (BG.Ptr BG.Void -> IO BG.CBool))
   => BG.CompatHasField.HasField "close" SDL_StorageInterface ty
@@ -394,6 +405,7 @@ instance HasCField.HasCField SDL_StorageInterface "close" where
 
   offset# = \_ -> \_ -> 8
 
+-- | [C declaration]: @ready@, defined at @SDL3\/SDL_storage.h 283:20@
 instance
   (ty ~ BG.FunPtr (BG.Ptr BG.Void -> IO BG.CBool))
   => BG.CompatHasField.HasField "ready" SDL_StorageInterface ty
@@ -431,6 +443,7 @@ instance HasCField.HasCField SDL_StorageInterface "ready" where
 
   offset# = \_ -> \_ -> 16
 
+-- | [C declaration]: @enumerate@, defined at @SDL3\/SDL_storage.h 286:20@
 instance
   ( ty
       ~ BG.FunPtr
@@ -490,6 +503,7 @@ instance HasCField.HasCField SDL_StorageInterface "enumerate" where
 
   offset# = \_ -> \_ -> 24
 
+-- | [C declaration]: @info@, defined at @SDL3\/SDL_storage.h 289:20@
 instance
   ( ty
       ~ BG.FunPtr
@@ -546,6 +560,7 @@ instance HasCField.HasCField SDL_StorageInterface "info" where
 
   offset# = \_ -> \_ -> 32
 
+-- | [C declaration]: @read_file@, defined at @SDL3\/SDL_storage.h 292:20@
 instance
   ( ty
       ~ BG.FunPtr
@@ -605,6 +620,7 @@ instance HasCField.HasCField SDL_StorageInterface "read_file" where
 
   offset# = \_ -> \_ -> 40
 
+-- | [C declaration]: @write_file@, defined at @SDL3\/SDL_storage.h 295:20@
 instance
   ( ty
       ~ BG.FunPtr
@@ -664,6 +680,7 @@ instance HasCField.HasCField SDL_StorageInterface "write_file" where
 
   offset# = \_ -> \_ -> 48
 
+-- | [C declaration]: @mkdir@, defined at @SDL3\/SDL_storage.h 298:20@
 instance
   (ty ~ BG.FunPtr (BG.Ptr BG.Void -> PtrConst.PtrConst BG.CChar -> IO BG.CBool))
   => BG.CompatHasField.HasField "mkdir" SDL_StorageInterface ty
@@ -701,6 +718,7 @@ instance HasCField.HasCField SDL_StorageInterface "mkdir" where
 
   offset# = \_ -> \_ -> 56
 
+-- | [C declaration]: @remove@, defined at @SDL3\/SDL_storage.h 301:20@
 instance
   (ty ~ BG.FunPtr (BG.Ptr BG.Void -> PtrConst.PtrConst BG.CChar -> IO BG.CBool))
   => BG.CompatHasField.HasField "remove" SDL_StorageInterface ty
@@ -738,6 +756,7 @@ instance HasCField.HasCField SDL_StorageInterface "remove" where
 
   offset# = \_ -> \_ -> 64
 
+-- | [C declaration]: @rename@, defined at @SDL3\/SDL_storage.h 304:20@
 instance
   ( ty
       ~ BG.FunPtr
@@ -782,6 +801,7 @@ instance HasCField.HasCField SDL_StorageInterface "rename" where
 
   offset# = \_ -> \_ -> 72
 
+-- | [C declaration]: @copy@, defined at @SDL3\/SDL_storage.h 307:20@
 instance
   ( ty
       ~ BG.FunPtr
@@ -826,6 +846,7 @@ instance HasCField.HasCField SDL_StorageInterface "copy" where
 
   offset# = \_ -> \_ -> 80
 
+-- | [C declaration]: @space_remaining@, defined at @SDL3\/SDL_storage.h 310:22@
 instance
   (ty ~ BG.FunPtr (BG.Ptr BG.Void -> IO SDL3.Sys.Bindgen.Stdinc.Uint64))
   => BG.CompatHasField.HasField "space_remaining" SDL_StorageInterface ty

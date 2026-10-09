@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Timer.FunPtr (
@@ -16,6 +18,8 @@ module SDL3.Sys.Bindgen.Timer.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -23,7 +27,8 @@ import SDL3.Sys.Bindgen.Timer
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_timer.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_timer.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Timer_get_SDL_GetTicks */"
          , "__attribute__ ((const))"
          , "Uint64 (*hs_bindgen_b002c533def7d6e4 (void)) (void)"
@@ -112,7 +117,7 @@ foreign import ccall unsafe "hs_bindgen_b002c533def7d6e4"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_get_SDL_GetTicks@
 hs_bindgen_b002c533def7d6e4 :: IO (BG.FunPtr (IO SDL3.Sys.Bindgen.Stdinc.Uint64))
 hs_bindgen_b002c533def7d6e4 =
-  BG.fromFFIType hs_bindgen_b002c533def7d6e4_base
+  fmap BG.fromFFIType hs_bindgen_b002c533def7d6e4_base
 
 {-# NOINLINE sDL_GetTicks #-}
 
@@ -139,7 +144,7 @@ foreign import ccall unsafe "hs_bindgen_b11474f76c0aba2f"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_get_SDL_GetTicksNS@
 hs_bindgen_b11474f76c0aba2f :: IO (BG.FunPtr (IO SDL3.Sys.Bindgen.Stdinc.Uint64))
 hs_bindgen_b11474f76c0aba2f =
-  BG.fromFFIType hs_bindgen_b11474f76c0aba2f_base
+  fmap BG.fromFFIType hs_bindgen_b11474f76c0aba2f_base
 
 {-# NOINLINE sDL_GetTicksNS #-}
 
@@ -164,7 +169,7 @@ foreign import ccall unsafe "hs_bindgen_2b2a93de1b59846d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_get_SDL_GetPerformanceCounter@
 hs_bindgen_2b2a93de1b59846d :: IO (BG.FunPtr (IO SDL3.Sys.Bindgen.Stdinc.Uint64))
 hs_bindgen_2b2a93de1b59846d =
-  BG.fromFFIType hs_bindgen_2b2a93de1b59846d_base
+  fmap BG.fromFFIType hs_bindgen_2b2a93de1b59846d_base
 
 {-# NOINLINE sDL_GetPerformanceCounter #-}
 
@@ -195,7 +200,7 @@ foreign import ccall unsafe "hs_bindgen_4255230676734c7d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_get_SDL_GetPerformanceFrequency@
 hs_bindgen_4255230676734c7d :: IO (BG.FunPtr (IO SDL3.Sys.Bindgen.Stdinc.Uint64))
 hs_bindgen_4255230676734c7d =
-  BG.fromFFIType hs_bindgen_4255230676734c7d_base
+  fmap BG.fromFFIType hs_bindgen_4255230676734c7d_base
 
 {-# NOINLINE sDL_GetPerformanceFrequency #-}
 
@@ -222,7 +227,7 @@ foreign import ccall unsafe "hs_bindgen_84b99149e32b080f"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_get_SDL_Delay@
 hs_bindgen_84b99149e32b080f :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO ()))
 hs_bindgen_84b99149e32b080f =
-  BG.fromFFIType hs_bindgen_84b99149e32b080f_base
+  fmap BG.fromFFIType hs_bindgen_84b99149e32b080f_base
 
 {-# NOINLINE sDL_Delay #-}
 
@@ -251,7 +256,7 @@ foreign import ccall unsafe "hs_bindgen_1a329c57b5bdd945"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_get_SDL_DelayNS@
 hs_bindgen_1a329c57b5bdd945 :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint64 -> IO ()))
 hs_bindgen_1a329c57b5bdd945 =
-  BG.fromFFIType hs_bindgen_1a329c57b5bdd945_base
+  fmap BG.fromFFIType hs_bindgen_1a329c57b5bdd945_base
 
 {-# NOINLINE sDL_DelayNS #-}
 
@@ -280,7 +285,7 @@ foreign import ccall unsafe "hs_bindgen_f88afdd785f29344"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_get_SDL_DelayPrecise@
 hs_bindgen_f88afdd785f29344 :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint64 -> IO ()))
 hs_bindgen_f88afdd785f29344 =
-  BG.fromFFIType hs_bindgen_f88afdd785f29344_base
+  fmap BG.fromFFIType hs_bindgen_f88afdd785f29344_base
 
 {-# NOINLINE sDL_DelayPrecise #-}
 
@@ -311,7 +316,7 @@ hs_bindgen_fd3519e258872841
   :: IO
        (BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> SDL_TimerCallback -> BG.Ptr BG.Void -> IO SDL_TimerID))
 hs_bindgen_fd3519e258872841 =
-  BG.fromFFIType hs_bindgen_fd3519e258872841_base
+  fmap BG.fromFFIType hs_bindgen_fd3519e258872841_base
 
 {-# NOINLINE sDL_AddTimer #-}
 
@@ -357,7 +362,7 @@ hs_bindgen_de4009388b75ebae
            (SDL3.Sys.Bindgen.Stdinc.Uint64 -> SDL_NSTimerCallback -> BG.Ptr BG.Void -> IO SDL_TimerID)
        )
 hs_bindgen_de4009388b75ebae =
-  BG.fromFFIType hs_bindgen_de4009388b75ebae_base
+  fmap BG.fromFFIType hs_bindgen_de4009388b75ebae_base
 
 {-# NOINLINE sDL_AddTimerNS #-}
 
@@ -400,7 +405,7 @@ foreign import ccall unsafe "hs_bindgen_837b4956d1a9314e"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_get_SDL_RemoveTimer@
 hs_bindgen_837b4956d1a9314e :: IO (BG.FunPtr (SDL_TimerID -> IO BG.CBool))
 hs_bindgen_837b4956d1a9314e =
-  BG.fromFFIType hs_bindgen_837b4956d1a9314e_base
+  fmap BG.fromFFIType hs_bindgen_837b4956d1a9314e_base
 
 {-# NOINLINE sDL_RemoveTimer #-}
 

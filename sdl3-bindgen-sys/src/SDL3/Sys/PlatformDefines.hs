@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Platform-detection defines, baked at generation time.
 --
 --     == FFI conventions

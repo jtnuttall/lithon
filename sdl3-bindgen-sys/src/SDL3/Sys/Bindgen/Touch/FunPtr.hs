@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Touch.FunPtr (
@@ -10,6 +12,8 @@ module SDL3.Sys.Bindgen.Touch.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -17,7 +21,8 @@ import SDL3.Sys.Bindgen.Touch
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_touch.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_touch.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Touch_get_SDL_GetTouchDevices */"
          , "__attribute__ ((const))"
          , "SDL_TouchID *(*hs_bindgen_d990cfdd3ce3b935 (void)) ("
@@ -63,7 +68,7 @@ foreign import ccall unsafe "hs_bindgen_d990cfdd3ce3b935"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Touch_get_SDL_GetTouchDevices@
 hs_bindgen_d990cfdd3ce3b935 :: IO (BG.FunPtr (BG.Ptr BG.CInt -> IO (BG.Ptr SDL_TouchID)))
 hs_bindgen_d990cfdd3ce3b935 =
-  BG.fromFFIType hs_bindgen_d990cfdd3ce3b935_base
+  fmap BG.fromFFIType hs_bindgen_d990cfdd3ce3b935_base
 
 {-# NOINLINE sDL_GetTouchDevices #-}
 
@@ -90,7 +95,7 @@ foreign import ccall unsafe "hs_bindgen_a221ea688dfb8835"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Touch_get_SDL_GetTouchDeviceName@
 hs_bindgen_a221ea688dfb8835 :: IO (BG.FunPtr (SDL_TouchID -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_a221ea688dfb8835 =
-  BG.fromFFIType hs_bindgen_a221ea688dfb8835_base
+  fmap BG.fromFFIType hs_bindgen_a221ea688dfb8835_base
 
 {-# NOINLINE sDL_GetTouchDeviceName #-}
 
@@ -115,7 +120,7 @@ foreign import ccall unsafe "hs_bindgen_41907e6474c07d6d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Touch_get_SDL_GetTouchDeviceType@
 hs_bindgen_41907e6474c07d6d :: IO (BG.FunPtr (SDL_TouchID -> IO SDL_TouchDeviceType))
 hs_bindgen_41907e6474c07d6d =
-  BG.fromFFIType hs_bindgen_41907e6474c07d6d_base
+  fmap BG.fromFFIType hs_bindgen_41907e6474c07d6d_base
 
 {-# NOINLINE sDL_GetTouchDeviceType #-}
 
@@ -141,7 +146,7 @@ foreign import ccall unsafe "hs_bindgen_7edabe47405f9352"
 hs_bindgen_7edabe47405f9352
   :: IO (BG.FunPtr (SDL_TouchID -> BG.Ptr BG.CInt -> IO (BG.Ptr (BG.Ptr SDL_Finger))))
 hs_bindgen_7edabe47405f9352 =
-  BG.fromFFIType hs_bindgen_7edabe47405f9352_base
+  fmap BG.fromFFIType hs_bindgen_7edabe47405f9352_base
 
 {-# NOINLINE sDL_GetTouchFingers #-}
 

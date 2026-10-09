@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Audio.FunPtr (
@@ -64,6 +66,8 @@ module SDL3.Sys.Bindgen.Audio.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -74,7 +78,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_audio.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_audio.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetNumAudioDrivers */"
          , "__attribute__ ((const))"
          , "signed int (*hs_bindgen_70df3deb87a6a291 (void)) (void)"
@@ -621,7 +626,7 @@ foreign import ccall unsafe "hs_bindgen_70df3deb87a6a291"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetNumAudioDrivers@
 hs_bindgen_70df3deb87a6a291 :: IO (BG.FunPtr (IO BG.CInt))
 hs_bindgen_70df3deb87a6a291 =
-  BG.fromFFIType hs_bindgen_70df3deb87a6a291_base
+  fmap BG.fromFFIType hs_bindgen_70df3deb87a6a291_base
 
 {-# NOINLINE sDL_GetNumAudioDrivers #-}
 
@@ -652,7 +657,7 @@ foreign import ccall unsafe "hs_bindgen_96a59296db34206f"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetAudioDriver@
 hs_bindgen_96a59296db34206f :: IO (BG.FunPtr (BG.CInt -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_96a59296db34206f =
-  BG.fromFFIType hs_bindgen_96a59296db34206f_base
+  fmap BG.fromFFIType hs_bindgen_96a59296db34206f_base
 
 {-# NOINLINE sDL_GetAudioDriver #-}
 
@@ -685,7 +690,7 @@ foreign import ccall unsafe "hs_bindgen_3b5e65309af7eb52"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetCurrentAudioDriver@
 hs_bindgen_3b5e65309af7eb52 :: IO (BG.FunPtr (IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_3b5e65309af7eb52 =
-  BG.fromFFIType hs_bindgen_3b5e65309af7eb52_base
+  fmap BG.fromFFIType hs_bindgen_3b5e65309af7eb52_base
 
 {-# NOINLINE sDL_GetCurrentAudioDriver #-}
 
@@ -712,7 +717,7 @@ foreign import ccall unsafe "hs_bindgen_0154df1db50254cb"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetAudioPlaybackDevices@
 hs_bindgen_0154df1db50254cb :: IO (BG.FunPtr (BG.Ptr BG.CInt -> IO (BG.Ptr SDL_AudioDeviceID)))
 hs_bindgen_0154df1db50254cb =
-  BG.fromFFIType hs_bindgen_0154df1db50254cb_base
+  fmap BG.fromFFIType hs_bindgen_0154df1db50254cb_base
 
 {-# NOINLINE sDL_GetAudioPlaybackDevices #-}
 
@@ -747,7 +752,7 @@ foreign import ccall unsafe "hs_bindgen_b1e17652d75669ba"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetAudioRecordingDevices@
 hs_bindgen_b1e17652d75669ba :: IO (BG.FunPtr (BG.Ptr BG.CInt -> IO (BG.Ptr SDL_AudioDeviceID)))
 hs_bindgen_b1e17652d75669ba =
-  BG.fromFFIType hs_bindgen_b1e17652d75669ba_base
+  fmap BG.fromFFIType hs_bindgen_b1e17652d75669ba_base
 
 {-# NOINLINE sDL_GetAudioRecordingDevices #-}
 
@@ -782,7 +787,7 @@ foreign import ccall unsafe "hs_bindgen_dcc642abb8604857"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetAudioDeviceName@
 hs_bindgen_dcc642abb8604857 :: IO (BG.FunPtr (SDL_AudioDeviceID -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_dcc642abb8604857 =
-  BG.fromFFIType hs_bindgen_dcc642abb8604857_base
+  fmap BG.fromFFIType hs_bindgen_dcc642abb8604857_base
 
 {-# NOINLINE sDL_GetAudioDeviceName #-}
 
@@ -814,7 +819,7 @@ foreign import ccall unsafe "hs_bindgen_7ee63106dd01fabe"
 hs_bindgen_7ee63106dd01fabe
   :: IO (BG.FunPtr (SDL_AudioDeviceID -> BG.Ptr SDL_AudioSpec -> BG.Ptr BG.CInt -> IO BG.CBool))
 hs_bindgen_7ee63106dd01fabe =
-  BG.fromFFIType hs_bindgen_7ee63106dd01fabe_base
+  fmap BG.fromFFIType hs_bindgen_7ee63106dd01fabe_base
 
 {-# NOINLINE sDL_GetAudioDeviceFormat #-}
 
@@ -857,7 +862,7 @@ foreign import ccall unsafe "hs_bindgen_d8865ee45cf3f909"
 hs_bindgen_d8865ee45cf3f909
   :: IO (BG.FunPtr (SDL_AudioDeviceID -> BG.Ptr BG.CInt -> IO (BG.Ptr BG.CInt)))
 hs_bindgen_d8865ee45cf3f909 =
-  BG.fromFFIType hs_bindgen_d8865ee45cf3f909_base
+  fmap BG.fromFFIType hs_bindgen_d8865ee45cf3f909_base
 
 {-# NOINLINE sDL_GetAudioDeviceChannelMap #-}
 
@@ -894,7 +899,7 @@ foreign import ccall unsafe "hs_bindgen_a61ac8f884503a96"
 hs_bindgen_a61ac8f884503a96
   :: IO (BG.FunPtr (SDL_AudioDeviceID -> PtrConst.PtrConst SDL_AudioSpec -> IO SDL_AudioDeviceID))
 hs_bindgen_a61ac8f884503a96 =
-  BG.fromFFIType hs_bindgen_a61ac8f884503a96_base
+  fmap BG.fromFFIType hs_bindgen_a61ac8f884503a96_base
 
 {-# NOINLINE sDL_OpenAudioDevice #-}
 
@@ -944,7 +949,7 @@ foreign import ccall unsafe "hs_bindgen_6499cfa703c6758f"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_IsAudioDevicePhysical@
 hs_bindgen_6499cfa703c6758f :: IO (BG.FunPtr (SDL_AudioDeviceID -> IO BG.CBool))
 hs_bindgen_6499cfa703c6758f =
-  BG.fromFFIType hs_bindgen_6499cfa703c6758f_base
+  fmap BG.fromFFIType hs_bindgen_6499cfa703c6758f_base
 
 {-# NOINLINE sDL_IsAudioDevicePhysical #-}
 
@@ -977,7 +982,7 @@ foreign import ccall unsafe "hs_bindgen_a0086d8f92145768"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_IsAudioDevicePlayback@
 hs_bindgen_a0086d8f92145768 :: IO (BG.FunPtr (SDL_AudioDeviceID -> IO BG.CBool))
 hs_bindgen_a0086d8f92145768 =
-  BG.fromFFIType hs_bindgen_a0086d8f92145768_base
+  fmap BG.fromFFIType hs_bindgen_a0086d8f92145768_base
 
 {-# NOINLINE sDL_IsAudioDevicePlayback #-}
 
@@ -1006,7 +1011,7 @@ foreign import ccall unsafe "hs_bindgen_1003717acae7ce8b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_PauseAudioDevice@
 hs_bindgen_1003717acae7ce8b :: IO (BG.FunPtr (SDL_AudioDeviceID -> IO BG.CBool))
 hs_bindgen_1003717acae7ce8b =
-  BG.fromFFIType hs_bindgen_1003717acae7ce8b_base
+  fmap BG.fromFFIType hs_bindgen_1003717acae7ce8b_base
 
 {-# NOINLINE sDL_PauseAudioDevice #-}
 
@@ -1043,7 +1048,7 @@ foreign import ccall unsafe "hs_bindgen_df9a550a09c18c65"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_ResumeAudioDevice@
 hs_bindgen_df9a550a09c18c65 :: IO (BG.FunPtr (SDL_AudioDeviceID -> IO BG.CBool))
 hs_bindgen_df9a550a09c18c65 =
-  BG.fromFFIType hs_bindgen_df9a550a09c18c65_base
+  fmap BG.fromFFIType hs_bindgen_df9a550a09c18c65_base
 
 {-# NOINLINE sDL_ResumeAudioDevice #-}
 
@@ -1078,7 +1083,7 @@ foreign import ccall unsafe "hs_bindgen_4580e249e63ded2b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_AudioDevicePaused@
 hs_bindgen_4580e249e63ded2b :: IO (BG.FunPtr (SDL_AudioDeviceID -> IO BG.CBool))
 hs_bindgen_4580e249e63ded2b =
-  BG.fromFFIType hs_bindgen_4580e249e63ded2b_base
+  fmap BG.fromFFIType hs_bindgen_4580e249e63ded2b_base
 
 {-# NOINLINE sDL_AudioDevicePaused #-}
 
@@ -1111,7 +1116,7 @@ foreign import ccall unsafe "hs_bindgen_6f1b270afdab6bb6"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetAudioDeviceGain@
 hs_bindgen_6f1b270afdab6bb6 :: IO (BG.FunPtr (SDL_AudioDeviceID -> IO BG.CFloat))
 hs_bindgen_6f1b270afdab6bb6 =
-  BG.fromFFIType hs_bindgen_6f1b270afdab6bb6_base
+  fmap BG.fromFFIType hs_bindgen_6f1b270afdab6bb6_base
 
 {-# NOINLINE sDL_GetAudioDeviceGain #-}
 
@@ -1146,7 +1151,7 @@ foreign import ccall unsafe "hs_bindgen_aa933d15c7bb8ed3"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_SetAudioDeviceGain@
 hs_bindgen_aa933d15c7bb8ed3 :: IO (BG.FunPtr (SDL_AudioDeviceID -> BG.CFloat -> IO BG.CBool))
 hs_bindgen_aa933d15c7bb8ed3 =
-  BG.fromFFIType hs_bindgen_aa933d15c7bb8ed3_base
+  fmap BG.fromFFIType hs_bindgen_aa933d15c7bb8ed3_base
 
 {-# NOINLINE sDL_SetAudioDeviceGain #-}
 
@@ -1185,7 +1190,7 @@ foreign import ccall unsafe "hs_bindgen_b303dd6fccc99188"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_CloseAudioDevice@
 hs_bindgen_b303dd6fccc99188 :: IO (BG.FunPtr (SDL_AudioDeviceID -> IO ()))
 hs_bindgen_b303dd6fccc99188 =
-  BG.fromFFIType hs_bindgen_b303dd6fccc99188_base
+  fmap BG.fromFFIType hs_bindgen_b303dd6fccc99188_base
 
 {-# NOINLINE sDL_CloseAudioDevice #-}
 
@@ -1220,7 +1225,7 @@ hs_bindgen_3e9d0d17f11c1de8
            (SDL_AudioDeviceID -> PtrConst.PtrConst (BG.Ptr SDL_AudioStream) -> BG.CInt -> IO BG.CBool)
        )
 hs_bindgen_3e9d0d17f11c1de8 =
-  BG.fromFFIType hs_bindgen_3e9d0d17f11c1de8_base
+  fmap BG.fromFFIType hs_bindgen_3e9d0d17f11c1de8_base
 
 {-# NOINLINE sDL_BindAudioStreams #-}
 
@@ -1264,7 +1269,7 @@ foreign import ccall unsafe "hs_bindgen_d6749d59b79ec0ff"
 hs_bindgen_d6749d59b79ec0ff
   :: IO (BG.FunPtr (SDL_AudioDeviceID -> BG.Ptr SDL_AudioStream -> IO BG.CBool))
 hs_bindgen_d6749d59b79ec0ff =
-  BG.fromFFIType hs_bindgen_d6749d59b79ec0ff_base
+  fmap BG.fromFFIType hs_bindgen_d6749d59b79ec0ff_base
 
 {-# NOINLINE sDL_BindAudioStream #-}
 
@@ -1298,7 +1303,7 @@ foreign import ccall unsafe "hs_bindgen_d96a4f36c25b0021"
 hs_bindgen_d96a4f36c25b0021
   :: IO (BG.FunPtr (PtrConst.PtrConst (BG.Ptr SDL_AudioStream) -> BG.CInt -> IO ()))
 hs_bindgen_d96a4f36c25b0021 =
-  BG.fromFFIType hs_bindgen_d96a4f36c25b0021_base
+  fmap BG.fromFFIType hs_bindgen_d96a4f36c25b0021_base
 
 {-# NOINLINE sDL_UnbindAudioStreams #-}
 
@@ -1331,7 +1336,7 @@ foreign import ccall unsafe "hs_bindgen_8afc843a61a3bdb8"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_UnbindAudioStream@
 hs_bindgen_8afc843a61a3bdb8 :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO ()))
 hs_bindgen_8afc843a61a3bdb8 =
-  BG.fromFFIType hs_bindgen_8afc843a61a3bdb8_base
+  fmap BG.fromFFIType hs_bindgen_8afc843a61a3bdb8_base
 
 {-# NOINLINE sDL_UnbindAudioStream #-}
 
@@ -1360,7 +1365,7 @@ foreign import ccall unsafe "hs_bindgen_218bd50ed6f98e9c"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetAudioStreamDevice@
 hs_bindgen_218bd50ed6f98e9c :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO SDL_AudioDeviceID))
 hs_bindgen_218bd50ed6f98e9c =
-  BG.fromFFIType hs_bindgen_218bd50ed6f98e9c_base
+  fmap BG.fromFFIType hs_bindgen_218bd50ed6f98e9c_base
 
 {-# NOINLINE sDL_GetAudioStreamDevice #-}
 
@@ -1397,7 +1402,7 @@ hs_bindgen_7305536d807d048c
            (PtrConst.PtrConst SDL_AudioSpec -> PtrConst.PtrConst SDL_AudioSpec -> IO (BG.Ptr SDL_AudioStream))
        )
 hs_bindgen_7305536d807d048c =
-  BG.fromFFIType hs_bindgen_7305536d807d048c_base
+  fmap BG.fromFFIType hs_bindgen_7305536d807d048c_base
 
 {-# NOINLINE sDL_CreateAudioStream #-}
 
@@ -1433,7 +1438,7 @@ foreign import ccall unsafe "hs_bindgen_73d6922c8243e33c"
 hs_bindgen_73d6922c8243e33c
   :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID))
 hs_bindgen_73d6922c8243e33c =
-  BG.fromFFIType hs_bindgen_73d6922c8243e33c_base
+  fmap BG.fromFFIType hs_bindgen_73d6922c8243e33c_base
 
 {-# NOINLINE sDL_GetAudioStreamProperties #-}
 
@@ -1467,7 +1472,7 @@ hs_bindgen_eb3398e3b41382ce
   :: IO
        (BG.FunPtr (BG.Ptr SDL_AudioStream -> BG.Ptr SDL_AudioSpec -> BG.Ptr SDL_AudioSpec -> IO BG.CBool))
 hs_bindgen_eb3398e3b41382ce =
-  BG.fromFFIType hs_bindgen_eb3398e3b41382ce_base
+  fmap BG.fromFFIType hs_bindgen_eb3398e3b41382ce_base
 
 {-# NOINLINE sDL_GetAudioStreamFormat #-}
 
@@ -1509,7 +1514,7 @@ hs_bindgen_53ea32f5417e7afe
            )
        )
 hs_bindgen_53ea32f5417e7afe =
-  BG.fromFFIType hs_bindgen_53ea32f5417e7afe_base
+  fmap BG.fromFFIType hs_bindgen_53ea32f5417e7afe_base
 
 {-# NOINLINE sDL_SetAudioStreamFormat #-}
 
@@ -1556,7 +1561,7 @@ foreign import ccall unsafe "hs_bindgen_b61bdb5d542753f6"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetAudioStreamFrequencyRatio@
 hs_bindgen_b61bdb5d542753f6 :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CFloat))
 hs_bindgen_b61bdb5d542753f6 =
-  BG.fromFFIType hs_bindgen_b61bdb5d542753f6_base
+  fmap BG.fromFFIType hs_bindgen_b61bdb5d542753f6_base
 
 {-# NOINLINE sDL_GetAudioStreamFrequencyRatio #-}
 
@@ -1585,7 +1590,7 @@ foreign import ccall unsafe "hs_bindgen_ce1524607d0065a9"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_SetAudioStreamFrequencyRatio@
 hs_bindgen_ce1524607d0065a9 :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> BG.CFloat -> IO BG.CBool))
 hs_bindgen_ce1524607d0065a9 =
-  BG.fromFFIType hs_bindgen_ce1524607d0065a9_base
+  fmap BG.fromFFIType hs_bindgen_ce1524607d0065a9_base
 
 {-# NOINLINE sDL_SetAudioStreamFrequencyRatio #-}
 
@@ -1620,7 +1625,7 @@ foreign import ccall unsafe "hs_bindgen_a83ce7d2a5163b17"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetAudioStreamGain@
 hs_bindgen_a83ce7d2a5163b17 :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CFloat))
 hs_bindgen_a83ce7d2a5163b17 =
-  BG.fromFFIType hs_bindgen_a83ce7d2a5163b17_base
+  fmap BG.fromFFIType hs_bindgen_a83ce7d2a5163b17_base
 
 {-# NOINLINE sDL_GetAudioStreamGain #-}
 
@@ -1653,7 +1658,7 @@ foreign import ccall unsafe "hs_bindgen_79a25e2eef272c3b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_SetAudioStreamGain@
 hs_bindgen_79a25e2eef272c3b :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> BG.CFloat -> IO BG.CBool))
 hs_bindgen_79a25e2eef272c3b =
-  BG.fromFFIType hs_bindgen_79a25e2eef272c3b_base
+  fmap BG.fromFFIType hs_bindgen_79a25e2eef272c3b_base
 
 {-# NOINLINE sDL_SetAudioStreamGain #-}
 
@@ -1691,7 +1696,7 @@ foreign import ccall unsafe "hs_bindgen_8335e23836f4112d"
 hs_bindgen_8335e23836f4112d
   :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> BG.Ptr BG.CInt -> IO (BG.Ptr BG.CInt)))
 hs_bindgen_8335e23836f4112d =
-  BG.fromFFIType hs_bindgen_8335e23836f4112d_base
+  fmap BG.fromFFIType hs_bindgen_8335e23836f4112d_base
 
 {-# NOINLINE sDL_GetAudioStreamInputChannelMap #-}
 
@@ -1728,7 +1733,7 @@ foreign import ccall unsafe "hs_bindgen_fa8ad3c08cbd6973"
 hs_bindgen_fa8ad3c08cbd6973
   :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> BG.Ptr BG.CInt -> IO (BG.Ptr BG.CInt)))
 hs_bindgen_fa8ad3c08cbd6973 =
-  BG.fromFFIType hs_bindgen_fa8ad3c08cbd6973_base
+  fmap BG.fromFFIType hs_bindgen_fa8ad3c08cbd6973_base
 
 {-# NOINLINE sDL_GetAudioStreamOutputChannelMap #-}
 
@@ -1765,7 +1770,7 @@ foreign import ccall unsafe "hs_bindgen_779c5c09495318d9"
 hs_bindgen_779c5c09495318d9
   :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> PtrConst.PtrConst BG.CInt -> BG.CInt -> IO BG.CBool))
 hs_bindgen_779c5c09495318d9 =
-  BG.fromFFIType hs_bindgen_779c5c09495318d9_base
+  fmap BG.fromFFIType hs_bindgen_779c5c09495318d9_base
 
 {-# NOINLINE sDL_SetAudioStreamInputChannelMap #-}
 
@@ -1818,7 +1823,7 @@ foreign import ccall unsafe "hs_bindgen_aea000b7665d902d"
 hs_bindgen_aea000b7665d902d
   :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> PtrConst.PtrConst BG.CInt -> BG.CInt -> IO BG.CBool))
 hs_bindgen_aea000b7665d902d =
-  BG.fromFFIType hs_bindgen_aea000b7665d902d_base
+  fmap BG.fromFFIType hs_bindgen_aea000b7665d902d_base
 
 {-# NOINLINE sDL_SetAudioStreamOutputChannelMap #-}
 
@@ -1871,7 +1876,7 @@ foreign import ccall unsafe "hs_bindgen_958cb85cef653993"
 hs_bindgen_958cb85cef653993
   :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> PtrConst.PtrConst BG.Void -> BG.CInt -> IO BG.CBool))
 hs_bindgen_958cb85cef653993 =
-  BG.fromFFIType hs_bindgen_958cb85cef653993_base
+  fmap BG.fromFFIType hs_bindgen_958cb85cef653993_base
 
 {-# NOINLINE sDL_PutAudioStreamData #-}
 
@@ -1919,7 +1924,7 @@ hs_bindgen_29041de46ea3d0a6
            )
        )
 hs_bindgen_29041de46ea3d0a6 =
-  BG.fromFFIType hs_bindgen_29041de46ea3d0a6_base
+  fmap BG.fromFFIType hs_bindgen_29041de46ea3d0a6_base
 
 {-# NOINLINE sDL_PutAudioStreamDataNoCopy #-}
 
@@ -1981,7 +1986,7 @@ hs_bindgen_8d42e0e8a50f7193
            )
        )
 hs_bindgen_8d42e0e8a50f7193 =
-  BG.fromFFIType hs_bindgen_8d42e0e8a50f7193_base
+  fmap BG.fromFFIType hs_bindgen_8d42e0e8a50f7193_base
 
 {-# NOINLINE sDL_PutAudioStreamPlanarData #-}
 
@@ -2034,7 +2039,7 @@ foreign import ccall unsafe "hs_bindgen_c52b30082bdb58cd"
 hs_bindgen_c52b30082bdb58cd
   :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> BG.Ptr BG.Void -> BG.CInt -> IO BG.CInt))
 hs_bindgen_c52b30082bdb58cd =
-  BG.fromFFIType hs_bindgen_c52b30082bdb58cd_base
+  fmap BG.fromFFIType hs_bindgen_c52b30082bdb58cd_base
 
 {-# NOINLINE sDL_GetAudioStreamData #-}
 
@@ -2072,7 +2077,7 @@ foreign import ccall unsafe "hs_bindgen_887ee267fde7c9f0"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetAudioStreamAvailable@
 hs_bindgen_887ee267fde7c9f0 :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CInt))
 hs_bindgen_887ee267fde7c9f0 =
-  BG.fromFFIType hs_bindgen_887ee267fde7c9f0_base
+  fmap BG.fromFFIType hs_bindgen_887ee267fde7c9f0_base
 
 {-# NOINLINE sDL_GetAudioStreamAvailable #-}
 
@@ -2105,7 +2110,7 @@ foreign import ccall unsafe "hs_bindgen_30f43c9a9503bb9c"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetAudioStreamQueued@
 hs_bindgen_30f43c9a9503bb9c :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CInt))
 hs_bindgen_30f43c9a9503bb9c =
-  BG.fromFFIType hs_bindgen_30f43c9a9503bb9c_base
+  fmap BG.fromFFIType hs_bindgen_30f43c9a9503bb9c_base
 
 {-# NOINLINE sDL_GetAudioStreamQueued #-}
 
@@ -2142,7 +2147,7 @@ foreign import ccall unsafe "hs_bindgen_b5a765a41b34efed"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_FlushAudioStream@
 hs_bindgen_b5a765a41b34efed :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CBool))
 hs_bindgen_b5a765a41b34efed =
-  BG.fromFFIType hs_bindgen_b5a765a41b34efed_base
+  fmap BG.fromFFIType hs_bindgen_b5a765a41b34efed_base
 
 {-# NOINLINE sDL_FlushAudioStream #-}
 
@@ -2173,7 +2178,7 @@ foreign import ccall unsafe "hs_bindgen_66aa75f68cad1a60"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_ClearAudioStream@
 hs_bindgen_66aa75f68cad1a60 :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CBool))
 hs_bindgen_66aa75f68cad1a60 =
-  BG.fromFFIType hs_bindgen_66aa75f68cad1a60_base
+  fmap BG.fromFFIType hs_bindgen_66aa75f68cad1a60_base
 
 {-# NOINLINE sDL_ClearAudioStream #-}
 
@@ -2204,7 +2209,7 @@ foreign import ccall unsafe "hs_bindgen_65bad5f751085af2"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_PauseAudioStreamDevice@
 hs_bindgen_65bad5f751085af2 :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CBool))
 hs_bindgen_65bad5f751085af2 =
-  BG.fromFFIType hs_bindgen_65bad5f751085af2_base
+  fmap BG.fromFFIType hs_bindgen_65bad5f751085af2_base
 
 {-# NOINLINE sDL_PauseAudioStreamDevice #-}
 
@@ -2237,7 +2242,7 @@ foreign import ccall unsafe "hs_bindgen_3422451103f73d83"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_ResumeAudioStreamDevice@
 hs_bindgen_3422451103f73d83 :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CBool))
 hs_bindgen_3422451103f73d83 =
-  BG.fromFFIType hs_bindgen_3422451103f73d83_base
+  fmap BG.fromFFIType hs_bindgen_3422451103f73d83_base
 
 {-# NOINLINE sDL_ResumeAudioStreamDevice #-}
 
@@ -2270,7 +2275,7 @@ foreign import ccall unsafe "hs_bindgen_3e6ce96a7f944949"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_AudioStreamDevicePaused@
 hs_bindgen_3e6ce96a7f944949 :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CBool))
 hs_bindgen_3e6ce96a7f944949 =
-  BG.fromFFIType hs_bindgen_3e6ce96a7f944949_base
+  fmap BG.fromFFIType hs_bindgen_3e6ce96a7f944949_base
 
 {-# NOINLINE sDL_AudioStreamDevicePaused #-}
 
@@ -2301,7 +2306,7 @@ foreign import ccall unsafe "hs_bindgen_0d7bbaa2282f61af"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_LockAudioStream@
 hs_bindgen_0d7bbaa2282f61af :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CBool))
 hs_bindgen_0d7bbaa2282f61af =
-  BG.fromFFIType hs_bindgen_0d7bbaa2282f61af_base
+  fmap BG.fromFFIType hs_bindgen_0d7bbaa2282f61af_base
 
 {-# NOINLINE sDL_LockAudioStream #-}
 
@@ -2336,7 +2341,7 @@ foreign import ccall unsafe "hs_bindgen_01197b6703408060"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_UnlockAudioStream@
 hs_bindgen_01197b6703408060 :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO BG.CBool))
 hs_bindgen_01197b6703408060 =
-  BG.fromFFIType hs_bindgen_01197b6703408060_base
+  fmap BG.fromFFIType hs_bindgen_01197b6703408060_base
 
 {-# NOINLINE sDL_UnlockAudioStream #-}
 
@@ -2368,7 +2373,7 @@ foreign import ccall unsafe "hs_bindgen_c3613cf8e8649c19"
 hs_bindgen_c3613cf8e8649c19
   :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> SDL_AudioStreamCallback -> BG.Ptr BG.Void -> IO BG.CBool))
 hs_bindgen_c3613cf8e8649c19 =
-  BG.fromFFIType hs_bindgen_c3613cf8e8649c19_base
+  fmap BG.fromFFIType hs_bindgen_c3613cf8e8649c19_base
 
 {-# NOINLINE sDL_SetAudioStreamGetCallback #-}
 
@@ -2417,7 +2422,7 @@ foreign import ccall unsafe "hs_bindgen_94194526836dd7bc"
 hs_bindgen_94194526836dd7bc
   :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> SDL_AudioStreamCallback -> BG.Ptr BG.Void -> IO BG.CBool))
 hs_bindgen_94194526836dd7bc =
-  BG.fromFFIType hs_bindgen_94194526836dd7bc_base
+  fmap BG.fromFFIType hs_bindgen_94194526836dd7bc_base
 
 {-# NOINLINE sDL_SetAudioStreamPutCallback #-}
 
@@ -2467,7 +2472,7 @@ foreign import ccall unsafe "hs_bindgen_8414956b9aa941e0"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_DestroyAudioStream@
 hs_bindgen_8414956b9aa941e0 :: IO (BG.FunPtr (BG.Ptr SDL_AudioStream -> IO ()))
 hs_bindgen_8414956b9aa941e0 =
-  BG.fromFFIType hs_bindgen_8414956b9aa941e0_base
+  fmap BG.fromFFIType hs_bindgen_8414956b9aa941e0_base
 
 {-# NOINLINE sDL_DestroyAudioStream #-}
 
@@ -2507,7 +2512,7 @@ hs_bindgen_e8ad9974dfab54c1
            )
        )
 hs_bindgen_e8ad9974dfab54c1 =
-  BG.fromFFIType hs_bindgen_e8ad9974dfab54c1_base
+  fmap BG.fromFFIType hs_bindgen_e8ad9974dfab54c1_base
 
 {-# NOINLINE sDL_OpenAudioDeviceStream #-}
 
@@ -2568,7 +2573,7 @@ foreign import ccall unsafe "hs_bindgen_fb49ec8721a9eaae"
 hs_bindgen_fb49ec8721a9eaae
   :: IO (BG.FunPtr (SDL_AudioDeviceID -> SDL_AudioPostmixCallback -> BG.Ptr BG.Void -> IO BG.CBool))
 hs_bindgen_fb49ec8721a9eaae =
-  BG.fromFFIType hs_bindgen_fb49ec8721a9eaae_base
+  fmap BG.fromFFIType hs_bindgen_fb49ec8721a9eaae_base
 
 {-# NOINLINE sDL_SetAudioPostmixCallback #-}
 
@@ -2628,7 +2633,7 @@ hs_bindgen_aeaf62387043ab14
            )
        )
 hs_bindgen_aeaf62387043ab14 =
-  BG.fromFFIType hs_bindgen_aeaf62387043ab14_base
+  fmap BG.fromFFIType hs_bindgen_aeaf62387043ab14_base
 
 {-# NOINLINE sDL_LoadWAV_IO #-}
 
@@ -2712,7 +2717,7 @@ hs_bindgen_23688fb6d15b1a20
            )
        )
 hs_bindgen_23688fb6d15b1a20 =
-  BG.fromFFIType hs_bindgen_23688fb6d15b1a20_base
+  fmap BG.fromFFIType hs_bindgen_23688fb6d15b1a20_base
 
 {-# NOINLINE sDL_LoadWAV #-}
 
@@ -2774,7 +2779,7 @@ hs_bindgen_b67274f0c4cb98dd
            )
        )
 hs_bindgen_b67274f0c4cb98dd =
-  BG.fromFFIType hs_bindgen_b67274f0c4cb98dd_base
+  fmap BG.fromFFIType hs_bindgen_b67274f0c4cb98dd_base
 
 {-# NOINLINE sDL_MixAudio #-}
 
@@ -2836,7 +2841,7 @@ hs_bindgen_94a0a8ff1b94e777
            )
        )
 hs_bindgen_94a0a8ff1b94e777 =
-  BG.fromFFIType hs_bindgen_94a0a8ff1b94e777_base
+  fmap BG.fromFFIType hs_bindgen_94a0a8ff1b94e777_base
 
 {-# NOINLINE sDL_ConvertAudioSamples #-}
 
@@ -2886,7 +2891,7 @@ foreign import ccall unsafe "hs_bindgen_8a62dc82ce668b2b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetAudioFormatName@
 hs_bindgen_8a62dc82ce668b2b :: IO (BG.FunPtr (SDL_AudioFormat -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_8a62dc82ce668b2b =
-  BG.fromFFIType hs_bindgen_8a62dc82ce668b2b_base
+  fmap BG.fromFFIType hs_bindgen_8a62dc82ce668b2b_base
 
 {-# NOINLINE sDL_GetAudioFormatName #-}
 
@@ -2913,7 +2918,7 @@ foreign import ccall unsafe "hs_bindgen_733e8e75537d52fb"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_get_SDL_GetSilenceValueForFormat@
 hs_bindgen_733e8e75537d52fb :: IO (BG.FunPtr (SDL_AudioFormat -> IO BG.CInt))
 hs_bindgen_733e8e75537d52fb =
-  BG.fromFFIType hs_bindgen_733e8e75537d52fb_base
+  fmap BG.fromFFIType hs_bindgen_733e8e75537d52fb_base
 
 {-# NOINLINE sDL_GetSilenceValueForFormat #-}
 

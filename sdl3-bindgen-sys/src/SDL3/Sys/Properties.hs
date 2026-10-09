@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | A property is a variable that can be created and retrieved by name at runtime.
 --
 --     All properties are part of a property group ('SDL_PropertiesID'). A property group can be created with the 'createProperties' function and destroyed with the 'destroyProperties' function.
@@ -71,6 +73,7 @@ module SDL3.Sys.Properties (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, Float, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

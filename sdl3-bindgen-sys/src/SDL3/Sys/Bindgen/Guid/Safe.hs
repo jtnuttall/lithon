@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Guid.Safe (
@@ -8,6 +10,8 @@ module SDL3.Sys.Bindgen.Guid.Safe (
 )
 where
 
+import Prelude (IO)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -15,7 +19,8 @@ import SDL3.Sys.Bindgen.Guid
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_guid.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_guid.h>"
          , "void hs_bindgen_33e8afba591e5cdf ("
          , "  SDL_GUID *arg1,"
          , "  char *arg2,"
@@ -40,7 +45,7 @@ foreign import ccall safe "hs_bindgen_33e8afba591e5cdf"
   hs_bindgen_33e8afba591e5cdf_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Guid_Safe_SDL_GUIDToString@
@@ -50,7 +55,10 @@ hs_bindgen_33e8afba591e5cdf
   -> BG.CInt
   -> IO ()
 hs_bindgen_33e8afba591e5cdf =
-  BG.fromFFIType hs_bindgen_33e8afba591e5cdf_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        hs_bindgen_33e8afba591e5cdf_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2)
 
 -- | Get an ASCII string representation for a given 'SDL_GUID'.
 --
@@ -98,7 +106,9 @@ hs_bindgen_260d7fbde1a12e5d
   -> BG.Ptr SDL_GUID
   -> IO ()
 hs_bindgen_260d7fbde1a12e5d =
-  BG.fromFFIType hs_bindgen_260d7fbde1a12e5d_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_260d7fbde1a12e5d_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Convert a GUID string into a 'SDL_GUID' structure.
 --

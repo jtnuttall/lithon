@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Storage.Unsafe (
@@ -23,7 +25,11 @@ module SDL3.Sys.Bindgen.Storage.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Support qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Filesystem qualified
@@ -33,7 +39,8 @@ import SDL3.Sys.Bindgen.Storage
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_storage.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_storage.h>"
          , "SDL_Storage *hs_bindgen_3efb7b0f89cc88bf ("
          , "  char const *arg1,"
          , "  SDL_PropertiesID arg2"
@@ -171,7 +178,7 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 foreign import ccall unsafe "hs_bindgen_3efb7b0f89cc88bf"
   hs_bindgen_3efb7b0f89cc88bf_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_Unsafe_SDL_OpenTitleStorage@
@@ -180,7 +187,9 @@ hs_bindgen_3efb7b0f89cc88bf
   -> SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -> IO (BG.Ptr SDL_Storage)
 hs_bindgen_3efb7b0f89cc88bf =
-  BG.fromFFIType hs_bindgen_3efb7b0f89cc88bf_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_3efb7b0f89cc88bf_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Opens up a read-only container for the application\'s filesystem.
 --
@@ -210,7 +219,7 @@ foreign import ccall unsafe "hs_bindgen_091f6a568e98e088"
   hs_bindgen_091f6a568e98e088_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_Unsafe_SDL_OpenUserStorage@
@@ -220,7 +229,12 @@ hs_bindgen_091f6a568e98e088
   -> SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -> IO (BG.Ptr SDL_Storage)
 hs_bindgen_091f6a568e98e088 =
-  BG.fromFFIType hs_bindgen_091f6a568e98e088_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_091f6a568e98e088_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Opens up a container for a user\'s unique read\/write filesystem.
 --
@@ -260,7 +274,8 @@ hs_bindgen_7005113c31f7da2f
   :: PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr SDL_Storage)
 hs_bindgen_7005113c31f7da2f =
-  BG.fromFFIType hs_bindgen_7005113c31f7da2f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_7005113c31f7da2f_base (BG.toFFIType x0))
 
 -- | Opens up a container for local filesystem storage.
 --
@@ -294,7 +309,9 @@ hs_bindgen_b8dda6b007805de7
   -> BG.Ptr BG.Void
   -> IO (BG.Ptr SDL_Storage)
 hs_bindgen_b8dda6b007805de7 =
-  BG.fromFFIType hs_bindgen_b8dda6b007805de7_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b8dda6b007805de7_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Opens up a container using a client-provided storage interface.
 --
@@ -325,14 +342,15 @@ sDL_OpenStorage = hs_bindgen_b8dda6b007805de7
 foreign import ccall unsafe "hs_bindgen_cbfe2f0e9b4cbc36"
   hs_bindgen_cbfe2f0e9b4cbc36_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_Unsafe_SDL_CloseStorage@
 hs_bindgen_cbfe2f0e9b4cbc36
   :: BG.Ptr SDL_Storage
   -> IO BG.CBool
 hs_bindgen_cbfe2f0e9b4cbc36 =
-  BG.fromFFIType hs_bindgen_cbfe2f0e9b4cbc36_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_cbfe2f0e9b4cbc36_base (BG.toFFIType x0))
 
 -- | Closes and frees a storage container.
 --
@@ -355,14 +373,15 @@ sDL_CloseStorage = hs_bindgen_cbfe2f0e9b4cbc36
 foreign import ccall unsafe "hs_bindgen_2696a9ea9d0fe58b"
   hs_bindgen_2696a9ea9d0fe58b_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_Unsafe_SDL_StorageReady@
 hs_bindgen_2696a9ea9d0fe58b
   :: BG.Ptr SDL_Storage
   -> IO BG.CBool
 hs_bindgen_2696a9ea9d0fe58b =
-  BG.fromFFIType hs_bindgen_2696a9ea9d0fe58b_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_2696a9ea9d0fe58b_base (BG.toFFIType x0))
 
 -- | Checks if the storage container is ready to use.
 --
@@ -387,7 +406,7 @@ foreign import ccall unsafe "hs_bindgen_4355da006df8358e"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_Unsafe_SDL_GetStorageFileSize@
 hs_bindgen_4355da006df8358e
@@ -396,7 +415,12 @@ hs_bindgen_4355da006df8358e
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint64
   -> IO BG.CBool
 hs_bindgen_4355da006df8358e =
-  BG.fromFFIType hs_bindgen_4355da006df8358e_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_4355da006df8358e_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Query the size of a file within a storage container.
 --
@@ -429,8 +453,8 @@ foreign import ccall unsafe "hs_bindgen_9bef126210db7928"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word64
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_Unsafe_SDL_ReadStorageFile@
 hs_bindgen_9bef126210db7928
@@ -440,7 +464,18 @@ hs_bindgen_9bef126210db7928
   -> SDL3.Sys.Bindgen.Stdinc.Uint64
   -> IO BG.CBool
 hs_bindgen_9bef126210db7928 =
-  BG.fromFFIType hs_bindgen_9bef126210db7928_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_9bef126210db7928_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Synchronously read a file from a storage container into a client-provided buffer.
 --
@@ -479,8 +514,8 @@ foreign import ccall unsafe "hs_bindgen_b7b6d20d57e278de"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word64
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_Unsafe_SDL_WriteStorageFile@
 hs_bindgen_b7b6d20d57e278de
@@ -490,7 +525,18 @@ hs_bindgen_b7b6d20d57e278de
   -> SDL3.Sys.Bindgen.Stdinc.Uint64
   -> IO BG.CBool
 hs_bindgen_b7b6d20d57e278de =
-  BG.fromFFIType hs_bindgen_b7b6d20d57e278de_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_b7b6d20d57e278de_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Synchronously write a file from client memory into a storage container.
 --
@@ -526,7 +572,7 @@ foreign import ccall unsafe "hs_bindgen_ca002acf3667a014"
   hs_bindgen_ca002acf3667a014_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_Unsafe_SDL_CreateStorageDirectory@
 hs_bindgen_ca002acf3667a014
@@ -534,7 +580,9 @@ hs_bindgen_ca002acf3667a014
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_ca002acf3667a014 =
-  BG.fromFFIType hs_bindgen_ca002acf3667a014_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_ca002acf3667a014_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Create a directory in a writable storage container.
 --
@@ -563,9 +611,9 @@ foreign import ccall unsafe "hs_bindgen_26712abeb8ac186f"
   hs_bindgen_26712abeb8ac186f_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.FunPtr BG.Void
+    -> HsBindgen.Runtime.Support.FunPtrVoid
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_Unsafe_SDL_EnumerateStorageDirectory@
 hs_bindgen_26712abeb8ac186f
@@ -575,7 +623,18 @@ hs_bindgen_26712abeb8ac186f
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_26712abeb8ac186f =
-  BG.fromFFIType hs_bindgen_26712abeb8ac186f_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_26712abeb8ac186f_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Enumerate a directory in a storage container through a callback function.
 --
@@ -618,7 +677,7 @@ foreign import ccall unsafe "hs_bindgen_76b7043c8ce038fa"
   hs_bindgen_76b7043c8ce038fa_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_Unsafe_SDL_RemoveStoragePath@
 hs_bindgen_76b7043c8ce038fa
@@ -626,7 +685,9 @@ hs_bindgen_76b7043c8ce038fa
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_76b7043c8ce038fa =
-  BG.fromFFIType hs_bindgen_76b7043c8ce038fa_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_76b7043c8ce038fa_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Remove a file or an empty directory in a writable storage container.
 --
@@ -655,7 +716,7 @@ foreign import ccall unsafe "hs_bindgen_27e9f0759ca9fa2b"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_Unsafe_SDL_RenameStoragePath@
 hs_bindgen_27e9f0759ca9fa2b
@@ -664,7 +725,12 @@ hs_bindgen_27e9f0759ca9fa2b
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_27e9f0759ca9fa2b =
-  BG.fromFFIType hs_bindgen_27e9f0759ca9fa2b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_27e9f0759ca9fa2b_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Rename a file or directory in a writable storage container.
 --
@@ -697,7 +763,7 @@ foreign import ccall unsafe "hs_bindgen_d46668712d52c888"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_Unsafe_SDL_CopyStorageFile@
 hs_bindgen_d46668712d52c888
@@ -706,7 +772,12 @@ hs_bindgen_d46668712d52c888
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_d46668712d52c888 =
-  BG.fromFFIType hs_bindgen_d46668712d52c888_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_d46668712d52c888_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Copy a file in a writable storage container.
 --
@@ -739,7 +810,7 @@ foreign import ccall unsafe "hs_bindgen_a307c310a8b1e035"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_Unsafe_SDL_GetStoragePathInfo@
 hs_bindgen_a307c310a8b1e035
@@ -748,7 +819,12 @@ hs_bindgen_a307c310a8b1e035
   -> BG.Ptr SDL3.Sys.Bindgen.Filesystem.SDL_PathInfo
   -> IO BG.CBool
 hs_bindgen_a307c310a8b1e035 =
-  BG.fromFFIType hs_bindgen_a307c310a8b1e035_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_a307c310a8b1e035_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get information about a filesystem path in a storage container.
 --
@@ -779,14 +855,15 @@ sDL_GetStoragePathInfo = hs_bindgen_a307c310a8b1e035
 foreign import ccall unsafe "hs_bindgen_0980e8da26f68acf"
   hs_bindgen_0980e8da26f68acf_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word64
+    -> IO HsBindgen.Runtime.LibC.Word64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Storage_Unsafe_SDL_GetStorageSpaceRemaining@
 hs_bindgen_0980e8da26f68acf
   :: BG.Ptr SDL_Storage
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint64
 hs_bindgen_0980e8da26f68acf =
-  BG.fromFFIType hs_bindgen_0980e8da26f68acf_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_0980e8da26f68acf_base (BG.toFFIType x0))
 
 -- | Queries the remaining space in a storage container.
 --
@@ -812,7 +889,7 @@ foreign import ccall unsafe "hs_bindgen_c0ca5ffb0ed420ff"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> IO (BG.Ptr BG.Void)
 
@@ -825,7 +902,20 @@ hs_bindgen_c0ca5ffb0ed420ff
   -> BG.Ptr BG.CInt
   -> IO (BG.Ptr (BG.Ptr BG.CChar))
 hs_bindgen_c0ca5ffb0ed420ff =
-  BG.fromFFIType hs_bindgen_c0ca5ffb0ed420ff_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_c0ca5ffb0ed420ff_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Enumerate a directory tree, filtered by pattern, and return a list.
 --

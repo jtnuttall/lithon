@@ -17,6 +17,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL offers facilities for pixel management.
 --
@@ -270,11 +271,14 @@ module SDL3.Sys.Bindgen.Pixels (
 )
 where
 
+import Prelude (Eq, Int, Ord, Read, Show, pure, (<*>), (>>), type (~))
+
 import C.Expr.HostPlatform qualified
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.ConstantArray qualified as CA
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -2789,6 +2793,9 @@ instance Marshal.WriteRaw SDL_Color where
 
 deriving via Marshal.EquivStorable SDL_Color instance BG.Storable SDL_Color
 
+deriving via Struct.IsStructViaReadRaw SDL_Color instance Struct.IsStruct SDL_Color
+
+-- | [C declaration]: @r@, defined at @SDL3\/SDL_pixels.h 1114:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "r" SDL_Color ty
@@ -2818,6 +2825,7 @@ instance HasCField.HasCField SDL_Color "r" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @g@, defined at @SDL3\/SDL_pixels.h 1115:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "g" SDL_Color ty
@@ -2847,6 +2855,7 @@ instance HasCField.HasCField SDL_Color "g" where
 
   offset# = \_ -> \_ -> 1
 
+-- | [C declaration]: @b@, defined at @SDL3\/SDL_pixels.h 1116:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "b" SDL_Color ty
@@ -2876,6 +2885,7 @@ instance HasCField.HasCField SDL_Color "b" where
 
   offset# = \_ -> \_ -> 2
 
+-- | [C declaration]: @a@, defined at @SDL3\/SDL_pixels.h 1117:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "a" SDL_Color ty
@@ -2949,6 +2959,9 @@ instance Marshal.WriteRaw SDL_FColor where
 
 deriving via Marshal.EquivStorable SDL_FColor instance BG.Storable SDL_FColor
 
+deriving via Struct.IsStructViaReadRaw SDL_FColor instance Struct.IsStruct SDL_FColor
+
+-- | [C declaration]: @r@, defined at @SDL3\/SDL_pixels.h 1128:11@
 instance (ty ~ BG.CFloat) => BG.CompatHasField.HasField "r" SDL_FColor ty where
   hasField =
     \x0 ->
@@ -2973,6 +2986,7 @@ instance HasCField.HasCField SDL_FColor "r" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @g@, defined at @SDL3\/SDL_pixels.h 1129:11@
 instance (ty ~ BG.CFloat) => BG.CompatHasField.HasField "g" SDL_FColor ty where
   hasField =
     \x0 ->
@@ -2997,6 +3011,7 @@ instance HasCField.HasCField SDL_FColor "g" where
 
   offset# = \_ -> \_ -> 4
 
+-- | [C declaration]: @b@, defined at @SDL3\/SDL_pixels.h 1130:11@
 instance (ty ~ BG.CFloat) => BG.CompatHasField.HasField "b" SDL_FColor ty where
   hasField =
     \x0 ->
@@ -3021,6 +3036,7 @@ instance HasCField.HasCField SDL_FColor "b" where
 
   offset# = \_ -> \_ -> 8
 
+-- | [C declaration]: @a@, defined at @SDL3\/SDL_pixels.h 1131:11@
 instance (ty ~ BG.CFloat) => BG.CompatHasField.HasField "a" SDL_FColor ty where
   hasField =
     \x0 ->
@@ -3099,6 +3115,11 @@ instance Marshal.WriteRaw SDL_Palette where
 
 deriving via Marshal.EquivStorable SDL_Palette instance BG.Storable SDL_Palette
 
+deriving via Struct.IsStructViaReadRaw SDL_Palette instance Struct.IsStruct SDL_Palette
+
+-- | number of elements in @colors@.
+--
+--     [C declaration]: @ncolors@, defined at @SDL3\/SDL_pixels.h 1143:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "ncolors" SDL_Palette ty
@@ -3126,6 +3147,9 @@ instance HasCField.HasCField SDL_Palette "ncolors" where
 
   offset# = \_ -> \_ -> 0
 
+-- | an array of colors, @ncolors@ long.
+--
+--     [C declaration]: @colors@, defined at @SDL3\/SDL_pixels.h 1144:16@
 instance
   (ty ~ BG.Ptr SDL_Color)
   => BG.CompatHasField.HasField "colors" SDL_Palette ty
@@ -3155,6 +3179,9 @@ instance HasCField.HasCField SDL_Palette "colors" where
 
   offset# = \_ -> \_ -> 8
 
+-- | internal use only, do not touch.
+--
+--     [C declaration]: @version@, defined at @SDL3\/SDL_pixels.h 1145:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "version" SDL_Palette ty
@@ -3184,6 +3211,9 @@ instance HasCField.HasCField SDL_Palette "version" where
 
   offset# = \_ -> \_ -> 16
 
+-- | internal use only, do not touch.
+--
+--     [C declaration]: @refcount@, defined at @SDL3\/SDL_pixels.h 1146:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "refcount" SDL_Palette ty
@@ -3322,6 +3352,12 @@ deriving via
   instance
     BG.Storable SDL_PixelFormatDetails
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_PixelFormatDetails
+  instance
+    Struct.IsStruct SDL_PixelFormatDetails
+
+-- | [C declaration]: @format@, defined at @SDL3\/SDL_pixels.h 1156:21@
 instance
   (ty ~ SDL_PixelFormat)
   => BG.CompatHasField.HasField "format" SDL_PixelFormatDetails ty
@@ -3363,6 +3399,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "format" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @bits_per_pixel@, defined at @SDL3\/SDL_pixels.h 1157:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "bits_per_pixel" SDL_PixelFormatDetails ty
@@ -3405,6 +3442,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "bits_per_pixel" where
 
   offset# = \_ -> \_ -> 4
 
+-- | [C declaration]: @bytes_per_pixel@, defined at @SDL3\/SDL_pixels.h 1158:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "bytes_per_pixel" SDL_PixelFormatDetails ty
@@ -3447,6 +3485,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "bytes_per_pixel" where
 
   offset# = \_ -> \_ -> 5
 
+-- | [C declaration]: @padding@, defined at @SDL3\/SDL_pixels.h 1159:11@
 instance
   (ty ~ CA.ConstantArray 2 SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding" SDL_PixelFormatDetails ty
@@ -3488,6 +3527,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "padding" where
 
   offset# = \_ -> \_ -> 6
 
+-- | [C declaration]: @Rmask@, defined at @SDL3\/SDL_pixels.h 1160:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "rmask" SDL_PixelFormatDetails ty
@@ -3529,6 +3569,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "rmask" where
 
   offset# = \_ -> \_ -> 8
 
+-- | [C declaration]: @Gmask@, defined at @SDL3\/SDL_pixels.h 1161:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "gmask" SDL_PixelFormatDetails ty
@@ -3570,6 +3611,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "gmask" where
 
   offset# = \_ -> \_ -> 12
 
+-- | [C declaration]: @Bmask@, defined at @SDL3\/SDL_pixels.h 1162:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "bmask" SDL_PixelFormatDetails ty
@@ -3611,6 +3653,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "bmask" where
 
   offset# = \_ -> \_ -> 16
 
+-- | [C declaration]: @Amask@, defined at @SDL3\/SDL_pixels.h 1163:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "amask" SDL_PixelFormatDetails ty
@@ -3652,6 +3695,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "amask" where
 
   offset# = \_ -> \_ -> 20
 
+-- | [C declaration]: @Rbits@, defined at @SDL3\/SDL_pixels.h 1164:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "rbits" SDL_PixelFormatDetails ty
@@ -3693,6 +3737,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "rbits" where
 
   offset# = \_ -> \_ -> 24
 
+-- | [C declaration]: @Gbits@, defined at @SDL3\/SDL_pixels.h 1165:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "gbits" SDL_PixelFormatDetails ty
@@ -3734,6 +3779,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "gbits" where
 
   offset# = \_ -> \_ -> 25
 
+-- | [C declaration]: @Bbits@, defined at @SDL3\/SDL_pixels.h 1166:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "bbits" SDL_PixelFormatDetails ty
@@ -3775,6 +3821,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "bbits" where
 
   offset# = \_ -> \_ -> 26
 
+-- | [C declaration]: @Abits@, defined at @SDL3\/SDL_pixels.h 1167:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "abits" SDL_PixelFormatDetails ty
@@ -3816,6 +3863,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "abits" where
 
   offset# = \_ -> \_ -> 27
 
+-- | [C declaration]: @Rshift@, defined at @SDL3\/SDL_pixels.h 1168:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "rshift" SDL_PixelFormatDetails ty
@@ -3857,6 +3905,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "rshift" where
 
   offset# = \_ -> \_ -> 28
 
+-- | [C declaration]: @Gshift@, defined at @SDL3\/SDL_pixels.h 1169:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "gshift" SDL_PixelFormatDetails ty
@@ -3898,6 +3947,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "gshift" where
 
   offset# = \_ -> \_ -> 29
 
+-- | [C declaration]: @Bshift@, defined at @SDL3\/SDL_pixels.h 1170:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "bshift" SDL_PixelFormatDetails ty
@@ -3939,6 +3989,7 @@ instance HasCField.HasCField SDL_PixelFormatDetails "bshift" where
 
   offset# = \_ -> \_ -> 30
 
+-- | [C declaration]: @Ashift@, defined at @SDL3\/SDL_pixels.h 1171:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "ashift" SDL_PixelFormatDetails ty

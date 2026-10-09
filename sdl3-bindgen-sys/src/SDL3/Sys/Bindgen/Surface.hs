@@ -17,6 +17,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL surfaces are buffers of pixels in system RAM. These are useful for passing around and manipulating images that are not stored in GPU memory.
 --
@@ -53,9 +54,27 @@ module SDL3.Sys.Bindgen.Surface (
 )
 where
 
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  pure,
+  (<*>),
+  (>>),
+  type (~),
+ )
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Pixels qualified
@@ -458,6 +477,11 @@ instance Marshal.WriteRaw SDL_Surface where
 
 deriving via Marshal.EquivStorable SDL_Surface instance BG.Storable SDL_Surface
 
+deriving via Struct.IsStructViaReadRaw SDL_Surface instance Struct.IsStruct SDL_Surface
+
+-- | The flags of the surface, read-only
+--
+--     [C declaration]: @flags@, defined at @SDL3\/SDL_surface.h 140:22@
 instance
   (ty ~ SDL_SurfaceFlags)
   => BG.CompatHasField.HasField "flags" SDL_Surface ty
@@ -491,6 +515,9 @@ instance HasCField.HasCField SDL_Surface "flags" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The format of the surface, read-only
+--
+--     [C declaration]: @format@, defined at @SDL3\/SDL_surface.h 141:21@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat)
   => BG.CompatHasField.HasField "format" SDL_Surface ty
@@ -524,6 +551,9 @@ instance HasCField.HasCField SDL_Surface "format" where
 
   offset# = \_ -> \_ -> 4
 
+-- | The width of the surface, read-only.
+--
+--     [C declaration]: @w@, defined at @SDL3\/SDL_surface.h 142:9@
 instance (ty ~ BG.CInt) => BG.CompatHasField.HasField "w" SDL_Surface ty where
   hasField =
     \x0 ->
@@ -552,6 +582,9 @@ instance HasCField.HasCField SDL_Surface "w" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The height of the surface, read-only.
+--
+--     [C declaration]: @h@, defined at @SDL3\/SDL_surface.h 143:9@
 instance (ty ~ BG.CInt) => BG.CompatHasField.HasField "h" SDL_Surface ty where
   hasField =
     \x0 ->
@@ -580,6 +613,9 @@ instance HasCField.HasCField SDL_Surface "h" where
 
   offset# = \_ -> \_ -> 12
 
+-- | The distance in bytes between rows of pixels, read-only
+--
+--     [C declaration]: @pitch@, defined at @SDL3\/SDL_surface.h 144:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "pitch" SDL_Surface ty
@@ -611,6 +647,9 @@ instance HasCField.HasCField SDL_Surface "pitch" where
 
   offset# = \_ -> \_ -> 16
 
+-- | A pointer to the pixels of the surface, the pixels are writeable if non-NULL
+--
+--     [C declaration]: @pixels@, defined at @SDL3\/SDL_surface.h 145:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "pixels" SDL_Surface ty
@@ -642,6 +681,9 @@ instance HasCField.HasCField SDL_Surface "pixels" where
 
   offset# = \_ -> \_ -> 24
 
+-- | Application reference count, used when freeing surface
+--
+--     [C declaration]: @refcount@, defined at @SDL3\/SDL_surface.h 147:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "refcount" SDL_Surface ty
@@ -673,6 +715,9 @@ instance HasCField.HasCField SDL_Surface "refcount" where
 
   offset# = \_ -> \_ -> 32
 
+-- | Reserved for internal use
+--
+--     [C declaration]: @reserved@, defined at @SDL3\/SDL_surface.h 149:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "reserved" SDL_Surface ty

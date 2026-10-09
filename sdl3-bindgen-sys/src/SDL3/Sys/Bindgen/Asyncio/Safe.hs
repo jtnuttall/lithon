@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Asyncio.Safe (
@@ -17,6 +19,9 @@ module SDL3.Sys.Bindgen.Asyncio.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -25,7 +30,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_asyncio.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_asyncio.h>"
          , "SDL_AsyncIO *hs_bindgen_31ab6fd411d04f78 ("
          , "  char const *arg1,"
          , "  char const *arg2"
@@ -126,7 +132,9 @@ hs_bindgen_31ab6fd411d04f78
   -> PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr SDL_AsyncIO)
 hs_bindgen_31ab6fd411d04f78 =
-  BG.fromFFIType hs_bindgen_31ab6fd411d04f78_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_31ab6fd411d04f78_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Use this function to create a new 'SDL_AsyncIO' object for reading from and\/or writing to a named file.
 --
@@ -171,14 +179,15 @@ sDL_AsyncIOFromFile = hs_bindgen_31ab6fd411d04f78
 foreign import ccall safe "hs_bindgen_53193075bdfec7d8"
   hs_bindgen_53193075bdfec7d8_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int64
+    -> IO HsBindgen.Runtime.LibC.Int64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Asyncio_Safe_SDL_GetAsyncIOSize@
 hs_bindgen_53193075bdfec7d8
   :: BG.Ptr SDL_AsyncIO
   -> IO SDL3.Sys.Bindgen.Stdinc.Sint64
 hs_bindgen_53193075bdfec7d8 =
-  BG.fromFFIType hs_bindgen_53193075bdfec7d8_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_53193075bdfec7d8_base (BG.toFFIType x0))
 
 -- | Use this function to get the size of the data stream in an 'SDL_AsyncIO'.
 --
@@ -204,11 +213,11 @@ foreign import ccall safe "hs_bindgen_c7966557f41dcbfc"
   hs_bindgen_c7966557f41dcbfc_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.Word64
+    -> HsBindgen.Runtime.LibC.Word64
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Asyncio_Safe_SDL_ReadAsyncIO@
 hs_bindgen_c7966557f41dcbfc
@@ -220,7 +229,22 @@ hs_bindgen_c7966557f41dcbfc
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_c7966557f41dcbfc =
-  BG.fromFFIType hs_bindgen_c7966557f41dcbfc_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_c7966557f41dcbfc_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Start an async read.
 --
@@ -274,11 +298,11 @@ foreign import ccall safe "hs_bindgen_3970c0028c407ec9"
   hs_bindgen_3970c0028c407ec9_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.Word64
+    -> HsBindgen.Runtime.LibC.Word64
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Asyncio_Safe_SDL_WriteAsyncIO@
 hs_bindgen_3970c0028c407ec9
@@ -290,7 +314,22 @@ hs_bindgen_3970c0028c407ec9
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_3970c0028c407ec9 =
-  BG.fromFFIType hs_bindgen_3970c0028c407ec9_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_3970c0028c407ec9_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Start an async write.
 --
@@ -343,10 +382,10 @@ sDL_WriteAsyncIO = hs_bindgen_3970c0028c407ec9
 foreign import ccall safe "hs_bindgen_c29ad527f342080d"
   hs_bindgen_c29ad527f342080d_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Asyncio_Safe_SDL_CloseAsyncIO@
 hs_bindgen_c29ad527f342080d
@@ -356,7 +395,18 @@ hs_bindgen_c29ad527f342080d
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_c29ad527f342080d =
-  BG.fromFFIType hs_bindgen_c29ad527f342080d_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_c29ad527f342080d_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Close and free any allocated resources for an async I\/O object.
 --
@@ -407,7 +457,7 @@ foreign import ccall safe "hs_bindgen_175ded8a64120502"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Asyncio_Safe_SDL_CreateAsyncIOQueue@
 hs_bindgen_175ded8a64120502 :: IO (BG.Ptr SDL_AsyncIOQueue)
 hs_bindgen_175ded8a64120502 =
-  BG.fromFFIType hs_bindgen_175ded8a64120502_base
+  fmap BG.fromFFIType hs_bindgen_175ded8a64120502_base
 
 -- | Create a task queue for tracking multiple I\/O operations.
 --
@@ -436,7 +486,8 @@ hs_bindgen_4ff67e45af8870e5
   :: BG.Ptr SDL_AsyncIOQueue
   -> IO ()
 hs_bindgen_4ff67e45af8870e5 =
-  BG.fromFFIType hs_bindgen_4ff67e45af8870e5_base
+  \x0 ->
+    hs_bindgen_4ff67e45af8870e5_base (BG.toFFIType x0)
 
 -- | Destroy a previously-created async I\/O task queue.
 --
@@ -466,7 +517,7 @@ foreign import ccall safe "hs_bindgen_0fb3edb3afb2ac7e"
   hs_bindgen_0fb3edb3afb2ac7e_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Asyncio_Safe_SDL_GetAsyncIOResult@
 hs_bindgen_0fb3edb3afb2ac7e
@@ -474,7 +525,9 @@ hs_bindgen_0fb3edb3afb2ac7e
   -> BG.Ptr SDL_AsyncIOOutcome
   -> IO BG.CBool
 hs_bindgen_0fb3edb3afb2ac7e =
-  BG.fromFFIType hs_bindgen_0fb3edb3afb2ac7e_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_0fb3edb3afb2ac7e_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Query an async I\/O task queue for completed tasks.
 --
@@ -510,8 +563,8 @@ foreign import ccall safe "hs_bindgen_449b1d195d52a054"
   hs_bindgen_449b1d195d52a054_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Int32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Asyncio_Safe_SDL_WaitAsyncIOResult@
 hs_bindgen_449b1d195d52a054
@@ -520,7 +573,12 @@ hs_bindgen_449b1d195d52a054
   -> SDL3.Sys.Bindgen.Stdinc.Sint32
   -> IO BG.CBool
 hs_bindgen_449b1d195d52a054 =
-  BG.fromFFIType hs_bindgen_449b1d195d52a054_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_449b1d195d52a054_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Block until an async I\/O task queue has a completed task.
 --
@@ -574,7 +632,8 @@ hs_bindgen_ee15a5dcf2cc9ab4
   :: BG.Ptr SDL_AsyncIOQueue
   -> IO ()
 hs_bindgen_ee15a5dcf2cc9ab4 =
-  BG.fromFFIType hs_bindgen_ee15a5dcf2cc9ab4_base
+  \x0 ->
+    hs_bindgen_ee15a5dcf2cc9ab4_base (BG.toFFIType x0)
 
 -- | Wake up any threads that are blocking in @SDL_WaitAsyncIOResult()@.
 --
@@ -603,7 +662,7 @@ foreign import ccall safe "hs_bindgen_7556f48fabd8988b"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Asyncio_Safe_SDL_LoadFileAsync@
 hs_bindgen_7556f48fabd8988b
@@ -612,7 +671,12 @@ hs_bindgen_7556f48fabd8988b
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_7556f48fabd8988b =
-  BG.fromFFIType hs_bindgen_7556f48fabd8988b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_7556f48fabd8988b_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Load all the data from a file path, asynchronously.
 --

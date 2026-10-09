@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Atomic.FunPtr (
@@ -22,6 +24,8 @@ module SDL3.Sys.Bindgen.Atomic.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Atomic
@@ -29,7 +33,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_atomic.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_atomic.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_get_SDL_TryLockSpinlock */"
          , "__attribute__ ((const))"
          , "_Bool (*hs_bindgen_3653769bf64cd142 (void)) ("
@@ -183,7 +188,7 @@ foreign import ccall unsafe "hs_bindgen_3653769bf64cd142"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_get_SDL_TryLockSpinlock@
 hs_bindgen_3653769bf64cd142 :: IO (BG.FunPtr (BG.Ptr SDL_SpinLock -> IO BG.CBool))
 hs_bindgen_3653769bf64cd142 =
-  BG.fromFFIType hs_bindgen_3653769bf64cd142_base
+  fmap BG.fromFFIType hs_bindgen_3653769bf64cd142_base
 
 {-# NOINLINE sDL_TryLockSpinlock #-}
 
@@ -214,7 +219,7 @@ foreign import ccall unsafe "hs_bindgen_192f3ef53748431b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_get_SDL_LockSpinlock@
 hs_bindgen_192f3ef53748431b :: IO (BG.FunPtr (BG.Ptr SDL_SpinLock -> IO ()))
 hs_bindgen_192f3ef53748431b =
-  BG.fromFFIType hs_bindgen_192f3ef53748431b_base
+  fmap BG.fromFFIType hs_bindgen_192f3ef53748431b_base
 
 {-# NOINLINE sDL_LockSpinlock #-}
 
@@ -243,7 +248,7 @@ foreign import ccall unsafe "hs_bindgen_da14195ad2b603e0"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_get_SDL_UnlockSpinlock@
 hs_bindgen_da14195ad2b603e0 :: IO (BG.FunPtr (BG.Ptr SDL_SpinLock -> IO ()))
 hs_bindgen_da14195ad2b603e0 =
-  BG.fromFFIType hs_bindgen_da14195ad2b603e0_base
+  fmap BG.fromFFIType hs_bindgen_da14195ad2b603e0_base
 
 {-# NOINLINE sDL_UnlockSpinlock #-}
 
@@ -274,7 +279,7 @@ foreign import ccall unsafe "hs_bindgen_4979d73c1ba41e39"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_get_SDL_MemoryBarrierReleaseFunction@
 hs_bindgen_4979d73c1ba41e39 :: IO (BG.FunPtr (IO ()))
 hs_bindgen_4979d73c1ba41e39 =
-  BG.fromFFIType hs_bindgen_4979d73c1ba41e39_base
+  fmap BG.fromFFIType hs_bindgen_4979d73c1ba41e39_base
 
 {-# NOINLINE sDL_MemoryBarrierReleaseFunction #-}
 
@@ -301,7 +306,7 @@ foreign import ccall unsafe "hs_bindgen_e6cbd7564a024d99"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_get_SDL_MemoryBarrierAcquireFunction@
 hs_bindgen_e6cbd7564a024d99 :: IO (BG.FunPtr (IO ()))
 hs_bindgen_e6cbd7564a024d99 =
-  BG.fromFFIType hs_bindgen_e6cbd7564a024d99_base
+  fmap BG.fromFFIType hs_bindgen_e6cbd7564a024d99_base
 
 {-# NOINLINE sDL_MemoryBarrierAcquireFunction #-}
 
@@ -329,7 +334,7 @@ foreign import ccall unsafe "hs_bindgen_c535bda19feaf153"
 hs_bindgen_c535bda19feaf153
   :: IO (BG.FunPtr (BG.Ptr SDL_AtomicInt -> BG.CInt -> BG.CInt -> IO BG.CBool))
 hs_bindgen_c535bda19feaf153 =
-  BG.fromFFIType hs_bindgen_c535bda19feaf153_base
+  fmap BG.fromFFIType hs_bindgen_c535bda19feaf153_base
 
 {-# NOINLINE sDL_CompareAndSwapAtomicInt #-}
 
@@ -364,7 +369,7 @@ foreign import ccall unsafe "hs_bindgen_281a397e642c4489"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_get_SDL_SetAtomicInt@
 hs_bindgen_281a397e642c4489 :: IO (BG.FunPtr (BG.Ptr SDL_AtomicInt -> BG.CInt -> IO BG.CInt))
 hs_bindgen_281a397e642c4489 =
-  BG.fromFFIType hs_bindgen_281a397e642c4489_base
+  fmap BG.fromFFIType hs_bindgen_281a397e642c4489_base
 
 {-# NOINLINE sDL_SetAtomicInt #-}
 
@@ -399,7 +404,7 @@ foreign import ccall unsafe "hs_bindgen_db9688135888e49b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_get_SDL_GetAtomicInt@
 hs_bindgen_db9688135888e49b :: IO (BG.FunPtr (BG.Ptr SDL_AtomicInt -> IO BG.CInt))
 hs_bindgen_db9688135888e49b =
-  BG.fromFFIType hs_bindgen_db9688135888e49b_base
+  fmap BG.fromFFIType hs_bindgen_db9688135888e49b_base
 
 {-# NOINLINE sDL_GetAtomicInt #-}
 
@@ -430,7 +435,7 @@ foreign import ccall unsafe "hs_bindgen_3e37f598766ca408"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_get_SDL_AddAtomicInt@
 hs_bindgen_3e37f598766ca408 :: IO (BG.FunPtr (BG.Ptr SDL_AtomicInt -> BG.CInt -> IO BG.CInt))
 hs_bindgen_3e37f598766ca408 =
-  BG.fromFFIType hs_bindgen_3e37f598766ca408_base
+  fmap BG.fromFFIType hs_bindgen_3e37f598766ca408_base
 
 {-# NOINLINE sDL_AddAtomicInt #-}
 
@@ -473,7 +478,7 @@ hs_bindgen_b4be57e876b926c0
            )
        )
 hs_bindgen_b4be57e876b926c0 =
-  BG.fromFFIType hs_bindgen_b4be57e876b926c0_base
+  fmap BG.fromFFIType hs_bindgen_b4be57e876b926c0_base
 
 {-# NOINLINE sDL_CompareAndSwapAtomicU32 #-}
 
@@ -518,7 +523,7 @@ hs_bindgen_34e65bfeeaed8bb5
            (BG.Ptr SDL_AtomicU32 -> SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO SDL3.Sys.Bindgen.Stdinc.Uint32)
        )
 hs_bindgen_34e65bfeeaed8bb5 =
-  BG.fromFFIType hs_bindgen_34e65bfeeaed8bb5_base
+  fmap BG.fromFFIType hs_bindgen_34e65bfeeaed8bb5_base
 
 {-# NOINLINE sDL_SetAtomicU32 #-}
 
@@ -556,7 +561,7 @@ foreign import ccall unsafe "hs_bindgen_89429d58246e8835"
 hs_bindgen_89429d58246e8835
   :: IO (BG.FunPtr (BG.Ptr SDL_AtomicU32 -> IO SDL3.Sys.Bindgen.Stdinc.Uint32))
 hs_bindgen_89429d58246e8835 =
-  BG.fromFFIType hs_bindgen_89429d58246e8835_base
+  fmap BG.fromFFIType hs_bindgen_89429d58246e8835_base
 
 {-# NOINLINE sDL_GetAtomicU32 #-}
 
@@ -588,7 +593,7 @@ foreign import ccall unsafe "hs_bindgen_74ebd3ff8c83f38e"
 hs_bindgen_74ebd3ff8c83f38e
   :: IO (BG.FunPtr (BG.Ptr SDL_AtomicU32 -> BG.CInt -> IO SDL3.Sys.Bindgen.Stdinc.Uint32))
 hs_bindgen_74ebd3ff8c83f38e =
-  BG.fromFFIType hs_bindgen_74ebd3ff8c83f38e_base
+  fmap BG.fromFFIType hs_bindgen_74ebd3ff8c83f38e_base
 
 {-# NOINLINE sDL_AddAtomicU32 #-}
 
@@ -622,7 +627,7 @@ foreign import ccall unsafe "hs_bindgen_6871c50a63bfd9f4"
 hs_bindgen_6871c50a63bfd9f4
   :: IO (BG.FunPtr (BG.Ptr (BG.Ptr BG.Void) -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CBool))
 hs_bindgen_6871c50a63bfd9f4 =
-  BG.fromFFIType hs_bindgen_6871c50a63bfd9f4_base
+  fmap BG.fromFFIType hs_bindgen_6871c50a63bfd9f4_base
 
 {-# NOINLINE sDL_CompareAndSwapAtomicPointer #-}
 
@@ -659,7 +664,7 @@ foreign import ccall unsafe "hs_bindgen_f4bd3696da14dba9"
 hs_bindgen_f4bd3696da14dba9
   :: IO (BG.FunPtr (BG.Ptr (BG.Ptr BG.Void) -> BG.Ptr BG.Void -> IO (BG.Ptr BG.Void)))
 hs_bindgen_f4bd3696da14dba9 =
-  BG.fromFFIType hs_bindgen_f4bd3696da14dba9_base
+  fmap BG.fromFFIType hs_bindgen_f4bd3696da14dba9_base
 
 {-# NOINLINE sDL_SetAtomicPointer #-}
 
@@ -692,7 +697,7 @@ foreign import ccall unsafe "hs_bindgen_dc36e65ef974254e"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_get_SDL_GetAtomicPointer@
 hs_bindgen_dc36e65ef974254e :: IO (BG.FunPtr (BG.Ptr (BG.Ptr BG.Void) -> IO (BG.Ptr BG.Void)))
 hs_bindgen_dc36e65ef974254e =
-  BG.fromFFIType hs_bindgen_dc36e65ef974254e_base
+  fmap BG.fromFFIType hs_bindgen_dc36e65ef974254e_base
 
 {-# NOINLINE sDL_GetAtomicPointer #-}
 

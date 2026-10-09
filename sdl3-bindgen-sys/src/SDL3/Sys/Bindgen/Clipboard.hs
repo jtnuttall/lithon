@@ -4,6 +4,7 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -12,6 +13,7 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL provides access to the system clipboard, both for reading information from other processes and publishing information of its own.
 --
@@ -52,6 +54,8 @@ module SDL3.Sys.Bindgen.Clipboard (
 )
 where
 
+import Prelude (Eq, IO, Ord, Show, fmap, type (~))
+
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Marshal qualified as Marshal
@@ -70,7 +74,6 @@ newtype SDL_ClipboardDataCallback_Aux = SDL_ClipboardDataCallback_Aux
       -> IO (PtrConst.PtrConst BG.Void)
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_ClipboardDataCallback_Aux@
 foreign import ccall safe "wrapper"
@@ -84,7 +87,17 @@ hs_bindgen_4dc4029500cc2362
   -> IO (BG.FunPtr SDL_ClipboardDataCallback_Aux)
 hs_bindgen_4dc4029500cc2362 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_4dc4029500cc2362_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_4dc4029500cc2362_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  fmap
+                    BG.toFFIType
+                    (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2) (BG.fromFFIType x3))
+          )
+      )
 
 -- __unique:__ @fromSDL_ClipboardDataCallback_Aux@
 foreign import ccall safe "dynamic"
@@ -101,7 +114,19 @@ hs_bindgen_941a517724689596
   -> SDL_ClipboardDataCallback_Aux
 hs_bindgen_941a517724689596 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_941a517724689596_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_ClipboardDataCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_941a517724689596_base
+                    (BG.castFunPtr funPtr0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                )
+      )
 
 instance BG.ToFunPtr SDL_ClipboardDataCallback_Aux where
   toFunPtr = hs_bindgen_4dc4029500cc2362
@@ -207,7 +232,6 @@ newtype SDL_ClipboardCleanupCallback_Aux = SDL_ClipboardCleanupCallback_Aux
   { unwrap :: BG.Ptr BG.Void -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_ClipboardCleanupCallback_Aux@
 foreign import ccall safe "wrapper"
@@ -221,7 +245,13 @@ hs_bindgen_dec1734c1f7f2a3f
   -> IO (BG.FunPtr SDL_ClipboardCleanupCallback_Aux)
 hs_bindgen_dec1734c1f7f2a3f =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_dec1734c1f7f2a3f_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_dec1734c1f7f2a3f_base
+          ( \x1 ->
+              BG.getField @"unwrap" fun0 (BG.fromFFIType x1)
+          )
+      )
 
 -- __unique:__ @fromSDL_ClipboardCleanupCallback_Aux@
 foreign import ccall safe "dynamic"
@@ -236,7 +266,10 @@ hs_bindgen_0ab064059cf117ee
   -> SDL_ClipboardCleanupCallback_Aux
 hs_bindgen_0ab064059cf117ee =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_0ab064059cf117ee_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_ClipboardCleanupCallback_Aux
+      ( \x1 ->
+          hs_bindgen_0ab064059cf117ee_base (BG.castFunPtr funPtr0) (BG.toFFIType x1)
+      )
 
 instance BG.ToFunPtr SDL_ClipboardCleanupCallback_Aux where
   toFunPtr = hs_bindgen_dec1734c1f7f2a3f

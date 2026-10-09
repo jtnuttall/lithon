@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Loadso.Unsafe (
@@ -9,7 +11,10 @@ module SDL3.Sys.Bindgen.Loadso.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Support qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Loadso
@@ -17,7 +22,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_loadso.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_loadso.h>"
          , "SDL_SharedObject *hs_bindgen_480ab0651497eddb ("
          , "  char const *arg1"
          , ")"
@@ -52,7 +58,8 @@ hs_bindgen_480ab0651497eddb
   :: PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr SDL_SharedObject)
 hs_bindgen_480ab0651497eddb =
-  BG.fromFFIType hs_bindgen_480ab0651497eddb_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_480ab0651497eddb_base (BG.toFFIType x0))
 
 -- | Dynamically load a shared object.
 --
@@ -78,7 +85,7 @@ foreign import ccall unsafe "hs_bindgen_215b1c5734d854fe"
   hs_bindgen_215b1c5734d854fe_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO (BG.FunPtr BG.Void)
+    -> IO HsBindgen.Runtime.Support.FunPtrVoid
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Loadso_Unsafe_SDL_LoadFunction@
 hs_bindgen_215b1c5734d854fe
@@ -86,7 +93,9 @@ hs_bindgen_215b1c5734d854fe
   -> PtrConst.PtrConst BG.CChar
   -> IO SDL3.Sys.Bindgen.Stdinc.SDL_FunctionPointer
 hs_bindgen_215b1c5734d854fe =
-  BG.fromFFIType hs_bindgen_215b1c5734d854fe_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_215b1c5734d854fe_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Look up the address of the named function in a shared object.
 --
@@ -130,7 +139,8 @@ hs_bindgen_0898e457bf0f2807
   :: BG.Ptr SDL_SharedObject
   -> IO ()
 hs_bindgen_0898e457bf0f2807 =
-  BG.fromFFIType hs_bindgen_0898e457bf0f2807_base
+  \x0 ->
+    hs_bindgen_0898e457bf0f2807_base (BG.toFFIType x0)
 
 -- | Unload a shared object from memory.
 --

@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL sensor management.
 --
 --     These APIs grant access to gyros and accelerometers on various platforms.
@@ -47,6 +49,7 @@ module SDL3.Sys.Sensor (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

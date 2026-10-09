@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Version.FunPtr (
@@ -8,13 +10,16 @@ module SDL3.Sys.Bindgen.Version.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_version.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_version.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Version_get_SDL_GetVersion */"
          , "__attribute__ ((const))"
          , "signed int (*hs_bindgen_44ed10f40287cec8 (void)) (void)"
@@ -39,7 +44,7 @@ foreign import ccall unsafe "hs_bindgen_44ed10f40287cec8"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Version_get_SDL_GetVersion@
 hs_bindgen_44ed10f40287cec8 :: IO (BG.FunPtr (IO BG.CInt))
 hs_bindgen_44ed10f40287cec8 =
-  BG.fromFFIType hs_bindgen_44ed10f40287cec8_base
+  fmap BG.fromFFIType hs_bindgen_44ed10f40287cec8_base
 
 {-# NOINLINE sDL_GetVersion #-}
 
@@ -70,7 +75,7 @@ foreign import ccall unsafe "hs_bindgen_e9f711a7185d859a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Version_get_SDL_GetRevision@
 hs_bindgen_e9f711a7185d859a :: IO (BG.FunPtr (IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_e9f711a7185d859a =
-  BG.fromFFIType hs_bindgen_e9f711a7185d859a_base
+  fmap BG.fromFFIType hs_bindgen_e9f711a7185d859a_base
 
 {-# NOINLINE sDL_GetRevision #-}
 
