@@ -7,6 +7,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.FileEmbed (embedFileRelative)
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
+import Data.Text qualified as T
 import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
@@ -25,7 +26,12 @@ unit_committedRegistryDecodes = do
   let bytes = LBS.fromStrict $(embedFileRelative "data/sdl3/aliases.json")
   config <- either (assertFailure . toString) pure (decodeAliasConfig bytes)
   config.naming @?= CamelSegments
-  config.renames @?= mempty
+  -- Only C shims are renamed: SCREAMING macros, and SDL_Log, whose alias
+  -- would collide with the math function SDL_log's.
+  Map.lookup "lithon_SDL_Log" config.renames @?= Just "logApplication"
+  assertBool
+    "only C shims are renamed"
+    (all ("lithon_SDL_" `T.isPrefixOf`) (Map.keys config.renames))
   config.skip @?= mempty
   -- Spot-check the three classification poles.
   fmap (.safety) (Map.lookup "SDL_EnumerateDirectory" config.functions)

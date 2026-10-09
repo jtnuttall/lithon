@@ -40,6 +40,17 @@ extra-source-files:
     data/mpv/overrides/client.yaml
     data/sdl3/overrides/SDL_main.yaml
     data/sdl3/overrides/SDL_stdinc.yaml
+    data/sdl3/include/sdl3-bindgen-sys/SDL_atomic_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_audio_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_endian_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_error_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_iostream_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_log_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_pixels_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_stdinc_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_surface_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_thread_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_timer_shims.h
 extra-doc-files:
     README.md
     CHANGELOG.md

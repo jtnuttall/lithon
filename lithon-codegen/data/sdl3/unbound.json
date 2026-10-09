@@ -207,7 +207,7 @@
     },
     {
       "disposition": "wontfix",
-      "note": "They take a va_list, which has no FFI type; the variadic functions' shims cover logging and errors.",
+      "note": "They take a va_list, which has no FFI type; the variadic functions' shims cover logging, errors, and stream printing.",
       "names": [
         "SDL_vsscanf",
         "SDL_vsnprintf",

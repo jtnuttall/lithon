@@ -80,6 +80,7 @@ import Lithon.Codegen.Bindgen.Abi (AbiMacroConst (..))
 import Lithon.Codegen.Bindgen.Abi.Validate (AbiProblem, LibraryRef (..), validateAbi)
 import Lithon.Codegen.Bindgen.Alias (
   AliasModule (..),
+  CFunction (..),
   FamilyDecls (..),
   aliasRewriteMap,
   functionCensus,
@@ -138,9 +139,11 @@ import Lithon.Codegen.Bindgen.Env (
 import Lithon.Codegen.Bindgen.Package (BindgenPackagingError, assembleBindgenPackage)
 import Lithon.Codegen.Bindgen.Payload (BindgenPayload (..), distillPayload)
 import Lithon.Codegen.Bindgen.Target (
+  AuthoredHeaders (..),
   BindgenTarget (..),
   VersionScheme (..),
   headerPlan,
+  isAuthored,
   registryDisplayPath,
   validateTarget,
  )
@@ -153,6 +156,7 @@ import Lithon.Codegen.Bindgen.Unbound (
   unboundDoc,
   untriagedSnippets,
   validateConstantDispositions,
+  validateShimDispositions,
  )
 import Lithon.Codegen.Bindgen.Versions (
   Versioned (..),
@@ -241,7 +245,8 @@ instance Display BindgenError where
         <> from registry
         <> "; nothing was written. Every name hs-bindgen skips needs exactly one disposition"
         <> " (shim, constant, wontfix, or upstream), every listed name must still be skipped,"
-        <> " and constants.json must bind every name listed as constant:"
+        <> " an authored C header must bind every name listed as shim, and constants.json must"
+        <> " bind every name listed as constant:"
         <> displayBuilder errs
         <> case untriagedSnippets (toList errs) of
           [] -> mempty
@@ -396,10 +401,10 @@ validateChain target registry results = do
 
 -- | Triage the chain's skips against @unbound.json@ and render the ledger
 -- (@unbound.md@), returning the registry too. Run before anything is
--- written, by both commands: a skip without a disposition, or a
--- disposition for a name that is bound now, fails the run, and both
--- commands emit the ledger (an artifact one of them did not emit, the
--- other would prune).
+-- written, by both commands: a skip without a disposition, a disposition
+-- for a name that is bound now, or a @shim@ disposition no authored C
+-- function binds fails the run, and both commands emit the ledger (an
+-- artifact one of them did not emit, the other would prune).
 triageUnbound
   :: (BindgenGen :> es, Error BindgenError :> es, FileSystem :> es)
   => BindgenTarget -> [HeaderResult BindgenPayload] -> Eff es (UnboundConfig, Text)
@@ -417,9 +422,25 @@ triageUnbound target results = do
           }
   doc <-
     liftEither
-      . first (UnboundFailed (registryDisplayPath target (registryFile UnboundJson)))
+      . first (UnboundFailed registryPath)
       $ unboundDoc source (headerPlan target) config results
+  -- Known from the chain alone (unlike the constant dispositions), so both
+  -- commands check it.
+  liftEither
+    . first (UnboundFailed registryPath)
+    $ validateShimDispositions
+      ((.namePrefix) <$> target.authored)
+      config
+      ( Set.fromList
+          [ fn.cName
+          | r <- results
+          , isAuthored target r.unit.headerName
+          , fn <- r.payload.facts.functions
+          ]
+      )
   pure (config, renderUnbound doc)
+ where
+  registryPath = registryDisplayPath target (registryFile UnboundJson)
 
 -- | Load, validate, plan, and render the target's curated layer, with the
 -- typed constants 'planConstantGroups' planned (and the registry bytes

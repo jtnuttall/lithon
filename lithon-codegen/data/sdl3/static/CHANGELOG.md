@@ -25,9 +25,36 @@
   - `SDL3.Sys.Mouse`: `SDL_TOUCH_MOUSEID` and `SDL_PEN_MOUSEID`.
   - `SDL3.Sys.Touch`: `SDL_MOUSE_TOUCHID` and `SDL_PEN_TOUCHID`.
 - ABI assertions for the 29 constants.
+- C shims: 57 fixed-arity C functions over what the FFI cannot call, in
+  `include/sdl3-bindgen-sys/SDL_*_shims.h` (one header per SDL header,
+  raw bindings in `SDL3.Sys.Bindgen.*Shims`), exported from the module of
+  the header they extend under a new `C shims` section and named like what
+  they wrap. See the README's `C shims` section.
+  - Variadic functions, taking the message verbatim, never as a format
+    string: `logApplication` (`SDL_Log`), `logTrace`, `logVerbose`,
+    `logDebug`, `logInfo`, `logWarn`, `logError`, `logCritical`,
+    `logMessage` in `SDL3.Sys.Log`; `setError` in `SDL3.Sys.Error`;
+    `ioPrintf` in `SDL3.Sys.Iostream`.
+  - Function-like macros: `unsupported`, `invalidParamError`
+    (`SDL3.Sys.Error`); `fourCC` (`SDL3.Sys.Stdinc`); `secondsToNs`,
+    `msToNs`, `usToNs` (`SDL3.Sys.Timer`); `swap16`, `swap32`, `swap64` and
+    the `LE`/`BE` swaps of 16, 32 and 64 bits and of floats
+    (`SDL3.Sys.Endian`); `createThread`, `createThreadWithProperties`
+    (`SDL3.Sys.Thread`), which pass the C runtime's thread entry and exit
+    functions on Windows like SDL's macros do; `mustLock`
+    (`SDL3.Sys.Surface`); `atomicIncRef`, `atomicDecRef`
+    (`SDL3.Sys.Atomic`); `audioFrameSize`, `defineAudioFormat`
+    (`SDL3.Sys.Audio`); and in `SDL3.Sys.Pixels`, `definePixelFourCC`,
+    `bitsPerPixel`, `bytesPerPixel`, the seven `isPixelFormat*` predicates,
+    `defineColorspace`, the six `colorspace*` accessors and the five
+    `isColorspace*` predicates.
+- The package ships the shims' headers (`extra-source-files`) and compiles
+  its wrapper C with `include-dirs: include`.
 
 ### Changed
 
+- README: the `C shims` section, and the variadic functions and
+  function-like macros it binds are no longer listed as unbound.
 - Regenerated with hs-bindgen 1.0.0.0.
 - Raw modules (`SDL3.Sys.Bindgen.*`): each foreign import sits behind a
   wrapper that converts argument by argument through `HasFFIType` and keeps

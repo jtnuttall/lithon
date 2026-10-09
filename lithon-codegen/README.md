@@ -156,6 +156,9 @@ A target binds one C library through hs-bindgen. There are two: `sdl3` and
   (`<namespace>.Bindgen.*`).
 - Every declaration hs-bindgen skips needs a disposition in `unbound.json`.
   The skip ledger, `unbound.md`, lists them all, with hs-bindgen's reasons.
+- What the FFI cannot call (variadic functions, function-like macros) can
+  get a C shim: a function in a C header the target authors, bound like the
+  library's own. See [Authored headers](#authored-headers-c-shims).
 - Anything newer than the floor, the oldest supported release, gets a version
   gate. Availability comes from the library's docs and the availability
   annotations; the annotations win.
@@ -175,12 +178,13 @@ Every target uses the same layout in `lithon-codegen/data/<key>/`:
 | `versions.json`         | You           | The availability annotations. See [`versions.json`](#versionsjson).                           |
 | `unbound.json`          | You           | Each skipped declaration's disposition. See [`unbound.json`](#unboundjson).                   |
 | `overrides/`            | You, optional | hs-bindgen's prescriptive binding specs, one per header: renames, representations, omissions. |
+| `include/<root>/`       | You, optional | The target's authored C headers. See [Authored headers](#authored-headers-c-shims).           |
 | `static/`               | You           | The statics, copied to the package root.                                                      |
 | `spec/`                 | Generator     | The spec artifacts: one binding spec per header, committed for review.                        |
 | `unbound.md`            | Generator     | The skip ledger: every declaration hs-bindgen skips, by disposition.                          |
 | `.lithon-manifest.json` | Generator     | Digests of the spec artifacts and the skip ledger.                                            |
 
-The generator enforces five rules:
+The generator enforces six rules:
 
 - `aliases.json` must classify every callback-taking function as `both` or
   `safe-only`. Other functions default to `both`.
@@ -195,6 +199,9 @@ The generator enforces five rules:
   alone, and holds only that header's entries. A file that pairs with no
   bound header is an error, and so is a single-file `overrides.yaml`. So is
   an entry hs-bindgen rejects, such as one its header's run does not use.
+- `include/` holds exactly the headers the target's `authored` field lists,
+  in its root directory, and nothing else. A target that authors none has no
+  `include/`.
 
 #### `unbound.json`
 
@@ -236,11 +243,65 @@ each one:
 - `generate` also checks every `constant` name against `constants.json`: a
   name no group binds is an error. `constants.json` may bind more, such as
   macros hs-bindgen binds itself (`SDL_INIT_*`).
+- `spec` and `generate` check every `shim` name against the authored
+  headers: the function named the target's name prefix and the name's C
+  identifier must be bound (`macro SDL_FOURCC` needs `lithon_SDL_FOURCC`). A
+  shim may also wrap a name hs-bindgen binds (`SDL_Swap16LE`).
 - To start one, write `{"groups": []}` and run `spec`. The error lists every
   skip, then prints one group per reason to paste in.
 - The generator writes the joined result to `unbound.md`: one section per
   group, the dependencies outside the bound headers that block skips, what
   the overrides omit, and the headers the target excludes.
+
+#### Authored headers (C shims)
+
+Haskell's FFI cannot call a variadic function, and a function-like macro
+has no symbol. A target can author C headers of fixed-arity functions over
+them, which the chain binds like the library's own. The target lists them:
+
+```haskell
+authored =
+  Just
+    AuthoredHeaders
+      { includeRoot = "sdl3-bindgen-sys"
+      , namePrefix = "lithon_"
+      , headers =
+          [AuthoredHeader{file = "SDL_log_shims.h", extends = Just "SDL_log.h"}]
+      }
+```
+
+- The headers live in `data/<key>/include/<includeRoot>/`. The package ships
+  them verbatim in `include/<includeRoot>/`; its `static/package.yaml` lists
+  them in `extra-source-files` and sets `include-dirs: include` for the
+  wrapper C. Generation refuses a `package.yaml` without either: without the
+  first, `cabal sdist` drops the headers silently.
+- Each header is one more unit of the chain. It includes the library header
+  it builds on, so the include graph orders it after that header, and its
+  run reads that header's spec. Its raw family is named by the target's
+  mangle (`SDL_log_shims.h` is `SDL3.Sys.Bindgen.LogShims`). The ABI
+  assertion unit and the constants probe never include it.
+- Each function is `namePrefix` and the exact name it wraps:
+  `lithon_SDL_LogMessage`. Its alias drops the prefix and follows the
+  naming rule (`logMessage`). `aliases.json` classifies and renames it like
+  any function, by its C name. A collision needs a rename (`lithon_SDL_Log`
+  is `logApplication`, since `log` is `SDL_log`'s), and SCREAMING macros
+  read better with one (`lithon_SDL_MS_TO_NS` would mint `msTONS`; it is
+  `msToNs`).
+- With `extends`, the functions join the curated module of that header,
+  under a `C shims` export section. Without it, the header gets a module of
+  its own. The library's own mentions of a wrapped name (`SDL_CreateThread()`)
+  link to the shim.
+- A header declares functions only: no types, no macros but its include
+  guard. Write them `static` and inline (SDL's `static SDL_INLINE`). Copy the
+  wrapped API's `\since`; anything newer than the floor guards its
+  definition with the target's version macro, since a gate only guards the
+  wrapper's call.
+- Doc comments are doxygen, like the library's: a plain `/*` banner, so it
+  does not attach to the first function, and never a literal `%s`: doxygen
+  drops a `%` before a word.
+- A header that declares types, a function not named
+  `namePrefix<functionPrefix>…`, and an `extends` no bound header matches are
+  errors.
 
 #### `constants.json`
 
@@ -420,6 +481,8 @@ Available options:
    - headers: `pkgConfig`, `headers`, `parse`
    - versions: `versioning`, `gateStubs`
    - output: `shims`, `widthTypedefs`, `docs`, `prose`
+   - C shims: `authored` (`Nothing`, or see
+     [Authored headers](#authored-headers-c-shims))
 3. Run `hpack lithon-codegen` to add the module to the `.cabal` file.
 4. Register the value in `bindgenTargets` (`Lithon.Codegen.Bindgen.Targets`)
    for the `<key>` command and tests.
@@ -453,6 +516,10 @@ with a stable ABI. Its annotations cover SDL's doc errors and gaps:
   signatures use but 3.2 headers lack.
 
 Below its gate, a wrapper reports the failure through `SDL_SetError`.
+
+Its C shims, in `data/sdl3/include/sdl3-bindgen-sys/`, cover SDL's
+variadic logging, error, and stream-printing functions and 46 function-like
+macros: 57 functions in 11 headers, one per SDL header they extend.
 
 ### mpv
 

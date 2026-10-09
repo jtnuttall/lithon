@@ -21,7 +21,8 @@
 --
 -- A @constant@ disposition is checked against @constants.json@ as well
 -- ('validateConstantDispositions'), by @generate@, which plans the
--- constants.
+-- constants; a @shim@ disposition against the target's authored C headers
+-- ('validateShimDispositions'), by @spec@ and @generate@ alike.
 module Lithon.Codegen.Bindgen.Unbound (
   -- * The registry
   Disposition (..),
@@ -42,6 +43,7 @@ module Lithon.Codegen.Bindgen.Unbound (
   TriagedGroup (..),
   validateUnbound,
   validateConstantDispositions,
+  validateShimDispositions,
   untriagedSnippets,
 
   -- * The document
@@ -242,6 +244,10 @@ data UnboundError
     UnboundEmptyGroup {disposition :: Disposition, note :: Text}
   | -- | A @constant@ disposition for a name no @constants.json@ group binds.
     UnboundConstantMissing {name :: Text}
+  | -- | A @shim@ disposition for a name no authored C function binds, with
+    -- the function that would ('Nothing' when the target authors no C
+    -- headers).
+    UnboundShimMissing {name :: Text, shim :: Maybe Text}
   deriving stock (Eq, Show)
 
 instance Display UnboundError where
@@ -269,6 +275,10 @@ instance Display UnboundError where
         name
           <> ": disposition constant, but no constants.json group binds it; add it to a"
           <> " constants.json group or change its disposition"
+      UnboundShimMissing{name, shim = Just fn} ->
+        name <> ": disposition shim, but no authored C header binds " <> fn
+      UnboundShimMissing{name, shim = Nothing} ->
+        name <> ": disposition shim, but the target authors no C headers"
 
 -- | A registry group with the rows it covers, sorted by header, then line.
 data TriagedGroup = TriagedGroup
@@ -332,6 +342,30 @@ validateConstantDispositions config members =
       ()
  where
   bound = Set.map (\text -> HB.renderCName HB.CName{text, namespace = HB.Macro, unnamed = False}) members
+
+-- | The @shim@ disposition's promise, kept: every name a @shim@ group
+-- lists has a bound authored C function in its place, named the target's
+-- name prefix and the listed name's C identifier (@macro SDL_FOURCC@ ->
+-- @lithon_SDL_FOURCC@). Takes the name prefix ('Nothing' for a target that
+-- authors no C headers) and the C names of the authored headers' bound
+-- functions. One direction only: a shim may also wrap a name hs-bindgen
+-- binds itself (SDL's @SDL_Swap16LE@ macro).
+validateShimDispositions
+  :: Maybe Text -> UnboundConfig -> Set Text -> Either (Errors UnboundError) ()
+validateShimDispositions prefix config bound =
+  validationToEither
+    $ failUnlessEmpty
+      [ UnboundShimMissing{name = n, shim}
+      | g <- config.groups
+      , g.disposition == Shim
+      , n <- g.names
+      , let shim = (<> cIdentifier n) <$> prefix
+      , maybe True (`Set.notMember` bound) shim
+      ]
+      ()
+ where
+  -- The rendered name's last word: @SDL_Log@, @macro SDL_FOURCC@.
+  cIdentifier = T.takeWhileEnd (/= ' ')
 
 -- | For bootstrapping a registry: the untriaged names as one pasteable
 -- group per reason class, in the order the classes first appear.

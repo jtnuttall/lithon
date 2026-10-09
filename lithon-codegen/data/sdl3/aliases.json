@@ -1020,8 +1020,260 @@
     "SDL_wcsstr": {
       "safety": "unsafe-only",
       "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
+    },
+    "lithon_SDL_AUDIO_FRAMESIZE": {
+      "safety": "unsafe-only",
+      "rationale": "pure arithmetic on a caller-supplied struct; cannot block, lock, or call back"
+    },
+    "lithon_SDL_BITSPERPIXEL": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_BYTESPERPIXEL": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_COLORSPACECHROMA": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_COLORSPACEMATRIX": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_COLORSPACEPRIMARIES": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_COLORSPACERANGE": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_COLORSPACETRANSFER": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_COLORSPACETYPE": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_CreateThread": {
+      "safety": "both",
+      "rationale": "the entry function runs on the spawned thread, not during the call"
+    },
+    "lithon_SDL_CreateThreadWithProperties": {
+      "safety": "both",
+      "rationale": "the entry function runs on the spawned thread, not during the call"
+    },
+    "lithon_SDL_DEFINE_AUDIO_FORMAT": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_DEFINE_COLORSPACE": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_DEFINE_PIXELFOURCC": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_FOURCC": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_IOprintf": {
+      "safety": "both",
+      "rationale": "writes through the stream's SDL_IOStreamInterface, which may be implemented in Haskell"
+    },
+    "lithon_SDL_ISCOLORSPACE_FULL_RANGE": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_ISCOLORSPACE_LIMITED_RANGE": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_ISCOLORSPACE_MATRIX_BT601": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_ISCOLORSPACE_MATRIX_BT709": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_ISPIXELFORMAT_10BIT": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_ISPIXELFORMAT_ALPHA": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_ISPIXELFORMAT_ARRAY": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_ISPIXELFORMAT_FLOAT": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_ISPIXELFORMAT_FOURCC": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_ISPIXELFORMAT_INDEXED": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_ISPIXELFORMAT_PACKED": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_InvalidParamError": {
+      "safety": "unsafe-only",
+      "rationale": "formats into the thread-local error buffer; SDL_SetErrorV's log call is compiled out (#if 0, SDL 3.2.0 through 3.4.16); cannot block, lock, or call back"
+    },
+    "lithon_SDL_Log": {
+      "safety": "both",
+      "rationale": "invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction)"
+    },
+    "lithon_SDL_LogCritical": {
+      "safety": "both",
+      "rationale": "invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction)"
+    },
+    "lithon_SDL_LogDebug": {
+      "safety": "both",
+      "rationale": "invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction)"
+    },
+    "lithon_SDL_LogError": {
+      "safety": "both",
+      "rationale": "invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction)"
+    },
+    "lithon_SDL_LogInfo": {
+      "safety": "both",
+      "rationale": "invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction)"
+    },
+    "lithon_SDL_LogMessage": {
+      "safety": "both",
+      "rationale": "invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction)"
+    },
+    "lithon_SDL_LogTrace": {
+      "safety": "both",
+      "rationale": "invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction)"
+    },
+    "lithon_SDL_LogVerbose": {
+      "safety": "both",
+      "rationale": "invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction)"
+    },
+    "lithon_SDL_LogWarn": {
+      "safety": "both",
+      "rationale": "invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction)"
+    },
+    "lithon_SDL_MS_TO_NS": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_MUSTLOCK": {
+      "safety": "unsafe-only",
+      "rationale": "reads one field of the caller's surface; cannot block, lock, or call back"
+    },
+    "lithon_SDL_SECONDS_TO_NS": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_SetError": {
+      "safety": "unsafe-only",
+      "rationale": "formats into the thread-local error buffer; SDL_SetErrorV's log call is compiled out (#if 0, SDL 3.2.0 through 3.4.16); cannot block, lock, or call back"
+    },
+    "lithon_SDL_Swap16": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on an immediate value; cannot block, lock, or call back"
+    },
+    "lithon_SDL_Swap16BE": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on an immediate value; cannot block, lock, or call back"
+    },
+    "lithon_SDL_Swap16LE": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on an immediate value; cannot block, lock, or call back"
+    },
+    "lithon_SDL_Swap32": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on an immediate value; cannot block, lock, or call back"
+    },
+    "lithon_SDL_Swap32BE": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on an immediate value; cannot block, lock, or call back"
+    },
+    "lithon_SDL_Swap32LE": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on an immediate value; cannot block, lock, or call back"
+    },
+    "lithon_SDL_Swap64": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on an immediate value; cannot block, lock, or call back"
+    },
+    "lithon_SDL_Swap64BE": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on an immediate value; cannot block, lock, or call back"
+    },
+    "lithon_SDL_Swap64LE": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on an immediate value; cannot block, lock, or call back"
+    },
+    "lithon_SDL_SwapFloatBE": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on an immediate value; cannot block, lock, or call back"
+    },
+    "lithon_SDL_SwapFloatLE": {
+      "safety": "unsafe-only",
+      "rationale": "pure bit manipulation on an immediate value; cannot block, lock, or call back"
+    },
+    "lithon_SDL_US_TO_NS": {
+      "safety": "unsafe-only",
+      "rationale": "pure math on immediate values; cannot block, lock, or call back"
+    },
+    "lithon_SDL_Unsupported": {
+      "safety": "unsafe-only",
+      "rationale": "formats into the thread-local error buffer; SDL_SetErrorV's log call is compiled out (#if 0, SDL 3.2.0 through 3.4.16); cannot block, lock, or call back"
     }
   },
-  "renames": {},
+  "renames": {
+    "lithon_SDL_AUDIO_FRAMESIZE": "audioFrameSize",
+    "lithon_SDL_BITSPERPIXEL": "bitsPerPixel",
+    "lithon_SDL_BYTESPERPIXEL": "bytesPerPixel",
+    "lithon_SDL_COLORSPACECHROMA": "colorspaceChroma",
+    "lithon_SDL_COLORSPACEMATRIX": "colorspaceMatrix",
+    "lithon_SDL_COLORSPACEPRIMARIES": "colorspacePrimaries",
+    "lithon_SDL_COLORSPACERANGE": "colorspaceRange",
+    "lithon_SDL_COLORSPACETRANSFER": "colorspaceTransfer",
+    "lithon_SDL_COLORSPACETYPE": "colorspaceType",
+    "lithon_SDL_DEFINE_AUDIO_FORMAT": "defineAudioFormat",
+    "lithon_SDL_DEFINE_COLORSPACE": "defineColorspace",
+    "lithon_SDL_DEFINE_PIXELFOURCC": "definePixelFourCC",
+    "lithon_SDL_FOURCC": "fourCC",
+    "lithon_SDL_IOprintf": "ioPrintf",
+    "lithon_SDL_ISCOLORSPACE_FULL_RANGE": "isColorspaceFullRange",
+    "lithon_SDL_ISCOLORSPACE_LIMITED_RANGE": "isColorspaceLimitedRange",
+    "lithon_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL": "isColorspaceMatrixBT2020NCL",
+    "lithon_SDL_ISCOLORSPACE_MATRIX_BT601": "isColorspaceMatrixBT601",
+    "lithon_SDL_ISCOLORSPACE_MATRIX_BT709": "isColorspaceMatrixBT709",
+    "lithon_SDL_ISPIXELFORMAT_10BIT": "isPixelFormat10Bit",
+    "lithon_SDL_ISPIXELFORMAT_ALPHA": "isPixelFormatAlpha",
+    "lithon_SDL_ISPIXELFORMAT_ARRAY": "isPixelFormatArray",
+    "lithon_SDL_ISPIXELFORMAT_FLOAT": "isPixelFormatFloat",
+    "lithon_SDL_ISPIXELFORMAT_FOURCC": "isPixelFormatFourCC",
+    "lithon_SDL_ISPIXELFORMAT_INDEXED": "isPixelFormatIndexed",
+    "lithon_SDL_ISPIXELFORMAT_PACKED": "isPixelFormatPacked",
+    "lithon_SDL_Log": "logApplication",
+    "lithon_SDL_MS_TO_NS": "msToNs",
+    "lithon_SDL_MUSTLOCK": "mustLock",
+    "lithon_SDL_SECONDS_TO_NS": "secondsToNs",
+    "lithon_SDL_US_TO_NS": "usToNs"
+  },
   "skip": []
 }

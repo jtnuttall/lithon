@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 -- | Authored C headers as chain units: a header lithon writes for a
 -- target ('toy2Shims': @toy2-shims\/toy_thing_shims.h@ over the library's
@@ -11,7 +12,8 @@
 -- wrap (the @alias-toy-shims-module@ golden), a bound function of that
 -- name winning the link; an authored header extending nothing gets a
 -- module of its own; and an authored header whose host is not bound, or
--- that declares types or misnamed functions, is refused.
+-- that declares types or misnamed functions, is refused. The committed SDL
+-- shim headers load, and compile against the SDL @pkg-config@ resolves.
 module Bindgen.AuthoredTest (
   unit_authoredHeaderChains,
   unit_authoredIncludeResolution,
@@ -20,9 +22,11 @@ module Bindgen.AuthoredTest (
   unit_rewriteMapPrefersBound,
   unit_orphanAuthoredRejected,
   unit_authoredTypesRejected,
+  unit_sdl3ShimHeadersCompile,
 ) where
 
 import Data.ByteString.Lazy qualified as LBS
+import Data.FileEmbed (makeRelativeToProject)
 import Data.List qualified as L
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
@@ -30,14 +34,17 @@ import Data.Text.Encoding qualified as TE
 import Data.Text.IO qualified as TIO
 import Effectful (runEff)
 import Effectful.Error.Dynamic (runErrorNoCallStack)
+import Language.Haskell.TH (stringE)
 import Lithon.Effect.ClangEnv (PkgDbEntry (..))
 import Lithon.Effect.FileSystem (runFileSystem)
 import Lithon.Effect.Log (runLog)
 import Lithon.HsBindgen qualified as HB
 import Lithon.Prelude
-import System.Directory (createDirectory, createDirectoryIfMissing)
+import System.Directory (createDirectory, createDirectoryIfMissing, findExecutable)
+import System.Exit (ExitCode (..))
 import System.FilePath (takeDirectory, (</>))
 import System.IO.Temp (withSystemTempDirectory)
+import System.Process (readProcessWithExitCode)
 import Test.Tasty (TestTree)
 import Test.Tasty.Golden (goldenVsStringDiff)
 import Test.Tasty.HUnit (Assertion, assertBool, assertFailure, (@?=))
@@ -81,7 +88,12 @@ import Lithon.Codegen.Bindgen.Env (
   resolveAuthoredInclude,
  )
 import Lithon.Codegen.Bindgen.Payload (BindgenPayload (..))
-import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), HeaderSpec (..), headerPlan)
+import Lithon.Codegen.Bindgen.Target (
+  BindgenTarget (..),
+  HeaderSpec (..),
+  defineLine,
+  headerPlan,
+ )
 -- Qualified: the authored-header records share field names with the
 -- target's own (@includeRoot@, @headers@).
 import Lithon.Codegen.Bindgen.Target qualified as Target
@@ -218,8 +230,69 @@ unit_authoredIncludeResolution = do
   -- Anything beside the root.
   withDataDir [listed, "include/other.h"] \dir ->
     resolved toy2Shims dir >>= refused (dir </> "include/other.h") OutsideTheRoot
+  -- The committed SDL set: the eleven listed headers, nothing else.
+  resolved sdl3 sdl3DataDir >>= found (Just (sdl3DataDir </> "include"))
+  loaded <-
+    runEff
+      . runFileSystem
+      $ loadAuthoredHeaders sdl3 (envFor sdl3DataDir (Just (sdl3DataDir </> "include")))
+  map fst loaded @?= map ("include/sdl3-bindgen-sys" </>) sdl3ShimFiles
  where
   listed = "include/toy2-shims/toy_thing_shims.h"
+
+-- | @lithon-codegen\/data\/sdl3@.
+sdl3DataDir :: FilePath
+sdl3DataDir = $(stringE =<< makeRelativeToProject "data/sdl3")
+
+sdl3ShimFiles :: [FilePath]
+sdl3ShimFiles =
+  [ "SDL_" <> x <> "_shims.h"
+  | x <-
+      [ "atomic"
+      , "audio"
+      , "endian"
+      , "error"
+      , "iostream"
+      , "log"
+      , "pixels"
+      , "stdinc"
+      , "surface"
+      , "thread"
+      , "timer"
+      ]
+  ]
+
+-- | One translation unit including every committed shim header, as the
+-- wrapper C does (the target's defines first), compiles warning-free against
+-- the SDL @pkg-config@ resolves. Skipped without a C compiler or SDL.
+-- @-c@, not @-fsyntax-only@: the dev shell's compiler wrapper adds linker
+-- flags to a syntax-only run, which @-Werror@ then rejects as unused.
+unit_sdl3ShimHeadersCompile :: Assertion
+unit_sdl3ShimHeadersCompile =
+  (,) <$> findExecutable "cc" <*> findExecutable "pkg-config" >>= \case
+    (Nothing, _) -> skipped "no cc on PATH"
+    (_, Nothing) -> skipped "no pkg-config on PATH"
+    (Just cc, Just pkgConfig) -> do
+      (pkgCode, cflags, _) <- readProcessWithExitCode pkgConfig ["--cflags", "sdl3"] ""
+      if pkgCode /= ExitSuccess then
+        skipped "pkg-config --cflags sdl3 failed"
+      else withSystemTempDirectory "lithon-shims" \dir -> do
+        let tu = dir </> "shims.c"
+        TIO.writeFile tu
+          . T.unlines
+          $ map defineLine sdl3.parse.defines
+          <> ["#include <sdl3-bindgen-sys/" <> toText f <> ">" | f <- sdl3ShimFiles]
+        let args =
+              ["-std=c11", "-Wall", "-Wextra", "-Werror", "-c", "-o", dir </> "shims.o"]
+                <> ["-I", sdl3DataDir </> "include"]
+                <> map toString (words (toText cflags))
+                <> [tu]
+        (code, _out, err) <- readProcessWithExitCode cc args ""
+        assertBool ("the shim headers do not compile:\n" <> err) (code == ExitSuccess)
+ where
+  skipped why =
+    putStrLn @Text
+      ("SDL SHIM HEADER COMPILE SKIPPED: " <> why <> "; run inside the dev shell for the real check")
 
 -- | A fresh data directory holding the given files (the authored header's
 -- own text, whatever the path).

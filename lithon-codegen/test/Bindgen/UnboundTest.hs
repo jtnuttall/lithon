@@ -5,8 +5,9 @@
 -- two-way join of the registry with the ledger rows (a skip without a
 -- disposition, a disposition for a name no longer skipped, a name listed
 -- twice, and an empty group are each an error, all reported together),
--- the check of @constant@ dispositions against the planned constants, and
--- the bootstrap snippets.
+-- the checks of @constant@ dispositions against the planned constants and
+-- of @shim@ dispositions against the bound authored functions, and the
+-- bootstrap snippets.
 module Bindgen.UnboundTest (
   unit_completeTriageGroupsRows,
   unit_untriagedRejected,
@@ -16,6 +17,8 @@ module Bindgen.UnboundTest (
   unit_errorsAccumulate,
   unit_constantDispositionsBound,
   unit_constantMissingRejected,
+  unit_shimDispositionsBound,
+  unit_shimMissingRejected,
   unit_snippetsGroupByClass,
   unit_codecRoundTrips,
   unit_codecRejectsUnknownDisposition,
@@ -39,6 +42,7 @@ import Lithon.Codegen.Bindgen.Unbound (
   encodeUnboundConfig,
   untriagedSnippets,
   validateConstantDispositions,
+  validateShimDispositions,
   validateUnbound,
  )
 
@@ -139,6 +143,7 @@ unit_errorsAccumulate = do
     UnboundDuplicate{} -> "duplicate"
     UnboundEmptyGroup{} -> "empty"
     UnboundConstantMissing{} -> "constant"
+    UnboundShimMissing{} -> "shim"
 
 -- | A @constant@ disposition holds when a constants.json group binds the
 -- macro. constants.json may bind more, including macros hs-bindgen binds
@@ -167,6 +172,44 @@ unit_constantMissingRejected =
         )
  where
   config = complete{groups = complete.groups <> [groupOf Constant ["macro SDL_MIN_SINT8", "SDL_SIZE_MAX"]]}
+
+-- | A @shim@ disposition holds when an authored function named the prefix
+-- and the listed name's C identifier is bound; the authored headers may
+-- bind more (a shim over a macro hs-bindgen binds itself).
+unit_shimDispositionsBound :: Assertion
+unit_shimDispositionsBound =
+  validateShimDispositions
+    (Just "lithon_")
+    complete{groups = complete.groups <> [groupOf Shim ["macro SDL_FOURCC"]]}
+    (fromList ["lithon_SDL_Log", "lithon_SDL_LogWarn", "lithon_SDL_FOURCC", "lithon_SDL_Swap16LE"])
+    @?= Right ()
+
+-- | A @shim@ name no authored function binds is an error naming the
+-- function it needs, every one reported; for a target that authors no C
+-- headers, every @shim@ name is.
+unit_shimMissingRejected :: Assertion
+unit_shimMissingRejected = do
+  case validateShimDispositions (Just "lithon_") config (fromList ["lithon_SDL_Log"]) of
+    Right () -> assertFailure "expected the check to fail"
+    Left errs -> do
+      toList errs
+        @?= [ UnboundShimMissing{name = "SDL_LogWarn", shim = Just "lithon_SDL_LogWarn"}
+            , UnboundShimMissing{name = "macro SDL_FOURCC", shim = Just "lithon_SDL_FOURCC"}
+            ]
+      assertBool
+        ("the message: " <> toString (display errs))
+        ( "macro SDL_FOURCC: disposition shim, but no authored C header binds lithon_SDL_FOURCC"
+            `T.isInfixOf` display errs
+        )
+  case validateShimDispositions Nothing complete mempty of
+    Right () -> assertFailure "expected the check to fail"
+    Left errs ->
+      toList errs
+        @?= [ UnboundShimMissing{name = "SDL_LogWarn", shim = Nothing}
+            , UnboundShimMissing{name = "SDL_Log", shim = Nothing}
+            ]
+ where
+  config = complete{groups = complete.groups <> [groupOf Shim ["macro SDL_FOURCC"]]}
 
 -- | The bootstrap snippets: one group per reason class, in the order the
 -- classes first appear, each name once.

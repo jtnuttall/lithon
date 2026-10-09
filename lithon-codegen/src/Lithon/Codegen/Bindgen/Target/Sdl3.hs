@@ -19,7 +19,7 @@ import Data.Text qualified as T
 import Lithon.HsBindgen qualified as HB
 import Lithon.HsBindgen.HsDoc qualified as HsDoc
 import Lithon.Prelude
-import System.FilePath ((<.>))
+import System.FilePath (dropExtension, (<.>))
 
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Bindgen.Driver (HeaderUnit (..), Passes (..))
@@ -133,8 +133,35 @@ sdl3 =
           , runtimeDoc
           , abiBanner
           }
-    , authored = Nothing
+    , -- The C shims: fixed-arity functions over SDL's variadic functions
+      -- and the function-like macros hs-bindgen cannot translate, one header
+      -- per SDL header they extend (@SDL_log.h@ -> @SDL_log_shims.h@, raw
+      -- family @SDL3.Sys.Bindgen.LogShims@, exported from @SDL3.Sys.Log@).
+      -- Each function is @lithon_@ and the SDL name it wraps.
+      authored =
+        Just
+          AuthoredHeaders
+            { includeRoot = "sdl3-bindgen-sys"
+            , namePrefix = "lithon_"
+            , headers =
+                map
+                  shimsFor
+                  [ "SDL_atomic.h"
+                  , "SDL_audio.h"
+                  , "SDL_endian.h"
+                  , "SDL_error.h"
+                  , "SDL_iostream.h"
+                  , "SDL_log.h"
+                  , "SDL_pixels.h"
+                  , "SDL_stdinc.h"
+                  , "SDL_surface.h"
+                  , "SDL_thread.h"
+                  , "SDL_timer.h"
+                  ]
+            }
     }
+ where
+  shimsFor host = AuthoredHeader{file = dropExtension host <> "_shims.h", extends = Just host}
 
 -- | SDL versions are MAJOR.MINOR.PATCH, in the annotations and in the docs.
 sdlArity :: Int
@@ -367,6 +394,15 @@ umbrellaDoc familyIndex =
   --
   -- * This layer additionally provides typed pattern synonyms for
   --   the macro constant groups in SDL headers.
+  --
+  -- * What the FFI cannot call — SDL's variadic functions and the
+  --   function-like macros hs-bindgen cannot translate — is reached through
+  --   C shims: fixed-arity functions this package defines in C, exported
+  --   from the module of the header they extend, in its C shims section,
+  --   and named like what they wrap (@SDL_LogMessage@ -> @logMessage@,
+  --   @SDL_MUSTLOCK@ -> @mustLock@). The variadic functions' shims take
+  --   their message verbatim, never as a printf-style format string.
+  --   @SDL_Log@ is @logApplication@: @log@ is the math function.
   --
   -- * Some aliases (@free@, @abs@, @init@, …) collide with the "Prelude";
   --   import this module qualified or curate your import list.

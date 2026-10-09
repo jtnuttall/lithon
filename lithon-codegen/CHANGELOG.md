@@ -118,6 +118,24 @@
   `<name prefix><function prefix>…` is an `AliasFamilyInvalid`. Tests:
   `AuthoredTest` (the `alias-toy-shims-module` golden, the rejections),
   `AliasNamesTest.unit_authoredNamesMint`.
+- `spec` and `generate` check every `shim` disposition against the
+  authored headers: the function named the target's name prefix and the
+  listed name's C identifier must be bound (`macro SDL_FOURCC` needs
+  `lithon_SDL_FOURCC`), or the run fails before anything is written
+  (`UnboundShimMissing`, through `UnboundFailed`). A shim may also wrap a
+  name hs-bindgen binds. Tested in `Bindgen.UnboundTest`.
+- The sdl3 target's C shims: 57 functions in 11 authored headers,
+  `data/sdl3/include/sdl3-bindgen-sys/SDL_<x>_shims.h`, over SDL's variadic
+  logging, error and stream-printing functions and 46 function-like macros,
+  each named `lithon_` and the SDL name it wraps. `aliases.json` classifies
+  them (the log and stream shims `both`, as they may call Haskell
+  functions; the thread shims `both`, like `SDL_CreateThreadRuntime`, as
+  the entry function runs on the new thread; the atomics `both` by default,
+  unlisted like `SDL_AddAtomicInt`; the error shims and the pure ones
+  `unsafe-only`) and renames 31 (`lithon_SDL_Log` is `logApplication`:
+  `log` is `SDL_log`'s). The umbrella's conventions describe them.
+  `AuthoredTest` checks that the committed set loads and compiles
+  (`-Wall -Wextra -Werror`) against the SDL `pkg-config` resolves.
 
 ### Changed
 
