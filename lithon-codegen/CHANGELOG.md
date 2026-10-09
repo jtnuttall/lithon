@@ -65,6 +65,8 @@
   unit, so `SDL_MAIN_HANDLED` already precedes `<SDL3/SDL_main.h>`; this
   retires the `SDL_main.h` text shim.
 - The include graph's paths are canonical real paths, not source paths.
+- lithon-codegen no longer depends on doxygen-parser directly; doxygen
+  sections are read through `Lithon.HsBindgen.C`.
 
 ## 0.1.1.0 - 2026-07-30
 
