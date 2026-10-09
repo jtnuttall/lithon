@@ -62,7 +62,19 @@ sdl3 =
             -- the includes and hs-bindgen renders the root directives, in
             -- order, at the top of every wrapper translation unit. Harmless
             -- where @SDL_main.h@ leaves @main@ alone.
-            defines = [CDefine{name = "SDL_MAIN_HANDLED", value = Nothing}]
+            defines =
+              [ CDefine{name = "SDL_MAIN_HANDLED", value = Nothing}
+              , -- @SDL_stdinc.h@ otherwise @#define@s @SDL_memcpy memcpy@
+                -- (likewise memmove, memset) to take advantage of the
+                -- compiler's own copy, and hs-bindgen drops a function
+                -- shadowed by a same-name macro: neither would bind. The
+                -- defines land in the wrapper C prologue, the ABI
+                -- translation unit and the constants probe, where they only
+                -- make SDL's inline helpers call SDL's own functions.
+                CDefine{name = "SDL_SLOW_MEMCPY", value = Nothing}
+              , CDefine{name = "SDL_SLOW_MEMMOVE", value = Nothing}
+              , CDefine{name = "SDL_SLOW_MEMSET", value = Nothing}
+              ]
           , -- SDL's Doxyfile defines \threadsafety; without the alias doxygen
             -- passes the command through as literal text and every function doc
             -- leaks "\threadsafety ..." verbatim. \par routes it through the

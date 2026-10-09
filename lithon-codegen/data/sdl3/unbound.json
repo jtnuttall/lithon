@@ -140,19 +140,6 @@
     },
     {
       "disposition": "upstream",
-      "note": "SDL_stdinc.h defines each as a macro naming libc's function unless SDL_SLOW_MEMCPY (and its siblings) is set, and hs-bindgen drops both halves of a function and macro name clash.",
-      "issue": "https://github.com/well-typed/hs-bindgen/issues/2097",
-      "names": [
-        "SDL_memcpy",
-        "macro SDL_memcpy",
-        "SDL_memmove",
-        "macro SDL_memmove",
-        "SDL_memset",
-        "macro SDL_memset"
-      ]
-    },
-    {
-      "disposition": "upstream",
       "note": "Function-like macros over same-name inline functions; hs-bindgen drops both halves of the clash. The _builtin variants are bound.",
       "issue": "https://github.com/well-typed/hs-bindgen/issues/2097",
       "names": [

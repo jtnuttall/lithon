@@ -96,6 +96,16 @@
   entries copied into the specs of those that did reach it. `sdl3` and `mpv`
   are migrated (`overrides/SDL_main.yaml`, `overrides/SDL_stdinc.yaml`,
   `overrides/client.yaml`); the generated packages are unchanged.
+- The sdl3 target defines `SDL_SLOW_MEMCPY`, `SDL_SLOW_MEMMOVE` and
+  `SDL_SLOW_MEMSET` (after `SDL_MAIN_HANDLED`). `SDL_stdinc.h` otherwise
+  `#define`s `SDL_memcpy memcpy` (and the other two), and hs-bindgen drops a
+  function that a same-name macro shadows, so `memcpy`, `memmove` and
+  `memset` bind now. They reach the wrapper C, the ABI assertion unit and
+  the constants probe, where they only make SDL's inline helpers call SDL's
+  own functions. hs-bindgen's conflict warnings fall from 10 to 4; the
+  remaining four are `SDL_size_mul_check_overflow` and
+  `SDL_size_add_check_overflow` and their macros, on the ledger as
+  `upstream`.
 
 ## 0.1.1.0 - 2026-07-30
 

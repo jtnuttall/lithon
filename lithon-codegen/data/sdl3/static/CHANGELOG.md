@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### Added
+
+- `memcpy`, `memmove`, `memset` and their `Safe` variants in
+  `SDL3.Sys.Stdinc` (raw: `sDL_memcpy` and friends in
+  `SDL3.Sys.Bindgen.Stdinc.*`). `SDL_stdinc.h` `#define`s `SDL_memcpy` as
+  libc's `memcpy` (likewise the other two) unless `SDL_SLOW_MEMCPY` is set,
+  and hs-bindgen drops a function that a same-name macro shadows. The
+  generator now sets `SDL_SLOW_MEMCPY`, `SDL_SLOW_MEMMOVE` and
+  `SDL_SLOW_MEMSET`, so the declarations stay and bind to SDL's own
+  functions.
+
 ### Changed
 
 - Regenerated with hs-bindgen 1.0.0.0.
@@ -21,8 +32,8 @@
   import them.
 - `template-haskell >= 2.19` for the vendored runtime.
 - Exported names, signatures and export lists of all pre-existing modules are
-  unchanged, apart from names added to the runtime facades; the raw foreign
-  imports changed only internally.
+  unchanged, apart from the additions above and names added to the runtime
+  facades; the raw foreign imports changed only internally.
 
 ## 0.0.0.3 - 2026-09-13
 
