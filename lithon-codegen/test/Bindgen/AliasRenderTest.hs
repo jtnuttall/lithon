@@ -10,6 +10,7 @@
 -- camel-segments minting, see-also rewriting to alias names, the flavor
 -- provenance paragraphs, and the module\/umbrella shapes.
 module Bindgen.AliasRenderTest (
+  unit_nativeGroupImportsTheSupportAlias,
   unit_toyCensusDetectsCallbacks,
   test_aliasRenderGolden,
 ) where
@@ -24,10 +25,11 @@ import Lithon.Prelude
 import System.FilePath ((</>))
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Golden (goldenVsStringDiff)
-import Test.Tasty.HUnit (assertFailure, (@?=))
+import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
 import Bindgen.Support.Toy (ToyEnv (..), ToyHeader (..), renderedPairs, toyArtefacts, toyEnv)
 import Lithon.Codegen.Bindgen.Alias (
+  AliasModule (..),
   FamilyDecls (..),
   aliasRewriteMap,
   distillFamily,
@@ -53,6 +55,50 @@ import Lithon.Codegen.Bindgen.Alias.Constants qualified as Constants
 import Lithon.Codegen.Bindgen.Alias.Names (Safety (..))
 import Lithon.Codegen.Bindgen.Target qualified as Target
 import Lithon.Codegen.Bindgen.Target.Sdl3 (sdl3)
+
+-- | A native constant group's signatures say @BG.Word64@, so the module
+-- imports the support alias even with no binding of its own to bring it in.
+unit_nativeGroupImportsTheSupportAlias :: IO ()
+unit_nativeGroupImportsTheSupportAlias = do
+  let supportImport = "import qualified HsBindgen.Runtime.Support as BG"
+      constantsOf target =
+        [ Constants.ConstantGroupPlan
+            { typeName = "size_t"
+            , target
+            , familyBase = "SDL3.Sys.Bindgen.Toy"
+            , headerName = "SDL_toy.h"
+            , combine = ValueSpace
+            , widthBits = 64
+            , members =
+                [ Constants.ConstantMember
+                    { cName = "SDL_TOYSIZE_ERROR"
+                    , value = 18446744073709551615
+                    , declaredIn = "SDL_toy.h"
+                    }
+                ]
+            }
+        ]
+      rendered target =
+        snd
+          $ renderAliasModule
+            sdl3
+            mempty
+            AliasModule
+              { moduleName = "SDL3.Sys.Toy"
+              , familyBase = "SDL3.Sys.Bindgen.Toy"
+              , headerName = "SDL_toy.h"
+              , baseModule = Nothing
+              , moduleDoc = Nothing
+              , constants = constantsOf target
+              , bindings = []
+              }
+      native = rendered (Constants.NativeTarget Target.NativeWord64)
+      newtyped = rendered (Constants.NewtypeTarget "SDL_ToySize")
+  assertBool "native group: BG import present" (supportImport `T.isInfixOf` native)
+  assertBool
+    "native group: signature uses BG"
+    ("pattern SDL_TOYSIZE_ERROR :: BG.Word64" `T.isInfixOf` native)
+  assertBool "newtype group: no BG import" (not (supportImport `T.isInfixOf` newtyped))
 
 unit_toyCensusDetectsCallbacks :: IO ()
 unit_toyCensusDetectsCallbacks = do
@@ -117,7 +163,7 @@ test_aliasRenderGolden =
       either (assertFailure . toString . display) pure
         $ validateAliasConfig census config
     -- The constants pipeline, minus the probe: membership from the toy
-    -- header's scanned macros, values/sizeofs supplied directly (what the
+    -- header's scanned macros, values/sizeofs/signedness supplied directly (what the
     -- probe TU would have printed).
     let constantsConfig =
           ConstantsConfig
@@ -134,6 +180,7 @@ test_aliasRenderGolden =
                           -- failure mode the probe otherwise hard-fails on.
                           exclude = ["SDL_TOY_LIMIT", "SDL_TOY_H"]
                         , members = Nothing
+                        , native = Nothing
                         }
                     )
                   ,
@@ -144,6 +191,45 @@ test_aliasRenderGolden =
                         , suffix = Nothing
                         , exclude = []
                         , members = Just ["SDL_TOY_LIMIT"]
+                        , native = Nothing
+                        }
+                    )
+                  , -- A signed type: the macros cast to it, and the minimum is
+                    -- negative (the probe's image is its 64-bit two's complement).
+                    -- hs-bindgen leaves both casts out of the raw layer.
+
+                    ( "SDL_ToyOffset"
+                    , ConstantGroup
+                        { combine = ValueSpace
+                        , prefix = Nothing
+                        , suffix = Nothing
+                        , exclude = []
+                        , members = Just ["SDL_TOYOFFSET_MAX", "SDL_TOYOFFSET_MIN"]
+                        , native = Nothing
+                        }
+                    )
+                  , -- A constant declared in another header than its type.
+
+                    ( "SDL_ToyId"
+                    , ConstantGroup
+                        { combine = ValueSpace
+                        , prefix = Nothing
+                        , suffix = Nothing
+                        , exclude = []
+                        , members = Just ["SDL_TOY2_ID_NONE"]
+                        , native = Nothing
+                        }
+                    )
+                  , -- A C type with no newtype: plain scalar patterns.
+
+                    ( "size_t"
+                    , ConstantGroup
+                        { combine = ValueSpace
+                        , prefix = Nothing
+                        , suffix = Nothing
+                        , exclude = []
+                        , members = Just ["SDL_TOYSIZE_ERROR"]
+                        , native = Just Target.NativeWord64
                         }
                     )
                   ]
@@ -156,15 +242,48 @@ test_aliasRenderGolden =
             , newtypeConstrs = facts.newtypeConstrs
             , takenNames = facts.takenNames
             }
+        -- A synthetic second header of the chain: only its macro matters.
+        toy2Constants =
+          Constants.FamilyConstants
+            { familyBase = "SDL3.Sys.Bindgen.Toy2"
+            , headerName = "SDL_toy2.h"
+            , headerMacros = ["SDL_TOY2_ID_NONE"]
+            , newtypeConstrs = mempty
+            , takenNames = mempty
+            }
+        probe =
+          Constants.ProbeResult
+            { sizeofs =
+                Map.fromList
+                  [ ("SDL_ToyFlags", 4)
+                  , ("SDL_ToyMode", 1)
+                  , ("SDL_ToyOffset", 2)
+                  , ("SDL_ToyId", 4)
+                  , ("size_t", 8)
+                  ]
+            , signedness =
+                Map.fromList
+                  [ ("SDL_ToyFlags", False)
+                  , ("SDL_ToyMode", False)
+                  , ("SDL_ToyOffset", True)
+                  , ("SDL_ToyId", False)
+                  , ("size_t", False)
+                  ]
+            , values =
+                Map.fromList
+                  [ ("SDL_TOY_A", 1)
+                  , ("SDL_TOY_B", 2)
+                  , ("SDL_TOY_AB", 3)
+                  , ("SDL_TOY_LIMIT", 7)
+                  , ("SDL_TOYOFFSET_MAX", 32767)
+                  , ("SDL_TOYOFFSET_MIN", 2 ^ (64 :: Int) - 32768)
+                  , ("SDL_TOY2_ID_NONE", 4294967295)
+                  , ("SDL_TOYSIZE_ERROR", 2 ^ (64 :: Int) - 1)
+                  ]
+            }
     constantPlans <-
       either (assertFailure . toString . display) pure
-        $ planConstants
-          constantsConfig
-          [familyConstants]
-          (Map.fromList [("SDL_ToyFlags", 4), ("SDL_ToyMode", 1)])
-          ( Map.fromList
-              [("SDL_TOY_A", 1), ("SDL_TOY_B", 2), ("SDL_TOY_AB", 3), ("SDL_TOY_LIMIT", 7)]
-          )
+        $ planConstants constantsConfig [familyConstants, toy2Constants] probe
     let plansByFamily =
           Map.fromListWith (flip (<>)) [(p.familyBase, [p]) | p <- constantPlans]
     aliasModules <-
@@ -337,6 +456,17 @@ toyHeader =
     , " * Fetch the registered callback through an out-param."
     , " */"
     , "void SDL_GetToyCallback(SDL_ToyCallback *callback);"
+    , ""
+    , "/**"
+    , " * A signed toy offset (mirrors Sint16: constants cast to the type)."
+    , " */"
+    , "typedef int16_t SDL_ToyOffset;"
+    , ""
+    , -- Named so the SDL_TOY_ prefix rule (SDL_ToyFlags) does not sweep them.
+      "#define SDL_TOYOFFSET_MAX ((SDL_ToyOffset)0x7FFF)"
+    , "#define SDL_TOYOFFSET_MIN ((SDL_ToyOffset)(~0x7FFF))"
+    , ""
+    , "#define SDL_TOYSIZE_ERROR (size_t)-1"
     , ""
     , "#endif"
     ]

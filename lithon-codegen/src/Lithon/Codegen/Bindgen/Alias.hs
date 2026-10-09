@@ -59,6 +59,7 @@ import Lithon.Codegen.Bindgen.Alias.Constants (
   Combine (..),
   ConstantGroupPlan (..),
   ConstantMember (..),
+  ConstantTarget (..),
  )
 import Lithon.Codegen.Bindgen.Alias.Names (
   AliasError (..),
@@ -74,6 +75,7 @@ import Lithon.Codegen.Bindgen.Target (
   Prose (..),
   WidthTypedefs (..),
   bindgenNamespaceText,
+  nativeScalarName,
   runtimeModule,
  )
 
@@ -426,6 +428,13 @@ renderAliasModule target rewriteMap aliasModule =
                 LibCScope -> "HsBindgen.Runtime.LibC"
                 WidthScope widthModule -> widthModule
         ]
+      -- A native constant group's pattern signatures name the scalar as
+      -- @BG.Word64@ (see 'constantsBlock'), which the decls' own imports
+      -- need not already bring in.
+      <> Set.fromList
+        [ uncurry HsModule.QualifiedImportListItem supportImport
+        | any isNativeGroup aliasModule.constants
+        ]
 
   declsWithScopes = map (bindingDecl target rewrite aliasModule.familyBase) aliasModule.bindings
   decls = map fst declsWithScopes
@@ -598,22 +607,19 @@ nativeType =
 -- | The type's name in "Data.Int" \/ "Data.Word" (and the runtime's
 -- re-export of them).
 widthTypeName :: NativeScalar -> String
-widthTypeName = \case
-  NativeWord8 -> "Word8"
-  NativeWord16 -> "Word16"
-  NativeWord32 -> "Word32"
-  NativeWord64 -> "Word64"
-  NativeInt8 -> "Int8"
-  NativeInt16 -> "Int16"
-  NativeInt32 -> "Int32"
-  NativeInt64 -> "Int64"
+widthTypeName = toString . nativeScalarName
+
+-- | The runtime's support module and the alias generated code qualifies it
+-- by (@BG.Word64@).
+supportImport :: (Hs.ModuleName, Maybe String)
+supportImport = (Hs.ModuleName "HsBindgen.Runtime.Support", Just "BG")
 
 supportType, preludeType :: String -> SHs.Global SHs.LvlType
 supportType name =
   SHs.CustomGlobal
     (TH.mkName name)
     SHs.GTyp
-    (Hs.QualifiedImport (Hs.ModuleName "HsBindgen.Runtime.Support") (Just "BG"))
+    (uncurry Hs.QualifiedImport supportImport)
 preludeType name =
   SHs.CustomGlobal
     (TH.mkName name)
@@ -813,17 +819,55 @@ constantsBlock aliasModule = case aliasModule.constants of
 
   memberBlock group member =
     T.unlines
-      [ ""
-      , "{-| Typed constant for macro @" <> member.cName <> "@." <> combineNote group.combine
-      , "-}"
-      , "pattern " <> member.cName <> " :: " <> group.typeName
-      , "pattern "
-          <> member.cName
-          <> " = "
-          <> group.constrName
-          <> " "
-          <> renderValue group member.value
-      ]
+      $ [ ""
+        , "{-| Typed constant for macro @"
+            <> member.cName
+            <> "@"
+            <> declaredNote group member
+            <> cTypeNote group
+            <> "."
+            <> combineNote group.combine
+        , "-}"
+        , "pattern " <> member.cName <> " :: " <> signatureType group
+        ]
+      <> definition group member
+
+  -- A negative constant is explicitly bidirectional. The implicit form
+  -- derives the builder from the pattern, and GHC then sees the bare
+  -- literal under the negation and warns (@-Woverflowed-literals@) at the
+  -- type's minimum (@Sint8 (-128)@: "Literal 128 is out of the Int8
+  -- range"). The explicit builder is an ordinary expression, which GHC
+  -- checks with the sign. @NegativeLiterals@ would also silence the
+  -- warning, but it changes lexing module-wide and would have to be
+  -- enabled only in modules that have a negative member.
+  definition group member
+    | member.value < 0 =
+        [ "pattern " <> member.cName <> " <- " <> rhs
+        , "  where"
+        , "    " <> member.cName <> " = " <> rhs
+        ]
+    | otherwise = ["pattern " <> member.cName <> " = " <> rhs]
+   where
+    rhs = constructor group <> renderValue group member.value
+
+  -- A constant is documented where its type lives; say so when the macro
+  -- is declared in another header.
+  declaredNote group member
+    | member.declaredIn /= group.headerName =
+        " (declared in @" <> toText member.declaredIn <> "@)"
+    | otherwise = ""
+
+  cTypeNote group = case group.target of
+    NativeTarget _ -> " (C type @" <> group.typeName <> "@)"
+    NewtypeTarget _ -> ""
+
+  signatureType group = case group.target of
+    NewtypeTarget _ -> group.typeName
+    NativeTarget scalar -> "BG." <> nativeScalarName scalar
+
+  constructor group = case group.target of
+    NewtypeTarget constr -> constr <> " "
+    NativeTarget _ -> ""
 
   combineNote = \case
     Bitmask -> " Combine with @.|.@ from \"Data.Bits\"."
@@ -833,7 +877,14 @@ constantsBlock aliasModule = case aliasModule.constants of
     Bitmask ->
       let digits = max 1 (group.widthBits `div` 4)
        in "0x" <> T.justifyRight digits '0' (T.pack (showHex v ""))
-    ValueSpace -> show v
+    ValueSpace
+      | v < 0 -> "(" <> show v <> ")"
+      | otherwise -> show v
+
+isNativeGroup :: ConstantGroupPlan -> Bool
+isNativeGroup group = case group.target of
+  NativeTarget _ -> True
+  NewtypeTarget _ -> False
 
 -- | Rewrite documentation cross-references: identifier nodes through the
 -- mangled-name map, and bare-text word tokens carrying the target's

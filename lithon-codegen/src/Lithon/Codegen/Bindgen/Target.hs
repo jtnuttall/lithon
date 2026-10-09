@@ -29,6 +29,9 @@ module Lithon.Codegen.Bindgen.Target (
   GateStubs (..),
   WidthTypedefs (..),
   NativeScalar (..),
+  nativeScalarName,
+  nativeScalarBits,
+  nativeScalarSigned,
   DocHooks (..),
   Prose (..),
 
@@ -176,7 +179,46 @@ data NativeScalar
   | NativeInt16
   | NativeInt32
   | NativeInt64
-  deriving stock (Bounded, Enum, Eq, Ord, Show)
+  deriving stock (Bounded, Enum, Eq, Generic, Ord, Show)
+  deriving anyclass (NFData)
+
+-- | The scalar's name in "Data.Int" \/ "Data.Word" (and the runtime's
+-- re-export of them): also the spelling the constants registry's
+-- @native@ field uses.
+nativeScalarName :: NativeScalar -> Text
+nativeScalarName = \case
+  NativeWord8 -> "Word8"
+  NativeWord16 -> "Word16"
+  NativeWord32 -> "Word32"
+  NativeWord64 -> "Word64"
+  NativeInt8 -> "Int8"
+  NativeInt16 -> "Int16"
+  NativeInt32 -> "Int32"
+  NativeInt64 -> "Int64"
+
+-- | The scalar's width in bits.
+nativeScalarBits :: NativeScalar -> Int
+nativeScalarBits = \case
+  NativeWord8 -> 8
+  NativeWord16 -> 16
+  NativeWord32 -> 32
+  NativeWord64 -> 64
+  NativeInt8 -> 8
+  NativeInt16 -> 16
+  NativeInt32 -> 32
+  NativeInt64 -> 64
+
+-- | Whether the scalar is a signed integer.
+nativeScalarSigned :: NativeScalar -> Bool
+nativeScalarSigned = \case
+  NativeWord8 -> False
+  NativeWord16 -> False
+  NativeWord32 -> False
+  NativeWord64 -> False
+  NativeInt8 -> True
+  NativeInt16 -> True
+  NativeInt32 -> True
+  NativeInt64 -> True
 
 -- | Rewrites applied to copied documentation.
 data DocHooks = DocHooks

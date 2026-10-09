@@ -56,6 +56,21 @@
   to units, and the `unbound-toy` golden, which also pins that no absolute
   path reaches the ledger), `Bindgen.UnboundTest` (the registry codec and
   triage), and `DriverTest.unit_unusedOverrideFails`.
+- `constants.json`: constants of signed types (a negative value such as
+  `SDL_MIN_SINT8` is read back from the probe's 64-bit image and checked
+  against the type's range), constants declared in another header than
+  their type (`members` may name the macros of any bound header; the
+  pattern is hosted with the type and its haddock says where the macro
+  came from), and `native` groups for a C type with no newtype (`size_t`:
+  plain `BG.Word64` patterns). The probe also prints each type's
+  signedness. A `bitmask` group on a signed type, a `native` group with
+  `prefix` or with members from two headers, and a `native` that disagrees
+  with the probed width or signedness are errors. A negative constant is an
+  explicitly bidirectional pattern: the implicit form makes GHC warn
+  (`-Woverflowed-literals`) at the type's minimum.
+- Tests: `Bindgen.ConstantsTest`; the toy goldens `alias-toy-module`,
+  `alias-toy-bindgen-base` and `abi-toy2-assertions` pin a signed, a
+  cross-header and a `native` group, and negative assertions.
 
 ### Changed
 
@@ -106,6 +121,10 @@
   remaining four are `SDL_size_mul_check_overflow` and
   `SDL_size_add_check_overflow` and their macros, on the ledger as
   `upstream`.
+- The typed-constant ABI assertion compares `(NAME) == (<value mod 2^64>ull)`:
+  the usual arithmetic conversions take the C operand to `unsigned long long`
+  modulo 2^64 as well, so a negative constant compares exactly at every width.
+  Existing assertions are unchanged.
 
 ## 0.1.1.0 - 2026-07-30
 

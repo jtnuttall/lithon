@@ -95,10 +95,11 @@ import Lithon.Codegen.Bindgen.Alias.Constants (
   ConstantError,
   ConstantGroupPlan (..),
   ConstantMember (..),
-  ConstantsConfig (..),
   FamilyConstants (..),
+  ProbeResult,
+  constantProbeInputs,
   decodeConstantsConfig,
-  enumerateMembers,
+  emptyProbe,
   parseProbeOutput,
   planConstants,
   renderProbeSource,
@@ -471,8 +472,8 @@ planAliases target registry headerResults = do
 
 -- |
 -- Load constants.json, enumerate memberships against the resolved
--- headers, evaluate every value and group sizeof in a probe TU compiled
--- against those same headers, and validate the lot.
+-- headers, evaluate every value and group sizeof and signedness in a
+-- probe TU compiled against those same headers, and validate the lot.
 planConstantGroups
   :: (IOE :> es, BindgenGen :> es, Driver :> es, Error BindgenError :> es, FileSystem :> es)
   => BindgenTarget -> [FamilyDecls] -> Eff es ([ConstantGroupPlan], LByteString)
@@ -496,29 +497,20 @@ planConstantGroups target families = do
         , takenNames = fd.takenNames
         }
 
-  -- Successful enumerations feed the probe; rule failures resurface
+  -- Successful resolutions feed the probe; rule failures resurface
   -- identically (same pure inputs) from 'planConstants' below.
-  let probeInputs =
-        [ (typeName, names)
-        | (typeName, cgroup) <- Map.toAscList constantsConfig.groups
-        , fc : _ <-
-            [[f | f <- familyConstants, Map.member typeName f.newtypeConstrs]]
-        , Right names <-
-            [validationToEither (enumerateMembers typeName cgroup fc.headerMacros)]
-        ]
-
-  (sizeofs, values) <- probeConstants target probeInputs
+  probe <- probeConstants target (constantProbeInputs constantsConfig familyConstants)
   plans <-
     liftEither
       . first from
-      $ planConstants constantsConfig familyConstants sizeofs values
+      $ planConstants constantsConfig familyConstants probe
   pure (plans, constantsBytes)
 
 probeConstants
   :: (IOE :> es, BindgenGen :> es, Driver :> es, Error BindgenError :> es)
-  => BindgenTarget -> [(Text, [Text])] -> Eff es (Map Text Int, Map Text Integer)
+  => BindgenTarget -> [(Text, [Text])] -> Eff es ProbeResult
 probeConstants target probeInputs
-  | null probeInputs = pure (mempty, mempty)
+  | null probeInputs = pure emptyProbe
   | otherwise = do
       SystemTempDir scratch <- getScratchDirectory
 

@@ -363,6 +363,7 @@ test-suite lithon-codegen-test
       Bindgen.AliasNamesTest
       Bindgen.AliasRenderTest
       Bindgen.CensusTest
+      Bindgen.ConstantsTest
       Bindgen.DriverTest
       Bindgen.GateTest
       Bindgen.OverridesTest

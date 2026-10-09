@@ -171,7 +171,7 @@ Every target uses the same layout in `lithon-codegen/data/<key>/`:
 | Path                    | Written by    | Holds                                                                                         |
 | ----------------------- | ------------- | --------------------------------------------------------------------------------------------- |
 | `aliases.json`          | You           | The naming rule and each function's FFI flavor, with rationales.                              |
-| `constants.json`        | You           | Typed-constant groups: which macros belong to which newtype.                                  |
+| `constants.json`        | You           | Typed-constant groups: which macros are constants of which type.                              |
 | `versions.json`         | You           | The availability annotations. See [`versions.json`](#versionsjson).                           |
 | `unbound.json`          | You           | Each skipped declaration's disposition. See [`unbound.json`](#unboundjson).                   |
 | `overrides/`            | You, optional | hs-bindgen's prescriptive binding specs, one per header: renames, representations, omissions. |
@@ -238,6 +238,42 @@ each one:
 - The generator writes the joined result to `unbound.md`: one section per
   group, the dependencies outside the bound headers that block skips, what
   the overrides omit, and the headers the target excludes.
+
+#### `constants.json`
+
+The typed constants of the curated layer: which `#define`s are constants of
+which C type. SDL ties a macro to its type by naming convention only, so the
+grouping is a judgment kept here. The values never are: `generate` compiles
+and runs a probe against the same headers for each group's `sizeof` and
+signedness and for each member's value, and the assertion TU re-checks every
+baked value on the consumer's platform.
+
+`{"groups": {"<type>": {…}}}`, keyed by the C type name.
+
+| Field     | Meaning                                                                                   |
+| --------- | ----------------------------------------------------------------------------------------- |
+| `combine` | Required. `bitmask` (members OR-combine) or `value` (a plain value space).                |
+| `prefix`  | The members are the type's header's object-like macros that start with this.              |
+| `suffix`  | Also require this suffix. Needs `prefix`.                                                 |
+| `exclude` | Macros the `prefix` rule must not sweep in. Needs `prefix`.                               |
+| `members` | An explicit list, for prefixes that collide or macros declared outside the type's header. |
+| `native`  | `Word8` … `Int64`: the scalar for a C type with no newtype (`size_t`). Needs `members`.   |
+
+- A group has exactly one of `prefix` or `members`.
+- A constant lives with its type. A newtype group is hosted in the family that
+  declares the newtype. `members` may name the macros of any bound header
+  (`SDL_TOUCH_MOUSEID` is declared in `SDL_touch.h` but is an `SDL_MouseID`,
+  so it lives in `SDL3.Sys.Mouse`), and its haddock says where the macro came
+  from. `prefix` only scans the type's own header.
+- A `native` group has no newtype to follow. Its host is the family declaring
+  its members, which must all come from one header. The patterns are plain
+  scalars (`pattern SDL_SIZE_MAX :: BG.Word64`), and the scalar must agree with
+  the probed width and signedness.
+- Negative constants need a signed type (`SDL_MIN_SINT8`, `SDL_MIN_TIME`);
+  `bitmask` needs an unsigned one. A value that does not fit its type is an
+  error.
+- A macro belongs to at most one group, and a pattern may not reuse a name any
+  family already exports.
 
 #### `versions.json`
 

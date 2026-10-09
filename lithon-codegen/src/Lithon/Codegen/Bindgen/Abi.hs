@@ -314,15 +314,18 @@ renderAbiAssertions target libraryVersion includes decls macroConsts =
       <> concatMap constFamilyLines (NE.groupBy ((==) `on` (.headerName)) macroConsts)
 
   -- Typed-constant sections follow the layout sections: probed macro
-  -- values, compared with an @ull@ literal so the usual arithmetic
-  -- conversions cover every UintN width.
+  -- values, compared with an @ull@ literal of the value modulo 2^64. The
+  -- usual arithmetic conversions take the C operand to @unsigned long
+  -- long@ modulo 2^64 as well, so the comparison is exact for every width
+  -- and sign (a negative constant is its two's-complement image on both
+  -- sides); the message keeps the signed value.
   constFamilyLines family =
     ["", "/* ---- " <> toText (head family).headerName <> " (typed constants) ---- */"]
       <> guardRuns
         baseline
         [ ( c.since
           , sassert
-              ("(" <> c.name <> ") == (" <> show c.value <> "ull)")
+              ("(" <> c.name <> ") == (" <> show (c.value `mod` 2 ^ (64 :: Int)) <> "ull)")
               (quoted (c.name <> ": baked value " <> show c.value <> divergence))
           )
         | c <- toList family
