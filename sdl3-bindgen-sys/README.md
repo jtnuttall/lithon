@@ -249,6 +249,10 @@ Known gaps, so you can discover them here instead of mid-build:
   native window handles are reached through the bound
   `SDL_GetWindowProperties` keys instead.
 
+The complete list, checked at every generation, is the
+[skip ledger](https://github.com/jtnuttall/lithon/blob/main/lithon-codegen/data/sdl3/unbound.md):
+every declaration hs-bindgen skips, why, and what lithon does about it.
+
 ## Versioning
 
 The 0.0.x series is experimental: pin to the minor

@@ -56,6 +56,7 @@ import Lithon.Codegen.Bindgen.Target (
  )
 import Lithon.Codegen.Bindgen.Target.Sdl3 (sdl3)
 import Lithon.Codegen.Bindgen.Targets (bindgenTargets)
+import Lithon.Codegen.Bindgen.Unbound (decodeUnboundConfig)
 import Lithon.Codegen.Bindgen.Version (mkVersion)
 import Lithon.Codegen.Bindgen.Versions (decodeVersionsRegistry)
 
@@ -75,8 +76,8 @@ projectDir :: FilePath
 projectDir = $(stringE =<< makeRelativeToProject ".")
 
 -- | What generation reads from each registered target's data directory
--- decodes: the versions registry at the target's own arity, the alias and
--- constants registries, and the package statics.
+-- decodes: the versions registry at the target's own arity, the alias,
+-- constants, and skip-ledger registries, and the package statics.
 unit_registeredTargetsDataDecodes :: Assertion
 unit_registeredTargetsDataDecodes = for_ bindgenTargets \target -> do
   let dataDir = projectDir </> "data" </> toString target.key
@@ -88,6 +89,7 @@ unit_registeredTargetsDataDecodes = for_ bindgenTargets \target -> do
     =<< LBS.readFile (dataDir </> "versions.json")
   decodes "aliases.json" . decodeAliasConfig =<< LBS.readFile (dataDir </> "aliases.json")
   decodes "constants.json" . decodeConstantsConfig =<< LBS.readFile (dataDir </> "constants.json")
+  decodes "unbound.json" . decodeUnboundConfig =<< LBS.readFile (dataDir </> "unbound.json")
   statics <-
     runEff
       . runLog "targets-test"

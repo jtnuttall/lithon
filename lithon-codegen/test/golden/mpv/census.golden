@@ -5,6 +5,7 @@ modules: 38
 curated modules: 5
 wrapper-splice modules: 9
 registry: both=41 safe-only=3 unsafe-only=9 renames=0 skip=0
+unbound: shim=0 constant=0 wontfix=3 upstream=0
 facades: Mpv.Sys.Bindgen.Runtime Mpv.Sys.Bindgen.Runtime.BitfieldPtr Mpv.Sys.Bindgen.Runtime.Block Mpv.Sys.Bindgen.Runtime.CBool Mpv.Sys.Bindgen.Runtime.CEnum Mpv.Sys.Bindgen.Runtime.CExpr Mpv.Sys.Bindgen.Runtime.ConstantArray Mpv.Sys.Bindgen.Runtime.FLAM Mpv.Sys.Bindgen.Runtime.HasCBitfield Mpv.Sys.Bindgen.Runtime.HasCField Mpv.Sys.Bindgen.Runtime.HasFFIType Mpv.Sys.Bindgen.Runtime.IncompleteArray Mpv.Sys.Bindgen.Runtime.IsArray Mpv.Sys.Bindgen.Runtime.Macro Mpv.Sys.Bindgen.Runtime.Marshal Mpv.Sys.Bindgen.Runtime.Overloading Mpv.Sys.Bindgen.Runtime.PtrConst Mpv.Sys.Bindgen.Runtime.Struct Mpv.Sys.Bindgen.Runtime.Union Mpv.Sys.Runtime
 per-header:
   client.h: types safe unsafe funptr sys

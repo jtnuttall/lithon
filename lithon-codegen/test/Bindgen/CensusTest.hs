@@ -3,8 +3,9 @@
 
 -- | Census golden over each registered target's COMMITTED artifacts (like
 -- the Vulkan 382-wrapper census): per-header category-module coverage,
--- spec inventory, and the wrapper-splice count, all derived from the
--- checked-in tree — no libclang, no library headers. Live drift against
+-- spec inventory, the wrapper-splice count, and the skip ledger's
+-- totals by disposition, all derived from the checked-in tree — no
+-- libclang, no library headers. Live drift against
 -- the environment is scripts\/check.sh's @\<key\> generate --check@;
 -- THESE goldens (@test\/golden\/\<key\>\/census.golden@) are the
 -- reviewable record of each generated surface's shape.
@@ -32,6 +33,12 @@ import Lithon.Codegen.Bindgen.Alias.Config (AliasConfig (..), FunctionEntry (..)
 import Lithon.Codegen.Bindgen.Alias.Names (Safety (..))
 import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), bindgenNamespaceText, moduleFor)
 import Lithon.Codegen.Bindgen.Targets (bindgenTargets)
+import Lithon.Codegen.Bindgen.Unbound (
+  UnboundConfig (..),
+  UnboundGroup (..),
+  decodeUnboundConfig,
+  dispositionText,
+ )
 
 -- | The lithon-codegen package directory; every target's committed
 -- artifacts derive from it: @..\/\<packageName\>@ and
@@ -70,6 +77,10 @@ census target =
       either (\e -> error ("aliases.json failed to decode: " <> show e)) pure
         . decodeAliasConfig
         =<< LBS.readFile (dataDir </> "aliases.json")
+    unboundRegistry :: UnboundConfig <-
+      either (\e -> error ("unbound.json failed to decode: " <> show e)) pure
+        . decodeUnboundConfig
+        =<< LBS.readFile (dataDir </> "unbound.json")
     specs <- sort . map T.pack <$> listDirectory (dataDir </> "spec")
     let srcPaths = [p | p <- Map.keys manifest.files, "src/" `isPrefixOf` p]
         moduleNames =
@@ -103,6 +114,8 @@ census target =
         facades =
           Set.toList
             (moduleNames `Set.difference` familyModules `Set.difference` curatedModules)
+        unboundTotals =
+          Map.fromListWith (+) [(g.disposition, length g.names) | g <- unboundRegistry.groups]
         classified safety =
           length [() | e <- Map.elems aliasesRegistry.functions, e.safety == safety]
     wrapperModules <- countWrapperModules packageDir srcPaths
@@ -126,6 +139,11 @@ census target =
             <> T.show (Map.size aliasesRegistry.renames)
             <> " skip="
             <> T.show (length aliasesRegistry.skip)
+        , "unbound:"
+            <> T.concat
+              [ " " <> dispositionText d <> "=" <> T.show (Map.findWithDefault 0 d unboundTotals)
+              | d <- [minBound .. maxBound]
+              ]
         , "facades: " <> T.unwords facades
         , "per-header:"
         ]
