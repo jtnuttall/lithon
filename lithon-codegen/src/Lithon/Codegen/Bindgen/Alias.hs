@@ -353,29 +353,27 @@ renderAliasModule target rewriteMap aliasModule =
  where
   rewrite = rewriteComment target rewriteMap aliasModule.moduleName
   hsModule =
-    HsModule.HsModule
-      { pragmas =
-          -- The constant patterns are emitted as a text block (see
-          -- 'constantsBlock'), so their extension cannot be resolved from
-          -- @decls@ and is added explicitly.
-          Set.toAscList
-            $ Set.fromList
-            $ pragmasFor decls
-            <> [ "LANGUAGE PatternSynonyms"
-               | not (null aliasModule.constants)
-               ]
-      , -- The SDL category overview leads (rewritten so its cross-references
-        -- resolve to curated aliases), followed by the compact conventions
-        -- block; rendered by the same pretty-printer as the Bindgen modules.
-        moduleComment = Just (familyComment target rewrite aliasModule)
-      , name = Hs.ModuleName aliasModule.moduleName
-      , exports
-      , imports
-      , qualifiedStyle = HB.PreQualified
-      , rootDirectives = []
-      , cWrappers = []
-      , decls
-      }
+    HsModule.authoredModule
+      HsModule.AuthoredModule
+        { pragmas =
+            -- The constant patterns are emitted as a text block (see
+            -- 'constantsBlock'), so their extension cannot be resolved from
+            -- @decls@ and is added explicitly.
+            Set.toAscList
+              $ Set.fromList
+              $ pragmasFor decls
+              <> [ "LANGUAGE PatternSynonyms"
+                 | not (null aliasModule.constants)
+                 ]
+        , -- The SDL category overview leads (rewritten so its cross-references
+          -- resolve to curated aliases), followed by the compact conventions
+          -- block; rendered by the same pretty-printer as the Bindgen modules.
+          moduleComment = Just (familyComment target rewrite aliasModule)
+        , name = Hs.ModuleName aliasModule.moduleName
+        , exports
+        , imports
+        , decls
+        }
 
   exports =
     [ HsModule.ExportEntry (HsModule.ExportModule (Hs.ModuleName base))
@@ -955,23 +953,21 @@ renderUmbrella target aliasModules =
       | otherwise -> h <> "."
 
   hsModule =
-    HsModule.HsModule
-      { pragmas = ["LANGUAGE DuplicateRecordFields"]
-      , moduleComment = Nothing
-      , name = Hs.ModuleName umbrellaName
-      , exports =
-          [ HsModule.ExportEntry (HsModule.ExportModule (Hs.ModuleName m))
-          | m <- names
-          ]
-      , imports =
-          [ HsModule.UnqualifiedImportListItem (Hs.ModuleName m) Nothing
-          | m <- names
-          ]
-      , qualifiedStyle = HB.PreQualified
-      , rootDirectives = []
-      , cWrappers = []
-      , decls = []
-      }
+    HsModule.authoredModule
+      HsModule.AuthoredModule
+        { pragmas = ["LANGUAGE DuplicateRecordFields"]
+        , moduleComment = Nothing
+        , name = Hs.ModuleName umbrellaName
+        , exports =
+            [ HsModule.ExportEntry (HsModule.ExportModule (Hs.ModuleName m))
+            | m <- names
+            ]
+        , imports =
+            [ HsModule.UnqualifiedImportListItem (Hs.ModuleName m) Nothing
+            | m <- names
+            ]
+        , decls = []
+        }
 
 runtimeModuleName :: BindgenTarget -> Text
 runtimeModuleName = Module.hsName . runtimeModule
