@@ -5,7 +5,8 @@
 -- two-way join of the registry with the ledger rows (a skip without a
 -- disposition, a disposition for a name no longer skipped, a name listed
 -- twice, and an empty group are each an error, all reported together),
--- plus the bootstrap snippets.
+-- the check of @constant@ dispositions against the planned constants, and
+-- the bootstrap snippets.
 module Bindgen.UnboundTest (
   unit_completeTriageGroupsRows,
   unit_untriagedRejected,
@@ -13,6 +14,8 @@ module Bindgen.UnboundTest (
   unit_duplicateRejected,
   unit_emptyGroupRejected,
   unit_errorsAccumulate,
+  unit_constantDispositionsBound,
+  unit_constantMissingRejected,
   unit_snippetsGroupByClass,
   unit_codecRoundTrips,
   unit_codecRejectsUnknownDisposition,
@@ -35,6 +38,7 @@ import Lithon.Codegen.Bindgen.Unbound (
   decodeUnboundConfig,
   encodeUnboundConfig,
   untriagedSnippets,
+  validateConstantDispositions,
   validateUnbound,
  )
 
@@ -134,6 +138,35 @@ unit_errorsAccumulate = do
     UnboundStale{} -> "stale"
     UnboundDuplicate{} -> "duplicate"
     UnboundEmptyGroup{} -> "empty"
+    UnboundConstantMissing{} -> "constant"
+
+-- | A @constant@ disposition holds when a constants.json group binds the
+-- macro. constants.json may bind more, including macros hs-bindgen binds
+-- itself, and the other dispositions are not its business.
+unit_constantDispositionsBound :: Assertion
+unit_constantDispositionsBound =
+  validateConstantDispositions complete (fromList ["SDL_MAX_SINT8", "SDL_INIT_VIDEO"]) @?= Right ()
+
+-- | A @constant@ name no group binds is an error, every one reported. The
+-- names are rendered: an ordinary name is never a bound macro.
+unit_constantMissingRejected :: Assertion
+unit_constantMissingRejected =
+  case validateConstantDispositions config (fromList ["SDL_MAX_SINT8", "SDL_SIZE_MAX"]) of
+    Right () -> assertFailure "expected the check to fail"
+    Left errs -> do
+      toList errs
+        @?= [ UnboundConstantMissing{name = "macro SDL_MIN_SINT8"}
+            , UnboundConstantMissing{name = "SDL_SIZE_MAX"}
+            ]
+      assertBool
+        ("the message: " <> toString (display errs))
+        ( ( "macro SDL_MIN_SINT8: disposition constant, but no constants.json group binds it;"
+              <> " add it to a constants.json group or change its disposition"
+          )
+            `T.isInfixOf` display errs
+        )
+ where
+  config = complete{groups = complete.groups <> [groupOf Constant ["macro SDL_MIN_SINT8", "SDL_SIZE_MAX"]]}
 
 -- | The bootstrap snippets: one group per reason class, in the order the
 -- classes first appear, each name once.

@@ -86,7 +86,7 @@ SDL_pixels.h's format and colorspace macros: casts, enumerators, and conditional
 
 ## `constant` (29)
 
-Integer constants spelled as casts to SDL's typedefs (or through glibc's INT64_C and SIZE_MAX), which hs-bindgen's macro grammar does not cover; constants.json binds them as typed constants.
+Integer constants spelled as casts to SDL's typedefs or to size_t, or through glibc's INT64_C, UINT64_C and SIZE_MAX, which hs-bindgen's macro grammar does not cover; constants.json binds them as typed constants.
 
 - `macro SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK` (SDL_audio.h:385): macro-parse: `Could not parse macro: "SDL_audio.h" (line 385, column 64): unexpected "0xFFFFFFFFu" (simpleEnum CXToken_Literal) expecting operator`
 - `macro SDL_AUDIO_DEVICE_DEFAULT_RECORDING` (SDL_audio.h:396): macro-parse: `Could not parse macro: "SDL_audio.h" (line 396, column 65): unexpected "0xFFFFFFFEu" (simpleEnum CXToken_Literal) expecting operator`

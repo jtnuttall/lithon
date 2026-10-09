@@ -5,11 +5,13 @@
 -- | The skip ledger end to end over toy headers: the seam reports every
 -- skipped selection root, Info-level macro failures included, under the
 -- quietest verbosity; the ledger attributes each skip to the unit whose
--- header declares it; and a triaged toy ledger renders to a golden that
--- names files, never the toy root's absolute paths.
+-- header declares it, a conflict with another header's macro included;
+-- and a triaged toy ledger renders to a golden that names files, never the
+-- toy root's absolute paths.
 module Bindgen.SkipsTest (
   unit_skipsCapturedUnderQuiet,
   unit_ledgerAttributesToUnits,
+  unit_crossHeaderConflictAttributed,
   test_unboundToyGolden,
 ) where
 
@@ -18,7 +20,7 @@ import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 import Lithon.HsBindgen qualified as HB
 import Lithon.Prelude
-import System.FilePath ((</>))
+import System.FilePath (takeFileName, (</>))
 import Test.Tasty (TestTree)
 import Test.Tasty.Golden (goldenVsStringDiff)
 import Test.Tasty.HUnit (Assertion, assertBool, assertFailure, (@?=))
@@ -191,6 +193,57 @@ unit_ledgerAttributesToUnits = do
         , ("toy_other_log", "toy_other.h", 4)
         ]
   [map HB.renderCName r.report.omitted | r <- results] @?= [["toy_ok"], []]
+
+-- | A function and a same-name macro in two bound headers: @toy_z.h@
+-- declares @zz_conflict@ (line 4), then includes @toy_a.h@, whose macro
+-- (line 3) shadows it (SDL's @SDL_memcpy@ shape, across headers).
+-- @toy_a.h@'s own run binds the macro. @toy_z.h@'s run drops both halves
+-- and reports each at the smallest of the conflict's locations,
+-- @toy_a.h@'s, which the ledger used to drop as another header's; it now
+-- files both under @toy_z.h@, at the line there (4, not the macro's 3). The
+-- locations do not say which declaration is which, so the macro's row
+-- lands there too: a row too many asks for a disposition, where a row too
+-- few hid the function's skip.
+unit_crossHeaderConflictAttributed :: Assertion
+unit_crossHeaderConflictAttributed = do
+  results <-
+    either (assertFailure . toString) pure
+      =<< runToyChain
+        (toyEnv "lithon-skips-cross")
+        [ ToyHeader{include = "toy" </> "toy_a.h", source = aHeader}
+        , ToyHeader{include = "toy" </> "toy_z.h", source = zHeader}
+        ]
+        plan
+        Visitor{passes = mempty, finalize = \_ _ _ -> Right ()}
+  -- The shape under test: the conflict's first location is the macro's.
+  [ ( r.unit.headerName
+    , [(HB.renderCName s.name, takeFileName . (.path) <$> s.loc) | s <- r.report.skips]
+    )
+    | r <- results
+    ]
+    @?= [ ("toy_a.h", [])
+        , ("toy_z.h", [("zz_conflict", Just "toy_a.h"), ("macro zz_conflict", Just "toy_a.h")])
+        ]
+  [(row.key, row.header, row.line) | row <- unboundLedger plan results]
+    @?= [("zz_conflict", "toy_z.h", 4), ("macro zz_conflict", "toy_z.h", 4)]
+ where
+  plan = toyPlan{excludedHeaders = [], mainIncludes = ["toy/toy_z.h"]}
+  aHeader =
+    unlines
+      [ "#ifndef TOY_A_H"
+      , "#define TOY_A_H"
+      , "#define zz_conflict 1"
+      , "#endif"
+      ]
+  zHeader =
+    unlines
+      [ "#ifndef TOY_Z_H"
+      , "#define TOY_Z_H"
+      , "/* A later include's macro shadows this. */"
+      , "int zz_conflict(int x);"
+      , "#include \"toy_a.h\""
+      , "#endif"
+      ]
 
 toyRegistry :: UnboundConfig
 toyRegistry =

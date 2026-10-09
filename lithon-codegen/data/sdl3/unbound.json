@@ -73,7 +73,7 @@
     },
     {
       "disposition": "constant",
-      "note": "Integer constants spelled as casts to SDL's typedefs (or through glibc's INT64_C and SIZE_MAX), which hs-bindgen's macro grammar does not cover; constants.json binds them as typed constants.",
+      "note": "Integer constants spelled as casts to SDL's typedefs or to size_t, or through glibc's INT64_C, UINT64_C and SIZE_MAX, which hs-bindgen's macro grammar does not cover; constants.json binds them as typed constants.",
       "names": [
         "macro SDL_MAX_SINT8",
         "macro SDL_MIN_SINT8",

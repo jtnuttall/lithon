@@ -100,7 +100,8 @@ data Skip = Skip
   { name :: CName
   , loc :: Maybe SourceLoc
   -- ^ Where the declaration is ('Nothing' for one outside any header,
-  -- such as a root directive); a conflict's first location.
+  -- such as a root directive). For a conflict, the smallest of the
+  -- conflict's locations, which can be another header's.
   , reasons :: NonEmpty SkipReason
   -- ^ Usually one. A root can fail on its own and lack a dependency too.
   }

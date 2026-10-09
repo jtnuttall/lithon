@@ -18,6 +18,10 @@
 -- Dispositions key on rendered names ('HB.renderCName': @SDL_Log@,
 -- @macro SDL_memcpy@), never on hs-bindgen's message text, so a vendor bump
 -- that rewords a failure changes @unbound.md@ only.
+--
+-- A @constant@ disposition is checked against @constants.json@ as well
+-- ('validateConstantDispositions'), by @generate@, which plans the
+-- constants.
 module Lithon.Codegen.Bindgen.Unbound (
   -- * The registry
   Disposition (..),
@@ -37,6 +41,7 @@ module Lithon.Codegen.Bindgen.Unbound (
   UnboundError (..),
   TriagedGroup (..),
   validateUnbound,
+  validateConstantDispositions,
   untriagedSnippets,
 
   -- * The document
@@ -172,6 +177,14 @@ data LedgerRow = LedgerRow
 -- it. A run reports only its own main header's roots, so this drops what
 -- belongs to no bound header: a root directive's macro, and hs-bindgen's
 -- bug-level reports about declarations of other headers.
+--
+-- A conflict's location is the smallest of the clashing declarations'
+-- ('HB.Skip'), which can be in another header: a function here clashing
+-- with a same-name macro of a header it includes. A conflict's row is
+-- filed by the smallest of its locations in the unit's own header instead.
+-- The run reports every half of the conflict, and the locations do not
+-- say which is whose, so the other header's half is filed there too, even
+-- when its own header's unit binds it.
 unboundLedger :: HeaderPlan -> [HeaderResult r] -> [LedgerRow]
 unboundLedger plan results =
   [ LedgerRow
@@ -183,9 +196,11 @@ unboundLedger plan results =
       }
   | r <- results
   , skip <- r.report.skips
-  , Just loc <- [skip.loc]
-  , plan.projectHeader loc.path == Just r.unit.headerName
+  , Just loc <- [find (inUnit r) (conflictLocs skip <> maybeToList skip.loc)]
   ]
+ where
+  inUnit r loc = plan.projectHeader loc.path == Just r.unit.headerName
+  conflictLocs skip = [loc | HB.SkipConflict locs <- toList skip.reasons, loc <- locs]
 
 -- | The kind of a skip reason, as messages and @unbound.md@ name it.
 reasonClass :: HB.SkipReason -> Text
@@ -225,6 +240,8 @@ data UnboundError
     UnboundDuplicate {name :: Text, dispositions :: [Disposition]}
   | -- | A group without names.
     UnboundEmptyGroup {disposition :: Disposition, note :: Text}
+  | -- | A @constant@ disposition for a name no @constants.json@ group binds.
+    UnboundConstantMissing {name :: Text}
   deriving stock (Eq, Show)
 
 instance Display UnboundError where
@@ -248,6 +265,10 @@ instance Display UnboundError where
           <> "); keep one listing"
       UnboundEmptyGroup{disposition, note = why} ->
         "a " <> dispositionText disposition <> " group lists no names (" <> why <> "); delete it"
+      UnboundConstantMissing{name} ->
+        name
+          <> ": disposition constant, but no constants.json group binds it; add it to a"
+          <> " constants.json group or change its disposition"
 
 -- | A registry group with the rows it covers, sorted by header, then line.
 data TriagedGroup = TriagedGroup
@@ -266,9 +287,10 @@ validateUnbound config rows =
       (untriaged <> stale <> duplicate <> emptyGroups)
       [ TriagedGroup
           { entry = g
-          , rows = sortOn rowOrder [r | r <- rows, r.key `Set.member` Set.fromList g.names]
+          , rows = sortOn rowOrder [r | r <- rows, r.key `Set.member` listed]
           }
       | g <- config.groups
+      , let listed = Set.fromList g.names
       ]
  where
   listings = Map.fromListWith (flip (<>)) [(n, [g.disposition]) | g <- config.groups, n <- g.names]
@@ -291,6 +313,25 @@ validateUnbound config rows =
 
 rowOrder :: LedgerRow -> (FilePath, Int, Text)
 rowOrder r = (r.header, r.line, r.key)
+
+-- | The @constant@ disposition's promise, kept: every name a @constant@
+-- group lists is a macro some @constants.json@ group binds. Takes the C
+-- names of every constant group's members. One direction only:
+-- @constants.json@ may also bind macros hs-bindgen binds itself
+-- (@SDL_INIT_*@).
+validateConstantDispositions :: UnboundConfig -> Set Text -> Either (Errors UnboundError) ()
+validateConstantDispositions config members =
+  validationToEither
+    $ failUnlessEmpty
+      [ UnboundConstantMissing{name = n}
+      | g <- config.groups
+      , g.disposition == Constant
+      , n <- g.names
+      , not (n `Set.member` bound)
+      ]
+      ()
+ where
+  bound = Set.map (\text -> HB.renderCName HB.CName{text, namespace = HB.Macro, unnamed = False}) members
 
 -- | For bootstrapping a registry: the untriaged names as one pasteable
 -- group per reason class, in the order the classes first appear.

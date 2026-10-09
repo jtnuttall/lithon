@@ -39,6 +39,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Conduit.Process.Typed (ProcessConfig)
 import Data.Hash.RapidHash
 import Data.Map.Strict qualified as Map
+import Data.Set qualified as Set
 import Data.Text.IO qualified as TIO
 import Effectful (Eff, IOE, (:>))
 import Effectful.Concurrent.Async (Concurrent)
@@ -142,11 +143,13 @@ import Lithon.Codegen.Bindgen.Target (
  )
 import Lithon.Codegen.Bindgen.Unbound (
   LedgerSource (..),
+  UnboundConfig,
   UnboundError,
   decodeUnboundConfig,
   renderUnbound,
   unboundDoc,
   untriagedSnippets,
+  validateConstantDispositions,
  )
 import Lithon.Codegen.Bindgen.Versions (
   Versioned (..),
@@ -178,7 +181,7 @@ data BindgenError
     -- gated stub returns (and why).
     StubReturnUnused FilePath [(Text, UnusedStubReturn)]
   | -- | The skip ledger's registry, and where it disagrees with the chain's
-    -- skips.
+    -- skips (or, for a @constant@ disposition, with @constants.json@).
     UnboundFailed FilePath (Errors UnboundError)
   deriving stock (Show)
 
@@ -234,7 +237,8 @@ instance Display BindgenError where
       "the skip ledger disagrees with "
         <> from registry
         <> "; nothing was written. Every name hs-bindgen skips needs exactly one disposition"
-        <> " (shim, constant, wontfix, or upstream), and every listed name must still be skipped:"
+        <> " (shim, constant, wontfix, or upstream), every listed name must still be skipped,"
+        <> " and constants.json must bind every name listed as constant:"
         <> displayBuilder errs
         <> case untriagedSnippets (toList errs) of
           [] -> mempty
@@ -326,7 +330,7 @@ runBindgen target root cmd = runRethrow @BindgenResolutionError (ResolutionFaile
         registry <- loadVersionsRegistry target
         results <- runChain target registry
         validateChain target registry results
-        ledger <- triageUnbound target results
+        (_, ledger) <- triageUnbound target results
         syncArtifacts (guardCtx root opts.assumeYes) opts.emitEffect results ledger
       CmdGenerate opts -> do
         -- Before the chain: a missing README should not cost a full run.
@@ -334,12 +338,20 @@ runBindgen target root cmd = runRethrow @BindgenResolutionError (ResolutionFaile
         registry <- loadVersionsRegistry target
         results <- runChain target registry
         validateChain target registry results
-        ledger <- triageUnbound target results
+        (unbound, ledger) <- triageUnbound target results
+        -- Only generate plans the constants (they need the probe), so only
+        -- it checks the ledger's constant dispositions; before any write.
+        constants@(constantPlans, _) <- planConstantGroups target (map (.payload.facts) results)
+        liftEither
+          . first (UnboundFailed (registryDisplayPath target (registryFile UnboundJson)))
+          $ validateConstantDispositions
+            unbound
+            (Set.fromList [m.cName | p <- constantPlans, m <- p.members])
         -- Specs, ledger, and package come from the same chain run, so they
         -- can never skew; both emits respect --check.
         syncArtifacts (guardCtx root opts.out.assumeYes) opts.out.emitEffect results ledger
         (aliasFiles, macroConsts, aliasMeta) <-
-          planAliases target registry results
+          planAliases target registry results constants
         tree <-
           liftEither
             . first PackagingFailed
@@ -372,13 +384,14 @@ validateChain target registry results = do
     unused -> throwError (StubReturnUnused library.registry unused)
 
 -- | Triage the chain's skips against @unbound.json@ and render the ledger
--- (@unbound.md@). Run before anything is written, by both commands: a
--- skip without a disposition, or a disposition for a name that is bound
--- now, fails the run, and both commands emit the ledger (an artifact one
--- of them did not emit, the other would prune).
+-- (@unbound.md@), returning the registry too. Run before anything is
+-- written, by both commands: a skip without a disposition, or a
+-- disposition for a name that is bound now, fails the run, and both
+-- commands emit the ledger (an artifact one of them did not emit, the
+-- other would prune).
 triageUnbound
   :: (BindgenGen :> es, Error BindgenError :> es, FileSystem :> es)
-  => BindgenTarget -> [HeaderResult BindgenPayload] -> Eff es Text
+  => BindgenTarget -> [HeaderResult BindgenPayload] -> Eff es (UnboundConfig, Text)
 triageUnbound target results = do
   env <- getBindgenEnv
   bytes <- LBS.fromStrict <$> EBS.readFile env.paths.unbound
@@ -395,9 +408,11 @@ triageUnbound target results = do
     liftEither
       . first (UnboundFailed (registryDisplayPath target (registryFile UnboundJson)))
       $ unboundDoc source (headerPlan target) config results
-  pure (renderUnbound doc)
+  pure (config, renderUnbound doc)
 
--- | Load, validate, plan, and render the target's curated layer.
+-- | Load, validate, plan, and render the target's curated layer, with the
+-- typed constants 'planConstantGroups' planned (and the registry bytes
+-- they came from).
 --
 -- Both registries are required: every callback-taking function must be
 -- classified (@aliases.json@) and the typed-constant groups are the
@@ -406,18 +421,17 @@ triageUnbound target results = do
 -- run.
 planAliases
   :: ( HasCallStack
-     , IOE :> es
      , Log :> es
      , BindgenGen :> es
-     , Driver :> es
      , Error BindgenError :> es
      , FileSystem :> es
      )
   => BindgenTarget
   -> VersionsRegistry
   -> [HeaderResult BindgenPayload]
+  -> ([ConstantGroupPlan], LByteString)
   -> Eff es ([(Text, Text)], [AbiMacroConst], Map Text Aeson.Value)
-planAliases target registry headerResults = do
+planAliases target registry headerResults (constantPlans, constantsBytes) = do
   env <- getBindgenEnv
   let families = map (.payload.facts) headerResults
 
@@ -431,7 +445,6 @@ planAliases target registry headerResults = do
       . first from
       $ validateAliasConfig (functionCensus families) config
 
-  (constantPlans, constantsBytes) <- planConstantGroups target families
   let plansByFamily =
         Map.fromListWith
           (flip (<>))

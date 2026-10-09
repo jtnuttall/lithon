@@ -48,8 +48,9 @@
   a group per reason to paste. The skips come from the seam's report, so the
   macro failures hs-bindgen logs at `Info` are on the ledger too.
 - A prescriptive override hs-bindgen rejects in its header's run (an entry
-  that applies to nothing, or a module mismatch) fails the header
-  (`OverrideRejected`).
+  that applies to nothing, a module mismatch, an enum spec for a type that
+  is not an enum, or an opaque request for a kind that cannot be opaque)
+  fails the header (`OverrideRejected`).
 - The driver logs each header's skip count (`header bound`) and the chain's
   total (`chain complete`).
 - Tests: `Bindgen.SkipsTest` (the seam's capture under `Quiet`, attribution
@@ -71,6 +72,18 @@
 - Tests: `Bindgen.ConstantsTest`; the toy goldens `alias-toy-module`,
   `alias-toy-bindgen-base` and `abi-toy2-assertions` pin a signed, a
   cross-header and a `native` group, and negative assertions.
+- `generate` checks every `constant` disposition against the planned
+  constants: a name no `constants.json` group binds fails the run before
+  anything is written (`UnboundConstantMissing`, through `UnboundFailed`).
+  `constants.json` may bind more, such as macros hs-bindgen binds itself.
+  Tested in `Bindgen.UnboundTest`.
+- The ledger files a conflict under the unit whose run reports it even
+  when the conflict's smallest location is another header's (a function
+  clashing with a same-name macro of a header it includes): both halves,
+  at the line in the unit's header, since the locations do not say which
+  is whose, so the other header's half appears there even when its own
+  header's unit binds it. Such a conflict used to vanish from the ledger.
+  `SkipsTest.unit_crossHeaderConflictAttributed`.
 
 ### Changed
 

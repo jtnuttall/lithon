@@ -233,6 +233,9 @@ each one:
 - A skipped name without a disposition is an error, and so is a listed name
   that is no longer skipped. A name listed twice and a group without names
   are errors too.
+- `generate` also checks every `constant` name against `constants.json`: a
+  name no group binds is an error. `constants.json` may bind more, such as
+  macros hs-bindgen binds itself (`SDL_INIT_*`).
 - To start one, write `{"groups": []}` and run `spec`. The error lists every
   skip, then prints one group per reason to paste in.
 - The generator writes the joined result to `unbound.md`: one section per
