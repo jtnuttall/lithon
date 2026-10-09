@@ -8,20 +8,22 @@ The single entrypoint to the vendored [hs-bindgen](https://github.com/well-typed
   through `Lithon.HsBindgen`. The seam is cabal-enforced: importing
   `HsBindgen.*` elsewhere fails to compile.
 - Widening the surface has two ledgers: this package's exports, and the
-  `reexported-modules` vendor patch carried on the fork's
-  `lithon/vendor-patches` branch (jtnuttall/hs-bindgen), one commit atop the
-  upstream pin.
+  `reexported-modules` vendor patch set carried on the fork's
+  `lithon/vendor-patches-2` branch (jtnuttall/hs-bindgen).
 
 ## Vendored sources
 
 `vendor/` holds git submodules pinned to exact revisions:
 
-- `hs-bindgen` — jtnuttall fork, branch `lithon/vendor-patches` (upstream
-  `well-typed/hs-bindgen` main + the re-export patch)
-- `libclang-bindings`, `c-expr` — upstream well-typed repos at the SHAs
-  hs-bindgen's own `cabal.project.base` pins
+- `hs-bindgen` — jtnuttall fork, branch `lithon/vendor-patches-2` (upstream
+  `well-typed/hs-bindgen` `release-1.0.0.0` + the lithon patch set)
+- `c-expr` — upstream well-typed repo, pinned to its `release-0.2.0.0` tag
 - `doxygen-parser` — jtnuttall fork, branch `lithon/vendor-patches`,
   carrying the vendor patches atop the SHA hs-bindgen pins
+
+`libclang-bindings` is no longer a submodule: it is a
+`source-repository-package` pin in the root `cabal.project`, at tag
+`release-0.2.0.0`.
 
 Building `libclang-bindings` requires `LLVM_PATH` pointing at a prefix with
 `lib/libclang.so` and `include/clang-c/`; the flake devshell exports it.

@@ -37,14 +37,14 @@ module Lithon.HsBindgen.Invoke (
   sortedIncludeGraph,
 ) where
 
-import Clang.Paths (getSourcePath)
+import Clang.Paths (getRealPath)
 import Control.Monad (when)
+import Control.Monad.Reader (ReaderT, ask, lift, runReaderT)
 import Data.Default (def)
 import Data.Foldable (toList)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TB
-import Doxygen.Parser qualified as Doxy
 import GHC.Generics (Generic)
 import HsBindgen
 import HsBindgen.Artefact (ArtefactMsg (..))
@@ -67,14 +67,12 @@ import HsBindgen.Config.ClangArgs
 import HsBindgen.Config.Prelims (
   fromBaseModuleName,
  )
-import HsBindgen.Frontend.Analysis.IncludeGraph qualified as IncludeGraph
 import HsBindgen.Frontend.Pass.Final (Final)
 import HsBindgen.IR.C qualified as C
 import HsBindgen.Language.Haskell (ModuleName (..))
 import HsBindgen.Macro (CExpr, cExpr)
-import HsBindgen.TH qualified
 import HsBindgen.Util.Tracer
-import Lithon.Prelude (for_, toString, (&), (.~))
+import Lithon.Prelude (toString, (&), (.~))
 import Lithon.Prelude.Display (Display (..))
 
 -- | Per-project invocation environment: everything lithon varies about
@@ -83,6 +81,10 @@ import Lithon.Prelude.Display (Display (..))
 data InvocationEnv = InvocationEnv
   { extraIncludeDirs :: [FilePath]
   , defineMacros :: [(Text, Text)]
+  -- ^ Root @#define@s as (name, body) pairs. An empty body means a bare
+  -- @#define NAME@ (hs-bindgen's @HashDefine@ contract), not the implicit
+  -- @1@ of @-DNAME@. Emitted ahead of the includes, so each applies to
+  -- all of them.
   , doxygenAliases :: [(Text, Text)]
   -- ^ Doxyfile @ALIASES@ entries, for headers that use project-local
   -- doxygen commands (e.g. SDL's @\\threadsafety@).
@@ -95,7 +97,7 @@ data InvocationEnv = InvocationEnv
 data InvocationSpec = InvocationSpec
   { baseModule :: Text
   -- ^ The base module name; category modules hang off it.
-  , includes :: [C.UncheckedHashIncludeArg]
+  , includes :: [FilePath]
   -- ^ Hash-include arguments, e.g. @SDL3\/SDL_video.h@.
   , priorSpecs :: [FilePath]
   -- ^ External binding specifications consumed by this run.
@@ -111,14 +113,22 @@ newtype BindgenFailure = BindgenFailure Text
 instance Display BindgenFailure where
   displayBuilder (BindgenFailure t) = TB.fromText t
 
--- | The artefact operations available inside one invocation.
-newtype BindgenM a = BindgenM (Artefact CExpr a)
+-- | The artefact operations available inside one invocation. Carries the
+-- lithon-owned 'InvocationEnv', so operations read lithon's own settings
+-- from it and never read hs-bindgen's internal configuration back.
+newtype BindgenM a = BindgenM (ReaderT InvocationEnv (Artefact CExpr) a)
   deriving newtype (Applicative, Functor, Monad)
+
+-- | Lift a raw artefact into 'BindgenM'. The artefact constructors stay
+-- behind the seam; callers use the named operations below.
+artefact :: Artefact CExpr a -> BindgenM a
+artefact = BindgenM . lift
 
 -- | Run one hs-bindgen invocation.
 runBindgen :: InvocationEnv -> InvocationSpec -> BindgenM a -> IO (Either BindgenFailure a)
-runBindgen env spec (BindgenM artefact) = do
-  res <- hsBindgenEMacroLang (pure . cExpr) tracer def bindgenConfig rootDirectives artefact
+runBindgen env spec (BindgenM m) = do
+  res <-
+    hsBindgenEMacroLang (pure . cExpr) tracer def bindgenConfig rootDirectives (runReaderT m env)
   pure $ either (Left . toFailure) Right res
  where
   toFailure e = BindgenFailure (T.pack (show (prettyForTrace e)))
@@ -126,11 +136,15 @@ runBindgen env spec (BindgenM artefact) = do
   -- TODO: make verbosity configurable from InvocationEnv.
   tracer = def{verbosity = Verbosity Warning}
 
+  -- 1.0 renders the root header, and the prologue of every C wrapper
+  -- translation unit, from this list in order. A define therefore has to
+  -- precede the include it configures (SDL_MAIN_HANDLED before
+  -- <SDL3/SDL_main.h>), so the defines go first.
   rootDirectives =
-    map C.DirectiveHashInclude spec.includes
-      <> map
-        (\(name, body) -> C.DirectiveHashDefine (C.HashDefine (toString name) (toString body)))
-        env.defineMacros
+    map
+      (\(name, body) -> C.DirectiveHashDefine (C.HashDefine (toString name) (toString body)))
+      env.defineMacros
+      <> map C.DirectiveHashInclude spec.includes
 
   bindgenConfig =
     toBindgenConfig config (UniqueId env.uniqueId) (BaseModuleName spec.baseModule) def
@@ -202,18 +216,19 @@ collectArtefacts = do
 -- own category mapping. Feed the result through
 -- "Lithon.HsBindgen.Transform" and render there.
 translatedFamily :: BindgenM [NameableModule HsModule]
-translatedFamily = BindgenM do
-  name <- ModuleBaseName
-  decls <- FinalDecls
-  tags <- getExportTags
-  mdoc <- getModuleComment
-  when (all nullDecls decls)
-    $ EmitTrace
-    $ NoBindingsMultipleModules name
-  config <- getConfig
-  let fns = config.frontend.fieldNamingStrategy
-  pure . familyModules name $
-    translateModuleMultiple fns def name mdoc (resolveExports tags) decls
+translatedFamily = do
+  env <- BindgenM ask
+  artefact do
+    name <- ModuleBaseName
+    dirs <- RootDirectives
+    decls <- FinalDecls
+    tags <- getExportTags
+    mdoc <- getModuleComment
+    when (all nullDecls decls)
+      $ EmitTrace
+      $ NoBindingsMultipleModules name
+    pure . familyModules name $
+      translateModuleMultiple env.fieldNaming def dirs name mdoc (resolveExports tags) decls
  where
   nullDecls :: (Foldable f, Foldable g) => (f a, g b) -> Bool
   nullDecls (xs, ys) = null xs && null ys
@@ -228,21 +243,21 @@ translatedFamily = BindgenM do
 
 -- | The final Haskell declarations, by category.
 reifiedHs :: BindgenM (ByCategory_ [Hs.Decl CExpr])
-reifiedHs = BindgenM HsDecls
+reifiedHs = artefact HsDecls
 
 -- | The final C declarations.
 reifiedC :: BindgenM [C.Decl CExpr Final]
-reifiedC = BindgenM getReifiedC
+reifiedC = artefact getReifiedC
 
 -- | The header's translated module comment, if any.
 headerComment :: BindgenM (Maybe HsDoc.Comment)
-headerComment = BindgenM getModuleComment
+headerComment = artefact getModuleComment
 
 -- | Write this run's binding specification (overwrites; creates parents).
 writeSpec :: FilePath -> BindgenM ()
-writeSpec = BindgenM . writeBindingSpec AllowFileOverwrite CreateOutputDirs
+writeSpec = artefact . writeBindingSpec AllowFileOverwrite CreateOutputDirs
 
--- | The include graph in dependency order, as source paths.
+-- | The include graph in dependency order, as canonical absolute paths
+-- (symlink-resolved).
 sortedIncludeGraph :: BindgenM [FilePath]
-sortedIncludeGraph =
-  BindgenM (map getSourcePath . IncludeGraph.toSortedList <$> getIncludeGraph)
+sortedIncludeGraph = artefact (map getRealPath <$> getDependencies)

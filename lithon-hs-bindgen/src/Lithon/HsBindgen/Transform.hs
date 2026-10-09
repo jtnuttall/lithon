@@ -18,9 +18,12 @@
 -- shims before version gates, say) are relying on exactly that.
 --
 -- The one deliberate exception: 'TextEdit' operates on rendered module
--- text, for edits the 'CWrapper' model cannot express (its renderer emits
--- all @#include@ lines before all bodies, so a define-before-include
--- prologue has no structural home). Keep that set small.
+-- text, for edits the 'CWrapper' model cannot express. A
+-- define-before-include prologue is no longer one of them: in 1.0 the
+-- wrapper translation unit opens with the rendered root directives, in
+-- order, so it is structural (see @runBindgen@ in
+-- "Lithon.HsBindgen.Invoke"). 'TextEdit' remains the escape hatch for
+-- anything else. Keep that set small.
 module Lithon.HsBindgen.Transform (
   -- * C-stub edits (typed, pre-render)
   MissPolicy (..),
@@ -185,7 +188,8 @@ renderFamilyWith edits family = map (fmap toRendered) <$> foldM step prepared ed
 
   toRendered (text, importedModules) = RenderedHsModule{text, importedModules}
 
-  step :: [NameableModule (Text, [Text])] -> TextEdit -> Either TransformError [NameableModule (Text, [Text])]
+  step
+    :: [NameableModule (Text, [Text])] -> TextEdit -> Either TransformError [NameableModule (Text, [Text])]
   step fam TextEdit{..}
     | hits > 0 = Right $ map (fmap (first (T.replace needle replacement))) fam
     | AllowMiss <- onMiss = Right fam

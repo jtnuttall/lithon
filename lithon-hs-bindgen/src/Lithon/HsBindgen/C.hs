@@ -18,9 +18,9 @@ module Lithon.HsBindgen.C (
   FieldInfo (..),
   Function (..),
   FunctionArg (..),
-  HashDefine (..),
   Struct (..),
   Union (..),
+  Type,
   TypeF (..),
   TypeFunArgF (..),
 
@@ -37,6 +37,8 @@ module Lithon.HsBindgen.C (
 
   -- * Type translation ("HsBindgen.IR.Translation")
   getCanonicalType,
+  -- 1.0 decls carry @typ :: Types p@ = @TranslatedTypes {c, hs}@; @.c@ needs the field in scope.
+  TranslatedTypes (..),
 ) where
 
 import HsBindgen.Frontend.Pass.Final (Final)
@@ -53,15 +55,15 @@ import HsBindgen.IR.C (
   FieldInfo (..),
   Function (..),
   FunctionArg (..),
-  HashDefine (..),
   RegularField (..),
   ScopedName (..),
   Struct (..),
+  Type,
   TypeF (..),
   TypeFunArgF (..),
   Union (..),
   getCanonicalType,
   renderDeclNameC,
  )
-import HsBindgen.IR.Translation (DeclIdPair (..), ScopedNamePair (..))
+import HsBindgen.IR.Translation (DeclIdPair (..), ScopedNamePair (..), TranslatedTypes (..))
 import Prelude hiding (Enum)
