@@ -34,6 +34,11 @@ extra-doc-files:
   - README.md
   - CHANGELOG.md
 
+# The C shims' headers, which the library's own wrapper C includes
+# (<sdl3-bindgen-sys/SDL_log_shims.h>, ...); see include-dirs below.
+extra-source-files:
+  - include/*/*.h
+
 language: GHC2021
 
 flags:
@@ -169,6 +174,9 @@ internal-libraries:
 
 library:
   source-dirs: src
+  # The C shims' headers. Only this package's wrapper C includes them (the
+  # foreign imports are of hashed wrapper symbols), so they are not installed.
+  include-dirs: include
   pkg-config-dependencies:
     # Surface is generated from 3.4.16; everything newer than the consumer's
     # SDL is version-gated in the wrapper C (SDL_SetError stubs) and the

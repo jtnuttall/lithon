@@ -30,6 +30,8 @@
 --
 --     Unsuffixed aliases are __unsafe__ foreign imports; aliases suffixed @Safe@ are safe. Functions whose callbacks fire during the call export only the Safe alias (the genuine unsafe import stays reachable under @SDL3.Sys.Bindgen.Atomic.Unsafe@); functions curated unsafe-only export only the unsuffixed one. Each alias\'s documentation records its flavor and rationale.
 --
+--     The C shims are functions this package defines in C over what the FFI cannot call directly (variadic functions, function-like macros), each named after what it wraps; the same flavor rules apply. Their raw imports live under "SDL3.Sys.Bindgen.AtomicShims".
+--
 --     Full conventions: "SDL3.Sys".
 module SDL3.Sys.Atomic (
   module SDL3.Sys.Bindgen.Atomic,
@@ -67,6 +69,12 @@ module SDL3.Sys.Atomic (
   SDL3.Sys.Atomic.setAtomicPointerSafe,
   SDL3.Sys.Atomic.getAtomicPointer,
   SDL3.Sys.Atomic.getAtomicPointerSafe,
+
+  -- * C shims
+  SDL3.Sys.Atomic.atomicIncRef,
+  SDL3.Sys.Atomic.atomicIncRefSafe,
+  SDL3.Sys.Atomic.atomicDecRef,
+  SDL3.Sys.Atomic.atomicDecRefSafe,
 )
 where
 
@@ -77,8 +85,11 @@ import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Support qualified as BG
 import SDL3.Sys.Bindgen.Atomic
+import SDL3.Sys.Bindgen.Atomic qualified
 import SDL3.Sys.Bindgen.Atomic.Safe qualified as Safe
 import SDL3.Sys.Bindgen.Atomic.Unsafe qualified as Unsafe
+import SDL3.Sys.Bindgen.AtomicShims.Safe qualified as Safe
+import SDL3.Sys.Bindgen.AtomicShims.Unsafe qualified as Unsafe
 import SDL3.Sys.Bindgen.Stdinc qualified
 
 -- | Try to lock a spin lock by setting it to a non-zero value.
@@ -571,7 +582,7 @@ getAtomicIntSafe =
 --
 --     @since 3.2.0
 --
---     [See also]: @SDL_AtomicDecRef@, @SDL_AtomicIncRef@
+--     [See also]: @'atomicDecRef'@, @'atomicIncRef'@
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -610,7 +621,7 @@ addAtomicInt =
 --
 --     @since 3.2.0
 --
---     [See also]: @SDL_AtomicDecRef@, @SDL_AtomicIncRef@
+--     [See also]: @'atomicDecRef'@, @'atomicIncRef'@
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -1136,3 +1147,131 @@ getAtomicPointerSafe
   --           [@a@]: a pointer to a pointer.
   -> IO (BG.Ptr BG.Void)
 getAtomicPointerSafe = Safe.sDL_GetAtomicPointer
+
+-- | Increment an atomic variable used as a reference count.
+--
+--     The SDL_AtomicIncRef macro as a function.
+--
+--     [Returns]: the previous value of the atomic variable.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'atomicDecRef'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_AtomicIncRef@.
+--                   The safe flavor is 'atomicIncRefSafe'
+--                   .
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_AtomicIncRef@, defined at @sdl3-bindgen-sys\/SDL_atomic_shims.h 38:23@
+atomicIncRef
+  :: BG.Ptr SDL3.Sys.Bindgen.Atomic.SDL_AtomicInt
+  -- ^
+  --
+  --           [@a@]: a pointer to an SDL_AtomicInt to increment.
+  -> IO BG.Int32
+atomicIncRef =
+  \x00 ->
+    fmap Coerce.coerce (Unsafe.lithon_SDL_AtomicIncRef x00)
+
+-- | Increment an atomic variable used as a reference count.
+--
+--     The SDL_AtomicIncRef macro as a function.
+--
+--     [Returns]: the previous value of the atomic variable.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'atomicDecRef'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @lithon_SDL_AtomicIncRef@.
+--                   The unsafe flavor is 'atomicIncRef'
+--                   .
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_AtomicIncRef@, defined at @sdl3-bindgen-sys\/SDL_atomic_shims.h 38:23@
+atomicIncRefSafe
+  :: BG.Ptr SDL3.Sys.Bindgen.Atomic.SDL_AtomicInt
+  -- ^
+  --
+  --           [@a@]: a pointer to an SDL_AtomicInt to increment.
+  -> IO BG.Int32
+atomicIncRefSafe =
+  \x00 ->
+    fmap Coerce.coerce (Safe.lithon_SDL_AtomicIncRef x00)
+
+-- | Decrement an atomic variable used as a reference count.
+--
+--     The SDL_AtomicDecRef macro as a function.
+--
+--     [Returns]: true if the variable reached zero after decrementing, false otherwise.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'atomicIncRef'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_AtomicDecRef@.
+--                   The safe flavor is 'atomicDecRefSafe'
+--                   .
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_AtomicDecRef@, defined at @sdl3-bindgen-sys\/SDL_atomic_shims.h 58:24@
+atomicDecRef
+  :: BG.Ptr SDL3.Sys.Bindgen.Atomic.SDL_AtomicInt
+  -- ^
+  --
+  --           [@a@]: a pointer to an SDL_AtomicInt to decrement.
+  -> IO Bool
+atomicDecRef =
+  \x00 ->
+    fmap CBool.toBool (Unsafe.lithon_SDL_AtomicDecRef x00)
+
+-- | Decrement an atomic variable used as a reference count.
+--
+--     The SDL_AtomicDecRef macro as a function.
+--
+--     [Returns]: true if the variable reached zero after decrementing, false otherwise.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'atomicIncRef'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @lithon_SDL_AtomicDecRef@.
+--                   The unsafe flavor is 'atomicDecRef'
+--                   .
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_AtomicDecRef@, defined at @sdl3-bindgen-sys\/SDL_atomic_shims.h 58:24@
+atomicDecRefSafe
+  :: BG.Ptr SDL3.Sys.Bindgen.Atomic.SDL_AtomicInt
+  -- ^
+  --
+  --           [@a@]: a pointer to an SDL_AtomicInt to decrement.
+  -> IO Bool
+atomicDecRefSafe =
+  \x00 ->
+    fmap CBool.toBool (Safe.lithon_SDL_AtomicDecRef x00)

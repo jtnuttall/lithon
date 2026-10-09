@@ -4,7 +4,7 @@ cabal-version: 2.2
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: "x\137\GS\243b\192\175>Dd\239bw\180iz\FS\209>P\140*}MjA\STX\a\253\130\251\132"
+-- hash: "lA5\138b\174\NUL\202\238\202\175\201\196T\134\240\198\253Sf\137\132\144\&9d\209N\156\148\191Yi"
 
 name:           sdl3-bindgen-sys
 version:        0.0.0.3
@@ -36,6 +36,18 @@ license-files:  LICENSE,
 build-type:     Simple
 tested-with:
     GHC == 9.8.* || == 9.10.* || == 9.12.*
+extra-source-files:
+    include/sdl3-bindgen-sys/SDL_atomic_shims.h
+    include/sdl3-bindgen-sys/SDL_audio_shims.h
+    include/sdl3-bindgen-sys/SDL_endian_shims.h
+    include/sdl3-bindgen-sys/SDL_error_shims.h
+    include/sdl3-bindgen-sys/SDL_iostream_shims.h
+    include/sdl3-bindgen-sys/SDL_log_shims.h
+    include/sdl3-bindgen-sys/SDL_pixels_shims.h
+    include/sdl3-bindgen-sys/SDL_stdinc_shims.h
+    include/sdl3-bindgen-sys/SDL_surface_shims.h
+    include/sdl3-bindgen-sys/SDL_thread_shims.h
+    include/sdl3-bindgen-sys/SDL_timer_shims.h
 extra-doc-files:
     README.md
     CHANGELOG.md
@@ -107,10 +119,16 @@ library
       SDL3.Sys.Bindgen.Atomic.FunPtr
       SDL3.Sys.Bindgen.Atomic.Safe
       SDL3.Sys.Bindgen.Atomic.Unsafe
+      SDL3.Sys.Bindgen.AtomicShims.FunPtr
+      SDL3.Sys.Bindgen.AtomicShims.Safe
+      SDL3.Sys.Bindgen.AtomicShims.Unsafe
       SDL3.Sys.Bindgen.Audio
       SDL3.Sys.Bindgen.Audio.FunPtr
       SDL3.Sys.Bindgen.Audio.Safe
       SDL3.Sys.Bindgen.Audio.Unsafe
+      SDL3.Sys.Bindgen.AudioShims.FunPtr
+      SDL3.Sys.Bindgen.AudioShims.Safe
+      SDL3.Sys.Bindgen.AudioShims.Unsafe
       SDL3.Sys.Bindgen.Bits.FunPtr
       SDL3.Sys.Bindgen.Bits.Safe
       SDL3.Sys.Bindgen.Bits.Unsafe
@@ -139,9 +157,15 @@ library
       SDL3.Sys.Bindgen.Endian.FunPtr
       SDL3.Sys.Bindgen.Endian.Safe
       SDL3.Sys.Bindgen.Endian.Unsafe
+      SDL3.Sys.Bindgen.EndianShims.FunPtr
+      SDL3.Sys.Bindgen.EndianShims.Safe
+      SDL3.Sys.Bindgen.EndianShims.Unsafe
       SDL3.Sys.Bindgen.Error.FunPtr
       SDL3.Sys.Bindgen.Error.Safe
       SDL3.Sys.Bindgen.Error.Unsafe
+      SDL3.Sys.Bindgen.ErrorShims.FunPtr
+      SDL3.Sys.Bindgen.ErrorShims.Safe
+      SDL3.Sys.Bindgen.ErrorShims.Unsafe
       SDL3.Sys.Bindgen.Events
       SDL3.Sys.Bindgen.Events.FunPtr
       SDL3.Sys.Bindgen.Events.Safe
@@ -182,6 +206,9 @@ library
       SDL3.Sys.Bindgen.Iostream.FunPtr
       SDL3.Sys.Bindgen.Iostream.Safe
       SDL3.Sys.Bindgen.Iostream.Unsafe
+      SDL3.Sys.Bindgen.IostreamShims.FunPtr
+      SDL3.Sys.Bindgen.IostreamShims.Safe
+      SDL3.Sys.Bindgen.IostreamShims.Unsafe
       SDL3.Sys.Bindgen.Joystick
       SDL3.Sys.Bindgen.Joystick.FunPtr
       SDL3.Sys.Bindgen.Joystick.Safe
@@ -203,6 +230,9 @@ library
       SDL3.Sys.Bindgen.Log.FunPtr
       SDL3.Sys.Bindgen.Log.Safe
       SDL3.Sys.Bindgen.Log.Unsafe
+      SDL3.Sys.Bindgen.LogShims.FunPtr
+      SDL3.Sys.Bindgen.LogShims.Safe
+      SDL3.Sys.Bindgen.LogShims.Unsafe
       SDL3.Sys.Bindgen.Main
       SDL3.Sys.Bindgen.Main.FunPtr
       SDL3.Sys.Bindgen.Main.Safe
@@ -234,6 +264,9 @@ library
       SDL3.Sys.Bindgen.Pixels.FunPtr
       SDL3.Sys.Bindgen.Pixels.Safe
       SDL3.Sys.Bindgen.Pixels.Unsafe
+      SDL3.Sys.Bindgen.PixelsShims.FunPtr
+      SDL3.Sys.Bindgen.PixelsShims.Safe
+      SDL3.Sys.Bindgen.PixelsShims.Unsafe
       SDL3.Sys.Bindgen.Platform.FunPtr
       SDL3.Sys.Bindgen.Platform.Safe
       SDL3.Sys.Bindgen.Platform.Unsafe
@@ -286,6 +319,9 @@ library
       SDL3.Sys.Bindgen.Stdinc.FunPtr
       SDL3.Sys.Bindgen.Stdinc.Safe
       SDL3.Sys.Bindgen.Stdinc.Unsafe
+      SDL3.Sys.Bindgen.StdincShims.FunPtr
+      SDL3.Sys.Bindgen.StdincShims.Safe
+      SDL3.Sys.Bindgen.StdincShims.Unsafe
       SDL3.Sys.Bindgen.Storage
       SDL3.Sys.Bindgen.Storage.FunPtr
       SDL3.Sys.Bindgen.Storage.Safe
@@ -294,6 +330,9 @@ library
       SDL3.Sys.Bindgen.Surface.FunPtr
       SDL3.Sys.Bindgen.Surface.Safe
       SDL3.Sys.Bindgen.Surface.Unsafe
+      SDL3.Sys.Bindgen.SurfaceShims.FunPtr
+      SDL3.Sys.Bindgen.SurfaceShims.Safe
+      SDL3.Sys.Bindgen.SurfaceShims.Unsafe
       SDL3.Sys.Bindgen.System
       SDL3.Sys.Bindgen.System.FunPtr
       SDL3.Sys.Bindgen.System.Safe
@@ -302,6 +341,9 @@ library
       SDL3.Sys.Bindgen.Thread.FunPtr
       SDL3.Sys.Bindgen.Thread.Safe
       SDL3.Sys.Bindgen.Thread.Unsafe
+      SDL3.Sys.Bindgen.ThreadShims.FunPtr
+      SDL3.Sys.Bindgen.ThreadShims.Safe
+      SDL3.Sys.Bindgen.ThreadShims.Unsafe
       SDL3.Sys.Bindgen.Time
       SDL3.Sys.Bindgen.Time.FunPtr
       SDL3.Sys.Bindgen.Time.Safe
@@ -310,6 +352,9 @@ library
       SDL3.Sys.Bindgen.Timer.FunPtr
       SDL3.Sys.Bindgen.Timer.Safe
       SDL3.Sys.Bindgen.Timer.Unsafe
+      SDL3.Sys.Bindgen.TimerShims.FunPtr
+      SDL3.Sys.Bindgen.TimerShims.Safe
+      SDL3.Sys.Bindgen.TimerShims.Unsafe
       SDL3.Sys.Bindgen.Touch
       SDL3.Sys.Bindgen.Touch.FunPtr
       SDL3.Sys.Bindgen.Touch.Safe
@@ -392,6 +437,8 @@ library
   hs-source-dirs:
       src
   ghc-options: -optc-Wno-incompatible-pointer-types -optc-Wno-incompatible-function-pointer-types
+  include-dirs:
+      include
   pkgconfig-depends:
       sdl3 >= 3.2
   build-depends:

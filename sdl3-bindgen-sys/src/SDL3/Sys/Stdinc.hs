@@ -7,6 +7,8 @@
 --
 --     Unsuffixed aliases are __unsafe__ foreign imports; aliases suffixed @Safe@ are safe. Functions whose callbacks fire during the call export only the Safe alias (the genuine unsafe import stays reachable under @SDL3.Sys.Bindgen.Stdinc.Unsafe@); functions curated unsafe-only export only the unsuffixed one. Each alias\'s documentation records its flavor and rationale.
 --
+--     The C shims are functions this package defines in C over what the FFI cannot call directly (variadic functions, function-like macros), each named after what it wraps; the same flavor rules apply. Their raw imports live under "SDL3.Sys.Bindgen.StdincShims".
+--
 --     Full conventions: "SDL3.Sys".
 module SDL3.Sys.Stdinc (
   module SDL3.Sys.Bindgen.Stdinc,
@@ -235,6 +237,9 @@ module SDL3.Sys.Stdinc (
   SDL3.Sys.Stdinc.sizeMulCheckOverflowBuiltinSafe,
   SDL3.Sys.Stdinc.sizeAddCheckOverflowBuiltin,
   SDL3.Sys.Stdinc.sizeAddCheckOverflowBuiltinSafe,
+
+  -- * C shims
+  SDL3.Sys.Stdinc.fourCC,
 )
 where
 
@@ -246,8 +251,10 @@ import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import SDL3.Sys.Bindgen.Stdinc
+import SDL3.Sys.Bindgen.Stdinc qualified
 import SDL3.Sys.Bindgen.Stdinc.Safe qualified as Safe
 import SDL3.Sys.Bindgen.Stdinc.Unsafe qualified as Unsafe
+import SDL3.Sys.Bindgen.StdincShims.Unsafe qualified as Unsafe
 
 -- | Allocate uninitialized memory.
 --
@@ -7618,6 +7625,58 @@ sizeAddCheckOverflowBuiltinSafe =
         fmap
           CBool.toBool
           (Safe.sDL_size_add_check_overflow_builtin (Coerce.coerce x00) (Coerce.coerce x11) x22)
+
+-- | Define a four character code as a Uint32.
+--
+--     The SDL_FOURCC macro as a function.
+--
+--     [Returns]: the four characters converted into a Uint32, one character per-byte.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_FOURCC@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_FOURCC@, defined at @sdl3-bindgen-sys\/SDL_stdinc_shims.h 40:26@
+fourCC
+  :: BG.Word8
+  -- ^
+  --
+  --           [@a@]: the first ASCII character.
+  -> BG.Word8
+  -- ^
+  --
+  --           [@b@]: the second ASCII character.
+  -> BG.Word8
+  -- ^
+  --
+  --           [@c@]: the third ASCII character.
+  -> BG.Word8
+  -- ^
+  --
+  --           [@d@]: the fourth ASCII character.
+  -> IO BG.Word32
+fourCC =
+  \x00 ->
+    \x11 ->
+      \x22 ->
+        \x33 ->
+          fmap
+            Coerce.coerce
+            ( Unsafe.lithon_SDL_FOURCC
+                (Coerce.coerce x00)
+                (Coerce.coerce x11)
+                (Coerce.coerce x22)
+                (Coerce.coerce x33)
+            )
 
 -- | Typed constant for macro @SDL_MAX_TIME@.
 pattern SDL_MAX_TIME :: SDL_Time

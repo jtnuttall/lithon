@@ -10,6 +10,8 @@
 --
 --     Unsuffixed aliases are __unsafe__ foreign imports; aliases suffixed @Safe@ are safe. Functions whose callbacks fire during the call export only the Safe alias (the genuine unsafe import stays reachable under @SDL3.Sys.Bindgen.Iostream.Unsafe@); functions curated unsafe-only export only the unsuffixed one. Each alias\'s documentation records its flavor and rationale.
 --
+--     The C shims are functions this package defines in C over what the FFI cannot call directly (variadic functions, function-like macros), each named after what it wraps; the same flavor rules apply. Their raw imports live under "SDL3.Sys.Bindgen.IostreamShims".
+--
 --     Full conventions: "SDL3.Sys".
 module SDL3.Sys.Iostream (
   module SDL3.Sys.Bindgen.Iostream,
@@ -107,6 +109,10 @@ module SDL3.Sys.Iostream (
   SDL3.Sys.Iostream.writeU64BESafe,
   SDL3.Sys.Iostream.writeS64BE,
   SDL3.Sys.Iostream.writeS64BESafe,
+
+  -- * C shims
+  SDL3.Sys.Iostream.ioPrintf,
+  SDL3.Sys.Iostream.ioPrintfSafe,
 )
 where
 
@@ -118,8 +124,11 @@ import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import SDL3.Sys.Bindgen.Iostream
+import SDL3.Sys.Bindgen.Iostream qualified
 import SDL3.Sys.Bindgen.Iostream.Safe qualified as Safe
 import SDL3.Sys.Bindgen.Iostream.Unsafe qualified as Unsafe
+import SDL3.Sys.Bindgen.IostreamShims.Safe qualified as Safe
+import SDL3.Sys.Bindgen.IostreamShims.Unsafe qualified as Unsafe
 import SDL3.Sys.Bindgen.Properties qualified
 import SDL3.Sys.Bindgen.Stdinc qualified
 
@@ -1079,7 +1088,7 @@ readIOSafe =
 --
 --     @since 3.2.0
 --
---     [See also]: @SDL_IOprintf@, 'readIO', 'seekIO', 'flushIO', 'getIOStatus'
+--     [See also]: @'ioPrintf'@, 'readIO', 'seekIO', 'flushIO', 'getIOStatus'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -1127,7 +1136,7 @@ writeIO =
 --
 --     @since 3.2.0
 --
---     [See also]: @SDL_IOprintf@, 'readIO', 'seekIO', 'flushIO', 'getIOStatus'
+--     [See also]: @'ioPrintf'@, 'readIO', 'seekIO', 'flushIO', 'getIOStatus'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -3540,3 +3549,77 @@ writeS64BESafe =
   \x00 ->
     \x11 ->
       fmap CBool.toBool (Safe.sDL_WriteS64BE x00 (Coerce.coerce x11))
+
+-- | Print a string to an SDL_IOStream data stream.
+--
+--     A fixed-arity shim over the variadic SDL_IOprintf: @str@ is written verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Returns]: the number of bytes written or 0 on failure; call 'SDL3.Sys.Error.getError' for more information.
+--
+--     [Thread safety]: Do not use the same SDL_IOStream from two threads at once.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'writeIO'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_IOprintf@.
+--                   The safe flavor is 'ioPrintfSafe'
+--                   : writes through the stream\'s SDL_IOStreamInterface, which may be implemented in Haskell.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_IOprintf@, defined at @sdl3-bindgen-sys\/SDL_iostream_shims.h 42:26@
+ioPrintf
+  :: BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream
+  -- ^
+  --
+  --           [@context@]: a pointer to an SDL_IOStream structure.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@str@]: the NUL-terminated string to write.
+  -> IO BG.Word64
+ioPrintf =
+  \x00 ->
+    \x11 ->
+      fmap Coerce.coerce (Unsafe.lithon_SDL_IOprintf x00 x11)
+
+-- | Print a string to an SDL_IOStream data stream.
+--
+--     A fixed-arity shim over the variadic SDL_IOprintf: @str@ is written verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Returns]: the number of bytes written or 0 on failure; call 'SDL3.Sys.Error.getError' for more information.
+--
+--     [Thread safety]: Do not use the same SDL_IOStream from two threads at once.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'writeIO'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @lithon_SDL_IOprintf@.
+--                   The unsafe flavor is 'ioPrintf'
+--                   : writes through the stream\'s SDL_IOStreamInterface, which may be implemented in Haskell.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_IOprintf@, defined at @sdl3-bindgen-sys\/SDL_iostream_shims.h 42:26@
+ioPrintfSafe
+  :: BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream
+  -- ^
+  --
+  --           [@context@]: a pointer to an SDL_IOStream structure.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@str@]: the NUL-terminated string to write.
+  -> IO BG.Word64
+ioPrintfSafe =
+  \x00 ->
+    \x11 ->
+      fmap Coerce.coerce (Safe.lithon_SDL_IOprintf x00 x11)

@@ -14,9 +14,9 @@ this package aims to support.
 This library aims to be:
 
 - **Complete by construction:** Generated from all 58 headers of the
-  SDL 3.4 API (291 modules), so a gap is either a code generation
-  bug or a [deliberate omission](#what-is-not-bound) rather than a
-  binding waiting to be hand-written.
+  SDL 3.4 API (328 modules, 33 of them the C shims'), so a gap is either a
+  code generation bug or a [deliberate omission](#what-is-not-bound) rather
+  than a binding waiting to be hand-written.
 - **Curated:** The `SDL3.Sys.*` layer wraps `hs-bindgen`'s output
   with best-effort Haskell casing, native scalar types, and FFI safety
   decisions and recommendations.
@@ -193,6 +193,65 @@ You can combine bitmask groups with `.|.` from `Data.Bits`:
 SDL3.init (SDL3.SDL_INIT_VIDEO .|. SDL3.SDL_INIT_AUDIO)
 ```
 
+### C shims
+
+Haskell's FFI cannot call a variadic C function, and a function-like
+macro has no symbol to call at all. For the useful ones, this package
+ships small C functions of its own, in
+`include/sdl3-bindgen-sys/SDL_*_shims.h`, which are bound like any SDL
+header. Each module exports its shims in a **C shims** section, named
+like what they wrap: `SDL_LogMessage` is `logMessage`, and `SDL_MUSTLOCK`
+is `mustLock`.
+
+- **Messages are verbatim.** The logging, error, and stream-printing
+  shims take a finished string, never a printf-style format string:
+  format in Haskell, and a `%` needs no escaping. After `setError` with
+  `100% done`, `getError` returns `100% done`.
+- **Call `createThread`, not `createThreadRuntime`.** Like SDL's
+  `SDL_CreateThread` macro, the shim passes the C runtime's thread entry
+  and exit functions on Windows (`_beginthreadex` and `_endthreadex`;
+  `NULL` elsewhere).
+- **Cost:** each shim is a `static inline` C function, so the compiler
+  folds it into the wrapper the foreign import calls: one FFI call, like
+  any binding. That is still a call, and an `IO` action, for what C
+  computes inline (`bitsPerPixel`, `fourCC`, the byte swaps); hoist it out
+  of hot loops.
+- **Byte order:** use the `swap16LE` … `swapFloatBE` shims, not the raw
+  layer's `sDL_Swap16LE` … `sDL_SwapFloatLE`, which hs-bindgen translated
+  on the little-endian generation host as the identity.
+- The raw imports are `lithon_SDL_*` in `SDL3.Sys.Bindgen.*Shims`
+  (`SDL3.Sys.Bindgen.LogShims.Unsafe.lithon_SDL_LogMessage`).
+
+The shims, by module:
+
+- `SDL3.Sys.Atomic`: `SDL_AtomicIncRef` → `atomicIncRef`,
+  `SDL_AtomicDecRef` → `atomicDecRef`
+- `SDL3.Sys.Audio`: `SDL_AUDIO_FRAMESIZE` → `audioFrameSize` (takes a
+  pointer to the spec), `SDL_DEFINE_AUDIO_FORMAT` → `defineAudioFormat`
+- `SDL3.Sys.Endian`: `SDL_Swap16`, `SDL_Swap32`, `SDL_Swap64` → `swap16`,
+  `swap32`, `swap64`; `SDL_Swap16LE` … `SDL_SwapFloatBE` → `swap16LE` …
+  `swapFloatBE`
+- `SDL3.Sys.Error`: `SDL_SetError` → `setError`, `SDL_Unsupported` →
+  `unsupported`, `SDL_InvalidParamError` → `invalidParamError`
+- `SDL3.Sys.Iostream`: `SDL_IOprintf` → `ioPrintf`
+- `SDL3.Sys.Log`: `SDL_Log` → `logApplication` (`log` is the math
+  function), `SDL_LogTrace` … `SDL_LogCritical` → `logTrace` …
+  `logCritical`, `SDL_LogMessage` → `logMessage`
+- `SDL3.Sys.Pixels`: `SDL_DEFINE_PIXELFOURCC` → `definePixelFourCC`,
+  `SDL_BITSPERPIXEL` → `bitsPerPixel`, `SDL_BYTESPERPIXEL` →
+  `bytesPerPixel`, `SDL_ISPIXELFORMAT_INDEXED` … `SDL_ISPIXELFORMAT_FOURCC`
+  → `isPixelFormatIndexed` … `isPixelFormatFourCC`,
+  `SDL_DEFINE_COLORSPACE` → `defineColorspace`, `SDL_COLORSPACETYPE` …
+  `SDL_COLORSPACEMATRIX` → `colorspaceType` … `colorspaceMatrix`,
+  `SDL_ISCOLORSPACE_MATRIX_BT601` … `SDL_ISCOLORSPACE_FULL_RANGE` →
+  `isColorspaceMatrixBT601` … `isColorspaceFullRange`
+- `SDL3.Sys.Stdinc`: `SDL_FOURCC` → `fourCC`
+- `SDL3.Sys.Surface`: `SDL_MUSTLOCK` → `mustLock`
+- `SDL3.Sys.Thread`: `SDL_CreateThread` → `createThread`,
+  `SDL_CreateThreadWithProperties` → `createThreadWithProperties`
+- `SDL3.Sys.Timer`: `SDL_SECONDS_TO_NS` → `secondsToNs`, `SDL_MS_TO_NS` →
+  `msToNs`, `SDL_US_TO_NS` → `usToNs`
+
 ### Conversion to and from C types
 
 `SDL3.Sys` re-exports `SDL3.Sys.Runtime`, the conversion vocabulary
@@ -230,9 +289,9 @@ Known gaps, so you can discover them here instead of mid-build:
 
 - **Variadic functions**: Haskell's FFI cannot express C varargs, so
   hs-bindgen has nothing to bind them to; the `SDL_Log` family,
-  `SDL_SetError`, and `SDL_RenderDebugTextFormat` are currently
-  unbound. In a future version, these will be bound via a fixed-arity
-  C shim.
+  `SDL_SetError`, and `SDL_IOprintf` are bound through
+  [C shims](#c-shims) instead, and `SDL_RenderDebugTextFormat` is
+  unbound (format in Haskell and use `renderDebugText`).
 - **Most function-like macros**: a macro has no linkable symbol, but
   hs-bindgen does not need one: it parses and typechecks macro bodies
   and translates them to Haskell functions on a best-effort basis. From
@@ -248,7 +307,9 @@ Known gaps, so you can discover them here instead of mid-build:
   [survey of SDL's macros](https://github.com/dschrempf/hs-bindgen-sdl-survey)
   counts 108 user-facing function-like macros, so most remain unbound
   for now: upstream is extending coverage, and a `capi` import or a C
-  shim can reach the rest. Macro _constants_ are bound; see
+  shim can reach the rest. This package's [C shims](#c-shims) cover the
+  most useful of them (`SDL_MUSTLOCK`, the byte swaps, the pixel-format
+  and colorspace macros, ...). Macro _constants_ are bound; see
   [Typed constants](#typed-constants).
 - `SDL_size_mul_check_overflow` and `SDL_size_add_check_overflow`: each
   is an inline function with a function-like macro of the same name

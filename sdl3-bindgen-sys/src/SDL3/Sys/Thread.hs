@@ -4,7 +4,7 @@
 --
 --     In addition, there is support for Thread Local Storage (data that is unique to each thread, but accessed from a single key).
 --
---     On platforms without thread support (such as Emscripten when built without pthreads), these functions still exist, but things like @SDL_CreateThread()@ will report failure without doing anything.
+--     On platforms without thread support (such as Emscripten when built without pthreads), these functions still exist, but things like @'createThread'@ will report failure without doing anything.
 --
 --     If you\'re going to work with threads, you almost certainly need to have a good understanding of thread safety measures: locking and synchronization mechanisms are handled by the functions in SDL_mutex.h. The SDL thread object.
 --
@@ -12,11 +12,13 @@
 --
 --     @since 3.2.0
 --
---     [See also]: @SDL_CreateThread@, 'waitThread'
+--     [See also]: @'createThread'@, 'waitThread'
 --
 --     == FFI conventions
 --
 --     Unsuffixed aliases are __unsafe__ foreign imports; aliases suffixed @Safe@ are safe. Functions whose callbacks fire during the call export only the Safe alias (the genuine unsafe import stays reachable under @SDL3.Sys.Bindgen.Thread.Unsafe@); functions curated unsafe-only export only the unsuffixed one. Each alias\'s documentation records its flavor and rationale.
+--
+--     The C shims are functions this package defines in C over what the FFI cannot call directly (variadic functions, function-like macros), each named after what it wraps; the same flavor rules apply. Their raw imports live under "SDL3.Sys.Bindgen.ThreadShims".
 --
 --     Full conventions: "SDL3.Sys".
 module SDL3.Sys.Thread (
@@ -47,6 +49,12 @@ module SDL3.Sys.Thread (
   SDL3.Sys.Thread.setTLSSafe,
   SDL3.Sys.Thread.cleanupTLS,
   SDL3.Sys.Thread.cleanupTLSSafe,
+
+  -- * C shims
+  SDL3.Sys.Thread.createThread,
+  SDL3.Sys.Thread.createThreadSafe,
+  SDL3.Sys.Thread.createThreadWithProperties,
+  SDL3.Sys.Thread.createThreadWithPropertiesSafe,
 )
 where
 
@@ -58,10 +66,13 @@ import HsBindgen.Runtime.Support qualified as BG
 import SDL3.Sys.Bindgen.Properties qualified
 import SDL3.Sys.Bindgen.Stdinc qualified
 import SDL3.Sys.Bindgen.Thread
+import SDL3.Sys.Bindgen.Thread qualified
 import SDL3.Sys.Bindgen.Thread.Safe qualified as Safe
 import SDL3.Sys.Bindgen.Thread.Unsafe qualified as Unsafe
+import SDL3.Sys.Bindgen.ThreadShims.Safe qualified as Safe
+import SDL3.Sys.Bindgen.ThreadShims.Unsafe qualified as Unsafe
 
--- | The actual entry point for SDL_CreateThread.
+-- | The actual entry point for 'createThread'.
 --
 --     [Returns]: an opaque pointer to the new thread object on success, NULL if the new thread could not be created; call 'SDL3.Sys.Error.getError' for more information.
 --
@@ -100,7 +111,7 @@ createThreadRuntime
   -> IO (BG.Ptr SDL_Thread)
 createThreadRuntime = Unsafe.sDL_CreateThreadRuntime
 
--- | The actual entry point for SDL_CreateThread.
+-- | The actual entry point for 'createThread'.
 --
 --     [Returns]: an opaque pointer to the new thread object on success, NULL if the new thread could not be created; call 'SDL3.Sys.Error.getError' for more information.
 --
@@ -140,7 +151,7 @@ createThreadRuntimeSafe
 createThreadRuntimeSafe =
   Safe.sDL_CreateThreadRuntime
 
--- | The actual entry point for SDL_CreateThreadWithProperties.
+-- | The actual entry point for 'createThreadWithProperties'.
 --
 --     [Returns]: an opaque pointer to the new thread object on success, NULL if the new thread could not be created; call 'SDL3.Sys.Error.getError' for more information.
 --
@@ -172,7 +183,7 @@ createThreadWithPropertiesRuntime
 createThreadWithPropertiesRuntime =
   Unsafe.sDL_CreateThreadWithPropertiesRuntime
 
--- | The actual entry point for SDL_CreateThreadWithProperties.
+-- | The actual entry point for 'createThreadWithProperties'.
 --
 --     [Returns]: an opaque pointer to the new thread object on success, NULL if the new thread could not be created; call 'SDL3.Sys.Error.getError' for more information.
 --
@@ -204,7 +215,7 @@ createThreadWithPropertiesRuntimeSafe
 createThreadWithPropertiesRuntimeSafe =
   Safe.sDL_CreateThreadWithPropertiesRuntime
 
--- | Get the thread name as it was specified in @SDL_CreateThread()@.
+-- | Get the thread name as it was specified in @'createThread'@.
 --
 --     [Returns]: a pointer to a UTF-8 string that names the specified thread, or NULL if it doesn\'t have a name.
 --
@@ -227,7 +238,7 @@ getThreadName
   -> IO (PtrConst.PtrConst BG.CChar)
 getThreadName = Unsafe.sDL_GetThreadName
 
--- | Get the thread name as it was specified in @SDL_CreateThread()@.
+-- | Get the thread name as it was specified in @'createThread'@.
 --
 --     [Returns]: a pointer to a UTF-8 string that names the specified thread, or NULL if it doesn\'t have a name.
 --
@@ -430,7 +441,7 @@ setCurrentThreadPrioritySafe =
 --
 --     @since 3.2.0
 --
---     [See also]: @SDL_CreateThread@, 'detachThread'
+--     [See also]: @'createThread'@, 'detachThread'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -443,7 +454,7 @@ waitThread
   :: BG.Ptr SDL_Thread
   -- ^
   --
-  --           [@thread@]: the 'SDL_Thread' pointer that was returned from the @SDL_CreateThread()@ call that started this thread.
+  --           [@thread@]: the 'SDL_Thread' pointer that was returned from the @'createThread'@ call that started this thread.
   -> BG.Ptr BG.CInt
   -- ^
   --
@@ -469,7 +480,7 @@ waitThread = Unsafe.sDL_WaitThread
 --
 --     @since 3.2.0
 --
---     [See also]: @SDL_CreateThread@, 'detachThread'
+--     [See also]: @'createThread'@, 'detachThread'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -482,7 +493,7 @@ waitThreadSafe
   :: BG.Ptr SDL_Thread
   -- ^
   --
-  --           [@thread@]: the 'SDL_Thread' pointer that was returned from the @SDL_CreateThread()@ call that started this thread.
+  --           [@thread@]: the 'SDL_Thread' pointer that was returned from the @'createThread'@ call that started this thread.
   -> BG.Ptr BG.CInt
   -- ^
   --
@@ -558,7 +569,7 @@ getThreadStateSafe = Safe.sDL_GetThreadState
 --
 --     @since 3.2.0
 --
---     [See also]: @SDL_CreateThread@, 'waitThread'
+--     [See also]: @'createThread'@, 'waitThread'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -571,7 +582,7 @@ detachThread
   :: BG.Ptr SDL_Thread
   -- ^
   --
-  --           [@thread@]: the 'SDL_Thread' pointer that was returned from the @SDL_CreateThread()@ call that started this thread.
+  --           [@thread@]: the 'SDL_Thread' pointer that was returned from the @'createThread'@ call that started this thread.
   -> IO ()
 detachThread = Unsafe.sDL_DetachThread
 
@@ -593,7 +604,7 @@ detachThread = Unsafe.sDL_DetachThread
 --
 --     @since 3.2.0
 --
---     [See also]: @SDL_CreateThread@, 'waitThread'
+--     [See also]: @'createThread'@, 'waitThread'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -606,7 +617,7 @@ detachThreadSafe
   :: BG.Ptr SDL_Thread
   -- ^
   --
-  --           [@thread@]: the 'SDL_Thread' pointer that was returned from the @SDL_CreateThread()@ call that started this thread.
+  --           [@thread@]: the 'SDL_Thread' pointer that was returned from the @'createThread'@ call that started this thread.
   -> IO ()
 detachThreadSafe = Safe.sDL_DetachThread
 
@@ -787,3 +798,165 @@ cleanupTLS = Unsafe.sDL_CleanupTLS
 --     [C declaration]: @SDL_CleanupTLS@, defined at @SDL3\/SDL_thread.h 594:34@
 cleanupTLSSafe :: IO ()
 cleanupTLSSafe = Safe.sDL_CleanupTLS
+
+-- | Create a new thread with a default stack size.
+--
+--     The SDL_CreateThread macro as a function. Like the macro, it calls 'createThreadRuntime' with the C runtime\'s thread entry and exit functions for the platform it is compiled on (@_beginthreadex@ and @_endthreadex@ on Windows, NULL elsewhere), so prefer it to calling 'createThreadRuntime' directly.
+--
+--     This is equivalent to calling 'createThreadWithProperties' with the following properties set:
+--
+--     * @SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER@: @fn@
+--
+--     * @SDL_PROP_THREAD_CREATE_NAME_STRING@: @name@
+--
+--     * @SDL_PROP_THREAD_CREATE_USERDATA_POINTER@: @data@
+--
+--     [Returns]: an opaque pointer to the new thread object on success, NULL if the new thread could not be created; call 'SDL3.Sys.Error.getError' for more information.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'createThreadWithProperties', 'waitThread'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_CreateThread@.
+--                   The safe flavor is 'createThreadSafe'
+--                   : the entry function runs on the spawned thread, not during the call.
+--
+--     [C declaration]: @lithon_SDL_CreateThread@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 54:31@
+createThread
+  :: SDL3.Sys.Bindgen.Thread.SDL_ThreadFunction
+  -- ^
+  --
+  --           [@fn@]: the SDL_ThreadFunction function to call in the new thread.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@name@]: the name of the thread.
+  -> BG.Ptr BG.Void
+  -- ^
+  --
+  --           [@data@]: a pointer that is passed to @fn@.
+  -> IO (BG.Ptr SDL3.Sys.Bindgen.Thread.SDL_Thread)
+createThread = Unsafe.lithon_SDL_CreateThread
+
+-- | Create a new thread with a default stack size.
+--
+--     The SDL_CreateThread macro as a function. Like the macro, it calls 'createThreadRuntime' with the C runtime\'s thread entry and exit functions for the platform it is compiled on (@_beginthreadex@ and @_endthreadex@ on Windows, NULL elsewhere), so prefer it to calling 'createThreadRuntime' directly.
+--
+--     This is equivalent to calling 'createThreadWithProperties' with the following properties set:
+--
+--     * @SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER@: @fn@
+--
+--     * @SDL_PROP_THREAD_CREATE_NAME_STRING@: @name@
+--
+--     * @SDL_PROP_THREAD_CREATE_USERDATA_POINTER@: @data@
+--
+--     [Returns]: an opaque pointer to the new thread object on success, NULL if the new thread could not be created; call 'SDL3.Sys.Error.getError' for more information.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'createThreadWithProperties', 'waitThread'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @lithon_SDL_CreateThread@.
+--                   The unsafe flavor is 'createThread'
+--                   : the entry function runs on the spawned thread, not during the call.
+--
+--     [C declaration]: @lithon_SDL_CreateThread@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 54:31@
+createThreadSafe
+  :: SDL3.Sys.Bindgen.Thread.SDL_ThreadFunction
+  -- ^
+  --
+  --           [@fn@]: the SDL_ThreadFunction function to call in the new thread.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@name@]: the name of the thread.
+  -> BG.Ptr BG.Void
+  -- ^
+  --
+  --           [@data@]: a pointer that is passed to @fn@.
+  -> IO (BG.Ptr SDL3.Sys.Bindgen.Thread.SDL_Thread)
+createThreadSafe = Safe.lithon_SDL_CreateThread
+
+-- | Create a new thread with the specified properties.
+--
+--     The SDL_CreateThreadWithProperties macro as a function, passing the C runtime\'s thread entry and exit functions like 'createThread' does.
+--
+--     These are the supported properties:
+--
+--     * @SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER@: an SDL_ThreadFunction value that will be called at the start of the new thread\'s life. Required.
+--
+--     * @SDL_PROP_THREAD_CREATE_NAME_STRING@: the name of the new thread, which might be available to debuggers. Optional, defaults to NULL.
+--
+--     * @SDL_PROP_THREAD_CREATE_USERDATA_POINTER@: an arbitrary app-defined pointer, which is passed to the entry function on the new thread, as its only parameter. Optional, defaults to NULL.
+--
+--     * @SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER@: the size, in bytes, of the new thread\'s stack. Optional, defaults to 0 (system-defined default).
+--
+--     [Returns]: an opaque pointer to the new thread object on success, NULL if the new thread could not be created; call 'SDL3.Sys.Error.getError' for more information.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'createThread', 'waitThread'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_CreateThreadWithProperties@.
+--                   The safe flavor is 'createThreadWithPropertiesSafe'
+--                   : the entry function runs on the spawned thread, not during the call.
+--
+--     [C declaration]: @lithon_SDL_CreateThreadWithProperties@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 90:31@
+createThreadWithProperties
+  :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
+  -- ^
+  --
+  --           [@props@]: the properties to use.
+  -> IO (BG.Ptr SDL3.Sys.Bindgen.Thread.SDL_Thread)
+createThreadWithProperties =
+  Unsafe.lithon_SDL_CreateThreadWithProperties
+
+-- | Create a new thread with the specified properties.
+--
+--     The SDL_CreateThreadWithProperties macro as a function, passing the C runtime\'s thread entry and exit functions like 'createThread' does.
+--
+--     These are the supported properties:
+--
+--     * @SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER@: an SDL_ThreadFunction value that will be called at the start of the new thread\'s life. Required.
+--
+--     * @SDL_PROP_THREAD_CREATE_NAME_STRING@: the name of the new thread, which might be available to debuggers. Optional, defaults to NULL.
+--
+--     * @SDL_PROP_THREAD_CREATE_USERDATA_POINTER@: an arbitrary app-defined pointer, which is passed to the entry function on the new thread, as its only parameter. Optional, defaults to NULL.
+--
+--     * @SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER@: the size, in bytes, of the new thread\'s stack. Optional, defaults to 0 (system-defined default).
+--
+--     [Returns]: an opaque pointer to the new thread object on success, NULL if the new thread could not be created; call 'SDL3.Sys.Error.getError' for more information.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'createThread', 'waitThread'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @lithon_SDL_CreateThreadWithProperties@.
+--                   The unsafe flavor is 'createThreadWithProperties'
+--                   : the entry function runs on the spawned thread, not during the call.
+--
+--     [C declaration]: @lithon_SDL_CreateThreadWithProperties@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 90:31@
+createThreadWithPropertiesSafe
+  :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
+  -- ^
+  --
+  --           [@props@]: the properties to use.
+  -> IO (BG.Ptr SDL3.Sys.Bindgen.Thread.SDL_Thread)
+createThreadWithPropertiesSafe =
+  Safe.lithon_SDL_CreateThreadWithProperties

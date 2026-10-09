@@ -215,7 +215,7 @@ Variadic; draw a string formatted in Haskell with SDL_RenderDebugText.
 
 ## `wontfix` (7)
 
-They take a va_list, which has no FFI type; the variadic functions' shims cover logging and errors.
+They take a va_list, which has no FFI type; the variadic functions' shims cover logging, errors, and stream printing.
 
 - `SDL_SetErrorV` (SDL_error.h:108): parse: `Parse failure of underlying type of typedef 'va_list': Parse failure of underlying type of typedef '__gnuc_va_list': Unsupported built-in "__builtin_va_list"`
 - `SDL_IOvprintf` (SDL_iostream.h:681): parse: `Parse failure of underlying type of typedef 'va_list': Parse failure of underlying type of typedef '__gnuc_va_list': Unsupported built-in "__builtin_va_list"`

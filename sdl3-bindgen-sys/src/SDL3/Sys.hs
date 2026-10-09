@@ -45,6 +45,15 @@
 -- * This layer additionally provides typed pattern synonyms for
 --   the macro constant groups in SDL headers.
 --
+-- * What the FFI cannot call — SDL's variadic functions and the
+--   function-like macros hs-bindgen cannot translate — is reached through
+--   C shims: fixed-arity functions this package defines in C, exported
+--   from the module of the header they extend, in its C shims section,
+--   and named like what they wrap (@SDL_LogMessage@ -> @logMessage@,
+--   @SDL_MUSTLOCK@ -> @mustLock@). The variadic functions' shims take
+--   their message verbatim, never as a printf-style format string.
+--   @SDL_Log@ is @logApplication@: @log@ is the math function.
+--
 -- * Some aliases (@free@, @abs@, @init@, …) collide with the "Prelude";
 --   import this module qualified or curate your import list.
 --

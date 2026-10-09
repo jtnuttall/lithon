@@ -6,7 +6,7 @@
 --
 --     This category covers measuring time elapsed (@'getTicks'@, @'getPerformanceCounter'@), putting a thread to sleep for a certain amount of time (@'delay'@, @'delayNS'@, @'delayPrecise'@), and firing a callback function after a certain amount of time has elapsed (@'addTimer'@, etc).
 --
---     There are also useful macros to convert between time units, like @SDL_SECONDS_TO_NS()@ and such. Number of milliseconds in a second.
+--     There are also useful macros to convert between time units, like @'secondsToNs'@ and such. Number of milliseconds in a second.
 --
 --     This is always 1000.
 --
@@ -15,6 +15,8 @@
 --     == FFI conventions
 --
 --     Unsuffixed aliases are __unsafe__ foreign imports; aliases suffixed @Safe@ are safe. Functions whose callbacks fire during the call export only the Safe alias (the genuine unsafe import stays reachable under @SDL3.Sys.Bindgen.Timer.Unsafe@); functions curated unsafe-only export only the unsuffixed one. Each alias\'s documentation records its flavor and rationale.
+--
+--     The C shims are functions this package defines in C over what the FFI cannot call directly (variadic functions, function-like macros), each named after what it wraps; the same flavor rules apply. Their raw imports live under "SDL3.Sys.Bindgen.TimerShims".
 --
 --     Full conventions: "SDL3.Sys".
 module SDL3.Sys.Timer (
@@ -37,6 +39,11 @@ module SDL3.Sys.Timer (
   SDL3.Sys.Timer.addTimerNSSafe,
   SDL3.Sys.Timer.removeTimer,
   SDL3.Sys.Timer.removeTimerSafe,
+
+  -- * C shims
+  SDL3.Sys.Timer.secondsToNs,
+  SDL3.Sys.Timer.msToNs,
+  SDL3.Sys.Timer.usToNs,
 )
 where
 
@@ -49,6 +56,7 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 import SDL3.Sys.Bindgen.Timer
 import SDL3.Sys.Bindgen.Timer.Safe qualified as Safe
 import SDL3.Sys.Bindgen.Timer.Unsafe qualified as Unsafe
+import SDL3.Sys.Bindgen.TimerShims.Unsafe qualified as Unsafe
 
 -- | Get the number of milliseconds that have elapsed since the SDL library initialization.
 --
@@ -568,3 +576,93 @@ removeTimerSafe
   -> IO Bool
 removeTimerSafe =
   \x00 -> fmap CBool.toBool (Safe.sDL_RemoveTimer x00)
+
+-- | Convert seconds to nanoseconds.
+--
+--     The SDL_SECONDS_TO_NS macro as a function. This only converts whole numbers, not fractional seconds.
+--
+--     [Returns]: @s@, expressed in nanoseconds.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_SECONDS_TO_NS@.
+--                   The safe import is not exported
+--                   : pure math on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_SECONDS_TO_NS@, defined at @sdl3-bindgen-sys\/SDL_timer_shims.h 37:26@
+secondsToNs
+  :: BG.Word64
+  -- ^
+  --
+  --           [@s@]: the number of seconds to convert.
+  -> IO BG.Word64
+secondsToNs =
+  \x00 ->
+    fmap Coerce.coerce (Unsafe.lithon_SDL_SECONDS_TO_NS (Coerce.coerce x00))
+
+-- | Convert milliseconds to nanoseconds.
+--
+--     The SDL_MS_TO_NS macro as a function. This only converts whole numbers, not fractional milliseconds.
+--
+--     [Returns]: @ms@, expressed in nanoseconds.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_MS_TO_NS@.
+--                   The safe import is not exported
+--                   : pure math on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_MS_TO_NS@, defined at @sdl3-bindgen-sys\/SDL_timer_shims.h 55:26@
+msToNs
+  :: BG.Word64
+  -- ^
+  --
+  --           [@ms@]: the number of milliseconds to convert.
+  -> IO BG.Word64
+msToNs =
+  \x00 ->
+    fmap Coerce.coerce (Unsafe.lithon_SDL_MS_TO_NS (Coerce.coerce x00))
+
+-- | Convert microseconds to nanoseconds.
+--
+--     The SDL_US_TO_NS macro as a function. This only converts whole numbers, not fractional microseconds.
+--
+--     [Returns]: @us@, expressed in nanoseconds.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_US_TO_NS@.
+--                   The safe import is not exported
+--                   : pure math on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_US_TO_NS@, defined at @sdl3-bindgen-sys\/SDL_timer_shims.h 73:26@
+usToNs
+  :: BG.Word64
+  -- ^
+  --
+  --           [@us@]: the number of microseconds to convert.
+  -> IO BG.Word64
+usToNs =
+  \x00 ->
+    fmap Coerce.coerce (Unsafe.lithon_SDL_US_TO_NS (Coerce.coerce x00))
