@@ -194,7 +194,7 @@ invokeBindgen prescriptiveSpec priorSpecs baseModule includes ops = do
           , prescriptiveSpec
           }
   res <- liftIO $ HB.runBindgen rep.opts.invocationEnv spec ops
-  either (throwError . HsBindgenError baseModule) pure res
+  either (throwError . HsBindgenError baseModule) (pure . fst) res
 
 -- | A target's header universe, as data: how headers are discovered,
 -- filtered, and named. Planning is pure given the include graph.

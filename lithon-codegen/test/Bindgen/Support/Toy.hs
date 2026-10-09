@@ -127,7 +127,7 @@ invokeToy root env baseModule includes ops = do
         , prescriptiveSpec = Nothing
         }
       ops
-  either (\err -> assertFailure ("bindgen error: " <> toString (display err))) pure eres
+  either (\err -> assertFailure ("bindgen error: " <> toString (display err))) (pure . fst) eres
 
 -- | One seam invocation over the toy headers (each one an include, in
 -- list order) under the given base module.

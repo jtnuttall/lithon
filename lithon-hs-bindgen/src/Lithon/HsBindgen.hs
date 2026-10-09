@@ -16,6 +16,8 @@
 --   invocation records ('InvocationEnv' \/ 'InvocationSpec'),
 --   'runBindgen', and the 'BindgenM' operations. hs-bindgen's own
 --   orchestration vocabulary stays behind it.
+-- * "Lithon.HsBindgen.Skip" — what an invocation left unbound
+--   ('InvocationReport', returned by 'runBindgen'), in lithon-owned types.
 -- * "Lithon.HsBindgen.Transform" — AST-level passes over translated
 --   modules ('StubEdit', the rendered-text escape hatch), replacing
 --   post-render text surgery.
@@ -24,6 +26,7 @@
 --   to module assembly.
 module Lithon.HsBindgen (
   module Lithon.HsBindgen.Invoke,
+  module Lithon.HsBindgen.Skip,
   module Lithon.HsBindgen.Transform,
 
   -- * Categories ("HsBindgen.Backend.Category")
@@ -53,4 +56,5 @@ import HsBindgen.Config.Prelims (
  )
 
 import Lithon.HsBindgen.Invoke
+import Lithon.HsBindgen.Skip
 import Lithon.HsBindgen.Transform

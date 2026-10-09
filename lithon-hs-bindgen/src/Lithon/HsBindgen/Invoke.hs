@@ -41,6 +41,7 @@ module Lithon.HsBindgen.Invoke (
 import Clang.Paths (getRealPath)
 import Control.Monad (when)
 import Control.Monad.Reader (ReaderT, ask, lift, runReaderT)
+import Data.Bifunctor (bimap)
 import Data.Default (def)
 import Data.Foldable (toList)
 import Data.Text (Text)
@@ -76,6 +77,11 @@ import HsBindgen.Util.Tracer (PrettyForTrace (..))
 import HsBindgen.Util.Tracer qualified as Tracer
 import Lithon.Prelude (toString, (&), (.~))
 import Lithon.Prelude.Display (Display (..))
+import System.Console.ANSI (hSupportsANSIColor)
+import System.IO (hPutStr, stderr)
+
+import Lithon.HsBindgen.Invoke.Trace (collectTrace, collected, invocationReport, newCollector)
+import Lithon.HsBindgen.Skip (InvocationReport)
 
 -- | Per-project invocation environment: everything lithon varies about
 -- how hs-bindgen parses and names things. The consumer supplies the
@@ -94,7 +100,8 @@ data InvocationEnv = InvocationEnv
   , uniqueId :: String
   -- ^ Disambiguates generated global C names across packages.
   , verbosity :: Verbosity
-  -- ^ How much of hs-bindgen's own trace output the run prints.
+  -- ^ How much of hs-bindgen's own trace output the run prints. The skip
+  -- report 'runBindgen' returns is complete at every level.
   }
 
 -- | How much of hs-bindgen's own trace output a run prints. Each level
@@ -142,9 +149,45 @@ newtype BindgenM a = BindgenM (ReaderT InvocationEnv (Artefact CExpr) a)
 artefact :: Artefact CExpr a -> BindgenM a
 artefact = BindgenM . lift
 
--- | Run one hs-bindgen invocation.
-runBindgen :: InvocationEnv -> InvocationSpec -> BindgenM a -> IO (Either BindgenFailure a)
+-- | Run one hs-bindgen invocation: its result, and what it left unbound
+-- ("Lithon.HsBindgen.Skip"). The report rides beside the result because
+-- the artefact monad has no way to hand a value out of its own tracing.
+runBindgen
+  :: InvocationEnv
+  -> InvocationSpec
+  -> BindgenM a
+  -> IO (Either BindgenFailure (a, InvocationReport))
 runBindgen env spec (BindgenM m) = do
+  collector <- newCollector
+  ansiColor <- hSupportsANSIColor stderr
+  let
+    -- hs-bindgen takes two tracer configs, and a trace prints when its
+    -- level reaches the config's threshold. The unsafe one (frontendTracer)
+    -- carries the boot and frontend traces, which run up to errors. The
+    -- safe one (safeTracer) carries the backend, artefact and file-write
+    -- traces, which stop at notices: Quiet puts its threshold above all of
+    -- them, and Normal keeps hs-bindgen's default, Notice, which still
+    -- shows the notices (the seam's "no bindings" one is among them).
+    --
+    -- The frontend tracer lets everything from Info up through to the
+    -- report, which keeps what the skip report reads and prints only what
+    -- reaches frontendLevel: hs-bindgen reports most macro failures at
+    -- Info, and the skip report needs them at every verbosity. Printing is
+    -- what hs-bindgen's own stderr output does (same text, same colours);
+    -- only the threshold check moves here.
+    frontendTracer =
+      def
+        { Tracer.verbosity = Tracer.Verbosity (min Tracer.Info frontendLevel)
+        , Tracer.outputConfig =
+            Tracer.OutputConfigCustom
+              Tracer.OutputCustom
+                { Tracer.report = \lvl trace rendered -> do
+                    collectTrace collector trace
+                    when (lvl >= frontendLevel) (hPutStr stderr rendered)
+                , Tracer.ansiColor =
+                    if ansiColor then Tracer.EnableAnsiColor else Tracer.DisableAnsiColor
+                }
+        }
   res <-
     hsBindgenEMacroLang
       (pure . cExpr)
@@ -153,18 +196,11 @@ runBindgen env spec (BindgenM m) = do
       bindgenConfig
       rootDirectives
       (runReaderT m env)
-  pure $ either (Left . toFailure) Right res
+  report <- invocationReport <$> collected collector
+  pure $ bimap toFailure (,report) res
  where
   toFailure e = BindgenFailure (T.pack (show (prettyForTrace e)))
 
-  -- hs-bindgen takes two tracer configs, and a trace prints when its level
-  -- reaches the config's threshold. The unsafe one (frontendTracer) carries
-  -- the boot and frontend traces, which run up to errors. The safe one
-  -- (safeTracer) carries the backend, artefact and file-write traces, which
-  -- stop at notices: Quiet puts its threshold above all of them, and Normal
-  -- keeps hs-bindgen's default, Notice, which still shows the notices (the
-  -- seam's "no bindings" one is among them).
-  frontendTracer = def{Tracer.verbosity = Tracer.Verbosity frontendLevel}
   safeTracer = def{Tracer.verbosity = Tracer.Verbosity safeLevel}
 
   frontendLevel = case env.verbosity of

@@ -23,3 +23,14 @@ All notable changes to this project will be documented in this file.
   tracers; the field is new and required). `Normal` keeps the previous
   thresholds (frontend `Warning`, the safe tracer at hs-bindgen's default
   `Notice`); `Quiet` raises both (frontend `Error`, safe tracer `Warning`).
+- Skip report: `runBindgen` returns `(a, InvocationReport)`, and
+  `Lithon.HsBindgen.Skip` (re-exported from `Lithon.HsBindgen`) holds the
+  report's lithon-owned types: every selection root the run skipped
+  (`Skip`, with `SkipFailure`, conflicts, and missing dependencies), what its
+  prescriptive spec omitted, and the spec entries hs-bindgen rejected. It is
+  collected from the frontend traces at `Info` and above whatever the
+  `Verbosity`; the printed output is unchanged. The fork commit `977d2d596`
+  re-exports `HsBindgen.TraceMsg` (which `53376b013` had dropped),
+  `HsBindgen.Frontend.Pass.Select.IsPass`, and
+  `HsBindgen.Frontend.Analysis.DeclIndex` for it. New dependencies:
+  `ansi-terminal`, `containers`.
