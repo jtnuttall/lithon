@@ -29,16 +29,13 @@ module Lithon.HsBindgen.Invoke.Trace (
 
   -- * The report
   invocationReport,
-
-  -- * Rendering
-  vendorText,
-  scrubPaths,
 ) where
 
 import Clang.HighLevel.Types (SingleLoc (..))
 import Clang.Paths (getRealPath)
 import Data.Containers.ListUtils (nubOrd)
 import Data.IORef (IORef, modifyIORef', newIORef, readIORef)
+import Data.List (isSuffixOf)
 import Data.List.NonEmpty (NonEmpty (..), nonEmpty)
 import Data.Map.Strict qualified as Map
 import Data.Maybe (listToMaybe, mapMaybe)
@@ -62,7 +59,6 @@ import HsBindgen.TraceMsg (
   TraceMsg (..),
  )
 import HsBindgen.Util.Tracer (PrettyForTrace (..))
-import System.FilePath (takeFileName)
 
 import Lithon.HsBindgen.Skip
 
@@ -292,29 +288,50 @@ sourceLoc l = case singleLocPath l of
   C.OnCommandLine -> Nothing
 
 -- | hs-bindgen's rendering of a trace payload, the way its own output
--- spells it, on one line and with paths reduced to file names
--- ('scrubPaths').
+-- spells it, on one line, with a line that repeats the one before it
+-- said once ('dropRepeats') and paths reduced to file names
+-- ('scrubPath').
 vendorText :: (PrettyForTrace a) => a -> Text
-vendorText = scrubPaths . T.unwords . T.words . T.pack . show . prettyForTrace
+vendorText =
+  T.unwords
+    . map scrubPath
+    . concat
+    . dropRepeats
+    . map T.words
+    . T.lines
+    . T.pack
+    . show
+    . prettyForTrace
 
--- | Reduce every absolute path in the text to its file name: a word that,
--- once stripped of surrounding quotes, brackets, and punctuation, starts
--- with @\/@ and has at least two components. hs-bindgen's texts embed the
--- headers' paths (a macro parse error names its file), which differ by
--- machine; a header's name does not.
-scrubPaths :: Text -> Text
-scrubPaths = T.unwords . map scrub . T.words
+-- | Drop each line (as words) that repeats the end of the line kept before
+-- it, and blank lines. The macro typechecker reports an unbound name once
+-- per use, a line each, and hs-bindgen sets the first of those lines after
+-- its own heading (@Failed to typecheck macro:@), so a repeat is the
+-- previous line or its end.
+dropRepeats :: [[Text]] -> [[Text]]
+dropRepeats = go []
  where
-  scrub word
-    | Just file <- fileOf core = lead <> file <> trail
-    | otherwise = word
-   where
-    lead = T.takeWhile isWrapper word
-    trail = T.takeWhileEnd isWrapper (T.drop (T.length lead) word)
-    core = T.dropEnd (T.length trail) (T.drop (T.length lead) word)
-  fileOf core = case T.uncons core of
+  go _ [] = []
+  go kept (line : rest)
+    | line `isSuffixOf` kept = go kept rest
+    | otherwise = line : go line rest
+
+-- | Reduce a word that is an absolute path to its file name: once stripped
+-- of surrounding quotes, brackets, and punctuation, it starts with @\/@
+-- and has at least two components. hs-bindgen's texts embed the headers'
+-- paths (a macro parse error names its file), which differ by machine; a
+-- header's name does not.
+scrubPath :: Text -> Text
+scrubPath word
+  | Just file <- fileOf core = lead <> file <> trail
+  | otherwise = word
+ where
+  lead = T.takeWhile isWrapper word
+  trail = T.takeWhileEnd isWrapper (T.drop (T.length lead) word)
+  core = T.dropEnd (T.length trail) (T.drop (T.length lead) word)
+  fileOf path = case T.uncons path of
     Just ('/', _)
-      | components@(_ : _ : _) <- filter (not . T.null) (T.splitOn "/" core) ->
-          Just (T.pack (takeFileName (T.unpack (T.intercalate "/" components))))
+      | components@(_ : _ : _) <- filter (not . T.null) (T.splitOn "/" path) ->
+          Just (last components)
     _notAPath -> Nothing
   isWrapper c = c `elem` ("\"'`()[]{}<>,;" :: String)

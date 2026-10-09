@@ -34,3 +34,7 @@ All notable changes to this project will be documented in this file.
   `HsBindgen.Frontend.Pass.Select.IsPass`, and
   `HsBindgen.Frontend.Analysis.DeclIndex` for it. New dependencies:
   `ansi-terminal`, `containers`.
+- Skip report text: a failure's text says a line that repeats the one
+  before it (or its end) once (the macro typechecker reports an unbound name
+  once per use: `SDL_FOURCC`'s `Unbound variable: 'SDL_static_cast'` came
+  eight times). Everything else stays hs-bindgen's wording.

@@ -26,10 +26,14 @@ omitted and any entry of it hs-bindgen rejected.
   `Lithon.HsBindgen.Invoke.Trace` is the only importer of `HsBindgen.TraceMsg`,
   `HsBindgen.Frontend.Pass.Select.IsPass`, and
   `HsBindgen.Frontend.Analysis.DeclIndex`, which the fork re-exports for it.
-  Its matches on hs-bindgen's message types have no wildcards, so a vendor bump
-  that adds a failure breaks the build here.
-- hs-bindgen's own text for a failure crosses the seam on one line, with
-  every absolute path reduced to its file name.
+  Its classification matches on `SelectMsg`, `UnusableReason`,
+  `DelayedParseMsg`, and `ResolveBindingSpecsMsg` have no wildcards, so a
+  vendor bump that adds a failure breaks the build here. Only the filter
+  that picks the select and resolve-binding-specs traces out of every
+  `TraceMsg` has one, by design.
+- hs-bindgen's own text for a failure crosses the seam on one line, with a
+  line that repeats the one before it (or its end) said once, and with every
+  absolute path reduced to its file name.
 
 ## Vendored sources
 

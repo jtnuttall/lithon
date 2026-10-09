@@ -57,8 +57,10 @@ import Lithon.Codegen.Bindgen.Unbound (
 -- typecheck (reported at Info, below a default run's output), a variadic
 -- function, a @long double@ typedef and a function returning it, a
 -- function over a type from a header the plan excludes, a function shadowed
--- by a same-name macro (both halves are dropped), and one function that
--- binds.
+-- by a same-name macro (both halves are dropped), one function that
+-- binds, and a cast macro over a type parameter (which fails to parse)
+-- used twice by another macro, whose typecheck failure names it once per
+-- use: the ledger says it once (the @unbound-toy@ golden).
 skipHeader :: Text
 skipHeader =
   unlines
@@ -76,6 +78,8 @@ skipHeader =
     , "#define toy_memcpy memcpy"
     , "int toy_ok(int x);"
     , "int toy_also(int x);"
+    , "#define toy_cast(type, x) ((type)(x))"
+    , "#define TOY_TWICE(x) (toy_cast(toy_size, x) + toy_cast(toy_size, x))"
     , "#endif"
     ]
 
@@ -150,9 +154,11 @@ runChain uniqueId =
 
 -- | A run under 'HB.Quiet' prints errors only, yet reports every skipped
 -- root, in hs-bindgen's order: the Info-level macro failure, the
--- warning-level parse failures, the missing dependency, and both halves of
--- the conflict. The include guard (an empty macro) is not a skip, and
--- neither is anything of the non-main @toy_hidden.h@ or @<stddef.h>@.
+-- warning-level parse failures, the missing dependency, both halves of
+-- the conflict, and the cast macro's parse failure and the failures of the
+-- macro using it (its own, and its missing dependency's). The include
+-- guard (an empty macro) is not a skip, and neither is anything of the
+-- non-main @toy_hidden.h@ or @<stddef.h>@.
 unit_skipsCapturedUnderQuiet :: Assertion
 unit_skipsCapturedUnderQuiet = do
   (_, report) <-
@@ -171,6 +177,8 @@ unit_skipsCapturedUnderQuiet = do
         , ("toy_hidden_get", ["dependency"])
         , ("toy_memcpy", ["conflict"])
         , ("macro toy_memcpy", ["conflict"])
+        , ("macro toy_cast", ["macro-parse"])
+        , ("macro TOY_TWICE", ["dependency", "macro-typecheck"])
         ]
   report.omitted @?= []
   report.overrideProblems @?= []
@@ -190,6 +198,8 @@ unit_ledgerAttributesToUnits = do
         , ("toy_hidden_get", "toy_skip.h", 10)
         , ("toy_memcpy", "toy_skip.h", 11)
         , ("macro toy_memcpy", "toy_skip.h", 11)
+        , ("macro toy_cast", "toy_skip.h", 15)
+        , ("macro TOY_TWICE", "toy_skip.h", 16)
         , ("toy_other_log", "toy_other.h", 4)
         ]
   [map HB.renderCName r.report.omitted | r <- results] @?= [["toy_ok"], []]
@@ -272,6 +282,12 @@ toyRegistry =
             , note = "No Haskell FFI type for long double; the hidden type is never bound."
             , issue = Nothing
             , names = ["toy_wide", "toy_wide_get", "toy_hidden_get"]
+            }
+        , UnboundGroup
+            { disposition = WontFix
+            , note = "A cast over a type parameter, and a macro casting through it twice."
+            , issue = Nothing
+            , names = ["macro toy_cast", "macro TOY_TWICE"]
             }
         ]
     }

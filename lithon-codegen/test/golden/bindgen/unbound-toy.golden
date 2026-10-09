@@ -8,7 +8,7 @@ hs-bindgen does not bind these declarations of the Toy 1.0 headers. [`unbound.js
 | ----------- | ----: |
 | `shim`      |     2 |
 | `constant`  |     1 |
-| `wontfix`   |     3 |
+| `wontfix`   |     5 |
 | `upstream`  |     2 |
 
 - `shim`: a lithon-authored C shim binds it instead.
@@ -45,6 +45,13 @@ No Haskell FFI type for long double; the hidden type is never bound.
 - `toy_wide` (toy_skip.h:8): parse: `Unsupported floating-point type long double`
 - `toy_wide_get` (toy_skip.h:9): parse: `Parse failure of underlying type of typedef 'toy_wide': Unsupported floating-point type long double`
 - `toy_hidden_get` (toy_skip.h:10): needs `toy_hidden` (not selected), `struct toy_hidden` (not selected)
+
+## `wontfix` (2)
+
+A cast over a type parameter, and a macro casting through it twice.
+
+- `macro toy_cast` (toy_skip.h:15): macro-parse: `Could not parse macro: "toy_skip.h" (line 15, column 34): unexpected "(" (simpleEnum CXToken_Punctuation) expecting operator`
+- `macro TOY_TWICE` (toy_skip.h:16): needs `macro toy_cast` (macro-parse); macro-typecheck: `Failed to typecheck macro: Unbound variable: 'toy_cast'`
 
 ## Blocking dependencies outside the bound headers
 
