@@ -1,5 +1,9 @@
 {
   "groups": {
+    "SDL_AudioDeviceID": {
+      "combine": "value",
+      "members": ["SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK", "SDL_AUDIO_DEVICE_DEFAULT_RECORDING"]
+    },
     "SDL_BlendMode": {
       "combine": "value",
       "prefix": "SDL_BLENDMODE_"
@@ -97,6 +101,10 @@
       "prefix": "SDL_BUTTON_",
       "suffix": "MASK"
     },
+    "SDL_MouseID": {
+      "combine": "value",
+      "members": ["SDL_TOUCH_MOUSEID", "SDL_PEN_MOUSEID"]
+    },
     "SDL_PenInputFlags": {
       "combine": "bitmask",
       "prefix": "SDL_PEN_INPUT_"
@@ -104,6 +112,14 @@
     "SDL_SurfaceFlags": {
       "combine": "bitmask",
       "prefix": "SDL_SURFACE_"
+    },
+    "SDL_Time": {
+      "combine": "value",
+      "members": ["SDL_MAX_TIME", "SDL_MIN_TIME"]
+    },
+    "SDL_TouchID": {
+      "combine": "value",
+      "members": ["SDL_MOUSE_TOUCHID", "SDL_PEN_TOUCHID"]
     },
     "SDL_TrayEntryFlags": {
       "combine": "bitmask",
@@ -116,6 +132,49 @@
         "SDL_WINDOW_SURFACE_VSYNC_DISABLED",
         "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE"
       ]
+    },
+    "Sint16": {
+      "combine": "value",
+      "members": ["SDL_MAX_SINT16", "SDL_MIN_SINT16"]
+    },
+    "Sint32": {
+      "combine": "value",
+      "members": ["SDL_MAX_SINT32", "SDL_MIN_SINT32"]
+    },
+    "Sint64": {
+      "combine": "value",
+      "members": ["SDL_MAX_SINT64", "SDL_MIN_SINT64"]
+    },
+    "Sint8": {
+      "combine": "value",
+      "members": ["SDL_MAX_SINT8", "SDL_MIN_SINT8"]
+    },
+    "Uint16": {
+      "combine": "value",
+      "members": ["SDL_MAX_UINT16", "SDL_MIN_UINT16"]
+    },
+    "Uint32": {
+      "combine": "value",
+      "members": ["SDL_MAX_UINT32", "SDL_MIN_UINT32"]
+    },
+    "Uint64": {
+      "combine": "value",
+      "members": ["SDL_MAX_UINT64", "SDL_MIN_UINT64"]
+    },
+    "Uint8": {
+      "combine": "value",
+      "members": ["SDL_MAX_UINT8", "SDL_MIN_UINT8"]
+    },
+    "size_t": {
+      "combine": "value",
+      "members": [
+        "SDL_SIZE_MAX",
+        "SDL_ICONV_ERROR",
+        "SDL_ICONV_E2BIG",
+        "SDL_ICONV_EILSEQ",
+        "SDL_ICONV_EINVAL"
+      ],
+      "native": "Word64"
     }
   }
 }

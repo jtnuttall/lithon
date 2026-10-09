@@ -1,3 +1,4 @@
+{-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL\'s C-library replacements: memory, strings, math, and conversions.
@@ -9,6 +10,31 @@
 --     Full conventions: "SDL3.Sys".
 module SDL3.Sys.Stdinc (
   module SDL3.Sys.Bindgen.Stdinc,
+
+  -- * Typed constants
+  pattern SDL3.Sys.Stdinc.SDL_MAX_TIME,
+  pattern SDL3.Sys.Stdinc.SDL_MIN_TIME,
+  pattern SDL3.Sys.Stdinc.SDL_MAX_SINT16,
+  pattern SDL3.Sys.Stdinc.SDL_MIN_SINT16,
+  pattern SDL3.Sys.Stdinc.SDL_MAX_SINT32,
+  pattern SDL3.Sys.Stdinc.SDL_MIN_SINT32,
+  pattern SDL3.Sys.Stdinc.SDL_MAX_SINT64,
+  pattern SDL3.Sys.Stdinc.SDL_MIN_SINT64,
+  pattern SDL3.Sys.Stdinc.SDL_MAX_SINT8,
+  pattern SDL3.Sys.Stdinc.SDL_MIN_SINT8,
+  pattern SDL3.Sys.Stdinc.SDL_MAX_UINT16,
+  pattern SDL3.Sys.Stdinc.SDL_MIN_UINT16,
+  pattern SDL3.Sys.Stdinc.SDL_MAX_UINT32,
+  pattern SDL3.Sys.Stdinc.SDL_MIN_UINT32,
+  pattern SDL3.Sys.Stdinc.SDL_MAX_UINT64,
+  pattern SDL3.Sys.Stdinc.SDL_MIN_UINT64,
+  pattern SDL3.Sys.Stdinc.SDL_MAX_UINT8,
+  pattern SDL3.Sys.Stdinc.SDL_MIN_UINT8,
+  pattern SDL3.Sys.Stdinc.SDL_SIZE_MAX,
+  pattern SDL3.Sys.Stdinc.SDL_ICONV_ERROR,
+  pattern SDL3.Sys.Stdinc.SDL_ICONV_E2BIG,
+  pattern SDL3.Sys.Stdinc.SDL_ICONV_EILSEQ,
+  pattern SDL3.Sys.Stdinc.SDL_ICONV_EINVAL,
 
   -- * Function aliases
   SDL3.Sys.Stdinc.malloc,
@@ -7592,3 +7618,105 @@ sizeAddCheckOverflowBuiltinSafe =
         fmap
           CBool.toBool
           (Safe.sDL_size_add_check_overflow_builtin (Coerce.coerce x00) (Coerce.coerce x11) x22)
+
+-- | Typed constant for macro @SDL_MAX_TIME@.
+pattern SDL_MAX_TIME :: SDL_Time
+pattern SDL_MAX_TIME = SDL_Time 9223372036854775807
+
+-- | Typed constant for macro @SDL_MIN_TIME@.
+pattern SDL_MIN_TIME :: SDL_Time
+pattern SDL_MIN_TIME <- SDL_Time (-9223372036854775808)
+ where
+  SDL_MIN_TIME = SDL_Time (-9223372036854775808)
+
+-- | Typed constant for macro @SDL_MAX_SINT16@.
+pattern SDL_MAX_SINT16 :: Sint16
+pattern SDL_MAX_SINT16 = Sint16 32767
+
+-- | Typed constant for macro @SDL_MIN_SINT16@.
+pattern SDL_MIN_SINT16 :: Sint16
+pattern SDL_MIN_SINT16 <- Sint16 (-32768)
+ where
+  SDL_MIN_SINT16 = Sint16 (-32768)
+
+-- | Typed constant for macro @SDL_MAX_SINT32@.
+pattern SDL_MAX_SINT32 :: Sint32
+pattern SDL_MAX_SINT32 = Sint32 2147483647
+
+-- | Typed constant for macro @SDL_MIN_SINT32@.
+pattern SDL_MIN_SINT32 :: Sint32
+pattern SDL_MIN_SINT32 <- Sint32 (-2147483648)
+ where
+  SDL_MIN_SINT32 = Sint32 (-2147483648)
+
+-- | Typed constant for macro @SDL_MAX_SINT64@.
+pattern SDL_MAX_SINT64 :: Sint64
+pattern SDL_MAX_SINT64 = Sint64 9223372036854775807
+
+-- | Typed constant for macro @SDL_MIN_SINT64@.
+pattern SDL_MIN_SINT64 :: Sint64
+pattern SDL_MIN_SINT64 <- Sint64 (-9223372036854775808)
+ where
+  SDL_MIN_SINT64 = Sint64 (-9223372036854775808)
+
+-- | Typed constant for macro @SDL_MAX_SINT8@.
+pattern SDL_MAX_SINT8 :: Sint8
+pattern SDL_MAX_SINT8 = Sint8 127
+
+-- | Typed constant for macro @SDL_MIN_SINT8@.
+pattern SDL_MIN_SINT8 :: Sint8
+pattern SDL_MIN_SINT8 <- Sint8 (-128)
+ where
+  SDL_MIN_SINT8 = Sint8 (-128)
+
+-- | Typed constant for macro @SDL_MAX_UINT16@.
+pattern SDL_MAX_UINT16 :: Uint16
+pattern SDL_MAX_UINT16 = Uint16 65535
+
+-- | Typed constant for macro @SDL_MIN_UINT16@.
+pattern SDL_MIN_UINT16 :: Uint16
+pattern SDL_MIN_UINT16 = Uint16 0
+
+-- | Typed constant for macro @SDL_MAX_UINT32@.
+pattern SDL_MAX_UINT32 :: Uint32
+pattern SDL_MAX_UINT32 = Uint32 4294967295
+
+-- | Typed constant for macro @SDL_MIN_UINT32@.
+pattern SDL_MIN_UINT32 :: Uint32
+pattern SDL_MIN_UINT32 = Uint32 0
+
+-- | Typed constant for macro @SDL_MAX_UINT64@.
+pattern SDL_MAX_UINT64 :: Uint64
+pattern SDL_MAX_UINT64 = Uint64 18446744073709551615
+
+-- | Typed constant for macro @SDL_MIN_UINT64@.
+pattern SDL_MIN_UINT64 :: Uint64
+pattern SDL_MIN_UINT64 = Uint64 0
+
+-- | Typed constant for macro @SDL_MAX_UINT8@.
+pattern SDL_MAX_UINT8 :: Uint8
+pattern SDL_MAX_UINT8 = Uint8 255
+
+-- | Typed constant for macro @SDL_MIN_UINT8@.
+pattern SDL_MIN_UINT8 :: Uint8
+pattern SDL_MIN_UINT8 = Uint8 0
+
+-- | Typed constant for macro @SDL_SIZE_MAX@ (C type @size_t@).
+pattern SDL_SIZE_MAX :: BG.Word64
+pattern SDL_SIZE_MAX = 18446744073709551615
+
+-- | Typed constant for macro @SDL_ICONV_ERROR@ (C type @size_t@).
+pattern SDL_ICONV_ERROR :: BG.Word64
+pattern SDL_ICONV_ERROR = 18446744073709551615
+
+-- | Typed constant for macro @SDL_ICONV_E2BIG@ (C type @size_t@).
+pattern SDL_ICONV_E2BIG :: BG.Word64
+pattern SDL_ICONV_E2BIG = 18446744073709551614
+
+-- | Typed constant for macro @SDL_ICONV_EILSEQ@ (C type @size_t@).
+pattern SDL_ICONV_EILSEQ :: BG.Word64
+pattern SDL_ICONV_EILSEQ = 18446744073709551613
+
+-- | Typed constant for macro @SDL_ICONV_EINVAL@ (C type @size_t@).
+pattern SDL_ICONV_EINVAL :: BG.Word64
+pattern SDL_ICONV_EINVAL = 18446744073709551612

@@ -1,3 +1,4 @@
+{-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL offers touch input, on platforms that support it. It can manage multiple touch devices and track multiple fingers on those devices.
@@ -19,6 +20,10 @@
 --     Full conventions: "SDL3.Sys".
 module SDL3.Sys.Touch (
   module SDL3.Sys.Bindgen.Touch,
+
+  -- * Typed constants
+  pattern SDL3.Sys.Touch.SDL_MOUSE_TOUCHID,
+  pattern SDL3.Sys.Touch.SDL_PEN_TOUCHID,
 
   -- * Function aliases
   SDL3.Sys.Touch.getTouchDevices,
@@ -219,3 +224,11 @@ getTouchFingersSafe
   --           [@count@]: a pointer filled in with the number of fingers returned, can be NULL.
   -> IO (BG.Ptr (BG.Ptr SDL_Finger))
 getTouchFingersSafe = Safe.sDL_GetTouchFingers
+
+-- | Typed constant for macro @SDL_MOUSE_TOUCHID@.
+pattern SDL_MOUSE_TOUCHID :: SDL_TouchID
+pattern SDL_MOUSE_TOUCHID = SDL_TouchID 18446744073709551615
+
+-- | Typed constant for macro @SDL_PEN_TOUCHID@ (declared in @SDL_pen.h@).
+pattern SDL_PEN_TOUCHID :: SDL_TouchID
+pattern SDL_PEN_TOUCHID = SDL_TouchID 18446744073709551614

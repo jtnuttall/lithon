@@ -178,6 +178,15 @@ registry maintained alongside the generator.
 Similar to the `vulkan` library, every group member is a pattern synonym
 typed at its newtype, e.g. `SDL_INIT_VIDEO :: SDL_InitFlags`.
 
+A constant lives with its type, wherever SDL declares the macro:
+`SDL_TOUCH_MOUSEID` is an `SDL_MouseID`, so it is in `SDL3.Sys.Mouse`,
+not with `SDL_touch.h`'s other names. This includes macros hs-bindgen
+cannot translate (casts to typedef names, token pasting, or libc
+macros), which exist only here: the limits (`SDL_MIN_SINT8`,
+`SDL_MAX_TIME`, ...), the default audio devices, and the mouse and
+touch ids. The `size_t` constants (`SDL_SIZE_MAX`, `SDL_ICONV_ERROR`,
+...) are `Word64`.
+
 You can combine bitmask groups with `.|.` from `Data.Bits`:
 
 ```haskell
@@ -247,6 +256,10 @@ Known gaps, so you can discover them here instead of mid-build:
   ([hs-bindgen#2097](https://github.com/well-typed/hs-bindgen/issues/2097)).
   The `SDL_size_mul_check_overflow_builtin` and
   `SDL_size_add_check_overflow_builtin` variants are bound.
+- `SDL_BYTEORDER` and `SDL_FLOATWORDORDER`: they describe the platform
+  the headers were read on, not SDL; use `GHC.ByteOrder.targetByteOrder`.
+- The `SDL_PROP_GAMEPAD_CAP_*` aliases of the joystick keys; use the
+  `SDL_PROP_JOYSTICK_CAP_*` keys.
 - The seven `long`-typed `SDL_stdinc.h` libc clones (`strtol`/`ltoa`
   families, `lround`/`lroundf`): their FFI types cannot be correct on
   both LP64 and LLP64, so they are omitted.

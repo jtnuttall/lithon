@@ -1,3 +1,4 @@
+{-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Audio functionality for the SDL library.
@@ -81,6 +82,10 @@
 --     Full conventions: "SDL3.Sys".
 module SDL3.Sys.Audio (
   module SDL3.Sys.Bindgen.Audio,
+
+  -- * Typed constants
+  pattern SDL3.Sys.Audio.SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK,
+  pattern SDL3.Sys.Audio.SDL_AUDIO_DEVICE_DEFAULT_RECORDING,
 
   -- * Function aliases
   SDL3.Sys.Audio.getNumAudioDrivers,
@@ -4793,3 +4798,11 @@ getSilenceValueForFormatSafe
 getSilenceValueForFormatSafe =
   \x00 ->
     fmap Coerce.coerce (Safe.sDL_GetSilenceValueForFormat x00)
+
+-- | Typed constant for macro @SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK@.
+pattern SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK :: SDL_AudioDeviceID
+pattern SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK = SDL_AudioDeviceID 4294967295
+
+-- | Typed constant for macro @SDL_AUDIO_DEVICE_DEFAULT_RECORDING@.
+pattern SDL_AUDIO_DEVICE_DEFAULT_RECORDING :: SDL_AudioDeviceID
+pattern SDL_AUDIO_DEVICE_DEFAULT_RECORDING = SDL_AudioDeviceID 4294967294

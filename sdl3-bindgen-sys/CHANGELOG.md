@@ -12,6 +12,19 @@
   generator now sets `SDL_SLOW_MEMCPY`, `SDL_SLOW_MEMMOVE` and
   `SDL_SLOW_MEMSET`, so the declarations stay and bind to SDL's own
   functions.
+- Typed constants for 29 macros hs-bindgen cannot translate, each typed at
+  its C type (its newtype, or `Word64` for `size_t`) and exported from the
+  curated module of that type:
+  - `SDL3.Sys.Stdinc`: the sixteen `SDL_MAX_*` and `SDL_MIN_*` limits of
+    `Sint8` through `Uint64` (`SDL_MIN_SINT8`, `SDL_MAX_UINT64`, ...),
+    `SDL_MAX_TIME` and `SDL_MIN_TIME` (`SDL_Time`), and `SDL_SIZE_MAX`,
+    `SDL_ICONV_ERROR`, `SDL_ICONV_E2BIG`, `SDL_ICONV_EILSEQ` and
+    `SDL_ICONV_EINVAL`, which are `Word64` (the `size_t` constants).
+  - `SDL3.Sys.Audio`: `SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK` and
+    `SDL_AUDIO_DEVICE_DEFAULT_RECORDING`.
+  - `SDL3.Sys.Mouse`: `SDL_TOUCH_MOUSEID` and `SDL_PEN_MOUSEID`.
+  - `SDL3.Sys.Touch`: `SDL_MOUSE_TOUCHID` and `SDL_PEN_TOUCHID`.
+- ABI assertions for the 29 constants.
 
 ### Changed
 
