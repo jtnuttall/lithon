@@ -3,9 +3,6 @@ version:
   binding_specification: "1.0"
 hsmodule: Mpv.Sys.Bindgen.RenderGl
 ctypes:
-  - omit:
-      headers: mpv/render_gl.h
-      cname: mpv_client_api_version
   - headers: mpv/render_gl.h
     cname: struct mpv_opengl_init_params
     hsname: Mpv_opengl_init_params
