@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Init.Safe (
@@ -16,6 +18,9 @@ module SDL3.Sys.Bindgen.Init.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -23,7 +28,8 @@ import SDL3.Sys.Bindgen.Init
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_init.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_init.h>"
          , "_Bool hs_bindgen_cce05a9def0ccffc ("
          , "  SDL_InitFlags arg1"
          , ")"
@@ -92,15 +98,16 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_Safe_SDL_Init@
 foreign import ccall safe "hs_bindgen_cce05a9def0ccffc"
   hs_bindgen_cce05a9def0ccffc_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_Safe_SDL_Init@
 hs_bindgen_cce05a9def0ccffc
   :: SDL_InitFlags
   -> IO BG.CBool
 hs_bindgen_cce05a9def0ccffc =
-  BG.fromFFIType hs_bindgen_cce05a9def0ccffc_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_cce05a9def0ccffc_base (BG.toFFIType x0))
 
 -- | Initialize the SDL library.
 --
@@ -152,15 +159,16 @@ sDL_Init = hs_bindgen_cce05a9def0ccffc
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_Safe_SDL_InitSubSystem@
 foreign import ccall safe "hs_bindgen_7c583c295e3b8523"
   hs_bindgen_7c583c295e3b8523_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_Safe_SDL_InitSubSystem@
 hs_bindgen_7c583c295e3b8523
   :: SDL_InitFlags
   -> IO BG.CBool
 hs_bindgen_7c583c295e3b8523 =
-  BG.fromFFIType hs_bindgen_7c583c295e3b8523_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_7c583c295e3b8523_base (BG.toFFIType x0))
 
 -- | Compatibility function to initialize the SDL library.
 --
@@ -186,7 +194,7 @@ sDL_InitSubSystem = hs_bindgen_7c583c295e3b8523
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_Safe_SDL_QuitSubSystem@
 foreign import ccall safe "hs_bindgen_c31cb1c8dc07319b"
   hs_bindgen_c31cb1c8dc07319b_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_Safe_SDL_QuitSubSystem@
@@ -194,7 +202,8 @@ hs_bindgen_c31cb1c8dc07319b
   :: SDL_InitFlags
   -> IO ()
 hs_bindgen_c31cb1c8dc07319b =
-  BG.fromFFIType hs_bindgen_c31cb1c8dc07319b_base
+  \x0 ->
+    hs_bindgen_c31cb1c8dc07319b_base (BG.toFFIType x0)
 
 -- | Shut down specific SDL subsystems.
 --
@@ -218,15 +227,16 @@ sDL_QuitSubSystem = hs_bindgen_c31cb1c8dc07319b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_Safe_SDL_WasInit@
 foreign import ccall safe "hs_bindgen_6d57cac3c583d674"
   hs_bindgen_6d57cac3c583d674_base
-    :: BG.Word32
-    -> IO BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_Safe_SDL_WasInit@
 hs_bindgen_6d57cac3c583d674
   :: SDL_InitFlags
   -> IO SDL_InitFlags
 hs_bindgen_6d57cac3c583d674 =
-  BG.fromFFIType hs_bindgen_6d57cac3c583d674_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_6d57cac3c583d674_base (BG.toFFIType x0))
 
 -- | Get a mask of the specified subsystems which are currently initialized.
 --
@@ -255,7 +265,7 @@ foreign import ccall safe "hs_bindgen_96d0ac915668fb34"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_Safe_SDL_Quit@
 hs_bindgen_96d0ac915668fb34 :: IO ()
 hs_bindgen_96d0ac915668fb34 =
-  BG.fromFFIType hs_bindgen_96d0ac915668fb34_base
+  hs_bindgen_96d0ac915668fb34_base
 
 -- | Clean up all initialized subsystems.
 --
@@ -276,12 +286,12 @@ sDL_Quit = hs_bindgen_96d0ac915668fb34
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_Safe_SDL_IsMainThread@
 foreign import ccall safe "hs_bindgen_45b2d9eafd0eabc3"
   hs_bindgen_45b2d9eafd0eabc3_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_Safe_SDL_IsMainThread@
 hs_bindgen_45b2d9eafd0eabc3 :: IO BG.CBool
 hs_bindgen_45b2d9eafd0eabc3 =
-  BG.fromFFIType hs_bindgen_45b2d9eafd0eabc3_base
+  fmap BG.fromFFIType hs_bindgen_45b2d9eafd0eabc3_base
 
 -- | Return whether this is the main thread.
 --
@@ -304,8 +314,8 @@ foreign import ccall safe "hs_bindgen_d86c3ceed06f5ebf"
   hs_bindgen_d86c3ceed06f5ebf_base
     :: BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_Safe_SDL_RunOnMainThread@
 hs_bindgen_d86c3ceed06f5ebf
@@ -314,7 +324,12 @@ hs_bindgen_d86c3ceed06f5ebf
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_d86c3ceed06f5ebf =
-  BG.fromFFIType hs_bindgen_d86c3ceed06f5ebf_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_d86c3ceed06f5ebf_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Call a function on the main thread during event processing.
 --
@@ -353,7 +368,7 @@ foreign import ccall safe "hs_bindgen_d087dffccd50b723"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_Safe_SDL_SetAppMetadata@
 hs_bindgen_d087dffccd50b723
@@ -362,7 +377,12 @@ hs_bindgen_d087dffccd50b723
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_d087dffccd50b723 =
-  BG.fromFFIType hs_bindgen_d087dffccd50b723_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_d087dffccd50b723_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Specify basic metadata about your app.
 --
@@ -406,7 +426,7 @@ foreign import ccall safe "hs_bindgen_85f726d170efe2ac"
   hs_bindgen_85f726d170efe2ac_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_Safe_SDL_SetAppMetadataProperty@
 hs_bindgen_85f726d170efe2ac
@@ -414,7 +434,9 @@ hs_bindgen_85f726d170efe2ac
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_85f726d170efe2ac =
-  BG.fromFFIType hs_bindgen_85f726d170efe2ac_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_85f726d170efe2ac_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Specify metadata about your app through a set of properties.
 --
@@ -475,7 +497,8 @@ hs_bindgen_0affadab10f86eb8
   :: PtrConst.PtrConst BG.CChar
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_0affadab10f86eb8 =
-  BG.fromFFIType hs_bindgen_0affadab10f86eb8_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_0affadab10f86eb8_base (BG.toFFIType x0))
 
 -- | Get metadata about your app.
 --

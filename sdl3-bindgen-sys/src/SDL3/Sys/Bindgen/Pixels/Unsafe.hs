@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Pixels.Unsafe (
@@ -17,6 +19,9 @@ module SDL3.Sys.Bindgen.Pixels.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -25,7 +30,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_pixels.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_pixels.h>"
          , "char const *hs_bindgen_8fbe065b3c4d8879 ("
          , "  SDL_PixelFormat arg1"
          , ")"
@@ -131,7 +137,7 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_GetPixelFormatName@
 foreign import ccall unsafe "hs_bindgen_8fbe065b3c4d8879"
   hs_bindgen_8fbe065b3c4d8879_base
-    :: BG.Word32
+    :: BG.CUInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_GetPixelFormatName@
@@ -139,7 +145,8 @@ hs_bindgen_8fbe065b3c4d8879
   :: SDL_PixelFormat
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_8fbe065b3c4d8879 =
-  BG.fromFFIType hs_bindgen_8fbe065b3c4d8879_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_8fbe065b3c4d8879_base (BG.toFFIType x0))
 
 -- | Get the human readable name of a pixel format.
 --
@@ -161,13 +168,13 @@ sDL_GetPixelFormatName = hs_bindgen_8fbe065b3c4d8879
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_GetMasksForPixelFormat@
 foreign import ccall unsafe "hs_bindgen_8f634ab31e40ca98"
   hs_bindgen_8f634ab31e40ca98_base
-    :: BG.Word32
+    :: BG.CUInt
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_GetMasksForPixelFormat@
 hs_bindgen_8f634ab31e40ca98
@@ -179,7 +186,22 @@ hs_bindgen_8f634ab31e40ca98
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_8f634ab31e40ca98 =
-  BG.fromFFIType hs_bindgen_8f634ab31e40ca98_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_8f634ab31e40ca98_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
 --
@@ -224,12 +246,12 @@ sDL_GetMasksForPixelFormat =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_GetPixelFormatForMasks@
 foreign import ccall unsafe "hs_bindgen_e7620db26f444473"
   hs_bindgen_e7620db26f444473_base
-    :: BG.Int32
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
-    -> IO BG.Word32
+    :: BG.CInt
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_GetPixelFormatForMasks@
 hs_bindgen_e7620db26f444473
@@ -240,7 +262,20 @@ hs_bindgen_e7620db26f444473
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO SDL_PixelFormat
 hs_bindgen_e7620db26f444473 =
-  BG.fromFFIType hs_bindgen_e7620db26f444473_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_e7620db26f444473_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Convert a bpp value and RGBA masks to an enumerated pixel format.
 --
@@ -283,7 +318,7 @@ sDL_GetPixelFormatForMasks =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_GetPixelFormatDetails@
 foreign import ccall unsafe "hs_bindgen_d5b09ce14a5ee6cb"
   hs_bindgen_d5b09ce14a5ee6cb_base
-    :: BG.Word32
+    :: BG.CUInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_GetPixelFormatDetails@
@@ -291,7 +326,8 @@ hs_bindgen_d5b09ce14a5ee6cb
   :: SDL_PixelFormat
   -> IO (PtrConst.PtrConst SDL_PixelFormatDetails)
 hs_bindgen_d5b09ce14a5ee6cb =
-  BG.fromFFIType hs_bindgen_d5b09ce14a5ee6cb_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_d5b09ce14a5ee6cb_base (BG.toFFIType x0))
 
 -- | Create an 'SDL_PixelFormatDetails' structure corresponding to a pixel format.
 --
@@ -316,7 +352,7 @@ sDL_GetPixelFormatDetails =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_CreatePalette@
 foreign import ccall unsafe "hs_bindgen_b247627517d074a6"
   hs_bindgen_b247627517d074a6_base
-    :: BG.Int32
+    :: BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_CreatePalette@
@@ -324,7 +360,8 @@ hs_bindgen_b247627517d074a6
   :: BG.CInt
   -> IO (BG.Ptr SDL_Palette)
 hs_bindgen_b247627517d074a6 =
-  BG.fromFFIType hs_bindgen_b247627517d074a6_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b247627517d074a6_base (BG.toFFIType x0))
 
 -- | Create a palette structure with the specified number of color entries.
 --
@@ -352,9 +389,9 @@ foreign import ccall unsafe "hs_bindgen_1db50350d55a3029"
   hs_bindgen_1db50350d55a3029_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_SetPaletteColors@
 hs_bindgen_1db50350d55a3029
@@ -364,7 +401,18 @@ hs_bindgen_1db50350d55a3029
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_1db50350d55a3029 =
-  BG.fromFFIType hs_bindgen_1db50350d55a3029_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_1db50350d55a3029_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Set a range of colors in a palette.
 --
@@ -406,7 +454,8 @@ hs_bindgen_0c5b20ec2209c5f8
   :: BG.Ptr SDL_Palette
   -> IO ()
 hs_bindgen_0c5b20ec2209c5f8 =
-  BG.fromFFIType hs_bindgen_0c5b20ec2209c5f8_base
+  \x0 ->
+    hs_bindgen_0c5b20ec2209c5f8_base (BG.toFFIType x0)
 
 -- | Free a palette created with @SDL_CreatePalette()@.
 --
@@ -430,10 +479,10 @@ foreign import ccall unsafe "hs_bindgen_69237948f17500f6"
   hs_bindgen_69237948f17500f6_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word8
-    -> BG.Word8
-    -> BG.Word8
-    -> IO BG.Word32
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_MapRGB@
 hs_bindgen_69237948f17500f6
@@ -444,7 +493,20 @@ hs_bindgen_69237948f17500f6
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint32
 hs_bindgen_69237948f17500f6 =
-  BG.fromFFIType hs_bindgen_69237948f17500f6_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_69237948f17500f6_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Map an RGB triple to an opaque pixel value for a given pixel format.
 --
@@ -494,11 +556,11 @@ foreign import ccall unsafe "hs_bindgen_b496c5a642029802"
   hs_bindgen_b496c5a642029802_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word8
-    -> BG.Word8
-    -> BG.Word8
-    -> BG.Word8
-    -> IO BG.Word32
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_MapRGBA@
 hs_bindgen_b496c5a642029802
@@ -510,7 +572,22 @@ hs_bindgen_b496c5a642029802
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint32
 hs_bindgen_b496c5a642029802 =
-  BG.fromFFIType hs_bindgen_b496c5a642029802_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_b496c5a642029802_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Map an RGBA quadruple to a pixel value for a given pixel format.
 --
@@ -562,7 +639,7 @@ sDL_MapRGBA = hs_bindgen_b496c5a642029802
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_GetRGB@
 foreign import ccall unsafe "hs_bindgen_39f53a47a31a2bfc"
   hs_bindgen_39f53a47a31a2bfc_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
@@ -580,7 +657,19 @@ hs_bindgen_39f53a47a31a2bfc
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO ()
 hs_bindgen_39f53a47a31a2bfc =
-  BG.fromFFIType hs_bindgen_39f53a47a31a2bfc_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              hs_bindgen_39f53a47a31a2bfc_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+                (BG.toFFIType x4)
+                (BG.toFFIType x5)
 
 -- | Get RGB values from a pixel in the specified format.
 --
@@ -624,7 +713,7 @@ sDL_GetRGB = hs_bindgen_39f53a47a31a2bfc
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pixels_Unsafe_SDL_GetRGBA@
 foreign import ccall unsafe "hs_bindgen_5ce2e49df4845c32"
   hs_bindgen_5ce2e49df4845c32_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
@@ -644,7 +733,21 @@ hs_bindgen_5ce2e49df4845c32
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO ()
 hs_bindgen_5ce2e49df4845c32 =
-  BG.fromFFIType hs_bindgen_5ce2e49df4845c32_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                hs_bindgen_5ce2e49df4845c32_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+                  (BG.toFFIType x5)
+                  (BG.toFFIType x6)
 
 -- | Get RGBA values from a pixel in the specified format.
 --

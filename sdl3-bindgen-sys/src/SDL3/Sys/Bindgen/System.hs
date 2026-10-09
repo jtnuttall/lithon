@@ -6,6 +6,7 @@
 {-# LANGUAGE EmptyDataDecls #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -17,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module SDL3.Sys.Bindgen.System (
   SDL3.Sys.Bindgen.System.XEvent,
@@ -30,6 +32,8 @@ module SDL3.Sys.Bindgen.System (
   pattern SDL3.Sys.Bindgen.System.SDL_SANDBOX_MACOS,
 )
 where
+
+import Prelude (Eq, IO, Int, Ord, Read, Show, fmap, pure, (<*>), type (~))
 
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
@@ -47,13 +51,12 @@ newtype SDL_X11EventHook_Aux = SDL_X11EventHook_Aux
   { unwrap :: BG.Ptr BG.Void -> BG.Ptr XEvent -> IO BG.CBool
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_X11EventHook_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_74aa64577de95c6c_base
-    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word8)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word8))
+    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CBool)
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CBool))
 
 -- __unique:__ @toSDL_X11EventHook_Aux@
 hs_bindgen_74aa64577de95c6c
@@ -61,15 +64,22 @@ hs_bindgen_74aa64577de95c6c
   -> IO (BG.FunPtr SDL_X11EventHook_Aux)
 hs_bindgen_74aa64577de95c6c =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_74aa64577de95c6c_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_74aa64577de95c6c_base
+          ( \x1 ->
+              \x2 ->
+                fmap BG.toFFIType (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2))
+          )
+      )
 
 -- __unique:__ @fromSDL_X11EventHook_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_cc5ab09f101f43e5_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word8)
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CBool)
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @fromSDL_X11EventHook_Aux@
 hs_bindgen_cc5ab09f101f43e5
@@ -77,7 +87,13 @@ hs_bindgen_cc5ab09f101f43e5
   -> SDL_X11EventHook_Aux
 hs_bindgen_cc5ab09f101f43e5 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_cc5ab09f101f43e5_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_X11EventHook_Aux
+      ( \x1 ->
+          \x2 ->
+            fmap
+              BG.fromFFIType
+              (hs_bindgen_cc5ab09f101f43e5_base (BG.castFunPtr funPtr0) (BG.toFFIType x1) (BG.toFFIType x2))
+      )
 
 instance BG.ToFunPtr SDL_X11EventHook_Aux where
   toFunPtr = hs_bindgen_74aa64577de95c6c

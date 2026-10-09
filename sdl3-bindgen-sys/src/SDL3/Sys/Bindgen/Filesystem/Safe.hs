@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Filesystem.Safe (
@@ -17,6 +19,9 @@ module SDL3.Sys.Bindgen.Filesystem.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -24,7 +29,8 @@ import SDL3.Sys.Bindgen.Filesystem
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_filesystem.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_filesystem.h>"
          , "char const *hs_bindgen_f92cc8ff07ef9740 (void)"
          , "{"
          , "  return (SDL_GetBasePath)();"
@@ -108,7 +114,7 @@ foreign import ccall safe "hs_bindgen_f92cc8ff07ef9740"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Filesystem_Safe_SDL_GetBasePath@
 hs_bindgen_f92cc8ff07ef9740 :: IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_f92cc8ff07ef9740 =
-  BG.fromFFIType hs_bindgen_f92cc8ff07ef9740_base
+  fmap BG.fromFFIType hs_bindgen_f92cc8ff07ef9740_base
 
 -- | [C declaration]: @SDL_GetBasePath@, defined at @SDL3\/SDL_filesystem.h 101:42@
 sDL_GetBasePath :: IO (PtrConst.PtrConst BG.CChar)
@@ -127,7 +133,9 @@ hs_bindgen_619cc1fa3f4aefd0
   -> PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr BG.CChar)
 hs_bindgen_619cc1fa3f4aefd0 =
-  BG.fromFFIType hs_bindgen_619cc1fa3f4aefd0_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_619cc1fa3f4aefd0_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the user-and-app-specific path where files can be written.
 --
@@ -187,7 +195,7 @@ sDL_GetPrefPath = hs_bindgen_619cc1fa3f4aefd0
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Filesystem_Safe_SDL_GetUserFolder@
 foreign import ccall safe "hs_bindgen_c6c5688c3bb20e35"
   hs_bindgen_c6c5688c3bb20e35_base
-    :: BG.Word32
+    :: BG.CUInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Filesystem_Safe_SDL_GetUserFolder@
@@ -195,7 +203,8 @@ hs_bindgen_c6c5688c3bb20e35
   :: SDL_Folder
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_c6c5688c3bb20e35 =
-  BG.fromFFIType hs_bindgen_c6c5688c3bb20e35_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c6c5688c3bb20e35_base (BG.toFFIType x0))
 
 -- | Finds the most suitable user folder for a specific purpose.
 --
@@ -226,14 +235,15 @@ sDL_GetUserFolder = hs_bindgen_c6c5688c3bb20e35
 foreign import ccall safe "hs_bindgen_9f1feb13cd45a33b"
   hs_bindgen_9f1feb13cd45a33b_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Filesystem_Safe_SDL_CreateDirectory@
 hs_bindgen_9f1feb13cd45a33b
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_9f1feb13cd45a33b =
-  BG.fromFFIType hs_bindgen_9f1feb13cd45a33b_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9f1feb13cd45a33b_base (BG.toFFIType x0))
 
 -- | Create a directory, and any missing parent directories.
 --
@@ -262,7 +272,7 @@ foreign import ccall safe "hs_bindgen_e94d2a77c1f86c96"
     :: BG.Ptr BG.Void
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Filesystem_Safe_SDL_EnumerateDirectory@
 hs_bindgen_e94d2a77c1f86c96
@@ -271,7 +281,12 @@ hs_bindgen_e94d2a77c1f86c96
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_e94d2a77c1f86c96 =
-  BG.fromFFIType hs_bindgen_e94d2a77c1f86c96_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_e94d2a77c1f86c96_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Enumerate a directory through a callback function.
 --
@@ -306,14 +321,15 @@ sDL_EnumerateDirectory = hs_bindgen_e94d2a77c1f86c96
 foreign import ccall safe "hs_bindgen_84b6008494da965d"
   hs_bindgen_84b6008494da965d_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Filesystem_Safe_SDL_RemovePath@
 hs_bindgen_84b6008494da965d
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_84b6008494da965d =
-  BG.fromFFIType hs_bindgen_84b6008494da965d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_84b6008494da965d_base (BG.toFFIType x0))
 
 -- | Remove a file or an empty directory.
 --
@@ -339,7 +355,7 @@ foreign import ccall safe "hs_bindgen_41cbbf30c063ebd5"
   hs_bindgen_41cbbf30c063ebd5_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Filesystem_Safe_SDL_RenamePath@
 hs_bindgen_41cbbf30c063ebd5
@@ -347,7 +363,9 @@ hs_bindgen_41cbbf30c063ebd5
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_41cbbf30c063ebd5 =
-  BG.fromFFIType hs_bindgen_41cbbf30c063ebd5_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_41cbbf30c063ebd5_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Rename a file or directory.
 --
@@ -381,7 +399,7 @@ foreign import ccall safe "hs_bindgen_4feaee53c2645e31"
   hs_bindgen_4feaee53c2645e31_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Filesystem_Safe_SDL_CopyFile@
 hs_bindgen_4feaee53c2645e31
@@ -389,7 +407,9 @@ hs_bindgen_4feaee53c2645e31
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_4feaee53c2645e31 =
-  BG.fromFFIType hs_bindgen_4feaee53c2645e31_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4feaee53c2645e31_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Copy a file.
 --
@@ -427,7 +447,7 @@ foreign import ccall safe "hs_bindgen_caa951538e03e0b0"
   hs_bindgen_caa951538e03e0b0_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Filesystem_Safe_SDL_GetPathInfo@
 hs_bindgen_caa951538e03e0b0
@@ -435,7 +455,9 @@ hs_bindgen_caa951538e03e0b0
   -> BG.Ptr SDL_PathInfo
   -> IO BG.CBool
 hs_bindgen_caa951538e03e0b0 =
-  BG.fromFFIType hs_bindgen_caa951538e03e0b0_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_caa951538e03e0b0_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get information about a filesystem path.
 --
@@ -465,7 +487,7 @@ foreign import ccall safe "hs_bindgen_fb5d363e95cc2777"
   hs_bindgen_fb5d363e95cc2777_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> IO (BG.Ptr BG.Void)
 
@@ -477,7 +499,18 @@ hs_bindgen_fb5d363e95cc2777
   -> BG.Ptr BG.CInt
   -> IO (BG.Ptr (BG.Ptr BG.CChar))
 hs_bindgen_fb5d363e95cc2777 =
-  BG.fromFFIType hs_bindgen_fb5d363e95cc2777_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_fb5d363e95cc2777_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Enumerate a directory tree, filtered by pattern, and return a list.
 --
@@ -522,7 +555,7 @@ foreign import ccall safe "hs_bindgen_1c738c64af33b51a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Filesystem_Safe_SDL_GetCurrentDirectory@
 hs_bindgen_1c738c64af33b51a :: IO (BG.Ptr BG.CChar)
 hs_bindgen_1c738c64af33b51a =
-  BG.fromFFIType hs_bindgen_1c738c64af33b51a_base
+  fmap BG.fromFFIType hs_bindgen_1c738c64af33b51a_base
 
 -- | Get what the system believes is the \"current working directory.\"
 --

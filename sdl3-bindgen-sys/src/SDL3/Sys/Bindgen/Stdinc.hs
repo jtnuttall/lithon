@@ -7,6 +7,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -18,6 +19,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module SDL3.Sys.Bindgen.Stdinc (
   SDL3.Sys.Bindgen.Stdinc.Sint8 (..),
@@ -57,11 +59,31 @@ module SDL3.Sys.Bindgen.Stdinc (
 )
 where
 
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  IO,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  fmap,
+  pure,
+  (<*>),
+  (>>),
+  type (~),
+ )
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 
@@ -573,6 +595,12 @@ instance Marshal.WriteRaw SDL_alignment_test where
 
 deriving via Marshal.EquivStorable SDL_alignment_test instance BG.Storable SDL_alignment_test
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_alignment_test
+  instance
+    Struct.IsStruct SDL_alignment_test
+
+-- | [C declaration]: @a@, defined at @SDL3\/SDL_stdinc.h 1184:11@
 instance
   (ty ~ Uint8)
   => BG.CompatHasField.HasField "a" SDL_alignment_test ty
@@ -595,6 +623,7 @@ instance HasCField.HasCField SDL_alignment_test "a" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @b@, defined at @SDL3\/SDL_stdinc.h 1185:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "b" SDL_alignment_test ty
@@ -718,13 +747,12 @@ newtype SDL_malloc_func_Aux = SDL_malloc_func_Aux
   { unwrap :: HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void)
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_malloc_func_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_5c5a0694498aea22_base
-    :: (BG.Word64 -> IO (BG.Ptr BG.Void))
-    -> IO (BG.FunPtr (BG.Word64 -> IO (BG.Ptr BG.Void)))
+    :: (HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
+    -> IO (BG.FunPtr (HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void)))
 
 -- __unique:__ @toSDL_malloc_func_Aux@
 hs_bindgen_5c5a0694498aea22
@@ -732,13 +760,19 @@ hs_bindgen_5c5a0694498aea22
   -> IO (BG.FunPtr SDL_malloc_func_Aux)
 hs_bindgen_5c5a0694498aea22 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_5c5a0694498aea22_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_5c5a0694498aea22_base
+          ( \x1 ->
+              fmap BG.toFFIType (BG.getField @"unwrap" fun0 (BG.fromFFIType x1))
+          )
+      )
 
 -- __unique:__ @fromSDL_malloc_func_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_3dfc01b3bec18b2f_base
-    :: BG.FunPtr (BG.Word64 -> IO (BG.Ptr BG.Void))
-    -> BG.Word64
+    :: BG.FunPtr (HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
+    -> HsBindgen.Runtime.LibC.CSize
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @fromSDL_malloc_func_Aux@
@@ -747,7 +781,10 @@ hs_bindgen_3dfc01b3bec18b2f
   -> SDL_malloc_func_Aux
 hs_bindgen_3dfc01b3bec18b2f =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_3dfc01b3bec18b2f_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_malloc_func_Aux
+      ( \x1 ->
+          fmap BG.fromFFIType (hs_bindgen_3dfc01b3bec18b2f_base (BG.castFunPtr funPtr0) (BG.toFFIType x1))
+      )
 
 instance BG.ToFunPtr SDL_malloc_func_Aux where
   toFunPtr = hs_bindgen_5c5a0694498aea22
@@ -837,13 +874,12 @@ newtype SDL_calloc_func_Aux = SDL_calloc_func_Aux
   { unwrap :: HsBindgen.Runtime.LibC.CSize -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void)
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_calloc_func_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_e0fe0baaf22a9277_base
-    :: (BG.Word64 -> BG.Word64 -> IO (BG.Ptr BG.Void))
-    -> IO (BG.FunPtr (BG.Word64 -> BG.Word64 -> IO (BG.Ptr BG.Void)))
+    :: (HsBindgen.Runtime.LibC.CSize -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
+    -> IO (BG.FunPtr (HsBindgen.Runtime.LibC.CSize -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void)))
 
 -- __unique:__ @toSDL_calloc_func_Aux@
 hs_bindgen_e0fe0baaf22a9277
@@ -851,14 +887,21 @@ hs_bindgen_e0fe0baaf22a9277
   -> IO (BG.FunPtr SDL_calloc_func_Aux)
 hs_bindgen_e0fe0baaf22a9277 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_e0fe0baaf22a9277_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_e0fe0baaf22a9277_base
+          ( \x1 ->
+              \x2 ->
+                fmap BG.toFFIType (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2))
+          )
+      )
 
 -- __unique:__ @fromSDL_calloc_func_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_3046202e62b950f1_base
-    :: BG.FunPtr (BG.Word64 -> BG.Word64 -> IO (BG.Ptr BG.Void))
-    -> BG.Word64
-    -> BG.Word64
+    :: BG.FunPtr (HsBindgen.Runtime.LibC.CSize -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
+    -> HsBindgen.Runtime.LibC.CSize
+    -> HsBindgen.Runtime.LibC.CSize
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @fromSDL_calloc_func_Aux@
@@ -867,7 +910,13 @@ hs_bindgen_3046202e62b950f1
   -> SDL_calloc_func_Aux
 hs_bindgen_3046202e62b950f1 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_3046202e62b950f1_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_calloc_func_Aux
+      ( \x1 ->
+          \x2 ->
+            fmap
+              BG.fromFFIType
+              (hs_bindgen_3046202e62b950f1_base (BG.castFunPtr funPtr0) (BG.toFFIType x1) (BG.toFFIType x2))
+      )
 
 instance BG.ToFunPtr SDL_calloc_func_Aux where
   toFunPtr = hs_bindgen_e0fe0baaf22a9277
@@ -959,13 +1008,12 @@ newtype SDL_realloc_func_Aux = SDL_realloc_func_Aux
   { unwrap :: BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void)
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_realloc_func_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_ae5f282d8127c075_base
-    :: (BG.Ptr BG.Void -> BG.Word64 -> IO (BG.Ptr BG.Void))
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Word64 -> IO (BG.Ptr BG.Void)))
+    :: (BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void)))
 
 -- __unique:__ @toSDL_realloc_func_Aux@
 hs_bindgen_ae5f282d8127c075
@@ -973,14 +1021,21 @@ hs_bindgen_ae5f282d8127c075
   -> IO (BG.FunPtr SDL_realloc_func_Aux)
 hs_bindgen_ae5f282d8127c075 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_ae5f282d8127c075_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_ae5f282d8127c075_base
+          ( \x1 ->
+              \x2 ->
+                fmap BG.toFFIType (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2))
+          )
+      )
 
 -- __unique:__ @fromSDL_realloc_func_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_60fef27e3e28e137_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Word64 -> IO (BG.Ptr BG.Void))
+    :: BG.FunPtr (BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
     -> BG.Ptr BG.Void
-    -> BG.Word64
+    -> HsBindgen.Runtime.LibC.CSize
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @fromSDL_realloc_func_Aux@
@@ -989,7 +1044,13 @@ hs_bindgen_60fef27e3e28e137
   -> SDL_realloc_func_Aux
 hs_bindgen_60fef27e3e28e137 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_60fef27e3e28e137_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_realloc_func_Aux
+      ( \x1 ->
+          \x2 ->
+            fmap
+              BG.fromFFIType
+              (hs_bindgen_60fef27e3e28e137_base (BG.castFunPtr funPtr0) (BG.toFFIType x1) (BG.toFFIType x2))
+      )
 
 instance BG.ToFunPtr SDL_realloc_func_Aux where
   toFunPtr = hs_bindgen_ae5f282d8127c075
@@ -1081,7 +1142,6 @@ newtype SDL_free_func_Aux = SDL_free_func_Aux
   { unwrap :: BG.Ptr BG.Void -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_free_func_Aux@
 foreign import ccall safe "wrapper"
@@ -1095,7 +1155,13 @@ hs_bindgen_f13c0d9d2bec2096
   -> IO (BG.FunPtr SDL_free_func_Aux)
 hs_bindgen_f13c0d9d2bec2096 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_f13c0d9d2bec2096_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_f13c0d9d2bec2096_base
+          ( \x1 ->
+              BG.getField @"unwrap" fun0 (BG.fromFFIType x1)
+          )
+      )
 
 -- __unique:__ @fromSDL_free_func_Aux@
 foreign import ccall safe "dynamic"
@@ -1110,7 +1176,10 @@ hs_bindgen_05ceac4716402972
   -> SDL_free_func_Aux
 hs_bindgen_05ceac4716402972 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_05ceac4716402972_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_free_func_Aux
+      ( \x1 ->
+          hs_bindgen_05ceac4716402972_base (BG.castFunPtr funPtr0) (BG.toFFIType x1)
+      )
 
 instance BG.ToFunPtr SDL_free_func_Aux where
   toFunPtr = hs_bindgen_f13c0d9d2bec2096
@@ -1207,13 +1276,12 @@ newtype SDL_CompareCallback_Aux = SDL_CompareCallback_Aux
   { unwrap :: PtrConst.PtrConst BG.Void -> PtrConst.PtrConst BG.Void -> IO BG.CInt
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_CompareCallback_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_b4335f7e8ef40f79_base
-    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Int32)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Int32))
+    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CInt)
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CInt))
 
 -- __unique:__ @toSDL_CompareCallback_Aux@
 hs_bindgen_b4335f7e8ef40f79
@@ -1221,15 +1289,22 @@ hs_bindgen_b4335f7e8ef40f79
   -> IO (BG.FunPtr SDL_CompareCallback_Aux)
 hs_bindgen_b4335f7e8ef40f79 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_b4335f7e8ef40f79_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_b4335f7e8ef40f79_base
+          ( \x1 ->
+              \x2 ->
+                fmap BG.toFFIType (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2))
+          )
+      )
 
 -- __unique:__ @fromSDL_CompareCallback_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_72d385fa3e33955d_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Int32)
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CInt)
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @fromSDL_CompareCallback_Aux@
 hs_bindgen_72d385fa3e33955d
@@ -1237,7 +1312,13 @@ hs_bindgen_72d385fa3e33955d
   -> SDL_CompareCallback_Aux
 hs_bindgen_72d385fa3e33955d =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_72d385fa3e33955d_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_CompareCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            fmap
+              BG.fromFFIType
+              (hs_bindgen_72d385fa3e33955d_base (BG.castFunPtr funPtr0) (BG.toFFIType x1) (BG.toFFIType x2))
+      )
 
 instance BG.ToFunPtr SDL_CompareCallback_Aux where
   toFunPtr = hs_bindgen_b4335f7e8ef40f79
@@ -1325,13 +1406,12 @@ newtype SDL_CompareCallback_r_Aux = SDL_CompareCallback_r_Aux
   { unwrap :: BG.Ptr BG.Void -> PtrConst.PtrConst BG.Void -> PtrConst.PtrConst BG.Void -> IO BG.CInt
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_CompareCallback_r_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_a12f359999653344_base
-    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Int32)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Int32))
+    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CInt)
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CInt))
 
 -- __unique:__ @toSDL_CompareCallback_r_Aux@
 hs_bindgen_a12f359999653344
@@ -1339,16 +1419,26 @@ hs_bindgen_a12f359999653344
   -> IO (BG.FunPtr SDL_CompareCallback_r_Aux)
 hs_bindgen_a12f359999653344 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_a12f359999653344_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_a12f359999653344_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  fmap
+                    BG.toFFIType
+                    (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2) (BG.fromFFIType x3))
+          )
+      )
 
 -- __unique:__ @fromSDL_CompareCallback_r_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_c41d0998fdad0a16_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Int32)
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CInt)
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @fromSDL_CompareCallback_r_Aux@
 hs_bindgen_c41d0998fdad0a16
@@ -1356,7 +1446,19 @@ hs_bindgen_c41d0998fdad0a16
   -> SDL_CompareCallback_r_Aux
 hs_bindgen_c41d0998fdad0a16 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_c41d0998fdad0a16_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_CompareCallback_r_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_c41d0998fdad0a16_base
+                    (BG.castFunPtr funPtr0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                )
+      )
 
 instance BG.ToFunPtr SDL_CompareCallback_r_Aux where
   toFunPtr = hs_bindgen_a12f359999653344
@@ -1526,7 +1628,6 @@ newtype SDL_FunctionPointer_Aux = SDL_FunctionPointer_Aux
   { unwrap :: IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_FunctionPointer_Aux@
 foreign import ccall safe "wrapper"
@@ -1540,7 +1641,7 @@ hs_bindgen_8e3379ae5ebc8b29
   -> IO (BG.FunPtr SDL_FunctionPointer_Aux)
 hs_bindgen_8e3379ae5ebc8b29 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_8e3379ae5ebc8b29_base (BG.toFFIType fun0))
+    fmap BG.castFunPtr (hs_bindgen_8e3379ae5ebc8b29_base (BG.getField @"unwrap" fun0))
 
 -- __unique:__ @fromSDL_FunctionPointer_Aux@
 foreign import ccall safe "dynamic"
@@ -1554,7 +1655,7 @@ hs_bindgen_8a4eac10e33e73be
   -> SDL_FunctionPointer_Aux
 hs_bindgen_8a4eac10e33e73be =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_8a4eac10e33e73be_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_FunctionPointer_Aux (hs_bindgen_8a4eac10e33e73be_base (BG.castFunPtr funPtr0))
 
 instance BG.ToFunPtr SDL_FunctionPointer_Aux where
   toFunPtr = hs_bindgen_8e3379ae5ebc8b29

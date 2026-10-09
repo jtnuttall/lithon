@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL provides time management functionality. It is useful for dealing with (usually) small durations of time.
 --
 --     This is not to be confused with /calendar time/ management, which is provided by [CategoryTime](https:\/\/wiki.libsdl.org\/SDL3\/CategoryTime).
@@ -39,6 +41,7 @@ module SDL3.Sys.Timer (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.Support qualified as BG

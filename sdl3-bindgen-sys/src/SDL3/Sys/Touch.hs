@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL offers touch input, on platforms that support it. It can manage multiple touch devices and track multiple fingers on those devices.
 --
 --     Touches are mostly dealt with through the event system, in the SDL_EVENT_FINGER_DOWN, SDL_EVENT_FINGER_MOTION, and SDL_EVENT_FINGER_UP events, but there are also functions to query for hardware details, etc.
@@ -29,6 +31,8 @@ module SDL3.Sys.Touch (
   SDL3.Sys.Touch.getTouchFingersSafe,
 )
 where
+
+import Prelude (IO)
 
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG

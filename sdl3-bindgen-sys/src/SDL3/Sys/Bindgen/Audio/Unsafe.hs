@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Audio.Unsafe (
@@ -64,6 +66,9 @@ module SDL3.Sys.Bindgen.Audio.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -74,7 +79,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_audio.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_audio.h>"
          , "signed int hs_bindgen_3fadb766434bf32a (void)"
          , "{"
          , "  return (SDL_GetNumAudioDrivers)();"
@@ -500,12 +506,12 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetNumAudioDrivers@
 foreign import ccall unsafe "hs_bindgen_3fadb766434bf32a"
   hs_bindgen_3fadb766434bf32a_base
-    :: IO BG.Int32
+    :: IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetNumAudioDrivers@
 hs_bindgen_3fadb766434bf32a :: IO BG.CInt
 hs_bindgen_3fadb766434bf32a =
-  BG.fromFFIType hs_bindgen_3fadb766434bf32a_base
+  fmap BG.fromFFIType hs_bindgen_3fadb766434bf32a_base
 
 -- | Use this function to get the number of built-in audio drivers.
 --
@@ -528,7 +534,7 @@ sDL_GetNumAudioDrivers = hs_bindgen_3fadb766434bf32a
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioDriver@
 foreign import ccall unsafe "hs_bindgen_088e341c96ec752f"
   hs_bindgen_088e341c96ec752f_base
-    :: BG.Int32
+    :: BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioDriver@
@@ -536,7 +542,8 @@ hs_bindgen_088e341c96ec752f
   :: BG.CInt
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_088e341c96ec752f =
-  BG.fromFFIType hs_bindgen_088e341c96ec752f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_088e341c96ec752f_base (BG.toFFIType x0))
 
 -- | Use this function to get the name of a built in audio driver.
 --
@@ -569,7 +576,7 @@ foreign import ccall unsafe "hs_bindgen_8d83991bf7c57ced"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetCurrentAudioDriver@
 hs_bindgen_8d83991bf7c57ced :: IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_8d83991bf7c57ced =
-  BG.fromFFIType hs_bindgen_8d83991bf7c57ced_base
+  fmap BG.fromFFIType hs_bindgen_8d83991bf7c57ced_base
 
 -- | Get the name of the current audio driver.
 --
@@ -597,7 +604,8 @@ hs_bindgen_ac01234fb497c823
   :: BG.Ptr BG.CInt
   -> IO (BG.Ptr SDL_AudioDeviceID)
 hs_bindgen_ac01234fb497c823 =
-  BG.fromFFIType hs_bindgen_ac01234fb497c823_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ac01234fb497c823_base (BG.toFFIType x0))
 
 -- | Get a list of currently-connected audio playback devices.
 --
@@ -636,7 +644,8 @@ hs_bindgen_3d763bb9432bd9eb
   :: BG.Ptr BG.CInt
   -> IO (BG.Ptr SDL_AudioDeviceID)
 hs_bindgen_3d763bb9432bd9eb =
-  BG.fromFFIType hs_bindgen_3d763bb9432bd9eb_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3d763bb9432bd9eb_base (BG.toFFIType x0))
 
 -- | Get a list of currently-connected audio recording devices.
 --
@@ -667,7 +676,7 @@ sDL_GetAudioRecordingDevices =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioDeviceName@
 foreign import ccall unsafe "hs_bindgen_b2c73ae14aa40e78"
   hs_bindgen_b2c73ae14aa40e78_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioDeviceName@
@@ -675,7 +684,8 @@ hs_bindgen_b2c73ae14aa40e78
   :: SDL_AudioDeviceID
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_b2c73ae14aa40e78 =
-  BG.fromFFIType hs_bindgen_b2c73ae14aa40e78_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b2c73ae14aa40e78_base (BG.toFFIType x0))
 
 -- | Get the human-readable name of a specific audio device.
 --
@@ -701,10 +711,10 @@ sDL_GetAudioDeviceName = hs_bindgen_b2c73ae14aa40e78
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioDeviceFormat@
 foreign import ccall unsafe "hs_bindgen_8117a6bb4c2d4973"
   hs_bindgen_8117a6bb4c2d4973_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioDeviceFormat@
 hs_bindgen_8117a6bb4c2d4973
@@ -713,7 +723,12 @@ hs_bindgen_8117a6bb4c2d4973
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_8117a6bb4c2d4973 =
-  BG.fromFFIType hs_bindgen_8117a6bb4c2d4973_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_8117a6bb4c2d4973_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the current audio format of a specific audio device.
 --
@@ -754,7 +769,7 @@ sDL_GetAudioDeviceFormat =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioDeviceChannelMap@
 foreign import ccall unsafe "hs_bindgen_4c4c9c72b628a61b"
   hs_bindgen_4c4c9c72b628a61b_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> IO (BG.Ptr BG.Void)
 
@@ -764,7 +779,9 @@ hs_bindgen_4c4c9c72b628a61b
   -> BG.Ptr BG.CInt
   -> IO (BG.Ptr BG.CInt)
 hs_bindgen_4c4c9c72b628a61b =
-  BG.fromFFIType hs_bindgen_4c4c9c72b628a61b_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4c4c9c72b628a61b_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the current channel map of an audio device.
 --
@@ -797,9 +814,9 @@ sDL_GetAudioDeviceChannelMap =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_OpenAudioDevice@
 foreign import ccall unsafe "hs_bindgen_b33e26bd03556385"
   hs_bindgen_b33e26bd03556385_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_OpenAudioDevice@
 hs_bindgen_b33e26bd03556385
@@ -807,7 +824,9 @@ hs_bindgen_b33e26bd03556385
   -> PtrConst.PtrConst SDL_AudioSpec
   -> IO SDL_AudioDeviceID
 hs_bindgen_b33e26bd03556385 =
-  BG.fromFFIType hs_bindgen_b33e26bd03556385_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b33e26bd03556385_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Open a specific audio device.
 --
@@ -853,15 +872,16 @@ sDL_OpenAudioDevice = hs_bindgen_b33e26bd03556385
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_IsAudioDevicePhysical@
 foreign import ccall unsafe "hs_bindgen_40b4f5474e930396"
   hs_bindgen_40b4f5474e930396_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_IsAudioDevicePhysical@
 hs_bindgen_40b4f5474e930396
   :: SDL_AudioDeviceID
   -> IO BG.CBool
 hs_bindgen_40b4f5474e930396 =
-  BG.fromFFIType hs_bindgen_40b4f5474e930396_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_40b4f5474e930396_base (BG.toFFIType x0))
 
 -- | Determine if an audio device is physical (instead of logical).
 --
@@ -890,15 +910,16 @@ sDL_IsAudioDevicePhysical =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_IsAudioDevicePlayback@
 foreign import ccall unsafe "hs_bindgen_3529c6e832f821e2"
   hs_bindgen_3529c6e832f821e2_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_IsAudioDevicePlayback@
 hs_bindgen_3529c6e832f821e2
   :: SDL_AudioDeviceID
   -> IO BG.CBool
 hs_bindgen_3529c6e832f821e2 =
-  BG.fromFFIType hs_bindgen_3529c6e832f821e2_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3529c6e832f821e2_base (BG.toFFIType x0))
 
 -- | Determine if an audio device is a playback device (instead of recording).
 --
@@ -923,15 +944,16 @@ sDL_IsAudioDevicePlayback =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_PauseAudioDevice@
 foreign import ccall unsafe "hs_bindgen_8b915f5bea8027b8"
   hs_bindgen_8b915f5bea8027b8_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_PauseAudioDevice@
 hs_bindgen_8b915f5bea8027b8
   :: SDL_AudioDeviceID
   -> IO BG.CBool
 hs_bindgen_8b915f5bea8027b8 =
-  BG.fromFFIType hs_bindgen_8b915f5bea8027b8_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_8b915f5bea8027b8_base (BG.toFFIType x0))
 
 -- | Use this function to pause audio playback on a specified device.
 --
@@ -963,15 +985,16 @@ sDL_PauseAudioDevice = hs_bindgen_8b915f5bea8027b8
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_ResumeAudioDevice@
 foreign import ccall unsafe "hs_bindgen_459b30881d6df917"
   hs_bindgen_459b30881d6df917_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_ResumeAudioDevice@
 hs_bindgen_459b30881d6df917
   :: SDL_AudioDeviceID
   -> IO BG.CBool
 hs_bindgen_459b30881d6df917 =
-  BG.fromFFIType hs_bindgen_459b30881d6df917_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_459b30881d6df917_base (BG.toFFIType x0))
 
 -- | Use this function to unpause audio playback on a specified device.
 --
@@ -1001,15 +1024,16 @@ sDL_ResumeAudioDevice = hs_bindgen_459b30881d6df917
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_AudioDevicePaused@
 foreign import ccall unsafe "hs_bindgen_672dd7353e8716ce"
   hs_bindgen_672dd7353e8716ce_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_AudioDevicePaused@
 hs_bindgen_672dd7353e8716ce
   :: SDL_AudioDeviceID
   -> IO BG.CBool
 hs_bindgen_672dd7353e8716ce =
-  BG.fromFFIType hs_bindgen_672dd7353e8716ce_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_672dd7353e8716ce_base (BG.toFFIType x0))
 
 -- | Use this function to query if an audio device is paused.
 --
@@ -1037,15 +1061,16 @@ sDL_AudioDevicePaused = hs_bindgen_672dd7353e8716ce
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioDeviceGain@
 foreign import ccall unsafe "hs_bindgen_c8b5c017b7910d18"
   hs_bindgen_c8b5c017b7910d18_base
-    :: BG.Word32
-    -> IO Float
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioDeviceGain@
 hs_bindgen_c8b5c017b7910d18
   :: SDL_AudioDeviceID
   -> IO BG.CFloat
 hs_bindgen_c8b5c017b7910d18 =
-  BG.fromFFIType hs_bindgen_c8b5c017b7910d18_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c8b5c017b7910d18_base (BG.toFFIType x0))
 
 -- | Get the gain of an audio device.
 --
@@ -1075,9 +1100,9 @@ sDL_GetAudioDeviceGain = hs_bindgen_c8b5c017b7910d18
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_SetAudioDeviceGain@
 foreign import ccall unsafe "hs_bindgen_13f5c18c777458dd"
   hs_bindgen_13f5c18c777458dd_base
-    :: BG.Word32
-    -> Float
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_SetAudioDeviceGain@
 hs_bindgen_13f5c18c777458dd
@@ -1085,7 +1110,9 @@ hs_bindgen_13f5c18c777458dd
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_13f5c18c777458dd =
-  BG.fromFFIType hs_bindgen_13f5c18c777458dd_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_13f5c18c777458dd_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Change the gain of an audio device.
 --
@@ -1121,7 +1148,7 @@ sDL_SetAudioDeviceGain = hs_bindgen_13f5c18c777458dd
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_CloseAudioDevice@
 foreign import ccall unsafe "hs_bindgen_1f1d897129d034a7"
   hs_bindgen_1f1d897129d034a7_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_CloseAudioDevice@
@@ -1129,7 +1156,8 @@ hs_bindgen_1f1d897129d034a7
   :: SDL_AudioDeviceID
   -> IO ()
 hs_bindgen_1f1d897129d034a7 =
-  BG.fromFFIType hs_bindgen_1f1d897129d034a7_base
+  \x0 ->
+    hs_bindgen_1f1d897129d034a7_base (BG.toFFIType x0)
 
 -- | Close a previously-opened audio device.
 --
@@ -1155,10 +1183,10 @@ sDL_CloseAudioDevice = hs_bindgen_1f1d897129d034a7
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_BindAudioStreams@
 foreign import ccall unsafe "hs_bindgen_347a950bd3b0f9b2"
   hs_bindgen_347a950bd3b0f9b2_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_BindAudioStreams@
 hs_bindgen_347a950bd3b0f9b2
@@ -1167,7 +1195,12 @@ hs_bindgen_347a950bd3b0f9b2
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_347a950bd3b0f9b2 =
-  BG.fromFFIType hs_bindgen_347a950bd3b0f9b2_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_347a950bd3b0f9b2_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Bind a list of audio streams to an audio device.
 --
@@ -1207,9 +1240,9 @@ sDL_BindAudioStreams = hs_bindgen_347a950bd3b0f9b2
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_BindAudioStream@
 foreign import ccall unsafe "hs_bindgen_98bc5733fab56d11"
   hs_bindgen_98bc5733fab56d11_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_BindAudioStream@
 hs_bindgen_98bc5733fab56d11
@@ -1217,7 +1250,9 @@ hs_bindgen_98bc5733fab56d11
   -> BG.Ptr SDL_AudioStream
   -> IO BG.CBool
 hs_bindgen_98bc5733fab56d11 =
-  BG.fromFFIType hs_bindgen_98bc5733fab56d11_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_98bc5733fab56d11_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Bind a single audio stream to an audio device.
 --
@@ -1248,7 +1283,7 @@ sDL_BindAudioStream = hs_bindgen_98bc5733fab56d11
 foreign import ccall unsafe "hs_bindgen_ec7f859bb5c9ee4b"
   hs_bindgen_ec7f859bb5c9ee4b_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_UnbindAudioStreams@
@@ -1257,7 +1292,9 @@ hs_bindgen_ec7f859bb5c9ee4b
   -> BG.CInt
   -> IO ()
 hs_bindgen_ec7f859bb5c9ee4b =
-  BG.fromFFIType hs_bindgen_ec7f859bb5c9ee4b_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_ec7f859bb5c9ee4b_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Unbind a list of audio streams from their audio devices.
 --
@@ -1295,7 +1332,8 @@ hs_bindgen_4c718e02b5ad1279
   :: BG.Ptr SDL_AudioStream
   -> IO ()
 hs_bindgen_4c718e02b5ad1279 =
-  BG.fromFFIType hs_bindgen_4c718e02b5ad1279_base
+  \x0 ->
+    hs_bindgen_4c718e02b5ad1279_base (BG.toFFIType x0)
 
 -- | Unbind a single audio stream from its audio device.
 --
@@ -1320,14 +1358,15 @@ sDL_UnbindAudioStream = hs_bindgen_4c718e02b5ad1279
 foreign import ccall unsafe "hs_bindgen_caea3c9230448fae"
   hs_bindgen_caea3c9230448fae_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioStreamDevice@
 hs_bindgen_caea3c9230448fae
   :: BG.Ptr SDL_AudioStream
   -> IO SDL_AudioDeviceID
 hs_bindgen_caea3c9230448fae =
-  BG.fromFFIType hs_bindgen_caea3c9230448fae_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_caea3c9230448fae_base (BG.toFFIType x0))
 
 -- | Query an audio stream for its currently-bound device.
 --
@@ -1366,7 +1405,9 @@ hs_bindgen_bcc8d812c83afb38
   -> PtrConst.PtrConst SDL_AudioSpec
   -> IO (BG.Ptr SDL_AudioStream)
 hs_bindgen_bcc8d812c83afb38 =
-  BG.fromFFIType hs_bindgen_bcc8d812c83afb38_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_bcc8d812c83afb38_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Create a new audio stream.
 --
@@ -1397,14 +1438,15 @@ sDL_CreateAudioStream = hs_bindgen_bcc8d812c83afb38
 foreign import ccall unsafe "hs_bindgen_a513bf944ff78877"
   hs_bindgen_a513bf944ff78877_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioStreamProperties@
 hs_bindgen_a513bf944ff78877
   :: BG.Ptr SDL_AudioStream
   -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
 hs_bindgen_a513bf944ff78877 =
-  BG.fromFFIType hs_bindgen_a513bf944ff78877_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a513bf944ff78877_base (BG.toFFIType x0))
 
 -- | Get the properties associated with an audio stream.
 --
@@ -1434,7 +1476,7 @@ foreign import ccall unsafe "hs_bindgen_4b2310dc9f80a9f8"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioStreamFormat@
 hs_bindgen_4b2310dc9f80a9f8
@@ -1443,7 +1485,12 @@ hs_bindgen_4b2310dc9f80a9f8
   -> BG.Ptr SDL_AudioSpec
   -> IO BG.CBool
 hs_bindgen_4b2310dc9f80a9f8 =
-  BG.fromFFIType hs_bindgen_4b2310dc9f80a9f8_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_4b2310dc9f80a9f8_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Query the current format of an audio stream.
 --
@@ -1479,7 +1526,7 @@ foreign import ccall unsafe "hs_bindgen_a8488bb9b411fc5d"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_SetAudioStreamFormat@
 hs_bindgen_a8488bb9b411fc5d
@@ -1488,7 +1535,12 @@ hs_bindgen_a8488bb9b411fc5d
   -> PtrConst.PtrConst SDL_AudioSpec
   -> IO BG.CBool
 hs_bindgen_a8488bb9b411fc5d =
-  BG.fromFFIType hs_bindgen_a8488bb9b411fc5d_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_a8488bb9b411fc5d_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Change the input and output formats of an audio stream.
 --
@@ -1530,14 +1582,15 @@ sDL_SetAudioStreamFormat =
 foreign import ccall unsafe "hs_bindgen_15397b18d1ddad29"
   hs_bindgen_15397b18d1ddad29_base
     :: BG.Ptr BG.Void
-    -> IO Float
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioStreamFrequencyRatio@
 hs_bindgen_15397b18d1ddad29
   :: BG.Ptr SDL_AudioStream
   -> IO BG.CFloat
 hs_bindgen_15397b18d1ddad29 =
-  BG.fromFFIType hs_bindgen_15397b18d1ddad29_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_15397b18d1ddad29_base (BG.toFFIType x0))
 
 -- | Get the frequency ratio of an audio stream.
 --
@@ -1563,8 +1616,8 @@ sDL_GetAudioStreamFrequencyRatio =
 foreign import ccall unsafe "hs_bindgen_86275fb04d01b569"
   hs_bindgen_86275fb04d01b569_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_SetAudioStreamFrequencyRatio@
 hs_bindgen_86275fb04d01b569
@@ -1572,7 +1625,9 @@ hs_bindgen_86275fb04d01b569
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_86275fb04d01b569 =
-  BG.fromFFIType hs_bindgen_86275fb04d01b569_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_86275fb04d01b569_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Change the frequency ratio of an audio stream.
 --
@@ -1606,14 +1661,15 @@ sDL_SetAudioStreamFrequencyRatio =
 foreign import ccall unsafe "hs_bindgen_b0201fb647f1a55c"
   hs_bindgen_b0201fb647f1a55c_base
     :: BG.Ptr BG.Void
-    -> IO Float
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioStreamGain@
 hs_bindgen_b0201fb647f1a55c
   :: BG.Ptr SDL_AudioStream
   -> IO BG.CFloat
 hs_bindgen_b0201fb647f1a55c =
-  BG.fromFFIType hs_bindgen_b0201fb647f1a55c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b0201fb647f1a55c_base (BG.toFFIType x0))
 
 -- | Get the gain of an audio stream.
 --
@@ -1642,8 +1698,8 @@ sDL_GetAudioStreamGain = hs_bindgen_b0201fb647f1a55c
 foreign import ccall unsafe "hs_bindgen_90b7daeac2130f28"
   hs_bindgen_90b7daeac2130f28_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_SetAudioStreamGain@
 hs_bindgen_90b7daeac2130f28
@@ -1651,7 +1707,9 @@ hs_bindgen_90b7daeac2130f28
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_90b7daeac2130f28 =
-  BG.fromFFIType hs_bindgen_90b7daeac2130f28_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_90b7daeac2130f28_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Change the gain of an audio stream.
 --
@@ -1695,7 +1753,9 @@ hs_bindgen_1b79fdfec2f48b4f
   -> BG.Ptr BG.CInt
   -> IO (BG.Ptr BG.CInt)
 hs_bindgen_1b79fdfec2f48b4f =
-  BG.fromFFIType hs_bindgen_1b79fdfec2f48b4f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_1b79fdfec2f48b4f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the current input channel map of an audio stream.
 --
@@ -1738,7 +1798,9 @@ hs_bindgen_0c6aa9ee60372768
   -> BG.Ptr BG.CInt
   -> IO (BG.Ptr BG.CInt)
 hs_bindgen_0c6aa9ee60372768 =
-  BG.fromFFIType hs_bindgen_0c6aa9ee60372768_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_0c6aa9ee60372768_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the current output channel map of an audio stream.
 --
@@ -1773,8 +1835,8 @@ foreign import ccall unsafe "hs_bindgen_c2adfd0bb37d9aa2"
   hs_bindgen_c2adfd0bb37d9aa2_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_SetAudioStreamInputChannelMap@
 hs_bindgen_c2adfd0bb37d9aa2
@@ -1783,7 +1845,12 @@ hs_bindgen_c2adfd0bb37d9aa2
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_c2adfd0bb37d9aa2 =
-  BG.fromFFIType hs_bindgen_c2adfd0bb37d9aa2_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_c2adfd0bb37d9aa2_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set the current input channel map of an audio stream.
 --
@@ -1836,8 +1903,8 @@ foreign import ccall unsafe "hs_bindgen_b0ed00a566f29be4"
   hs_bindgen_b0ed00a566f29be4_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_SetAudioStreamOutputChannelMap@
 hs_bindgen_b0ed00a566f29be4
@@ -1846,7 +1913,12 @@ hs_bindgen_b0ed00a566f29be4
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_b0ed00a566f29be4 =
-  BG.fromFFIType hs_bindgen_b0ed00a566f29be4_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_b0ed00a566f29be4_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set the current output channel map of an audio stream.
 --
@@ -1899,8 +1971,8 @@ foreign import ccall unsafe "hs_bindgen_32b25453fa9b8c52"
   hs_bindgen_32b25453fa9b8c52_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_PutAudioStreamData@
 hs_bindgen_32b25453fa9b8c52
@@ -1909,7 +1981,12 @@ hs_bindgen_32b25453fa9b8c52
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_32b25453fa9b8c52 =
-  BG.fromFFIType hs_bindgen_32b25453fa9b8c52_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_32b25453fa9b8c52_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Add data to the stream.
 --
@@ -1947,10 +2024,10 @@ foreign import ccall unsafe "hs_bindgen_8e034cb6408bf39f"
   hs_bindgen_8e034cb6408bf39f_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_PutAudioStreamDataNoCopy@
 hs_bindgen_8e034cb6408bf39f
@@ -1961,7 +2038,20 @@ hs_bindgen_8e034cb6408bf39f
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_8e034cb6408bf39f =
-  BG.fromFFIType hs_bindgen_8e034cb6408bf39f_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_8e034cb6408bf39f_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Add external data to an audio stream without copying it.
 --
@@ -2012,9 +2102,9 @@ foreign import ccall unsafe "hs_bindgen_2517bbaa11deade2"
   hs_bindgen_2517bbaa11deade2_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_PutAudioStreamPlanarData@
 hs_bindgen_2517bbaa11deade2
@@ -2024,7 +2114,18 @@ hs_bindgen_2517bbaa11deade2
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_2517bbaa11deade2 =
-  BG.fromFFIType hs_bindgen_2517bbaa11deade2_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_2517bbaa11deade2_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Add data to the stream with each channel in a separate array.
 --
@@ -2073,8 +2174,8 @@ foreign import ccall unsafe "hs_bindgen_05c01671d414ec35"
   hs_bindgen_05c01671d414ec35_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Int32
+    -> BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioStreamData@
 hs_bindgen_05c01671d414ec35
@@ -2083,7 +2184,12 @@ hs_bindgen_05c01671d414ec35
   -> BG.CInt
   -> IO BG.CInt
 hs_bindgen_05c01671d414ec35 =
-  BG.fromFFIType hs_bindgen_05c01671d414ec35_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_05c01671d414ec35_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get converted\/resampled data from the stream.
 --
@@ -2120,14 +2226,15 @@ sDL_GetAudioStreamData = hs_bindgen_05c01671d414ec35
 foreign import ccall unsafe "hs_bindgen_6693b5a0bc38b7f9"
   hs_bindgen_6693b5a0bc38b7f9_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioStreamAvailable@
 hs_bindgen_6693b5a0bc38b7f9
   :: BG.Ptr SDL_AudioStream
   -> IO BG.CInt
 hs_bindgen_6693b5a0bc38b7f9 =
-  BG.fromFFIType hs_bindgen_6693b5a0bc38b7f9_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_6693b5a0bc38b7f9_base (BG.toFFIType x0))
 
 -- | Get the number of converted\/resampled bytes available.
 --
@@ -2157,14 +2264,15 @@ sDL_GetAudioStreamAvailable =
 foreign import ccall unsafe "hs_bindgen_75fb0631cff6ceae"
   hs_bindgen_75fb0631cff6ceae_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioStreamQueued@
 hs_bindgen_75fb0631cff6ceae
   :: BG.Ptr SDL_AudioStream
   -> IO BG.CInt
 hs_bindgen_75fb0631cff6ceae =
-  BG.fromFFIType hs_bindgen_75fb0631cff6ceae_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_75fb0631cff6ceae_base (BG.toFFIType x0))
 
 -- | Get the number of bytes currently queued.
 --
@@ -2198,14 +2306,15 @@ sDL_GetAudioStreamQueued =
 foreign import ccall unsafe "hs_bindgen_ad5616a591f54851"
   hs_bindgen_ad5616a591f54851_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_FlushAudioStream@
 hs_bindgen_ad5616a591f54851
   :: BG.Ptr SDL_AudioStream
   -> IO BG.CBool
 hs_bindgen_ad5616a591f54851 =
-  BG.fromFFIType hs_bindgen_ad5616a591f54851_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ad5616a591f54851_base (BG.toFFIType x0))
 
 -- | Tell the stream that you\'re done sending data, and anything being buffered should be converted\/resampled and made available immediately.
 --
@@ -2232,14 +2341,15 @@ sDL_FlushAudioStream = hs_bindgen_ad5616a591f54851
 foreign import ccall unsafe "hs_bindgen_f4d190bd770b2df3"
   hs_bindgen_f4d190bd770b2df3_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_ClearAudioStream@
 hs_bindgen_f4d190bd770b2df3
   :: BG.Ptr SDL_AudioStream
   -> IO BG.CBool
 hs_bindgen_f4d190bd770b2df3 =
-  BG.fromFFIType hs_bindgen_f4d190bd770b2df3_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_f4d190bd770b2df3_base (BG.toFFIType x0))
 
 -- | Clear any pending data in the stream.
 --
@@ -2266,14 +2376,15 @@ sDL_ClearAudioStream = hs_bindgen_f4d190bd770b2df3
 foreign import ccall unsafe "hs_bindgen_fa7a02853d833a6c"
   hs_bindgen_fa7a02853d833a6c_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_PauseAudioStreamDevice@
 hs_bindgen_fa7a02853d833a6c
   :: BG.Ptr SDL_AudioStream
   -> IO BG.CBool
 hs_bindgen_fa7a02853d833a6c =
-  BG.fromFFIType hs_bindgen_fa7a02853d833a6c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_fa7a02853d833a6c_base (BG.toFFIType x0))
 
 -- | Use this function to pause audio playback on the audio device associated with an audio stream.
 --
@@ -2303,14 +2414,15 @@ sDL_PauseAudioStreamDevice =
 foreign import ccall unsafe "hs_bindgen_0460d36f7042c57a"
   hs_bindgen_0460d36f7042c57a_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_ResumeAudioStreamDevice@
 hs_bindgen_0460d36f7042c57a
   :: BG.Ptr SDL_AudioStream
   -> IO BG.CBool
 hs_bindgen_0460d36f7042c57a =
-  BG.fromFFIType hs_bindgen_0460d36f7042c57a_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_0460d36f7042c57a_base (BG.toFFIType x0))
 
 -- | Use this function to unpause audio playback on the audio device associated with an audio stream.
 --
@@ -2340,14 +2452,15 @@ sDL_ResumeAudioStreamDevice =
 foreign import ccall unsafe "hs_bindgen_ffc6b2bb5b052f6d"
   hs_bindgen_ffc6b2bb5b052f6d_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_AudioStreamDevicePaused@
 hs_bindgen_ffc6b2bb5b052f6d
   :: BG.Ptr SDL_AudioStream
   -> IO BG.CBool
 hs_bindgen_ffc6b2bb5b052f6d =
-  BG.fromFFIType hs_bindgen_ffc6b2bb5b052f6d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ffc6b2bb5b052f6d_base (BG.toFFIType x0))
 
 -- | Use this function to query if an audio device associated with a stream is paused.
 --
@@ -2375,14 +2488,15 @@ sDL_AudioStreamDevicePaused =
 foreign import ccall unsafe "hs_bindgen_0f17d22c674fb4db"
   hs_bindgen_0f17d22c674fb4db_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_LockAudioStream@
 hs_bindgen_0f17d22c674fb4db
   :: BG.Ptr SDL_AudioStream
   -> IO BG.CBool
 hs_bindgen_0f17d22c674fb4db =
-  BG.fromFFIType hs_bindgen_0f17d22c674fb4db_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_0f17d22c674fb4db_base (BG.toFFIType x0))
 
 -- | Lock an audio stream for serialized access.
 --
@@ -2413,14 +2527,15 @@ sDL_LockAudioStream = hs_bindgen_0f17d22c674fb4db
 foreign import ccall unsafe "hs_bindgen_03cca6936a438b69"
   hs_bindgen_03cca6936a438b69_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_UnlockAudioStream@
 hs_bindgen_03cca6936a438b69
   :: BG.Ptr SDL_AudioStream
   -> IO BG.CBool
 hs_bindgen_03cca6936a438b69 =
-  BG.fromFFIType hs_bindgen_03cca6936a438b69_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_03cca6936a438b69_base (BG.toFFIType x0))
 
 -- | Unlock an audio stream for serialized access.
 --
@@ -2449,7 +2564,7 @@ foreign import ccall unsafe "hs_bindgen_dc2f74eae1a93c31"
     :: BG.Ptr BG.Void
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_SetAudioStreamGetCallback@
 hs_bindgen_dc2f74eae1a93c31
@@ -2458,7 +2573,12 @@ hs_bindgen_dc2f74eae1a93c31
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_dc2f74eae1a93c31 =
-  BG.fromFFIType hs_bindgen_dc2f74eae1a93c31_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_dc2f74eae1a93c31_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set a callback that runs when data is requested from an audio stream.
 --
@@ -2508,7 +2628,7 @@ foreign import ccall unsafe "hs_bindgen_146f387abf38d92a"
     :: BG.Ptr BG.Void
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_SetAudioStreamPutCallback@
 hs_bindgen_146f387abf38d92a
@@ -2517,7 +2637,12 @@ hs_bindgen_146f387abf38d92a
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_146f387abf38d92a =
-  BG.fromFFIType hs_bindgen_146f387abf38d92a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_146f387abf38d92a_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set a callback that runs when data is added to an audio stream.
 --
@@ -2574,7 +2699,8 @@ hs_bindgen_49f1ea9de2669438
   :: BG.Ptr SDL_AudioStream
   -> IO ()
 hs_bindgen_49f1ea9de2669438 =
-  BG.fromFFIType hs_bindgen_49f1ea9de2669438_base
+  \x0 ->
+    hs_bindgen_49f1ea9de2669438_base (BG.toFFIType x0)
 
 -- | Free an audio stream.
 --
@@ -2600,7 +2726,7 @@ sDL_DestroyAudioStream = hs_bindgen_49f1ea9de2669438
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_OpenAudioDeviceStream@
 foreign import ccall unsafe "hs_bindgen_c626b93042e17a97"
   hs_bindgen_c626b93042e17a97_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
@@ -2614,7 +2740,18 @@ hs_bindgen_c626b93042e17a97
   -> BG.Ptr BG.Void
   -> IO (BG.Ptr SDL_AudioStream)
 hs_bindgen_c626b93042e17a97 =
-  BG.fromFFIType hs_bindgen_c626b93042e17a97_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_c626b93042e17a97_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Convenience function for straightforward audio init for the common case.
 --
@@ -2669,10 +2806,10 @@ sDL_OpenAudioDeviceStream =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_SetAudioPostmixCallback@
 foreign import ccall unsafe "hs_bindgen_2207c9d46d721c22"
   hs_bindgen_2207c9d46d721c22_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_SetAudioPostmixCallback@
 hs_bindgen_2207c9d46d721c22
@@ -2681,7 +2818,12 @@ hs_bindgen_2207c9d46d721c22
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_2207c9d46d721c22 =
-  BG.fromFFIType hs_bindgen_2207c9d46d721c22_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_2207c9d46d721c22_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set a callback that fires when data is about to be fed to an audio device.
 --
@@ -2731,11 +2873,11 @@ sDL_SetAudioPostmixCallback =
 foreign import ccall unsafe "hs_bindgen_7d7f4ec89c051bd9"
   hs_bindgen_7d7f4ec89c051bd9_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_LoadWAV_IO@
 hs_bindgen_7d7f4ec89c051bd9
@@ -2746,7 +2888,20 @@ hs_bindgen_7d7f4ec89c051bd9
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_7d7f4ec89c051bd9 =
-  BG.fromFFIType hs_bindgen_7d7f4ec89c051bd9_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_7d7f4ec89c051bd9_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Load the audio data of a WAVE file into memory.
 --
@@ -2820,7 +2975,7 @@ foreign import ccall unsafe "hs_bindgen_618ebcf6bf6e8650"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_LoadWAV@
 hs_bindgen_618ebcf6bf6e8650
@@ -2830,7 +2985,18 @@ hs_bindgen_618ebcf6bf6e8650
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_618ebcf6bf6e8650 =
-  BG.fromFFIType hs_bindgen_618ebcf6bf6e8650_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_618ebcf6bf6e8650_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Loads a WAV from a file path.
 --
@@ -2878,10 +3044,10 @@ foreign import ccall unsafe "hs_bindgen_da6d00b62c3fdd0b"
   hs_bindgen_da6d00b62c3fdd0b_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word32
-    -> Float
-    -> IO BG.Word8
+    -> BG.CUInt
+    -> HsBindgen.Runtime.LibC.Word32
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_MixAudio@
 hs_bindgen_da6d00b62c3fdd0b
@@ -2892,7 +3058,20 @@ hs_bindgen_da6d00b62c3fdd0b
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_da6d00b62c3fdd0b =
-  BG.fromFFIType hs_bindgen_da6d00b62c3fdd0b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_da6d00b62c3fdd0b_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Mix audio data in a specified format.
 --
@@ -2940,11 +3119,11 @@ foreign import ccall unsafe "hs_bindgen_a6d61748227d6f0b"
   hs_bindgen_a6d61748227d6f0b_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_ConvertAudioSamples@
 hs_bindgen_a6d61748227d6f0b
@@ -2956,7 +3135,22 @@ hs_bindgen_a6d61748227d6f0b
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_a6d61748227d6f0b =
-  BG.fromFFIType hs_bindgen_a6d61748227d6f0b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_a6d61748227d6f0b_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Convert some audio data of one format to another format.
 --
@@ -3002,7 +3196,7 @@ sDL_ConvertAudioSamples = hs_bindgen_a6d61748227d6f0b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioFormatName@
 foreign import ccall unsafe "hs_bindgen_43b528b55cc775cf"
   hs_bindgen_43b528b55cc775cf_base
-    :: BG.Word32
+    :: BG.CUInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetAudioFormatName@
@@ -3010,7 +3204,8 @@ hs_bindgen_43b528b55cc775cf
   :: SDL_AudioFormat
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_43b528b55cc775cf =
-  BG.fromFFIType hs_bindgen_43b528b55cc775cf_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_43b528b55cc775cf_base (BG.toFFIType x0))
 
 -- | Get the human readable name of an audio format.
 --
@@ -3032,15 +3227,16 @@ sDL_GetAudioFormatName = hs_bindgen_43b528b55cc775cf
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetSilenceValueForFormat@
 foreign import ccall unsafe "hs_bindgen_0154acf0cb371eab"
   hs_bindgen_0154acf0cb371eab_base
-    :: BG.Word32
-    -> IO BG.Int32
+    :: BG.CUInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Audio_Unsafe_SDL_GetSilenceValueForFormat@
 hs_bindgen_0154acf0cb371eab
   :: SDL_AudioFormat
   -> IO BG.CInt
 hs_bindgen_0154acf0cb371eab =
-  BG.fromFFIType hs_bindgen_0154acf0cb371eab_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_0154acf0cb371eab_base (BG.toFFIType x0))
 
 -- | Get the appropriate memset value for silencing an audio format.
 --

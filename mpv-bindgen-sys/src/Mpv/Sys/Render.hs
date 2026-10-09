@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Render API: drive video output from your own rendering loop.
 --
 --     == FFI conventions
@@ -27,6 +29,7 @@ module Mpv.Sys.Render (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (IO, fmap)
 
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Support qualified as BG

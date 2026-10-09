@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL offers cross-platform thread management functions. These are mostly concerned with starting threads, setting their priority, and dealing with their termination.
 --
 --     In addition, there is support for Thread Local Storage (data that is unique to each thread, but accessed from a single key).
@@ -47,6 +49,8 @@ module SDL3.Sys.Thread (
   SDL3.Sys.Thread.cleanupTLSSafe,
 )
 where
+
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.PtrConst qualified as PtrConst

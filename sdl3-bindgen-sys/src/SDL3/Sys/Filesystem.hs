@@ -1,4 +1,5 @@
 {-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL offers an API for examining and manipulating the system\'s filesystem. This covers most things one would need to do with directories, except for actual file I\/O (which is covered by [CategoryIOStream](https:\/\/wiki.libsdl.org\/SDL3\/CategoryIOStream) and [CategoryAsyncIO](https:\/\/wiki.libsdl.org\/SDL3\/CategoryAsyncIO) instead).
 --
@@ -81,6 +82,8 @@ module SDL3.Sys.Filesystem (
   SDL3.Sys.Filesystem.getCurrentDirectorySafe,
 )
 where
+
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.PtrConst qualified as PtrConst

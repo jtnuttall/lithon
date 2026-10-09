@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Clipboard.Unsafe (
@@ -17,6 +19,8 @@ module SDL3.Sys.Bindgen.Clipboard.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
@@ -25,7 +29,8 @@ import SDL3.Sys.Bindgen.Clipboard
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_clipboard.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_clipboard.h>"
          , "_Bool hs_bindgen_9f2a95dedb650832 ("
          , "  char const *arg1"
          , ")"
@@ -95,14 +100,15 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 foreign import ccall unsafe "hs_bindgen_9f2a95dedb650832"
   hs_bindgen_9f2a95dedb650832_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_Unsafe_SDL_SetClipboardText@
 hs_bindgen_9f2a95dedb650832
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_9f2a95dedb650832 =
-  BG.fromFFIType hs_bindgen_9f2a95dedb650832_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9f2a95dedb650832_base (BG.toFFIType x0))
 
 -- | [C declaration]: @SDL_SetClipboardText@, defined at @SDL3\/SDL_clipboard.h 104:34@
 sDL_SetClipboardText
@@ -119,7 +125,7 @@ foreign import ccall unsafe "hs_bindgen_421a57638d4c3dac"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_Unsafe_SDL_GetClipboardText@
 hs_bindgen_421a57638d4c3dac :: IO (BG.Ptr BG.CChar)
 hs_bindgen_421a57638d4c3dac =
-  BG.fromFFIType hs_bindgen_421a57638d4c3dac_base
+  fmap BG.fromFFIType hs_bindgen_421a57638d4c3dac_base
 
 -- | Get UTF-8 text from the clipboard.
 --
@@ -140,12 +146,12 @@ sDL_GetClipboardText = hs_bindgen_421a57638d4c3dac
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_Unsafe_SDL_HasClipboardText@
 foreign import ccall unsafe "hs_bindgen_98d342e69ea4a567"
   hs_bindgen_98d342e69ea4a567_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_Unsafe_SDL_HasClipboardText@
 hs_bindgen_98d342e69ea4a567 :: IO BG.CBool
 hs_bindgen_98d342e69ea4a567 =
-  BG.fromFFIType hs_bindgen_98d342e69ea4a567_base
+  fmap BG.fromFFIType hs_bindgen_98d342e69ea4a567_base
 
 -- | Query whether the clipboard exists and contains a non-empty text string.
 --
@@ -165,14 +171,15 @@ sDL_HasClipboardText = hs_bindgen_98d342e69ea4a567
 foreign import ccall unsafe "hs_bindgen_6488f17232c683bf"
   hs_bindgen_6488f17232c683bf_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_Unsafe_SDL_SetPrimarySelectionText@
 hs_bindgen_6488f17232c683bf
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_6488f17232c683bf =
-  BG.fromFFIType hs_bindgen_6488f17232c683bf_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_6488f17232c683bf_base (BG.toFFIType x0))
 
 -- | Put UTF-8 text into the primary selection.
 --
@@ -202,7 +209,7 @@ foreign import ccall unsafe "hs_bindgen_5e7b06376b2e9bbd"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_Unsafe_SDL_GetPrimarySelectionText@
 hs_bindgen_5e7b06376b2e9bbd :: IO (BG.Ptr BG.CChar)
 hs_bindgen_5e7b06376b2e9bbd =
-  BG.fromFFIType hs_bindgen_5e7b06376b2e9bbd_base
+  fmap BG.fromFFIType hs_bindgen_5e7b06376b2e9bbd_base
 
 -- | Get UTF-8 text from the primary selection.
 --
@@ -224,12 +231,12 @@ sDL_GetPrimarySelectionText =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_Unsafe_SDL_HasPrimarySelectionText@
 foreign import ccall unsafe "hs_bindgen_219ce6e82c7fc2f7"
   hs_bindgen_219ce6e82c7fc2f7_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_Unsafe_SDL_HasPrimarySelectionText@
 hs_bindgen_219ce6e82c7fc2f7 :: IO BG.CBool
 hs_bindgen_219ce6e82c7fc2f7 =
-  BG.fromFFIType hs_bindgen_219ce6e82c7fc2f7_base
+  fmap BG.fromFFIType hs_bindgen_219ce6e82c7fc2f7_base
 
 -- | Query whether the primary selection exists and contains a non-empty text string.
 --
@@ -253,8 +260,8 @@ foreign import ccall unsafe "hs_bindgen_d48cb2fd87e5c697"
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.CSize
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_Unsafe_SDL_SetClipboardData@
 hs_bindgen_d48cb2fd87e5c697
@@ -265,7 +272,20 @@ hs_bindgen_d48cb2fd87e5c697
   -> HsBindgen.Runtime.LibC.CSize
   -> IO BG.CBool
 hs_bindgen_d48cb2fd87e5c697 =
-  BG.fromFFIType hs_bindgen_d48cb2fd87e5c697_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_d48cb2fd87e5c697_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Offer clipboard data to the OS.
 --
@@ -309,12 +329,12 @@ sDL_SetClipboardData = hs_bindgen_d48cb2fd87e5c697
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_Unsafe_SDL_ClearClipboardData@
 foreign import ccall unsafe "hs_bindgen_c332ca2219d94718"
   hs_bindgen_c332ca2219d94718_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_Unsafe_SDL_ClearClipboardData@
 hs_bindgen_c332ca2219d94718 :: IO BG.CBool
 hs_bindgen_c332ca2219d94718 =
-  BG.fromFFIType hs_bindgen_c332ca2219d94718_base
+  fmap BG.fromFFIType hs_bindgen_c332ca2219d94718_base
 
 -- | Clear the clipboard data.
 --
@@ -343,7 +363,9 @@ hs_bindgen_c38a6cca511b3536
   -> BG.Ptr HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_c38a6cca511b3536 =
-  BG.fromFFIType hs_bindgen_c38a6cca511b3536_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_c38a6cca511b3536_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the data from the clipboard for a given mime type.
 --
@@ -374,14 +396,15 @@ sDL_GetClipboardData = hs_bindgen_c38a6cca511b3536
 foreign import ccall unsafe "hs_bindgen_5aacfbaa2a2e29f4"
   hs_bindgen_5aacfbaa2a2e29f4_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_Unsafe_SDL_HasClipboardData@
 hs_bindgen_5aacfbaa2a2e29f4
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_5aacfbaa2a2e29f4 =
-  BG.fromFFIType hs_bindgen_5aacfbaa2a2e29f4_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_5aacfbaa2a2e29f4_base (BG.toFFIType x0))
 
 -- | Query whether there is data in the clipboard for the provided mime type.
 --
@@ -413,7 +436,8 @@ hs_bindgen_936644e3f850ec42
   :: BG.Ptr HsBindgen.Runtime.LibC.CSize
   -> IO (BG.Ptr (BG.Ptr BG.CChar))
 hs_bindgen_936644e3f850ec42 =
-  BG.fromFFIType hs_bindgen_936644e3f850ec42_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_936644e3f850ec42_base (BG.toFFIType x0))
 
 -- | Retrieve the list of mime types available in the clipboard.
 --

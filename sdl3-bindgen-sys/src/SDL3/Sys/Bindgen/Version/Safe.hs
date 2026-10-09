@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Version.Safe (
@@ -8,13 +10,16 @@ module SDL3.Sys.Bindgen.Version.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_version.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_version.h>"
          , "signed int hs_bindgen_773c658657d9ec27 (void)"
          , "{"
          , "  return (SDL_GetVersion)();"
@@ -30,12 +35,12 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Version_Safe_SDL_GetVersion@
 foreign import ccall safe "hs_bindgen_773c658657d9ec27"
   hs_bindgen_773c658657d9ec27_base
-    :: IO BG.Int32
+    :: IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Version_Safe_SDL_GetVersion@
 hs_bindgen_773c658657d9ec27 :: IO BG.CInt
 hs_bindgen_773c658657d9ec27 =
-  BG.fromFFIType hs_bindgen_773c658657d9ec27_base
+  fmap BG.fromFFIType hs_bindgen_773c658657d9ec27_base
 
 -- | Get the version of SDL that is linked against your program.
 --
@@ -63,7 +68,7 @@ foreign import ccall safe "hs_bindgen_56f1110e8f8cc4a0"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Version_Safe_SDL_GetRevision@
 hs_bindgen_56f1110e8f8cc4a0 :: IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_56f1110e8f8cc4a0 =
-  BG.fromFFIType hs_bindgen_56f1110e8f8cc4a0_base
+  fmap BG.fromFFIType hs_bindgen_56f1110e8f8cc4a0_base
 
 -- | Get the code revision of the SDL library that is linked against your program.
 --

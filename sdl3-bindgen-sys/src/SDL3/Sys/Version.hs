@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Functionality to query the current SDL version, both as headers the app was compiled against, and a library the app is linked to. The current major version of SDL headers.
 --
 --     If this were SDL version 3.2.1, this value would be 3.
@@ -19,6 +21,7 @@ module SDL3.Sys.Version (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (IO, fmap)
 
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst

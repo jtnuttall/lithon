@@ -5,9 +5,11 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeFamilies #-}
@@ -37,8 +39,10 @@ import qualified C.Expr.HostPlatform
 import qualified HsBindgen.Runtime.HasCField as HasCField
 import qualified HsBindgen.Runtime.LibC
 import qualified HsBindgen.Runtime.Marshal as Marshal
+import qualified HsBindgen.Runtime.Struct as Struct
 import qualified HsBindgen.Runtime.Support as BG
 import qualified HsBindgen.Runtime.Support.CompatHasField as BG.CompatHasField
+import Prelude ((<*>), Bounded, Enum, Eq, IO, Int, Integral, Num, Ord, Read, Real, Show, fmap, pure, type (~))
 
 -- | [C declaration]: @struct SDL_ToyThing@, defined at @SDL_toy.h 14:16@
 data SDL_ToyThing = SDL_ToyThing
@@ -71,6 +75,9 @@ instance Marshal.WriteRaw SDL_ToyThing where
 
 deriving via Marshal.EquivStorable SDL_ToyThing instance BG.Storable SDL_ToyThing
 
+deriving via Struct.IsStructViaReadRaw SDL_ToyThing instance Struct.IsStruct SDL_ToyThing
+
+-- | [C declaration]: @size@, defined at @SDL_toy.h 15:7@
 instance ( ty ~ BG.CInt
          ) => BG.CompatHasField.HasField "sDL_ToyThing_size" SDL_ToyThing ty where
 
@@ -218,12 +225,11 @@ newtype SDL_ToyCallback_Aux = SDL_ToyCallback_Aux
   { unwrapSDL_ToyCallback_Aux :: BG.Ptr BG.Void -> BG.CInt -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_ToyCallback_Aux@
 foreign import ccall safe "wrapper" hs_bindgen_450bb4cbb1a00030_base ::
-     (BG.Ptr BG.Void -> BG.Int32 -> IO ())
-  -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Int32 -> IO ()))
+     (BG.Ptr BG.Void -> BG.CInt -> IO ())
+  -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.CInt -> IO ()))
 
 -- __unique:__ @toSDL_ToyCallback_Aux@
 hs_bindgen_450bb4cbb1a00030 ::
@@ -231,12 +237,14 @@ hs_bindgen_450bb4cbb1a00030 ::
   -> IO (BG.FunPtr SDL_ToyCallback_Aux)
 hs_bindgen_450bb4cbb1a00030 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_450bb4cbb1a00030_base (BG.toFFIType fun0))
+    fmap BG.castFunPtr (hs_bindgen_450bb4cbb1a00030_base (\x1 ->
+                                                            \x2 ->
+                                                              BG.getField @"unwrapSDL_ToyCallback_Aux" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2)))
 
 -- __unique:__ @fromSDL_ToyCallback_Aux@
 foreign import ccall safe "dynamic" hs_bindgen_a143e824dd9d1e0f_base ::
-     BG.FunPtr (BG.Ptr BG.Void -> BG.Int32 -> IO ())
-  -> BG.Ptr BG.Void -> BG.Int32 -> IO ()
+     BG.FunPtr (BG.Ptr BG.Void -> BG.CInt -> IO ())
+  -> BG.Ptr BG.Void -> BG.CInt -> IO ()
 
 -- __unique:__ @fromSDL_ToyCallback_Aux@
 hs_bindgen_a143e824dd9d1e0f ::
@@ -244,7 +252,9 @@ hs_bindgen_a143e824dd9d1e0f ::
   -> SDL_ToyCallback_Aux
 hs_bindgen_a143e824dd9d1e0f =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_a143e824dd9d1e0f_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_ToyCallback_Aux (\x1 ->
+                           \x2 ->
+                             hs_bindgen_a143e824dd9d1e0f_base (BG.castFunPtr funPtr0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 instance BG.ToFunPtr SDL_ToyCallback_Aux where
 

@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Camera.Safe (
@@ -21,6 +23,9 @@ module SDL3.Sys.Bindgen.Camera.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -31,7 +36,8 @@ import SDL3.Sys.Bindgen.Surface qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_camera.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_camera.h>"
          , "signed int hs_bindgen_cd72562c40895f9d (void)"
          , "{"
          , "  return (SDL_GetNumCameraDrivers)();"
@@ -134,12 +140,12 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_GetNumCameraDrivers@
 foreign import ccall safe "hs_bindgen_cd72562c40895f9d"
   hs_bindgen_cd72562c40895f9d_base
-    :: IO BG.Int32
+    :: IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_GetNumCameraDrivers@
 hs_bindgen_cd72562c40895f9d :: IO BG.CInt
 hs_bindgen_cd72562c40895f9d =
-  BG.fromFFIType hs_bindgen_cd72562c40895f9d_base
+  fmap BG.fromFFIType hs_bindgen_cd72562c40895f9d_base
 
 -- | Use this function to get the number of built-in camera drivers.
 --
@@ -162,7 +168,7 @@ sDL_GetNumCameraDrivers = hs_bindgen_cd72562c40895f9d
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_GetCameraDriver@
 foreign import ccall safe "hs_bindgen_1b2353edfbc61157"
   hs_bindgen_1b2353edfbc61157_base
-    :: BG.Int32
+    :: BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_GetCameraDriver@
@@ -170,7 +176,8 @@ hs_bindgen_1b2353edfbc61157
   :: BG.CInt
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_1b2353edfbc61157 =
-  BG.fromFFIType hs_bindgen_1b2353edfbc61157_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_1b2353edfbc61157_base (BG.toFFIType x0))
 
 -- | Use this function to get the name of a built in camera driver.
 --
@@ -203,7 +210,7 @@ foreign import ccall safe "hs_bindgen_eb2b917f28fc96fd"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_GetCurrentCameraDriver@
 hs_bindgen_eb2b917f28fc96fd :: IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_eb2b917f28fc96fd =
-  BG.fromFFIType hs_bindgen_eb2b917f28fc96fd_base
+  fmap BG.fromFFIType hs_bindgen_eb2b917f28fc96fd_base
 
 -- | Get the name of the current camera driver.
 --
@@ -231,7 +238,8 @@ hs_bindgen_1ba2aef0a8cc6032
   :: BG.Ptr BG.CInt
   -> IO (BG.Ptr SDL_CameraID)
 hs_bindgen_1ba2aef0a8cc6032 =
-  BG.fromFFIType hs_bindgen_1ba2aef0a8cc6032_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_1ba2aef0a8cc6032_base (BG.toFFIType x0))
 
 -- | Get a list of currently connected camera devices.
 --
@@ -255,7 +263,7 @@ sDL_GetCameras = hs_bindgen_1ba2aef0a8cc6032
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_GetCameraSupportedFormats@
 foreign import ccall safe "hs_bindgen_5a031667f9d45a0d"
   hs_bindgen_5a031667f9d45a0d_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> IO (BG.Ptr BG.Void)
 
@@ -265,7 +273,9 @@ hs_bindgen_5a031667f9d45a0d
   -> BG.Ptr BG.CInt
   -> IO (BG.Ptr (BG.Ptr SDL_CameraSpec))
 hs_bindgen_5a031667f9d45a0d =
-  BG.fromFFIType hs_bindgen_5a031667f9d45a0d_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_5a031667f9d45a0d_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the list of native formats\/sizes a camera supports.
 --
@@ -302,7 +312,7 @@ sDL_GetCameraSupportedFormats =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_GetCameraName@
 foreign import ccall safe "hs_bindgen_1fe2503ad9612c29"
   hs_bindgen_1fe2503ad9612c29_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_GetCameraName@
@@ -310,7 +320,8 @@ hs_bindgen_1fe2503ad9612c29
   :: SDL_CameraID
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_1fe2503ad9612c29 =
-  BG.fromFFIType hs_bindgen_1fe2503ad9612c29_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_1fe2503ad9612c29_base (BG.toFFIType x0))
 
 -- | Get the human-readable device name for a camera.
 --
@@ -334,15 +345,16 @@ sDL_GetCameraName = hs_bindgen_1fe2503ad9612c29
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_GetCameraPosition@
 foreign import ccall safe "hs_bindgen_53c0436c6140f231"
   hs_bindgen_53c0436c6140f231_base
-    :: BG.Word32
-    -> IO BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_GetCameraPosition@
 hs_bindgen_53c0436c6140f231
   :: SDL_CameraID
   -> IO SDL_CameraPosition
 hs_bindgen_53c0436c6140f231 =
-  BG.fromFFIType hs_bindgen_53c0436c6140f231_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_53c0436c6140f231_base (BG.toFFIType x0))
 
 -- | Get the position of the camera in relation to the system.
 --
@@ -368,7 +380,7 @@ sDL_GetCameraPosition = hs_bindgen_53c0436c6140f231
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_OpenCamera@
 foreign import ccall safe "hs_bindgen_9c29b271631f7c6f"
   hs_bindgen_9c29b271631f7c6f_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> IO (BG.Ptr BG.Void)
 
@@ -378,7 +390,9 @@ hs_bindgen_9c29b271631f7c6f
   -> PtrConst.PtrConst SDL_CameraSpec
   -> IO (BG.Ptr SDL_Camera)
 hs_bindgen_9c29b271631f7c6f =
-  BG.fromFFIType hs_bindgen_9c29b271631f7c6f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_9c29b271631f7c6f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Open a video recording device (a \"camera\").
 --
@@ -417,14 +431,15 @@ sDL_OpenCamera = hs_bindgen_9c29b271631f7c6f
 foreign import ccall safe "hs_bindgen_77d5a87752cf6936"
   hs_bindgen_77d5a87752cf6936_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_GetCameraPermissionState@
 hs_bindgen_77d5a87752cf6936
   :: BG.Ptr SDL_Camera
   -> IO SDL_CameraPermissionState
 hs_bindgen_77d5a87752cf6936 =
-  BG.fromFFIType hs_bindgen_77d5a87752cf6936_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_77d5a87752cf6936_base (BG.toFFIType x0))
 
 -- | Query if camera access has been approved by the user.
 --
@@ -458,14 +473,15 @@ sDL_GetCameraPermissionState =
 foreign import ccall safe "hs_bindgen_bcdd620eca919b2e"
   hs_bindgen_bcdd620eca919b2e_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_GetCameraID@
 hs_bindgen_bcdd620eca919b2e
   :: BG.Ptr SDL_Camera
   -> IO SDL_CameraID
 hs_bindgen_bcdd620eca919b2e =
-  BG.fromFFIType hs_bindgen_bcdd620eca919b2e_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_bcdd620eca919b2e_base (BG.toFFIType x0))
 
 -- | Get the instance ID of an opened camera.
 --
@@ -490,14 +506,15 @@ sDL_GetCameraID = hs_bindgen_bcdd620eca919b2e
 foreign import ccall safe "hs_bindgen_052b8e57c4e6c7b6"
   hs_bindgen_052b8e57c4e6c7b6_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_GetCameraProperties@
 hs_bindgen_052b8e57c4e6c7b6
   :: BG.Ptr SDL_Camera
   -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
 hs_bindgen_052b8e57c4e6c7b6 =
-  BG.fromFFIType hs_bindgen_052b8e57c4e6c7b6_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_052b8e57c4e6c7b6_base (BG.toFFIType x0))
 
 -- | Get the properties associated with an opened camera.
 --
@@ -521,7 +538,7 @@ foreign import ccall safe "hs_bindgen_077520cc55e1919f"
   hs_bindgen_077520cc55e1919f_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_Safe_SDL_GetCameraFormat@
 hs_bindgen_077520cc55e1919f
@@ -529,7 +546,9 @@ hs_bindgen_077520cc55e1919f
   -> BG.Ptr SDL_CameraSpec
   -> IO BG.CBool
 hs_bindgen_077520cc55e1919f =
-  BG.fromFFIType hs_bindgen_077520cc55e1919f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_077520cc55e1919f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the spec that a camera is using when generating images.
 --
@@ -571,7 +590,9 @@ hs_bindgen_ea5de39cea6d2cc9
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint64
   -> IO (BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface)
 hs_bindgen_ea5de39cea6d2cc9 =
-  BG.fromFFIType hs_bindgen_ea5de39cea6d2cc9_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_ea5de39cea6d2cc9_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Acquire a frame.
 --
@@ -621,7 +642,9 @@ hs_bindgen_9abaf64e06b4eeb3
   -> BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface
   -> IO ()
 hs_bindgen_9abaf64e06b4eeb3 =
-  BG.fromFFIType hs_bindgen_9abaf64e06b4eeb3_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_9abaf64e06b4eeb3_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Release a frame of video acquired from a camera.
 --
@@ -663,7 +686,8 @@ hs_bindgen_2ca914bb2dfa2f4d
   :: BG.Ptr SDL_Camera
   -> IO ()
 hs_bindgen_2ca914bb2dfa2f4d =
-  BG.fromFFIType hs_bindgen_2ca914bb2dfa2f4d_base
+  \x0 ->
+    hs_bindgen_2ca914bb2dfa2f4d_base (BG.toFFIType x0)
 
 -- | Use this function to shut down camera processing and close the camera device.
 --

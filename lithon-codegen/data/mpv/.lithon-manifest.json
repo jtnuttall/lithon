@@ -1,9 +1,9 @@
 {
   "files": {
-    "spec/client.yaml": "rhv3:a2ea1f68cdabf820",
-    "spec/render.yaml": "rhv3:361ced992463fdae",
-    "spec/render_gl.yaml": "rhv3:e17015bec54e150a",
-    "spec/stream_cb.yaml": "rhv3:959dd69cbadb206a"
+    "spec/client.yaml": "rhv3:32c6e85dbc4be548",
+    "spec/render.yaml": "rhv3:75dfb19fb037d8c1",
+    "spec/render_gl.yaml": "rhv3:ec4396ae65df9029",
+    "spec/stream_cb.yaml": "rhv3:b45a38793ea49082"
   },
   "generatorVersion": "0.1.1.0",
   "meta": {

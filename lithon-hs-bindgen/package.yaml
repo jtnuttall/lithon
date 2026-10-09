@@ -39,7 +39,7 @@ dependencies:
   - base <4.22.0.0
   - doxygen-parser
   - hs-bindgen
-  - libclang-bindings
+  - libclang-bindings >= 0.2 && < 0.3
   - lithon-prelude
   - bytestring
   - debruijn

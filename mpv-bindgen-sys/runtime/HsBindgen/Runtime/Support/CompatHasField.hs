@@ -1,3 +1,4 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
 {-# OPTIONS_HADDOCK hide #-}
 
 -- | Prelude required by generated bindings.
@@ -12,6 +13,13 @@ module HsBindgen.Runtime.Support.CompatHasField (
   HasField (hasField),
   getField,
   setField,
+  modifyField,
 ) where
 
 import GHC.Records.Compat (HasField (..), getField, setField)
+
+-- | Modify a field in a record.
+modifyField :: forall x r a. (HasField x r a) => r -> (a -> a) -> r
+modifyField r f = gen $ f val
+ where
+  (gen, val) = hasField @x r

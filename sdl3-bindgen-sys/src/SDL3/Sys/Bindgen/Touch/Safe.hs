@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Touch.Safe (
@@ -10,6 +12,9 @@ module SDL3.Sys.Bindgen.Touch.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -17,7 +22,8 @@ import SDL3.Sys.Bindgen.Touch
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_touch.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_touch.h>"
          , "SDL_TouchID *hs_bindgen_5bb90a8e6a2a7744 ("
          , "  signed int *arg1"
          , ")"
@@ -58,7 +64,8 @@ hs_bindgen_5bb90a8e6a2a7744
   :: BG.Ptr BG.CInt
   -> IO (BG.Ptr SDL_TouchID)
 hs_bindgen_5bb90a8e6a2a7744 =
-  BG.fromFFIType hs_bindgen_5bb90a8e6a2a7744_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_5bb90a8e6a2a7744_base (BG.toFFIType x0))
 
 -- | Get a list of registered touch devices.
 --
@@ -80,7 +87,7 @@ sDL_GetTouchDevices = hs_bindgen_5bb90a8e6a2a7744
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Touch_Safe_SDL_GetTouchDeviceName@
 foreign import ccall safe "hs_bindgen_8215300124d28f2f"
   hs_bindgen_8215300124d28f2f_base
-    :: BG.Word64
+    :: HsBindgen.Runtime.LibC.Word64
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Touch_Safe_SDL_GetTouchDeviceName@
@@ -88,7 +95,8 @@ hs_bindgen_8215300124d28f2f
   :: SDL_TouchID
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_8215300124d28f2f =
-  BG.fromFFIType hs_bindgen_8215300124d28f2f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_8215300124d28f2f_base (BG.toFFIType x0))
 
 -- | Get the touch device name as reported from the driver.
 --
@@ -108,15 +116,16 @@ sDL_GetTouchDeviceName = hs_bindgen_8215300124d28f2f
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Touch_Safe_SDL_GetTouchDeviceType@
 foreign import ccall safe "hs_bindgen_a494e81cbe4e8c2f"
   hs_bindgen_a494e81cbe4e8c2f_base
-    :: BG.Word64
-    -> IO BG.Int32
+    :: HsBindgen.Runtime.LibC.Word64
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Touch_Safe_SDL_GetTouchDeviceType@
 hs_bindgen_a494e81cbe4e8c2f
   :: SDL_TouchID
   -> IO SDL_TouchDeviceType
 hs_bindgen_a494e81cbe4e8c2f =
-  BG.fromFFIType hs_bindgen_a494e81cbe4e8c2f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a494e81cbe4e8c2f_base (BG.toFFIType x0))
 
 -- | Get the type of the given touch device.
 --
@@ -136,7 +145,7 @@ sDL_GetTouchDeviceType = hs_bindgen_a494e81cbe4e8c2f
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Touch_Safe_SDL_GetTouchFingers@
 foreign import ccall safe "hs_bindgen_ea3a929a9ac35739"
   hs_bindgen_ea3a929a9ac35739_base
-    :: BG.Word64
+    :: HsBindgen.Runtime.LibC.Word64
     -> BG.Ptr BG.Void
     -> IO (BG.Ptr BG.Void)
 
@@ -146,7 +155,9 @@ hs_bindgen_ea3a929a9ac35739
   -> BG.Ptr BG.CInt
   -> IO (BG.Ptr (BG.Ptr SDL_Finger))
 hs_bindgen_ea3a929a9ac35739 =
-  BG.fromFFIType hs_bindgen_ea3a929a9ac35739_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_ea3a929a9ac35739_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get a list of active fingers for a given touch device.
 --

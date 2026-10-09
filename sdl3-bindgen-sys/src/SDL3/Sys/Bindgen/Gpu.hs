@@ -18,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | The GPU API offers a cross-platform way for apps to talk to modern graphics hardware. It offers both 3D graphics and compute support, in the style of Metal, Vulkan, and Direct3D 12.
 --
@@ -627,12 +628,30 @@ module SDL3.Sys.Bindgen.Gpu (
 )
 where
 
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  pure,
+  (<*>),
+  (>>),
+  type (~),
+ )
+
 import C.Expr.HostPlatform qualified
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Pixels qualified
@@ -5025,6 +5044,11 @@ instance Marshal.WriteRaw SDL_GPUViewport where
 
 deriving via Marshal.EquivStorable SDL_GPUViewport instance BG.Storable SDL_GPUViewport
 
+deriving via Struct.IsStructViaReadRaw SDL_GPUViewport instance Struct.IsStruct SDL_GPUViewport
+
+-- | The left offset of the viewport.
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_gpu.h 1386:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_GPUViewport ty
@@ -5054,6 +5078,9 @@ instance HasCField.HasCField SDL_GPUViewport "x" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The top offset of the viewport.
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_gpu.h 1387:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_GPUViewport ty
@@ -5083,6 +5110,9 @@ instance HasCField.HasCField SDL_GPUViewport "y" where
 
   offset# = \_ -> \_ -> 4
 
+-- | The width of the viewport.
+--
+--     [C declaration]: @w@, defined at @SDL3\/SDL_gpu.h 1388:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "w" SDL_GPUViewport ty
@@ -5112,6 +5142,9 @@ instance HasCField.HasCField SDL_GPUViewport "w" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The height of the viewport.
+--
+--     [C declaration]: @h@, defined at @SDL3\/SDL_gpu.h 1389:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "h" SDL_GPUViewport ty
@@ -5141,6 +5174,9 @@ instance HasCField.HasCField SDL_GPUViewport "h" where
 
   offset# = \_ -> \_ -> 12
 
+-- | The minimum depth of the viewport.
+--
+--     [C declaration]: @min_depth@, defined at @SDL3\/SDL_gpu.h 1390:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "min_depth" SDL_GPUViewport ty
@@ -5172,6 +5208,9 @@ instance HasCField.HasCField SDL_GPUViewport "min_depth" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The maximum depth of the viewport.
+--
+--     [C declaration]: @max_depth@, defined at @SDL3\/SDL_gpu.h 1391:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "max_depth" SDL_GPUViewport ty
@@ -5268,6 +5307,14 @@ deriving via
   instance
     BG.Storable SDL_GPUTextureTransferInfo
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUTextureTransferInfo
+  instance
+    Struct.IsStruct SDL_GPUTextureTransferInfo
+
+-- | The transfer buffer used in the transfer operation.
+--
+--     [C declaration]: @transfer_buffer@, defined at @SDL3\/SDL_gpu.h 1418:28@
 instance
   (ty ~ BG.Ptr SDL_GPUTransferBuffer)
   => BG.CompatHasField.HasField "transfer_buffer" SDL_GPUTextureTransferInfo ty
@@ -5298,6 +5345,9 @@ instance HasCField.HasCField SDL_GPUTextureTransferInfo "transfer_buffer" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The starting byte of the image data in the transfer buffer.
+--
+--     [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1419:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "offset" SDL_GPUTextureTransferInfo ty
@@ -5327,6 +5377,9 @@ instance HasCField.HasCField SDL_GPUTextureTransferInfo "offset" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The number of pixels from one row to the next.
+--
+--     [C declaration]: @pixels_per_row@, defined at @SDL3\/SDL_gpu.h 1420:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "pixels_per_row" SDL_GPUTextureTransferInfo ty
@@ -5357,6 +5410,9 @@ instance HasCField.HasCField SDL_GPUTextureTransferInfo "pixels_per_row" where
 
   offset# = \_ -> \_ -> 12
 
+-- | The number of rows from one layer\/depth-slice to the next.
+--
+--     [C declaration]: @rows_per_layer@, defined at @SDL3\/SDL_gpu.h 1421:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "rows_per_layer" SDL_GPUTextureTransferInfo ty
@@ -5434,6 +5490,14 @@ deriving via
   instance
     BG.Storable SDL_GPUTransferBufferLocation
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUTransferBufferLocation
+  instance
+    Struct.IsStruct SDL_GPUTransferBufferLocation
+
+-- | The transfer buffer used in the transfer operation.
+--
+--     [C declaration]: @transfer_buffer@, defined at @SDL3\/SDL_gpu.h 1437:28@
 instance
   (ty ~ BG.Ptr SDL_GPUTransferBuffer)
   => BG.CompatHasField.HasField "transfer_buffer" SDL_GPUTransferBufferLocation ty
@@ -5459,6 +5523,9 @@ instance HasCField.HasCField SDL_GPUTransferBufferLocation "transfer_buffer" whe
 
   offset# = \_ -> \_ -> 0
 
+-- | The starting byte of the buffer data in the transfer buffer.
+--
+--     [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1438:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "offset" SDL_GPUTransferBufferLocation ty
@@ -5554,6 +5621,14 @@ deriving via
   instance
     BG.Storable SDL_GPUTextureLocation
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUTextureLocation
+  instance
+    Struct.IsStruct SDL_GPUTextureLocation
+
+-- | The texture used in the copy operation.
+--
+--     [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 1453:21@
 instance
   (ty ~ BG.Ptr SDL_GPUTexture)
   => BG.CompatHasField.HasField "texture" SDL_GPUTextureLocation ty
@@ -5585,6 +5660,9 @@ instance HasCField.HasCField SDL_GPUTextureLocation "texture" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The mip level index of the location.
+--
+--     [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 1454:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "mip_level" SDL_GPUTextureLocation ty
@@ -5616,6 +5694,9 @@ instance HasCField.HasCField SDL_GPUTextureLocation "mip_level" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The layer index of the location.
+--
+--     [C declaration]: @layer@, defined at @SDL3\/SDL_gpu.h 1455:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "layer" SDL_GPUTextureLocation ty
@@ -5647,6 +5728,9 @@ instance HasCField.HasCField SDL_GPUTextureLocation "layer" where
 
   offset# = \_ -> \_ -> 12
 
+-- | The left offset of the location.
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_gpu.h 1456:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "x" SDL_GPUTextureLocation ty
@@ -5678,6 +5762,9 @@ instance HasCField.HasCField SDL_GPUTextureLocation "x" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The top offset of the location.
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_gpu.h 1457:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "y" SDL_GPUTextureLocation ty
@@ -5709,6 +5796,9 @@ instance HasCField.HasCField SDL_GPUTextureLocation "y" where
 
   offset# = \_ -> \_ -> 20
 
+-- | The front offset of the location.
+--
+--     [C declaration]: @z@, defined at @SDL3\/SDL_gpu.h 1458:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "z" SDL_GPUTextureLocation ty
@@ -5826,6 +5916,14 @@ instance Marshal.WriteRaw SDL_GPUTextureRegion where
 
 deriving via Marshal.EquivStorable SDL_GPUTextureRegion instance BG.Storable SDL_GPUTextureRegion
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUTextureRegion
+  instance
+    Struct.IsStruct SDL_GPUTextureRegion
+
+-- | The texture used in the copy operation.
+--
+--     [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 1475:21@
 instance
   (ty ~ BG.Ptr SDL_GPUTexture)
   => BG.CompatHasField.HasField "texture" SDL_GPUTextureRegion ty
@@ -5860,6 +5958,9 @@ instance HasCField.HasCField SDL_GPUTextureRegion "texture" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The mip level index to transfer.
+--
+--     [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 1476:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "mip_level" SDL_GPUTextureRegion ty
@@ -5894,6 +5995,9 @@ instance HasCField.HasCField SDL_GPUTextureRegion "mip_level" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The layer index to transfer.
+--
+--     [C declaration]: @layer@, defined at @SDL3\/SDL_gpu.h 1477:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "layer" SDL_GPUTextureRegion ty
@@ -5928,6 +6032,9 @@ instance HasCField.HasCField SDL_GPUTextureRegion "layer" where
 
   offset# = \_ -> \_ -> 12
 
+-- | The left offset of the region.
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_gpu.h 1478:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "x" SDL_GPUTextureRegion ty
@@ -5962,6 +6069,9 @@ instance HasCField.HasCField SDL_GPUTextureRegion "x" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The top offset of the region.
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_gpu.h 1479:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "y" SDL_GPUTextureRegion ty
@@ -5996,6 +6106,9 @@ instance HasCField.HasCField SDL_GPUTextureRegion "y" where
 
   offset# = \_ -> \_ -> 20
 
+-- | The front offset of the region.
+--
+--     [C declaration]: @z@, defined at @SDL3\/SDL_gpu.h 1480:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "z" SDL_GPUTextureRegion ty
@@ -6030,6 +6143,9 @@ instance HasCField.HasCField SDL_GPUTextureRegion "z" where
 
   offset# = \_ -> \_ -> 24
 
+-- | The width of the region.
+--
+--     [C declaration]: @w@, defined at @SDL3\/SDL_gpu.h 1481:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "w" SDL_GPUTextureRegion ty
@@ -6064,6 +6180,9 @@ instance HasCField.HasCField SDL_GPUTextureRegion "w" where
 
   offset# = \_ -> \_ -> 28
 
+-- | The height of the region.
+--
+--     [C declaration]: @h@, defined at @SDL3\/SDL_gpu.h 1482:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "h" SDL_GPUTextureRegion ty
@@ -6098,6 +6217,9 @@ instance HasCField.HasCField SDL_GPUTextureRegion "h" where
 
   offset# = \_ -> \_ -> 32
 
+-- | The depth of the region.
+--
+--     [C declaration]: @d@, defined at @SDL3\/SDL_gpu.h 1483:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "d" SDL_GPUTextureRegion ty
@@ -6204,6 +6326,11 @@ instance Marshal.WriteRaw SDL_GPUBlitRegion where
 
 deriving via Marshal.EquivStorable SDL_GPUBlitRegion instance BG.Storable SDL_GPUBlitRegion
 
+deriving via Struct.IsStructViaReadRaw SDL_GPUBlitRegion instance Struct.IsStruct SDL_GPUBlitRegion
+
+-- | The texture.
+--
+--     [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 1496:21@
 instance
   (ty ~ BG.Ptr SDL_GPUTexture)
   => BG.CompatHasField.HasField "texture" SDL_GPUBlitRegion ty
@@ -6236,6 +6363,9 @@ instance HasCField.HasCField SDL_GPUBlitRegion "texture" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The mip level index of the region.
+--
+--     [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 1497:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "mip_level" SDL_GPUBlitRegion ty
@@ -6268,6 +6398,9 @@ instance HasCField.HasCField SDL_GPUBlitRegion "mip_level" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The layer index or depth plane of the region. This value is treated as a layer index on 2D array and cube textures, and as a depth plane on 3D textures.
+--
+--     [C declaration]: @layer_or_depth_plane@, defined at @SDL3\/SDL_gpu.h 1498:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "layer_or_depth_plane" SDL_GPUBlitRegion ty
@@ -6301,6 +6434,9 @@ instance HasCField.HasCField SDL_GPUBlitRegion "layer_or_depth_plane" where
 
   offset# = \_ -> \_ -> 12
 
+-- | The left offset of the region.
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_gpu.h 1499:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "x" SDL_GPUBlitRegion ty
@@ -6333,6 +6469,9 @@ instance HasCField.HasCField SDL_GPUBlitRegion "x" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The top offset of the region.
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_gpu.h 1500:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "y" SDL_GPUBlitRegion ty
@@ -6365,6 +6504,9 @@ instance HasCField.HasCField SDL_GPUBlitRegion "y" where
 
   offset# = \_ -> \_ -> 20
 
+-- | The width of the region.
+--
+--     [C declaration]: @w@, defined at @SDL3\/SDL_gpu.h 1501:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "w" SDL_GPUBlitRegion ty
@@ -6397,6 +6539,9 @@ instance HasCField.HasCField SDL_GPUBlitRegion "w" where
 
   offset# = \_ -> \_ -> 24
 
+-- | The height of the region.
+--
+--     [C declaration]: @h@, defined at @SDL3\/SDL_gpu.h 1502:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "h" SDL_GPUBlitRegion ty
@@ -6473,6 +6618,14 @@ instance Marshal.WriteRaw SDL_GPUBufferLocation where
 
 deriving via Marshal.EquivStorable SDL_GPUBufferLocation instance BG.Storable SDL_GPUBufferLocation
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUBufferLocation
+  instance
+    Struct.IsStruct SDL_GPUBufferLocation
+
+-- | The buffer.
+--
+--     [C declaration]: @buffer@, defined at @SDL3\/SDL_gpu.h 1516:20@
 instance
   (ty ~ BG.Ptr SDL_GPUBuffer)
   => BG.CompatHasField.HasField "buffer" SDL_GPUBufferLocation ty
@@ -6497,6 +6650,9 @@ instance HasCField.HasCField SDL_GPUBufferLocation "buffer" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The starting byte within the buffer.
+--
+--     [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1517:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "offset" SDL_GPUBufferLocation ty
@@ -6571,6 +6727,14 @@ instance Marshal.WriteRaw SDL_GPUBufferRegion where
 
 deriving via Marshal.EquivStorable SDL_GPUBufferRegion instance BG.Storable SDL_GPUBufferRegion
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUBufferRegion
+  instance
+    Struct.IsStruct SDL_GPUBufferRegion
+
+-- | The buffer.
+--
+--     [C declaration]: @buffer@, defined at @SDL3\/SDL_gpu.h 1532:20@
 instance
   (ty ~ BG.Ptr SDL_GPUBuffer)
   => BG.CompatHasField.HasField "buffer" SDL_GPUBufferRegion ty
@@ -6595,6 +6759,9 @@ instance HasCField.HasCField SDL_GPUBufferRegion "buffer" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The starting byte within the buffer.
+--
+--     [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1533:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "offset" SDL_GPUBufferRegion ty
@@ -6619,6 +6786,9 @@ instance HasCField.HasCField SDL_GPUBufferRegion "offset" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The size in bytes of the region.
+--
+--     [C declaration]: @size@, defined at @SDL3\/SDL_gpu.h 1534:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "size" SDL_GPUBufferRegion ty
@@ -6710,6 +6880,14 @@ deriving via
   instance
     BG.Storable SDL_GPUIndirectDrawCommand
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUIndirectDrawCommand
+  instance
+    Struct.IsStruct SDL_GPUIndirectDrawCommand
+
+-- | The number of vertices to draw.
+--
+--     [C declaration]: @num_vertices@, defined at @SDL3\/SDL_gpu.h 1553:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_vertices" SDL_GPUIndirectDrawCommand ty
@@ -6740,6 +6918,9 @@ instance HasCField.HasCField SDL_GPUIndirectDrawCommand "num_vertices" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The number of instances to draw.
+--
+--     [C declaration]: @num_instances@, defined at @SDL3\/SDL_gpu.h 1554:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_instances" SDL_GPUIndirectDrawCommand ty
@@ -6770,6 +6951,9 @@ instance HasCField.HasCField SDL_GPUIndirectDrawCommand "num_instances" where
 
   offset# = \_ -> \_ -> 4
 
+-- | The index of the first vertex to draw.
+--
+--     [C declaration]: @first_vertex@, defined at @SDL3\/SDL_gpu.h 1555:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "first_vertex" SDL_GPUIndirectDrawCommand ty
@@ -6800,6 +6984,9 @@ instance HasCField.HasCField SDL_GPUIndirectDrawCommand "first_vertex" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The ID of the first instance to draw.
+--
+--     [C declaration]: @first_instance@, defined at @SDL3\/SDL_gpu.h 1556:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "first_instance" SDL_GPUIndirectDrawCommand ty
@@ -6900,6 +7087,14 @@ deriving via
   instance
     BG.Storable SDL_GPUIndexedIndirectDrawCommand
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUIndexedIndirectDrawCommand
+  instance
+    Struct.IsStruct SDL_GPUIndexedIndirectDrawCommand
+
+-- | The number of indices to draw per instance.
+--
+--     [C declaration]: @num_indices@, defined at @SDL3\/SDL_gpu.h 1575:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_indices" SDL_GPUIndexedIndirectDrawCommand ty
@@ -6931,6 +7126,9 @@ instance HasCField.HasCField SDL_GPUIndexedIndirectDrawCommand "num_indices" whe
 
   offset# = \_ -> \_ -> 0
 
+-- | The number of instances to draw.
+--
+--     [C declaration]: @num_instances@, defined at @SDL3\/SDL_gpu.h 1576:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_instances" SDL_GPUIndexedIndirectDrawCommand ty
@@ -6962,6 +7160,9 @@ instance HasCField.HasCField SDL_GPUIndexedIndirectDrawCommand "num_instances" w
 
   offset# = \_ -> \_ -> 4
 
+-- | The base index within the index buffer.
+--
+--     [C declaration]: @first_index@, defined at @SDL3\/SDL_gpu.h 1577:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "first_index" SDL_GPUIndexedIndirectDrawCommand ty
@@ -6993,6 +7194,9 @@ instance HasCField.HasCField SDL_GPUIndexedIndirectDrawCommand "first_index" whe
 
   offset# = \_ -> \_ -> 8
 
+-- | The value added to the vertex index before indexing into the vertex buffer.
+--
+--     [C declaration]: @vertex_offset@, defined at @SDL3\/SDL_gpu.h 1578:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "vertex_offset" SDL_GPUIndexedIndirectDrawCommand ty
@@ -7024,6 +7228,9 @@ instance HasCField.HasCField SDL_GPUIndexedIndirectDrawCommand "vertex_offset" w
 
   offset# = \_ -> \_ -> 12
 
+-- | The ID of the first instance to draw.
+--
+--     [C declaration]: @first_instance@, defined at @SDL3\/SDL_gpu.h 1579:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "first_instance" SDL_GPUIndexedIndirectDrawCommand ty
@@ -7106,6 +7313,14 @@ deriving via
   instance
     BG.Storable SDL_GPUIndirectDispatchCommand
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUIndirectDispatchCommand
+  instance
+    Struct.IsStruct SDL_GPUIndirectDispatchCommand
+
+-- | The number of local workgroups to dispatch in the X dimension.
+--
+--     [C declaration]: @groupcount_x@, defined at @SDL3\/SDL_gpu.h 1591:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "groupcount_x" SDL_GPUIndirectDispatchCommand ty
@@ -7135,6 +7350,9 @@ instance HasCField.HasCField SDL_GPUIndirectDispatchCommand "groupcount_x" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The number of local workgroups to dispatch in the Y dimension.
+--
+--     [C declaration]: @groupcount_y@, defined at @SDL3\/SDL_gpu.h 1592:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "groupcount_y" SDL_GPUIndirectDispatchCommand ty
@@ -7164,6 +7382,9 @@ instance HasCField.HasCField SDL_GPUIndirectDispatchCommand "groupcount_y" where
 
   offset# = \_ -> \_ -> 4
 
+-- | The number of local workgroups to dispatch in the Z dimension.
+--
+--     [C declaration]: @groupcount_z@, defined at @SDL3\/SDL_gpu.h 1593:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "groupcount_z" SDL_GPUIndirectDispatchCommand ty
@@ -7336,6 +7557,14 @@ deriving via
   instance
     BG.Storable SDL_GPUSamplerCreateInfo
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUSamplerCreateInfo
+  instance
+    Struct.IsStruct SDL_GPUSamplerCreateInfo
+
+-- | The minification filter to apply to lookups.
+--
+--     [C declaration]: @min_filter@, defined at @SDL3\/SDL_gpu.h 1614:19@
 instance
   (ty ~ SDL_GPUFilter)
   => BG.CompatHasField.HasField "min_filter" SDL_GPUSamplerCreateInfo ty
@@ -7377,6 +7606,9 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "min_filter" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The magnification filter to apply to lookups.
+--
+--     [C declaration]: @mag_filter@, defined at @SDL3\/SDL_gpu.h 1615:19@
 instance
   (ty ~ SDL_GPUFilter)
   => BG.CompatHasField.HasField "mag_filter" SDL_GPUSamplerCreateInfo ty
@@ -7418,6 +7650,9 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "mag_filter" where
 
   offset# = \_ -> \_ -> 4
 
+-- | The mipmap filter to apply to lookups.
+--
+--     [C declaration]: @mipmap_mode@, defined at @SDL3\/SDL_gpu.h 1616:30@
 instance
   (ty ~ SDL_GPUSamplerMipmapMode)
   => BG.CompatHasField.HasField "mipmap_mode" SDL_GPUSamplerCreateInfo ty
@@ -7460,6 +7695,9 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "mipmap_mode" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The addressing mode for U coordinates outside [0, 1).
+--
+--     [C declaration]: @address_mode_u@, defined at @SDL3\/SDL_gpu.h 1617:31@
 instance
   (ty ~ SDL_GPUSamplerAddressMode)
   => BG.CompatHasField.HasField "address_mode_u" SDL_GPUSamplerCreateInfo ty
@@ -7502,6 +7740,9 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "address_mode_u" where
 
   offset# = \_ -> \_ -> 12
 
+-- | The addressing mode for V coordinates outside [0, 1).
+--
+--     [C declaration]: @address_mode_v@, defined at @SDL3\/SDL_gpu.h 1618:31@
 instance
   (ty ~ SDL_GPUSamplerAddressMode)
   => BG.CompatHasField.HasField "address_mode_v" SDL_GPUSamplerCreateInfo ty
@@ -7544,6 +7785,9 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "address_mode_v" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The addressing mode for W coordinates outside [0, 1).
+--
+--     [C declaration]: @address_mode_w@, defined at @SDL3\/SDL_gpu.h 1619:31@
 instance
   (ty ~ SDL_GPUSamplerAddressMode)
   => BG.CompatHasField.HasField "address_mode_w" SDL_GPUSamplerCreateInfo ty
@@ -7586,6 +7830,9 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "address_mode_w" where
 
   offset# = \_ -> \_ -> 20
 
+-- | The bias to be added to mipmap LOD calculation.
+--
+--     [C declaration]: @mip_lod_bias@, defined at @SDL3\/SDL_gpu.h 1620:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "mip_lod_bias" SDL_GPUSamplerCreateInfo ty
@@ -7628,6 +7875,9 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "mip_lod_bias" where
 
   offset# = \_ -> \_ -> 24
 
+-- | The anisotropy value clamp used by the sampler. If enable_anisotropy is false, this is ignored.
+--
+--     [C declaration]: @max_anisotropy@, defined at @SDL3\/SDL_gpu.h 1621:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "max_anisotropy" SDL_GPUSamplerCreateInfo ty
@@ -7670,6 +7920,9 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "max_anisotropy" where
 
   offset# = \_ -> \_ -> 28
 
+-- | The comparison operator to apply to fetched data before filtering.
+--
+--     [C declaration]: @compare_op@, defined at @SDL3\/SDL_gpu.h 1622:22@
 instance
   (ty ~ SDL_GPUCompareOp)
   => BG.CompatHasField.HasField "compare_op" SDL_GPUSamplerCreateInfo ty
@@ -7711,6 +7964,9 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "compare_op" where
 
   offset# = \_ -> \_ -> 32
 
+-- | Clamps the minimum of the computed LOD value.
+--
+--     [C declaration]: @min_lod@, defined at @SDL3\/SDL_gpu.h 1623:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "min_lod" SDL_GPUSamplerCreateInfo ty
@@ -7752,6 +8008,9 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "min_lod" where
 
   offset# = \_ -> \_ -> 36
 
+-- | Clamps the maximum of the computed LOD value.
+--
+--     [C declaration]: @max_lod@, defined at @SDL3\/SDL_gpu.h 1624:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "max_lod" SDL_GPUSamplerCreateInfo ty
@@ -7793,6 +8052,9 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "max_lod" where
 
   offset# = \_ -> \_ -> 40
 
+-- | true to enable anisotropic filtering.
+--
+--     [C declaration]: @enable_anisotropy@, defined at @SDL3\/SDL_gpu.h 1625:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "enable_anisotropy" SDL_GPUSamplerCreateInfo ty
@@ -7835,6 +8097,9 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "enable_anisotropy" where
 
   offset# = \_ -> \_ -> 44
 
+-- | true to enable comparison against a reference value during lookups.
+--
+--     [C declaration]: @enable_compare@, defined at @SDL3\/SDL_gpu.h 1626:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "enable_compare" SDL_GPUSamplerCreateInfo ty
@@ -7877,6 +8142,7 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "enable_compare" where
 
   offset# = \_ -> \_ -> 45
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1627:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_GPUSamplerCreateInfo ty
@@ -7918,6 +8184,7 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "padding1" where
 
   offset# = \_ -> \_ -> 46
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1628:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_GPUSamplerCreateInfo ty
@@ -7959,6 +8226,9 @@ instance HasCField.HasCField SDL_GPUSamplerCreateInfo "padding2" where
 
   offset# = \_ -> \_ -> 47
 
+-- | A properties ID for extensions. Should be 0 if no extensions are needed.
+--
+--     [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1630:22@
 instance
   (ty ~ SDL3.Sys.Bindgen.Properties.SDL_PropertiesID)
   => BG.CompatHasField.HasField "props" SDL_GPUSamplerCreateInfo ty
@@ -8061,6 +8331,14 @@ deriving via
   instance
     BG.Storable SDL_GPUVertexBufferDescription
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUVertexBufferDescription
+  instance
+    Struct.IsStruct SDL_GPUVertexBufferDescription
+
+-- | The binding slot of the vertex buffer.
+--
+--     [C declaration]: @slot@, defined at @SDL3\/SDL_gpu.h 1653:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "slot" SDL_GPUVertexBufferDescription ty
@@ -8090,6 +8368,9 @@ instance HasCField.HasCField SDL_GPUVertexBufferDescription "slot" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The size of a single element + the offset between elements.
+--
+--     [C declaration]: @pitch@, defined at @SDL3\/SDL_gpu.h 1654:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "pitch" SDL_GPUVertexBufferDescription ty
@@ -8119,6 +8400,9 @@ instance HasCField.HasCField SDL_GPUVertexBufferDescription "pitch" where
 
   offset# = \_ -> \_ -> 4
 
+-- | Whether attribute addressing is a function of the vertex index or instance index.
+--
+--     [C declaration]: @input_rate@, defined at @SDL3\/SDL_gpu.h 1655:28@
 instance
   (ty ~ SDL_GPUVertexInputRate)
   => BG.CompatHasField.HasField "input_rate" SDL_GPUVertexBufferDescription ty
@@ -8148,6 +8432,9 @@ instance HasCField.HasCField SDL_GPUVertexBufferDescription "input_rate" where
 
   offset# = \_ -> \_ -> 8
 
+-- | Reserved for future use. Must be set to 0.
+--
+--     [C declaration]: @instance_step_rate@, defined at @SDL3\/SDL_gpu.h 1656:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "instance_step_rate" SDL_GPUVertexBufferDescription ty
@@ -8237,6 +8524,14 @@ deriving via
   instance
     BG.Storable SDL_GPUVertexAttribute
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUVertexAttribute
+  instance
+    Struct.IsStruct SDL_GPUVertexAttribute
+
+-- | The shader input location index.
+--
+--     [C declaration]: @location@, defined at @SDL3\/SDL_gpu.h 1673:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "location" SDL_GPUVertexAttribute ty
@@ -8266,6 +8561,9 @@ instance HasCField.HasCField SDL_GPUVertexAttribute "location" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The binding slot of the associated vertex buffer.
+--
+--     [C declaration]: @buffer_slot@, defined at @SDL3\/SDL_gpu.h 1674:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "buffer_slot" SDL_GPUVertexAttribute ty
@@ -8296,6 +8594,9 @@ instance HasCField.HasCField SDL_GPUVertexAttribute "buffer_slot" where
 
   offset# = \_ -> \_ -> 4
 
+-- | The size and type of the attribute data.
+--
+--     [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1675:32@
 instance
   (ty ~ SDL_GPUVertexElementFormat)
   => BG.CompatHasField.HasField "format" SDL_GPUVertexAttribute ty
@@ -8325,6 +8626,9 @@ instance HasCField.HasCField SDL_GPUVertexAttribute "format" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The byte offset of this attribute relative to the start of the vertex element.
+--
+--     [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 1676:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "offset" SDL_GPUVertexAttribute ty
@@ -8415,6 +8719,14 @@ deriving via
   instance
     BG.Storable SDL_GPUVertexInputState
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUVertexInputState
+  instance
+    Struct.IsStruct SDL_GPUVertexInputState
+
+-- | A pointer to an array of vertex buffer descriptions.
+--
+--     [C declaration]: @vertex_buffer_descriptions@, defined at @SDL3\/SDL_gpu.h 1691:43@
 instance
   (ty ~ PtrConst.PtrConst SDL_GPUVertexBufferDescription)
   => BG.CompatHasField.HasField "vertex_buffer_descriptions" SDL_GPUVertexInputState ty
@@ -8445,6 +8757,9 @@ instance HasCField.HasCField SDL_GPUVertexInputState "vertex_buffer_descriptions
 
   offset# = \_ -> \_ -> 0
 
+-- | The number of vertex buffer descriptions in the above array.
+--
+--     [C declaration]: @num_vertex_buffers@, defined at @SDL3\/SDL_gpu.h 1692:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_vertex_buffers" SDL_GPUVertexInputState ty
@@ -8475,6 +8790,9 @@ instance HasCField.HasCField SDL_GPUVertexInputState "num_vertex_buffers" where
 
   offset# = \_ -> \_ -> 8
 
+-- | A pointer to an array of vertex attribute descriptions.
+--
+--     [C declaration]: @vertex_attributes@, defined at @SDL3\/SDL_gpu.h 1693:35@
 instance
   (ty ~ PtrConst.PtrConst SDL_GPUVertexAttribute)
   => BG.CompatHasField.HasField "vertex_attributes" SDL_GPUVertexInputState ty
@@ -8505,6 +8823,9 @@ instance HasCField.HasCField SDL_GPUVertexInputState "vertex_attributes" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The number of vertex attribute descriptions in the above array.
+--
+--     [C declaration]: @num_vertex_attributes@, defined at @SDL3\/SDL_gpu.h 1694:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_vertex_attributes" SDL_GPUVertexInputState ty
@@ -8589,6 +8910,14 @@ instance Marshal.WriteRaw SDL_GPUStencilOpState where
 
 deriving via Marshal.EquivStorable SDL_GPUStencilOpState instance BG.Storable SDL_GPUStencilOpState
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUStencilOpState
+  instance
+    Struct.IsStruct SDL_GPUStencilOpState
+
+-- | The action performed on samples that fail the stencil test.
+--
+--     [C declaration]: @fail_op@, defined at @SDL3\/SDL_gpu.h 1706:22@
 instance
   (ty ~ SDL_GPUStencilOp)
   => BG.CompatHasField.HasField "fail_op" SDL_GPUStencilOpState ty
@@ -8618,6 +8947,9 @@ instance HasCField.HasCField SDL_GPUStencilOpState "fail_op" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The action performed on samples that pass the depth and stencil tests.
+--
+--     [C declaration]: @pass_op@, defined at @SDL3\/SDL_gpu.h 1707:22@
 instance
   (ty ~ SDL_GPUStencilOp)
   => BG.CompatHasField.HasField "pass_op" SDL_GPUStencilOpState ty
@@ -8647,6 +8979,9 @@ instance HasCField.HasCField SDL_GPUStencilOpState "pass_op" where
 
   offset# = \_ -> \_ -> 4
 
+-- | The action performed on samples that pass the stencil test and fail the depth test.
+--
+--     [C declaration]: @depth_fail_op@, defined at @SDL3\/SDL_gpu.h 1708:22@
 instance
   (ty ~ SDL_GPUStencilOp)
   => BG.CompatHasField.HasField "depth_fail_op" SDL_GPUStencilOpState ty
@@ -8677,6 +9012,9 @@ instance HasCField.HasCField SDL_GPUStencilOpState "depth_fail_op" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The comparison operator used in the stencil test.
+--
+--     [C declaration]: @compare_op@, defined at @SDL3\/SDL_gpu.h 1709:22@
 instance
   (ty ~ SDL_GPUCompareOp)
   => BG.CompatHasField.HasField "compare_op" SDL_GPUStencilOpState ty
@@ -8812,6 +9150,14 @@ deriving via
   instance
     BG.Storable SDL_GPUColorTargetBlendState
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUColorTargetBlendState
+  instance
+    Struct.IsStruct SDL_GPUColorTargetBlendState
+
+-- | The value to be multiplied by the source RGB value.
+--
+--     [C declaration]: @src_color_blendfactor@, defined at @SDL3\/SDL_gpu.h 1725:24@
 instance
   (ty ~ SDL_GPUBlendFactor)
   => BG.CompatHasField.HasField "src_color_blendfactor" SDL_GPUColorTargetBlendState ty
@@ -8849,6 +9195,9 @@ instance HasCField.HasCField SDL_GPUColorTargetBlendState "src_color_blendfactor
 
   offset# = \_ -> \_ -> 0
 
+-- | The value to be multiplied by the destination RGB value.
+--
+--     [C declaration]: @dst_color_blendfactor@, defined at @SDL3\/SDL_gpu.h 1726:24@
 instance
   (ty ~ SDL_GPUBlendFactor)
   => BG.CompatHasField.HasField "dst_color_blendfactor" SDL_GPUColorTargetBlendState ty
@@ -8886,6 +9235,9 @@ instance HasCField.HasCField SDL_GPUColorTargetBlendState "dst_color_blendfactor
 
   offset# = \_ -> \_ -> 4
 
+-- | The blend operation for the RGB components.
+--
+--     [C declaration]: @color_blend_op@, defined at @SDL3\/SDL_gpu.h 1727:20@
 instance
   (ty ~ SDL_GPUBlendOp)
   => BG.CompatHasField.HasField "color_blend_op" SDL_GPUColorTargetBlendState ty
@@ -8923,6 +9275,9 @@ instance HasCField.HasCField SDL_GPUColorTargetBlendState "color_blend_op" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The value to be multiplied by the source alpha.
+--
+--     [C declaration]: @src_alpha_blendfactor@, defined at @SDL3\/SDL_gpu.h 1728:24@
 instance
   (ty ~ SDL_GPUBlendFactor)
   => BG.CompatHasField.HasField "src_alpha_blendfactor" SDL_GPUColorTargetBlendState ty
@@ -8960,6 +9315,9 @@ instance HasCField.HasCField SDL_GPUColorTargetBlendState "src_alpha_blendfactor
 
   offset# = \_ -> \_ -> 12
 
+-- | The value to be multiplied by the destination alpha.
+--
+--     [C declaration]: @dst_alpha_blendfactor@, defined at @SDL3\/SDL_gpu.h 1729:24@
 instance
   (ty ~ SDL_GPUBlendFactor)
   => BG.CompatHasField.HasField "dst_alpha_blendfactor" SDL_GPUColorTargetBlendState ty
@@ -8997,6 +9355,9 @@ instance HasCField.HasCField SDL_GPUColorTargetBlendState "dst_alpha_blendfactor
 
   offset# = \_ -> \_ -> 16
 
+-- | The blend operation for the alpha component.
+--
+--     [C declaration]: @alpha_blend_op@, defined at @SDL3\/SDL_gpu.h 1730:20@
 instance
   (ty ~ SDL_GPUBlendOp)
   => BG.CompatHasField.HasField "alpha_blend_op" SDL_GPUColorTargetBlendState ty
@@ -9034,6 +9395,9 @@ instance HasCField.HasCField SDL_GPUColorTargetBlendState "alpha_blend_op" where
 
   offset# = \_ -> \_ -> 20
 
+-- | A bitmask specifying which of the RGBA components are enabled for writing. Writes to all channels if enable_color_write_mask is false.
+--
+--     [C declaration]: @color_write_mask@, defined at @SDL3\/SDL_gpu.h 1731:32@
 instance
   (ty ~ SDL_GPUColorComponentFlags)
   => BG.CompatHasField.HasField "color_write_mask" SDL_GPUColorTargetBlendState ty
@@ -9071,6 +9435,9 @@ instance HasCField.HasCField SDL_GPUColorTargetBlendState "color_write_mask" whe
 
   offset# = \_ -> \_ -> 24
 
+-- | Whether blending is enabled for the color target.
+--
+--     [C declaration]: @enable_blend@, defined at @SDL3\/SDL_gpu.h 1732:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "enable_blend" SDL_GPUColorTargetBlendState ty
@@ -9108,6 +9475,9 @@ instance HasCField.HasCField SDL_GPUColorTargetBlendState "enable_blend" where
 
   offset# = \_ -> \_ -> 25
 
+-- | Whether the color write mask is enabled.
+--
+--     [C declaration]: @enable_color_write_mask@, defined at @SDL3\/SDL_gpu.h 1733:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "enable_color_write_mask" SDL_GPUColorTargetBlendState ty
@@ -9145,6 +9515,7 @@ instance HasCField.HasCField SDL_GPUColorTargetBlendState "enable_color_write_ma
 
   offset# = \_ -> \_ -> 26
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1734:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_GPUColorTargetBlendState ty
@@ -9181,6 +9552,7 @@ instance HasCField.HasCField SDL_GPUColorTargetBlendState "padding1" where
 
   offset# = \_ -> \_ -> 27
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1735:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_GPUColorTargetBlendState ty
@@ -9320,6 +9692,14 @@ deriving via
   instance
     BG.Storable SDL_GPUShaderCreateInfo
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUShaderCreateInfo
+  instance
+    Struct.IsStruct SDL_GPUShaderCreateInfo
+
+-- | The size in bytes of the code pointed to.
+--
+--     [C declaration]: @code_size@, defined at @SDL3\/SDL_gpu.h 1750:12@
 instance
   (ty ~ HsBindgen.Runtime.LibC.CSize)
   => BG.CompatHasField.HasField "code_size" SDL_GPUShaderCreateInfo ty
@@ -9355,6 +9735,9 @@ instance HasCField.HasCField SDL_GPUShaderCreateInfo "code_size" where
 
   offset# = \_ -> \_ -> 0
 
+-- | A pointer to shader code.
+--
+--     [C declaration]: @code@, defined at @SDL3\/SDL_gpu.h 1751:18@
 instance
   (ty ~ PtrConst.PtrConst SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "code" SDL_GPUShaderCreateInfo ty
@@ -9390,6 +9773,9 @@ instance HasCField.HasCField SDL_GPUShaderCreateInfo "code" where
 
   offset# = \_ -> \_ -> 8
 
+-- | A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader.
+--
+--     [C declaration]: @entrypoint@, defined at @SDL3\/SDL_gpu.h 1752:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "entrypoint" SDL_GPUShaderCreateInfo ty
@@ -9425,6 +9811,9 @@ instance HasCField.HasCField SDL_GPUShaderCreateInfo "entrypoint" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The format of the shader code.
+--
+--     [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1753:25@
 instance
   (ty ~ SDL_GPUShaderFormat)
   => BG.CompatHasField.HasField "format" SDL_GPUShaderCreateInfo ty
@@ -9460,6 +9849,9 @@ instance HasCField.HasCField SDL_GPUShaderCreateInfo "format" where
 
   offset# = \_ -> \_ -> 24
 
+-- | The stage the shader program corresponds to.
+--
+--     [C declaration]: @stage@, defined at @SDL3\/SDL_gpu.h 1754:24@
 instance
   (ty ~ SDL_GPUShaderStage)
   => BG.CompatHasField.HasField "stage" SDL_GPUShaderCreateInfo ty
@@ -9495,6 +9887,9 @@ instance HasCField.HasCField SDL_GPUShaderCreateInfo "stage" where
 
   offset# = \_ -> \_ -> 28
 
+-- | The number of samplers defined in the shader.
+--
+--     [C declaration]: @num_samplers@, defined at @SDL3\/SDL_gpu.h 1755:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_samplers" SDL_GPUShaderCreateInfo ty
@@ -9531,6 +9926,9 @@ instance HasCField.HasCField SDL_GPUShaderCreateInfo "num_samplers" where
 
   offset# = \_ -> \_ -> 32
 
+-- | The number of storage textures defined in the shader.
+--
+--     [C declaration]: @num_storage_textures@, defined at @SDL3\/SDL_gpu.h 1756:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_storage_textures" SDL_GPUShaderCreateInfo ty
@@ -9567,6 +9965,9 @@ instance HasCField.HasCField SDL_GPUShaderCreateInfo "num_storage_textures" wher
 
   offset# = \_ -> \_ -> 36
 
+-- | The number of storage buffers defined in the shader.
+--
+--     [C declaration]: @num_storage_buffers@, defined at @SDL3\/SDL_gpu.h 1757:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_storage_buffers" SDL_GPUShaderCreateInfo ty
@@ -9603,6 +10004,9 @@ instance HasCField.HasCField SDL_GPUShaderCreateInfo "num_storage_buffers" where
 
   offset# = \_ -> \_ -> 40
 
+-- | The number of uniform buffers defined in the shader.
+--
+--     [C declaration]: @num_uniform_buffers@, defined at @SDL3\/SDL_gpu.h 1758:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_uniform_buffers" SDL_GPUShaderCreateInfo ty
@@ -9639,6 +10043,9 @@ instance HasCField.HasCField SDL_GPUShaderCreateInfo "num_uniform_buffers" where
 
   offset# = \_ -> \_ -> 44
 
+-- | A properties ID for extensions. Should be 0 if no extensions are needed.
+--
+--     [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1760:22@
 instance
   (ty ~ SDL3.Sys.Bindgen.Properties.SDL_PropertiesID)
   => BG.CompatHasField.HasField "props" SDL_GPUShaderCreateInfo ty
@@ -9772,6 +10179,14 @@ deriving via
   instance
     BG.Storable SDL_GPUTextureCreateInfo
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUTextureCreateInfo
+  instance
+    Struct.IsStruct SDL_GPUTextureCreateInfo
+
+-- | The base dimensionality of the texture.
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_gpu.h 1780:24@
 instance
   (ty ~ SDL_GPUTextureType)
   => BG.CompatHasField.HasField "type'" SDL_GPUTextureCreateInfo ty
@@ -9806,6 +10221,9 @@ instance HasCField.HasCField SDL_GPUTextureCreateInfo "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The pixel format of the texture.
+--
+--     [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1781:26@
 instance
   (ty ~ SDL_GPUTextureFormat)
   => BG.CompatHasField.HasField "format" SDL_GPUTextureCreateInfo ty
@@ -9840,6 +10258,9 @@ instance HasCField.HasCField SDL_GPUTextureCreateInfo "format" where
 
   offset# = \_ -> \_ -> 4
 
+-- | How the texture is intended to be used by the client.
+--
+--     [C declaration]: @usage@, defined at @SDL3\/SDL_gpu.h 1782:30@
 instance
   (ty ~ SDL_GPUTextureUsageFlags)
   => BG.CompatHasField.HasField "usage" SDL_GPUTextureCreateInfo ty
@@ -9874,6 +10295,9 @@ instance HasCField.HasCField SDL_GPUTextureCreateInfo "usage" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The width of the texture.
+--
+--     [C declaration]: @width@, defined at @SDL3\/SDL_gpu.h 1783:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "width" SDL_GPUTextureCreateInfo ty
@@ -9908,6 +10332,9 @@ instance HasCField.HasCField SDL_GPUTextureCreateInfo "width" where
 
   offset# = \_ -> \_ -> 12
 
+-- | The height of the texture.
+--
+--     [C declaration]: @height@, defined at @SDL3\/SDL_gpu.h 1784:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "height" SDL_GPUTextureCreateInfo ty
@@ -9942,6 +10369,9 @@ instance HasCField.HasCField SDL_GPUTextureCreateInfo "height" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The layer count or depth of the texture. This value is treated as a layer count on 2D array textures, and as a depth value on 3D textures.
+--
+--     [C declaration]: @layer_count_or_depth@, defined at @SDL3\/SDL_gpu.h 1785:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "layer_count_or_depth" SDL_GPUTextureCreateInfo ty
@@ -9977,6 +10407,9 @@ instance HasCField.HasCField SDL_GPUTextureCreateInfo "layer_count_or_depth" whe
 
   offset# = \_ -> \_ -> 20
 
+-- | The number of mip levels in the texture.
+--
+--     [C declaration]: @num_levels@, defined at @SDL3\/SDL_gpu.h 1786:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_levels" SDL_GPUTextureCreateInfo ty
@@ -10011,6 +10444,9 @@ instance HasCField.HasCField SDL_GPUTextureCreateInfo "num_levels" where
 
   offset# = \_ -> \_ -> 24
 
+-- | The number of samples per texel. Only applies if the texture is used as a render target.
+--
+--     [C declaration]: @sample_count@, defined at @SDL3\/SDL_gpu.h 1787:24@
 instance
   (ty ~ SDL_GPUSampleCount)
   => BG.CompatHasField.HasField "sample_count" SDL_GPUTextureCreateInfo ty
@@ -10046,6 +10482,9 @@ instance HasCField.HasCField SDL_GPUTextureCreateInfo "sample_count" where
 
   offset# = \_ -> \_ -> 28
 
+-- | A properties ID for extensions. Should be 0 if no extensions are needed.
+--
+--     [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1789:22@
 instance
   (ty ~ SDL3.Sys.Bindgen.Properties.SDL_PropertiesID)
   => BG.CompatHasField.HasField "props" SDL_GPUTextureCreateInfo ty
@@ -10133,6 +10572,14 @@ deriving via
   instance
     BG.Storable SDL_GPUBufferCreateInfo
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUBufferCreateInfo
+  instance
+    Struct.IsStruct SDL_GPUBufferCreateInfo
+
+-- | How the buffer is intended to be used by the client.
+--
+--     [C declaration]: @usage@, defined at @SDL3\/SDL_gpu.h 1805:29@
 instance
   (ty ~ SDL_GPUBufferUsageFlags)
   => BG.CompatHasField.HasField "usage" SDL_GPUBufferCreateInfo ty
@@ -10157,6 +10604,9 @@ instance HasCField.HasCField SDL_GPUBufferCreateInfo "usage" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The size in bytes of the buffer.
+--
+--     [C declaration]: @size@, defined at @SDL3\/SDL_gpu.h 1806:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "size" SDL_GPUBufferCreateInfo ty
@@ -10185,6 +10635,9 @@ instance HasCField.HasCField SDL_GPUBufferCreateInfo "size" where
 
   offset# = \_ -> \_ -> 4
 
+-- | A properties ID for extensions. Should be 0 if no extensions are needed.
+--
+--     [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1808:22@
 instance
   (ty ~ SDL3.Sys.Bindgen.Properties.SDL_PropertiesID)
   => BG.CompatHasField.HasField "props" SDL_GPUBufferCreateInfo ty
@@ -10260,6 +10713,14 @@ deriving via
   instance
     BG.Storable SDL_GPUTransferBufferCreateInfo
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUTransferBufferCreateInfo
+  instance
+    Struct.IsStruct SDL_GPUTransferBufferCreateInfo
+
+-- | How the transfer buffer is intended to be used by the client.
+--
+--     [C declaration]: @usage@, defined at @SDL3\/SDL_gpu.h 1820:32@
 instance
   (ty ~ SDL_GPUTransferBufferUsage)
   => BG.CompatHasField.HasField "usage" SDL_GPUTransferBufferCreateInfo ty
@@ -10288,6 +10749,9 @@ instance HasCField.HasCField SDL_GPUTransferBufferCreateInfo "usage" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The size in bytes of the transfer buffer.
+--
+--     [C declaration]: @size@, defined at @SDL3\/SDL_gpu.h 1821:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "size" SDL_GPUTransferBufferCreateInfo ty
@@ -10316,6 +10780,9 @@ instance HasCField.HasCField SDL_GPUTransferBufferCreateInfo "size" where
 
   offset# = \_ -> \_ -> 4
 
+-- | A properties ID for extensions. Should be 0 if no extensions are needed.
+--
+--     [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1823:22@
 instance
   (ty ~ SDL3.Sys.Bindgen.Properties.SDL_PropertiesID)
   => BG.CompatHasField.HasField "props" SDL_GPUTransferBufferCreateInfo ty
@@ -10447,6 +10914,14 @@ deriving via
   instance
     BG.Storable SDL_GPURasterizerState
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPURasterizerState
+  instance
+    Struct.IsStruct SDL_GPURasterizerState
+
+-- | Whether polygons will be filled in or drawn as lines.
+--
+--     [C declaration]: @fill_mode@, defined at @SDL3\/SDL_gpu.h 1846:21@
 instance
   (ty ~ SDL_GPUFillMode)
   => BG.CompatHasField.HasField "fill_mode" SDL_GPURasterizerState ty
@@ -10482,6 +10957,9 @@ instance HasCField.HasCField SDL_GPURasterizerState "fill_mode" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The facing direction in which triangles will be culled.
+--
+--     [C declaration]: @cull_mode@, defined at @SDL3\/SDL_gpu.h 1847:21@
 instance
   (ty ~ SDL_GPUCullMode)
   => BG.CompatHasField.HasField "cull_mode" SDL_GPURasterizerState ty
@@ -10517,6 +10995,9 @@ instance HasCField.HasCField SDL_GPURasterizerState "cull_mode" where
 
   offset# = \_ -> \_ -> 4
 
+-- | The vertex winding that will cause a triangle to be determined as front-facing.
+--
+--     [C declaration]: @front_face@, defined at @SDL3\/SDL_gpu.h 1848:22@
 instance
   (ty ~ SDL_GPUFrontFace)
   => BG.CompatHasField.HasField "front_face" SDL_GPURasterizerState ty
@@ -10552,6 +11033,9 @@ instance HasCField.HasCField SDL_GPURasterizerState "front_face" where
 
   offset# = \_ -> \_ -> 8
 
+-- | A scalar factor controlling the depth value added to each fragment.
+--
+--     [C declaration]: @depth_bias_constant_factor@, defined at @SDL3\/SDL_gpu.h 1849:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "depth_bias_constant_factor" SDL_GPURasterizerState ty
@@ -10588,6 +11072,9 @@ instance HasCField.HasCField SDL_GPURasterizerState "depth_bias_constant_factor"
 
   offset# = \_ -> \_ -> 12
 
+-- | The maximum depth bias of a fragment.
+--
+--     [C declaration]: @depth_bias_clamp@, defined at @SDL3\/SDL_gpu.h 1850:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "depth_bias_clamp" SDL_GPURasterizerState ty
@@ -10624,6 +11111,9 @@ instance HasCField.HasCField SDL_GPURasterizerState "depth_bias_clamp" where
 
   offset# = \_ -> \_ -> 16
 
+-- | A scalar factor applied to a fragment\'s slope in depth calculations.
+--
+--     [C declaration]: @depth_bias_slope_factor@, defined at @SDL3\/SDL_gpu.h 1851:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "depth_bias_slope_factor" SDL_GPURasterizerState ty
@@ -10660,6 +11150,9 @@ instance HasCField.HasCField SDL_GPURasterizerState "depth_bias_slope_factor" wh
 
   offset# = \_ -> \_ -> 20
 
+-- | true to bias fragment depth values.
+--
+--     [C declaration]: @enable_depth_bias@, defined at @SDL3\/SDL_gpu.h 1852:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "enable_depth_bias" SDL_GPURasterizerState ty
@@ -10696,6 +11189,9 @@ instance HasCField.HasCField SDL_GPURasterizerState "enable_depth_bias" where
 
   offset# = \_ -> \_ -> 24
 
+-- | true to enable depth clip, false to enable depth clamp.
+--
+--     [C declaration]: @enable_depth_clip@, defined at @SDL3\/SDL_gpu.h 1853:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "enable_depth_clip" SDL_GPURasterizerState ty
@@ -10732,6 +11228,7 @@ instance HasCField.HasCField SDL_GPURasterizerState "enable_depth_clip" where
 
   offset# = \_ -> \_ -> 25
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1854:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_GPURasterizerState ty
@@ -10767,6 +11264,7 @@ instance HasCField.HasCField SDL_GPURasterizerState "padding1" where
 
   offset# = \_ -> \_ -> 26
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1855:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_GPURasterizerState ty
@@ -10873,6 +11371,14 @@ deriving via
   instance
     BG.Storable SDL_GPUMultisampleState
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUMultisampleState
+  instance
+    Struct.IsStruct SDL_GPUMultisampleState
+
+-- | The number of samples to be used in rasterization.
+--
+--     [C declaration]: @sample_count@, defined at @SDL3\/SDL_gpu.h 1868:24@
 instance
   (ty ~ SDL_GPUSampleCount)
   => BG.CompatHasField.HasField "sample_count" SDL_GPUMultisampleState ty
@@ -10905,6 +11411,9 @@ instance HasCField.HasCField SDL_GPUMultisampleState "sample_count" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Reserved for future use. Must be set to 0.
+--
+--     [C declaration]: @sample_mask@, defined at @SDL3\/SDL_gpu.h 1869:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "sample_mask" SDL_GPUMultisampleState ty
@@ -10937,6 +11446,9 @@ instance HasCField.HasCField SDL_GPUMultisampleState "sample_mask" where
 
   offset# = \_ -> \_ -> 4
 
+-- | Reserved for future use. Must be set to false.
+--
+--     [C declaration]: @enable_mask@, defined at @SDL3\/SDL_gpu.h 1870:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "enable_mask" SDL_GPUMultisampleState ty
@@ -10969,6 +11481,9 @@ instance HasCField.HasCField SDL_GPUMultisampleState "enable_mask" where
 
   offset# = \_ -> \_ -> 8
 
+-- | true enables the alpha-to-coverage feature.
+--
+--     [C declaration]: @enable_alpha_to_coverage@, defined at @SDL3\/SDL_gpu.h 1871:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "enable_alpha_to_coverage" SDL_GPUMultisampleState ty
@@ -11001,6 +11516,7 @@ instance HasCField.HasCField SDL_GPUMultisampleState "enable_alpha_to_coverage" 
 
   offset# = \_ -> \_ -> 9
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1872:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_GPUMultisampleState ty
@@ -11032,6 +11548,7 @@ instance HasCField.HasCField SDL_GPUMultisampleState "padding2" where
 
   offset# = \_ -> \_ -> 10
 
+-- | [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 1873:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding3" SDL_GPUMultisampleState ty
@@ -11167,6 +11684,14 @@ deriving via
   instance
     BG.Storable SDL_GPUDepthStencilState
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUDepthStencilState
+  instance
+    Struct.IsStruct SDL_GPUDepthStencilState
+
+-- | The comparison operator used for depth testing.
+--
+--     [C declaration]: @compare_op@, defined at @SDL3\/SDL_gpu.h 1886:22@
 instance
   (ty ~ SDL_GPUCompareOp)
   => BG.CompatHasField.HasField "compare_op" SDL_GPUDepthStencilState ty
@@ -11203,6 +11728,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilState "compare_op" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The stencil op state for back-facing triangles.
+--
+--     [C declaration]: @back_stencil_state@, defined at @SDL3\/SDL_gpu.h 1887:27@
 instance
   (ty ~ SDL_GPUStencilOpState)
   => BG.CompatHasField.HasField "back_stencil_state" SDL_GPUDepthStencilState ty
@@ -11240,6 +11768,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilState "back_stencil_state" where
 
   offset# = \_ -> \_ -> 4
 
+-- | The stencil op state for front-facing triangles.
+--
+--     [C declaration]: @front_stencil_state@, defined at @SDL3\/SDL_gpu.h 1888:27@
 instance
   (ty ~ SDL_GPUStencilOpState)
   => BG.CompatHasField.HasField "front_stencil_state" SDL_GPUDepthStencilState ty
@@ -11277,6 +11808,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilState "front_stencil_state" wher
 
   offset# = \_ -> \_ -> 20
 
+-- | Selects the bits of the stencil values participating in the stencil test.
+--
+--     [C declaration]: @compare_mask@, defined at @SDL3\/SDL_gpu.h 1889:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "compare_mask" SDL_GPUDepthStencilState ty
@@ -11314,6 +11848,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilState "compare_mask" where
 
   offset# = \_ -> \_ -> 36
 
+-- | Selects the bits of the stencil values updated by the stencil test.
+--
+--     [C declaration]: @write_mask@, defined at @SDL3\/SDL_gpu.h 1890:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "write_mask" SDL_GPUDepthStencilState ty
@@ -11350,6 +11887,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilState "write_mask" where
 
   offset# = \_ -> \_ -> 37
 
+-- | true enables the depth test.
+--
+--     [C declaration]: @enable_depth_test@, defined at @SDL3\/SDL_gpu.h 1891:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "enable_depth_test" SDL_GPUDepthStencilState ty
@@ -11387,6 +11927,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilState "enable_depth_test" where
 
   offset# = \_ -> \_ -> 38
 
+-- | true enables depth writes. Depth writes are always disabled when enable_depth_test is false.
+--
+--     [C declaration]: @enable_depth_write@, defined at @SDL3\/SDL_gpu.h 1892:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "enable_depth_write" SDL_GPUDepthStencilState ty
@@ -11424,6 +11967,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilState "enable_depth_write" where
 
   offset# = \_ -> \_ -> 39
 
+-- | true enables the stencil test.
+--
+--     [C declaration]: @enable_stencil_test@, defined at @SDL3\/SDL_gpu.h 1893:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "enable_stencil_test" SDL_GPUDepthStencilState ty
@@ -11461,6 +12007,7 @@ instance HasCField.HasCField SDL_GPUDepthStencilState "enable_stencil_test" wher
 
   offset# = \_ -> \_ -> 40
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1894:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_GPUDepthStencilState ty
@@ -11497,6 +12044,7 @@ instance HasCField.HasCField SDL_GPUDepthStencilState "padding1" where
 
   offset# = \_ -> \_ -> 41
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1895:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_GPUDepthStencilState ty
@@ -11533,6 +12081,7 @@ instance HasCField.HasCField SDL_GPUDepthStencilState "padding2" where
 
   offset# = \_ -> \_ -> 42
 
+-- | [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 1896:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding3" SDL_GPUDepthStencilState ty
@@ -11614,6 +12163,14 @@ deriving via
   instance
     BG.Storable SDL_GPUColorTargetDescription
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUColorTargetDescription
+  instance
+    Struct.IsStruct SDL_GPUColorTargetDescription
+
+-- | The pixel format of the texture to be used as a color target.
+--
+--     [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1909:26@
 instance
   (ty ~ SDL_GPUTextureFormat)
   => BG.CompatHasField.HasField "format" SDL_GPUColorTargetDescription ty
@@ -11638,6 +12195,9 @@ instance HasCField.HasCField SDL_GPUColorTargetDescription "format" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The blend state to be used for the color target.
+--
+--     [C declaration]: @blend_state@, defined at @SDL3\/SDL_gpu.h 1910:34@
 instance
   (ty ~ SDL_GPUColorTargetBlendState)
   => BG.CompatHasField.HasField "blend_state" SDL_GPUColorTargetDescription ty
@@ -11739,6 +12299,14 @@ deriving via
   instance
     BG.Storable SDL_GPUGraphicsPipelineTargetInfo
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUGraphicsPipelineTargetInfo
+  instance
+    Struct.IsStruct SDL_GPUGraphicsPipelineTargetInfo
+
+-- | A pointer to an array of color target descriptions.
+--
+--     [C declaration]: @color_target_descriptions@, defined at @SDL3\/SDL_gpu.h 1925:42@
 instance
   (ty ~ PtrConst.PtrConst SDL_GPUColorTargetDescription)
   => BG.CompatHasField.HasField "color_target_descriptions" SDL_GPUGraphicsPipelineTargetInfo ty
@@ -11772,6 +12340,9 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineTargetInfo "color_target_des
 
   offset# = \_ -> \_ -> 0
 
+-- | The number of color target descriptions in the above array.
+--
+--     [C declaration]: @num_color_targets@, defined at @SDL3\/SDL_gpu.h 1926:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_color_targets" SDL_GPUGraphicsPipelineTargetInfo ty
@@ -11805,6 +12376,9 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineTargetInfo "num_color_target
 
   offset# = \_ -> \_ -> 8
 
+-- | The pixel format of the depth-stencil target. Ignored if has_depth_stencil_target is false.
+--
+--     [C declaration]: @depth_stencil_format@, defined at @SDL3\/SDL_gpu.h 1927:26@
 instance
   (ty ~ SDL_GPUTextureFormat)
   => BG.CompatHasField.HasField "depth_stencil_format" SDL_GPUGraphicsPipelineTargetInfo ty
@@ -11838,6 +12412,9 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineTargetInfo "depth_stencil_fo
 
   offset# = \_ -> \_ -> 12
 
+-- | true specifies that the pipeline uses a depth-stencil target.
+--
+--     [C declaration]: @has_depth_stencil_target@, defined at @SDL3\/SDL_gpu.h 1928:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "has_depth_stencil_target" SDL_GPUGraphicsPipelineTargetInfo ty
@@ -11871,6 +12448,7 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineTargetInfo "has_depth_stenci
 
   offset# = \_ -> \_ -> 16
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 1929:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_GPUGraphicsPipelineTargetInfo ty
@@ -11903,6 +12481,7 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineTargetInfo "padding1" where
 
   offset# = \_ -> \_ -> 17
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 1930:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_GPUGraphicsPipelineTargetInfo ty
@@ -11935,6 +12514,7 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineTargetInfo "padding2" where
 
   offset# = \_ -> \_ -> 18
 
+-- | [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 1931:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding3" SDL_GPUGraphicsPipelineTargetInfo ty
@@ -12063,6 +12643,14 @@ deriving via
   instance
     BG.Storable SDL_GPUGraphicsPipelineCreateInfo
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUGraphicsPipelineCreateInfo
+  instance
+    Struct.IsStruct SDL_GPUGraphicsPipelineCreateInfo
+
+-- | The vertex shader used by the graphics pipeline.
+--
+--     [C declaration]: @vertex_shader@, defined at @SDL3\/SDL_gpu.h 1950:20@
 instance
   (ty ~ BG.Ptr SDL_GPUShader)
   => BG.CompatHasField.HasField "vertex_shader" SDL_GPUGraphicsPipelineCreateInfo ty
@@ -12098,6 +12686,9 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineCreateInfo "vertex_shader" w
 
   offset# = \_ -> \_ -> 0
 
+-- | The fragment shader used by the graphics pipeline.
+--
+--     [C declaration]: @fragment_shader@, defined at @SDL3\/SDL_gpu.h 1951:20@
 instance
   (ty ~ BG.Ptr SDL_GPUShader)
   => BG.CompatHasField.HasField "fragment_shader" SDL_GPUGraphicsPipelineCreateInfo ty
@@ -12133,6 +12724,9 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineCreateInfo "fragment_shader"
 
   offset# = \_ -> \_ -> 8
 
+-- | The vertex layout of the graphics pipeline.
+--
+--     [C declaration]: @vertex_input_state@, defined at @SDL3\/SDL_gpu.h 1952:29@
 instance
   (ty ~ SDL_GPUVertexInputState)
   => BG.CompatHasField.HasField "vertex_input_state" SDL_GPUGraphicsPipelineCreateInfo ty
@@ -12168,6 +12762,9 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineCreateInfo "vertex_input_sta
 
   offset# = \_ -> \_ -> 16
 
+-- | The primitive topology of the graphics pipeline.
+--
+--     [C declaration]: @primitive_type@, defined at @SDL3\/SDL_gpu.h 1953:26@
 instance
   (ty ~ SDL_GPUPrimitiveType)
   => BG.CompatHasField.HasField "primitive_type" SDL_GPUGraphicsPipelineCreateInfo ty
@@ -12203,6 +12800,9 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineCreateInfo "primitive_type" 
 
   offset# = \_ -> \_ -> 48
 
+-- | The rasterizer state of the graphics pipeline.
+--
+--     [C declaration]: @rasterizer_state@, defined at @SDL3\/SDL_gpu.h 1954:28@
 instance
   (ty ~ SDL_GPURasterizerState)
   => BG.CompatHasField.HasField "rasterizer_state" SDL_GPUGraphicsPipelineCreateInfo ty
@@ -12238,6 +12838,9 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineCreateInfo "rasterizer_state
 
   offset# = \_ -> \_ -> 52
 
+-- | The multisample state of the graphics pipeline.
+--
+--     [C declaration]: @multisample_state@, defined at @SDL3\/SDL_gpu.h 1955:29@
 instance
   (ty ~ SDL_GPUMultisampleState)
   => BG.CompatHasField.HasField "multisample_state" SDL_GPUGraphicsPipelineCreateInfo ty
@@ -12273,6 +12876,9 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineCreateInfo "multisample_stat
 
   offset# = \_ -> \_ -> 80
 
+-- | The depth-stencil state of the graphics pipeline.
+--
+--     [C declaration]: @depth_stencil_state@, defined at @SDL3\/SDL_gpu.h 1956:30@
 instance
   (ty ~ SDL_GPUDepthStencilState)
   => BG.CompatHasField.HasField "depth_stencil_state" SDL_GPUGraphicsPipelineCreateInfo ty
@@ -12308,6 +12914,9 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineCreateInfo "depth_stencil_st
 
   offset# = \_ -> \_ -> 92
 
+-- | Formats and blend modes for the render targets of the graphics pipeline.
+--
+--     [C declaration]: @target_info@, defined at @SDL3\/SDL_gpu.h 1957:39@
 instance
   (ty ~ SDL_GPUGraphicsPipelineTargetInfo)
   => BG.CompatHasField.HasField "target_info" SDL_GPUGraphicsPipelineCreateInfo ty
@@ -12343,6 +12952,9 @@ instance HasCField.HasCField SDL_GPUGraphicsPipelineCreateInfo "target_info" whe
 
   offset# = \_ -> \_ -> 136
 
+-- | A properties ID for extensions. Should be 0 if no extensions are needed.
+--
+--     [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1959:22@
 instance
   (ty ~ SDL3.Sys.Bindgen.Properties.SDL_PropertiesID)
   => BG.CompatHasField.HasField "props" SDL_GPUGraphicsPipelineCreateInfo ty
@@ -12508,6 +13120,14 @@ deriving via
   instance
     BG.Storable SDL_GPUComputePipelineCreateInfo
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUComputePipelineCreateInfo
+  instance
+    Struct.IsStruct SDL_GPUComputePipelineCreateInfo
+
+-- | The size in bytes of the compute shader code pointed to.
+--
+--     [C declaration]: @code_size@, defined at @SDL3\/SDL_gpu.h 1972:12@
 instance
   (ty ~ HsBindgen.Runtime.LibC.CSize)
   => BG.CompatHasField.HasField "code_size" SDL_GPUComputePipelineCreateInfo ty
@@ -12547,6 +13167,9 @@ instance HasCField.HasCField SDL_GPUComputePipelineCreateInfo "code_size" where
 
   offset# = \_ -> \_ -> 0
 
+-- | A pointer to compute shader code.
+--
+--     [C declaration]: @code@, defined at @SDL3\/SDL_gpu.h 1973:18@
 instance
   (ty ~ PtrConst.PtrConst SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "code" SDL_GPUComputePipelineCreateInfo ty
@@ -12586,6 +13209,9 @@ instance HasCField.HasCField SDL_GPUComputePipelineCreateInfo "code" where
 
   offset# = \_ -> \_ -> 8
 
+-- | A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader.
+--
+--     [C declaration]: @entrypoint@, defined at @SDL3\/SDL_gpu.h 1974:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "entrypoint" SDL_GPUComputePipelineCreateInfo ty
@@ -12625,6 +13251,9 @@ instance HasCField.HasCField SDL_GPUComputePipelineCreateInfo "entrypoint" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The format of the compute shader code.
+--
+--     [C declaration]: @format@, defined at @SDL3\/SDL_gpu.h 1975:25@
 instance
   (ty ~ SDL_GPUShaderFormat)
   => BG.CompatHasField.HasField "format" SDL_GPUComputePipelineCreateInfo ty
@@ -12664,6 +13293,9 @@ instance HasCField.HasCField SDL_GPUComputePipelineCreateInfo "format" where
 
   offset# = \_ -> \_ -> 24
 
+-- | The number of samplers defined in the shader.
+--
+--     [C declaration]: @num_samplers@, defined at @SDL3\/SDL_gpu.h 1976:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_samplers" SDL_GPUComputePipelineCreateInfo ty
@@ -12704,6 +13336,9 @@ instance HasCField.HasCField SDL_GPUComputePipelineCreateInfo "num_samplers" whe
 
   offset# = \_ -> \_ -> 28
 
+-- | The number of readonly storage textures defined in the shader.
+--
+--     [C declaration]: @num_readonly_storage_textures@, defined at @SDL3\/SDL_gpu.h 1977:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_readonly_storage_textures" SDL_GPUComputePipelineCreateInfo ty
@@ -12744,6 +13379,9 @@ instance HasCField.HasCField SDL_GPUComputePipelineCreateInfo "num_readonly_stor
 
   offset# = \_ -> \_ -> 32
 
+-- | The number of readonly storage buffers defined in the shader.
+--
+--     [C declaration]: @num_readonly_storage_buffers@, defined at @SDL3\/SDL_gpu.h 1978:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_readonly_storage_buffers" SDL_GPUComputePipelineCreateInfo ty
@@ -12784,6 +13422,9 @@ instance HasCField.HasCField SDL_GPUComputePipelineCreateInfo "num_readonly_stor
 
   offset# = \_ -> \_ -> 36
 
+-- | The number of read-write storage textures defined in the shader.
+--
+--     [C declaration]: @num_readwrite_storage_textures@, defined at @SDL3\/SDL_gpu.h 1979:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_readwrite_storage_textures" SDL_GPUComputePipelineCreateInfo ty
@@ -12824,6 +13465,9 @@ instance HasCField.HasCField SDL_GPUComputePipelineCreateInfo "num_readwrite_sto
 
   offset# = \_ -> \_ -> 40
 
+-- | The number of read-write storage buffers defined in the shader.
+--
+--     [C declaration]: @num_readwrite_storage_buffers@, defined at @SDL3\/SDL_gpu.h 1980:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_readwrite_storage_buffers" SDL_GPUComputePipelineCreateInfo ty
@@ -12864,6 +13508,9 @@ instance HasCField.HasCField SDL_GPUComputePipelineCreateInfo "num_readwrite_sto
 
   offset# = \_ -> \_ -> 44
 
+-- | The number of uniform buffers defined in the shader.
+--
+--     [C declaration]: @num_uniform_buffers@, defined at @SDL3\/SDL_gpu.h 1981:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "num_uniform_buffers" SDL_GPUComputePipelineCreateInfo ty
@@ -12904,6 +13551,9 @@ instance HasCField.HasCField SDL_GPUComputePipelineCreateInfo "num_uniform_buffe
 
   offset# = \_ -> \_ -> 48
 
+-- | The number of threads in the X dimension. This should match the value in the shader.
+--
+--     [C declaration]: @threadcount_x@, defined at @SDL3\/SDL_gpu.h 1982:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "threadcount_x" SDL_GPUComputePipelineCreateInfo ty
@@ -12944,6 +13594,9 @@ instance HasCField.HasCField SDL_GPUComputePipelineCreateInfo "threadcount_x" wh
 
   offset# = \_ -> \_ -> 52
 
+-- | The number of threads in the Y dimension. This should match the value in the shader.
+--
+--     [C declaration]: @threadcount_y@, defined at @SDL3\/SDL_gpu.h 1983:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "threadcount_y" SDL_GPUComputePipelineCreateInfo ty
@@ -12984,6 +13637,9 @@ instance HasCField.HasCField SDL_GPUComputePipelineCreateInfo "threadcount_y" wh
 
   offset# = \_ -> \_ -> 56
 
+-- | The number of threads in the Z dimension. This should match the value in the shader.
+--
+--     [C declaration]: @threadcount_z@, defined at @SDL3\/SDL_gpu.h 1984:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "threadcount_z" SDL_GPUComputePipelineCreateInfo ty
@@ -13024,6 +13680,9 @@ instance HasCField.HasCField SDL_GPUComputePipelineCreateInfo "threadcount_z" wh
 
   offset# = \_ -> \_ -> 60
 
+-- | A properties ID for extensions. Should be 0 if no extensions are needed.
+--
+--     [C declaration]: @props@, defined at @SDL3\/SDL_gpu.h 1986:22@
 instance
   (ty ~ SDL3.Sys.Bindgen.Properties.SDL_PropertiesID)
   => BG.CompatHasField.HasField "props" SDL_GPUComputePipelineCreateInfo ty
@@ -13201,6 +13860,14 @@ deriving via
   instance
     BG.Storable SDL_GPUColorTargetInfo
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUColorTargetInfo
+  instance
+    Struct.IsStruct SDL_GPUColorTargetInfo
+
+-- | The texture that will be used as a color target by a render pass.
+--
+--     [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 2027:21@
 instance
   (ty ~ BG.Ptr SDL_GPUTexture)
   => BG.CompatHasField.HasField "texture" SDL_GPUColorTargetInfo ty
@@ -13239,6 +13906,9 @@ instance HasCField.HasCField SDL_GPUColorTargetInfo "texture" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The mip level to use as a color target.
+--
+--     [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 2028:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "mip_level" SDL_GPUColorTargetInfo ty
@@ -13277,6 +13947,9 @@ instance HasCField.HasCField SDL_GPUColorTargetInfo "mip_level" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The layer index or depth plane to use as a color target. This value is treated as a layer index on 2D array and cube textures, and as a depth plane on 3D textures.
+--
+--     [C declaration]: @layer_or_depth_plane@, defined at @SDL3\/SDL_gpu.h 2029:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "layer_or_depth_plane" SDL_GPUColorTargetInfo ty
@@ -13316,6 +13989,9 @@ instance HasCField.HasCField SDL_GPUColorTargetInfo "layer_or_depth_plane" where
 
   offset# = \_ -> \_ -> 12
 
+-- | The color to clear the color target to at the start of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used.
+--
+--     [C declaration]: @clear_color@, defined at @SDL3\/SDL_gpu.h 2030:16@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pixels.SDL_FColor)
   => BG.CompatHasField.HasField "clear_color" SDL_GPUColorTargetInfo ty
@@ -13355,6 +14031,9 @@ instance HasCField.HasCField SDL_GPUColorTargetInfo "clear_color" where
 
   offset# = \_ -> \_ -> 16
 
+-- | What is done with the contents of the color target at the beginning of the render pass.
+--
+--     [C declaration]: @load_op@, defined at @SDL3\/SDL_gpu.h 2031:19@
 instance
   (ty ~ SDL_GPULoadOp)
   => BG.CompatHasField.HasField "load_op" SDL_GPUColorTargetInfo ty
@@ -13393,6 +14072,9 @@ instance HasCField.HasCField SDL_GPUColorTargetInfo "load_op" where
 
   offset# = \_ -> \_ -> 32
 
+-- | What is done with the results of the render pass.
+--
+--     [C declaration]: @store_op@, defined at @SDL3\/SDL_gpu.h 2032:20@
 instance
   (ty ~ SDL_GPUStoreOp)
   => BG.CompatHasField.HasField "store_op" SDL_GPUColorTargetInfo ty
@@ -13431,6 +14113,9 @@ instance HasCField.HasCField SDL_GPUColorTargetInfo "store_op" where
 
   offset# = \_ -> \_ -> 36
 
+-- | The texture that will receive the results of a multisample resolve operation. Ignored if a RESOLVE* store_op is not used.
+--
+--     [C declaration]: @resolve_texture@, defined at @SDL3\/SDL_gpu.h 2033:21@
 instance
   (ty ~ BG.Ptr SDL_GPUTexture)
   => BG.CompatHasField.HasField "resolve_texture" SDL_GPUColorTargetInfo ty
@@ -13470,6 +14155,9 @@ instance HasCField.HasCField SDL_GPUColorTargetInfo "resolve_texture" where
 
   offset# = \_ -> \_ -> 40
 
+-- | The mip level of the resolve texture to use for the resolve operation. Ignored if a RESOLVE* store_op is not used.
+--
+--     [C declaration]: @resolve_mip_level@, defined at @SDL3\/SDL_gpu.h 2034:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "resolve_mip_level" SDL_GPUColorTargetInfo ty
@@ -13509,6 +14197,9 @@ instance HasCField.HasCField SDL_GPUColorTargetInfo "resolve_mip_level" where
 
   offset# = \_ -> \_ -> 48
 
+-- | The layer index of the resolve texture to use for the resolve operation. Ignored if a RESOLVE* store_op is not used.
+--
+--     [C declaration]: @resolve_layer@, defined at @SDL3\/SDL_gpu.h 2035:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "resolve_layer" SDL_GPUColorTargetInfo ty
@@ -13548,6 +14239,9 @@ instance HasCField.HasCField SDL_GPUColorTargetInfo "resolve_layer" where
 
   offset# = \_ -> \_ -> 52
 
+-- | true cycles the texture if the texture is bound and load_op is not LOAD
+--
+--     [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2036:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "cycle" SDL_GPUColorTargetInfo ty
@@ -13586,6 +14280,9 @@ instance HasCField.HasCField SDL_GPUColorTargetInfo "cycle" where
 
   offset# = \_ -> \_ -> 56
 
+-- | true cycles the resolve texture if the resolve texture is bound. Ignored if a RESOLVE* store_op is not used.
+--
+--     [C declaration]: @cycle_resolve_texture@, defined at @SDL3\/SDL_gpu.h 2037:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "cycle_resolve_texture" SDL_GPUColorTargetInfo ty
@@ -13625,6 +14322,7 @@ instance HasCField.HasCField SDL_GPUColorTargetInfo "cycle_resolve_texture" wher
 
   offset# = \_ -> \_ -> 57
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 2038:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_GPUColorTargetInfo ty
@@ -13663,6 +14361,7 @@ instance HasCField.HasCField SDL_GPUColorTargetInfo "padding1" where
 
   offset# = \_ -> \_ -> 58
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 2039:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_GPUColorTargetInfo ty
@@ -13836,6 +14535,14 @@ deriving via
   instance
     BG.Storable SDL_GPUDepthStencilTargetInfo
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUDepthStencilTargetInfo
+  instance
+    Struct.IsStruct SDL_GPUDepthStencilTargetInfo
+
+-- | The texture that will be used as the depth stencil target by the render pass.
+--
+--     [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 2091:21@
 instance
   (ty ~ BG.Ptr SDL_GPUTexture)
   => BG.CompatHasField.HasField "texture" SDL_GPUDepthStencilTargetInfo ty
@@ -13871,6 +14578,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilTargetInfo "texture" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The value to clear the depth component to at the beginning of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used.
+--
+--     [C declaration]: @clear_depth@, defined at @SDL3\/SDL_gpu.h 2092:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "clear_depth" SDL_GPUDepthStencilTargetInfo ty
@@ -13907,6 +14617,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilTargetInfo "clear_depth" where
 
   offset# = \_ -> \_ -> 8
 
+-- | What is done with the depth contents at the beginning of the render pass.
+--
+--     [C declaration]: @load_op@, defined at @SDL3\/SDL_gpu.h 2093:19@
 instance
   (ty ~ SDL_GPULoadOp)
   => BG.CompatHasField.HasField "load_op" SDL_GPUDepthStencilTargetInfo ty
@@ -13942,6 +14655,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilTargetInfo "load_op" where
 
   offset# = \_ -> \_ -> 12
 
+-- | What is done with the depth results of the render pass.
+--
+--     [C declaration]: @store_op@, defined at @SDL3\/SDL_gpu.h 2094:20@
 instance
   (ty ~ SDL_GPUStoreOp)
   => BG.CompatHasField.HasField "store_op" SDL_GPUDepthStencilTargetInfo ty
@@ -13977,6 +14693,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilTargetInfo "store_op" where
 
   offset# = \_ -> \_ -> 16
 
+-- | What is done with the stencil contents at the beginning of the render pass.
+--
+--     [C declaration]: @stencil_load_op@, defined at @SDL3\/SDL_gpu.h 2095:19@
 instance
   (ty ~ SDL_GPULoadOp)
   => BG.CompatHasField.HasField "stencil_load_op" SDL_GPUDepthStencilTargetInfo ty
@@ -14013,6 +14732,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilTargetInfo "stencil_load_op" whe
 
   offset# = \_ -> \_ -> 20
 
+-- | What is done with the stencil results of the render pass.
+--
+--     [C declaration]: @stencil_store_op@, defined at @SDL3\/SDL_gpu.h 2096:20@
 instance
   (ty ~ SDL_GPUStoreOp)
   => BG.CompatHasField.HasField "stencil_store_op" SDL_GPUDepthStencilTargetInfo ty
@@ -14049,6 +14771,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilTargetInfo "stencil_store_op" wh
 
   offset# = \_ -> \_ -> 24
 
+-- | true cycles the texture if the texture is bound and any load ops are not LOAD
+--
+--     [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2097:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "cycle" SDL_GPUDepthStencilTargetInfo ty
@@ -14084,6 +14809,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilTargetInfo "cycle" where
 
   offset# = \_ -> \_ -> 28
 
+-- | The value to clear the stencil component to at the beginning of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used.
+--
+--     [C declaration]: @clear_stencil@, defined at @SDL3\/SDL_gpu.h 2098:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "clear_stencil" SDL_GPUDepthStencilTargetInfo ty
@@ -14120,6 +14848,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilTargetInfo "clear_stencil" where
 
   offset# = \_ -> \_ -> 29
 
+-- | The mip level to use as the depth stencil target.
+--
+--     [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 2099:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "mip_level" SDL_GPUDepthStencilTargetInfo ty
@@ -14155,6 +14886,9 @@ instance HasCField.HasCField SDL_GPUDepthStencilTargetInfo "mip_level" where
 
   offset# = \_ -> \_ -> 30
 
+-- | The layer index to use as the depth stencil target.
+--
+--     [C declaration]: @layer@, defined at @SDL3\/SDL_gpu.h 2100:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "layer" SDL_GPUDepthStencilTargetInfo ty
@@ -14284,6 +15018,11 @@ instance Marshal.WriteRaw SDL_GPUBlitInfo where
 
 deriving via Marshal.EquivStorable SDL_GPUBlitInfo instance BG.Storable SDL_GPUBlitInfo
 
+deriving via Struct.IsStructViaReadRaw SDL_GPUBlitInfo instance Struct.IsStruct SDL_GPUBlitInfo
+
+-- | The source region for the blit.
+--
+--     [C declaration]: @source@, defined at @SDL3\/SDL_gpu.h 2116:23@
 instance
   (ty ~ SDL_GPUBlitRegion)
   => BG.CompatHasField.HasField "source" SDL_GPUBlitInfo ty
@@ -14319,6 +15058,9 @@ instance HasCField.HasCField SDL_GPUBlitInfo "source" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The destination region for the blit.
+--
+--     [C declaration]: @destination@, defined at @SDL3\/SDL_gpu.h 2117:23@
 instance
   (ty ~ SDL_GPUBlitRegion)
   => BG.CompatHasField.HasField "destination" SDL_GPUBlitInfo ty
@@ -14355,6 +15097,9 @@ instance HasCField.HasCField SDL_GPUBlitInfo "destination" where
 
   offset# = \_ -> \_ -> 32
 
+-- | What is done with the contents of the destination before the blit.
+--
+--     [C declaration]: @load_op@, defined at @SDL3\/SDL_gpu.h 2118:19@
 instance
   (ty ~ SDL_GPULoadOp)
   => BG.CompatHasField.HasField "load_op" SDL_GPUBlitInfo ty
@@ -14390,6 +15135,9 @@ instance HasCField.HasCField SDL_GPUBlitInfo "load_op" where
 
   offset# = \_ -> \_ -> 64
 
+-- | The color to clear the destination region to before the blit. Ignored if load_op is not SDL_GPU_LOADOP_CLEAR.
+--
+--     [C declaration]: @clear_color@, defined at @SDL3\/SDL_gpu.h 2119:16@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pixels.SDL_FColor)
   => BG.CompatHasField.HasField "clear_color" SDL_GPUBlitInfo ty
@@ -14426,6 +15174,9 @@ instance HasCField.HasCField SDL_GPUBlitInfo "clear_color" where
 
   offset# = \_ -> \_ -> 68
 
+-- | The flip mode for the source region.
+--
+--     [C declaration]: @flip_mode@, defined at @SDL3\/SDL_gpu.h 2120:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Surface.SDL_FlipMode)
   => BG.CompatHasField.HasField "flip_mode" SDL_GPUBlitInfo ty
@@ -14461,6 +15212,9 @@ instance HasCField.HasCField SDL_GPUBlitInfo "flip_mode" where
 
   offset# = \_ -> \_ -> 84
 
+-- | The filter mode used when blitting.
+--
+--     [C declaration]: @filter@, defined at @SDL3\/SDL_gpu.h 2121:19@
 instance
   (ty ~ SDL_GPUFilter)
   => BG.CompatHasField.HasField "filter" SDL_GPUBlitInfo ty
@@ -14496,6 +15250,9 @@ instance HasCField.HasCField SDL_GPUBlitInfo "filter" where
 
   offset# = \_ -> \_ -> 88
 
+-- | true cycles the destination texture if it is already bound.
+--
+--     [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2122:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "cycle" SDL_GPUBlitInfo ty
@@ -14529,6 +15286,7 @@ instance HasCField.HasCField SDL_GPUBlitInfo "cycle" where
 
   offset# = \_ -> \_ -> 92
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 2123:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_GPUBlitInfo ty
@@ -14564,6 +15322,7 @@ instance HasCField.HasCField SDL_GPUBlitInfo "padding1" where
 
   offset# = \_ -> \_ -> 93
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 2124:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_GPUBlitInfo ty
@@ -14599,6 +15358,7 @@ instance HasCField.HasCField SDL_GPUBlitInfo "padding2" where
 
   offset# = \_ -> \_ -> 94
 
+-- | [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 2125:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding3" SDL_GPUBlitInfo ty
@@ -14676,6 +15436,14 @@ instance Marshal.WriteRaw SDL_GPUBufferBinding where
 
 deriving via Marshal.EquivStorable SDL_GPUBufferBinding instance BG.Storable SDL_GPUBufferBinding
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUBufferBinding
+  instance
+    Struct.IsStruct SDL_GPUBufferBinding
+
+-- | The buffer to bind. Must have been created with SDL_GPU_BUFFERUSAGE_VERTEX for SDL_BindGPUVertexBuffers, or SDL_GPU_BUFFERUSAGE_INDEX for SDL_BindGPUIndexBuffer.
+--
+--     [C declaration]: @buffer@, defined at @SDL3\/SDL_gpu.h 2140:20@
 instance
   (ty ~ BG.Ptr SDL_GPUBuffer)
   => BG.CompatHasField.HasField "buffer" SDL_GPUBufferBinding ty
@@ -14700,6 +15468,9 @@ instance HasCField.HasCField SDL_GPUBufferBinding "buffer" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The starting byte of the data to bind in the buffer.
+--
+--     [C declaration]: @offset@, defined at @SDL3\/SDL_gpu.h 2141:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "offset" SDL_GPUBufferBinding ty
@@ -14769,6 +15540,14 @@ deriving via
   instance
     BG.Storable SDL_GPUTextureSamplerBinding
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUTextureSamplerBinding
+  instance
+    Struct.IsStruct SDL_GPUTextureSamplerBinding
+
+-- | The texture to bind. Must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
+--
+--     [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 2156:21@
 instance
   (ty ~ BG.Ptr SDL_GPUTexture)
   => BG.CompatHasField.HasField "texture" SDL_GPUTextureSamplerBinding ty
@@ -14793,6 +15572,9 @@ instance HasCField.HasCField SDL_GPUTextureSamplerBinding "texture" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The sampler to bind.
+--
+--     [C declaration]: @sampler@, defined at @SDL3\/SDL_gpu.h 2157:21@
 instance
   (ty ~ BG.Ptr SDL_GPUSampler)
   => BG.CompatHasField.HasField "sampler" SDL_GPUTextureSamplerBinding ty
@@ -14879,6 +15661,14 @@ deriving via
   instance
     BG.Storable SDL_GPUStorageBufferReadWriteBinding
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUStorageBufferReadWriteBinding
+  instance
+    Struct.IsStruct SDL_GPUStorageBufferReadWriteBinding
+
+-- | The buffer to bind. Must have been created with SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE.
+--
+--     [C declaration]: @buffer@, defined at @SDL3\/SDL_gpu.h 2170:20@
 instance
   (ty ~ BG.Ptr SDL_GPUBuffer)
   => BG.CompatHasField.HasField "buffer" SDL_GPUStorageBufferReadWriteBinding ty
@@ -14909,6 +15699,9 @@ instance HasCField.HasCField SDL_GPUStorageBufferReadWriteBinding "buffer" where
 
   offset# = \_ -> \_ -> 0
 
+-- | true cycles the buffer if it is already bound.
+--
+--     [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2171:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "cycle" SDL_GPUStorageBufferReadWriteBinding ty
@@ -14939,6 +15732,7 @@ instance HasCField.HasCField SDL_GPUStorageBufferReadWriteBinding "cycle" where
 
   offset# = \_ -> \_ -> 8
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 2172:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_GPUStorageBufferReadWriteBinding ty
@@ -14969,6 +15763,7 @@ instance HasCField.HasCField SDL_GPUStorageBufferReadWriteBinding "padding1" whe
 
   offset# = \_ -> \_ -> 9
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 2173:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_GPUStorageBufferReadWriteBinding ty
@@ -14999,6 +15794,7 @@ instance HasCField.HasCField SDL_GPUStorageBufferReadWriteBinding "padding2" whe
 
   offset# = \_ -> \_ -> 10
 
+-- | [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 2174:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding3" SDL_GPUStorageBufferReadWriteBinding ty
@@ -15105,6 +15901,14 @@ deriving via
   instance
     BG.Storable SDL_GPUStorageTextureReadWriteBinding
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUStorageTextureReadWriteBinding
+  instance
+    Struct.IsStruct SDL_GPUStorageTextureReadWriteBinding
+
+-- | The texture to bind. Must have been created with SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE or SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE.
+--
+--     [C declaration]: @texture@, defined at @SDL3\/SDL_gpu.h 2187:21@
 instance
   (ty ~ BG.Ptr SDL_GPUTexture)
   => BG.CompatHasField.HasField "texture" SDL_GPUStorageTextureReadWriteBinding ty
@@ -15137,6 +15941,9 @@ instance HasCField.HasCField SDL_GPUStorageTextureReadWriteBinding "texture" whe
 
   offset# = \_ -> \_ -> 0
 
+-- | The mip level index to bind.
+--
+--     [C declaration]: @mip_level@, defined at @SDL3\/SDL_gpu.h 2188:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "mip_level" SDL_GPUStorageTextureReadWriteBinding ty
@@ -15169,6 +15976,9 @@ instance HasCField.HasCField SDL_GPUStorageTextureReadWriteBinding "mip_level" w
 
   offset# = \_ -> \_ -> 8
 
+-- | The layer index to bind.
+--
+--     [C declaration]: @layer@, defined at @SDL3\/SDL_gpu.h 2189:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "layer" SDL_GPUStorageTextureReadWriteBinding ty
@@ -15201,6 +16011,9 @@ instance HasCField.HasCField SDL_GPUStorageTextureReadWriteBinding "layer" where
 
   offset# = \_ -> \_ -> 12
 
+-- | true cycles the texture if it is already bound.
+--
+--     [C declaration]: @cycle@, defined at @SDL3\/SDL_gpu.h 2190:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "cycle" SDL_GPUStorageTextureReadWriteBinding ty
@@ -15233,6 +16046,7 @@ instance HasCField.HasCField SDL_GPUStorageTextureReadWriteBinding "cycle" where
 
   offset# = \_ -> \_ -> 16
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_gpu.h 2191:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_GPUStorageTextureReadWriteBinding ty
@@ -15265,6 +16079,7 @@ instance HasCField.HasCField SDL_GPUStorageTextureReadWriteBinding "padding1" wh
 
   offset# = \_ -> \_ -> 17
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_gpu.h 2192:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_GPUStorageTextureReadWriteBinding ty
@@ -15297,6 +16112,7 @@ instance HasCField.HasCField SDL_GPUStorageTextureReadWriteBinding "padding2" wh
 
   offset# = \_ -> \_ -> 18
 
+-- | [C declaration]: @padding3@, defined at @SDL3\/SDL_gpu.h 2193:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding3" SDL_GPUStorageTextureReadWriteBinding ty
@@ -16370,6 +17186,14 @@ instance Marshal.WriteRaw SDL_GPUVulkanOptions where
 
 deriving via Marshal.EquivStorable SDL_GPUVulkanOptions instance BG.Storable SDL_GPUVulkanOptions
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GPUVulkanOptions
+  instance
+    Struct.IsStruct SDL_GPUVulkanOptions
+
+-- | The Vulkan API version to request for the instance. Use Vulkan\'s VK_MAKE_VERSION or VK_MAKE_API_VERSION.
+--
+--     [C declaration]: @vulkan_api_version@, defined at @SDL3\/SDL_gpu.h 2417:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "vulkan_api_version" SDL_GPUVulkanOptions ty
@@ -16403,6 +17227,9 @@ instance HasCField.HasCField SDL_GPUVulkanOptions "vulkan_api_version" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Pointer to the first element of a chain of Vulkan feature structs. (Requires API version 1.1 or higher.)
+--
+--     [C declaration]: @feature_list@, defined at @SDL3\/SDL_gpu.h 2418:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "feature_list" SDL_GPUVulkanOptions ty
@@ -16436,6 +17263,9 @@ instance HasCField.HasCField SDL_GPUVulkanOptions "feature_list" where
 
   offset# = \_ -> \_ -> 8
 
+-- | Pointer to a VkPhysicalDeviceFeatures struct to enable additional Vulkan 1.0 features.
+--
+--     [C declaration]: @vulkan_10_physical_device_features@, defined at @SDL3\/SDL_gpu.h 2419:8@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "vulkan_10_physical_device_features" SDL_GPUVulkanOptions ty
@@ -16469,6 +17299,9 @@ instance HasCField.HasCField SDL_GPUVulkanOptions "vulkan_10_physical_device_fea
 
   offset# = \_ -> \_ -> 16
 
+-- | Number of additional device extensions to require.
+--
+--     [C declaration]: @device_extension_count@, defined at @SDL3\/SDL_gpu.h 2420:9@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "device_extension_count" SDL_GPUVulkanOptions ty
@@ -16502,6 +17335,9 @@ instance HasCField.HasCField SDL_GPUVulkanOptions "device_extension_count" where
 
   offset# = \_ -> \_ -> 24
 
+-- | Pointer to a list of additional device extensions to require.
+--
+--     [C declaration]: @device_extension_names@, defined at @SDL3\/SDL_gpu.h 2421:15@
 instance
   (ty ~ BG.Ptr (PtrConst.PtrConst BG.CChar))
   => BG.CompatHasField.HasField "device_extension_names" SDL_GPUVulkanOptions ty
@@ -16535,6 +17371,9 @@ instance HasCField.HasCField SDL_GPUVulkanOptions "device_extension_names" where
 
   offset# = \_ -> \_ -> 32
 
+-- | Number of additional instance extensions to require.
+--
+--     [C declaration]: @instance_extension_count@, defined at @SDL3\/SDL_gpu.h 2422:9@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "instance_extension_count" SDL_GPUVulkanOptions ty
@@ -16568,6 +17407,9 @@ instance HasCField.HasCField SDL_GPUVulkanOptions "instance_extension_count" whe
 
   offset# = \_ -> \_ -> 40
 
+-- | Pointer to a list of additional instance extensions to require.
+--
+--     [C declaration]: @instance_extension_names@, defined at @SDL3\/SDL_gpu.h 2423:15@
 instance
   (ty ~ BG.Ptr (PtrConst.PtrConst BG.CChar))
   => BG.CompatHasField.HasField "instance_extension_names" SDL_GPUVulkanOptions ty

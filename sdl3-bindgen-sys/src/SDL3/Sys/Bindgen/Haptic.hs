@@ -17,6 +17,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | The SDL haptic subsystem manages haptic (force feedback) devices.
 --
@@ -161,10 +162,28 @@ module SDL3.Sys.Bindgen.Haptic (
 )
 where
 
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  pure,
+  (<*>),
+  (>>),
+  type (~),
+ )
+
 import C.Expr.HostPlatform qualified
 import HsBindgen.Runtime.ConstantArray qualified as CA
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import HsBindgen.Runtime.Union qualified as Union
@@ -751,6 +770,14 @@ instance Marshal.WriteRaw SDL_HapticDirection where
 
 deriving via Marshal.EquivStorable SDL_HapticDirection instance BG.Storable SDL_HapticDirection
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_HapticDirection
+  instance
+    Struct.IsStruct SDL_HapticDirection
+
+-- | The type of encoding.
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_haptic.h 568:29@
 instance
   (ty ~ SDL_HapticDirectionType)
   => BG.CompatHasField.HasField "type'" SDL_HapticDirection ty
@@ -775,6 +802,9 @@ instance HasCField.HasCField SDL_HapticDirection "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The encoded direction.
+--
+--     [C declaration]: @dir@, defined at @SDL3\/SDL_haptic.h 569:12@
 instance
   (ty ~ CA.ConstantArray 3 SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "dir" SDL_HapticDirection ty
@@ -910,6 +940,14 @@ instance Marshal.WriteRaw SDL_HapticConstant where
 
 deriving via Marshal.EquivStorable SDL_HapticConstant instance BG.Storable SDL_HapticConstant
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_HapticConstant
+  instance
+    Struct.IsStruct SDL_HapticConstant
+
+-- | SDL_HAPTIC_CONSTANT
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_haptic.h 589:26@
 instance
   (ty ~ SDL_HapticEffectType)
   => BG.CompatHasField.HasField "type'" SDL_HapticConstant ty
@@ -946,6 +984,9 @@ instance HasCField.HasCField SDL_HapticConstant "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Direction of the effect.
+--
+--     [C declaration]: @direction@, defined at @SDL3\/SDL_haptic.h 590:25@
 instance
   (ty ~ SDL_HapticDirection)
   => BG.CompatHasField.HasField "direction" SDL_HapticConstant ty
@@ -982,6 +1023,9 @@ instance HasCField.HasCField SDL_HapticConstant "direction" where
 
   offset# = \_ -> \_ -> 4
 
+-- | Duration of the effect.
+--
+--     [C declaration]: @length@, defined at @SDL3\/SDL_haptic.h 593:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "length" SDL_HapticConstant ty
@@ -1018,6 +1062,9 @@ instance HasCField.HasCField SDL_HapticConstant "length" where
 
   offset# = \_ -> \_ -> 20
 
+-- | Delay before starting the effect.
+--
+--     [C declaration]: @delay@, defined at @SDL3\/SDL_haptic.h 594:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "delay" SDL_HapticConstant ty
@@ -1054,6 +1101,9 @@ instance HasCField.HasCField SDL_HapticConstant "delay" where
 
   offset# = \_ -> \_ -> 24
 
+-- | Button that triggers the effect.
+--
+--     [C declaration]: @button@, defined at @SDL3\/SDL_haptic.h 597:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "button" SDL_HapticConstant ty
@@ -1090,6 +1140,9 @@ instance HasCField.HasCField SDL_HapticConstant "button" where
 
   offset# = \_ -> \_ -> 26
 
+-- | How soon it can be triggered again after button.
+--
+--     [C declaration]: @interval@, defined at @SDL3\/SDL_haptic.h 598:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "interval" SDL_HapticConstant ty
@@ -1126,6 +1179,9 @@ instance HasCField.HasCField SDL_HapticConstant "interval" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Strength of the constant effect.
+--
+--     [C declaration]: @level@, defined at @SDL3\/SDL_haptic.h 601:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint16)
   => BG.CompatHasField.HasField "level" SDL_HapticConstant ty
@@ -1162,6 +1218,9 @@ instance HasCField.HasCField SDL_HapticConstant "level" where
 
   offset# = \_ -> \_ -> 30
 
+-- | Duration of the attack.
+--
+--     [C declaration]: @attack_length@, defined at @SDL3\/SDL_haptic.h 604:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "attack_length" SDL_HapticConstant ty
@@ -1199,6 +1258,9 @@ instance HasCField.HasCField SDL_HapticConstant "attack_length" where
 
   offset# = \_ -> \_ -> 32
 
+-- | Level at the start of the attack.
+--
+--     [C declaration]: @attack_level@, defined at @SDL3\/SDL_haptic.h 605:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "attack_level" SDL_HapticConstant ty
@@ -1236,6 +1298,9 @@ instance HasCField.HasCField SDL_HapticConstant "attack_level" where
 
   offset# = \_ -> \_ -> 34
 
+-- | Duration of the fade.
+--
+--     [C declaration]: @fade_length@, defined at @SDL3\/SDL_haptic.h 606:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "fade_length" SDL_HapticConstant ty
@@ -1273,6 +1338,9 @@ instance HasCField.HasCField SDL_HapticConstant "fade_length" where
 
   offset# = \_ -> \_ -> 36
 
+-- | Level at the end of the fade.
+--
+--     [C declaration]: @fade_level@, defined at @SDL3\/SDL_haptic.h 607:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "fade_level" SDL_HapticConstant ty
@@ -1492,6 +1560,14 @@ instance Marshal.WriteRaw SDL_HapticPeriodic where
 
 deriving via Marshal.EquivStorable SDL_HapticPeriodic instance BG.Storable SDL_HapticPeriodic
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_HapticPeriodic
+  instance
+    Struct.IsStruct SDL_HapticPeriodic
+
+-- | SDL_HAPTIC_SINE, SDL_HAPTIC_SQUARE SDL_HAPTIC_TRIANGLE, SDL_HAPTIC_SAWTOOTHUP or SDL_HAPTIC_SAWTOOTHDOWN
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_haptic.h 675:26@
 instance
   (ty ~ SDL_HapticEffectType)
   => BG.CompatHasField.HasField "type'" SDL_HapticPeriodic ty
@@ -1531,6 +1607,9 @@ instance HasCField.HasCField SDL_HapticPeriodic "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Direction of the effect.
+--
+--     [C declaration]: @direction@, defined at @SDL3\/SDL_haptic.h 678:25@
 instance
   (ty ~ SDL_HapticDirection)
   => BG.CompatHasField.HasField "direction" SDL_HapticPeriodic ty
@@ -1570,6 +1649,9 @@ instance HasCField.HasCField SDL_HapticPeriodic "direction" where
 
   offset# = \_ -> \_ -> 4
 
+-- | Duration of the effect.
+--
+--     [C declaration]: @length@, defined at @SDL3\/SDL_haptic.h 681:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "length" SDL_HapticPeriodic ty
@@ -1609,6 +1691,9 @@ instance HasCField.HasCField SDL_HapticPeriodic "length" where
 
   offset# = \_ -> \_ -> 20
 
+-- | Delay before starting the effect.
+--
+--     [C declaration]: @delay@, defined at @SDL3\/SDL_haptic.h 682:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "delay" SDL_HapticPeriodic ty
@@ -1648,6 +1733,9 @@ instance HasCField.HasCField SDL_HapticPeriodic "delay" where
 
   offset# = \_ -> \_ -> 24
 
+-- | Button that triggers the effect.
+--
+--     [C declaration]: @button@, defined at @SDL3\/SDL_haptic.h 685:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "button" SDL_HapticPeriodic ty
@@ -1687,6 +1775,9 @@ instance HasCField.HasCField SDL_HapticPeriodic "button" where
 
   offset# = \_ -> \_ -> 26
 
+-- | How soon it can be triggered again after button.
+--
+--     [C declaration]: @interval@, defined at @SDL3\/SDL_haptic.h 686:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "interval" SDL_HapticPeriodic ty
@@ -1726,6 +1817,9 @@ instance HasCField.HasCField SDL_HapticPeriodic "interval" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Period of the wave.
+--
+--     [C declaration]: @period@, defined at @SDL3\/SDL_haptic.h 689:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "period" SDL_HapticPeriodic ty
@@ -1765,6 +1859,9 @@ instance HasCField.HasCField SDL_HapticPeriodic "period" where
 
   offset# = \_ -> \_ -> 30
 
+-- | Peak value; if negative, equivalent to 180 degrees extra phase shift.
+--
+--     [C declaration]: @magnitude@, defined at @SDL3\/SDL_haptic.h 690:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint16)
   => BG.CompatHasField.HasField "magnitude" SDL_HapticPeriodic ty
@@ -1804,6 +1901,9 @@ instance HasCField.HasCField SDL_HapticPeriodic "magnitude" where
 
   offset# = \_ -> \_ -> 32
 
+-- | Mean value of the wave.
+--
+--     [C declaration]: @offset@, defined at @SDL3\/SDL_haptic.h 691:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint16)
   => BG.CompatHasField.HasField "offset" SDL_HapticPeriodic ty
@@ -1843,6 +1943,9 @@ instance HasCField.HasCField SDL_HapticPeriodic "offset" where
 
   offset# = \_ -> \_ -> 34
 
+-- | Positive phase shift given by hundredth of a degree.
+--
+--     [C declaration]: @phase@, defined at @SDL3\/SDL_haptic.h 692:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "phase" SDL_HapticPeriodic ty
@@ -1882,6 +1985,9 @@ instance HasCField.HasCField SDL_HapticPeriodic "phase" where
 
   offset# = \_ -> \_ -> 36
 
+-- | Duration of the attack.
+--
+--     [C declaration]: @attack_length@, defined at @SDL3\/SDL_haptic.h 695:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "attack_length" SDL_HapticPeriodic ty
@@ -1922,6 +2028,9 @@ instance HasCField.HasCField SDL_HapticPeriodic "attack_length" where
 
   offset# = \_ -> \_ -> 38
 
+-- | Level at the start of the attack.
+--
+--     [C declaration]: @attack_level@, defined at @SDL3\/SDL_haptic.h 696:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "attack_level" SDL_HapticPeriodic ty
@@ -1962,6 +2071,9 @@ instance HasCField.HasCField SDL_HapticPeriodic "attack_level" where
 
   offset# = \_ -> \_ -> 40
 
+-- | Duration of the fade.
+--
+--     [C declaration]: @fade_length@, defined at @SDL3\/SDL_haptic.h 697:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "fade_length" SDL_HapticPeriodic ty
@@ -2002,6 +2114,9 @@ instance HasCField.HasCField SDL_HapticPeriodic "fade_length" where
 
   offset# = \_ -> \_ -> 42
 
+-- | Level at the end of the fade.
+--
+--     [C declaration]: @fade_level@, defined at @SDL3\/SDL_haptic.h 698:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "fade_level" SDL_HapticPeriodic ty
@@ -2167,6 +2282,14 @@ instance Marshal.WriteRaw SDL_HapticCondition where
 
 deriving via Marshal.EquivStorable SDL_HapticCondition instance BG.Storable SDL_HapticCondition
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_HapticCondition
+  instance
+    Struct.IsStruct SDL_HapticCondition
+
+-- | SDL_HAPTIC_SPRING, SDL_HAPTIC_DAMPER, SDL_HAPTIC_INERTIA or SDL_HAPTIC_FRICTION
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_haptic.h 731:26@
 instance
   (ty ~ SDL_HapticEffectType)
   => BG.CompatHasField.HasField "type'" SDL_HapticCondition ty
@@ -2204,6 +2327,9 @@ instance HasCField.HasCField SDL_HapticCondition "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Direction of the effect.
+--
+--     [C declaration]: @direction@, defined at @SDL3\/SDL_haptic.h 733:25@
 instance
   (ty ~ SDL_HapticDirection)
   => BG.CompatHasField.HasField "direction" SDL_HapticCondition ty
@@ -2241,6 +2367,9 @@ instance HasCField.HasCField SDL_HapticCondition "direction" where
 
   offset# = \_ -> \_ -> 4
 
+-- | Duration of the effect.
+--
+--     [C declaration]: @length@, defined at @SDL3\/SDL_haptic.h 736:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "length" SDL_HapticCondition ty
@@ -2278,6 +2407,9 @@ instance HasCField.HasCField SDL_HapticCondition "length" where
 
   offset# = \_ -> \_ -> 20
 
+-- | Delay before starting the effect.
+--
+--     [C declaration]: @delay@, defined at @SDL3\/SDL_haptic.h 737:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "delay" SDL_HapticCondition ty
@@ -2315,6 +2447,9 @@ instance HasCField.HasCField SDL_HapticCondition "delay" where
 
   offset# = \_ -> \_ -> 24
 
+-- | Button that triggers the effect.
+--
+--     [C declaration]: @button@, defined at @SDL3\/SDL_haptic.h 740:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "button" SDL_HapticCondition ty
@@ -2352,6 +2487,9 @@ instance HasCField.HasCField SDL_HapticCondition "button" where
 
   offset# = \_ -> \_ -> 26
 
+-- | How soon it can be triggered again after button.
+--
+--     [C declaration]: @interval@, defined at @SDL3\/SDL_haptic.h 741:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "interval" SDL_HapticCondition ty
@@ -2389,6 +2527,9 @@ instance HasCField.HasCField SDL_HapticCondition "interval" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Level when joystick is to the positive side; max 0xFFFF.
+--
+--     [C declaration]: @right_sat@, defined at @SDL3\/SDL_haptic.h 744:12@
 instance
   (ty ~ CA.ConstantArray 3 SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "right_sat" SDL_HapticCondition ty
@@ -2426,6 +2567,9 @@ instance HasCField.HasCField SDL_HapticCondition "right_sat" where
 
   offset# = \_ -> \_ -> 30
 
+-- | Level when joystick is to the negative side; max 0xFFFF.
+--
+--     [C declaration]: @left_sat@, defined at @SDL3\/SDL_haptic.h 745:12@
 instance
   (ty ~ CA.ConstantArray 3 SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "left_sat" SDL_HapticCondition ty
@@ -2463,6 +2607,9 @@ instance HasCField.HasCField SDL_HapticCondition "left_sat" where
 
   offset# = \_ -> \_ -> 36
 
+-- | How fast to increase the force towards the positive side.
+--
+--     [C declaration]: @right_coeff@, defined at @SDL3\/SDL_haptic.h 746:12@
 instance
   (ty ~ CA.ConstantArray 3 SDL3.Sys.Bindgen.Stdinc.Sint16)
   => BG.CompatHasField.HasField "right_coeff" SDL_HapticCondition ty
@@ -2501,6 +2648,9 @@ instance HasCField.HasCField SDL_HapticCondition "right_coeff" where
 
   offset# = \_ -> \_ -> 42
 
+-- | How fast to increase the force towards the negative side.
+--
+--     [C declaration]: @left_coeff@, defined at @SDL3\/SDL_haptic.h 747:12@
 instance
   (ty ~ CA.ConstantArray 3 SDL3.Sys.Bindgen.Stdinc.Sint16)
   => BG.CompatHasField.HasField "left_coeff" SDL_HapticCondition ty
@@ -2538,6 +2688,9 @@ instance HasCField.HasCField SDL_HapticCondition "left_coeff" where
 
   offset# = \_ -> \_ -> 48
 
+-- | Size of the dead zone; max 0xFFFF: whole axis-range when 0-centered.
+--
+--     [C declaration]: @deadband@, defined at @SDL3\/SDL_haptic.h 748:12@
 instance
   (ty ~ CA.ConstantArray 3 SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "deadband" SDL_HapticCondition ty
@@ -2575,6 +2728,9 @@ instance HasCField.HasCField SDL_HapticCondition "deadband" where
 
   offset# = \_ -> \_ -> 54
 
+-- | Position of the dead zone.
+--
+--     [C declaration]: @center@, defined at @SDL3\/SDL_haptic.h 749:12@
 instance
   (ty ~ CA.ConstantArray 3 SDL3.Sys.Bindgen.Stdinc.Sint16)
   => BG.CompatHasField.HasField "center" SDL_HapticCondition ty
@@ -2730,6 +2886,11 @@ instance Marshal.WriteRaw SDL_HapticRamp where
 
 deriving via Marshal.EquivStorable SDL_HapticRamp instance BG.Storable SDL_HapticRamp
 
+deriving via Struct.IsStructViaReadRaw SDL_HapticRamp instance Struct.IsStruct SDL_HapticRamp
+
+-- | SDL_HAPTIC_RAMP
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_haptic.h 770:26@
 instance
   (ty ~ SDL_HapticEffectType)
   => BG.CompatHasField.HasField "type'" SDL_HapticRamp ty
@@ -2767,6 +2928,9 @@ instance HasCField.HasCField SDL_HapticRamp "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Direction of the effect.
+--
+--     [C declaration]: @direction@, defined at @SDL3\/SDL_haptic.h 771:25@
 instance
   (ty ~ SDL_HapticDirection)
   => BG.CompatHasField.HasField "direction" SDL_HapticRamp ty
@@ -2804,6 +2968,9 @@ instance HasCField.HasCField SDL_HapticRamp "direction" where
 
   offset# = \_ -> \_ -> 4
 
+-- | Duration of the effect.
+--
+--     [C declaration]: @length@, defined at @SDL3\/SDL_haptic.h 774:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "length" SDL_HapticRamp ty
@@ -2841,6 +3008,9 @@ instance HasCField.HasCField SDL_HapticRamp "length" where
 
   offset# = \_ -> \_ -> 20
 
+-- | Delay before starting the effect.
+--
+--     [C declaration]: @delay@, defined at @SDL3\/SDL_haptic.h 775:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "delay" SDL_HapticRamp ty
@@ -2878,6 +3048,9 @@ instance HasCField.HasCField SDL_HapticRamp "delay" where
 
   offset# = \_ -> \_ -> 24
 
+-- | Button that triggers the effect.
+--
+--     [C declaration]: @button@, defined at @SDL3\/SDL_haptic.h 778:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "button" SDL_HapticRamp ty
@@ -2915,6 +3088,9 @@ instance HasCField.HasCField SDL_HapticRamp "button" where
 
   offset# = \_ -> \_ -> 26
 
+-- | How soon it can be triggered again after button.
+--
+--     [C declaration]: @interval@, defined at @SDL3\/SDL_haptic.h 779:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "interval" SDL_HapticRamp ty
@@ -2952,6 +3128,9 @@ instance HasCField.HasCField SDL_HapticRamp "interval" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Beginning strength level.
+--
+--     [C declaration]: @start@, defined at @SDL3\/SDL_haptic.h 782:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint16)
   => BG.CompatHasField.HasField "start" SDL_HapticRamp ty
@@ -2989,6 +3168,9 @@ instance HasCField.HasCField SDL_HapticRamp "start" where
 
   offset# = \_ -> \_ -> 30
 
+-- | Ending strength level.
+--
+--     [C declaration]: @end@, defined at @SDL3\/SDL_haptic.h 783:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint16)
   => BG.CompatHasField.HasField "end" SDL_HapticRamp ty
@@ -3026,6 +3208,9 @@ instance HasCField.HasCField SDL_HapticRamp "end" where
 
   offset# = \_ -> \_ -> 32
 
+-- | Duration of the attack.
+--
+--     [C declaration]: @attack_length@, defined at @SDL3\/SDL_haptic.h 786:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "attack_length" SDL_HapticRamp ty
@@ -3064,6 +3249,9 @@ instance HasCField.HasCField SDL_HapticRamp "attack_length" where
 
   offset# = \_ -> \_ -> 34
 
+-- | Level at the start of the attack.
+--
+--     [C declaration]: @attack_level@, defined at @SDL3\/SDL_haptic.h 787:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "attack_level" SDL_HapticRamp ty
@@ -3102,6 +3290,9 @@ instance HasCField.HasCField SDL_HapticRamp "attack_level" where
 
   offset# = \_ -> \_ -> 36
 
+-- | Duration of the fade.
+--
+--     [C declaration]: @fade_length@, defined at @SDL3\/SDL_haptic.h 788:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "fade_length" SDL_HapticRamp ty
@@ -3140,6 +3331,9 @@ instance HasCField.HasCField SDL_HapticRamp "fade_length" where
 
   offset# = \_ -> \_ -> 38
 
+-- | Level at the end of the fade.
+--
+--     [C declaration]: @fade_level@, defined at @SDL3\/SDL_haptic.h 789:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "fade_level" SDL_HapticRamp ty
@@ -3235,6 +3429,14 @@ instance Marshal.WriteRaw SDL_HapticLeftRight where
 
 deriving via Marshal.EquivStorable SDL_HapticLeftRight instance BG.Storable SDL_HapticLeftRight
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_HapticLeftRight
+  instance
+    Struct.IsStruct SDL_HapticLeftRight
+
+-- | SDL_HAPTIC_LEFTRIGHT
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_haptic.h 809:26@
 instance
   (ty ~ SDL_HapticEffectType)
   => BG.CompatHasField.HasField "type'" SDL_HapticLeftRight ty
@@ -3264,6 +3466,9 @@ instance HasCField.HasCField SDL_HapticLeftRight "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Duration of the effect in milliseconds.
+--
+--     [C declaration]: @length@, defined at @SDL3\/SDL_haptic.h 812:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "length" SDL_HapticLeftRight ty
@@ -3293,6 +3498,9 @@ instance HasCField.HasCField SDL_HapticLeftRight "length" where
 
   offset# = \_ -> \_ -> 4
 
+-- | Control of the large controller motor.
+--
+--     [C declaration]: @large_magnitude@, defined at @SDL3\/SDL_haptic.h 815:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "large_magnitude" SDL_HapticLeftRight ty
@@ -3323,6 +3531,9 @@ instance HasCField.HasCField SDL_HapticLeftRight "large_magnitude" where
 
   offset# = \_ -> \_ -> 8
 
+-- | Control of the small controller motor.
+--
+--     [C declaration]: @small_magnitude@, defined at @SDL3\/SDL_haptic.h 816:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "small_magnitude" SDL_HapticLeftRight ty
@@ -3487,6 +3698,11 @@ instance Marshal.WriteRaw SDL_HapticCustom where
 
 deriving via Marshal.EquivStorable SDL_HapticCustom instance BG.Storable SDL_HapticCustom
 
+deriving via Struct.IsStructViaReadRaw SDL_HapticCustom instance Struct.IsStruct SDL_HapticCustom
+
+-- | SDL_HAPTIC_CUSTOM
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_haptic.h 839:26@
 instance
   (ty ~ SDL_HapticEffectType)
   => BG.CompatHasField.HasField "type'" SDL_HapticCustom ty
@@ -3526,6 +3742,9 @@ instance HasCField.HasCField SDL_HapticCustom "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Direction of the effect.
+--
+--     [C declaration]: @direction@, defined at @SDL3\/SDL_haptic.h 840:25@
 instance
   (ty ~ SDL_HapticDirection)
   => BG.CompatHasField.HasField "direction" SDL_HapticCustom ty
@@ -3565,6 +3784,9 @@ instance HasCField.HasCField SDL_HapticCustom "direction" where
 
   offset# = \_ -> \_ -> 4
 
+-- | Duration of the effect.
+--
+--     [C declaration]: @length@, defined at @SDL3\/SDL_haptic.h 843:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "length" SDL_HapticCustom ty
@@ -3604,6 +3826,9 @@ instance HasCField.HasCField SDL_HapticCustom "length" where
 
   offset# = \_ -> \_ -> 20
 
+-- | Delay before starting the effect.
+--
+--     [C declaration]: @delay@, defined at @SDL3\/SDL_haptic.h 844:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "delay" SDL_HapticCustom ty
@@ -3643,6 +3868,9 @@ instance HasCField.HasCField SDL_HapticCustom "delay" where
 
   offset# = \_ -> \_ -> 24
 
+-- | Button that triggers the effect.
+--
+--     [C declaration]: @button@, defined at @SDL3\/SDL_haptic.h 847:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "button" SDL_HapticCustom ty
@@ -3682,6 +3910,9 @@ instance HasCField.HasCField SDL_HapticCustom "button" where
 
   offset# = \_ -> \_ -> 26
 
+-- | How soon it can be triggered again after button.
+--
+--     [C declaration]: @interval@, defined at @SDL3\/SDL_haptic.h 848:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "interval" SDL_HapticCustom ty
@@ -3721,6 +3952,9 @@ instance HasCField.HasCField SDL_HapticCustom "interval" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Axes to use, minimum of one.
+--
+--     [C declaration]: @channels@, defined at @SDL3\/SDL_haptic.h 851:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "channels" SDL_HapticCustom ty
@@ -3760,6 +3994,9 @@ instance HasCField.HasCField SDL_HapticCustom "channels" where
 
   offset# = \_ -> \_ -> 30
 
+-- | Sample periods.
+--
+--     [C declaration]: @period@, defined at @SDL3\/SDL_haptic.h 852:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "period" SDL_HapticCustom ty
@@ -3799,6 +4036,9 @@ instance HasCField.HasCField SDL_HapticCustom "period" where
 
   offset# = \_ -> \_ -> 32
 
+-- | Amount of samples.
+--
+--     [C declaration]: @samples@, defined at @SDL3\/SDL_haptic.h 853:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "samples" SDL_HapticCustom ty
@@ -3838,6 +4078,9 @@ instance HasCField.HasCField SDL_HapticCustom "samples" where
 
   offset# = \_ -> \_ -> 34
 
+-- | Should contain channels*samples items.
+--
+--     [C declaration]: @data@, defined at @SDL3\/SDL_haptic.h 854:13@
 instance
   (ty ~ BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "data'" SDL_HapticCustom ty
@@ -3877,6 +4120,9 @@ instance HasCField.HasCField SDL_HapticCustom "data'" where
 
   offset# = \_ -> \_ -> 40
 
+-- | Duration of the attack.
+--
+--     [C declaration]: @attack_length@, defined at @SDL3\/SDL_haptic.h 857:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "attack_length" SDL_HapticCustom ty
@@ -3917,6 +4163,9 @@ instance HasCField.HasCField SDL_HapticCustom "attack_length" where
 
   offset# = \_ -> \_ -> 48
 
+-- | Level at the start of the attack.
+--
+--     [C declaration]: @attack_level@, defined at @SDL3\/SDL_haptic.h 858:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "attack_level" SDL_HapticCustom ty
@@ -3957,6 +4206,9 @@ instance HasCField.HasCField SDL_HapticCustom "attack_level" where
 
   offset# = \_ -> \_ -> 50
 
+-- | Duration of the fade.
+--
+--     [C declaration]: @fade_length@, defined at @SDL3\/SDL_haptic.h 859:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "fade_length" SDL_HapticCustom ty
@@ -3997,6 +4249,9 @@ instance HasCField.HasCField SDL_HapticCustom "fade_length" where
 
   offset# = \_ -> \_ -> 52
 
+-- | Level at the end of the fade.
+--
+--     [C declaration]: @fade_level@, defined at @SDL3\/SDL_haptic.h 860:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "fade_level" SDL_HapticCustom ty
@@ -4127,7 +4382,11 @@ instance
   => BG.CompatHasField.HasField "type'" SDL_HapticEffect ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"type'" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"type'" x0
+      )
 
 instance
   (ty ~ SDL_HapticEffectType)
@@ -4160,7 +4419,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"constant" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"constant" x0
+      )
 
 instance
   (ty ~ SDL_HapticConstant)
@@ -4193,7 +4455,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"periodic" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"periodic" x0
+      )
 
 instance
   (ty ~ SDL_HapticPeriodic)
@@ -4226,7 +4491,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"condition" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"condition" x0
+      )
 
 instance
   (ty ~ SDL_HapticCondition)
@@ -4255,7 +4523,11 @@ instance
   => BG.CompatHasField.HasField "ramp" SDL_HapticEffect ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"ramp" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"ramp" x0
+      )
 
 instance
   (ty ~ SDL_HapticRamp)
@@ -4288,7 +4560,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"leftright" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"leftright" x0
+      )
 
 instance
   (ty ~ SDL_HapticLeftRight)
@@ -4320,7 +4595,11 @@ instance
   => BG.CompatHasField.HasField "custom" SDL_HapticEffect ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"custom" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"custom" x0
+      )
 
 instance
   (ty ~ SDL_HapticCustom)

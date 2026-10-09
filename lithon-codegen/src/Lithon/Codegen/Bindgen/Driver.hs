@@ -183,8 +183,9 @@ data HeaderPlan = HeaderPlan
   , mangle :: Module.MangleOpts
   -- ^ Header basename -> module leaf (appended to 'baseNamespace').
   , projectHeader :: FilePath -> Maybe FilePath
-  -- ^ Include-graph source path -> in-scope basename ('Nothing' for libc,
-  -- clang builtins, anything outside the target's include root).
+  -- ^ Include-graph real path (canonical, symlink-resolved) -> in-scope
+  -- basename ('Nothing' for libc, clang builtins, anything outside the
+  -- target's include root).
   , includeArg :: FilePath -> FilePath
   -- ^ Basename -> the hash-include argument, e.g. @SDL3\/SDL_video.h@.
   , excludedHeaders :: Set FilePath
@@ -256,8 +257,8 @@ data HeaderResult r = HeaderResult
   }
 
 -- | One boot+frontend run over the plan's main includes, returning the
--- include graph (dependency-ordered source paths) that orders the real
--- per-header chain.
+-- include graph (dependency-ordered real paths: canonical, symlink-resolved)
+-- that orders the real per-header chain.
 preflightGraph
   :: (IOE :> es, Driver :> es, Error DriverError :> es) => HeaderPlan -> Eff es [FilePath]
 preflightGraph plan = invokeBindgen [] "Preflight" plan.mainIncludes HB.sortedIncludeGraph

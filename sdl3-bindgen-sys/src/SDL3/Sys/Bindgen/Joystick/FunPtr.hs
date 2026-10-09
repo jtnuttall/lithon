@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Joystick.FunPtr (
@@ -64,6 +66,8 @@ module SDL3.Sys.Bindgen.Joystick.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -76,7 +80,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_joystick.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_joystick.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_LockJoysticks */"
          , "__attribute__ ((const))"
          , "void (*hs_bindgen_114e63986aa83034 (void)) (void)"
@@ -587,7 +592,7 @@ foreign import ccall unsafe "hs_bindgen_114e63986aa83034"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_LockJoysticks@
 hs_bindgen_114e63986aa83034 :: IO (BG.FunPtr (IO ()))
 hs_bindgen_114e63986aa83034 =
-  BG.fromFFIType hs_bindgen_114e63986aa83034_base
+  fmap BG.fromFFIType hs_bindgen_114e63986aa83034_base
 
 {-# NOINLINE sDL_LockJoysticks #-}
 
@@ -612,7 +617,7 @@ foreign import ccall unsafe "hs_bindgen_08af331be04bcfc6"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_UnlockJoysticks@
 hs_bindgen_08af331be04bcfc6 :: IO (BG.FunPtr (IO ()))
 hs_bindgen_08af331be04bcfc6 =
-  BG.fromFFIType hs_bindgen_08af331be04bcfc6_base
+  fmap BG.fromFFIType hs_bindgen_08af331be04bcfc6_base
 
 {-# NOINLINE sDL_UnlockJoysticks #-}
 
@@ -635,7 +640,7 @@ foreign import ccall unsafe "hs_bindgen_43b30c46c7a64c3f"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_HasJoystick@
 hs_bindgen_43b30c46c7a64c3f :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_43b30c46c7a64c3f =
-  BG.fromFFIType hs_bindgen_43b30c46c7a64c3f_base
+  fmap BG.fromFFIType hs_bindgen_43b30c46c7a64c3f_base
 
 {-# NOINLINE sDL_HasJoystick #-}
 
@@ -662,7 +667,7 @@ foreign import ccall unsafe "hs_bindgen_8980d2e00276c32b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoysticks@
 hs_bindgen_8980d2e00276c32b :: IO (BG.FunPtr (BG.Ptr BG.CInt -> IO (BG.Ptr SDL_JoystickID)))
 hs_bindgen_8980d2e00276c32b =
-  BG.fromFFIType hs_bindgen_8980d2e00276c32b_base
+  fmap BG.fromFFIType hs_bindgen_8980d2e00276c32b_base
 
 {-# NOINLINE sDL_GetJoysticks #-}
 
@@ -691,7 +696,7 @@ foreign import ccall unsafe "hs_bindgen_609608d63d9b62ea"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoystickNameForID@
 hs_bindgen_609608d63d9b62ea :: IO (BG.FunPtr (SDL_JoystickID -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_609608d63d9b62ea =
-  BG.fromFFIType hs_bindgen_609608d63d9b62ea_base
+  fmap BG.fromFFIType hs_bindgen_609608d63d9b62ea_base
 
 {-# NOINLINE sDL_GetJoystickNameForID #-}
 
@@ -722,7 +727,7 @@ foreign import ccall unsafe "hs_bindgen_5ac5dcd7fcf6852e"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoystickPathForID@
 hs_bindgen_5ac5dcd7fcf6852e :: IO (BG.FunPtr (SDL_JoystickID -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_5ac5dcd7fcf6852e =
-  BG.fromFFIType hs_bindgen_5ac5dcd7fcf6852e_base
+  fmap BG.fromFFIType hs_bindgen_5ac5dcd7fcf6852e_base
 
 {-# NOINLINE sDL_GetJoystickPathForID #-}
 
@@ -753,7 +758,7 @@ foreign import ccall unsafe "hs_bindgen_cba85122d2af347d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoystickPlayerIndexForID@
 hs_bindgen_cba85122d2af347d :: IO (BG.FunPtr (SDL_JoystickID -> IO BG.CInt))
 hs_bindgen_cba85122d2af347d =
-  BG.fromFFIType hs_bindgen_cba85122d2af347d_base
+  fmap BG.fromFFIType hs_bindgen_cba85122d2af347d_base
 
 {-# NOINLINE sDL_GetJoystickPlayerIndexForID #-}
 
@@ -784,7 +789,7 @@ foreign import ccall unsafe "hs_bindgen_449e28b8e0e67e88"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoystickGUIDForID@
 hs_bindgen_449e28b8e0e67e88 :: IO (BG.FunPtr (SDL_JoystickID -> IO SDL3.Sys.Bindgen.Guid.SDL_GUID))
 hs_bindgen_449e28b8e0e67e88 =
-  BG.fromFFIType hs_bindgen_449e28b8e0e67e88_base
+  fmap BG.fromFFIType hs_bindgen_449e28b8e0e67e88_base
 
 {-# NOINLINE sDL_GetJoystickGUIDForID #-}
 
@@ -815,7 +820,7 @@ foreign import ccall unsafe "hs_bindgen_44ce4b8a7fdf6cbf"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoystickVendorForID@
 hs_bindgen_44ce4b8a7fdf6cbf :: IO (BG.FunPtr (SDL_JoystickID -> IO SDL3.Sys.Bindgen.Stdinc.Uint16))
 hs_bindgen_44ce4b8a7fdf6cbf =
-  BG.fromFFIType hs_bindgen_44ce4b8a7fdf6cbf_base
+  fmap BG.fromFFIType hs_bindgen_44ce4b8a7fdf6cbf_base
 
 {-# NOINLINE sDL_GetJoystickVendorForID #-}
 
@@ -846,7 +851,7 @@ foreign import ccall unsafe "hs_bindgen_820a9291485cee97"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoystickProductForID@
 hs_bindgen_820a9291485cee97 :: IO (BG.FunPtr (SDL_JoystickID -> IO SDL3.Sys.Bindgen.Stdinc.Uint16))
 hs_bindgen_820a9291485cee97 =
-  BG.fromFFIType hs_bindgen_820a9291485cee97_base
+  fmap BG.fromFFIType hs_bindgen_820a9291485cee97_base
 
 {-# NOINLINE sDL_GetJoystickProductForID #-}
 
@@ -877,7 +882,7 @@ foreign import ccall unsafe "hs_bindgen_3a0e1d9bde47f0ff"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoystickProductVersionForID@
 hs_bindgen_3a0e1d9bde47f0ff :: IO (BG.FunPtr (SDL_JoystickID -> IO SDL3.Sys.Bindgen.Stdinc.Uint16))
 hs_bindgen_3a0e1d9bde47f0ff =
-  BG.fromFFIType hs_bindgen_3a0e1d9bde47f0ff_base
+  fmap BG.fromFFIType hs_bindgen_3a0e1d9bde47f0ff_base
 
 {-# NOINLINE sDL_GetJoystickProductVersionForID #-}
 
@@ -909,7 +914,7 @@ foreign import ccall unsafe "hs_bindgen_a20dfde681f6caa0"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoystickTypeForID@
 hs_bindgen_a20dfde681f6caa0 :: IO (BG.FunPtr (SDL_JoystickID -> IO SDL_JoystickType))
 hs_bindgen_a20dfde681f6caa0 =
-  BG.fromFFIType hs_bindgen_a20dfde681f6caa0_base
+  fmap BG.fromFFIType hs_bindgen_a20dfde681f6caa0_base
 
 {-# NOINLINE sDL_GetJoystickTypeForID #-}
 
@@ -940,7 +945,7 @@ foreign import ccall unsafe "hs_bindgen_c7b5fbf5268defc4"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_OpenJoystick@
 hs_bindgen_c7b5fbf5268defc4 :: IO (BG.FunPtr (SDL_JoystickID -> IO (BG.Ptr SDL_Joystick)))
 hs_bindgen_c7b5fbf5268defc4 =
-  BG.fromFFIType hs_bindgen_c7b5fbf5268defc4_base
+  fmap BG.fromFFIType hs_bindgen_c7b5fbf5268defc4_base
 
 {-# NOINLINE sDL_OpenJoystick #-}
 
@@ -971,7 +976,7 @@ foreign import ccall unsafe "hs_bindgen_e1dd196b7b6820f0"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoystickFromID@
 hs_bindgen_e1dd196b7b6820f0 :: IO (BG.FunPtr (SDL_JoystickID -> IO (BG.Ptr SDL_Joystick)))
 hs_bindgen_e1dd196b7b6820f0 =
-  BG.fromFFIType hs_bindgen_e1dd196b7b6820f0_base
+  fmap BG.fromFFIType hs_bindgen_e1dd196b7b6820f0_base
 
 {-# NOINLINE sDL_GetJoystickFromID #-}
 
@@ -998,7 +1003,7 @@ foreign import ccall unsafe "hs_bindgen_557bcf514d2319d8"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoystickFromPlayerIndex@
 hs_bindgen_557bcf514d2319d8 :: IO (BG.FunPtr (BG.CInt -> IO (BG.Ptr SDL_Joystick)))
 hs_bindgen_557bcf514d2319d8 =
-  BG.fromFFIType hs_bindgen_557bcf514d2319d8_base
+  fmap BG.fromFFIType hs_bindgen_557bcf514d2319d8_base
 
 {-# NOINLINE sDL_GetJoystickFromPlayerIndex #-}
 
@@ -1028,7 +1033,7 @@ foreign import ccall unsafe "hs_bindgen_1ad626510c8533e6"
 hs_bindgen_1ad626510c8533e6
   :: IO (BG.FunPtr (PtrConst.PtrConst SDL_VirtualJoystickDesc -> IO SDL_JoystickID))
 hs_bindgen_1ad626510c8533e6 =
-  BG.fromFFIType hs_bindgen_1ad626510c8533e6_base
+  fmap BG.fromFFIType hs_bindgen_1ad626510c8533e6_base
 
 {-# NOINLINE sDL_AttachVirtualJoystick #-}
 
@@ -1064,7 +1069,7 @@ foreign import ccall unsafe "hs_bindgen_cce198ac8f90dd3d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_DetachVirtualJoystick@
 hs_bindgen_cce198ac8f90dd3d :: IO (BG.FunPtr (SDL_JoystickID -> IO BG.CBool))
 hs_bindgen_cce198ac8f90dd3d =
-  BG.fromFFIType hs_bindgen_cce198ac8f90dd3d_base
+  fmap BG.fromFFIType hs_bindgen_cce198ac8f90dd3d_base
 
 {-# NOINLINE sDL_DetachVirtualJoystick #-}
 
@@ -1093,7 +1098,7 @@ foreign import ccall unsafe "hs_bindgen_f63774bb7235f389"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_IsJoystickVirtual@
 hs_bindgen_f63774bb7235f389 :: IO (BG.FunPtr (SDL_JoystickID -> IO BG.CBool))
 hs_bindgen_f63774bb7235f389 =
-  BG.fromFFIType hs_bindgen_f63774bb7235f389_base
+  fmap BG.fromFFIType hs_bindgen_f63774bb7235f389_base
 
 {-# NOINLINE sDL_IsJoystickVirtual #-}
 
@@ -1121,7 +1126,7 @@ foreign import ccall unsafe "hs_bindgen_25ad7457e11fdfc6"
 hs_bindgen_25ad7457e11fdfc6
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> BG.CInt -> SDL3.Sys.Bindgen.Stdinc.Sint16 -> IO BG.CBool))
 hs_bindgen_25ad7457e11fdfc6 =
-  BG.fromFFIType hs_bindgen_25ad7457e11fdfc6_base
+  fmap BG.fromFFIType hs_bindgen_25ad7457e11fdfc6_base
 
 {-# NOINLINE sDL_SetJoystickVirtualAxis #-}
 
@@ -1168,7 +1173,7 @@ hs_bindgen_883279d52c622be7
            )
        )
 hs_bindgen_883279d52c622be7 =
-  BG.fromFFIType hs_bindgen_883279d52c622be7_base
+  fmap BG.fromFFIType hs_bindgen_883279d52c622be7_base
 
 {-# NOINLINE sDL_SetJoystickVirtualBall #-}
 
@@ -1213,7 +1218,7 @@ foreign import ccall unsafe "hs_bindgen_c874e2ca8a04d63f"
 hs_bindgen_c874e2ca8a04d63f
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> BG.CInt -> BG.CBool -> IO BG.CBool))
 hs_bindgen_c874e2ca8a04d63f =
-  BG.fromFFIType hs_bindgen_c874e2ca8a04d63f_base
+  fmap BG.fromFFIType hs_bindgen_c874e2ca8a04d63f_base
 
 {-# NOINLINE sDL_SetJoystickVirtualButton #-}
 
@@ -1250,7 +1255,7 @@ foreign import ccall unsafe "hs_bindgen_c1356b5e756048fc"
 hs_bindgen_c1356b5e756048fc
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> BG.CInt -> SDL3.Sys.Bindgen.Stdinc.Uint8 -> IO BG.CBool))
 hs_bindgen_c1356b5e756048fc =
-  BG.fromFFIType hs_bindgen_c1356b5e756048fc_base
+  fmap BG.fromFFIType hs_bindgen_c1356b5e756048fc_base
 
 {-# NOINLINE sDL_SetJoystickVirtualHat #-}
 
@@ -1298,7 +1303,7 @@ hs_bindgen_170b87771a92a148
            )
        )
 hs_bindgen_170b87771a92a148 =
-  BG.fromFFIType hs_bindgen_170b87771a92a148_base
+  fmap BG.fromFFIType hs_bindgen_170b87771a92a148_base
 
 {-# NOINLINE sDL_SetJoystickVirtualTouchpad #-}
 
@@ -1361,7 +1366,7 @@ hs_bindgen_5c51fdc7918227aa
            )
        )
 hs_bindgen_5c51fdc7918227aa =
-  BG.fromFFIType hs_bindgen_5c51fdc7918227aa_base
+  fmap BG.fromFFIType hs_bindgen_5c51fdc7918227aa_base
 
 {-# NOINLINE sDL_SendJoystickVirtualSensorData #-}
 
@@ -1409,7 +1414,7 @@ foreign import ccall unsafe "hs_bindgen_9c72e51496d953ec"
 hs_bindgen_9c72e51496d953ec
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID))
 hs_bindgen_9c72e51496d953ec =
-  BG.fromFFIType hs_bindgen_9c72e51496d953ec_base
+  fmap BG.fromFFIType hs_bindgen_9c72e51496d953ec_base
 
 {-# NOINLINE sDL_GetJoystickProperties #-}
 
@@ -1450,7 +1455,7 @@ foreign import ccall unsafe "hs_bindgen_6d93bd8000de4d74"
 hs_bindgen_6d93bd8000de4d74
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_6d93bd8000de4d74 =
-  BG.fromFFIType hs_bindgen_6d93bd8000de4d74_base
+  fmap BG.fromFFIType hs_bindgen_6d93bd8000de4d74_base
 
 {-# NOINLINE sDL_GetJoystickName #-}
 
@@ -1480,7 +1485,7 @@ foreign import ccall unsafe "hs_bindgen_2e7828c53ff173b7"
 hs_bindgen_2e7828c53ff173b7
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_2e7828c53ff173b7 =
-  BG.fromFFIType hs_bindgen_2e7828c53ff173b7_base
+  fmap BG.fromFFIType hs_bindgen_2e7828c53ff173b7_base
 
 {-# NOINLINE sDL_GetJoystickPath #-}
 
@@ -1509,7 +1514,7 @@ foreign import ccall unsafe "hs_bindgen_63f024097bd9c12b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoystickPlayerIndex@
 hs_bindgen_63f024097bd9c12b :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO BG.CInt))
 hs_bindgen_63f024097bd9c12b =
-  BG.fromFFIType hs_bindgen_63f024097bd9c12b_base
+  fmap BG.fromFFIType hs_bindgen_63f024097bd9c12b_base
 
 {-# NOINLINE sDL_GetJoystickPlayerIndex #-}
 
@@ -1540,7 +1545,7 @@ foreign import ccall unsafe "hs_bindgen_258294b3081be5f1"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_SetJoystickPlayerIndex@
 hs_bindgen_258294b3081be5f1 :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> BG.CInt -> IO BG.CBool))
 hs_bindgen_258294b3081be5f1 =
-  BG.fromFFIType hs_bindgen_258294b3081be5f1_base
+  fmap BG.fromFFIType hs_bindgen_258294b3081be5f1_base
 
 {-# NOINLINE sDL_SetJoystickPlayerIndex #-}
 
@@ -1572,7 +1577,7 @@ foreign import ccall unsafe "hs_bindgen_aea836abf82f48b9"
 hs_bindgen_aea836abf82f48b9
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO SDL3.Sys.Bindgen.Guid.SDL_GUID))
 hs_bindgen_aea836abf82f48b9 =
-  BG.fromFFIType hs_bindgen_aea836abf82f48b9_base
+  fmap BG.fromFFIType hs_bindgen_aea836abf82f48b9_base
 
 {-# NOINLINE sDL_GetJoystickGUID #-}
 
@@ -1604,7 +1609,7 @@ foreign import ccall unsafe "hs_bindgen_9cd3279f0e0ca747"
 hs_bindgen_9cd3279f0e0ca747
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO SDL3.Sys.Bindgen.Stdinc.Uint16))
 hs_bindgen_9cd3279f0e0ca747 =
-  BG.fromFFIType hs_bindgen_9cd3279f0e0ca747_base
+  fmap BG.fromFFIType hs_bindgen_9cd3279f0e0ca747_base
 
 {-# NOINLINE sDL_GetJoystickVendor #-}
 
@@ -1636,7 +1641,7 @@ foreign import ccall unsafe "hs_bindgen_22acb36edfbd0e8c"
 hs_bindgen_22acb36edfbd0e8c
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO SDL3.Sys.Bindgen.Stdinc.Uint16))
 hs_bindgen_22acb36edfbd0e8c =
-  BG.fromFFIType hs_bindgen_22acb36edfbd0e8c_base
+  fmap BG.fromFFIType hs_bindgen_22acb36edfbd0e8c_base
 
 {-# NOINLINE sDL_GetJoystickProduct #-}
 
@@ -1668,7 +1673,7 @@ foreign import ccall unsafe "hs_bindgen_0bae3c3de11e8bcd"
 hs_bindgen_0bae3c3de11e8bcd
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO SDL3.Sys.Bindgen.Stdinc.Uint16))
 hs_bindgen_0bae3c3de11e8bcd =
-  BG.fromFFIType hs_bindgen_0bae3c3de11e8bcd_base
+  fmap BG.fromFFIType hs_bindgen_0bae3c3de11e8bcd_base
 
 {-# NOINLINE sDL_GetJoystickProductVersion #-}
 
@@ -1701,7 +1706,7 @@ foreign import ccall unsafe "hs_bindgen_38f91890f6c8dd34"
 hs_bindgen_38f91890f6c8dd34
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO SDL3.Sys.Bindgen.Stdinc.Uint16))
 hs_bindgen_38f91890f6c8dd34 =
-  BG.fromFFIType hs_bindgen_38f91890f6c8dd34_base
+  fmap BG.fromFFIType hs_bindgen_38f91890f6c8dd34_base
 
 {-# NOINLINE sDL_GetJoystickFirmwareVersion #-}
 
@@ -1732,7 +1737,7 @@ foreign import ccall unsafe "hs_bindgen_a8489b391d128726"
 hs_bindgen_a8489b391d128726
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_a8489b391d128726 =
-  BG.fromFFIType hs_bindgen_a8489b391d128726_base
+  fmap BG.fromFFIType hs_bindgen_a8489b391d128726_base
 
 {-# NOINLINE sDL_GetJoystickSerial #-}
 
@@ -1761,7 +1766,7 @@ foreign import ccall unsafe "hs_bindgen_27fa723927645a5b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoystickType@
 hs_bindgen_27fa723927645a5b :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO SDL_JoystickType))
 hs_bindgen_27fa723927645a5b =
-  BG.fromFFIType hs_bindgen_27fa723927645a5b_base
+  fmap BG.fromFFIType hs_bindgen_27fa723927645a5b_base
 
 {-# NOINLINE sDL_GetJoystickType #-}
 
@@ -1800,7 +1805,7 @@ hs_bindgen_43f734d8766d207f
            )
        )
 hs_bindgen_43f734d8766d207f =
-  BG.fromFFIType hs_bindgen_43f734d8766d207f_base
+  fmap BG.fromFFIType hs_bindgen_43f734d8766d207f_base
 
 {-# NOINLINE sDL_GetJoystickGUIDInfo #-}
 
@@ -1843,7 +1848,7 @@ foreign import ccall unsafe "hs_bindgen_34fe2e0cf303a75f"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_JoystickConnected@
 hs_bindgen_34fe2e0cf303a75f :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO BG.CBool))
 hs_bindgen_34fe2e0cf303a75f =
-  BG.fromFFIType hs_bindgen_34fe2e0cf303a75f_base
+  fmap BG.fromFFIType hs_bindgen_34fe2e0cf303a75f_base
 
 {-# NOINLINE sDL_JoystickConnected #-}
 
@@ -1870,7 +1875,7 @@ foreign import ccall unsafe "hs_bindgen_db36c45c44877744"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoystickID@
 hs_bindgen_db36c45c44877744 :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO SDL_JoystickID))
 hs_bindgen_db36c45c44877744 =
-  BG.fromFFIType hs_bindgen_db36c45c44877744_base
+  fmap BG.fromFFIType hs_bindgen_db36c45c44877744_base
 
 {-# NOINLINE sDL_GetJoystickID #-}
 
@@ -1897,7 +1902,7 @@ foreign import ccall unsafe "hs_bindgen_c743dc688bb6eabd"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetNumJoystickAxes@
 hs_bindgen_c743dc688bb6eabd :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO BG.CInt))
 hs_bindgen_c743dc688bb6eabd =
-  BG.fromFFIType hs_bindgen_c743dc688bb6eabd_base
+  fmap BG.fromFFIType hs_bindgen_c743dc688bb6eabd_base
 
 {-# NOINLINE sDL_GetNumJoystickAxes #-}
 
@@ -1928,7 +1933,7 @@ foreign import ccall unsafe "hs_bindgen_948af313b23a1c65"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetNumJoystickBalls@
 hs_bindgen_948af313b23a1c65 :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO BG.CInt))
 hs_bindgen_948af313b23a1c65 =
-  BG.fromFFIType hs_bindgen_948af313b23a1c65_base
+  fmap BG.fromFFIType hs_bindgen_948af313b23a1c65_base
 
 {-# NOINLINE sDL_GetNumJoystickBalls #-}
 
@@ -1961,7 +1966,7 @@ foreign import ccall unsafe "hs_bindgen_2bfa757cb6822a72"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetNumJoystickHats@
 hs_bindgen_2bfa757cb6822a72 :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO BG.CInt))
 hs_bindgen_2bfa757cb6822a72 =
-  BG.fromFFIType hs_bindgen_2bfa757cb6822a72_base
+  fmap BG.fromFFIType hs_bindgen_2bfa757cb6822a72_base
 
 {-# NOINLINE sDL_GetNumJoystickHats #-}
 
@@ -1990,7 +1995,7 @@ foreign import ccall unsafe "hs_bindgen_a91d035d49fdc8d2"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetNumJoystickButtons@
 hs_bindgen_a91d035d49fdc8d2 :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO BG.CInt))
 hs_bindgen_a91d035d49fdc8d2 =
-  BG.fromFFIType hs_bindgen_a91d035d49fdc8d2_base
+  fmap BG.fromFFIType hs_bindgen_a91d035d49fdc8d2_base
 
 {-# NOINLINE sDL_GetNumJoystickButtons #-}
 
@@ -2019,7 +2024,7 @@ foreign import ccall unsafe "hs_bindgen_33fbade22db04a59"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_SetJoystickEventsEnabled@
 hs_bindgen_33fbade22db04a59 :: IO (BG.FunPtr (BG.CBool -> IO ()))
 hs_bindgen_33fbade22db04a59 =
-  BG.fromFFIType hs_bindgen_33fbade22db04a59_base
+  fmap BG.fromFFIType hs_bindgen_33fbade22db04a59_base
 
 {-# NOINLINE sDL_SetJoystickEventsEnabled #-}
 
@@ -2048,7 +2053,7 @@ foreign import ccall unsafe "hs_bindgen_ddd93029215cfd37"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_JoystickEventsEnabled@
 hs_bindgen_ddd93029215cfd37 :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_ddd93029215cfd37 =
-  BG.fromFFIType hs_bindgen_ddd93029215cfd37_base
+  fmap BG.fromFFIType hs_bindgen_ddd93029215cfd37_base
 
 {-# NOINLINE sDL_JoystickEventsEnabled #-}
 
@@ -2077,7 +2082,7 @@ foreign import ccall unsafe "hs_bindgen_fab2d264eddcaffa"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_UpdateJoysticks@
 hs_bindgen_fab2d264eddcaffa :: IO (BG.FunPtr (IO ()))
 hs_bindgen_fab2d264eddcaffa =
-  BG.fromFFIType hs_bindgen_fab2d264eddcaffa_base
+  fmap BG.fromFFIType hs_bindgen_fab2d264eddcaffa_base
 
 {-# NOINLINE sDL_UpdateJoysticks #-}
 
@@ -2103,7 +2108,7 @@ foreign import ccall unsafe "hs_bindgen_f60a6cb5f1d09a81"
 hs_bindgen_f60a6cb5f1d09a81
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> BG.CInt -> IO SDL3.Sys.Bindgen.Stdinc.Sint16))
 hs_bindgen_f60a6cb5f1d09a81 =
-  BG.fromFFIType hs_bindgen_f60a6cb5f1d09a81_base
+  fmap BG.fromFFIType hs_bindgen_f60a6cb5f1d09a81_base
 
 {-# NOINLINE sDL_GetJoystickAxis #-}
 
@@ -2141,7 +2146,7 @@ hs_bindgen_c09eb5cfd016adfb
   :: IO
        (BG.FunPtr (BG.Ptr SDL_Joystick -> BG.CInt -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Sint16 -> IO BG.CBool))
 hs_bindgen_c09eb5cfd016adfb =
-  BG.fromFFIType hs_bindgen_c09eb5cfd016adfb_base
+  fmap BG.fromFFIType hs_bindgen_c09eb5cfd016adfb_base
 
 {-# NOINLINE sDL_GetJoystickAxisInitialState #-}
 
@@ -2178,7 +2183,7 @@ foreign import ccall unsafe "hs_bindgen_ea4bd75fcfd7173a"
 hs_bindgen_ea4bd75fcfd7173a
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> BG.CInt -> BG.Ptr BG.CInt -> BG.Ptr BG.CInt -> IO BG.CBool))
 hs_bindgen_ea4bd75fcfd7173a =
-  BG.fromFFIType hs_bindgen_ea4bd75fcfd7173a_base
+  fmap BG.fromFFIType hs_bindgen_ea4bd75fcfd7173a_base
 
 {-# NOINLINE sDL_GetJoystickBall #-}
 
@@ -2219,7 +2224,7 @@ foreign import ccall unsafe "hs_bindgen_79462e0207a041dd"
 hs_bindgen_79462e0207a041dd
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> BG.CInt -> IO SDL3.Sys.Bindgen.Stdinc.Uint8))
 hs_bindgen_79462e0207a041dd =
-  BG.fromFFIType hs_bindgen_79462e0207a041dd_base
+  fmap BG.fromFFIType hs_bindgen_79462e0207a041dd_base
 
 {-# NOINLINE sDL_GetJoystickHat #-}
 
@@ -2252,7 +2257,7 @@ foreign import ccall unsafe "hs_bindgen_8db4e8a6fc998c72"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_GetJoystickButton@
 hs_bindgen_8db4e8a6fc998c72 :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> BG.CInt -> IO BG.CBool))
 hs_bindgen_8db4e8a6fc998c72 =
-  BG.fromFFIType hs_bindgen_8db4e8a6fc998c72_base
+  fmap BG.fromFFIType hs_bindgen_8db4e8a6fc998c72_base
 
 {-# NOINLINE sDL_GetJoystickButton #-}
 
@@ -2292,7 +2297,7 @@ hs_bindgen_01a69fecc103bd0a
            )
        )
 hs_bindgen_01a69fecc103bd0a =
-  BG.fromFFIType hs_bindgen_01a69fecc103bd0a_base
+  fmap BG.fromFFIType hs_bindgen_01a69fecc103bd0a_base
 
 {-# NOINLINE sDL_RumbleJoystick #-}
 
@@ -2345,7 +2350,7 @@ hs_bindgen_9190634ce5c1726f
            )
        )
 hs_bindgen_9190634ce5c1726f =
-  BG.fromFFIType hs_bindgen_9190634ce5c1726f_base
+  fmap BG.fromFFIType hs_bindgen_9190634ce5c1726f_base
 
 {-# NOINLINE sDL_RumbleJoystickTriggers #-}
 
@@ -2402,7 +2407,7 @@ hs_bindgen_a99b95fd254e2484
            )
        )
 hs_bindgen_a99b95fd254e2484 =
-  BG.fromFFIType hs_bindgen_a99b95fd254e2484_base
+  fmap BG.fromFFIType hs_bindgen_a99b95fd254e2484_base
 
 {-# NOINLINE sDL_SetJoystickLED #-}
 
@@ -2447,7 +2452,7 @@ foreign import ccall unsafe "hs_bindgen_2552aba22a4e5237"
 hs_bindgen_2552aba22a4e5237
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> PtrConst.PtrConst BG.Void -> BG.CInt -> IO BG.CBool))
 hs_bindgen_2552aba22a4e5237 =
-  BG.fromFFIType hs_bindgen_2552aba22a4e5237_base
+  fmap BG.fromFFIType hs_bindgen_2552aba22a4e5237_base
 
 {-# NOINLINE sDL_SendJoystickEffect #-}
 
@@ -2479,7 +2484,7 @@ foreign import ccall unsafe "hs_bindgen_85ce86bc3120d0c6"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Joystick_get_SDL_CloseJoystick@
 hs_bindgen_85ce86bc3120d0c6 :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO ()))
 hs_bindgen_85ce86bc3120d0c6 =
-  BG.fromFFIType hs_bindgen_85ce86bc3120d0c6_base
+  fmap BG.fromFFIType hs_bindgen_85ce86bc3120d0c6_base
 
 {-# NOINLINE sDL_CloseJoystick #-}
 
@@ -2507,7 +2512,7 @@ foreign import ccall unsafe "hs_bindgen_47061e113b50ffdc"
 hs_bindgen_47061e113b50ffdc
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> IO SDL_JoystickConnectionState))
 hs_bindgen_47061e113b50ffdc =
-  BG.fromFFIType hs_bindgen_47061e113b50ffdc_base
+  fmap BG.fromFFIType hs_bindgen_47061e113b50ffdc_base
 
 {-# NOINLINE sDL_GetJoystickConnectionState #-}
 
@@ -2535,7 +2540,7 @@ foreign import ccall unsafe "hs_bindgen_cf314c27d59c09a1"
 hs_bindgen_cf314c27d59c09a1
   :: IO (BG.FunPtr (BG.Ptr SDL_Joystick -> BG.Ptr BG.CInt -> IO SDL3.Sys.Bindgen.Power.SDL_PowerState))
 hs_bindgen_cf314c27d59c09a1 =
-  BG.fromFFIType hs_bindgen_cf314c27d59c09a1_base
+  fmap BG.fromFFIType hs_bindgen_cf314c27d59c09a1_base
 
 {-# NOINLINE sDL_GetJoystickPowerInfo #-}
 

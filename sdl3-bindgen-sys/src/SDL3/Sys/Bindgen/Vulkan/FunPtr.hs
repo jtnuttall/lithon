@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Vulkan.FunPtr (
@@ -13,6 +15,8 @@ module SDL3.Sys.Bindgen.Vulkan.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -22,7 +26,8 @@ import SDL3.Sys.Bindgen.Vulkan
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_vulkan.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_vulkan.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Vulkan_get_SDL_Vulkan_LoadLibrary */"
          , "__attribute__ ((const))"
          , "_Bool (*hs_bindgen_d0d596710f473c05 (void)) ("
@@ -94,7 +99,7 @@ foreign import ccall unsafe "hs_bindgen_d0d596710f473c05"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Vulkan_get_SDL_Vulkan_LoadLibrary@
 hs_bindgen_d0d596710f473c05 :: IO (BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO BG.CBool))
 hs_bindgen_d0d596710f473c05 =
-  BG.fromFFIType hs_bindgen_d0d596710f473c05_base
+  fmap BG.fromFFIType hs_bindgen_d0d596710f473c05_base
 
 {-# NOINLINE sDL_Vulkan_LoadLibrary #-}
 
@@ -135,7 +140,7 @@ foreign import ccall unsafe "hs_bindgen_e561af225e7863f2"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Vulkan_get_SDL_Vulkan_GetVkGetInstanceProcAddr@
 hs_bindgen_e561af225e7863f2 :: IO (BG.FunPtr (IO SDL3.Sys.Bindgen.Stdinc.SDL_FunctionPointer))
 hs_bindgen_e561af225e7863f2 =
-  BG.fromFFIType hs_bindgen_e561af225e7863f2_base
+  fmap BG.fromFFIType hs_bindgen_e561af225e7863f2_base
 
 {-# NOINLINE sDL_Vulkan_GetVkGetInstanceProcAddr #-}
 
@@ -164,7 +169,7 @@ foreign import ccall unsafe "hs_bindgen_8dbd3b301be26b64"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Vulkan_get_SDL_Vulkan_UnloadLibrary@
 hs_bindgen_8dbd3b301be26b64 :: IO (BG.FunPtr (IO ()))
 hs_bindgen_8dbd3b301be26b64 =
-  BG.fromFFIType hs_bindgen_8dbd3b301be26b64_base
+  fmap BG.fromFFIType hs_bindgen_8dbd3b301be26b64_base
 
 {-# NOINLINE sDL_Vulkan_UnloadLibrary #-}
 
@@ -197,7 +202,7 @@ hs_bindgen_86f751b3ecdfa51d
            (BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO (PtrConst.PtrConst (PtrConst.PtrConst BG.CChar)))
        )
 hs_bindgen_86f751b3ecdfa51d =
-  BG.fromFFIType hs_bindgen_86f751b3ecdfa51d_base
+  fmap BG.fromFFIType hs_bindgen_86f751b3ecdfa51d_base
 
 {-# NOINLINE sDL_Vulkan_GetInstanceExtensions #-}
 
@@ -241,7 +246,7 @@ hs_bindgen_8ae9a4cb1d4352ac
            )
        )
 hs_bindgen_8ae9a4cb1d4352ac =
-  BG.fromFFIType hs_bindgen_8ae9a4cb1d4352ac_base
+  fmap BG.fromFFIType hs_bindgen_8ae9a4cb1d4352ac_base
 
 {-# NOINLINE sDL_Vulkan_CreateSurface #-}
 
@@ -286,7 +291,7 @@ foreign import ccall unsafe "hs_bindgen_5ea94b407895c233"
 hs_bindgen_5ea94b407895c233
   :: IO (BG.FunPtr (VkInstance -> VkSurfaceKHR -> PtrConst.PtrConst VkAllocationCallbacks -> IO ()))
 hs_bindgen_5ea94b407895c233 =
-  BG.fromFFIType hs_bindgen_5ea94b407895c233_base
+  fmap BG.fromFFIType hs_bindgen_5ea94b407895c233_base
 
 {-# NOINLINE sDL_Vulkan_DestroySurface #-}
 
@@ -323,7 +328,7 @@ foreign import ccall unsafe "hs_bindgen_e61814e6ac761e26"
 hs_bindgen_e61814e6ac761e26
   :: IO (BG.FunPtr (VkInstance -> VkPhysicalDevice -> SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO BG.CBool))
 hs_bindgen_e61814e6ac761e26 =
-  BG.fromFFIType hs_bindgen_e61814e6ac761e26_base
+  fmap BG.fromFFIType hs_bindgen_e61814e6ac761e26_base
 
 {-# NOINLINE sDL_Vulkan_GetPresentationSupport #-}
 

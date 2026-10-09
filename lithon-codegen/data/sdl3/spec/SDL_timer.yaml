@@ -1,5 +1,5 @@
 version:
-  hs_bindgen: 0.1.0
+  hs_bindgen: 1.0.0.0
   binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Timer
 ctypes:
@@ -40,6 +40,9 @@ hstypes:
         constructor: SDL_NSTimerCallback
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -60,6 +63,9 @@ hstypes:
         constructor: SDL_TimerCallback
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -80,6 +86,9 @@ hstypes:
         constructor: SDL_TimerID
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word32
     instances:
       - Bitfield
       - Bits

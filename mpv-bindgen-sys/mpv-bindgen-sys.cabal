@@ -4,7 +4,7 @@ cabal-version: 2.2
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: "\128\134c\ETX\199J\205Y\129c\147\DEL\253\EM\153D\DLE<\226\189\SYN\191\207\145\132\218\187\DC44\240/\221"
+-- hash: "\ETX\230\143*\198&B]\CAN\134\STX+\222\167\FS\210\179\131.\142\189\235\219\201\DC3 \140h\241w\162\191"
 
 name:           mpv-bindgen-sys
 version:        0.0.0.1
@@ -111,10 +111,14 @@ library
       Mpv.Sys.Bindgen.Runtime.FLAM
       Mpv.Sys.Bindgen.Runtime.HasCBitfield
       Mpv.Sys.Bindgen.Runtime.HasCField
+      Mpv.Sys.Bindgen.Runtime.HasFFIType
       Mpv.Sys.Bindgen.Runtime.IncompleteArray
       Mpv.Sys.Bindgen.Runtime.IsArray
+      Mpv.Sys.Bindgen.Runtime.Macro
       Mpv.Sys.Bindgen.Runtime.Marshal
+      Mpv.Sys.Bindgen.Runtime.Overloading
       Mpv.Sys.Bindgen.Runtime.PtrConst
+      Mpv.Sys.Bindgen.Runtime.Struct
       Mpv.Sys.Bindgen.Runtime.Union
       Mpv.Sys.Bindgen.StreamCb
       Mpv.Sys.Bindgen.StreamCb.FunPtr
@@ -165,21 +169,23 @@ library bindgen-runtime
       HsBindgen.Runtime.FLAM
       HsBindgen.Runtime.HasCBitfield
       HsBindgen.Runtime.HasCField
+      HsBindgen.Runtime.HasFFIType
       HsBindgen.Runtime.IncompleteArray
       HsBindgen.Runtime.IsArray
       HsBindgen.Runtime.LibC
+      HsBindgen.Runtime.Macro
       HsBindgen.Runtime.Marshal
+      HsBindgen.Runtime.Overloading
       HsBindgen.Runtime.Prelude
       HsBindgen.Runtime.PtrConst
+      HsBindgen.Runtime.Struct
       HsBindgen.Runtime.Support
       HsBindgen.Runtime.Support.Bitfield
       HsBindgen.Runtime.Support.ByteArray
       HsBindgen.Runtime.Support.CAPI
       HsBindgen.Runtime.Support.CompatHasField
-      HsBindgen.Runtime.Support.FFIType
       HsBindgen.Runtime.Support.FunPtr
       HsBindgen.Runtime.Support.FunPtr.Class
-      HsBindgen.Runtime.Support.HasFFIType
       HsBindgen.Runtime.Support.LibC.Auxiliary
       HsBindgen.Runtime.Support.Ptr
       HsBindgen.Runtime.Support.SizedByteArray
@@ -215,7 +221,7 @@ library bindgen-runtime
     , containers >=0.6 && <0.9
     , primitive ==0.9.*
     , record-hasfield >=1.0 && <2
-    , template-haskell >=2.18 && <2.25
+    , template-haskell >=2.19 && <2.25
     , vector ==0.13.*
   default-language: GHC2021
   if flag(optimize)

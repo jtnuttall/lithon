@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Mouse.FunPtr (
@@ -30,6 +32,8 @@ module SDL3.Sys.Bindgen.Mouse.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -40,7 +44,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_mouse.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_mouse.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_HasMouse */"
          , "__attribute__ ((const))"
          , "_Bool (*hs_bindgen_808ad945705f4e48 (void)) (void)"
@@ -271,7 +276,7 @@ foreign import ccall unsafe "hs_bindgen_808ad945705f4e48"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_HasMouse@
 hs_bindgen_808ad945705f4e48 :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_808ad945705f4e48 =
-  BG.fromFFIType hs_bindgen_808ad945705f4e48_base
+  fmap BG.fromFFIType hs_bindgen_808ad945705f4e48_base
 
 {-# NOINLINE sDL_HasMouse #-}
 
@@ -298,7 +303,7 @@ foreign import ccall unsafe "hs_bindgen_ebefa78305745bc0"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_GetMice@
 hs_bindgen_ebefa78305745bc0 :: IO (BG.FunPtr (BG.Ptr BG.CInt -> IO (BG.Ptr SDL_MouseID)))
 hs_bindgen_ebefa78305745bc0 =
-  BG.fromFFIType hs_bindgen_ebefa78305745bc0_base
+  fmap BG.fromFFIType hs_bindgen_ebefa78305745bc0_base
 
 {-# NOINLINE sDL_GetMice #-}
 
@@ -329,7 +334,7 @@ foreign import ccall unsafe "hs_bindgen_cd3906ba4b6319e7"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_GetMouseNameForID@
 hs_bindgen_cd3906ba4b6319e7 :: IO (BG.FunPtr (SDL_MouseID -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_cd3906ba4b6319e7 =
-  BG.fromFFIType hs_bindgen_cd3906ba4b6319e7_base
+  fmap BG.fromFFIType hs_bindgen_cd3906ba4b6319e7_base
 
 {-# NOINLINE sDL_GetMouseNameForID #-}
 
@@ -360,7 +365,7 @@ foreign import ccall unsafe "hs_bindgen_b1cca0ecf584dbce"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_GetMouseFocus@
 hs_bindgen_b1cca0ecf584dbce :: IO (BG.FunPtr (IO (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window)))
 hs_bindgen_b1cca0ecf584dbce =
-  BG.fromFFIType hs_bindgen_b1cca0ecf584dbce_base
+  fmap BG.fromFFIType hs_bindgen_b1cca0ecf584dbce_base
 
 {-# NOINLINE sDL_GetMouseFocus #-}
 
@@ -386,7 +391,7 @@ foreign import ccall unsafe "hs_bindgen_cd78db7ca1b4380a"
 hs_bindgen_cd78db7ca1b4380a
   :: IO (BG.FunPtr (BG.Ptr BG.CFloat -> BG.Ptr BG.CFloat -> IO SDL_MouseButtonFlags))
 hs_bindgen_cd78db7ca1b4380a =
-  BG.fromFFIType hs_bindgen_cd78db7ca1b4380a_base
+  fmap BG.fromFFIType hs_bindgen_cd78db7ca1b4380a_base
 
 {-# NOINLINE sDL_GetMouseState #-}
 
@@ -426,7 +431,7 @@ foreign import ccall unsafe "hs_bindgen_8ad222945a494193"
 hs_bindgen_8ad222945a494193
   :: IO (BG.FunPtr (BG.Ptr BG.CFloat -> BG.Ptr BG.CFloat -> IO SDL_MouseButtonFlags))
 hs_bindgen_8ad222945a494193 =
-  BG.fromFFIType hs_bindgen_8ad222945a494193_base
+  fmap BG.fromFFIType hs_bindgen_8ad222945a494193_base
 
 {-# NOINLINE sDL_GetGlobalMouseState #-}
 
@@ -467,7 +472,7 @@ foreign import ccall unsafe "hs_bindgen_c09b770b28617678"
 hs_bindgen_c09b770b28617678
   :: IO (BG.FunPtr (BG.Ptr BG.CFloat -> BG.Ptr BG.CFloat -> IO SDL_MouseButtonFlags))
 hs_bindgen_c09b770b28617678 =
-  BG.fromFFIType hs_bindgen_c09b770b28617678_base
+  fmap BG.fromFFIType hs_bindgen_c09b770b28617678_base
 
 {-# NOINLINE sDL_GetRelativeMouseState #-}
 
@@ -508,7 +513,7 @@ foreign import ccall unsafe "hs_bindgen_e0aa89262c23f11d"
 hs_bindgen_e0aa89262c23f11d
   :: IO (BG.FunPtr (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window -> BG.CFloat -> BG.CFloat -> IO ()))
 hs_bindgen_e0aa89262c23f11d =
-  BG.fromFFIType hs_bindgen_e0aa89262c23f11d_base
+  fmap BG.fromFFIType hs_bindgen_e0aa89262c23f11d_base
 
 {-# NOINLINE sDL_WarpMouseInWindow #-}
 
@@ -544,7 +549,7 @@ foreign import ccall unsafe "hs_bindgen_a6c8da14823bf99f"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_WarpMouseGlobal@
 hs_bindgen_a6c8da14823bf99f :: IO (BG.FunPtr (BG.CFloat -> BG.CFloat -> IO BG.CBool))
 hs_bindgen_a6c8da14823bf99f =
-  BG.fromFFIType hs_bindgen_a6c8da14823bf99f_base
+  fmap BG.fromFFIType hs_bindgen_a6c8da14823bf99f_base
 
 {-# NOINLINE sDL_WarpMouseGlobal #-}
 
@@ -582,7 +587,7 @@ foreign import ccall unsafe "hs_bindgen_e75ba6290fb7b58a"
 hs_bindgen_e75ba6290fb7b58a
   :: IO (BG.FunPtr (SDL_MouseMotionTransformCallback -> BG.Ptr BG.Void -> IO BG.CBool))
 hs_bindgen_e75ba6290fb7b58a =
-  BG.fromFFIType hs_bindgen_e75ba6290fb7b58a_base
+  fmap BG.fromFFIType hs_bindgen_e75ba6290fb7b58a_base
 
 {-# NOINLINE sDL_SetRelativeMouseTransform #-}
 
@@ -615,7 +620,7 @@ foreign import ccall unsafe "hs_bindgen_5b077ae9a298496b"
 hs_bindgen_5b077ae9a298496b
   :: IO (BG.FunPtr (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window -> BG.CBool -> IO BG.CBool))
 hs_bindgen_5b077ae9a298496b =
-  BG.fromFFIType hs_bindgen_5b077ae9a298496b_base
+  fmap BG.fromFFIType hs_bindgen_5b077ae9a298496b_base
 
 {-# NOINLINE sDL_SetWindowRelativeMouseMode #-}
 
@@ -654,7 +659,7 @@ foreign import ccall unsafe "hs_bindgen_46446683507069cd"
 hs_bindgen_46446683507069cd
   :: IO (BG.FunPtr (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window -> IO BG.CBool))
 hs_bindgen_46446683507069cd =
-  BG.fromFFIType hs_bindgen_46446683507069cd_base
+  fmap BG.fromFFIType hs_bindgen_46446683507069cd_base
 
 {-# NOINLINE sDL_GetWindowRelativeMouseMode #-}
 
@@ -684,7 +689,7 @@ foreign import ccall unsafe "hs_bindgen_a6ebcff1379c54e6"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_CaptureMouse@
 hs_bindgen_a6ebcff1379c54e6 :: IO (BG.FunPtr (BG.CBool -> IO BG.CBool))
 hs_bindgen_a6ebcff1379c54e6 =
-  BG.fromFFIType hs_bindgen_a6ebcff1379c54e6_base
+  fmap BG.fromFFIType hs_bindgen_a6ebcff1379c54e6_base
 
 {-# NOINLINE sDL_CaptureMouse #-}
 
@@ -734,7 +739,7 @@ hs_bindgen_3f017d38c4a98259
            )
        )
 hs_bindgen_3f017d38c4a98259 =
-  BG.fromFFIType hs_bindgen_3f017d38c4a98259_base
+  fmap BG.fromFFIType hs_bindgen_3f017d38c4a98259_base
 
 {-# NOINLINE sDL_CreateCursor #-}
 
@@ -806,7 +811,7 @@ hs_bindgen_9741ddd9d73dea35
            (BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface -> BG.CInt -> BG.CInt -> IO (BG.Ptr SDL_Cursor))
        )
 hs_bindgen_9741ddd9d73dea35 =
-  BG.fromFFIType hs_bindgen_9741ddd9d73dea35_base
+  fmap BG.fromFFIType hs_bindgen_9741ddd9d73dea35_base
 
 {-# NOINLINE sDL_CreateColorCursor #-}
 
@@ -845,7 +850,7 @@ hs_bindgen_5a53bab7f1d0dd41
   :: IO
        (BG.FunPtr (BG.Ptr SDL_CursorFrameInfo -> BG.CInt -> BG.CInt -> BG.CInt -> IO (BG.Ptr SDL_Cursor)))
 hs_bindgen_5a53bab7f1d0dd41 =
-  BG.fromFFIType hs_bindgen_5a53bab7f1d0dd41_base
+  fmap BG.fromFFIType hs_bindgen_5a53bab7f1d0dd41_base
 
 {-# NOINLINE sDL_CreateAnimatedCursor #-}
 
@@ -889,7 +894,7 @@ foreign import ccall unsafe "hs_bindgen_98115455fed12c20"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_CreateSystemCursor@
 hs_bindgen_98115455fed12c20 :: IO (BG.FunPtr (SDL_SystemCursor -> IO (BG.Ptr SDL_Cursor)))
 hs_bindgen_98115455fed12c20 =
-  BG.fromFFIType hs_bindgen_98115455fed12c20_base
+  fmap BG.fromFFIType hs_bindgen_98115455fed12c20_base
 
 {-# NOINLINE sDL_CreateSystemCursor #-}
 
@@ -918,7 +923,7 @@ foreign import ccall unsafe "hs_bindgen_7f9d9e943410eac0"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_SetCursor@
 hs_bindgen_7f9d9e943410eac0 :: IO (BG.FunPtr (BG.Ptr SDL_Cursor -> IO BG.CBool))
 hs_bindgen_7f9d9e943410eac0 =
-  BG.fromFFIType hs_bindgen_7f9d9e943410eac0_base
+  fmap BG.fromFFIType hs_bindgen_7f9d9e943410eac0_base
 
 {-# NOINLINE sDL_SetCursor #-}
 
@@ -949,7 +954,7 @@ foreign import ccall unsafe "hs_bindgen_ddffa3c703f2160c"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_GetCursor@
 hs_bindgen_ddffa3c703f2160c :: IO (BG.FunPtr (IO (BG.Ptr SDL_Cursor)))
 hs_bindgen_ddffa3c703f2160c =
-  BG.fromFFIType hs_bindgen_ddffa3c703f2160c_base
+  fmap BG.fromFFIType hs_bindgen_ddffa3c703f2160c_base
 
 {-# NOINLINE sDL_GetCursor #-}
 
@@ -978,7 +983,7 @@ foreign import ccall unsafe "hs_bindgen_3cea96283579f3f7"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_GetDefaultCursor@
 hs_bindgen_3cea96283579f3f7 :: IO (BG.FunPtr (IO (BG.Ptr SDL_Cursor)))
 hs_bindgen_3cea96283579f3f7 =
-  BG.fromFFIType hs_bindgen_3cea96283579f3f7_base
+  fmap BG.fromFFIType hs_bindgen_3cea96283579f3f7_base
 
 {-# NOINLINE sDL_GetDefaultCursor #-}
 
@@ -1005,7 +1010,7 @@ foreign import ccall unsafe "hs_bindgen_cccc019b7e8bc17b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_DestroyCursor@
 hs_bindgen_cccc019b7e8bc17b :: IO (BG.FunPtr (BG.Ptr SDL_Cursor -> IO ()))
 hs_bindgen_cccc019b7e8bc17b =
-  BG.fromFFIType hs_bindgen_cccc019b7e8bc17b_base
+  fmap BG.fromFFIType hs_bindgen_cccc019b7e8bc17b_base
 
 {-# NOINLINE sDL_DestroyCursor #-}
 
@@ -1034,7 +1039,7 @@ foreign import ccall unsafe "hs_bindgen_fa1d352535cdb7a2"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_ShowCursor@
 hs_bindgen_fa1d352535cdb7a2 :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_fa1d352535cdb7a2 =
-  BG.fromFFIType hs_bindgen_fa1d352535cdb7a2_base
+  fmap BG.fromFFIType hs_bindgen_fa1d352535cdb7a2_base
 
 {-# NOINLINE sDL_ShowCursor #-}
 
@@ -1061,7 +1066,7 @@ foreign import ccall unsafe "hs_bindgen_d90c7f4cd007f484"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_HideCursor@
 hs_bindgen_d90c7f4cd007f484 :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_d90c7f4cd007f484 =
-  BG.fromFFIType hs_bindgen_d90c7f4cd007f484_base
+  fmap BG.fromFFIType hs_bindgen_d90c7f4cd007f484_base
 
 {-# NOINLINE sDL_HideCursor #-}
 
@@ -1088,7 +1093,7 @@ foreign import ccall unsafe "hs_bindgen_7ae5464b38889e15"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Mouse_get_SDL_CursorVisible@
 hs_bindgen_7ae5464b38889e15 :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_7ae5464b38889e15 =
-  BG.fromFFIType hs_bindgen_7ae5464b38889e15_base
+  fmap BG.fromFFIType hs_bindgen_7ae5464b38889e15_base
 
 {-# NOINLINE sDL_CursorVisible #-}
 

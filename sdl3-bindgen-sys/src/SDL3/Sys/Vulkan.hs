@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Functions for creating Vulkan surfaces on SDL windows.
 --
 --     == FFI conventions
@@ -27,6 +29,7 @@ module SDL3.Sys.Vulkan (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.PtrConst qualified as PtrConst

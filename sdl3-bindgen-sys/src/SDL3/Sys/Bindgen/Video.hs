@@ -7,6 +7,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -18,6 +19,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL\'s video subsystem is largely interested in abstracting window management from the underlying operating system. You can create windows, manage them in various ways, set them fullscreen, and get events when interesting things happen with them, such as the mouse or keyboard interacting with a window.
 --
@@ -219,12 +221,32 @@ module SDL3.Sys.Bindgen.Video (
 )
 where
 
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  IO,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  fmap,
+  pure,
+  (<*>),
+  (>>),
+  type (~),
+ )
+
 import C.Expr.HostPlatform qualified
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Pixels qualified
@@ -589,6 +611,11 @@ instance Marshal.WriteRaw SDL_DisplayMode where
 
 deriving via Marshal.EquivStorable SDL_DisplayMode instance BG.Storable SDL_DisplayMode
 
+deriving via Struct.IsStructViaReadRaw SDL_DisplayMode instance Struct.IsStruct SDL_DisplayMode
+
+-- | the display this mode is associated with
+--
+--     [C declaration]: @displayID@, defined at @SDL3\/SDL_video.h 141:19@
 instance
   (ty ~ SDL_DisplayID)
   => BG.CompatHasField.HasField "displayID" SDL_DisplayMode ty
@@ -623,6 +650,9 @@ instance HasCField.HasCField SDL_DisplayMode "displayID" where
 
   offset# = \_ -> \_ -> 0
 
+-- | pixel format
+--
+--     [C declaration]: @format@, defined at @SDL3\/SDL_video.h 142:21@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat)
   => BG.CompatHasField.HasField "format" SDL_DisplayMode ty
@@ -657,6 +687,9 @@ instance HasCField.HasCField SDL_DisplayMode "format" where
 
   offset# = \_ -> \_ -> 4
 
+-- | width
+--
+--     [C declaration]: @w@, defined at @SDL3\/SDL_video.h 143:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "w" SDL_DisplayMode ty
@@ -689,6 +722,9 @@ instance HasCField.HasCField SDL_DisplayMode "w" where
 
   offset# = \_ -> \_ -> 8
 
+-- | height
+--
+--     [C declaration]: @h@, defined at @SDL3\/SDL_video.h 144:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "h" SDL_DisplayMode ty
@@ -721,6 +757,9 @@ instance HasCField.HasCField SDL_DisplayMode "h" where
 
   offset# = \_ -> \_ -> 12
 
+-- | scale converting size to pixels (e.g. a 1920x1080 mode with 2.0 scale would have 3840x2160 pixels)
+--
+--     [C declaration]: @pixel_density@, defined at @SDL3\/SDL_video.h 145:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "pixel_density" SDL_DisplayMode ty
@@ -756,6 +795,9 @@ instance HasCField.HasCField SDL_DisplayMode "pixel_density" where
 
   offset# = \_ -> \_ -> 16
 
+-- | refresh rate (or 0.0f for unspecified)
+--
+--     [C declaration]: @refresh_rate@, defined at @SDL3\/SDL_video.h 146:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "refresh_rate" SDL_DisplayMode ty
@@ -791,6 +833,9 @@ instance HasCField.HasCField SDL_DisplayMode "refresh_rate" where
 
   offset# = \_ -> \_ -> 20
 
+-- | precise refresh rate numerator (or 0 for unspecified)
+--
+--     [C declaration]: @refresh_rate_numerator@, defined at @SDL3\/SDL_video.h 147:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "refresh_rate_numerator" SDL_DisplayMode ty
@@ -826,6 +871,9 @@ instance HasCField.HasCField SDL_DisplayMode "refresh_rate_numerator" where
 
   offset# = \_ -> \_ -> 24
 
+-- | precise refresh rate denominator
+--
+--     [C declaration]: @refresh_rate_denominator@, defined at @SDL3\/SDL_video.h 148:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "refresh_rate_denominator" SDL_DisplayMode ty
@@ -861,6 +909,9 @@ instance HasCField.HasCField SDL_DisplayMode "refresh_rate_denominator" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Private
+--
+--     [C declaration]: @internal@, defined at @SDL3\/SDL_video.h 150:26@
 instance
   (ty ~ BG.Ptr SDL_DisplayModeData)
   => BG.CompatHasField.HasField "internal" SDL_DisplayMode ty
@@ -1746,7 +1797,6 @@ newtype SDL_EGLAttribArrayCallback_Aux = SDL_EGLAttribArrayCallback_Aux
   { unwrap :: BG.Ptr BG.Void -> IO (BG.Ptr SDL_EGLAttrib)
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_EGLAttribArrayCallback_Aux@
 foreign import ccall safe "wrapper"
@@ -1760,7 +1810,13 @@ hs_bindgen_11c111f1d1328021
   -> IO (BG.FunPtr SDL_EGLAttribArrayCallback_Aux)
 hs_bindgen_11c111f1d1328021 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_11c111f1d1328021_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_11c111f1d1328021_base
+          ( \x1 ->
+              fmap BG.toFFIType (BG.getField @"unwrap" fun0 (BG.fromFFIType x1))
+          )
+      )
 
 -- __unique:__ @fromSDL_EGLAttribArrayCallback_Aux@
 foreign import ccall safe "dynamic"
@@ -1775,7 +1831,10 @@ hs_bindgen_30601c44a183aaaa
   -> SDL_EGLAttribArrayCallback_Aux
 hs_bindgen_30601c44a183aaaa =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_30601c44a183aaaa_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_EGLAttribArrayCallback_Aux
+      ( \x1 ->
+          fmap BG.fromFFIType (hs_bindgen_30601c44a183aaaa_base (BG.castFunPtr funPtr0) (BG.toFFIType x1))
+      )
 
 instance BG.ToFunPtr SDL_EGLAttribArrayCallback_Aux where
   toFunPtr = hs_bindgen_11c111f1d1328021
@@ -1868,7 +1927,6 @@ newtype SDL_EGLIntArrayCallback_Aux = SDL_EGLIntArrayCallback_Aux
   { unwrap :: BG.Ptr BG.Void -> SDL_EGLDisplay -> SDL_EGLConfig -> IO (BG.Ptr SDL_EGLint)
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_EGLIntArrayCallback_Aux@
 foreign import ccall safe "wrapper"
@@ -1882,7 +1940,17 @@ hs_bindgen_6f9a11d91e338196
   -> IO (BG.FunPtr SDL_EGLIntArrayCallback_Aux)
 hs_bindgen_6f9a11d91e338196 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_6f9a11d91e338196_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_6f9a11d91e338196_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  fmap
+                    BG.toFFIType
+                    (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2) (BG.fromFFIType x3))
+          )
+      )
 
 -- __unique:__ @fromSDL_EGLIntArrayCallback_Aux@
 foreign import ccall safe "dynamic"
@@ -1899,7 +1967,19 @@ hs_bindgen_19e73e54259a2a81
   -> SDL_EGLIntArrayCallback_Aux
 hs_bindgen_19e73e54259a2a81 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_19e73e54259a2a81_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_EGLIntArrayCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_19e73e54259a2a81_base
+                    (BG.castFunPtr funPtr0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                )
+      )
 
 instance BG.ToFunPtr SDL_EGLIntArrayCallback_Aux where
   toFunPtr = hs_bindgen_6f9a11d91e338196
@@ -5419,13 +5499,12 @@ newtype SDL_HitTest_Aux = SDL_HitTest_Aux
       -> IO SDL_HitTestResult
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_HitTest_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_22e8e872c7c7261b_base
-    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word32)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word32))
+    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CUInt)
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CUInt))
 
 -- __unique:__ @toSDL_HitTest_Aux@
 hs_bindgen_22e8e872c7c7261b
@@ -5433,16 +5512,26 @@ hs_bindgen_22e8e872c7c7261b
   -> IO (BG.FunPtr SDL_HitTest_Aux)
 hs_bindgen_22e8e872c7c7261b =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_22e8e872c7c7261b_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_22e8e872c7c7261b_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  fmap
+                    BG.toFFIType
+                    (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2) (BG.fromFFIType x3))
+          )
+      )
 
 -- __unique:__ @fromSDL_HitTest_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_33151ef072f28e0c_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word32)
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CUInt)
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @fromSDL_HitTest_Aux@
 hs_bindgen_33151ef072f28e0c
@@ -5450,7 +5539,19 @@ hs_bindgen_33151ef072f28e0c
   -> SDL_HitTest_Aux
 hs_bindgen_33151ef072f28e0c =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_33151ef072f28e0c_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_HitTest_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_33151ef072f28e0c_base
+                    (BG.castFunPtr funPtr0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                )
+      )
 
 instance BG.ToFunPtr SDL_HitTest_Aux where
   toFunPtr = hs_bindgen_22e8e872c7c7261b

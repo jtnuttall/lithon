@@ -17,6 +17,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module SDL3.Sys.Bindgen.Mutex (
   SDL3.Sys.Bindgen.Mutex.SDL_Mutex,
@@ -32,9 +33,12 @@ module SDL3.Sys.Bindgen.Mutex (
 )
 where
 
+import Prelude (Eq, Int, Ord, Read, Show, pure, (<*>), (>>), type (~))
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Atomic qualified
@@ -293,6 +297,9 @@ instance Marshal.WriteRaw SDL_InitState where
 
 deriving via Marshal.EquivStorable SDL_InitState instance BG.Storable SDL_InitState
 
+deriving via Struct.IsStructViaReadRaw SDL_InitState instance Struct.IsStruct SDL_InitState
+
+-- | [C declaration]: @status@, defined at @SDL3\/SDL_mutex.h 1041:19@
 instance
   (ty ~ SDL3.Sys.Bindgen.Atomic.SDL_AtomicInt)
   => BG.CompatHasField.HasField "status" SDL_InitState ty
@@ -321,6 +328,7 @@ instance HasCField.HasCField SDL_InitState "status" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @thread@, defined at @SDL3\/SDL_mutex.h 1042:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Thread.SDL_ThreadID)
   => BG.CompatHasField.HasField "thread" SDL_InitState ty
@@ -349,6 +357,7 @@ instance HasCField.HasCField SDL_InitState "thread" where
 
   offset# = \_ -> \_ -> 8
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_mutex.h 1043:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "reserved" SDL_InitState ty

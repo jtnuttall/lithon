@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Audio functionality for the SDL library.
 --
 --     All audio in SDL3 revolves around 'SDL_AudioStream'. Whether you want to play or record audio, convert it, stream it, buffer it, or mix it, you\'re going to be passing it through an audio stream.
@@ -201,6 +203,7 @@ module SDL3.Sys.Audio (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, Float, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

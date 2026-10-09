@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Tray.FunPtr (
@@ -29,6 +31,8 @@ module SDL3.Sys.Bindgen.Tray.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -37,7 +41,8 @@ import SDL3.Sys.Bindgen.Tray
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_tray.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_tray.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_CreateTray */"
          , "__attribute__ ((const))"
          , "SDL_Tray *(*hs_bindgen_e0b641cea81dd78b (void)) ("
@@ -248,7 +253,7 @@ hs_bindgen_e0b641cea81dd78b
            (BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface -> PtrConst.PtrConst BG.CChar -> IO (BG.Ptr SDL_Tray))
        )
 hs_bindgen_e0b641cea81dd78b =
-  BG.fromFFIType hs_bindgen_e0b641cea81dd78b_base
+  fmap BG.fromFFIType hs_bindgen_e0b641cea81dd78b_base
 
 {-# NOINLINE sDL_CreateTray #-}
 
@@ -286,7 +291,7 @@ foreign import ccall unsafe "hs_bindgen_4c9964d8c06580ec"
 hs_bindgen_4c9964d8c06580ec
   :: IO (BG.FunPtr (BG.Ptr SDL_Tray -> BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface -> IO ()))
 hs_bindgen_4c9964d8c06580ec =
-  BG.fromFFIType hs_bindgen_4c9964d8c06580ec_base
+  fmap BG.fromFFIType hs_bindgen_4c9964d8c06580ec_base
 
 {-# NOINLINE sDL_SetTrayIcon #-}
 
@@ -317,7 +322,7 @@ foreign import ccall unsafe "hs_bindgen_783d3d9ca84c197c"
 hs_bindgen_783d3d9ca84c197c
   :: IO (BG.FunPtr (BG.Ptr SDL_Tray -> PtrConst.PtrConst BG.CChar -> IO ()))
 hs_bindgen_783d3d9ca84c197c =
-  BG.fromFFIType hs_bindgen_783d3d9ca84c197c_base
+  fmap BG.fromFFIType hs_bindgen_783d3d9ca84c197c_base
 
 {-# NOINLINE sDL_SetTrayTooltip #-}
 
@@ -346,7 +351,7 @@ foreign import ccall unsafe "hs_bindgen_e6418e186102af71"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_CreateTrayMenu@
 hs_bindgen_e6418e186102af71 :: IO (BG.FunPtr (BG.Ptr SDL_Tray -> IO (BG.Ptr SDL_TrayMenu)))
 hs_bindgen_e6418e186102af71 =
-  BG.fromFFIType hs_bindgen_e6418e186102af71_base
+  fmap BG.fromFFIType hs_bindgen_e6418e186102af71_base
 
 {-# NOINLINE sDL_CreateTrayMenu #-}
 
@@ -381,7 +386,7 @@ foreign import ccall unsafe "hs_bindgen_7979c3b75512dd28"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_CreateTraySubmenu@
 hs_bindgen_7979c3b75512dd28 :: IO (BG.FunPtr (BG.Ptr SDL_TrayEntry -> IO (BG.Ptr SDL_TrayMenu)))
 hs_bindgen_7979c3b75512dd28 =
-  BG.fromFFIType hs_bindgen_7979c3b75512dd28_base
+  fmap BG.fromFFIType hs_bindgen_7979c3b75512dd28_base
 
 {-# NOINLINE sDL_CreateTraySubmenu #-}
 
@@ -416,7 +421,7 @@ foreign import ccall unsafe "hs_bindgen_487b4a68acb6ce70"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_GetTrayMenu@
 hs_bindgen_487b4a68acb6ce70 :: IO (BG.FunPtr (BG.Ptr SDL_Tray -> IO (BG.Ptr SDL_TrayMenu)))
 hs_bindgen_487b4a68acb6ce70 =
-  BG.fromFFIType hs_bindgen_487b4a68acb6ce70_base
+  fmap BG.fromFFIType hs_bindgen_487b4a68acb6ce70_base
 
 {-# NOINLINE sDL_GetTrayMenu #-}
 
@@ -451,7 +456,7 @@ foreign import ccall unsafe "hs_bindgen_fa3f90a24097169c"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_GetTraySubmenu@
 hs_bindgen_fa3f90a24097169c :: IO (BG.FunPtr (BG.Ptr SDL_TrayEntry -> IO (BG.Ptr SDL_TrayMenu)))
 hs_bindgen_fa3f90a24097169c =
-  BG.fromFFIType hs_bindgen_fa3f90a24097169c_base
+  fmap BG.fromFFIType hs_bindgen_fa3f90a24097169c_base
 
 {-# NOINLINE sDL_GetTraySubmenu #-}
 
@@ -488,7 +493,7 @@ hs_bindgen_924f686f0f9c486a
   :: IO
        (BG.FunPtr (BG.Ptr SDL_TrayMenu -> BG.Ptr BG.CInt -> IO (BG.Ptr (PtrConst.PtrConst SDL_TrayEntry))))
 hs_bindgen_924f686f0f9c486a =
-  BG.fromFFIType hs_bindgen_924f686f0f9c486a_base
+  fmap BG.fromFFIType hs_bindgen_924f686f0f9c486a_base
 
 {-# NOINLINE sDL_GetTrayEntries #-}
 
@@ -520,7 +525,7 @@ foreign import ccall unsafe "hs_bindgen_207a05e5b588636c"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_RemoveTrayEntry@
 hs_bindgen_207a05e5b588636c :: IO (BG.FunPtr (BG.Ptr SDL_TrayEntry -> IO ()))
 hs_bindgen_207a05e5b588636c =
-  BG.fromFFIType hs_bindgen_207a05e5b588636c_base
+  fmap BG.fromFFIType hs_bindgen_207a05e5b588636c_base
 
 {-# NOINLINE sDL_RemoveTrayEntry #-}
 
@@ -556,7 +561,7 @@ hs_bindgen_4f1eb15eda9eecc5
            )
        )
 hs_bindgen_4f1eb15eda9eecc5 =
-  BG.fromFFIType hs_bindgen_4f1eb15eda9eecc5_base
+  fmap BG.fromFFIType hs_bindgen_4f1eb15eda9eecc5_base
 
 {-# NOINLINE sDL_InsertTrayEntryAt #-}
 
@@ -603,7 +608,7 @@ foreign import ccall unsafe "hs_bindgen_db2f3045cf28b5d5"
 hs_bindgen_db2f3045cf28b5d5
   :: IO (BG.FunPtr (BG.Ptr SDL_TrayEntry -> PtrConst.PtrConst BG.CChar -> IO ()))
 hs_bindgen_db2f3045cf28b5d5 =
-  BG.fromFFIType hs_bindgen_db2f3045cf28b5d5_base
+  fmap BG.fromFFIType hs_bindgen_db2f3045cf28b5d5_base
 
 {-# NOINLINE sDL_SetTrayEntryLabel #-}
 
@@ -635,7 +640,7 @@ foreign import ccall unsafe "hs_bindgen_f9b74cb4f55c043f"
 hs_bindgen_f9b74cb4f55c043f
   :: IO (BG.FunPtr (BG.Ptr SDL_TrayEntry -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_f9b74cb4f55c043f =
-  BG.fromFFIType hs_bindgen_f9b74cb4f55c043f_base
+  fmap BG.fromFFIType hs_bindgen_f9b74cb4f55c043f_base
 
 {-# NOINLINE sDL_GetTrayEntryLabel #-}
 
@@ -666,7 +671,7 @@ foreign import ccall unsafe "hs_bindgen_815ad50438649e5d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_SetTrayEntryChecked@
 hs_bindgen_815ad50438649e5d :: IO (BG.FunPtr (BG.Ptr SDL_TrayEntry -> BG.CBool -> IO ()))
 hs_bindgen_815ad50438649e5d =
-  BG.fromFFIType hs_bindgen_815ad50438649e5d_base
+  fmap BG.fromFFIType hs_bindgen_815ad50438649e5d_base
 
 {-# NOINLINE sDL_SetTrayEntryChecked #-}
 
@@ -697,7 +702,7 @@ foreign import ccall unsafe "hs_bindgen_89a7fa670bbdd4aa"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_GetTrayEntryChecked@
 hs_bindgen_89a7fa670bbdd4aa :: IO (BG.FunPtr (BG.Ptr SDL_TrayEntry -> IO BG.CBool))
 hs_bindgen_89a7fa670bbdd4aa =
-  BG.fromFFIType hs_bindgen_89a7fa670bbdd4aa_base
+  fmap BG.fromFFIType hs_bindgen_89a7fa670bbdd4aa_base
 
 {-# NOINLINE sDL_GetTrayEntryChecked #-}
 
@@ -728,7 +733,7 @@ foreign import ccall unsafe "hs_bindgen_d2ae14ecd73c137a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_SetTrayEntryEnabled@
 hs_bindgen_d2ae14ecd73c137a :: IO (BG.FunPtr (BG.Ptr SDL_TrayEntry -> BG.CBool -> IO ()))
 hs_bindgen_d2ae14ecd73c137a =
-  BG.fromFFIType hs_bindgen_d2ae14ecd73c137a_base
+  fmap BG.fromFFIType hs_bindgen_d2ae14ecd73c137a_base
 
 {-# NOINLINE sDL_SetTrayEntryEnabled #-}
 
@@ -757,7 +762,7 @@ foreign import ccall unsafe "hs_bindgen_aacde4500657f4c0"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_GetTrayEntryEnabled@
 hs_bindgen_aacde4500657f4c0 :: IO (BG.FunPtr (BG.Ptr SDL_TrayEntry -> IO BG.CBool))
 hs_bindgen_aacde4500657f4c0 =
-  BG.fromFFIType hs_bindgen_aacde4500657f4c0_base
+  fmap BG.fromFFIType hs_bindgen_aacde4500657f4c0_base
 
 {-# NOINLINE sDL_GetTrayEntryEnabled #-}
 
@@ -787,7 +792,7 @@ foreign import ccall unsafe "hs_bindgen_624772d3d1eca5e3"
 hs_bindgen_624772d3d1eca5e3
   :: IO (BG.FunPtr (BG.Ptr SDL_TrayEntry -> SDL_TrayCallback -> BG.Ptr BG.Void -> IO ()))
 hs_bindgen_624772d3d1eca5e3 =
-  BG.fromFFIType hs_bindgen_624772d3d1eca5e3_base
+  fmap BG.fromFFIType hs_bindgen_624772d3d1eca5e3_base
 
 {-# NOINLINE sDL_SetTrayEntryCallback #-}
 
@@ -819,7 +824,7 @@ foreign import ccall unsafe "hs_bindgen_7aff8a582dc1af42"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_ClickTrayEntry@
 hs_bindgen_7aff8a582dc1af42 :: IO (BG.FunPtr (BG.Ptr SDL_TrayEntry -> IO ()))
 hs_bindgen_7aff8a582dc1af42 =
-  BG.fromFFIType hs_bindgen_7aff8a582dc1af42_base
+  fmap BG.fromFFIType hs_bindgen_7aff8a582dc1af42_base
 
 {-# NOINLINE sDL_ClickTrayEntry #-}
 
@@ -844,7 +849,7 @@ foreign import ccall unsafe "hs_bindgen_ac5647a4ad9aa76d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_DestroyTray@
 hs_bindgen_ac5647a4ad9aa76d :: IO (BG.FunPtr (BG.Ptr SDL_Tray -> IO ()))
 hs_bindgen_ac5647a4ad9aa76d =
-  BG.fromFFIType hs_bindgen_ac5647a4ad9aa76d_base
+  fmap BG.fromFFIType hs_bindgen_ac5647a4ad9aa76d_base
 
 {-# NOINLINE sDL_DestroyTray #-}
 
@@ -873,7 +878,7 @@ foreign import ccall unsafe "hs_bindgen_14c614d00cef77fa"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_GetTrayEntryParent@
 hs_bindgen_14c614d00cef77fa :: IO (BG.FunPtr (BG.Ptr SDL_TrayEntry -> IO (BG.Ptr SDL_TrayMenu)))
 hs_bindgen_14c614d00cef77fa =
-  BG.fromFFIType hs_bindgen_14c614d00cef77fa_base
+  fmap BG.fromFFIType hs_bindgen_14c614d00cef77fa_base
 
 {-# NOINLINE sDL_GetTrayEntryParent #-}
 
@@ -902,7 +907,7 @@ foreign import ccall unsafe "hs_bindgen_5521b8512f50cc76"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_GetTrayMenuParentEntry@
 hs_bindgen_5521b8512f50cc76 :: IO (BG.FunPtr (BG.Ptr SDL_TrayMenu -> IO (BG.Ptr SDL_TrayEntry)))
 hs_bindgen_5521b8512f50cc76 =
-  BG.fromFFIType hs_bindgen_5521b8512f50cc76_base
+  fmap BG.fromFFIType hs_bindgen_5521b8512f50cc76_base
 
 {-# NOINLINE sDL_GetTrayMenuParentEntry #-}
 
@@ -933,7 +938,7 @@ foreign import ccall unsafe "hs_bindgen_43523d65356b241b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_GetTrayMenuParentTray@
 hs_bindgen_43523d65356b241b :: IO (BG.FunPtr (BG.Ptr SDL_TrayMenu -> IO (BG.Ptr SDL_Tray)))
 hs_bindgen_43523d65356b241b =
-  BG.fromFFIType hs_bindgen_43523d65356b241b_base
+  fmap BG.fromFFIType hs_bindgen_43523d65356b241b_base
 
 {-# NOINLINE sDL_GetTrayMenuParentTray #-}
 
@@ -964,7 +969,7 @@ foreign import ccall unsafe "hs_bindgen_108816203a48fe42"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Tray_get_SDL_UpdateTrays@
 hs_bindgen_108816203a48fe42 :: IO (BG.FunPtr (IO ()))
 hs_bindgen_108816203a48fe42 =
-  BG.fromFFIType hs_bindgen_108816203a48fe42_base
+  fmap BG.fromFFIType hs_bindgen_108816203a48fe42_base
 
 {-# NOINLINE sDL_UpdateTrays #-}
 

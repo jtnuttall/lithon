@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Keyboard.Safe (
@@ -30,7 +32,11 @@ module SDL3.Sys.Bindgen.Keyboard.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Support qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Keyboard
@@ -42,7 +48,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_keyboard.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_keyboard.h>"
          , "_Bool hs_bindgen_1ef4ce9325e1d7c1 (void)"
          , "{"
          , "  return (SDL_HasKeyboard)();"
@@ -193,12 +200,12 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_HasKeyboard@
 foreign import ccall safe "hs_bindgen_1ef4ce9325e1d7c1"
   hs_bindgen_1ef4ce9325e1d7c1_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_HasKeyboard@
 hs_bindgen_1ef4ce9325e1d7c1 :: IO BG.CBool
 hs_bindgen_1ef4ce9325e1d7c1 =
-  BG.fromFFIType hs_bindgen_1ef4ce9325e1d7c1_base
+  fmap BG.fromFFIType hs_bindgen_1ef4ce9325e1d7c1_base
 
 -- | Return whether a keyboard is currently connected.
 --
@@ -225,7 +232,8 @@ hs_bindgen_b59c0860157b89a3
   :: BG.Ptr BG.CInt
   -> IO (BG.Ptr SDL_KeyboardID)
 hs_bindgen_b59c0860157b89a3 =
-  BG.fromFFIType hs_bindgen_b59c0860157b89a3_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b59c0860157b89a3_base (BG.toFFIType x0))
 
 -- | Get a list of currently connected keyboards.
 --
@@ -251,7 +259,7 @@ sDL_GetKeyboards = hs_bindgen_b59c0860157b89a3
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetKeyboardNameForID@
 foreign import ccall safe "hs_bindgen_cbd6c7684c35aab5"
   hs_bindgen_cbd6c7684c35aab5_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetKeyboardNameForID@
@@ -259,7 +267,8 @@ hs_bindgen_cbd6c7684c35aab5
   :: SDL_KeyboardID
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_cbd6c7684c35aab5 =
-  BG.fromFFIType hs_bindgen_cbd6c7684c35aab5_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_cbd6c7684c35aab5_base (BG.toFFIType x0))
 
 -- | Get the name of a keyboard.
 --
@@ -291,7 +300,7 @@ foreign import ccall safe "hs_bindgen_4466a0bcf920ec34"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetKeyboardFocus@
 hs_bindgen_4466a0bcf920ec34 :: IO (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window)
 hs_bindgen_4466a0bcf920ec34 =
-  BG.fromFFIType hs_bindgen_4466a0bcf920ec34_base
+  fmap BG.fromFFIType hs_bindgen_4466a0bcf920ec34_base
 
 -- | Query the window which currently has keyboard focus.
 --
@@ -316,7 +325,8 @@ hs_bindgen_28f41d367bc840d8
   :: BG.Ptr BG.CInt
   -> IO (PtrConst.PtrConst BG.CBool)
 hs_bindgen_28f41d367bc840d8 =
-  BG.fromFFIType hs_bindgen_28f41d367bc840d8_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_28f41d367bc840d8_base (BG.toFFIType x0))
 
 -- | Get a snapshot of the current state of the keyboard.
 --
@@ -355,7 +365,7 @@ foreign import ccall safe "hs_bindgen_e5be3af904377165"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_ResetKeyboard@
 hs_bindgen_e5be3af904377165 :: IO ()
 hs_bindgen_e5be3af904377165 =
-  BG.fromFFIType hs_bindgen_e5be3af904377165_base
+  hs_bindgen_e5be3af904377165_base
 
 -- | Clear the state of the keyboard.
 --
@@ -374,12 +384,12 @@ sDL_ResetKeyboard = hs_bindgen_e5be3af904377165
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetModState@
 foreign import ccall safe "hs_bindgen_2b74759b43835352"
   hs_bindgen_2b74759b43835352_base
-    :: IO BG.Word16
+    :: IO HsBindgen.Runtime.LibC.Word16
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetModState@
 hs_bindgen_2b74759b43835352 :: IO SDL3.Sys.Bindgen.Keycode.SDL_Keymod
 hs_bindgen_2b74759b43835352 =
-  BG.fromFFIType hs_bindgen_2b74759b43835352_base
+  fmap BG.fromFFIType hs_bindgen_2b74759b43835352_base
 
 -- | Get the current key modifier state for the keyboard.
 --
@@ -398,7 +408,7 @@ sDL_GetModState = hs_bindgen_2b74759b43835352
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_SetModState@
 foreign import ccall safe "hs_bindgen_12c8d03624bdd31a"
   hs_bindgen_12c8d03624bdd31a_base
-    :: BG.Word16
+    :: HsBindgen.Runtime.LibC.Word16
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_SetModState@
@@ -406,7 +416,8 @@ hs_bindgen_12c8d03624bdd31a
   :: SDL3.Sys.Bindgen.Keycode.SDL_Keymod
   -> IO ()
 hs_bindgen_12c8d03624bdd31a =
-  BG.fromFFIType hs_bindgen_12c8d03624bdd31a_base
+  \x0 ->
+    hs_bindgen_12c8d03624bdd31a_base (BG.toFFIType x0)
 
 -- | Set the current key modifier state for the keyboard.
 --
@@ -432,10 +443,10 @@ sDL_SetModState = hs_bindgen_12c8d03624bdd31a
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetKeyFromScancode@
 foreign import ccall safe "hs_bindgen_2ed37c1ae220bcdc"
   hs_bindgen_2ed37c1ae220bcdc_base
-    :: BG.Word32
-    -> BG.Word16
-    -> BG.Word8
-    -> IO BG.Word32
+    :: HsBindgen.Runtime.Support.CUInt
+    -> HsBindgen.Runtime.LibC.Word16
+    -> BG.CBool
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetKeyFromScancode@
 hs_bindgen_2ed37c1ae220bcdc
@@ -444,7 +455,12 @@ hs_bindgen_2ed37c1ae220bcdc
   -> BG.CBool
   -> IO SDL3.Sys.Bindgen.Keycode.SDL_Keycode
 hs_bindgen_2ed37c1ae220bcdc =
-  BG.fromFFIType hs_bindgen_2ed37c1ae220bcdc_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_2ed37c1ae220bcdc_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the key code corresponding to the given scancode according to the current keyboard layout.
 --
@@ -478,9 +494,9 @@ sDL_GetKeyFromScancode = hs_bindgen_2ed37c1ae220bcdc
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetScancodeFromKey@
 foreign import ccall safe "hs_bindgen_fc2da5865c26d1eb"
   hs_bindgen_fc2da5865c26d1eb_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.Support.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetScancodeFromKey@
 hs_bindgen_fc2da5865c26d1eb
@@ -488,7 +504,9 @@ hs_bindgen_fc2da5865c26d1eb
   -> BG.Ptr SDL3.Sys.Bindgen.Keycode.SDL_Keymod
   -> IO SDL3.Sys.Bindgen.Scancode.SDL_Scancode
 hs_bindgen_fc2da5865c26d1eb =
-  BG.fromFFIType hs_bindgen_fc2da5865c26d1eb_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_fc2da5865c26d1eb_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the scancode corresponding to the given key code according to the current keyboard layout.
 --
@@ -518,9 +536,9 @@ sDL_GetScancodeFromKey = hs_bindgen_fc2da5865c26d1eb
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_SetScancodeName@
 foreign import ccall safe "hs_bindgen_d3d1490d83b9909e"
   hs_bindgen_d3d1490d83b9909e_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.Support.CUInt
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_SetScancodeName@
 hs_bindgen_d3d1490d83b9909e
@@ -528,7 +546,9 @@ hs_bindgen_d3d1490d83b9909e
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_d3d1490d83b9909e =
-  BG.fromFFIType hs_bindgen_d3d1490d83b9909e_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_d3d1490d83b9909e_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set a human-readable name for a scancode.
 --
@@ -556,7 +576,7 @@ sDL_SetScancodeName = hs_bindgen_d3d1490d83b9909e
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetScancodeName@
 foreign import ccall safe "hs_bindgen_7fa9ebec253c00ba"
   hs_bindgen_7fa9ebec253c00ba_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.Support.CUInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetScancodeName@
@@ -564,7 +584,8 @@ hs_bindgen_7fa9ebec253c00ba
   :: SDL3.Sys.Bindgen.Scancode.SDL_Scancode
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_7fa9ebec253c00ba =
-  BG.fromFFIType hs_bindgen_7fa9ebec253c00ba_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_7fa9ebec253c00ba_base (BG.toFFIType x0))
 
 -- | Get a human-readable name for a scancode.
 --
@@ -591,14 +612,15 @@ sDL_GetScancodeName = hs_bindgen_7fa9ebec253c00ba
 foreign import ccall safe "hs_bindgen_93b32ce48be9ecca"
   hs_bindgen_93b32ce48be9ecca_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.Support.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetScancodeFromName@
 hs_bindgen_93b32ce48be9ecca
   :: PtrConst.PtrConst BG.CChar
   -> IO SDL3.Sys.Bindgen.Scancode.SDL_Scancode
 hs_bindgen_93b32ce48be9ecca =
-  BG.fromFFIType hs_bindgen_93b32ce48be9ecca_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_93b32ce48be9ecca_base (BG.toFFIType x0))
 
 -- | Get a scancode from a human-readable name.
 --
@@ -622,7 +644,7 @@ sDL_GetScancodeFromName = hs_bindgen_93b32ce48be9ecca
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetKeyName@
 foreign import ccall safe "hs_bindgen_1808b5592239c8c9"
   hs_bindgen_1808b5592239c8c9_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetKeyName@
@@ -630,7 +652,8 @@ hs_bindgen_1808b5592239c8c9
   :: SDL3.Sys.Bindgen.Keycode.SDL_Keycode
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_1808b5592239c8c9 =
-  BG.fromFFIType hs_bindgen_1808b5592239c8c9_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_1808b5592239c8c9_base (BG.toFFIType x0))
 
 -- | Get a human-readable name for a key.
 --
@@ -659,14 +682,15 @@ sDL_GetKeyName = hs_bindgen_1808b5592239c8c9
 foreign import ccall safe "hs_bindgen_cc4e614de70c9201"
   hs_bindgen_cc4e614de70c9201_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetKeyFromName@
 hs_bindgen_cc4e614de70c9201
   :: PtrConst.PtrConst BG.CChar
   -> IO SDL3.Sys.Bindgen.Keycode.SDL_Keycode
 hs_bindgen_cc4e614de70c9201 =
-  BG.fromFFIType hs_bindgen_cc4e614de70c9201_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_cc4e614de70c9201_base (BG.toFFIType x0))
 
 -- | Get a key code from a human-readable name.
 --
@@ -691,14 +715,15 @@ sDL_GetKeyFromName = hs_bindgen_cc4e614de70c9201
 foreign import ccall safe "hs_bindgen_ee1b6ad2d89317cd"
   hs_bindgen_ee1b6ad2d89317cd_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_StartTextInput@
 hs_bindgen_ee1b6ad2d89317cd
   :: BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window
   -> IO BG.CBool
 hs_bindgen_ee1b6ad2d89317cd =
-  BG.fromFFIType hs_bindgen_ee1b6ad2d89317cd_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ee1b6ad2d89317cd_base (BG.toFFIType x0))
 
 -- | Start accepting Unicode text input events in a window.
 --
@@ -729,8 +754,8 @@ sDL_StartTextInput = hs_bindgen_ee1b6ad2d89317cd
 foreign import ccall safe "hs_bindgen_9f9c608b064a8e66"
   hs_bindgen_9f9c608b064a8e66_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_StartTextInputWithProperties@
 hs_bindgen_9f9c608b064a8e66
@@ -738,7 +763,9 @@ hs_bindgen_9f9c608b064a8e66
   -> SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -> IO BG.CBool
 hs_bindgen_9f9c608b064a8e66 =
-  BG.fromFFIType hs_bindgen_9f9c608b064a8e66_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_9f9c608b064a8e66_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Start accepting Unicode text input events in a window, with properties describing the input.
 --
@@ -788,14 +815,15 @@ sDL_StartTextInputWithProperties =
 foreign import ccall safe "hs_bindgen_459a3903a479c503"
   hs_bindgen_459a3903a479c503_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_TextInputActive@
 hs_bindgen_459a3903a479c503
   :: BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window
   -> IO BG.CBool
 hs_bindgen_459a3903a479c503 =
-  BG.fromFFIType hs_bindgen_459a3903a479c503_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_459a3903a479c503_base (BG.toFFIType x0))
 
 -- | Check whether or not Unicode text input events are enabled for a window.
 --
@@ -820,14 +848,15 @@ sDL_TextInputActive = hs_bindgen_459a3903a479c503
 foreign import ccall safe "hs_bindgen_2b5c6adc62fd6b03"
   hs_bindgen_2b5c6adc62fd6b03_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_StopTextInput@
 hs_bindgen_2b5c6adc62fd6b03
   :: BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window
   -> IO BG.CBool
 hs_bindgen_2b5c6adc62fd6b03 =
-  BG.fromFFIType hs_bindgen_2b5c6adc62fd6b03_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_2b5c6adc62fd6b03_base (BG.toFFIType x0))
 
 -- | Stop receiving any text input events in a window.
 --
@@ -854,14 +883,15 @@ sDL_StopTextInput = hs_bindgen_2b5c6adc62fd6b03
 foreign import ccall safe "hs_bindgen_6b1d107b71fa60e9"
   hs_bindgen_6b1d107b71fa60e9_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_ClearComposition@
 hs_bindgen_6b1d107b71fa60e9
   :: BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window
   -> IO BG.CBool
 hs_bindgen_6b1d107b71fa60e9 =
-  BG.fromFFIType hs_bindgen_6b1d107b71fa60e9_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_6b1d107b71fa60e9_base (BG.toFFIType x0))
 
 -- | Dismiss the composition window\/IME without disabling the subsystem.
 --
@@ -887,8 +917,8 @@ foreign import ccall safe "hs_bindgen_03f0bc714d10f56b"
   hs_bindgen_03f0bc714d10f56b_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_SetTextInputArea@
 hs_bindgen_03f0bc714d10f56b
@@ -897,7 +927,12 @@ hs_bindgen_03f0bc714d10f56b
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_03f0bc714d10f56b =
-  BG.fromFFIType hs_bindgen_03f0bc714d10f56b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_03f0bc714d10f56b_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set the area used to type Unicode text input.
 --
@@ -934,7 +969,7 @@ foreign import ccall safe "hs_bindgen_20c88b6d3256a2c4"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_GetTextInputArea@
 hs_bindgen_20c88b6d3256a2c4
@@ -943,7 +978,12 @@ hs_bindgen_20c88b6d3256a2c4
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_20c88b6d3256a2c4 =
-  BG.fromFFIType hs_bindgen_20c88b6d3256a2c4_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_20c88b6d3256a2c4_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the area used to type Unicode text input.
 --
@@ -977,12 +1017,12 @@ sDL_GetTextInputArea = hs_bindgen_20c88b6d3256a2c4
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_HasScreenKeyboardSupport@
 foreign import ccall safe "hs_bindgen_052de17a6a7b51b1"
   hs_bindgen_052de17a6a7b51b1_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_HasScreenKeyboardSupport@
 hs_bindgen_052de17a6a7b51b1 :: IO BG.CBool
 hs_bindgen_052de17a6a7b51b1 =
-  BG.fromFFIType hs_bindgen_052de17a6a7b51b1_base
+  fmap BG.fromFFIType hs_bindgen_052de17a6a7b51b1_base
 
 -- | Check whether the platform has screen keyboard support.
 --
@@ -1003,14 +1043,15 @@ sDL_HasScreenKeyboardSupport =
 foreign import ccall safe "hs_bindgen_166e1a8b6522af56"
   hs_bindgen_166e1a8b6522af56_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_Safe_SDL_ScreenKeyboardShown@
 hs_bindgen_166e1a8b6522af56
   :: BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window
   -> IO BG.CBool
 hs_bindgen_166e1a8b6522af56 =
-  BG.fromFFIType hs_bindgen_166e1a8b6522af56_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_166e1a8b6522af56_base (BG.toFFIType x0))
 
 -- | Check whether the screen keyboard is shown for given window.
 --

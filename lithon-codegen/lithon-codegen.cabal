@@ -185,7 +185,6 @@ library
     , deriving-compat ==0.6.*
     , directory ==1.3.*
     , dlist ==1.0.*
-    , doxygen-parser
     , effectful ==2.6.*
     , effectful-core ==2.6.*
     , effectful-plugin ==2.1.*
@@ -290,7 +289,6 @@ executable lithon-codegen
     , deriving-compat ==0.6.*
     , directory ==1.3.*
     , dlist ==1.0.*
-    , doxygen-parser
     , effectful ==2.6.*
     , effectful-core ==2.6.*
     , effectful-plugin ==2.1.*
@@ -445,7 +443,6 @@ test-suite lithon-codegen-test
     , deriving-compat ==0.6.*
     , directory ==1.3.*
     , dlist ==1.0.*
-    , doxygen-parser
     , effectful ==2.6.*
     , effectful-core ==2.6.*
     , effectful-plugin ==2.1.*

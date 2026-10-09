@@ -15,6 +15,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Atomic operations.
 --
@@ -48,8 +49,11 @@ module SDL3.Sys.Bindgen.Atomic (
 )
 where
 
+import Prelude (Bounded, Enum, Eq, Int, Integral, Num, Ord, Read, Real, Show, pure, (<*>), type (~))
+
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -139,6 +143,9 @@ instance Marshal.WriteRaw SDL_AtomicInt where
 
 deriving via Marshal.EquivStorable SDL_AtomicInt instance BG.Storable SDL_AtomicInt
 
+deriving via Struct.IsStructViaReadRaw SDL_AtomicInt instance Struct.IsStruct SDL_AtomicInt
+
+-- | [C declaration]: @value@, defined at @SDL3\/SDL_atomic.h 405:36@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "value" SDL_AtomicInt ty
@@ -201,6 +208,9 @@ instance Marshal.WriteRaw SDL_AtomicU32 where
 
 deriving via Marshal.EquivStorable SDL_AtomicU32 instance BG.Storable SDL_AtomicU32
 
+deriving via Struct.IsStructViaReadRaw SDL_AtomicU32 instance Struct.IsStruct SDL_AtomicU32
+
+-- | [C declaration]: @value@, defined at @SDL3\/SDL_atomic.h 550:39@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "value" SDL_AtomicU32 ty

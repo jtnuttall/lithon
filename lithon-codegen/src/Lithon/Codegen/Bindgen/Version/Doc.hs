@@ -18,7 +18,6 @@ module Lithon.Codegen.Bindgen.Version.Doc (
 
 import Data.Char (isDigit)
 import Data.Text qualified as T
-import Doxygen.Parser.Types qualified as Doxy
 import Lithon.HsBindgen.C qualified as C
 import Lithon.Prelude
 
@@ -32,13 +31,7 @@ import Lithon.Codegen.Bindgen.Version (Version, mkVersion)
 -- ("Lithon.Codegen.Bindgen.Versions.Guards") and the assert TU correct it
 -- through the same annotations.
 doxygenSince :: Int -> C.DeclInfo C.Final -> Maybe Version
-doxygenSince arity info = do
-  comment <- info.comment
-  safeHead
-    [ v
-    | Doxy.SimpleSect Doxy.SSSince inner <- comment.doxygen.detailed
-    , Just v <- [versionToken arity (blockText inner)]
-    ]
+doxygenSince arity info = info.comment >>= safeHead . mapMaybe (versionToken arity) . C.sinceSections
 
 -- | A member's availability from its own doxygen comment: SDL's prose
 -- convention for a late member is \"(added in 3.4.16)\" in the
@@ -47,12 +40,7 @@ doxygenSince arity info = do
 -- and the version (SDL: @[\"sdl\"]@). The annotations win over it
 -- ('Lithon.Codegen.Bindgen.Abi.distillAbi').
 addedInNote :: Int -> [Text] -> C.FieldInfo C.Final -> Maybe Version
-addedInNote arity skipped info = do
-  comment <- info.comment
-  addedInProse
-    arity
-    skipped
-    (inlineText comment.doxygen.brief <> " " <> blockText comment.doxygen.detailed)
+addedInNote arity skipped info = info.comment >>= addedInProse arity skipped . C.commentProse
 
 -- | The version named by the first \"added in\" phrase in prose,
 -- case-insensitive, a run of the given words tolerated before it.
@@ -85,19 +73,3 @@ parseVersionProse arity w = do
     [] -> Nothing
  where
   groups = T.splitOn "." (T.dropWhileEnd (`elem` (".,;:)" :: String)) w)
-
--- | The plain text of a doxygen paragraph list (paragraphs only).
-blockText :: [Doxy.Block r] -> Text
-blockText blocks = T.strip (T.unwords [inlineText inlines | Doxy.Paragraph inlines <- blocks])
-
--- | The display text of doxygen inlines, markup flattened.
-inlineText :: [Doxy.Inline r] -> Text
-inlineText =
-  T.concat . map \case
-    Doxy.Text t -> t
-    Doxy.Bold is -> inlineText is
-    Doxy.Emph is -> inlineText is
-    Doxy.Mono is -> inlineText is
-    Doxy.Ref _ t -> t
-    Doxy.Anchor _ -> ""
-    Doxy.Link is _ -> inlineText is

@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Endian.Safe (
@@ -7,12 +9,15 @@ module SDL3.Sys.Bindgen.Endian.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_endian.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_endian.h>"
          , "float hs_bindgen_3b15c524a04a103e ("
          , "  float arg1"
          , ")"
@@ -26,15 +31,16 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Endian_Safe_SDL_SwapFloat@
 foreign import ccall safe "hs_bindgen_3b15c524a04a103e"
   hs_bindgen_3b15c524a04a103e_base
-    :: Float
-    -> IO Float
+    :: BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Endian_Safe_SDL_SwapFloat@
 hs_bindgen_3b15c524a04a103e
   :: BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_3b15c524a04a103e =
-  BG.fromFFIType hs_bindgen_3b15c524a04a103e_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3b15c524a04a103e_base (BG.toFFIType x0))
 
 -- | Byte-swap a floating point number.
 --

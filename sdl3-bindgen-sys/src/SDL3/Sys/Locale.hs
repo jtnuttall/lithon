@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL locale services.
 --
 --     This provides a way to get a list of preferred locales (language plus country) for the user. There is exactly one function: @'getPreferredLocales'@, which handles all the heavy lifting, and offers documentation on all the strange ways humans might have configured their language settings. A struct to provide locale data.
@@ -21,6 +23,8 @@ module SDL3.Sys.Locale (
   SDL3.Sys.Locale.getPreferredLocalesSafe,
 )
 where
+
+import Prelude (IO)
 
 import HsBindgen.Runtime.Support qualified as BG
 import SDL3.Sys.Bindgen.Locale

@@ -1,5 +1,5 @@
 version:
-  hs_bindgen: 0.1.0
+  hs_bindgen: 1.0.0.0
   binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Hidapi
 ctypes:
@@ -50,6 +50,9 @@ hstypes:
         constructor: SDL_hid_bus_type
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -97,6 +100,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize

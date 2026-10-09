@@ -1,5 +1,6 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module SDL3.Sys.Bindgen.PlatformDefines (
   SDL3.Sys.Bindgen.PlatformDefines.sDL_PLATFORM_LINUX,

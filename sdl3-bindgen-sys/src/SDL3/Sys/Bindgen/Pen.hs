@@ -17,6 +17,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL pen event handling.
 --
@@ -74,6 +75,8 @@ module SDL3.Sys.Bindgen.Pen (
   pattern SDL3.Sys.Bindgen.Pen.SDL_PEN_DEVICE_TYPE_INDIRECT,
 )
 where
+
+import Prelude (Bounded, Enum, Eq, Int, Integral, Num, Ord, Read, Real, Show, pure, (<*>), type (~))
 
 import C.Expr.HostPlatform qualified
 import HsBindgen.Runtime.CEnum qualified as CEnum

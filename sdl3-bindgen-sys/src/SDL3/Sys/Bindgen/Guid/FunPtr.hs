@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Guid.FunPtr (
@@ -8,6 +10,8 @@ module SDL3.Sys.Bindgen.Guid.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -15,7 +19,8 @@ import SDL3.Sys.Bindgen.Guid
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_guid.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_guid.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Guid_get_SDL_GUIDToString */"
          , "__attribute__ ((const))"
          , "void (*hs_bindgen_b89f8bb369b8de4d (void)) ("
@@ -46,7 +51,7 @@ foreign import ccall unsafe "hs_bindgen_b89f8bb369b8de4d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Guid_get_SDL_GUIDToString@
 hs_bindgen_b89f8bb369b8de4d :: IO (BG.FunPtr (SDL_GUID -> BG.Ptr BG.CChar -> BG.CInt -> IO ()))
 hs_bindgen_b89f8bb369b8de4d =
-  BG.fromFFIType hs_bindgen_b89f8bb369b8de4d_base
+  fmap BG.fromFFIType hs_bindgen_b89f8bb369b8de4d_base
 
 {-# NOINLINE sDL_GUIDToString #-}
 
@@ -77,7 +82,7 @@ foreign import ccall unsafe "hs_bindgen_0ce736a26b941e7b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Guid_get_SDL_StringToGUID@
 hs_bindgen_0ce736a26b941e7b :: IO (BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO SDL_GUID))
 hs_bindgen_0ce736a26b941e7b =
-  BG.fromFFIType hs_bindgen_0ce736a26b941e7b_base
+  fmap BG.fromFFIType hs_bindgen_0ce736a26b941e7b_base
 
 {-# NOINLINE sDL_StringToGUID #-}
 

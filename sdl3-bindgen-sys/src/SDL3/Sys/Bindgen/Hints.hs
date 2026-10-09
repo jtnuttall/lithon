@@ -6,6 +6,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -17,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | This file contains functions to set and get configuration hints, as well as listing each of them alphabetically.
 --
@@ -310,6 +312,8 @@ module SDL3.Sys.Bindgen.Hints (
   SDL3.Sys.Bindgen.Hints.SDL_HintCallback (..),
 )
 where
+
+import Prelude (Eq, IO, Int, Ord, Read, Show, fmap, pure, (<*>), type (~))
 
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
@@ -12376,7 +12380,6 @@ newtype SDL_HintCallback_Aux = SDL_HintCallback_Aux
       -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_HintCallback_Aux@
 foreign import ccall safe "wrapper"
@@ -12390,7 +12393,21 @@ hs_bindgen_d373a1a98e80dd1f
   -> IO (BG.FunPtr SDL_HintCallback_Aux)
 hs_bindgen_d373a1a98e80dd1f =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_d373a1a98e80dd1f_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_d373a1a98e80dd1f_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  \x4 ->
+                    BG.getField @"unwrap"
+                      fun0
+                      (BG.fromFFIType x1)
+                      (BG.fromFFIType x2)
+                      (BG.fromFFIType x3)
+                      (BG.fromFFIType x4)
+          )
+      )
 
 -- __unique:__ @fromSDL_HintCallback_Aux@
 foreign import ccall safe "dynamic"
@@ -12408,7 +12425,18 @@ hs_bindgen_52c5a5e7b6578189
   -> SDL_HintCallback_Aux
 hs_bindgen_52c5a5e7b6578189 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_52c5a5e7b6578189_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_HintCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              \x4 ->
+                hs_bindgen_52c5a5e7b6578189_base
+                  (BG.castFunPtr funPtr0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+      )
 
 instance BG.ToFunPtr SDL_HintCallback_Aux where
   toFunPtr = hs_bindgen_d373a1a98e80dd1f

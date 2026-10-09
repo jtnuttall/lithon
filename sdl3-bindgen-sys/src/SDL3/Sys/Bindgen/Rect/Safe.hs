@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Rect.Safe (
@@ -24,6 +26,8 @@ module SDL3.Sys.Bindgen.Rect.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -31,7 +35,8 @@ import SDL3.Sys.Bindgen.Rect
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_rect.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_rect.h>"
          , "void hs_bindgen_a9f520f11e166938 ("
          , "  SDL_Rect const *arg1,"
          , "  SDL_FRect *arg2"
@@ -188,7 +193,9 @@ hs_bindgen_a9f520f11e166938
   -> BG.Ptr SDL_FRect
   -> IO ()
 hs_bindgen_a9f520f11e166938 =
-  BG.fromFFIType hs_bindgen_a9f520f11e166938_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_a9f520f11e166938_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Convert an 'SDL_Rect' to 'SDL_FRect'
 --
@@ -214,7 +221,7 @@ foreign import ccall safe "hs_bindgen_7c0acf8d07c0c1dd"
   hs_bindgen_7c0acf8d07c0c1dd_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_PointInRect@
 hs_bindgen_7c0acf8d07c0c1dd
@@ -222,7 +229,9 @@ hs_bindgen_7c0acf8d07c0c1dd
   -> PtrConst.PtrConst SDL_Rect
   -> IO BG.CBool
 hs_bindgen_7c0acf8d07c0c1dd =
-  BG.fromFFIType hs_bindgen_7c0acf8d07c0c1dd_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_7c0acf8d07c0c1dd_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Determine whether a point resides inside a rectangle.
 --
@@ -253,14 +262,15 @@ sDL_PointInRect = hs_bindgen_7c0acf8d07c0c1dd
 foreign import ccall safe "hs_bindgen_7298326168509737"
   hs_bindgen_7298326168509737_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_RectEmpty@
 hs_bindgen_7298326168509737
   :: PtrConst.PtrConst SDL_Rect
   -> IO BG.CBool
 hs_bindgen_7298326168509737 =
-  BG.fromFFIType hs_bindgen_7298326168509737_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_7298326168509737_base (BG.toFFIType x0))
 
 -- | Determine whether a rectangle has no area.
 --
@@ -288,7 +298,7 @@ foreign import ccall safe "hs_bindgen_d40e366324ea8c2f"
   hs_bindgen_d40e366324ea8c2f_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_RectsEqual@
 hs_bindgen_d40e366324ea8c2f
@@ -296,7 +306,9 @@ hs_bindgen_d40e366324ea8c2f
   -> PtrConst.PtrConst SDL_Rect
   -> IO BG.CBool
 hs_bindgen_d40e366324ea8c2f =
-  BG.fromFFIType hs_bindgen_d40e366324ea8c2f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_d40e366324ea8c2f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Determine whether two rectangles are equal.
 --
@@ -328,7 +340,7 @@ foreign import ccall safe "hs_bindgen_b2eda76752d2c711"
   hs_bindgen_b2eda76752d2c711_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_HasRectIntersection@
 hs_bindgen_b2eda76752d2c711
@@ -336,7 +348,9 @@ hs_bindgen_b2eda76752d2c711
   -> PtrConst.PtrConst SDL_Rect
   -> IO BG.CBool
 hs_bindgen_b2eda76752d2c711 =
-  BG.fromFFIType hs_bindgen_b2eda76752d2c711_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b2eda76752d2c711_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Determine whether two rectangles intersect.
 --
@@ -369,7 +383,7 @@ foreign import ccall safe "hs_bindgen_808b8181f3c8f0c7"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_GetRectIntersection@
 hs_bindgen_808b8181f3c8f0c7
@@ -378,7 +392,12 @@ hs_bindgen_808b8181f3c8f0c7
   -> BG.Ptr SDL_Rect
   -> IO BG.CBool
 hs_bindgen_808b8181f3c8f0c7 =
-  BG.fromFFIType hs_bindgen_808b8181f3c8f0c7_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_808b8181f3c8f0c7_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Calculate the intersection of two rectangles.
 --
@@ -415,7 +434,7 @@ foreign import ccall safe "hs_bindgen_44114d292c0406e2"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_GetRectUnion@
 hs_bindgen_44114d292c0406e2
@@ -424,7 +443,12 @@ hs_bindgen_44114d292c0406e2
   -> BG.Ptr SDL_Rect
   -> IO BG.CBool
 hs_bindgen_44114d292c0406e2 =
-  BG.fromFFIType hs_bindgen_44114d292c0406e2_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_44114d292c0406e2_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Calculate the union of two rectangles.
 --
@@ -455,10 +479,10 @@ sDL_GetRectUnion = hs_bindgen_44114d292c0406e2
 foreign import ccall safe "hs_bindgen_b02c8a352859e75c"
   hs_bindgen_b02c8a352859e75c_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_GetRectEnclosingPoints@
 hs_bindgen_b02c8a352859e75c
@@ -468,7 +492,18 @@ hs_bindgen_b02c8a352859e75c
   -> BG.Ptr SDL_Rect
   -> IO BG.CBool
 hs_bindgen_b02c8a352859e75c =
-  BG.fromFFIType hs_bindgen_b02c8a352859e75c_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_b02c8a352859e75c_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Calculate a minimal rectangle enclosing a set of points.
 --
@@ -510,7 +545,7 @@ foreign import ccall safe "hs_bindgen_1319bb78d8d2e643"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_GetRectAndLineIntersection@
 hs_bindgen_1319bb78d8d2e643
@@ -521,7 +556,20 @@ hs_bindgen_1319bb78d8d2e643
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_1319bb78d8d2e643 =
-  BG.fromFFIType hs_bindgen_1319bb78d8d2e643_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_1319bb78d8d2e643_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Calculate the intersection of a rectangle and line segment.
 --
@@ -564,7 +612,7 @@ foreign import ccall safe "hs_bindgen_db89e1c0a4060064"
   hs_bindgen_db89e1c0a4060064_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_PointInRectFloat@
 hs_bindgen_db89e1c0a4060064
@@ -572,7 +620,9 @@ hs_bindgen_db89e1c0a4060064
   -> PtrConst.PtrConst SDL_FRect
   -> IO BG.CBool
 hs_bindgen_db89e1c0a4060064 =
-  BG.fromFFIType hs_bindgen_db89e1c0a4060064_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_db89e1c0a4060064_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Determine whether a point resides inside a floating point rectangle.
 --
@@ -603,14 +653,15 @@ sDL_PointInRectFloat = hs_bindgen_db89e1c0a4060064
 foreign import ccall safe "hs_bindgen_cf687f22e3772d43"
   hs_bindgen_cf687f22e3772d43_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_RectEmptyFloat@
 hs_bindgen_cf687f22e3772d43
   :: PtrConst.PtrConst SDL_FRect
   -> IO BG.CBool
 hs_bindgen_cf687f22e3772d43 =
-  BG.fromFFIType hs_bindgen_cf687f22e3772d43_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_cf687f22e3772d43_base (BG.toFFIType x0))
 
 -- | Determine whether a floating point rectangle takes no space.
 --
@@ -638,8 +689,8 @@ foreign import ccall safe "hs_bindgen_ffb7b7aa2884662e"
   hs_bindgen_ffb7b7aa2884662e_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_RectsEqualEpsilon@
 hs_bindgen_ffb7b7aa2884662e
@@ -648,7 +699,12 @@ hs_bindgen_ffb7b7aa2884662e
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_ffb7b7aa2884662e =
-  BG.fromFFIType hs_bindgen_ffb7b7aa2884662e_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_ffb7b7aa2884662e_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Determine whether two floating point rectangles are equal, within some given epsilon.
 --
@@ -686,7 +742,7 @@ foreign import ccall safe "hs_bindgen_16841c4903715a15"
   hs_bindgen_16841c4903715a15_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_RectsEqualFloat@
 hs_bindgen_16841c4903715a15
@@ -694,7 +750,9 @@ hs_bindgen_16841c4903715a15
   -> PtrConst.PtrConst SDL_FRect
   -> IO BG.CBool
 hs_bindgen_16841c4903715a15 =
-  BG.fromFFIType hs_bindgen_16841c4903715a15_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_16841c4903715a15_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Determine whether two floating point rectangles are equal, within a default epsilon.
 --
@@ -728,7 +786,7 @@ foreign import ccall safe "hs_bindgen_4ccee9871e6b2122"
   hs_bindgen_4ccee9871e6b2122_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_HasRectIntersectionFloat@
 hs_bindgen_4ccee9871e6b2122
@@ -736,7 +794,9 @@ hs_bindgen_4ccee9871e6b2122
   -> PtrConst.PtrConst SDL_FRect
   -> IO BG.CBool
 hs_bindgen_4ccee9871e6b2122 =
-  BG.fromFFIType hs_bindgen_4ccee9871e6b2122_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4ccee9871e6b2122_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Determine whether two rectangles intersect with float precision.
 --
@@ -770,7 +830,7 @@ foreign import ccall safe "hs_bindgen_73c245953e392b8b"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_GetRectIntersectionFloat@
 hs_bindgen_73c245953e392b8b
@@ -779,7 +839,12 @@ hs_bindgen_73c245953e392b8b
   -> BG.Ptr SDL_FRect
   -> IO BG.CBool
 hs_bindgen_73c245953e392b8b =
-  BG.fromFFIType hs_bindgen_73c245953e392b8b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_73c245953e392b8b_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Calculate the intersection of two rectangles with float precision.
 --
@@ -817,7 +882,7 @@ foreign import ccall safe "hs_bindgen_26df11f6f3486748"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_GetRectUnionFloat@
 hs_bindgen_26df11f6f3486748
@@ -826,7 +891,12 @@ hs_bindgen_26df11f6f3486748
   -> BG.Ptr SDL_FRect
   -> IO BG.CBool
 hs_bindgen_26df11f6f3486748 =
-  BG.fromFFIType hs_bindgen_26df11f6f3486748_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_26df11f6f3486748_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Calculate the union of two rectangles with float precision.
 --
@@ -857,10 +927,10 @@ sDL_GetRectUnionFloat = hs_bindgen_26df11f6f3486748
 foreign import ccall safe "hs_bindgen_c543abfe8b881179"
   hs_bindgen_c543abfe8b881179_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_GetRectEnclosingPointsFloat@
 hs_bindgen_c543abfe8b881179
@@ -870,7 +940,18 @@ hs_bindgen_c543abfe8b881179
   -> BG.Ptr SDL_FRect
   -> IO BG.CBool
 hs_bindgen_c543abfe8b881179 =
-  BG.fromFFIType hs_bindgen_c543abfe8b881179_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_c543abfe8b881179_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Calculate a minimal rectangle enclosing a set of points with float precision.
 --
@@ -912,7 +993,7 @@ foreign import ccall safe "hs_bindgen_274c31df17fcabf9"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Rect_Safe_SDL_GetRectAndLineIntersectionFloat@
 hs_bindgen_274c31df17fcabf9
@@ -923,7 +1004,20 @@ hs_bindgen_274c31df17fcabf9
   -> BG.Ptr BG.CFloat
   -> IO BG.CBool
 hs_bindgen_274c31df17fcabf9 =
-  BG.fromFFIType hs_bindgen_274c31df17fcabf9_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_274c31df17fcabf9_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Calculate the intersection of a rectangle and line segment with float precision.
 --

@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Header file for SDL HIDAPI functions.
 --
 --     This is an adaptation of the original HIDAPI interface by Alan Ott, and includes source code licensed under the following license:
@@ -79,6 +81,7 @@ module SDL3.Sys.Hidapi (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

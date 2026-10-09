@@ -18,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module Mpv.Sys.Bindgen.Client (
   Mpv.Sys.Bindgen.Client.mPV_MAKE_VERSION,
@@ -107,12 +108,15 @@ module Mpv.Sys.Bindgen.Client (
 )
 where
 
+import Prelude (Eq, Int, Ord, Read, Show, pure, (<*>), (>>), type (~))
+
 import C.Expr.HostPlatform qualified
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import HsBindgen.Runtime.Union qualified as Union
@@ -741,7 +745,11 @@ instance
   => BG.CompatHasField.HasField "string" Mpv_node_u ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"string" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"string" x0
+      )
 
 instance
   (ty ~ BG.Ptr BG.CChar)
@@ -765,7 +773,11 @@ instance (ty ~ BG.CInt) => BG.HasField "flag" Mpv_node_u ty where
 --     [C declaration]: @flag@, defined at @mpv\/client.h 767:13@
 instance (ty ~ BG.CInt) => BG.CompatHasField.HasField "flag" Mpv_node_u ty where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"flag" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"flag" x0
+      )
 
 instance
   (ty ~ BG.CInt)
@@ -795,7 +807,11 @@ instance
   => BG.CompatHasField.HasField "int64" Mpv_node_u ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"int64" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"int64" x0
+      )
 
 instance
   (ty ~ HsBindgen.Runtime.LibC.Int64)
@@ -825,7 +841,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"double_" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"double_" x0
+      )
 
 instance
   (ty ~ BG.CDouble)
@@ -852,7 +871,11 @@ instance
   => BG.CompatHasField.HasField "list" Mpv_node_u ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"list" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"list" x0
+      )
 
 instance
   (ty ~ BG.Ptr Mpv_node_list)
@@ -881,7 +904,11 @@ instance
   => BG.CompatHasField.HasField "ba" Mpv_node_u ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"ba" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"ba" x0
+      )
 
 instance
   (ty ~ BG.Ptr Mpv_byte_array)
@@ -938,6 +965,9 @@ instance Marshal.WriteRaw Mpv_node where
 
 deriving via Marshal.EquivStorable Mpv_node instance BG.Storable Mpv_node
 
+deriving via Struct.IsStructViaReadRaw Mpv_node instance Struct.IsStruct Mpv_node
+
+-- | [C declaration]: @u@, defined at @mpv\/client.h 779:7@
 instance (ty ~ Mpv_node_u) => BG.CompatHasField.HasField "u" Mpv_node ty where
   hasField =
     \x0 ->
@@ -957,6 +987,13 @@ instance HasCField.HasCField Mpv_node "u" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Type of the data stored in this struct. This value rules what members in the given union can be accessed. The following formats are currently defined to be allowed in 'Mpv_node':
+--
+--     MPV_FORMAT_STRING (u.string) MPV_FORMAT_FLAG (u.flag) MPV_FORMAT_INT64 (u.int64) MPV_FORMAT_DOUBLE (u.double_) MPV_FORMAT_NODE_ARRAY (u.list) MPV_FORMAT_NODE_MAP (u.list) MPV_FORMAT_BYTE_ARRAY (u.ba) MPV_FORMAT_NONE (no member)
+--
+--     If you encounter a value you don\'t know, you must not make any assumptions about the contents of union u.
+--
+--     [C declaration]: @format@, defined at @mpv\/client.h 797:16@
 instance
   (ty ~ Mpv_format)
   => BG.CompatHasField.HasField "format" Mpv_node ty
@@ -1029,6 +1066,11 @@ instance Marshal.WriteRaw Mpv_node_list where
 
 deriving via Marshal.EquivStorable Mpv_node_list instance BG.Storable Mpv_node_list
 
+deriving via Struct.IsStructViaReadRaw Mpv_node_list instance Struct.IsStruct Mpv_node_list
+
+-- | Number of entries. Negative values are not allowed.
+--
+--     [C declaration]: @num@, defined at @mpv\/client.h 807:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "num" Mpv_node_list ty
@@ -1051,6 +1093,13 @@ instance HasCField.HasCField Mpv_node_list "num" where
 
   offset# = \_ -> \_ -> 0
 
+-- | MPV_FORMAT_NODE_ARRAY: values[N] refers to value of the Nth item
+--
+--     MPV_FORMAT_NODE_MAP: values[N] refers to value of the Nth key\/value pair
+--
+--     If num > 0, values[0] to values[num-1] (inclusive) are valid. Otherwise, this can be NULL.
+--
+--     [C declaration]: @values@, defined at @mpv\/client.h 818:15@
 instance
   (ty ~ BG.Ptr Mpv_node)
   => BG.CompatHasField.HasField "values" Mpv_node_list ty
@@ -1075,6 +1124,11 @@ instance HasCField.HasCField Mpv_node_list "values" where
 
   offset# = \_ -> \_ -> 8
 
+-- | MPV_FORMAT_NODE_ARRAY: unused (typically NULL), access is not allowed
+--
+--     MPV_FORMAT_NODE_MAP: keys[N] refers to key of the Nth key\/value pair. If num > 0, keys[0] to keys[num-1] (inclusive) are valid. Otherwise, this can be NULL. The keys are in random order. The only guarantee is that keys[N] belongs to the value values[N]. NULL keys are not allowed.
+--
+--     [C declaration]: @keys@, defined at @mpv\/client.h 829:12@
 instance
   (ty ~ BG.Ptr (BG.Ptr BG.CChar))
   => BG.CompatHasField.HasField "keys" Mpv_node_list ty
@@ -1137,6 +1191,11 @@ instance Marshal.WriteRaw Mpv_byte_array where
 
 deriving via Marshal.EquivStorable Mpv_byte_array instance BG.Storable Mpv_byte_array
 
+deriving via Struct.IsStructViaReadRaw Mpv_byte_array instance Struct.IsStruct Mpv_byte_array
+
+-- | Pointer to the data. In what format the data is stored is up to whatever uses MPV_FORMAT_BYTE_ARRAY.
+--
+--     [C declaration]: @data@, defined at @mpv\/client.h 840:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "data'" Mpv_byte_array ty
@@ -1161,6 +1220,9 @@ instance HasCField.HasCField Mpv_byte_array "data'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Size of the data pointed to by ptr.
+--
+--     [C declaration]: @size@, defined at @mpv\/client.h 844:12@
 instance
   (ty ~ HsBindgen.Runtime.LibC.CSize)
   => BG.CompatHasField.HasField "size" Mpv_byte_array ty
@@ -1408,6 +1470,14 @@ instance Marshal.WriteRaw Mpv_event_property where
 
 deriving via Marshal.EquivStorable Mpv_event_property instance BG.Storable Mpv_event_property
 
+deriving via
+  Struct.IsStructViaReadRaw Mpv_event_property
+  instance
+    Struct.IsStruct Mpv_event_property
+
+-- | Name of the property.
+--
+--     [C declaration]: @name@, defined at @mpv\/client.h 1394:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "name" Mpv_event_property ty
@@ -1432,6 +1502,9 @@ instance HasCField.HasCField Mpv_event_property "name" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Format of the data field in the same struct. See enum 'Mpv_format'. This is always the same format as the requested format, except when the property could not be retrieved (unavailable, or an error happened), in which case the format is MPV_FORMAT_NONE.
+--
+--     [C declaration]: @format@, defined at @mpv\/client.h 1401:16@
 instance
   (ty ~ Mpv_format)
   => BG.CompatHasField.HasField "format" Mpv_event_property ty
@@ -1456,6 +1529,15 @@ instance HasCField.HasCField Mpv_event_property "format" where
 
   offset# = \_ -> \_ -> 8
 
+-- | Received property value. Depends on the format. This is like the pointer argument passed to @mpv_get_property()@.
+--
+--     For example, for MPV_FORMAT_STRING you get the string with:
+--
+--     char *value = *(char **)(event_property->data);
+--
+--     Note that this is set to NULL if retrieving the property failed (the format will be MPV_FORMAT_NONE).
+--
+--     [C declaration]: @data@, defined at @mpv\/client.h 1413:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "data'" Mpv_event_property ty
@@ -1664,6 +1746,14 @@ instance Marshal.WriteRaw Mpv_event_log_message where
 
 deriving via Marshal.EquivStorable Mpv_event_log_message instance BG.Storable Mpv_event_log_message
 
+deriving via
+  Struct.IsStructViaReadRaw Mpv_event_log_message
+  instance
+    Struct.IsStruct Mpv_event_log_message
+
+-- | The module prefix, identifies the sender of the message. As a special case, if the message buffer overflows, this will be set to the string \"overflow\" (which doesn\'t appear as prefix otherwise), and the text field will contain an informative message.
+--
+--     [C declaration]: @prefix@, defined at @mpv\/client.h 1441:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "prefix" Mpv_event_log_message ty
@@ -1693,6 +1783,9 @@ instance HasCField.HasCField Mpv_event_log_message "prefix" where
 
   offset# = \_ -> \_ -> 0
 
+-- | The log level as string. See @mpv_request_log_messages()@ for possible values. The level \"no\" is never used here.
+--
+--     [C declaration]: @level@, defined at @mpv\/client.h 1446:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "level" Mpv_event_log_message ty
@@ -1722,6 +1815,9 @@ instance HasCField.HasCField Mpv_event_log_message "level" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The log message. It consists of 1 line of text, and is terminated with a newline character. (Before API version 1.6, it could contain multiple or partial lines.)
+--
+--     [C declaration]: @text@, defined at @mpv\/client.h 1452:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "text" Mpv_event_log_message ty
@@ -1751,6 +1847,9 @@ instance HasCField.HasCField Mpv_event_log_message "text" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The same contents as the level field, but as a numeric ID. Since API version 1.6.
+--
+--     [C declaration]: @log_level@, defined at @mpv\/client.h 1457:19@
 instance
   (ty ~ Mpv_log_level)
   => BG.CompatHasField.HasField "log_level" Mpv_event_log_message ty
@@ -1933,6 +2032,14 @@ instance Marshal.WriteRaw Mpv_event_start_file where
 
 deriving via Marshal.EquivStorable Mpv_event_start_file instance BG.Storable Mpv_event_start_file
 
+deriving via
+  Struct.IsStructViaReadRaw Mpv_event_start_file
+  instance
+    Struct.IsStruct Mpv_event_start_file
+
+-- | Playlist entry ID of the file being loaded now.
+--
+--     [C declaration]: @playlist_entry_id@, defined at @mpv\/client.h 1501:13@
 instance
   (ty ~ HsBindgen.Runtime.LibC.Int64)
   => BG.CompatHasField.HasField "playlist_entry_id" Mpv_event_start_file ty
@@ -2019,6 +2126,16 @@ instance Marshal.WriteRaw Mpv_event_end_file where
 
 deriving via Marshal.EquivStorable Mpv_event_end_file instance BG.Storable Mpv_event_end_file
 
+deriving via
+  Struct.IsStructViaReadRaw Mpv_event_end_file
+  instance
+    Struct.IsStruct Mpv_event_end_file
+
+-- | Corresponds to the values in enum 'Mpv_end_file_reason'.
+--
+--     Unknown values should be treated as unknown.
+--
+--     [C declaration]: @reason@, defined at @mpv\/client.h 1510:25@
 instance
   (ty ~ Mpv_end_file_reason)
   => BG.CompatHasField.HasField "reason" Mpv_event_end_file ty
@@ -2049,6 +2166,9 @@ instance HasCField.HasCField Mpv_event_end_file "reason" where
 
   offset# = \_ -> \_ -> 0
 
+-- | If reason==MPV_END_FILE_REASON_ERROR, this contains a mpv error code (one of MPV_ERROR_...) giving an approximate reason why playback failed. In other cases, this field is 0 (no error). Since API version 1.9.
+--
+--     [C declaration]: @error@, defined at @mpv\/client.h 1517:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "error" Mpv_event_end_file ty
@@ -2077,6 +2197,9 @@ instance HasCField.HasCField Mpv_event_end_file "error" where
 
   offset# = \_ -> \_ -> 4
 
+-- | Playlist entry ID of the file that was being played or attempted to be played. This has the same value as the playlist_entry_id field in the corresponding 'Mpv_event_start_file' event. Since API version 1.108.
+--
+--     [C declaration]: @playlist_entry_id@, defined at @mpv\/client.h 1524:13@
 instance
   (ty ~ HsBindgen.Runtime.LibC.Int64)
   => BG.CompatHasField.HasField "playlist_entry_id" Mpv_event_end_file ty
@@ -2108,6 +2231,9 @@ instance HasCField.HasCField Mpv_event_end_file "playlist_entry_id" where
 
   offset# = \_ -> \_ -> 8
 
+-- | If loading ended, because the playlist entry to be played was for example a playlist, and the current playlist entry is replaced with a number of other entries. This may happen at least with MPV_END_FILE_REASON_REDIRECT (other event types may use this for similar but different purposes in the future). In this case, playlist_insert_id will be set to the playlist entry ID of the first inserted entry, and playlist_insert_num_entries to the total number of inserted playlist entries. Note this in this specific case, the ID of the last inserted entry is playlist_insert_id+num-1. Beware that depending on circumstances, you may observe the new playlist entries before seeing the event (e.g. reading the \"playlist\" property or getting a property change notification before receiving the event). Since API version 1.108.
+--
+--     [C declaration]: @playlist_insert_id@, defined at @mpv\/client.h 1539:13@
 instance
   (ty ~ HsBindgen.Runtime.LibC.Int64)
   => BG.CompatHasField.HasField "playlist_insert_id" Mpv_event_end_file ty
@@ -2139,6 +2265,9 @@ instance HasCField.HasCField Mpv_event_end_file "playlist_insert_id" where
 
   offset# = \_ -> \_ -> 16
 
+-- | See playlist_insert_id. Only non-0 if playlist_insert_id is valid. Never negative. Since API version 1.108.
+--
+--     [C declaration]: @playlist_insert_num_entries@, defined at @mpv\/client.h 1545:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "playlist_insert_num_entries" Mpv_event_end_file ty
@@ -2207,6 +2336,14 @@ deriving via
   instance
     BG.Storable Mpv_event_client_message
 
+deriving via
+  Struct.IsStructViaReadRaw Mpv_event_client_message
+  instance
+    Struct.IsStruct Mpv_event_client_message
+
+-- | Arbitrary arguments chosen by the sender of the message. If num_args > 0, you can access args[0] through args[num_args - 1] (inclusive). What these arguments mean is up to the sender and receiver. None of the valid items are NULL.
+--
+--     [C declaration]: @num_args@, defined at @mpv\/client.h 1555:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "num_args" Mpv_event_client_message ty
@@ -2231,6 +2368,7 @@ instance HasCField.HasCField Mpv_event_client_message "num_args" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @args@, defined at @mpv\/client.h 1556:18@
 instance
   (ty ~ BG.Ptr (PtrConst.PtrConst BG.CChar))
   => BG.CompatHasField.HasField "args" Mpv_event_client_message ty
@@ -2291,6 +2429,11 @@ instance Marshal.WriteRaw Mpv_event_hook where
 
 deriving via Marshal.EquivStorable Mpv_event_hook instance BG.Storable Mpv_event_hook
 
+deriving via Struct.IsStructViaReadRaw Mpv_event_hook instance Struct.IsStruct Mpv_event_hook
+
+-- | The hook name as passed to @mpv_hook_add()@.
+--
+--     [C declaration]: @name@, defined at @mpv\/client.h 1563:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "name" Mpv_event_hook ty
@@ -2315,6 +2458,9 @@ instance HasCField.HasCField Mpv_event_hook "name" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Internal ID that must be passed to @mpv_hook_continue()@.
+--
+--     [C declaration]: @id@, defined at @mpv\/client.h 1567:14@
 instance
   (ty ~ HsBindgen.Runtime.LibC.Word64)
   => BG.CompatHasField.HasField "id" Mpv_event_hook ty
@@ -2369,6 +2515,11 @@ instance Marshal.WriteRaw Mpv_event_command where
 
 deriving via Marshal.EquivStorable Mpv_event_command instance BG.Storable Mpv_event_command
 
+deriving via Struct.IsStructViaReadRaw Mpv_event_command instance Struct.IsStruct Mpv_event_command
+
+-- | Result data of the command. Note that success\/failure is signaled separately via @mpv_event.error@. This field is only for result data in case of success. Most commands leave it at MPV_FORMAT_NONE. Set to MPV_FORMAT_NONE on failure.
+--
+--     [C declaration]: @result@, defined at @mpv\/client.h 1578:14@
 instance
   (ty ~ Mpv_node)
   => BG.CompatHasField.HasField "result" Mpv_event_command ty
@@ -2441,6 +2592,11 @@ instance Marshal.WriteRaw Mpv_event where
 
 deriving via Marshal.EquivStorable Mpv_event instance BG.Storable Mpv_event
 
+deriving via Struct.IsStructViaReadRaw Mpv_event instance Struct.IsStruct Mpv_event
+
+-- | One of 'Mpv_event'. Keep in mind that later ABI compatible releases might add new event types. These should be ignored by the API user.
+--
+--     [C declaration]: @event_id@, defined at @mpv\/client.h 1586:18@
 instance
   (ty ~ Mpv_event_id)
   => BG.CompatHasField.HasField "event_id" Mpv_event ty
@@ -2468,6 +2624,9 @@ instance HasCField.HasCField Mpv_event "event_id" where
 
   offset# = \_ -> \_ -> 0
 
+-- | This is mainly used for events that are replies to (asynchronous) requests. It contains a status code, which is >= 0 on success, or \< 0 on error (a 'Mpv_error' value). Usually, this will be set if an asynchronous request fails. Used for: MPV_EVENT_GET_PROPERTY_REPLY MPV_EVENT_SET_PROPERTY_REPLY MPV_EVENT_COMMAND_REPLY
+--
+--     [C declaration]: @error@, defined at @mpv\/client.h 1597:9@
 instance (ty ~ BG.CInt) => BG.CompatHasField.HasField "error" Mpv_event ty where
   hasField =
     \x0 ->
@@ -2492,6 +2651,9 @@ instance HasCField.HasCField Mpv_event "error" where
 
   offset# = \_ -> \_ -> 4
 
+-- | If the event is in reply to a request (made with this API and this API handle), this is set to the reply_userdata parameter of the request call. Otherwise, this field is 0. Used for: MPV_EVENT_GET_PROPERTY_REPLY MPV_EVENT_SET_PROPERTY_REPLY MPV_EVENT_COMMAND_REPLY MPV_EVENT_PROPERTY_CHANGE MPV_EVENT_HOOK
+--
+--     [C declaration]: @reply_userdata@, defined at @mpv\/client.h 1609:14@
 instance
   (ty ~ HsBindgen.Runtime.LibC.Word64)
   => BG.CompatHasField.HasField "reply_userdata" Mpv_event ty
@@ -2522,6 +2684,11 @@ instance HasCField.HasCField Mpv_event "reply_userdata" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The meaning and contents of the data member depend on the event_id: MPV_EVENT_GET_PROPERTY_REPLY: mpv_event_property* MPV_EVENT_PROPERTY_CHANGE: mpv_event_property* MPV_EVENT_LOG_MESSAGE: mpv_event_log_message* MPV_EVENT_CLIENT_MESSAGE: mpv_event_client_message* MPV_EVENT_START_FILE: mpv_event_start_file* (since v1.108) MPV_EVENT_END_FILE: mpv_event_end_file* MPV_EVENT_HOOK: mpv_event_hook* MPV_EVENT_COMMAND_REPLY* mpv_event_command* other: NULL
+--
+--     Note: future enhancements might add new event structs for existing or new event types.
+--
+--     [C declaration]: @data@, defined at @mpv\/client.h 1625:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "data'" Mpv_event ty

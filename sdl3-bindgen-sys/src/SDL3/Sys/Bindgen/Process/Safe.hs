@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Process.Safe (
@@ -15,6 +17,8 @@ module SDL3.Sys.Bindgen.Process.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
@@ -25,7 +29,8 @@ import SDL3.Sys.Bindgen.Properties qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_process.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_process.h>"
          , "SDL_Process *hs_bindgen_e9112645fd8bb3e7 ("
          , "  char const *const *arg1,"
          , "  _Bool arg2"
@@ -94,7 +99,7 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 foreign import ccall safe "hs_bindgen_e9112645fd8bb3e7"
   hs_bindgen_e9112645fd8bb3e7_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Process_Safe_SDL_CreateProcess@
@@ -103,7 +108,9 @@ hs_bindgen_e9112645fd8bb3e7
   -> BG.CBool
   -> IO (BG.Ptr SDL_Process)
 hs_bindgen_e9112645fd8bb3e7 =
-  BG.fromFFIType hs_bindgen_e9112645fd8bb3e7_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_e9112645fd8bb3e7_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Create a new process.
 --
@@ -141,7 +148,7 @@ sDL_CreateProcess = hs_bindgen_e9112645fd8bb3e7
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Process_Safe_SDL_CreateProcessWithProperties@
 foreign import ccall safe "hs_bindgen_4f99e30fc1a0d086"
   hs_bindgen_4f99e30fc1a0d086_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Process_Safe_SDL_CreateProcessWithProperties@
@@ -149,7 +156,8 @@ hs_bindgen_4f99e30fc1a0d086
   :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -> IO (BG.Ptr SDL_Process)
 hs_bindgen_4f99e30fc1a0d086 =
-  BG.fromFFIType hs_bindgen_4f99e30fc1a0d086_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4f99e30fc1a0d086_base (BG.toFFIType x0))
 
 -- | Create a new process with the specified properties.
 --
@@ -203,14 +211,15 @@ sDL_CreateProcessWithProperties =
 foreign import ccall safe "hs_bindgen_761eafcfd938f5f3"
   hs_bindgen_761eafcfd938f5f3_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Process_Safe_SDL_GetProcessProperties@
 hs_bindgen_761eafcfd938f5f3
   :: BG.Ptr SDL_Process
   -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
 hs_bindgen_761eafcfd938f5f3 =
-  BG.fromFFIType hs_bindgen_761eafcfd938f5f3_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_761eafcfd938f5f3_base (BG.toFFIType x0))
 
 -- | Get the properties associated with a process.
 --
@@ -259,7 +268,12 @@ hs_bindgen_2cc49ec5272098a4
   -> BG.Ptr BG.CInt
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_2cc49ec5272098a4 =
-  BG.fromFFIType hs_bindgen_2cc49ec5272098a4_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_2cc49ec5272098a4_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Read all the output from a process.
 --
@@ -305,7 +319,8 @@ hs_bindgen_0f1c12a4756fb56e
   :: BG.Ptr SDL_Process
   -> IO (BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream)
 hs_bindgen_0f1c12a4756fb56e =
-  BG.fromFFIType hs_bindgen_0f1c12a4756fb56e_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_0f1c12a4756fb56e_base (BG.toFFIType x0))
 
 -- | Get the SDL_IOStream associated with process standard input.
 --
@@ -341,7 +356,8 @@ hs_bindgen_3e1d1e2fdc78eb7a
   :: BG.Ptr SDL_Process
   -> IO (BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream)
 hs_bindgen_3e1d1e2fdc78eb7a =
-  BG.fromFFIType hs_bindgen_3e1d1e2fdc78eb7a_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3e1d1e2fdc78eb7a_base (BG.toFFIType x0))
 
 -- | Get the SDL_IOStream associated with process standard output.
 --
@@ -370,8 +386,8 @@ sDL_GetProcessOutput = hs_bindgen_3e1d1e2fdc78eb7a
 foreign import ccall safe "hs_bindgen_b1711a43b4568e6a"
   hs_bindgen_b1711a43b4568e6a_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Process_Safe_SDL_KillProcess@
 hs_bindgen_b1711a43b4568e6a
@@ -379,7 +395,9 @@ hs_bindgen_b1711a43b4568e6a
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_b1711a43b4568e6a =
-  BG.fromFFIType hs_bindgen_b1711a43b4568e6a_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b1711a43b4568e6a_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Stop a process.
 --
@@ -408,9 +426,9 @@ sDL_KillProcess = hs_bindgen_b1711a43b4568e6a
 foreign import ccall safe "hs_bindgen_35fc3739c88d9909"
   hs_bindgen_35fc3739c88d9909_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Process_Safe_SDL_WaitProcess@
 hs_bindgen_35fc3739c88d9909
@@ -419,7 +437,12 @@ hs_bindgen_35fc3739c88d9909
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_35fc3739c88d9909 =
-  BG.fromFFIType hs_bindgen_35fc3739c88d9909_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_35fc3739c88d9909_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Wait for a process to finish.
 --
@@ -465,7 +488,8 @@ hs_bindgen_6754e69c7206382f
   :: BG.Ptr SDL_Process
   -> IO ()
 hs_bindgen_6754e69c7206382f =
-  BG.fromFFIType hs_bindgen_6754e69c7206382f_base
+  \x0 ->
+    hs_bindgen_6754e69c7206382f_base (BG.toFFIType x0)
 
 -- | Destroy a previously created process object.
 --

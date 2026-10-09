@@ -13,7 +13,6 @@ module Lithon.Codegen.Bindgen.Target.Sdl3 (
 
   -- * Platform shims (pinned by the platform-shim tests)
   stubEditsFor,
-  textEditsFor,
 ) where
 
 import Data.Text qualified as T
@@ -54,7 +53,15 @@ sdl3 =
     , parse =
         ParseEnv
           { -- @SDL_MAIN_HANDLED@ keeps @SDL_main.h@ from planting its
-            -- @#define main@ hijack (the declarations remain).
+            -- @#define main@ hijack (the declarations remain): without it,
+            -- Windows\/mobile headers compile a real entry point into the
+            -- wrapper object (guaranteed link failure). It has to precede
+            -- @#include <SDL3/SDL_main.h>@ (the header tests it with
+            -- @#ifndef@); as a root directive it does, because the seam
+            -- (@Lithon.HsBindgen.Invoke.runBindgen@) lists the defines before
+            -- the includes and hs-bindgen renders the root directives, in
+            -- order, at the top of every wrapper translation unit. Harmless
+            -- where @SDL_main.h@ leaves @main@ alone.
             defines = [CDefine{name = "SDL_MAIN_HANDLED", value = Nothing}]
           , -- SDL's Doxyfile defines \threadsafety; without the alias doxygen
             -- passes the command through as literal text and every function doc
@@ -143,7 +150,10 @@ platformShims :: Passes
 platformShims =
   Passes
     { stubEdits = \unit _arts -> stubEditsFor unit.headerName
-    , textEdits = \unit _arts -> textEditsFor unit.headerName
+    , -- No rendered-text shim remains: the define SDL needed ahead of the
+      -- @SDL_main.h@ include is a root directive now (see @parse.defines@
+      -- in 'sdl3').
+      textEdits = \_ _ -> []
     }
 
 -- | Platform forward-compat shims by header, as data; the seam owns the
@@ -196,25 +206,6 @@ stubEditsFor = \case
         , "#endif"
         ]
     ]
-
--- | Rendered-text shims by header — the escape hatch for edits the
--- wrapper model cannot express. @SDL_main.h@: without @SDL_MAIN_HANDLED@
--- defined BEFORE the include, Windows\/mobile headers @#define main
--- SDL_main@ and compile a real entry point into the wrapper object
--- (guaranteed link failure); the wrapper renderer emits all includes
--- before any body text, so the define has no structural home. Harmless
--- elsewhere.
-textEditsFor :: FilePath -> [HB.TextEdit]
-textEditsFor = \case
-  "SDL_main.h" ->
-    [ HB.TextEdit
-        { label = "SDL_MAIN_HANDLED prologue"
-        , needle = "[ \"#include <SDL3/SDL_main.h>\""
-        , replacement = "[ \"#define SDL_MAIN_HANDLED\"\n  , \"#include <SDL3/SDL_main.h>\""
-        , onMiss = HB.RequireHit
-        }
-    ]
-  _otherHeader -> []
 
 -- | Doxygen leaves SDL-wiki-relative markdown links (@[x](CategoryY)@) as
 -- plain text inside peeled category overviews, where they never become

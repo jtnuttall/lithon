@@ -165,7 +165,7 @@ cFunctionOf decl = case decl.kind of
 -- | A parameter is a callback iff its canonical type is exactly one
 -- pointer to a function
 isCallbackArg :: C.FunctionArg C.Final -> Bool
-isCallbackArg arg = case C.getCanonicalType arg.argTyp.typ of
+isCallbackArg arg = case C.getCanonicalType arg.typ.c of
   C.TypePointers 1 (C.TypeFun _ _) -> True
   _notACallback -> False
 
@@ -353,28 +353,27 @@ renderAliasModule target rewriteMap aliasModule =
  where
   rewrite = rewriteComment target rewriteMap aliasModule.moduleName
   hsModule =
-    HsModule.HsModule
-      { pragmas =
-          -- The constant patterns are emitted as a text block (see
-          -- 'constantsBlock'), so their extension cannot be resolved from
-          -- @decls@ and is added explicitly.
-          Set.toAscList
-            $ Set.fromList
-            $ pragmasFor decls
-            <> [ "LANGUAGE PatternSynonyms"
-               | not (null aliasModule.constants)
-               ]
-      , -- The SDL category overview leads (rewritten so its cross-references
-        -- resolve to curated aliases), followed by the compact conventions
-        -- block; rendered by the same pretty-printer as the Bindgen modules.
-        moduleComment = Just (familyComment target rewrite aliasModule)
-      , name = Hs.ModuleName aliasModule.moduleName
-      , exports
-      , imports
-      , qualifiedStyle = HB.PreQualified
-      , cWrappers = []
-      , decls
-      }
+    HsModule.authoredModule
+      HsModule.AuthoredModule
+        { pragmas =
+            -- The constant patterns are emitted as a text block (see
+            -- 'constantsBlock'), so their extension cannot be resolved from
+            -- @decls@ and is added explicitly.
+            Set.toAscList
+              $ Set.fromList
+              $ pragmasFor decls
+              <> [ "LANGUAGE PatternSynonyms"
+                 | not (null aliasModule.constants)
+                 ]
+        , -- The SDL category overview leads (rewritten so its cross-references
+          -- resolve to curated aliases), followed by the compact conventions
+          -- block; rendered by the same pretty-printer as the Bindgen modules.
+          moduleComment = Just (familyComment target rewrite aliasModule)
+        , name = Hs.ModuleName aliasModule.moduleName
+        , exports
+        , imports
+        , decls
+        }
 
   exports =
     [ HsModule.ExportEntry (HsModule.ExportModule (Hs.ModuleName base))
@@ -512,9 +511,22 @@ bindingDecl target rewrite familyBase b =
 -- types, 'FunPtr' payloads, and struct fields keep their C types.
 data ScalarBridge
   = BridgeBool
-  | -- | Coerce to\/from the given native global; 'CtorScope' names the
+  | -- | Coerce to\/from the given native scalar; 'CtorScope' names the
     -- import that keeps the 'Data.Coerce.Coercible' evidence solvable.
-    BridgeCoerce SHs.BindgenGlobalType (Maybe CtorScope)
+    BridgeCoerce Native (Maybe CtorScope)
+
+-- | A native Haskell scalar the bridge converts to: an equal-width integer
+-- ('NativeScalar', the targets' own width vocabulary) or one of the two
+-- IEEE floats.
+--
+-- hs-bindgen 1.0's 'SHs.BindgenGlobalType' no longer lists the fixed-width
+-- integers or the IEEE floats, so the native twins are the curated layer's to
+-- name; 'nativeType' builds each as a 'SHs.CustomGlobal'.
+data Native
+  = NativeWidth NativeScalar
+  | NativeFloat
+  | NativeDouble
+  deriving stock (Eq, Show)
 
 -- | Which qualified import guarantees the bridged newtype's constructor is
 -- in scope (nothing organic does — see the import note in
@@ -539,52 +551,79 @@ scalarBridge target = \case
   -- @SDL_stdinc.h@ alone, and the toy golden pins a same-named semantic
   -- typedef staying raw.
   SHs.TCon n -> BridgeCoerce <$> widthNative n.text <*> pure Nothing
-  SHs.TExt ref _cTypeSpec _hsTypeSpec
+  SHs.TExt ref
     | Just widthModule <- widthFamilyModule
     , ref.moduleName.text == widthModule ->
         BridgeCoerce <$> widthNative ref.name.text <*> pure (Just (WidthScope widthModule))
     | ref.moduleName.text == "HsBindgen.Runtime.LibC"
     , ref.name.text == "CSize" ->
-        Just (BridgeCoerce SHs.Word64_type (Just LibCScope))
+        Just (BridgeCoerce (NativeWidth NativeWord64) (Just LibCScope))
   _notBridgedScalar -> Nothing
  where
   widthFamilyModule =
     target.widthTypedefs <&> \w -> bindgenNamespaceText target <> "." <> w.family
   widthNative name = do
     w <- target.widthTypedefs
-    nativeGlobal <$> Map.lookup name w.natives
+    NativeWidth <$> Map.lookup name w.natives
 
 -- | @Foreign.C@ scalars and their equal-width native twins. 'CLong' and
 -- 'CULong' are deliberately absent (platform-width; zero occurrences).
-foreignCBridges :: [(SHs.BindgenGlobalType, SHs.BindgenGlobalType)]
+foreignCBridges :: [(SHs.BindgenGlobalType, Native)]
 foreignCBridges =
-  [ (SHs.CFloat_type, SHs.Float_type)
-  , (SHs.CDouble_type, SHs.Double_type)
-  , (SHs.CInt_type, SHs.Int32_type)
-  , (SHs.CUInt_type, SHs.Word32_type)
-  , (SHs.CShort_type, SHs.Int16_type)
-  , (SHs.CUShort_type, SHs.Word16_type)
-  , (SHs.CLLong_type, SHs.Int64_type)
-  , (SHs.CULLong_type, SHs.Word64_type)
+  [ (SHs.CFloat_type, NativeFloat)
+  , (SHs.CDouble_type, NativeDouble)
+  , (SHs.CInt_type, NativeWidth NativeInt32)
+  , (SHs.CUInt_type, NativeWidth NativeWord32)
+  , (SHs.CShort_type, NativeWidth NativeInt16)
+  , (SHs.CUShort_type, NativeWidth NativeWord16)
+  , (SHs.CLLong_type, NativeWidth NativeInt64)
+  , (SHs.CULLong_type, NativeWidth NativeWord64)
   ]
 
--- | A width typedef's equal-width GHC primitive.
-nativeGlobal :: NativeScalar -> SHs.BindgenGlobalType
-nativeGlobal = \case
-  NativeWord8 -> SHs.Word8_type
-  NativeWord16 -> SHs.Word16_type
-  NativeWord32 -> SHs.Word32_type
-  NativeWord64 -> SHs.Word64_type
-  NativeInt8 -> SHs.Int8_type
-  NativeInt16 -> SHs.Int16_type
-  NativeInt32 -> SHs.Int32_type
-  NativeInt64 -> SHs.Int64_type
+-- | The native scalar as a type, in the 'SHs.CustomGlobal' idiom of
+-- 'coerceGlobal' and 'runtimeCBoolGlobal'.
+--
+-- The widths are @HsBindgen.Runtime.Support@ re-exports under the @BG@
+-- alias every generated module already imports it by (the 'Set' of
+-- imports dedupes, and they render as @BG.Int32@); 'Float' and 'Double'
+-- are 'Prelude' names, which 'HsModule.resolveImports' adds to the module's
+-- explicit @import Prelude (…)@ list (1.0 modules are @NoImplicitPrelude@).
+nativeType :: Native -> SHs.SType ctx
+nativeType =
+  SHs.TGlobal . \case
+    NativeFloat -> preludeType "Float"
+    NativeDouble -> preludeType "Double"
+    NativeWidth width -> supportType (widthTypeName width)
+
+-- | The type's name in "Data.Int" \/ "Data.Word" (and the runtime's
+-- re-export of them).
+widthTypeName :: NativeScalar -> String
+widthTypeName = \case
+  NativeWord8 -> "Word8"
+  NativeWord16 -> "Word16"
+  NativeWord32 -> "Word32"
+  NativeWord64 -> "Word64"
+  NativeInt8 -> "Int8"
+  NativeInt16 -> "Int16"
+  NativeInt32 -> "Int32"
+  NativeInt64 -> "Int64"
+
+supportType, preludeType :: String -> SHs.Global SHs.LvlType
+supportType name =
+  SHs.CustomGlobal
+    (TH.mkName name)
+    SHs.GTyp
+    (Hs.QualifiedImport (Hs.ModuleName "HsBindgen.Runtime.Support") (Just "BG"))
+preludeType name =
+  SHs.CustomGlobal
+    (TH.mkName name)
+    SHs.GTyp
+    (Hs.UnqualifiedImport (Hs.ModuleName "Prelude"))
 
 nativeScalarType :: ScalarBridge -> SHs.SType ctx
-nativeScalarType =
-  SHs.tBindgenGlobal . \case
-    BridgeBool -> SHs.Bool_type
-    BridgeCoerce native _ctorScope -> native
+nativeScalarType = \case
+  BridgeBool -> SHs.tBindgenGlobal SHs.Bool_type
+  BridgeCoerce native _ctorScope -> nativeType native
 
 -- | Argument-position conversion (native -> C at the call).
 bridgeArg :: ScalarBridge -> SHs.SExpr ctx -> SHs.SExpr ctx
@@ -914,22 +953,21 @@ renderUmbrella target aliasModules =
       | otherwise -> h <> "."
 
   hsModule =
-    HsModule.HsModule
-      { pragmas = ["LANGUAGE DuplicateRecordFields"]
-      , moduleComment = Nothing
-      , name = Hs.ModuleName umbrellaName
-      , exports =
-          [ HsModule.ExportEntry (HsModule.ExportModule (Hs.ModuleName m))
-          | m <- names
-          ]
-      , imports =
-          [ HsModule.UnqualifiedImportListItem (Hs.ModuleName m) Nothing
-          | m <- names
-          ]
-      , qualifiedStyle = HB.PreQualified
-      , cWrappers = []
-      , decls = []
-      }
+    HsModule.authoredModule
+      HsModule.AuthoredModule
+        { pragmas = ["LANGUAGE DuplicateRecordFields"]
+        , moduleComment = Nothing
+        , name = Hs.ModuleName umbrellaName
+        , exports =
+            [ HsModule.ExportEntry (HsModule.ExportModule (Hs.ModuleName m))
+            | m <- names
+            ]
+        , imports =
+            [ HsModule.UnqualifiedImportListItem (Hs.ModuleName m) Nothing
+            | m <- names
+            ]
+        , decls = []
+        }
 
 runtimeModuleName :: BindgenTarget -> Text
 runtimeModuleName = Module.hsName . runtimeModule

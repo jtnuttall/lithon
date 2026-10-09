@@ -230,7 +230,7 @@ distillAbi scheme headerName ov = sequenceA . mapMaybe abiDeclOf
     _notAssertable -> Nothing
    where
     cId = decl.info.id.cName
-    named = not cId.isAnon
+    named = not cId.isUnnamed
     bareName = cId.name.text
     cTypeName = C.renderDeclNameC cId.name
     structOv = Map.lookup bareName ov.structs
@@ -274,7 +274,7 @@ assertableFields scheme owner memberSinces fs =
               since = Map.lookup fname memberSinces <|> commentSince
             , commentSince
             }
-    | C.FieldExplicit ef <- fs
+    | C.FieldRegular ef <- fs
     , isNothing ef.width
     , let bits = ef.offset
           fname = ef.info.name.cName.text
@@ -292,7 +292,7 @@ memberTypesOf :: [C.Field C.Final] -> [Text]
 memberTypesOf fs =
   [ C.renderDeclNameC ref.cName.name
   | f <- fs
-  , C.TypeRef ref <- [C.getCanonicalType f.typ]
+  , C.TypeRef ref <- [C.getCanonicalType f.typ.c]
   ]
 
 -- | Render the assertion TU for the target, given the library version the

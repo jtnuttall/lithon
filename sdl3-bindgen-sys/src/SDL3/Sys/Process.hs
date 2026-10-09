@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Process control support.
 --
 --     These functions provide a cross-platform way to spawn and manage OS-level processes.
@@ -41,6 +43,8 @@ module SDL3.Sys.Process (
   SDL3.Sys.Process.destroyProcessSafe,
 )
 where
+
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

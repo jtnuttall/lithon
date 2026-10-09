@@ -1,5 +1,5 @@
 version:
-  hs_bindgen: 0.1.0
+  hs_bindgen: 1.0.0.0
   binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Pixels
 ctypes:
@@ -146,6 +146,9 @@ hstypes:
         constructor: SDL_ArrayOrder
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -170,6 +173,9 @@ hstypes:
         constructor: SDL_BitmapOrder
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -194,6 +200,9 @@ hstypes:
         constructor: SDL_ChromaLocation
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -228,6 +237,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -239,6 +249,9 @@ hstypes:
         constructor: SDL_ColorPrimaries
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -262,6 +275,9 @@ hstypes:
         constructor: SDL_ColorRange
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -286,6 +302,9 @@ hstypes:
         constructor: SDL_ColorType
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -310,6 +329,9 @@ hstypes:
         constructor: SDL_Colorspace
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -343,6 +365,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -354,6 +377,9 @@ hstypes:
         constructor: SDL_MatrixCoefficients
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -377,6 +403,9 @@ hstypes:
         constructor: SDL_PackedLayout
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -401,6 +430,9 @@ hstypes:
         constructor: SDL_PackedOrder
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -435,6 +467,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -446,6 +479,9 @@ hstypes:
         constructor: SDL_PixelFormat
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -491,6 +527,7 @@ hstypes:
       - HasField
       - HasFieldCompat
       - HasFieldPtr
+      - IsStruct
       - ReadRaw
       - Show
       - StaticSize
@@ -502,6 +539,9 @@ hstypes:
         constructor: SDL_PixelType
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -526,6 +566,9 @@ hstypes:
         constructor: SDL_TransferCharacteristics
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq

@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Header file for SDL 2D rendering functions.
 --
 --     This API supports the following features:
@@ -237,6 +239,7 @@ module SDL3.Sys.Render (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, Double, Float, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

@@ -17,6 +17,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL provides a low-level joystick API, which just treats joysticks as an arbitrary pile of buttons, axes, and hat switches. If you\'re planning to write your own control configuration screen, this can give you a lot of flexibility, but that\'s a lot of work, and most things that we consider \"joysticks\" now are actually console-style gamepads. So SDL provides the gamepad API on top of the lower-level joystick functionality.
 --
@@ -117,9 +118,12 @@ module SDL3.Sys.Bindgen.Gamepad (
 )
 where
 
+import Prelude (Eq, Int, Ord, Read, Show, pure, (<*>), (>>), type (~))
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import HsBindgen.Runtime.Union qualified as Union
@@ -999,6 +1003,12 @@ deriving via
   instance
     BG.Storable SDL_GamepadBinding_input_axis
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GamepadBinding_input_axis
+  instance
+    Struct.IsStruct SDL_GamepadBinding_input_axis
+
+-- | [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 276:17@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "axis" SDL_GamepadBinding_input_axis ty
@@ -1027,6 +1037,7 @@ instance HasCField.HasCField SDL_GamepadBinding_input_axis "axis" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @axis_min@, defined at @SDL3\/SDL_gamepad.h 277:17@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "axis_min" SDL_GamepadBinding_input_axis ty
@@ -1055,6 +1066,7 @@ instance HasCField.HasCField SDL_GamepadBinding_input_axis "axis_min" where
 
   offset# = \_ -> \_ -> 4
 
+-- | [C declaration]: @axis_max@, defined at @SDL3\/SDL_gamepad.h 278:17@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "axis_max" SDL_GamepadBinding_input_axis ty
@@ -1118,6 +1130,12 @@ deriving via
   instance
     BG.Storable SDL_GamepadBinding_input_hat
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GamepadBinding_input_hat
+  instance
+    Struct.IsStruct SDL_GamepadBinding_input_hat
+
+-- | [C declaration]: @hat@, defined at @SDL3\/SDL_gamepad.h 283:17@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "hat" SDL_GamepadBinding_input_hat ty
@@ -1142,6 +1160,7 @@ instance HasCField.HasCField SDL_GamepadBinding_input_hat "hat" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @hat_mask@, defined at @SDL3\/SDL_gamepad.h 284:17@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "hat_mask" SDL_GamepadBinding_input_hat ty
@@ -1198,7 +1217,11 @@ instance
   => BG.CompatHasField.HasField "button" SDL_GamepadBinding_input ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"button" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"button" x0
+      )
 
 instance
   (ty ~ BG.CInt)
@@ -1226,7 +1249,11 @@ instance
   => BG.CompatHasField.HasField "axis" SDL_GamepadBinding_input ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"axis" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"axis" x0
+      )
 
 instance
   (ty ~ SDL_GamepadBinding_input_axis)
@@ -1254,7 +1281,11 @@ instance
   => BG.CompatHasField.HasField "hat" SDL_GamepadBinding_input ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"hat" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"hat" x0
+      )
 
 instance
   (ty ~ SDL_GamepadBinding_input_hat)
@@ -1308,6 +1339,12 @@ deriving via
   instance
     BG.Storable SDL_GamepadBinding_output_axis
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GamepadBinding_output_axis
+  instance
+    Struct.IsStruct SDL_GamepadBinding_output_axis
+
+-- | [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 296:29@
 instance
   (ty ~ SDL_GamepadAxis)
   => BG.CompatHasField.HasField "axis" SDL_GamepadBinding_output_axis ty
@@ -1336,6 +1373,7 @@ instance HasCField.HasCField SDL_GamepadBinding_output_axis "axis" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @axis_min@, defined at @SDL3\/SDL_gamepad.h 297:17@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "axis_min" SDL_GamepadBinding_output_axis ty
@@ -1364,6 +1402,7 @@ instance HasCField.HasCField SDL_GamepadBinding_output_axis "axis_min" where
 
   offset# = \_ -> \_ -> 4
 
+-- | [C declaration]: @axis_max@, defined at @SDL3\/SDL_gamepad.h 298:17@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "axis_max" SDL_GamepadBinding_output_axis ty
@@ -1424,7 +1463,11 @@ instance
   => BG.CompatHasField.HasField "button" SDL_GamepadBinding_output ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"button" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"button" x0
+      )
 
 instance
   (ty ~ SDL_GamepadButton)
@@ -1452,7 +1495,11 @@ instance
   => BG.CompatHasField.HasField "axis" SDL_GamepadBinding_output ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"axis" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"axis" x0
+      )
 
 instance
   (ty ~ SDL_GamepadBinding_output_axis)
@@ -1517,6 +1564,12 @@ instance Marshal.WriteRaw SDL_GamepadBinding where
 
 deriving via Marshal.EquivStorable SDL_GamepadBinding instance BG.Storable SDL_GamepadBinding
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GamepadBinding
+  instance
+    Struct.IsStruct SDL_GamepadBinding
+
+-- | [C declaration]: @input_type@, defined at @SDL3\/SDL_gamepad.h 269:28@
 instance
   (ty ~ SDL_GamepadBindingType)
   => BG.CompatHasField.HasField "input_type" SDL_GamepadBinding ty
@@ -1546,6 +1599,7 @@ instance HasCField.HasCField SDL_GamepadBinding "input_type" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @input@, defined at @SDL3\/SDL_gamepad.h 287:7@
 instance
   (ty ~ SDL_GamepadBinding_input)
   => BG.CompatHasField.HasField "input" SDL_GamepadBinding ty
@@ -1575,6 +1629,7 @@ instance HasCField.HasCField SDL_GamepadBinding "input" where
 
   offset# = \_ -> \_ -> 4
 
+-- | [C declaration]: @output_type@, defined at @SDL3\/SDL_gamepad.h 289:28@
 instance
   (ty ~ SDL_GamepadBindingType)
   => BG.CompatHasField.HasField "output_type" SDL_GamepadBinding ty
@@ -1605,6 +1660,7 @@ instance HasCField.HasCField SDL_GamepadBinding "output_type" where
 
   offset# = \_ -> \_ -> 16
 
+-- | [C declaration]: @output@, defined at @SDL3\/SDL_gamepad.h 301:7@
 instance
   (ty ~ SDL_GamepadBinding_output)
   => BG.CompatHasField.HasField "output" SDL_GamepadBinding ty

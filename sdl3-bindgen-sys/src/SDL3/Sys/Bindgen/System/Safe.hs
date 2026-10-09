@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.System.Safe (
@@ -18,6 +20,9 @@ module SDL3.Sys.Bindgen.System.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -25,7 +30,8 @@ import SDL3.Sys.Bindgen.System
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_system.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_system.h>"
          , "void hs_bindgen_ead2e2ea2677d0f8 ("
          , "  SDL_X11EventHook arg1,"
          , "  void *arg2"
@@ -109,7 +115,9 @@ hs_bindgen_ead2e2ea2677d0f8
   -> BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_ead2e2ea2677d0f8 =
-  BG.fromFFIType hs_bindgen_ead2e2ea2677d0f8_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_ead2e2ea2677d0f8_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Set a callback for every X11 event.
 --
@@ -135,9 +143,9 @@ sDL_SetX11EventHook = hs_bindgen_ead2e2ea2677d0f8
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_SetLinuxThreadPriority@
 foreign import ccall safe "hs_bindgen_9110686f4456a2f3"
   hs_bindgen_9110686f4456a2f3_base
-    :: BG.Int64
-    -> BG.Int32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Int64
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_SetLinuxThreadPriority@
 hs_bindgen_9110686f4456a2f3
@@ -145,7 +153,9 @@ hs_bindgen_9110686f4456a2f3
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_9110686f4456a2f3 =
-  BG.fromFFIType hs_bindgen_9110686f4456a2f3_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_9110686f4456a2f3_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | [C declaration]: @SDL_SetLinuxThreadPriority@, defined at @SDL3\/SDL_system.h 197:34@
 sDL_SetLinuxThreadPriority
@@ -160,10 +170,10 @@ sDL_SetLinuxThreadPriority =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_SetLinuxThreadPriorityAndPolicy@
 foreign import ccall safe "hs_bindgen_0383bd6da68658c0"
   hs_bindgen_0383bd6da68658c0_base
-    :: BG.Int64
-    -> BG.Int32
-    -> BG.Int32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Int64
+    -> BG.CInt
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_SetLinuxThreadPriorityAndPolicy@
 hs_bindgen_0383bd6da68658c0
@@ -172,7 +182,12 @@ hs_bindgen_0383bd6da68658c0
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_0383bd6da68658c0 =
-  BG.fromFFIType hs_bindgen_0383bd6da68658c0_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_0383bd6da68658c0_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | [C declaration]: @SDL_SetLinuxThreadPriorityAndPolicy@, defined at @SDL3\/SDL_system.h 215:34@
 sDL_SetLinuxThreadPriorityAndPolicy
@@ -189,12 +204,12 @@ sDL_SetLinuxThreadPriorityAndPolicy =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_IsTablet@
 foreign import ccall safe "hs_bindgen_c9f4754632fd8d42"
   hs_bindgen_c9f4754632fd8d42_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_IsTablet@
 hs_bindgen_c9f4754632fd8d42 :: IO BG.CBool
 hs_bindgen_c9f4754632fd8d42 =
-  BG.fromFFIType hs_bindgen_c9f4754632fd8d42_base
+  fmap BG.fromFFIType hs_bindgen_c9f4754632fd8d42_base
 
 -- | Query if the current device is a tablet.
 --
@@ -213,12 +228,12 @@ sDL_IsTablet = hs_bindgen_c9f4754632fd8d42
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_IsTV@
 foreign import ccall safe "hs_bindgen_0cd31739327b6cd7"
   hs_bindgen_0cd31739327b6cd7_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_IsTV@
 hs_bindgen_0cd31739327b6cd7 :: IO BG.CBool
 hs_bindgen_0cd31739327b6cd7 =
-  BG.fromFFIType hs_bindgen_0cd31739327b6cd7_base
+  fmap BG.fromFFIType hs_bindgen_0cd31739327b6cd7_base
 
 -- | Query if the current device is a TV.
 --
@@ -237,12 +252,12 @@ sDL_IsTV = hs_bindgen_0cd31739327b6cd7
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_GetSandbox@
 foreign import ccall safe "hs_bindgen_e5a169479304c118"
   hs_bindgen_e5a169479304c118_base
-    :: IO BG.Word32
+    :: IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_GetSandbox@
 hs_bindgen_e5a169479304c118 :: IO SDL_Sandbox
 hs_bindgen_e5a169479304c118 =
-  BG.fromFFIType hs_bindgen_e5a169479304c118_base
+  fmap BG.fromFFIType hs_bindgen_e5a169479304c118_base
 
 -- | Get the application sandbox environment, if any.
 --
@@ -262,7 +277,7 @@ foreign import ccall safe "hs_bindgen_6de90d6f8ee04ad6"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_OnApplicationWillTerminate@
 hs_bindgen_6de90d6f8ee04ad6 :: IO ()
 hs_bindgen_6de90d6f8ee04ad6 =
-  BG.fromFFIType hs_bindgen_6de90d6f8ee04ad6_base
+  hs_bindgen_6de90d6f8ee04ad6_base
 
 -- | Let iOS apps with external event handling report onApplicationWillTerminate.
 --
@@ -285,7 +300,7 @@ foreign import ccall safe "hs_bindgen_36ae92858c8204df"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_OnApplicationDidReceiveMemoryWarning@
 hs_bindgen_36ae92858c8204df :: IO ()
 hs_bindgen_36ae92858c8204df =
-  BG.fromFFIType hs_bindgen_36ae92858c8204df_base
+  hs_bindgen_36ae92858c8204df_base
 
 -- | Let iOS apps with external event handling report onApplicationDidReceiveMemoryWarning.
 --
@@ -308,7 +323,7 @@ foreign import ccall safe "hs_bindgen_62c6019205cd45c2"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_OnApplicationWillEnterBackground@
 hs_bindgen_62c6019205cd45c2 :: IO ()
 hs_bindgen_62c6019205cd45c2 =
-  BG.fromFFIType hs_bindgen_62c6019205cd45c2_base
+  hs_bindgen_62c6019205cd45c2_base
 
 -- | Let iOS apps with external event handling report onApplicationWillResignActive.
 --
@@ -331,7 +346,7 @@ foreign import ccall safe "hs_bindgen_73b2cba299dd5591"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_OnApplicationDidEnterBackground@
 hs_bindgen_73b2cba299dd5591 :: IO ()
 hs_bindgen_73b2cba299dd5591 =
-  BG.fromFFIType hs_bindgen_73b2cba299dd5591_base
+  hs_bindgen_73b2cba299dd5591_base
 
 -- | Let iOS apps with external event handling report onApplicationDidEnterBackground.
 --
@@ -354,7 +369,7 @@ foreign import ccall safe "hs_bindgen_2b70d675ad267009"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_OnApplicationWillEnterForeground@
 hs_bindgen_2b70d675ad267009 :: IO ()
 hs_bindgen_2b70d675ad267009 =
-  BG.fromFFIType hs_bindgen_2b70d675ad267009_base
+  hs_bindgen_2b70d675ad267009_base
 
 -- | Let iOS apps with external event handling report onApplicationWillEnterForeground.
 --
@@ -377,7 +392,7 @@ foreign import ccall safe "hs_bindgen_cfd36268e651eb47"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.System_Safe_SDL_OnApplicationDidEnterForeground@
 hs_bindgen_cfd36268e651eb47 :: IO ()
 hs_bindgen_cfd36268e651eb47 =
-  BG.fromFFIType hs_bindgen_cfd36268e651eb47_base
+  hs_bindgen_cfd36268e651eb47_base
 
 -- | Let iOS apps with external event handling report onApplicationDidBecomeActive.
 --

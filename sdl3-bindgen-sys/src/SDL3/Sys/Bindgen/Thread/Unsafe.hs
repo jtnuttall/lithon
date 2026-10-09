@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Thread.Unsafe (
@@ -18,7 +20,11 @@ module SDL3.Sys.Bindgen.Thread.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Support qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Properties qualified
@@ -27,7 +33,8 @@ import SDL3.Sys.Bindgen.Thread
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_thread.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_thread.h>"
          , "SDL_Thread *hs_bindgen_0b01e232776d1771 ("
          , "  SDL_ThreadFunction arg1,"
          , "  char const *arg2,"
@@ -115,8 +122,8 @@ foreign import ccall unsafe "hs_bindgen_0b01e232776d1771"
     :: BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.FunPtr BG.Void
-    -> BG.FunPtr BG.Void
+    -> HsBindgen.Runtime.Support.FunPtrVoid
+    -> HsBindgen.Runtime.Support.FunPtrVoid
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_Unsafe_SDL_CreateThreadRuntime@
@@ -128,7 +135,20 @@ hs_bindgen_0b01e232776d1771
   -> SDL3.Sys.Bindgen.Stdinc.SDL_FunctionPointer
   -> IO (BG.Ptr SDL_Thread)
 hs_bindgen_0b01e232776d1771 =
-  BG.fromFFIType hs_bindgen_0b01e232776d1771_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_0b01e232776d1771_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | The actual entry point for SDL_CreateThread.
 --
@@ -166,9 +186,9 @@ sDL_CreateThreadRuntime = hs_bindgen_0b01e232776d1771
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_Unsafe_SDL_CreateThreadWithPropertiesRuntime@
 foreign import ccall unsafe "hs_bindgen_1c8412acc4b761ed"
   hs_bindgen_1c8412acc4b761ed_base
-    :: BG.Word32
-    -> BG.FunPtr BG.Void
-    -> BG.FunPtr BG.Void
+    :: HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.Support.FunPtrVoid
+    -> HsBindgen.Runtime.Support.FunPtrVoid
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_Unsafe_SDL_CreateThreadWithPropertiesRuntime@
@@ -178,7 +198,12 @@ hs_bindgen_1c8412acc4b761ed
   -> SDL3.Sys.Bindgen.Stdinc.SDL_FunctionPointer
   -> IO (BG.Ptr SDL_Thread)
 hs_bindgen_1c8412acc4b761ed =
-  BG.fromFFIType hs_bindgen_1c8412acc4b761ed_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_1c8412acc4b761ed_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | The actual entry point for SDL_CreateThreadWithProperties.
 --
@@ -217,7 +242,8 @@ hs_bindgen_98e2f1286c996b7c
   :: BG.Ptr SDL_Thread
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_98e2f1286c996b7c =
-  BG.fromFFIType hs_bindgen_98e2f1286c996b7c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_98e2f1286c996b7c_base (BG.toFFIType x0))
 
 -- | Get the thread name as it was specified in @SDL_CreateThread()@.
 --
@@ -239,12 +265,12 @@ sDL_GetThreadName = hs_bindgen_98e2f1286c996b7c
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_Unsafe_SDL_GetCurrentThreadID@
 foreign import ccall unsafe "hs_bindgen_cdc0bfea9267653a"
   hs_bindgen_cdc0bfea9267653a_base
-    :: IO BG.Word64
+    :: IO HsBindgen.Runtime.LibC.Word64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_Unsafe_SDL_GetCurrentThreadID@
 hs_bindgen_cdc0bfea9267653a :: IO SDL_ThreadID
 hs_bindgen_cdc0bfea9267653a =
-  BG.fromFFIType hs_bindgen_cdc0bfea9267653a_base
+  fmap BG.fromFFIType hs_bindgen_cdc0bfea9267653a_base
 
 -- | Get the thread identifier for the current thread.
 --
@@ -268,14 +294,15 @@ sDL_GetCurrentThreadID = hs_bindgen_cdc0bfea9267653a
 foreign import ccall unsafe "hs_bindgen_0bcf1cae64c8f7f6"
   hs_bindgen_0bcf1cae64c8f7f6_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word64
+    -> IO HsBindgen.Runtime.LibC.Word64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_Unsafe_SDL_GetThreadID@
 hs_bindgen_0bcf1cae64c8f7f6
   :: BG.Ptr SDL_Thread
   -> IO SDL_ThreadID
 hs_bindgen_0bcf1cae64c8f7f6 =
-  BG.fromFFIType hs_bindgen_0bcf1cae64c8f7f6_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_0bcf1cae64c8f7f6_base (BG.toFFIType x0))
 
 -- | Get the thread identifier for the specified thread.
 --
@@ -301,15 +328,16 @@ sDL_GetThreadID = hs_bindgen_0bcf1cae64c8f7f6
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_Unsafe_SDL_SetCurrentThreadPriority@
 foreign import ccall unsafe "hs_bindgen_3d388217e2964b35"
   hs_bindgen_3d388217e2964b35_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: BG.CUInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_Unsafe_SDL_SetCurrentThreadPriority@
 hs_bindgen_3d388217e2964b35
   :: SDL_ThreadPriority
   -> IO BG.CBool
 hs_bindgen_3d388217e2964b35 =
-  BG.fromFFIType hs_bindgen_3d388217e2964b35_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3d388217e2964b35_base (BG.toFFIType x0))
 
 -- | Set the priority for the current thread.
 --
@@ -344,7 +372,9 @@ hs_bindgen_fe4fa21954b69cf9
   -> BG.Ptr BG.CInt
   -> IO ()
 hs_bindgen_fe4fa21954b69cf9 =
-  BG.fromFFIType hs_bindgen_fe4fa21954b69cf9_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_fe4fa21954b69cf9_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Wait for a thread to finish.
 --
@@ -383,14 +413,15 @@ sDL_WaitThread = hs_bindgen_fe4fa21954b69cf9
 foreign import ccall unsafe "hs_bindgen_44514a39d4434fbe"
   hs_bindgen_44514a39d4434fbe_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_Unsafe_SDL_GetThreadState@
 hs_bindgen_44514a39d4434fbe
   :: BG.Ptr SDL_Thread
   -> IO SDL_ThreadState
 hs_bindgen_44514a39d4434fbe =
-  BG.fromFFIType hs_bindgen_44514a39d4434fbe_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_44514a39d4434fbe_base (BG.toFFIType x0))
 
 -- | Get the current state of a thread.
 --
@@ -422,7 +453,8 @@ hs_bindgen_4de0f0719eae79d5
   :: BG.Ptr SDL_Thread
   -> IO ()
 hs_bindgen_4de0f0719eae79d5 =
-  BG.fromFFIType hs_bindgen_4de0f0719eae79d5_base
+  \x0 ->
+    hs_bindgen_4de0f0719eae79d5_base (BG.toFFIType x0)
 
 -- | Let a thread clean up on exit without intervention.
 --
@@ -464,7 +496,8 @@ hs_bindgen_43b0e02438c01176
   :: BG.Ptr SDL_TLSID
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_43b0e02438c01176 =
-  BG.fromFFIType hs_bindgen_43b0e02438c01176_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_43b0e02438c01176_base (BG.toFFIType x0))
 
 -- | Get the current thread\'s value associated with a thread local storage ID.
 --
@@ -491,7 +524,7 @@ foreign import ccall unsafe "hs_bindgen_ff93284cbd8231ff"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.FunPtr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_Unsafe_SDL_SetTLS@
 hs_bindgen_ff93284cbd8231ff
@@ -500,7 +533,12 @@ hs_bindgen_ff93284cbd8231ff
   -> SDL_TLSDestructorCallback
   -> IO BG.CBool
 hs_bindgen_ff93284cbd8231ff =
-  BG.fromFFIType hs_bindgen_ff93284cbd8231ff_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_ff93284cbd8231ff_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set the current thread\'s value associated with a thread local storage ID.
 --
@@ -543,7 +581,7 @@ foreign import ccall unsafe "hs_bindgen_b394a7e70a8b089a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Thread_Unsafe_SDL_CleanupTLS@
 hs_bindgen_b394a7e70a8b089a :: IO ()
 hs_bindgen_b394a7e70a8b089a =
-  BG.fromFFIType hs_bindgen_b394a7e70a8b089a_base
+  hs_bindgen_b394a7e70a8b089a_base
 
 -- | Cleanup all TLS data for this thread.
 --

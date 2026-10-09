@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Functions for fiddling with bits and bitmasks. Get the index of the most significant (set) bit in a 32-bit number.
 --
 --     This operation can also be stated as \"count leading zeroes\" and \"log base 2\".
@@ -27,6 +29,7 @@ module SDL3.Sys.Bits (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

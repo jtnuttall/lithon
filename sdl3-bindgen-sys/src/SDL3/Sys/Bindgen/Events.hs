@@ -5,6 +5,7 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -16,6 +17,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Event queue management.
 --
@@ -202,11 +204,14 @@ module SDL3.Sys.Bindgen.Events (
 )
 where
 
+import Prelude (Eq, IO, Int, Ord, Read, Show, fmap, pure, (<*>), (>>), type (~))
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.ConstantArray qualified as CA
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import HsBindgen.Runtime.Union qualified as Union
@@ -1189,6 +1194,11 @@ instance Marshal.WriteRaw SDL_CommonEvent where
 
 deriving via Marshal.EquivStorable SDL_CommonEvent instance BG.Storable SDL_CommonEvent
 
+deriving via Struct.IsStructViaReadRaw SDL_CommonEvent instance Struct.IsStruct SDL_CommonEvent
+
+-- | Event type, shared with all events, Uint32 to cover user events which are not in the 'SDL_EventType' enumeration
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 298:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "type'" SDL_CommonEvent ty
@@ -1217,6 +1227,7 @@ instance HasCField.HasCField SDL_CommonEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 299:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_CommonEvent ty
@@ -1245,6 +1256,9 @@ instance HasCField.HasCField SDL_CommonEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 300:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_CommonEvent ty
@@ -1335,6 +1349,11 @@ instance Marshal.WriteRaw SDL_DisplayEvent where
 
 deriving via Marshal.EquivStorable SDL_DisplayEvent instance BG.Storable SDL_DisplayEvent
 
+deriving via Struct.IsStructViaReadRaw SDL_DisplayEvent instance Struct.IsStruct SDL_DisplayEvent
+
+-- | SDL_EVENT_DISPLAY_*
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 310:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_DisplayEvent ty
@@ -1366,6 +1385,7 @@ instance HasCField.HasCField SDL_DisplayEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 311:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_DisplayEvent ty
@@ -1397,6 +1417,9 @@ instance HasCField.HasCField SDL_DisplayEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 312:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_DisplayEvent ty
@@ -1428,6 +1451,9 @@ instance HasCField.HasCField SDL_DisplayEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The associated display
+--
+--     [C declaration]: @displayID@, defined at @SDL3\/SDL_events.h 313:19@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_DisplayID)
   => BG.CompatHasField.HasField "displayID" SDL_DisplayEvent ty
@@ -1459,6 +1485,9 @@ instance HasCField.HasCField SDL_DisplayEvent "displayID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | event dependent data
+--
+--     [C declaration]: @data1@, defined at @SDL3\/SDL_events.h 314:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "data1" SDL_DisplayEvent ty
@@ -1490,6 +1519,9 @@ instance HasCField.HasCField SDL_DisplayEvent "data1" where
 
   offset# = \_ -> \_ -> 20
 
+-- | event dependent data
+--
+--     [C declaration]: @data2@, defined at @SDL3\/SDL_events.h 315:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "data2" SDL_DisplayEvent ty
@@ -1583,6 +1615,11 @@ instance Marshal.WriteRaw SDL_WindowEvent where
 
 deriving via Marshal.EquivStorable SDL_WindowEvent instance BG.Storable SDL_WindowEvent
 
+deriving via Struct.IsStructViaReadRaw SDL_WindowEvent instance Struct.IsStruct SDL_WindowEvent
+
+-- | SDL_EVENT_WINDOW_*
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 325:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_WindowEvent ty
@@ -1614,6 +1651,7 @@ instance HasCField.HasCField SDL_WindowEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 326:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_WindowEvent ty
@@ -1645,6 +1683,9 @@ instance HasCField.HasCField SDL_WindowEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 327:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_WindowEvent ty
@@ -1676,6 +1717,9 @@ instance HasCField.HasCField SDL_WindowEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The associated window
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 328:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_WindowEvent ty
@@ -1707,6 +1751,9 @@ instance HasCField.HasCField SDL_WindowEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | event dependent data
+--
+--     [C declaration]: @data1@, defined at @SDL3\/SDL_events.h 329:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "data1" SDL_WindowEvent ty
@@ -1738,6 +1785,9 @@ instance HasCField.HasCField SDL_WindowEvent "data1" where
 
   offset# = \_ -> \_ -> 20
 
+-- | event dependent data
+--
+--     [C declaration]: @data2@, defined at @SDL3\/SDL_events.h 330:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "data2" SDL_WindowEvent ty
@@ -1822,6 +1872,14 @@ deriving via
   instance
     BG.Storable SDL_KeyboardDeviceEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_KeyboardDeviceEvent
+  instance
+    Struct.IsStruct SDL_KeyboardDeviceEvent
+
+-- | SDL_EVENT_KEYBOARD_ADDED or SDL_EVENT_KEYBOARD_REMOVED
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 340:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_KeyboardDeviceEvent ty
@@ -1851,6 +1909,7 @@ instance HasCField.HasCField SDL_KeyboardDeviceEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 341:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_KeyboardDeviceEvent ty
@@ -1880,6 +1939,9 @@ instance HasCField.HasCField SDL_KeyboardDeviceEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 342:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_KeyboardDeviceEvent ty
@@ -1909,6 +1971,9 @@ instance HasCField.HasCField SDL_KeyboardDeviceEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The keyboard instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 343:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Keyboard.SDL_KeyboardID)
   => BG.CompatHasField.HasField "which" SDL_KeyboardDeviceEvent ty
@@ -2045,6 +2110,11 @@ instance Marshal.WriteRaw SDL_KeyboardEvent where
 
 deriving via Marshal.EquivStorable SDL_KeyboardEvent instance BG.Storable SDL_KeyboardEvent
 
+deriving via Struct.IsStructViaReadRaw SDL_KeyboardEvent instance Struct.IsStruct SDL_KeyboardEvent
+
+-- | SDL_EVENT_KEY_DOWN or SDL_EVENT_KEY_UP
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 362:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_KeyboardEvent ty
@@ -2081,6 +2151,7 @@ instance HasCField.HasCField SDL_KeyboardEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 363:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_KeyboardEvent ty
@@ -2117,6 +2188,9 @@ instance HasCField.HasCField SDL_KeyboardEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 364:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_KeyboardEvent ty
@@ -2153,6 +2227,9 @@ instance HasCField.HasCField SDL_KeyboardEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The window with keyboard focus, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 365:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_KeyboardEvent ty
@@ -2189,6 +2266,9 @@ instance HasCField.HasCField SDL_KeyboardEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The keyboard instance id, or 0 if unknown or virtual
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 366:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Keyboard.SDL_KeyboardID)
   => BG.CompatHasField.HasField "which" SDL_KeyboardEvent ty
@@ -2225,6 +2305,9 @@ instance HasCField.HasCField SDL_KeyboardEvent "which" where
 
   offset# = \_ -> \_ -> 20
 
+-- | SDL physical key code
+--
+--     [C declaration]: @scancode@, defined at @SDL3\/SDL_events.h 367:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Scancode.SDL_Scancode)
   => BG.CompatHasField.HasField "scancode" SDL_KeyboardEvent ty
@@ -2261,6 +2344,9 @@ instance HasCField.HasCField SDL_KeyboardEvent "scancode" where
 
   offset# = \_ -> \_ -> 24
 
+-- | SDL virtual key code
+--
+--     [C declaration]: @key@, defined at @SDL3\/SDL_events.h 368:17@
 instance
   (ty ~ SDL3.Sys.Bindgen.Keycode.SDL_Keycode)
   => BG.CompatHasField.HasField "key" SDL_KeyboardEvent ty
@@ -2297,6 +2383,9 @@ instance HasCField.HasCField SDL_KeyboardEvent "key" where
 
   offset# = \_ -> \_ -> 28
 
+-- | current key modifiers
+--
+--     [C declaration]: @mod@, defined at @SDL3\/SDL_events.h 369:16@
 instance
   (ty ~ SDL3.Sys.Bindgen.Keycode.SDL_Keymod)
   => BG.CompatHasField.HasField "mod" SDL_KeyboardEvent ty
@@ -2333,6 +2422,9 @@ instance HasCField.HasCField SDL_KeyboardEvent "mod" where
 
   offset# = \_ -> \_ -> 32
 
+-- | The platform dependent scancode for this event
+--
+--     [C declaration]: @raw@, defined at @SDL3\/SDL_events.h 370:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "raw" SDL_KeyboardEvent ty
@@ -2369,6 +2461,9 @@ instance HasCField.HasCField SDL_KeyboardEvent "raw" where
 
   offset# = \_ -> \_ -> 34
 
+-- | true if the key is pressed
+--
+--     [C declaration]: @down@, defined at @SDL3\/SDL_events.h 371:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "down" SDL_KeyboardEvent ty
@@ -2403,6 +2498,9 @@ instance HasCField.HasCField SDL_KeyboardEvent "down" where
 
   offset# = \_ -> \_ -> 36
 
+-- | true if this is a key repeat
+--
+--     [C declaration]: @repeat@, defined at @SDL3\/SDL_events.h 372:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "repeat" SDL_KeyboardEvent ty
@@ -2514,6 +2612,14 @@ instance Marshal.WriteRaw SDL_TextEditingEvent where
 
 deriving via Marshal.EquivStorable SDL_TextEditingEvent instance BG.Storable SDL_TextEditingEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_TextEditingEvent
+  instance
+    Struct.IsStruct SDL_TextEditingEvent
+
+-- | SDL_EVENT_TEXT_EDITING
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 386:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_TextEditingEvent ty
@@ -2546,6 +2652,7 @@ instance HasCField.HasCField SDL_TextEditingEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 387:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_TextEditingEvent ty
@@ -2578,6 +2685,9 @@ instance HasCField.HasCField SDL_TextEditingEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 388:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_TextEditingEvent ty
@@ -2610,6 +2720,9 @@ instance HasCField.HasCField SDL_TextEditingEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The window with keyboard focus, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 389:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_TextEditingEvent ty
@@ -2642,6 +2755,9 @@ instance HasCField.HasCField SDL_TextEditingEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The editing text
+--
+--     [C declaration]: @text@, defined at @SDL3\/SDL_events.h 390:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "text" SDL_TextEditingEvent ty
@@ -2674,6 +2790,9 @@ instance HasCField.HasCField SDL_TextEditingEvent "text" where
 
   offset# = \_ -> \_ -> 24
 
+-- | The start cursor of selected editing text, or -1 if not set
+--
+--     [C declaration]: @start@, defined at @SDL3\/SDL_events.h 391:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "start" SDL_TextEditingEvent ty
@@ -2706,6 +2825,9 @@ instance HasCField.HasCField SDL_TextEditingEvent "start" where
 
   offset# = \_ -> \_ -> 32
 
+-- | The length of selected editing text, or -1 if not set
+--
+--     [C declaration]: @length@, defined at @SDL3\/SDL_events.h 392:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "length" SDL_TextEditingEvent ty
@@ -2838,6 +2960,14 @@ deriving via
   instance
     BG.Storable SDL_TextEditingCandidatesEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_TextEditingCandidatesEvent
+  instance
+    Struct.IsStruct SDL_TextEditingCandidatesEvent
+
+-- | SDL_EVENT_TEXT_EDITING_CANDIDATES
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 402:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_TextEditingCandidatesEvent ty
@@ -2874,6 +3004,7 @@ instance HasCField.HasCField SDL_TextEditingCandidatesEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 403:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_TextEditingCandidatesEvent ty
@@ -2910,6 +3041,9 @@ instance HasCField.HasCField SDL_TextEditingCandidatesEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 404:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_TextEditingCandidatesEvent ty
@@ -2946,6 +3080,9 @@ instance HasCField.HasCField SDL_TextEditingCandidatesEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The window with keyboard focus, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 405:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_TextEditingCandidatesEvent ty
@@ -2982,6 +3119,9 @@ instance HasCField.HasCField SDL_TextEditingCandidatesEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The list of candidates, or NULL if there are no candidates available
+--
+--     [C declaration]: @candidates@, defined at @SDL3\/SDL_events.h 406:25@
 instance
   (ty ~ PtrConst.PtrConst (PtrConst.PtrConst BG.CChar))
   => BG.CompatHasField.HasField "candidates" SDL_TextEditingCandidatesEvent ty
@@ -3018,6 +3158,9 @@ instance HasCField.HasCField SDL_TextEditingCandidatesEvent "candidates" where
 
   offset# = \_ -> \_ -> 24
 
+-- | The number of strings in @candidates@
+--
+--     [C declaration]: @num_candidates@, defined at @SDL3\/SDL_events.h 407:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "num_candidates" SDL_TextEditingCandidatesEvent ty
@@ -3055,6 +3198,9 @@ instance HasCField.HasCField SDL_TextEditingCandidatesEvent "num_candidates" whe
 
   offset# = \_ -> \_ -> 32
 
+-- | The index of the selected candidate, or -1 if no candidate is selected
+--
+--     [C declaration]: @selected_candidate@, defined at @SDL3\/SDL_events.h 408:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "selected_candidate" SDL_TextEditingCandidatesEvent ty
@@ -3092,6 +3238,9 @@ instance HasCField.HasCField SDL_TextEditingCandidatesEvent "selected_candidate"
 
   offset# = \_ -> \_ -> 36
 
+-- | true if the list is horizontal, false if it\'s vertical
+--
+--     [C declaration]: @horizontal@, defined at @SDL3\/SDL_events.h 409:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "horizontal" SDL_TextEditingCandidatesEvent ty
@@ -3128,6 +3277,7 @@ instance HasCField.HasCField SDL_TextEditingCandidatesEvent "horizontal" where
 
   offset# = \_ -> \_ -> 40
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_events.h 410:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_TextEditingCandidatesEvent ty
@@ -3164,6 +3314,7 @@ instance HasCField.HasCField SDL_TextEditingCandidatesEvent "padding1" where
 
   offset# = \_ -> \_ -> 41
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_events.h 411:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_TextEditingCandidatesEvent ty
@@ -3200,6 +3351,7 @@ instance HasCField.HasCField SDL_TextEditingCandidatesEvent "padding2" where
 
   offset# = \_ -> \_ -> 42
 
+-- | [C declaration]: @padding3@, defined at @SDL3\/SDL_events.h 412:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding3" SDL_TextEditingCandidatesEvent ty
@@ -3296,6 +3448,14 @@ instance Marshal.WriteRaw SDL_TextInputEvent where
 
 deriving via Marshal.EquivStorable SDL_TextInputEvent instance BG.Storable SDL_TextInputEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_TextInputEvent
+  instance
+    Struct.IsStruct SDL_TextInputEvent
+
+-- | SDL_EVENT_TEXT_INPUT
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 428:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_TextInputEvent ty
@@ -3326,6 +3486,7 @@ instance HasCField.HasCField SDL_TextInputEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 429:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_TextInputEvent ty
@@ -3356,6 +3517,9 @@ instance HasCField.HasCField SDL_TextInputEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 430:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_TextInputEvent ty
@@ -3386,6 +3550,9 @@ instance HasCField.HasCField SDL_TextInputEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The window with keyboard focus, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 431:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_TextInputEvent ty
@@ -3416,6 +3583,9 @@ instance HasCField.HasCField SDL_TextInputEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The input text, UTF-8 encoded
+--
+--     [C declaration]: @text@, defined at @SDL3\/SDL_events.h 432:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "text" SDL_TextInputEvent ty
@@ -3496,6 +3666,14 @@ instance Marshal.WriteRaw SDL_MouseDeviceEvent where
 
 deriving via Marshal.EquivStorable SDL_MouseDeviceEvent instance BG.Storable SDL_MouseDeviceEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_MouseDeviceEvent
+  instance
+    Struct.IsStruct SDL_MouseDeviceEvent
+
+-- | SDL_EVENT_MOUSE_ADDED or SDL_EVENT_MOUSE_REMOVED
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 442:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_MouseDeviceEvent ty
@@ -3525,6 +3703,7 @@ instance HasCField.HasCField SDL_MouseDeviceEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 443:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_MouseDeviceEvent ty
@@ -3554,6 +3733,9 @@ instance HasCField.HasCField SDL_MouseDeviceEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 444:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_MouseDeviceEvent ty
@@ -3583,6 +3765,9 @@ instance HasCField.HasCField SDL_MouseDeviceEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The mouse instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 445:17@
 instance
   (ty ~ SDL3.Sys.Bindgen.Mouse.SDL_MouseID)
   => BG.CompatHasField.HasField "which" SDL_MouseDeviceEvent ty
@@ -3708,6 +3893,14 @@ instance Marshal.WriteRaw SDL_MouseMotionEvent where
 
 deriving via Marshal.EquivStorable SDL_MouseMotionEvent instance BG.Storable SDL_MouseMotionEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_MouseMotionEvent
+  instance
+    Struct.IsStruct SDL_MouseMotionEvent
+
+-- | SDL_EVENT_MOUSE_MOTION
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 455:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_MouseMotionEvent ty
@@ -3743,6 +3936,7 @@ instance HasCField.HasCField SDL_MouseMotionEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 456:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_MouseMotionEvent ty
@@ -3778,6 +3972,9 @@ instance HasCField.HasCField SDL_MouseMotionEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 457:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_MouseMotionEvent ty
@@ -3813,6 +4010,9 @@ instance HasCField.HasCField SDL_MouseMotionEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The window with mouse focus, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 458:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_MouseMotionEvent ty
@@ -3848,6 +4048,9 @@ instance HasCField.HasCField SDL_MouseMotionEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The mouse instance id in relative mode, SDL_TOUCH_MOUSEID for touch events, SDL_PEN_MOUSEID for pen events, or 0
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 459:17@
 instance
   (ty ~ SDL3.Sys.Bindgen.Mouse.SDL_MouseID)
   => BG.CompatHasField.HasField "which" SDL_MouseMotionEvent ty
@@ -3883,6 +4086,9 @@ instance HasCField.HasCField SDL_MouseMotionEvent "which" where
 
   offset# = \_ -> \_ -> 20
 
+-- | The current button state
+--
+--     [C declaration]: @state@, defined at @SDL3\/SDL_events.h 460:26@
 instance
   (ty ~ SDL3.Sys.Bindgen.Mouse.SDL_MouseButtonFlags)
   => BG.CompatHasField.HasField "state" SDL_MouseMotionEvent ty
@@ -3918,6 +4124,9 @@ instance HasCField.HasCField SDL_MouseMotionEvent "state" where
 
   offset# = \_ -> \_ -> 24
 
+-- | X coordinate, relative to window
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 461:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_MouseMotionEvent ty
@@ -3951,6 +4160,9 @@ instance HasCField.HasCField SDL_MouseMotionEvent "x" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Y coordinate, relative to window
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 462:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_MouseMotionEvent ty
@@ -3984,6 +4196,9 @@ instance HasCField.HasCField SDL_MouseMotionEvent "y" where
 
   offset# = \_ -> \_ -> 32
 
+-- | The relative motion in the X direction
+--
+--     [C declaration]: @xrel@, defined at @SDL3\/SDL_events.h 463:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "xrel" SDL_MouseMotionEvent ty
@@ -4019,6 +4234,9 @@ instance HasCField.HasCField SDL_MouseMotionEvent "xrel" where
 
   offset# = \_ -> \_ -> 36
 
+-- | The relative motion in the Y direction
+--
+--     [C declaration]: @yrel@, defined at @SDL3\/SDL_events.h 464:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "yrel" SDL_MouseMotionEvent ty
@@ -4155,6 +4373,14 @@ instance Marshal.WriteRaw SDL_MouseButtonEvent where
 
 deriving via Marshal.EquivStorable SDL_MouseButtonEvent instance BG.Storable SDL_MouseButtonEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_MouseButtonEvent
+  instance
+    Struct.IsStruct SDL_MouseButtonEvent
+
+-- | SDL_EVENT_MOUSE_BUTTON_DOWN or SDL_EVENT_MOUSE_BUTTON_UP
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 474:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_MouseButtonEvent ty
@@ -4191,6 +4417,7 @@ instance HasCField.HasCField SDL_MouseButtonEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 475:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_MouseButtonEvent ty
@@ -4227,6 +4454,9 @@ instance HasCField.HasCField SDL_MouseButtonEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 476:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_MouseButtonEvent ty
@@ -4263,6 +4493,9 @@ instance HasCField.HasCField SDL_MouseButtonEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The window with mouse focus, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 477:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_MouseButtonEvent ty
@@ -4299,6 +4532,9 @@ instance HasCField.HasCField SDL_MouseButtonEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The mouse instance id in relative mode, SDL_TOUCH_MOUSEID for touch events, or 0
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 478:17@
 instance
   (ty ~ SDL3.Sys.Bindgen.Mouse.SDL_MouseID)
   => BG.CompatHasField.HasField "which" SDL_MouseButtonEvent ty
@@ -4335,6 +4571,9 @@ instance HasCField.HasCField SDL_MouseButtonEvent "which" where
 
   offset# = \_ -> \_ -> 20
 
+-- | The mouse button index
+--
+--     [C declaration]: @button@, defined at @SDL3\/SDL_events.h 479:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "button" SDL_MouseButtonEvent ty
@@ -4371,6 +4610,9 @@ instance HasCField.HasCField SDL_MouseButtonEvent "button" where
 
   offset# = \_ -> \_ -> 24
 
+-- | true if the button is pressed
+--
+--     [C declaration]: @down@, defined at @SDL3\/SDL_events.h 480:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "down" SDL_MouseButtonEvent ty
@@ -4407,6 +4649,9 @@ instance HasCField.HasCField SDL_MouseButtonEvent "down" where
 
   offset# = \_ -> \_ -> 25
 
+-- | 1 for single-click, 2 for double-click, etc.
+--
+--     [C declaration]: @clicks@, defined at @SDL3\/SDL_events.h 481:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "clicks" SDL_MouseButtonEvent ty
@@ -4443,6 +4688,7 @@ instance HasCField.HasCField SDL_MouseButtonEvent "clicks" where
 
   offset# = \_ -> \_ -> 26
 
+-- | [C declaration]: @padding@, defined at @SDL3\/SDL_events.h 482:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding" SDL_MouseButtonEvent ty
@@ -4479,6 +4725,9 @@ instance HasCField.HasCField SDL_MouseButtonEvent "padding" where
 
   offset# = \_ -> \_ -> 27
 
+-- | X coordinate, relative to window
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 483:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_MouseButtonEvent ty
@@ -4513,6 +4762,9 @@ instance HasCField.HasCField SDL_MouseButtonEvent "x" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Y coordinate, relative to window
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 484:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_MouseButtonEvent ty
@@ -4657,6 +4909,14 @@ instance Marshal.WriteRaw SDL_MouseWheelEvent where
 
 deriving via Marshal.EquivStorable SDL_MouseWheelEvent instance BG.Storable SDL_MouseWheelEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_MouseWheelEvent
+  instance
+    Struct.IsStruct SDL_MouseWheelEvent
+
+-- | SDL_EVENT_MOUSE_WHEEL
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 494:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_MouseWheelEvent ty
@@ -4694,6 +4954,7 @@ instance HasCField.HasCField SDL_MouseWheelEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 495:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_MouseWheelEvent ty
@@ -4731,6 +4992,9 @@ instance HasCField.HasCField SDL_MouseWheelEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 496:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_MouseWheelEvent ty
@@ -4768,6 +5032,9 @@ instance HasCField.HasCField SDL_MouseWheelEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The window with mouse focus, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 497:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_MouseWheelEvent ty
@@ -4805,6 +5072,9 @@ instance HasCField.HasCField SDL_MouseWheelEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The mouse instance id in relative mode or 0
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 498:17@
 instance
   (ty ~ SDL3.Sys.Bindgen.Mouse.SDL_MouseID)
   => BG.CompatHasField.HasField "which" SDL_MouseWheelEvent ty
@@ -4842,6 +5112,9 @@ instance HasCField.HasCField SDL_MouseWheelEvent "which" where
 
   offset# = \_ -> \_ -> 20
 
+-- | The amount scrolled horizontally, positive to the right and negative to the left
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 499:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_MouseWheelEvent ty
@@ -4877,6 +5150,9 @@ instance HasCField.HasCField SDL_MouseWheelEvent "x" where
 
   offset# = \_ -> \_ -> 24
 
+-- | The amount scrolled vertically, positive away from the user and negative toward the user
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 500:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_MouseWheelEvent ty
@@ -4912,6 +5188,9 @@ instance HasCField.HasCField SDL_MouseWheelEvent "y" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Set to one of the SDL_MOUSEWHEEL_* defines. When FLIPPED the values in X and Y will be opposite. Multiply by -1 to change them back
+--
+--     [C declaration]: @direction@, defined at @SDL3\/SDL_events.h 501:29@
 instance
   (ty ~ SDL3.Sys.Bindgen.Mouse.SDL_MouseWheelDirection)
   => BG.CompatHasField.HasField "direction" SDL_MouseWheelEvent ty
@@ -4949,6 +5228,9 @@ instance HasCField.HasCField SDL_MouseWheelEvent "direction" where
 
   offset# = \_ -> \_ -> 32
 
+-- | X coordinate, relative to window
+--
+--     [C declaration]: @mouse_x@, defined at @SDL3\/SDL_events.h 502:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "mouse_x" SDL_MouseWheelEvent ty
@@ -4986,6 +5268,9 @@ instance HasCField.HasCField SDL_MouseWheelEvent "mouse_x" where
 
   offset# = \_ -> \_ -> 36
 
+-- | Y coordinate, relative to window
+--
+--     [C declaration]: @mouse_y@, defined at @SDL3\/SDL_events.h 503:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "mouse_y" SDL_MouseWheelEvent ty
@@ -5023,6 +5308,9 @@ instance HasCField.HasCField SDL_MouseWheelEvent "mouse_y" where
 
   offset# = \_ -> \_ -> 40
 
+-- | The amount scrolled horizontally, accumulated to whole scroll \"ticks\" (added in 3.2.12)
+--
+--     [C declaration]: @integer_x@, defined at @SDL3\/SDL_events.h 504:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "integer_x" SDL_MouseWheelEvent ty
@@ -5060,6 +5348,9 @@ instance HasCField.HasCField SDL_MouseWheelEvent "integer_x" where
 
   offset# = \_ -> \_ -> 44
 
+-- | The amount scrolled vertically, accumulated to whole scroll \"ticks\" (added in 3.2.12)
+--
+--     [C declaration]: @integer_y@, defined at @SDL3\/SDL_events.h 505:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "integer_y" SDL_MouseWheelEvent ty
@@ -5185,6 +5476,11 @@ instance Marshal.WriteRaw SDL_JoyAxisEvent where
 
 deriving via Marshal.EquivStorable SDL_JoyAxisEvent instance BG.Storable SDL_JoyAxisEvent
 
+deriving via Struct.IsStructViaReadRaw SDL_JoyAxisEvent instance Struct.IsStruct SDL_JoyAxisEvent
+
+-- | SDL_EVENT_JOYSTICK_AXIS_MOTION
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 515:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_JoyAxisEvent ty
@@ -5220,6 +5516,7 @@ instance HasCField.HasCField SDL_JoyAxisEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 516:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_JoyAxisEvent ty
@@ -5255,6 +5552,9 @@ instance HasCField.HasCField SDL_JoyAxisEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 517:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_JoyAxisEvent ty
@@ -5290,6 +5590,9 @@ instance HasCField.HasCField SDL_JoyAxisEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The joystick instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 518:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Joystick.SDL_JoystickID)
   => BG.CompatHasField.HasField "which" SDL_JoyAxisEvent ty
@@ -5325,6 +5628,9 @@ instance HasCField.HasCField SDL_JoyAxisEvent "which" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The joystick axis index
+--
+--     [C declaration]: @axis@, defined at @SDL3\/SDL_events.h 519:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "axis" SDL_JoyAxisEvent ty
@@ -5360,6 +5666,7 @@ instance HasCField.HasCField SDL_JoyAxisEvent "axis" where
 
   offset# = \_ -> \_ -> 20
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_events.h 520:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_JoyAxisEvent ty
@@ -5395,6 +5702,7 @@ instance HasCField.HasCField SDL_JoyAxisEvent "padding1" where
 
   offset# = \_ -> \_ -> 21
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_events.h 521:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_JoyAxisEvent ty
@@ -5430,6 +5738,7 @@ instance HasCField.HasCField SDL_JoyAxisEvent "padding2" where
 
   offset# = \_ -> \_ -> 22
 
+-- | [C declaration]: @padding3@, defined at @SDL3\/SDL_events.h 522:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding3" SDL_JoyAxisEvent ty
@@ -5465,6 +5774,9 @@ instance HasCField.HasCField SDL_JoyAxisEvent "padding3" where
 
   offset# = \_ -> \_ -> 23
 
+-- | The axis value (range: -32768 to 32767)
+--
+--     [C declaration]: @value@, defined at @SDL3\/SDL_events.h 523:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint16)
   => BG.CompatHasField.HasField "value" SDL_JoyAxisEvent ty
@@ -5500,6 +5812,7 @@ instance HasCField.HasCField SDL_JoyAxisEvent "value" where
 
   offset# = \_ -> \_ -> 24
 
+-- | [C declaration]: @padding4@, defined at @SDL3\/SDL_events.h 524:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "padding4" SDL_JoyAxisEvent ty
@@ -5625,6 +5938,11 @@ instance Marshal.WriteRaw SDL_JoyBallEvent where
 
 deriving via Marshal.EquivStorable SDL_JoyBallEvent instance BG.Storable SDL_JoyBallEvent
 
+deriving via Struct.IsStructViaReadRaw SDL_JoyBallEvent instance Struct.IsStruct SDL_JoyBallEvent
+
+-- | SDL_EVENT_JOYSTICK_BALL_MOTION
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 534:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_JoyBallEvent ty
@@ -5660,6 +5978,7 @@ instance HasCField.HasCField SDL_JoyBallEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 535:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_JoyBallEvent ty
@@ -5695,6 +6014,9 @@ instance HasCField.HasCField SDL_JoyBallEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 536:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_JoyBallEvent ty
@@ -5730,6 +6052,9 @@ instance HasCField.HasCField SDL_JoyBallEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The joystick instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 537:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Joystick.SDL_JoystickID)
   => BG.CompatHasField.HasField "which" SDL_JoyBallEvent ty
@@ -5765,6 +6090,9 @@ instance HasCField.HasCField SDL_JoyBallEvent "which" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The joystick trackball index
+--
+--     [C declaration]: @ball@, defined at @SDL3\/SDL_events.h 538:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "ball" SDL_JoyBallEvent ty
@@ -5800,6 +6128,7 @@ instance HasCField.HasCField SDL_JoyBallEvent "ball" where
 
   offset# = \_ -> \_ -> 20
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_events.h 539:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_JoyBallEvent ty
@@ -5835,6 +6164,7 @@ instance HasCField.HasCField SDL_JoyBallEvent "padding1" where
 
   offset# = \_ -> \_ -> 21
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_events.h 540:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_JoyBallEvent ty
@@ -5870,6 +6200,7 @@ instance HasCField.HasCField SDL_JoyBallEvent "padding2" where
 
   offset# = \_ -> \_ -> 22
 
+-- | [C declaration]: @padding3@, defined at @SDL3\/SDL_events.h 541:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding3" SDL_JoyBallEvent ty
@@ -5905,6 +6236,9 @@ instance HasCField.HasCField SDL_JoyBallEvent "padding3" where
 
   offset# = \_ -> \_ -> 23
 
+-- | The relative motion in the X direction
+--
+--     [C declaration]: @xrel@, defined at @SDL3\/SDL_events.h 542:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint16)
   => BG.CompatHasField.HasField "xrel" SDL_JoyBallEvent ty
@@ -5940,6 +6274,9 @@ instance HasCField.HasCField SDL_JoyBallEvent "xrel" where
 
   offset# = \_ -> \_ -> 24
 
+-- | The relative motion in the Y direction
+--
+--     [C declaration]: @yrel@, defined at @SDL3\/SDL_events.h 543:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint16)
   => BG.CompatHasField.HasField "yrel" SDL_JoyBallEvent ty
@@ -6055,6 +6392,11 @@ instance Marshal.WriteRaw SDL_JoyHatEvent where
 
 deriving via Marshal.EquivStorable SDL_JoyHatEvent instance BG.Storable SDL_JoyHatEvent
 
+deriving via Struct.IsStructViaReadRaw SDL_JoyHatEvent instance Struct.IsStruct SDL_JoyHatEvent
+
+-- | SDL_EVENT_JOYSTICK_HAT_MOTION
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 553:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_JoyHatEvent ty
@@ -6088,6 +6430,7 @@ instance HasCField.HasCField SDL_JoyHatEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 554:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_JoyHatEvent ty
@@ -6121,6 +6464,9 @@ instance HasCField.HasCField SDL_JoyHatEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 555:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_JoyHatEvent ty
@@ -6154,6 +6500,9 @@ instance HasCField.HasCField SDL_JoyHatEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The joystick instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 556:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Joystick.SDL_JoystickID)
   => BG.CompatHasField.HasField "which" SDL_JoyHatEvent ty
@@ -6187,6 +6536,9 @@ instance HasCField.HasCField SDL_JoyHatEvent "which" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The joystick hat index
+--
+--     [C declaration]: @hat@, defined at @SDL3\/SDL_events.h 557:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "hat" SDL_JoyHatEvent ty
@@ -6220,6 +6572,11 @@ instance HasCField.HasCField SDL_JoyHatEvent "hat" where
 
   offset# = \_ -> \_ -> 20
 
+-- | The hat position value. Note that zero means the POV is centered.
+--
+--     [See also]: SDL_HAT_LEFTUP SDL_HAT_UP SDL_HAT_RIGHTUP, SDL_HAT_LEFT SDL_HAT_CENTERED SDL_HAT_RIGHT, SDL_HAT_LEFTDOWN SDL_HAT_DOWN SDL_HAT_RIGHTDOWN
+--
+--     [C declaration]: @value@, defined at @SDL3\/SDL_events.h 558:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "value" SDL_JoyHatEvent ty
@@ -6253,6 +6610,7 @@ instance HasCField.HasCField SDL_JoyHatEvent "value" where
 
   offset# = \_ -> \_ -> 21
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_events.h 565:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_JoyHatEvent ty
@@ -6286,6 +6644,7 @@ instance HasCField.HasCField SDL_JoyHatEvent "padding1" where
 
   offset# = \_ -> \_ -> 22
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_events.h 566:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_JoyHatEvent ty
@@ -6397,6 +6756,14 @@ instance Marshal.WriteRaw SDL_JoyButtonEvent where
 
 deriving via Marshal.EquivStorable SDL_JoyButtonEvent instance BG.Storable SDL_JoyButtonEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_JoyButtonEvent
+  instance
+    Struct.IsStruct SDL_JoyButtonEvent
+
+-- | SDL_EVENT_JOYSTICK_BUTTON_DOWN or SDL_EVENT_JOYSTICK_BUTTON_UP
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 576:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_JoyButtonEvent ty
@@ -6430,6 +6797,7 @@ instance HasCField.HasCField SDL_JoyButtonEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 577:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_JoyButtonEvent ty
@@ -6463,6 +6831,9 @@ instance HasCField.HasCField SDL_JoyButtonEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 578:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_JoyButtonEvent ty
@@ -6496,6 +6867,9 @@ instance HasCField.HasCField SDL_JoyButtonEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The joystick instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 579:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Joystick.SDL_JoystickID)
   => BG.CompatHasField.HasField "which" SDL_JoyButtonEvent ty
@@ -6529,6 +6903,9 @@ instance HasCField.HasCField SDL_JoyButtonEvent "which" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The joystick button index
+--
+--     [C declaration]: @button@, defined at @SDL3\/SDL_events.h 580:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "button" SDL_JoyButtonEvent ty
@@ -6562,6 +6939,9 @@ instance HasCField.HasCField SDL_JoyButtonEvent "button" where
 
   offset# = \_ -> \_ -> 20
 
+-- | true if the button is pressed
+--
+--     [C declaration]: @down@, defined at @SDL3\/SDL_events.h 581:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "down" SDL_JoyButtonEvent ty
@@ -6593,6 +6973,7 @@ instance HasCField.HasCField SDL_JoyButtonEvent "down" where
 
   offset# = \_ -> \_ -> 21
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_events.h 582:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_JoyButtonEvent ty
@@ -6626,6 +7007,7 @@ instance HasCField.HasCField SDL_JoyButtonEvent "padding1" where
 
   offset# = \_ -> \_ -> 22
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_events.h 583:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_JoyButtonEvent ty
@@ -6713,6 +7095,14 @@ instance Marshal.WriteRaw SDL_JoyDeviceEvent where
 
 deriving via Marshal.EquivStorable SDL_JoyDeviceEvent instance BG.Storable SDL_JoyDeviceEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_JoyDeviceEvent
+  instance
+    Struct.IsStruct SDL_JoyDeviceEvent
+
+-- | SDL_EVENT_JOYSTICK_ADDED or SDL_EVENT_JOYSTICK_REMOVED or SDL_EVENT_JOYSTICK_UPDATE_COMPLETE
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 598:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_JoyDeviceEvent ty
@@ -6742,6 +7132,7 @@ instance HasCField.HasCField SDL_JoyDeviceEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 599:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_JoyDeviceEvent ty
@@ -6771,6 +7162,9 @@ instance HasCField.HasCField SDL_JoyDeviceEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 600:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_JoyDeviceEvent ty
@@ -6800,6 +7194,9 @@ instance HasCField.HasCField SDL_JoyDeviceEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The joystick instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 601:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Joystick.SDL_JoystickID)
   => BG.CompatHasField.HasField "which" SDL_JoyDeviceEvent ty
@@ -6891,6 +7288,14 @@ instance Marshal.WriteRaw SDL_JoyBatteryEvent where
 
 deriving via Marshal.EquivStorable SDL_JoyBatteryEvent instance BG.Storable SDL_JoyBatteryEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_JoyBatteryEvent
+  instance
+    Struct.IsStruct SDL_JoyBatteryEvent
+
+-- | SDL_EVENT_JOYSTICK_BATTERY_UPDATED
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 611:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_JoyBatteryEvent ty
@@ -6922,6 +7327,7 @@ instance HasCField.HasCField SDL_JoyBatteryEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 612:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_JoyBatteryEvent ty
@@ -6953,6 +7359,9 @@ instance HasCField.HasCField SDL_JoyBatteryEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 613:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_JoyBatteryEvent ty
@@ -6984,6 +7393,9 @@ instance HasCField.HasCField SDL_JoyBatteryEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The joystick instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 614:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Joystick.SDL_JoystickID)
   => BG.CompatHasField.HasField "which" SDL_JoyBatteryEvent ty
@@ -7015,6 +7427,9 @@ instance HasCField.HasCField SDL_JoyBatteryEvent "which" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The joystick battery state
+--
+--     [C declaration]: @state@, defined at @SDL3\/SDL_events.h 615:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Power.SDL_PowerState)
   => BG.CompatHasField.HasField "state" SDL_JoyBatteryEvent ty
@@ -7046,6 +7461,9 @@ instance HasCField.HasCField SDL_JoyBatteryEvent "state" where
 
   offset# = \_ -> \_ -> 20
 
+-- | The joystick battery percent charge remaining
+--
+--     [C declaration]: @percent@, defined at @SDL3\/SDL_events.h 616:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "percent" SDL_JoyBatteryEvent ty
@@ -7165,6 +7583,14 @@ instance Marshal.WriteRaw SDL_GamepadAxisEvent where
 
 deriving via Marshal.EquivStorable SDL_GamepadAxisEvent instance BG.Storable SDL_GamepadAxisEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GamepadAxisEvent
+  instance
+    Struct.IsStruct SDL_GamepadAxisEvent
+
+-- | SDL_EVENT_GAMEPAD_AXIS_MOTION
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 626:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_GamepadAxisEvent ty
@@ -7200,6 +7626,7 @@ instance HasCField.HasCField SDL_GamepadAxisEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 627:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_GamepadAxisEvent ty
@@ -7235,6 +7662,9 @@ instance HasCField.HasCField SDL_GamepadAxisEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 628:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_GamepadAxisEvent ty
@@ -7270,6 +7700,9 @@ instance HasCField.HasCField SDL_GamepadAxisEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The joystick instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 629:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Joystick.SDL_JoystickID)
   => BG.CompatHasField.HasField "which" SDL_GamepadAxisEvent ty
@@ -7305,6 +7738,9 @@ instance HasCField.HasCField SDL_GamepadAxisEvent "which" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The gamepad axis (SDL_GamepadAxis)
+--
+--     [C declaration]: @axis@, defined at @SDL3\/SDL_events.h 630:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "axis" SDL_GamepadAxisEvent ty
@@ -7340,6 +7776,7 @@ instance HasCField.HasCField SDL_GamepadAxisEvent "axis" where
 
   offset# = \_ -> \_ -> 20
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_events.h 631:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_GamepadAxisEvent ty
@@ -7375,6 +7812,7 @@ instance HasCField.HasCField SDL_GamepadAxisEvent "padding1" where
 
   offset# = \_ -> \_ -> 21
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_events.h 632:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_GamepadAxisEvent ty
@@ -7410,6 +7848,7 @@ instance HasCField.HasCField SDL_GamepadAxisEvent "padding2" where
 
   offset# = \_ -> \_ -> 22
 
+-- | [C declaration]: @padding3@, defined at @SDL3\/SDL_events.h 633:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding3" SDL_GamepadAxisEvent ty
@@ -7445,6 +7884,9 @@ instance HasCField.HasCField SDL_GamepadAxisEvent "padding3" where
 
   offset# = \_ -> \_ -> 23
 
+-- | The axis value (range: -32768 to 32767)
+--
+--     [C declaration]: @value@, defined at @SDL3\/SDL_events.h 634:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint16)
   => BG.CompatHasField.HasField "value" SDL_GamepadAxisEvent ty
@@ -7480,6 +7922,7 @@ instance HasCField.HasCField SDL_GamepadAxisEvent "value" where
 
   offset# = \_ -> \_ -> 24
 
+-- | [C declaration]: @padding4@, defined at @SDL3\/SDL_events.h 635:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint16)
   => BG.CompatHasField.HasField "padding4" SDL_GamepadAxisEvent ty
@@ -7596,6 +8039,14 @@ deriving via
   instance
     BG.Storable SDL_GamepadButtonEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GamepadButtonEvent
+  instance
+    Struct.IsStruct SDL_GamepadButtonEvent
+
+-- | SDL_EVENT_GAMEPAD_BUTTON_DOWN or SDL_EVENT_GAMEPAD_BUTTON_UP
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 646:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_GamepadButtonEvent ty
@@ -7629,6 +8080,7 @@ instance HasCField.HasCField SDL_GamepadButtonEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 647:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_GamepadButtonEvent ty
@@ -7662,6 +8114,9 @@ instance HasCField.HasCField SDL_GamepadButtonEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 648:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_GamepadButtonEvent ty
@@ -7695,6 +8150,9 @@ instance HasCField.HasCField SDL_GamepadButtonEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The joystick instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 649:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Joystick.SDL_JoystickID)
   => BG.CompatHasField.HasField "which" SDL_GamepadButtonEvent ty
@@ -7728,6 +8186,9 @@ instance HasCField.HasCField SDL_GamepadButtonEvent "which" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The gamepad button (SDL_GamepadButton)
+--
+--     [C declaration]: @button@, defined at @SDL3\/SDL_events.h 650:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "button" SDL_GamepadButtonEvent ty
@@ -7761,6 +8222,9 @@ instance HasCField.HasCField SDL_GamepadButtonEvent "button" where
 
   offset# = \_ -> \_ -> 20
 
+-- | true if the button is pressed
+--
+--     [C declaration]: @down@, defined at @SDL3\/SDL_events.h 651:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "down" SDL_GamepadButtonEvent ty
@@ -7794,6 +8258,7 @@ instance HasCField.HasCField SDL_GamepadButtonEvent "down" where
 
   offset# = \_ -> \_ -> 21
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_events.h 652:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_GamepadButtonEvent ty
@@ -7827,6 +8292,7 @@ instance HasCField.HasCField SDL_GamepadButtonEvent "padding1" where
 
   offset# = \_ -> \_ -> 22
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_events.h 653:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_GamepadButtonEvent ty
@@ -7919,6 +8385,14 @@ deriving via
   instance
     BG.Storable SDL_GamepadDeviceEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GamepadDeviceEvent
+  instance
+    Struct.IsStruct SDL_GamepadDeviceEvent
+
+-- | SDL_EVENT_GAMEPAD_ADDED, SDL_EVENT_GAMEPAD_REMOVED, or SDL_EVENT_GAMEPAD_REMAPPED, SDL_EVENT_GAMEPAD_UPDATE_COMPLETE or SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 673:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_GamepadDeviceEvent ty
@@ -7948,6 +8422,7 @@ instance HasCField.HasCField SDL_GamepadDeviceEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 674:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_GamepadDeviceEvent ty
@@ -7977,6 +8452,9 @@ instance HasCField.HasCField SDL_GamepadDeviceEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 675:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_GamepadDeviceEvent ty
@@ -8006,6 +8484,9 @@ instance HasCField.HasCField SDL_GamepadDeviceEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The joystick instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 676:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Joystick.SDL_JoystickID)
   => BG.CompatHasField.HasField "which" SDL_GamepadDeviceEvent ty
@@ -8127,6 +8608,14 @@ deriving via
   instance
     BG.Storable SDL_GamepadTouchpadEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GamepadTouchpadEvent
+  instance
+    Struct.IsStruct SDL_GamepadTouchpadEvent
+
+-- | SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN or SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION or SDL_EVENT_GAMEPAD_TOUCHPAD_UP
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 686:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_GamepadTouchpadEvent ty
@@ -8161,6 +8650,7 @@ instance HasCField.HasCField SDL_GamepadTouchpadEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 687:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_GamepadTouchpadEvent ty
@@ -8195,6 +8685,9 @@ instance HasCField.HasCField SDL_GamepadTouchpadEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 688:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_GamepadTouchpadEvent ty
@@ -8229,6 +8722,9 @@ instance HasCField.HasCField SDL_GamepadTouchpadEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The joystick instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 689:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Joystick.SDL_JoystickID)
   => BG.CompatHasField.HasField "which" SDL_GamepadTouchpadEvent ty
@@ -8263,6 +8759,9 @@ instance HasCField.HasCField SDL_GamepadTouchpadEvent "which" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The index of the touchpad
+--
+--     [C declaration]: @touchpad@, defined at @SDL3\/SDL_events.h 690:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "touchpad" SDL_GamepadTouchpadEvent ty
@@ -8297,6 +8796,9 @@ instance HasCField.HasCField SDL_GamepadTouchpadEvent "touchpad" where
 
   offset# = \_ -> \_ -> 20
 
+-- | The index of the finger on the touchpad
+--
+--     [C declaration]: @finger@, defined at @SDL3\/SDL_events.h 691:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "finger" SDL_GamepadTouchpadEvent ty
@@ -8331,6 +8833,9 @@ instance HasCField.HasCField SDL_GamepadTouchpadEvent "finger" where
 
   offset# = \_ -> \_ -> 24
 
+-- | Normalized in the range 0...1 with 0 being on the left
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 692:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_GamepadTouchpadEvent ty
@@ -8365,6 +8870,9 @@ instance HasCField.HasCField SDL_GamepadTouchpadEvent "x" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Normalized in the range 0...1 with 0 being at the top
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 693:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_GamepadTouchpadEvent ty
@@ -8399,6 +8907,9 @@ instance HasCField.HasCField SDL_GamepadTouchpadEvent "y" where
 
   offset# = \_ -> \_ -> 32
 
+-- | Normalized in the range 0...1
+--
+--     [C declaration]: @pressure@, defined at @SDL3\/SDL_events.h 694:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "pressure" SDL_GamepadTouchpadEvent ty
@@ -8511,6 +9022,14 @@ deriving via
   instance
     BG.Storable SDL_GamepadSensorEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_GamepadSensorEvent
+  instance
+    Struct.IsStruct SDL_GamepadSensorEvent
+
+-- | SDL_EVENT_GAMEPAD_SENSOR_UPDATE
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 704:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_GamepadSensorEvent ty
@@ -8543,6 +9062,7 @@ instance HasCField.HasCField SDL_GamepadSensorEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 705:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_GamepadSensorEvent ty
@@ -8575,6 +9095,9 @@ instance HasCField.HasCField SDL_GamepadSensorEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 706:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_GamepadSensorEvent ty
@@ -8607,6 +9130,9 @@ instance HasCField.HasCField SDL_GamepadSensorEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The joystick instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 707:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Joystick.SDL_JoystickID)
   => BG.CompatHasField.HasField "which" SDL_GamepadSensorEvent ty
@@ -8639,6 +9165,9 @@ instance HasCField.HasCField SDL_GamepadSensorEvent "which" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The type of the sensor, one of the values of SDL_SensorType
+--
+--     [C declaration]: @sensor@, defined at @SDL3\/SDL_events.h 708:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "sensor" SDL_GamepadSensorEvent ty
@@ -8671,6 +9200,9 @@ instance HasCField.HasCField SDL_GamepadSensorEvent "sensor" where
 
   offset# = \_ -> \_ -> 20
 
+-- | Up to 3 values from the sensor, as defined in SDL_sensor.h
+--
+--     [C declaration]: @data@, defined at @SDL3\/SDL_events.h 709:11@
 instance
   (ty ~ CA.ConstantArray 3 BG.CFloat)
   => BG.CompatHasField.HasField "data'" SDL_GamepadSensorEvent ty
@@ -8703,6 +9235,9 @@ instance HasCField.HasCField SDL_GamepadSensorEvent "data'" where
 
   offset# = \_ -> \_ -> 24
 
+-- | The timestamp of the sensor reading in nanoseconds, not necessarily synchronized with the system clock
+--
+--     [C declaration]: @sensor_timestamp@, defined at @SDL3\/SDL_events.h 710:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "sensor_timestamp" SDL_GamepadSensorEvent ty
@@ -8814,6 +9349,14 @@ instance Marshal.WriteRaw SDL_AudioDeviceEvent where
 
 deriving via Marshal.EquivStorable SDL_AudioDeviceEvent instance BG.Storable SDL_AudioDeviceEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_AudioDeviceEvent
+  instance
+    Struct.IsStruct SDL_AudioDeviceEvent
+
+-- | SDL_EVENT_AUDIO_DEVICE_ADDED, or SDL_EVENT_AUDIO_DEVICE_REMOVED, or SDL_EVENT_AUDIO_DEVICE_FORMAT_CHANGED
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 724:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_AudioDeviceEvent ty
@@ -8847,6 +9390,7 @@ instance HasCField.HasCField SDL_AudioDeviceEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 725:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_AudioDeviceEvent ty
@@ -8880,6 +9424,9 @@ instance HasCField.HasCField SDL_AudioDeviceEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 726:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_AudioDeviceEvent ty
@@ -8913,6 +9460,9 @@ instance HasCField.HasCField SDL_AudioDeviceEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | SDL_AudioDeviceID for the device being added or removed or changing
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 727:23@
 instance
   (ty ~ SDL3.Sys.Bindgen.Audio.SDL_AudioDeviceID)
   => BG.CompatHasField.HasField "which" SDL_AudioDeviceEvent ty
@@ -8946,6 +9496,9 @@ instance HasCField.HasCField SDL_AudioDeviceEvent "which" where
 
   offset# = \_ -> \_ -> 16
 
+-- | false if a playback device, true if a recording device.
+--
+--     [C declaration]: @recording@, defined at @SDL3\/SDL_events.h 728:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "recording" SDL_AudioDeviceEvent ty
@@ -8979,6 +9532,7 @@ instance HasCField.HasCField SDL_AudioDeviceEvent "recording" where
 
   offset# = \_ -> \_ -> 20
 
+-- | [C declaration]: @padding1@, defined at @SDL3\/SDL_events.h 729:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding1" SDL_AudioDeviceEvent ty
@@ -9012,6 +9566,7 @@ instance HasCField.HasCField SDL_AudioDeviceEvent "padding1" where
 
   offset# = \_ -> \_ -> 21
 
+-- | [C declaration]: @padding2@, defined at @SDL3\/SDL_events.h 730:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding2" SDL_AudioDeviceEvent ty
@@ -9045,6 +9600,7 @@ instance HasCField.HasCField SDL_AudioDeviceEvent "padding2" where
 
   offset# = \_ -> \_ -> 22
 
+-- | [C declaration]: @padding3@, defined at @SDL3\/SDL_events.h 731:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding3" SDL_AudioDeviceEvent ty
@@ -9128,6 +9684,14 @@ instance Marshal.WriteRaw SDL_CameraDeviceEvent where
 
 deriving via Marshal.EquivStorable SDL_CameraDeviceEvent instance BG.Storable SDL_CameraDeviceEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_CameraDeviceEvent
+  instance
+    Struct.IsStruct SDL_CameraDeviceEvent
+
+-- | SDL_EVENT_CAMERA_DEVICE_ADDED, SDL_EVENT_CAMERA_DEVICE_REMOVED, SDL_EVENT_CAMERA_DEVICE_APPROVED, SDL_EVENT_CAMERA_DEVICE_DENIED
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 741:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_CameraDeviceEvent ty
@@ -9157,6 +9721,7 @@ instance HasCField.HasCField SDL_CameraDeviceEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 742:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_CameraDeviceEvent ty
@@ -9186,6 +9751,9 @@ instance HasCField.HasCField SDL_CameraDeviceEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 743:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_CameraDeviceEvent ty
@@ -9215,6 +9783,9 @@ instance HasCField.HasCField SDL_CameraDeviceEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | SDL_CameraID for the device being added or removed or changing
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 744:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Camera.SDL_CameraID)
   => BG.CompatHasField.HasField "which" SDL_CameraDeviceEvent ty
@@ -9294,6 +9865,11 @@ instance Marshal.WriteRaw SDL_RenderEvent where
 
 deriving via Marshal.EquivStorable SDL_RenderEvent instance BG.Storable SDL_RenderEvent
 
+deriving via Struct.IsStructViaReadRaw SDL_RenderEvent instance Struct.IsStruct SDL_RenderEvent
+
+-- | SDL_EVENT_RENDER_TARGETS_RESET, SDL_EVENT_RENDER_DEVICE_RESET, SDL_EVENT_RENDER_DEVICE_LOST
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 755:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_RenderEvent ty
@@ -9323,6 +9899,7 @@ instance HasCField.HasCField SDL_RenderEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 756:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_RenderEvent ty
@@ -9352,6 +9929,9 @@ instance HasCField.HasCField SDL_RenderEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 757:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_RenderEvent ty
@@ -9381,6 +9961,9 @@ instance HasCField.HasCField SDL_RenderEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The window containing the renderer in question.
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 758:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_RenderEvent ty
@@ -9515,6 +10098,14 @@ instance Marshal.WriteRaw SDL_TouchFingerEvent where
 
 deriving via Marshal.EquivStorable SDL_TouchFingerEvent instance BG.Storable SDL_TouchFingerEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_TouchFingerEvent
+  instance
+    Struct.IsStruct SDL_TouchFingerEvent
+
+-- | SDL_EVENT_FINGER_DOWN, SDL_EVENT_FINGER_UP, SDL_EVENT_FINGER_MOTION, or SDL_EVENT_FINGER_CANCELED
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 783:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_TouchFingerEvent ty
@@ -9551,6 +10142,7 @@ instance HasCField.HasCField SDL_TouchFingerEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 784:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_TouchFingerEvent ty
@@ -9587,6 +10179,9 @@ instance HasCField.HasCField SDL_TouchFingerEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 785:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_TouchFingerEvent ty
@@ -9623,6 +10218,9 @@ instance HasCField.HasCField SDL_TouchFingerEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The touch device id
+--
+--     [C declaration]: @touchID@, defined at @SDL3\/SDL_events.h 786:17@
 instance
   (ty ~ SDL3.Sys.Bindgen.Touch.SDL_TouchID)
   => BG.CompatHasField.HasField "touchID" SDL_TouchFingerEvent ty
@@ -9659,6 +10257,7 @@ instance HasCField.HasCField SDL_TouchFingerEvent "touchID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | [C declaration]: @fingerID@, defined at @SDL3\/SDL_events.h 787:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Touch.SDL_FingerID)
   => BG.CompatHasField.HasField "fingerID" SDL_TouchFingerEvent ty
@@ -9695,6 +10294,9 @@ instance HasCField.HasCField SDL_TouchFingerEvent "fingerID" where
 
   offset# = \_ -> \_ -> 24
 
+-- | Normalized in the range 0...1
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 788:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_TouchFingerEvent ty
@@ -9729,6 +10331,9 @@ instance HasCField.HasCField SDL_TouchFingerEvent "x" where
 
   offset# = \_ -> \_ -> 32
 
+-- | Normalized in the range 0...1
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 789:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_TouchFingerEvent ty
@@ -9763,6 +10368,9 @@ instance HasCField.HasCField SDL_TouchFingerEvent "y" where
 
   offset# = \_ -> \_ -> 36
 
+-- | Normalized in the range -1...1
+--
+--     [C declaration]: @dx@, defined at @SDL3\/SDL_events.h 790:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "dx" SDL_TouchFingerEvent ty
@@ -9797,6 +10405,9 @@ instance HasCField.HasCField SDL_TouchFingerEvent "dx" where
 
   offset# = \_ -> \_ -> 40
 
+-- | Normalized in the range -1...1
+--
+--     [C declaration]: @dy@, defined at @SDL3\/SDL_events.h 791:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "dy" SDL_TouchFingerEvent ty
@@ -9831,6 +10442,9 @@ instance HasCField.HasCField SDL_TouchFingerEvent "dy" where
 
   offset# = \_ -> \_ -> 44
 
+-- | Normalized in the range 0...1
+--
+--     [C declaration]: @pressure@, defined at @SDL3\/SDL_events.h 792:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "pressure" SDL_TouchFingerEvent ty
@@ -9867,6 +10481,9 @@ instance HasCField.HasCField SDL_TouchFingerEvent "pressure" where
 
   offset# = \_ -> \_ -> 48
 
+-- | The window underneath the finger, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 793:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_TouchFingerEvent ty
@@ -9957,6 +10574,14 @@ instance Marshal.WriteRaw SDL_PinchFingerEvent where
 
 deriving via Marshal.EquivStorable SDL_PinchFingerEvent instance BG.Storable SDL_PinchFingerEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_PinchFingerEvent
+  instance
+    Struct.IsStruct SDL_PinchFingerEvent
+
+-- | @SDL_EVENT_PINCH_BEGIN@ or @SDL_EVENT_PINCH_UPDATE@ or @SDL_EVENT_PINCH_END@
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 801:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_PinchFingerEvent ty
@@ -9987,6 +10612,7 @@ instance HasCField.HasCField SDL_PinchFingerEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 802:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_PinchFingerEvent ty
@@ -10017,6 +10643,9 @@ instance HasCField.HasCField SDL_PinchFingerEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 803:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_PinchFingerEvent ty
@@ -10047,6 +10676,9 @@ instance HasCField.HasCField SDL_PinchFingerEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The scale change since the last SDL_EVENT_PINCH_UPDATE. Scale \< 1 is \"zoom out\". Scale > 1 is \"zoom in\".
+--
+--     [C declaration]: @scale@, defined at @SDL3\/SDL_events.h 804:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "scale" SDL_PinchFingerEvent ty
@@ -10077,6 +10709,9 @@ instance HasCField.HasCField SDL_PinchFingerEvent "scale" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The window underneath the finger, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 805:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_PinchFingerEvent ty
@@ -10175,6 +10810,14 @@ instance Marshal.WriteRaw SDL_PenProximityEvent where
 
 deriving via Marshal.EquivStorable SDL_PenProximityEvent instance BG.Storable SDL_PenProximityEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_PenProximityEvent
+  instance
+    Struct.IsStruct SDL_PenProximityEvent
+
+-- | SDL_EVENT_PEN_PROXIMITY_IN or SDL_EVENT_PEN_PROXIMITY_OUT
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 828:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_PenProximityEvent ty
@@ -10206,6 +10849,7 @@ instance HasCField.HasCField SDL_PenProximityEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 829:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_PenProximityEvent ty
@@ -10237,6 +10881,9 @@ instance HasCField.HasCField SDL_PenProximityEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 830:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_PenProximityEvent ty
@@ -10268,6 +10915,9 @@ instance HasCField.HasCField SDL_PenProximityEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The window with pen focus, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 831:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_PenProximityEvent ty
@@ -10299,6 +10949,9 @@ instance HasCField.HasCField SDL_PenProximityEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The pen instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 832:15@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenID)
   => BG.CompatHasField.HasField "which" SDL_PenProximityEvent ty
@@ -10330,6 +10983,9 @@ instance HasCField.HasCField SDL_PenProximityEvent "which" where
 
   offset# = \_ -> \_ -> 20
 
+-- | Complete pen input state at time of event (added in 3.4.16).
+--
+--     [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 833:23@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenInputFlags)
   => BG.CompatHasField.HasField "pen_state" SDL_PenProximityEvent ty
@@ -10445,6 +11101,14 @@ instance Marshal.WriteRaw SDL_PenMotionEvent where
 
 deriving via Marshal.EquivStorable SDL_PenMotionEvent instance BG.Storable SDL_PenMotionEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_PenMotionEvent
+  instance
+    Struct.IsStruct SDL_PenMotionEvent
+
+-- | SDL_EVENT_PEN_MOTION
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 849:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_PenMotionEvent ty
@@ -10478,6 +11142,7 @@ instance HasCField.HasCField SDL_PenMotionEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 850:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_PenMotionEvent ty
@@ -10511,6 +11176,9 @@ instance HasCField.HasCField SDL_PenMotionEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 851:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_PenMotionEvent ty
@@ -10544,6 +11212,9 @@ instance HasCField.HasCField SDL_PenMotionEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The window with pen focus, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 852:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_PenMotionEvent ty
@@ -10577,6 +11248,9 @@ instance HasCField.HasCField SDL_PenMotionEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The pen instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 853:15@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenID)
   => BG.CompatHasField.HasField "which" SDL_PenMotionEvent ty
@@ -10610,6 +11284,9 @@ instance HasCField.HasCField SDL_PenMotionEvent "which" where
 
   offset# = \_ -> \_ -> 20
 
+-- | Complete pen input state at time of event
+--
+--     [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 854:23@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenInputFlags)
   => BG.CompatHasField.HasField "pen_state" SDL_PenMotionEvent ty
@@ -10643,6 +11320,9 @@ instance HasCField.HasCField SDL_PenMotionEvent "pen_state" where
 
   offset# = \_ -> \_ -> 24
 
+-- | X coordinate, relative to window
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 855:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_PenMotionEvent ty
@@ -10674,6 +11354,9 @@ instance HasCField.HasCField SDL_PenMotionEvent "x" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Y coordinate, relative to window
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 856:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_PenMotionEvent ty
@@ -10803,6 +11486,11 @@ instance Marshal.WriteRaw SDL_PenTouchEvent where
 
 deriving via Marshal.EquivStorable SDL_PenTouchEvent instance BG.Storable SDL_PenTouchEvent
 
+deriving via Struct.IsStructViaReadRaw SDL_PenTouchEvent instance Struct.IsStruct SDL_PenTouchEvent
+
+-- | SDL_EVENT_PEN_DOWN or SDL_EVENT_PEN_UP
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 869:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_PenTouchEvent ty
@@ -10838,6 +11526,7 @@ instance HasCField.HasCField SDL_PenTouchEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 870:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_PenTouchEvent ty
@@ -10873,6 +11562,9 @@ instance HasCField.HasCField SDL_PenTouchEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 871:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_PenTouchEvent ty
@@ -10908,6 +11600,9 @@ instance HasCField.HasCField SDL_PenTouchEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The window with pen focus, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 872:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_PenTouchEvent ty
@@ -10943,6 +11638,9 @@ instance HasCField.HasCField SDL_PenTouchEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The pen instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 873:15@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenID)
   => BG.CompatHasField.HasField "which" SDL_PenTouchEvent ty
@@ -10978,6 +11676,9 @@ instance HasCField.HasCField SDL_PenTouchEvent "which" where
 
   offset# = \_ -> \_ -> 20
 
+-- | Complete pen input state at time of event
+--
+--     [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 874:23@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenInputFlags)
   => BG.CompatHasField.HasField "pen_state" SDL_PenTouchEvent ty
@@ -11013,6 +11714,9 @@ instance HasCField.HasCField SDL_PenTouchEvent "pen_state" where
 
   offset# = \_ -> \_ -> 24
 
+-- | X coordinate, relative to window
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 875:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_PenTouchEvent ty
@@ -11046,6 +11750,9 @@ instance HasCField.HasCField SDL_PenTouchEvent "x" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Y coordinate, relative to window
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 876:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_PenTouchEvent ty
@@ -11079,6 +11786,9 @@ instance HasCField.HasCField SDL_PenTouchEvent "y" where
 
   offset# = \_ -> \_ -> 32
 
+-- | true if eraser end is used (not all pens support this).
+--
+--     [C declaration]: @eraser@, defined at @SDL3\/SDL_events.h 877:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "eraser" SDL_PenTouchEvent ty
@@ -11112,6 +11822,9 @@ instance HasCField.HasCField SDL_PenTouchEvent "eraser" where
 
   offset# = \_ -> \_ -> 36
 
+-- | true if the pen is touching or false if the pen is lifted off
+--
+--     [C declaration]: @down@, defined at @SDL3\/SDL_events.h 878:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "down" SDL_PenTouchEvent ty
@@ -11243,6 +11956,14 @@ instance Marshal.WriteRaw SDL_PenButtonEvent where
 
 deriving via Marshal.EquivStorable SDL_PenButtonEvent instance BG.Storable SDL_PenButtonEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_PenButtonEvent
+  instance
+    Struct.IsStruct SDL_PenButtonEvent
+
+-- | SDL_EVENT_PEN_BUTTON_DOWN or SDL_EVENT_PEN_BUTTON_UP
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 891:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_PenButtonEvent ty
@@ -11278,6 +11999,7 @@ instance HasCField.HasCField SDL_PenButtonEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 892:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_PenButtonEvent ty
@@ -11313,6 +12035,9 @@ instance HasCField.HasCField SDL_PenButtonEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 893:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_PenButtonEvent ty
@@ -11348,6 +12073,9 @@ instance HasCField.HasCField SDL_PenButtonEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The window with mouse focus, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 894:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_PenButtonEvent ty
@@ -11383,6 +12111,9 @@ instance HasCField.HasCField SDL_PenButtonEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The pen instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 895:15@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenID)
   => BG.CompatHasField.HasField "which" SDL_PenButtonEvent ty
@@ -11418,6 +12149,9 @@ instance HasCField.HasCField SDL_PenButtonEvent "which" where
 
   offset# = \_ -> \_ -> 20
 
+-- | Complete pen input state at time of event
+--
+--     [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 896:23@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenInputFlags)
   => BG.CompatHasField.HasField "pen_state" SDL_PenButtonEvent ty
@@ -11453,6 +12187,9 @@ instance HasCField.HasCField SDL_PenButtonEvent "pen_state" where
 
   offset# = \_ -> \_ -> 24
 
+-- | X coordinate, relative to window
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 897:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_PenButtonEvent ty
@@ -11486,6 +12223,9 @@ instance HasCField.HasCField SDL_PenButtonEvent "x" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Y coordinate, relative to window
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 898:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_PenButtonEvent ty
@@ -11519,6 +12259,9 @@ instance HasCField.HasCField SDL_PenButtonEvent "y" where
 
   offset# = \_ -> \_ -> 32
 
+-- | The pen button index (first button is 1).
+--
+--     [C declaration]: @button@, defined at @SDL3\/SDL_events.h 899:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "button" SDL_PenButtonEvent ty
@@ -11554,6 +12297,9 @@ instance HasCField.HasCField SDL_PenButtonEvent "button" where
 
   offset# = \_ -> \_ -> 36
 
+-- | true if the button is pressed
+--
+--     [C declaration]: @down@, defined at @SDL3\/SDL_events.h 900:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "down" SDL_PenButtonEvent ty
@@ -11685,6 +12431,11 @@ instance Marshal.WriteRaw SDL_PenAxisEvent where
 
 deriving via Marshal.EquivStorable SDL_PenAxisEvent instance BG.Storable SDL_PenAxisEvent
 
+deriving via Struct.IsStructViaReadRaw SDL_PenAxisEvent instance Struct.IsStruct SDL_PenAxisEvent
+
+-- | SDL_EVENT_PEN_AXIS
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 913:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_PenAxisEvent ty
@@ -11720,6 +12471,7 @@ instance HasCField.HasCField SDL_PenAxisEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 914:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_PenAxisEvent ty
@@ -11755,6 +12507,9 @@ instance HasCField.HasCField SDL_PenAxisEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 915:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_PenAxisEvent ty
@@ -11790,6 +12545,9 @@ instance HasCField.HasCField SDL_PenAxisEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The window with pen focus, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 916:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_PenAxisEvent ty
@@ -11825,6 +12583,9 @@ instance HasCField.HasCField SDL_PenAxisEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | The pen instance id
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 917:15@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenID)
   => BG.CompatHasField.HasField "which" SDL_PenAxisEvent ty
@@ -11860,6 +12621,9 @@ instance HasCField.HasCField SDL_PenAxisEvent "which" where
 
   offset# = \_ -> \_ -> 20
 
+-- | Complete pen input state at time of event
+--
+--     [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 918:23@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenInputFlags)
   => BG.CompatHasField.HasField "pen_state" SDL_PenAxisEvent ty
@@ -11895,6 +12659,9 @@ instance HasCField.HasCField SDL_PenAxisEvent "pen_state" where
 
   offset# = \_ -> \_ -> 24
 
+-- | X coordinate, relative to window
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 919:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_PenAxisEvent ty
@@ -11928,6 +12695,9 @@ instance HasCField.HasCField SDL_PenAxisEvent "x" where
 
   offset# = \_ -> \_ -> 28
 
+-- | Y coordinate, relative to window
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 920:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_PenAxisEvent ty
@@ -11961,6 +12731,9 @@ instance HasCField.HasCField SDL_PenAxisEvent "y" where
 
   offset# = \_ -> \_ -> 32
 
+-- | Axis that has changed
+--
+--     [C declaration]: @axis@, defined at @SDL3\/SDL_events.h 921:17@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenAxis)
   => BG.CompatHasField.HasField "axis" SDL_PenAxisEvent ty
@@ -11996,6 +12769,9 @@ instance HasCField.HasCField SDL_PenAxisEvent "axis" where
 
   offset# = \_ -> \_ -> 36
 
+-- | New value of axis
+--
+--     [C declaration]: @value@, defined at @SDL3\/SDL_events.h 922:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "value" SDL_PenAxisEvent ty
@@ -12103,6 +12879,11 @@ instance Marshal.WriteRaw SDL_DropEvent where
 
 deriving via Marshal.EquivStorable SDL_DropEvent instance BG.Storable SDL_DropEvent
 
+deriving via Struct.IsStructViaReadRaw SDL_DropEvent instance Struct.IsStruct SDL_DropEvent
+
+-- | SDL_EVENT_DROP_BEGIN or SDL_EVENT_DROP_FILE or SDL_EVENT_DROP_TEXT or SDL_EVENT_DROP_COMPLETE or SDL_EVENT_DROP_POSITION
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 933:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_DropEvent ty
@@ -12134,6 +12915,7 @@ instance HasCField.HasCField SDL_DropEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 934:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_DropEvent ty
@@ -12167,6 +12949,9 @@ instance HasCField.HasCField SDL_DropEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 935:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_DropEvent ty
@@ -12200,6 +12985,9 @@ instance HasCField.HasCField SDL_DropEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The window that was dropped on, if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 936:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_DropEvent ty
@@ -12233,6 +13021,9 @@ instance HasCField.HasCField SDL_DropEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | X coordinate, relative to window (not on begin)
+--
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 937:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_DropEvent ty
@@ -12264,6 +13055,9 @@ instance HasCField.HasCField SDL_DropEvent "x" where
 
   offset# = \_ -> \_ -> 20
 
+-- | Y coordinate, relative to window (not on begin)
+--
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 938:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_DropEvent ty
@@ -12295,6 +13089,9 @@ instance HasCField.HasCField SDL_DropEvent "y" where
 
   offset# = \_ -> \_ -> 24
 
+-- | The source app that sent this drop event, or NULL if that isn\'t available
+--
+--     [C declaration]: @source@, defined at @SDL3\/SDL_events.h 939:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "source" SDL_DropEvent ty
@@ -12328,6 +13125,9 @@ instance HasCField.HasCField SDL_DropEvent "source" where
 
   offset# = \_ -> \_ -> 32
 
+-- | The text for SDL_EVENT_DROP_TEXT and the file name for SDL_EVENT_DROP_FILE, NULL for other events
+--
+--     [C declaration]: @data@, defined at @SDL3\/SDL_events.h 940:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "data'" SDL_DropEvent ty
@@ -12429,6 +13229,14 @@ instance Marshal.WriteRaw SDL_ClipboardEvent where
 
 deriving via Marshal.EquivStorable SDL_ClipboardEvent instance BG.Storable SDL_ClipboardEvent
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_ClipboardEvent
+  instance
+    Struct.IsStruct SDL_ClipboardEvent
+
+-- | SDL_EVENT_CLIPBOARD_UPDATE
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 951:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_ClipboardEvent ty
@@ -12460,6 +13268,7 @@ instance HasCField.HasCField SDL_ClipboardEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 952:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_ClipboardEvent ty
@@ -12491,6 +13300,9 @@ instance HasCField.HasCField SDL_ClipboardEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 953:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_ClipboardEvent ty
@@ -12522,6 +13334,9 @@ instance HasCField.HasCField SDL_ClipboardEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | are we owning the clipboard (internal update)
+--
+--     [C declaration]: @owner@, defined at @SDL3\/SDL_events.h 954:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "owner" SDL_ClipboardEvent ty
@@ -12551,6 +13366,9 @@ instance HasCField.HasCField SDL_ClipboardEvent "owner" where
 
   offset# = \_ -> \_ -> 16
 
+-- | number of mime types
+--
+--     [C declaration]: @num_mime_types@, defined at @SDL3\/SDL_events.h 955:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "num_mime_types" SDL_ClipboardEvent ty
@@ -12583,6 +13401,9 @@ instance HasCField.HasCField SDL_ClipboardEvent "num_mime_types" where
 
   offset# = \_ -> \_ -> 20
 
+-- | current mime types
+--
+--     [C declaration]: @mime_types@, defined at @SDL3\/SDL_events.h 956:18@
 instance
   (ty ~ BG.Ptr (PtrConst.PtrConst BG.CChar))
   => BG.CompatHasField.HasField "mime_types" SDL_ClipboardEvent ty
@@ -12676,6 +13497,11 @@ instance Marshal.WriteRaw SDL_SensorEvent where
 
 deriving via Marshal.EquivStorable SDL_SensorEvent instance BG.Storable SDL_SensorEvent
 
+deriving via Struct.IsStructViaReadRaw SDL_SensorEvent instance Struct.IsStruct SDL_SensorEvent
+
+-- | SDL_EVENT_SENSOR_UPDATE
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 966:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_SensorEvent ty
@@ -12707,6 +13533,7 @@ instance HasCField.HasCField SDL_SensorEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 967:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_SensorEvent ty
@@ -12738,6 +13565,9 @@ instance HasCField.HasCField SDL_SensorEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 968:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_SensorEvent ty
@@ -12769,6 +13599,9 @@ instance HasCField.HasCField SDL_SensorEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The instance ID of the sensor
+--
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 969:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Sensor.SDL_SensorID)
   => BG.CompatHasField.HasField "which" SDL_SensorEvent ty
@@ -12800,6 +13633,9 @@ instance HasCField.HasCField SDL_SensorEvent "which" where
 
   offset# = \_ -> \_ -> 16
 
+-- | Up to 6 values from the sensor - additional values can be queried using SDL_GetSensorData()
+--
+--     [C declaration]: @data@, defined at @SDL3\/SDL_events.h 970:11@
 instance
   (ty ~ CA.ConstantArray 6 BG.CFloat)
   => BG.CompatHasField.HasField "data'" SDL_SensorEvent ty
@@ -12831,6 +13667,9 @@ instance HasCField.HasCField SDL_SensorEvent "data'" where
 
   offset# = \_ -> \_ -> 20
 
+-- | The timestamp of the sensor reading in nanoseconds, not necessarily synchronized with the system clock
+--
+--     [C declaration]: @sensor_timestamp@, defined at @SDL3\/SDL_events.h 971:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "sensor_timestamp" SDL_SensorEvent ty
@@ -12907,6 +13746,11 @@ instance Marshal.WriteRaw SDL_QuitEvent where
 
 deriving via Marshal.EquivStorable SDL_QuitEvent instance BG.Storable SDL_QuitEvent
 
+deriving via Struct.IsStructViaReadRaw SDL_QuitEvent instance Struct.IsStruct SDL_QuitEvent
+
+-- | SDL_EVENT_QUIT
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 981:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_QuitEvent ty
@@ -12933,6 +13777,7 @@ instance HasCField.HasCField SDL_QuitEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 982:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_QuitEvent ty
@@ -12961,6 +13806,9 @@ instance HasCField.HasCField SDL_QuitEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 983:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_QuitEvent ty
@@ -13059,6 +13907,11 @@ instance Marshal.WriteRaw SDL_UserEvent where
 
 deriving via Marshal.EquivStorable SDL_UserEvent instance BG.Storable SDL_UserEvent
 
+deriving via Struct.IsStructViaReadRaw SDL_UserEvent instance Struct.IsStruct SDL_UserEvent
+
+-- | SDL_EVENT_USER through SDL_EVENT_LAST, Uint32 because these are not in the 'SDL_EventType' enumeration
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 999:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "type'" SDL_UserEvent ty
@@ -13091,6 +13944,7 @@ instance HasCField.HasCField SDL_UserEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 1000:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_UserEvent ty
@@ -13123,6 +13977,9 @@ instance HasCField.HasCField SDL_UserEvent "reserved" where
 
   offset# = \_ -> \_ -> 4
 
+-- | In nanoseconds, populated using SDL_GetTicksNS()
+--
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 1001:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_UserEvent ty
@@ -13155,6 +14012,9 @@ instance HasCField.HasCField SDL_UserEvent "timestamp" where
 
   offset# = \_ -> \_ -> 8
 
+-- | The associated window if any
+--
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 1002:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_UserEvent ty
@@ -13187,6 +14047,9 @@ instance HasCField.HasCField SDL_UserEvent "windowID" where
 
   offset# = \_ -> \_ -> 16
 
+-- | User defined event code
+--
+--     [C declaration]: @code@, defined at @SDL3\/SDL_events.h 1003:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "code" SDL_UserEvent ty
@@ -13219,6 +14082,9 @@ instance HasCField.HasCField SDL_UserEvent "code" where
 
   offset# = \_ -> \_ -> 20
 
+-- | User defined data pointer
+--
+--     [C declaration]: @data1@, defined at @SDL3\/SDL_events.h 1004:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "data1" SDL_UserEvent ty
@@ -13251,6 +14117,9 @@ instance HasCField.HasCField SDL_UserEvent "data1" where
 
   offset# = \_ -> \_ -> 24
 
+-- | User defined data pointer
+--
+--     [C declaration]: @data2@, defined at @SDL3\/SDL_events.h 1005:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "data2" SDL_UserEvent ty
@@ -13322,7 +14191,11 @@ instance
   => BG.CompatHasField.HasField "type'" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"type'" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"type'" x0
+      )
 
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
@@ -13351,7 +14224,11 @@ instance
   => BG.CompatHasField.HasField "common" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"common" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"common" x0
+      )
 
 instance
   (ty ~ SDL_CommonEvent)
@@ -13379,7 +14256,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"display" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"display" x0
+      )
 
 instance
   (ty ~ SDL_DisplayEvent)
@@ -13408,7 +14288,11 @@ instance
   => BG.CompatHasField.HasField "window" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"window" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"window" x0
+      )
 
 instance
   (ty ~ SDL_WindowEvent)
@@ -13439,7 +14323,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"kdevice" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"kdevice" x0
+      )
 
 instance
   (ty ~ SDL_KeyboardDeviceEvent)
@@ -13468,7 +14355,11 @@ instance
   => BG.CompatHasField.HasField "key" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"key" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"key" x0
+      )
 
 instance
   (ty ~ SDL_KeyboardEvent)
@@ -13495,7 +14386,11 @@ instance
   => BG.CompatHasField.HasField "edit" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"edit" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"edit" x0
+      )
 
 instance
   (ty ~ SDL_TextEditingEvent)
@@ -13528,7 +14423,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"edit_candidates" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"edit_candidates" x0
+      )
 
 instance
   (ty ~ SDL_TextEditingCandidatesEvent)
@@ -13558,7 +14456,11 @@ instance
   => BG.CompatHasField.HasField "text" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"text" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"text" x0
+      )
 
 instance
   (ty ~ SDL_TextInputEvent)
@@ -13586,7 +14488,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"mdevice" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"mdevice" x0
+      )
 
 instance
   (ty ~ SDL_MouseDeviceEvent)
@@ -13615,7 +14520,11 @@ instance
   => BG.CompatHasField.HasField "motion" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"motion" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"motion" x0
+      )
 
 instance
   (ty ~ SDL_MouseMotionEvent)
@@ -13644,7 +14553,11 @@ instance
   => BG.CompatHasField.HasField "button" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"button" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"button" x0
+      )
 
 instance
   (ty ~ SDL_MouseButtonEvent)
@@ -13673,7 +14586,11 @@ instance
   => BG.CompatHasField.HasField "wheel" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"wheel" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"wheel" x0
+      )
 
 instance
   (ty ~ SDL_MouseWheelEvent)
@@ -13703,7 +14620,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"jdevice" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"jdevice" x0
+      )
 
 instance
   (ty ~ SDL_JoyDeviceEvent)
@@ -13732,7 +14652,11 @@ instance
   => BG.CompatHasField.HasField "jaxis" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"jaxis" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"jaxis" x0
+      )
 
 instance
   (ty ~ SDL_JoyAxisEvent)
@@ -13759,7 +14683,11 @@ instance
   => BG.CompatHasField.HasField "jball" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"jball" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"jball" x0
+      )
 
 instance
   (ty ~ SDL_JoyBallEvent)
@@ -13786,7 +14714,11 @@ instance
   => BG.CompatHasField.HasField "jhat" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"jhat" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"jhat" x0
+      )
 
 instance
   (ty ~ SDL_JoyHatEvent)
@@ -13814,7 +14746,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"jbutton" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"jbutton" x0
+      )
 
 instance
   (ty ~ SDL_JoyButtonEvent)
@@ -13844,7 +14779,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"jbattery" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"jbattery" x0
+      )
 
 instance
   (ty ~ SDL_JoyBatteryEvent)
@@ -13877,7 +14815,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"gdevice" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"gdevice" x0
+      )
 
 instance
   (ty ~ SDL_GamepadDeviceEvent)
@@ -13906,7 +14847,11 @@ instance
   => BG.CompatHasField.HasField "gaxis" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"gaxis" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"gaxis" x0
+      )
 
 instance
   (ty ~ SDL_GamepadAxisEvent)
@@ -13939,7 +14884,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"gbutton" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"gbutton" x0
+      )
 
 instance
   (ty ~ SDL_GamepadButtonEvent)
@@ -13972,7 +14920,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"gtouchpad" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"gtouchpad" x0
+      )
 
 instance
   (ty ~ SDL_GamepadTouchpadEvent)
@@ -14005,7 +14956,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"gsensor" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"gsensor" x0
+      )
 
 instance
   (ty ~ SDL_GamepadSensorEvent)
@@ -14035,7 +14989,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"adevice" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"adevice" x0
+      )
 
 instance
   (ty ~ SDL_AudioDeviceEvent)
@@ -14068,7 +15025,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"cdevice" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"cdevice" x0
+      )
 
 instance
   (ty ~ SDL_CameraDeviceEvent)
@@ -14097,7 +15057,11 @@ instance
   => BG.CompatHasField.HasField "sensor" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"sensor" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"sensor" x0
+      )
 
 instance
   (ty ~ SDL_SensorEvent)
@@ -14124,7 +15088,11 @@ instance
   => BG.CompatHasField.HasField "quit" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"quit" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"quit" x0
+      )
 
 instance
   (ty ~ SDL_QuitEvent)
@@ -14151,7 +15119,11 @@ instance
   => BG.CompatHasField.HasField "user" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"user" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"user" x0
+      )
 
 instance
   (ty ~ SDL_UserEvent)
@@ -14179,7 +15151,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"tfinger" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"tfinger" x0
+      )
 
 instance
   (ty ~ SDL_TouchFingerEvent)
@@ -14208,7 +15183,11 @@ instance
   => BG.CompatHasField.HasField "pinch" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"pinch" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"pinch" x0
+      )
 
 instance
   (ty ~ SDL_PinchFingerEvent)
@@ -14241,7 +15220,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"pproximity" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"pproximity" x0
+      )
 
 instance
   (ty ~ SDL_PenProximityEvent)
@@ -14270,7 +15252,11 @@ instance
   => BG.CompatHasField.HasField "ptouch" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"ptouch" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"ptouch" x0
+      )
 
 instance
   (ty ~ SDL_PenTouchEvent)
@@ -14300,7 +15286,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"pmotion" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"pmotion" x0
+      )
 
 instance
   (ty ~ SDL_PenMotionEvent)
@@ -14330,7 +15319,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"pbutton" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"pbutton" x0
+      )
 
 instance
   (ty ~ SDL_PenButtonEvent)
@@ -14359,7 +15351,11 @@ instance
   => BG.CompatHasField.HasField "paxis" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"paxis" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"paxis" x0
+      )
 
 instance
   (ty ~ SDL_PenAxisEvent)
@@ -14386,7 +15382,11 @@ instance
   => BG.CompatHasField.HasField "render" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"render" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"render" x0
+      )
 
 instance
   (ty ~ SDL_RenderEvent)
@@ -14413,7 +15413,11 @@ instance
   => BG.CompatHasField.HasField "drop" SDL_Event ty
   where
   hasField =
-    \x0 -> (BG.setUnionPayload, BG.getField @"drop" x0)
+    \x0 ->
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"drop" x0
+      )
 
 instance
   (ty ~ SDL_DropEvent)
@@ -14441,7 +15445,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"clipboard" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"clipboard" x0
+      )
 
 instance
   (ty ~ SDL_ClipboardEvent)
@@ -14470,7 +15477,10 @@ instance
   where
   hasField =
     \x0 ->
-      (BG.setUnionPayload, BG.getField @"padding" x0)
+      ( \y1 ->
+          BG.setUnionPayload y1 x0
+      , BG.getField @"padding" x0
+      )
 
 instance
   (ty ~ CA.ConstantArray 128 SDL3.Sys.Bindgen.Stdinc.Uint8)
@@ -14606,13 +15616,12 @@ newtype SDL_EventFilter_Aux = SDL_EventFilter_Aux
   { unwrap :: BG.Ptr BG.Void -> BG.Ptr SDL_Event -> IO BG.CBool
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_EventFilter_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_eb1994b3ef52d185_base
-    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word8)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word8))
+    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CBool)
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CBool))
 
 -- __unique:__ @toSDL_EventFilter_Aux@
 hs_bindgen_eb1994b3ef52d185
@@ -14620,15 +15629,22 @@ hs_bindgen_eb1994b3ef52d185
   -> IO (BG.FunPtr SDL_EventFilter_Aux)
 hs_bindgen_eb1994b3ef52d185 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_eb1994b3ef52d185_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_eb1994b3ef52d185_base
+          ( \x1 ->
+              \x2 ->
+                fmap BG.toFFIType (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2))
+          )
+      )
 
 -- __unique:__ @fromSDL_EventFilter_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_fff801095df0ae67_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Word8)
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CBool)
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @fromSDL_EventFilter_Aux@
 hs_bindgen_fff801095df0ae67
@@ -14636,7 +15652,13 @@ hs_bindgen_fff801095df0ae67
   -> SDL_EventFilter_Aux
 hs_bindgen_fff801095df0ae67 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_fff801095df0ae67_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_EventFilter_Aux
+      ( \x1 ->
+          \x2 ->
+            fmap
+              BG.fromFFIType
+              (hs_bindgen_fff801095df0ae67_base (BG.castFunPtr funPtr0) (BG.toFFIType x1) (BG.toFFIType x2))
+      )
 
 instance BG.ToFunPtr SDL_EventFilter_Aux where
   toFunPtr = hs_bindgen_eb1994b3ef52d185

@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Main.Safe (
@@ -10,8 +12,11 @@ module SDL3.Sys.Bindgen.Main.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.IncompleteArray qualified as IA
 import HsBindgen.Runtime.IsArray qualified as IsA
+import HsBindgen.Runtime.Support qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Init qualified
@@ -61,7 +66,7 @@ foreign import ccall safe "hs_bindgen_1c56a59892e2463e"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Main_Safe_SDL_SetMainReady@
 hs_bindgen_1c56a59892e2463e :: IO ()
 hs_bindgen_1c56a59892e2463e =
-  BG.fromFFIType hs_bindgen_1c56a59892e2463e_base
+  hs_bindgen_1c56a59892e2463e_base
 
 -- | Circumvent failure of SDL_Init() when not using @SDL_main()@ as an entry point.
 --
@@ -80,11 +85,11 @@ sDL_SetMainReady = hs_bindgen_1c56a59892e2463e
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Main_Safe_SDL_RunApp@
 foreign import ccall safe "hs_bindgen_1b6974d956741083"
   hs_bindgen_1b6974d956741083_base
-    :: BG.Int32
+    :: BG.CInt
     -> BG.Ptr BG.Void
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Main_Safe_SDL_RunApp@
 hs_bindgen_1b6974d956741083
@@ -94,7 +99,18 @@ hs_bindgen_1b6974d956741083
   -> BG.Ptr BG.Void
   -> IO BG.CInt
 hs_bindgen_1b6974d956741083 =
-  BG.fromFFIType hs_bindgen_1b6974d956741083_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_1b6974d956741083_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Initializes and launches an SDL application, by doing platform-specific initialization before calling your mainFunction and cleanups after it returns, if that is needed for a specific platform, otherwise it just calls mainFunction.
 --
@@ -132,13 +148,13 @@ sDL_RunApp = hs_bindgen_1b6974d956741083
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Main_Safe_SDL_EnterAppMainCallbacks@
 foreign import ccall safe "hs_bindgen_656ed4ab2c6b8347"
   hs_bindgen_656ed4ab2c6b8347_base
-    :: BG.Int32
+    :: BG.CInt
     -> BG.Ptr BG.Void
-    -> BG.FunPtr BG.Void
-    -> BG.FunPtr BG.Void
-    -> BG.FunPtr BG.Void
-    -> BG.FunPtr BG.Void
-    -> IO BG.Int32
+    -> HsBindgen.Runtime.Support.FunPtrVoid
+    -> HsBindgen.Runtime.Support.FunPtrVoid
+    -> HsBindgen.Runtime.Support.FunPtrVoid
+    -> HsBindgen.Runtime.Support.FunPtrVoid
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Main_Safe_SDL_EnterAppMainCallbacks@
 hs_bindgen_656ed4ab2c6b8347
@@ -150,7 +166,22 @@ hs_bindgen_656ed4ab2c6b8347
   -> SDL3.Sys.Bindgen.Init.SDL_AppQuit_func
   -> IO BG.CInt
 hs_bindgen_656ed4ab2c6b8347 =
-  BG.fromFFIType hs_bindgen_656ed4ab2c6b8347_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_656ed4ab2c6b8347_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | An entry point for SDL\'s use in SDL_MAIN_USE_CALLBACKS.
 --
@@ -202,7 +233,7 @@ foreign import ccall safe "hs_bindgen_265bcc9d378e1bc4"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Main_Safe_SDL_GDKSuspendComplete@
 hs_bindgen_265bcc9d378e1bc4 :: IO ()
 hs_bindgen_265bcc9d378e1bc4 =
-  BG.fromFFIType hs_bindgen_265bcc9d378e1bc4_base
+  hs_bindgen_265bcc9d378e1bc4_base
 
 -- | Callback from the application to let the suspend continue.
 --

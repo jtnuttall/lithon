@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Pen.FunPtr (
@@ -7,13 +9,16 @@ module SDL3.Sys.Bindgen.Pen.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Pen
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_pen.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_pen.h>"
          , "#include <SDL3/SDL_version.h>"
          , "#include <SDL3/SDL_error.h>"
          , "#include <SDL3/SDL_version.h>"
@@ -44,7 +49,7 @@ foreign import ccall unsafe "hs_bindgen_bcd57304ca37ccf0"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Pen_get_SDL_GetPenDeviceType@
 hs_bindgen_bcd57304ca37ccf0 :: IO (BG.FunPtr (SDL_PenID -> IO SDL_PenDeviceType))
 hs_bindgen_bcd57304ca37ccf0 =
-  BG.fromFFIType hs_bindgen_bcd57304ca37ccf0_base
+  fmap BG.fromFFIType hs_bindgen_bcd57304ca37ccf0_base
 
 {-# NOINLINE sDL_GetPenDeviceType #-}
 

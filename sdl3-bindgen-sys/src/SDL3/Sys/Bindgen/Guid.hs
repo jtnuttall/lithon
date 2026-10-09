@@ -13,6 +13,7 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | A GUID is a 128-bit value that represents something that is uniquely identifiable by this value: \"globally unique.\"
 --
@@ -30,9 +31,12 @@ module SDL3.Sys.Bindgen.Guid (
 )
 where
 
+import Prelude (Eq, Int, Show, pure, (<*>), type (~))
+
 import HsBindgen.Runtime.ConstantArray qualified as CA
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -65,6 +69,9 @@ instance Marshal.WriteRaw SDL_GUID where
 
 deriving via Marshal.EquivStorable SDL_GUID instance BG.Storable SDL_GUID
 
+deriving via Struct.IsStructViaReadRaw SDL_GUID instance Struct.IsStruct SDL_GUID
+
+-- | [C declaration]: @data@, defined at @SDL3\/SDL_guid.h 62:11@
 instance
   (ty ~ CA.ConstantArray 16 SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "data'" SDL_GUID ty

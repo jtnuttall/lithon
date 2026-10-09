@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Render.Safe (
@@ -107,7 +109,11 @@ module SDL3.Sys.Bindgen.Render.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Support qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Blendmode qualified
@@ -123,7 +129,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_render.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_render.h>"
          , "signed int hs_bindgen_73e69181c85cbe7b (void)"
          , "{"
          , "  return (SDL_GetNumRenderDrivers)();"
@@ -1062,12 +1069,12 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetNumRenderDrivers@
 foreign import ccall safe "hs_bindgen_73e69181c85cbe7b"
   hs_bindgen_73e69181c85cbe7b_base
-    :: IO BG.Int32
+    :: IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetNumRenderDrivers@
 hs_bindgen_73e69181c85cbe7b :: IO BG.CInt
 hs_bindgen_73e69181c85cbe7b =
-  BG.fromFFIType hs_bindgen_73e69181c85cbe7b_base
+  fmap BG.fromFFIType hs_bindgen_73e69181c85cbe7b_base
 
 -- | Get the number of 2D rendering drivers available for the current display.
 --
@@ -1090,7 +1097,7 @@ sDL_GetNumRenderDrivers = hs_bindgen_73e69181c85cbe7b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderDriver@
 foreign import ccall safe "hs_bindgen_785e31d2ab303c36"
   hs_bindgen_785e31d2ab303c36_base
-    :: BG.Int32
+    :: BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderDriver@
@@ -1098,7 +1105,8 @@ hs_bindgen_785e31d2ab303c36
   :: BG.CInt
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_785e31d2ab303c36 =
-  BG.fromFFIType hs_bindgen_785e31d2ab303c36_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_785e31d2ab303c36_base (BG.toFFIType x0))
 
 -- | Use this function to get the name of a built in 2D rendering driver.
 --
@@ -1127,12 +1135,12 @@ sDL_GetRenderDriver = hs_bindgen_785e31d2ab303c36
 foreign import ccall safe "hs_bindgen_8b7a09bca8ba667b"
   hs_bindgen_8b7a09bca8ba667b_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> BG.Word64
+    -> BG.CInt
+    -> BG.CInt
+    -> HsBindgen.Runtime.LibC.Word64
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_CreateWindowAndRenderer@
 hs_bindgen_8b7a09bca8ba667b
@@ -1144,7 +1152,22 @@ hs_bindgen_8b7a09bca8ba667b
   -> BG.Ptr (BG.Ptr SDL_Renderer)
   -> IO BG.CBool
 hs_bindgen_8b7a09bca8ba667b =
-  BG.fromFFIType hs_bindgen_8b7a09bca8ba667b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_8b7a09bca8ba667b_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Create a window and default renderer.
 --
@@ -1199,7 +1222,9 @@ hs_bindgen_4a9fac5ac8d291e9
   -> PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr SDL_Renderer)
 hs_bindgen_4a9fac5ac8d291e9 =
-  BG.fromFFIType hs_bindgen_4a9fac5ac8d291e9_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4a9fac5ac8d291e9_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Create a 2D rendering context for a window.
 --
@@ -1233,7 +1258,7 @@ sDL_CreateRenderer = hs_bindgen_4a9fac5ac8d291e9
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_CreateRendererWithProperties@
 foreign import ccall safe "hs_bindgen_8b6efe6418cb34a2"
   hs_bindgen_8b6efe6418cb34a2_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_CreateRendererWithProperties@
@@ -1241,7 +1266,8 @@ hs_bindgen_8b6efe6418cb34a2
   :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -> IO (BG.Ptr SDL_Renderer)
 hs_bindgen_8b6efe6418cb34a2 =
-  BG.fromFFIType hs_bindgen_8b6efe6418cb34a2_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_8b6efe6418cb34a2_base (BG.toFFIType x0))
 
 -- | Create a 2D rendering context for a window, with the specified properties.
 --
@@ -1312,7 +1338,9 @@ hs_bindgen_6efbbd05c80e02d0
   -> BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window
   -> IO (BG.Ptr SDL_Renderer)
 hs_bindgen_6efbbd05c80e02d0 =
-  BG.fromFFIType hs_bindgen_6efbbd05c80e02d0_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_6efbbd05c80e02d0_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Create a 2D GPU rendering context.
 --
@@ -1352,7 +1380,8 @@ hs_bindgen_aa8cead59246ca07
   :: BG.Ptr SDL_Renderer
   -> IO (BG.Ptr SDL3.Sys.Bindgen.Gpu.SDL_GPUDevice)
 hs_bindgen_aa8cead59246ca07 =
-  BG.fromFFIType hs_bindgen_aa8cead59246ca07_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_aa8cead59246ca07_base (BG.toFFIType x0))
 
 -- | Return the GPU device used by a renderer.
 --
@@ -1383,7 +1412,8 @@ hs_bindgen_154eef5a69d9f0de
   :: BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface
   -> IO (BG.Ptr SDL_Renderer)
 hs_bindgen_154eef5a69d9f0de =
-  BG.fromFFIType hs_bindgen_154eef5a69d9f0de_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_154eef5a69d9f0de_base (BG.toFFIType x0))
 
 -- | Create a 2D software rendering context for a surface.
 --
@@ -1418,7 +1448,8 @@ hs_bindgen_6b28e604d7d033f7
   :: BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window
   -> IO (BG.Ptr SDL_Renderer)
 hs_bindgen_6b28e604d7d033f7 =
-  BG.fromFFIType hs_bindgen_6b28e604d7d033f7_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_6b28e604d7d033f7_base (BG.toFFIType x0))
 
 -- | Get the renderer associated with a window.
 --
@@ -1448,7 +1479,8 @@ hs_bindgen_b22b3e4ae10bdb0d
   :: BG.Ptr SDL_Renderer
   -> IO (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window)
 hs_bindgen_b22b3e4ae10bdb0d =
-  BG.fromFFIType hs_bindgen_b22b3e4ae10bdb0d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b22b3e4ae10bdb0d_base (BG.toFFIType x0))
 
 -- | Get the window associated with a renderer.
 --
@@ -1478,7 +1510,8 @@ hs_bindgen_599c50262188b811
   :: BG.Ptr SDL_Renderer
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_599c50262188b811 =
-  BG.fromFFIType hs_bindgen_599c50262188b811_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_599c50262188b811_base (BG.toFFIType x0))
 
 -- | Get the name of a renderer.
 --
@@ -1503,14 +1536,15 @@ sDL_GetRendererName = hs_bindgen_599c50262188b811
 foreign import ccall safe "hs_bindgen_4a11529b7951c637"
   hs_bindgen_4a11529b7951c637_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRendererProperties@
 hs_bindgen_4a11529b7951c637
   :: BG.Ptr SDL_Renderer
   -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
 hs_bindgen_4a11529b7951c637 =
-  BG.fromFFIType hs_bindgen_4a11529b7951c637_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4a11529b7951c637_base (BG.toFFIType x0))
 
 -- | Get the properties associated with a renderer.
 --
@@ -1598,7 +1632,7 @@ foreign import ccall safe "hs_bindgen_1d433c9827126af7"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderOutputSize@
 hs_bindgen_1d433c9827126af7
@@ -1607,7 +1641,12 @@ hs_bindgen_1d433c9827126af7
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_1d433c9827126af7 =
-  BG.fromFFIType hs_bindgen_1d433c9827126af7_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_1d433c9827126af7_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the output size in pixels of a rendering context.
 --
@@ -1646,7 +1685,7 @@ foreign import ccall safe "hs_bindgen_5d30db125155788b"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetCurrentRenderOutputSize@
 hs_bindgen_5d30db125155788b
@@ -1655,7 +1694,12 @@ hs_bindgen_5d30db125155788b
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_5d30db125155788b =
-  BG.fromFFIType hs_bindgen_5d30db125155788b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_5d30db125155788b_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the current output size in pixels of a rendering context.
 --
@@ -1693,10 +1737,10 @@ sDL_GetCurrentRenderOutputSize =
 foreign import ccall safe "hs_bindgen_052b6ffc7143143e"
   hs_bindgen_052b6ffc7143143e_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Int32
-    -> BG.Int32
+    -> HsBindgen.Runtime.Support.CUInt
+    -> BG.CUInt
+    -> BG.CInt
+    -> BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_CreateTexture@
@@ -1708,7 +1752,20 @@ hs_bindgen_052b6ffc7143143e
   -> BG.CInt
   -> IO (BG.Ptr SDL_Texture)
 hs_bindgen_052b6ffc7143143e =
-  BG.fromFFIType hs_bindgen_052b6ffc7143143e_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_052b6ffc7143143e_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Create a texture for a rendering context.
 --
@@ -1760,7 +1817,9 @@ hs_bindgen_4d23668000d5b53c
   -> BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface
   -> IO (BG.Ptr SDL_Texture)
 hs_bindgen_4d23668000d5b53c =
-  BG.fromFFIType hs_bindgen_4d23668000d5b53c_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4d23668000d5b53c_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Create a texture from an existing surface.
 --
@@ -1796,7 +1855,7 @@ sDL_CreateTextureFromSurface =
 foreign import ccall safe "hs_bindgen_56364d1627b2f54e"
   hs_bindgen_56364d1627b2f54e_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_CreateTextureWithProperties@
@@ -1805,7 +1864,9 @@ hs_bindgen_56364d1627b2f54e
   -> SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -> IO (BG.Ptr SDL_Texture)
 hs_bindgen_56364d1627b2f54e =
-  BG.fromFFIType hs_bindgen_56364d1627b2f54e_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_56364d1627b2f54e_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Create a texture for a rendering context with the specified properties.
 --
@@ -1909,14 +1970,15 @@ sDL_CreateTextureWithProperties =
 foreign import ccall safe "hs_bindgen_5a086b7bc8bee33d"
   hs_bindgen_5a086b7bc8bee33d_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetTextureProperties@
 hs_bindgen_5a086b7bc8bee33d
   :: BG.Ptr SDL_Texture
   -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
 hs_bindgen_5a086b7bc8bee33d =
-  BG.fromFFIType hs_bindgen_5a086b7bc8bee33d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_5a086b7bc8bee33d_base (BG.toFFIType x0))
 
 -- | Get the properties associated with a texture.
 --
@@ -2021,7 +2083,8 @@ hs_bindgen_952d60b9be750f80
   :: BG.Ptr SDL_Texture
   -> IO (BG.Ptr SDL_Renderer)
 hs_bindgen_952d60b9be750f80 =
-  BG.fromFFIType hs_bindgen_952d60b9be750f80_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_952d60b9be750f80_base (BG.toFFIType x0))
 
 -- | Get the renderer that created an 'SDL_Texture'.
 --
@@ -2047,7 +2110,7 @@ foreign import ccall safe "hs_bindgen_593080867d87a9cb"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetTextureSize@
 hs_bindgen_593080867d87a9cb
@@ -2056,7 +2119,12 @@ hs_bindgen_593080867d87a9cb
   -> BG.Ptr BG.CFloat
   -> IO BG.CBool
 hs_bindgen_593080867d87a9cb =
-  BG.fromFFIType hs_bindgen_593080867d87a9cb_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_593080867d87a9cb_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the size of a texture, as floating point values.
 --
@@ -2088,7 +2156,7 @@ foreign import ccall safe "hs_bindgen_c0c58495bafd931b"
   hs_bindgen_c0c58495bafd931b_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetTexturePalette@
 hs_bindgen_c0c58495bafd931b
@@ -2096,7 +2164,9 @@ hs_bindgen_c0c58495bafd931b
   -> BG.Ptr SDL3.Sys.Bindgen.Pixels.SDL_Palette
   -> IO BG.CBool
 hs_bindgen_c0c58495bafd931b =
-  BG.fromFFIType hs_bindgen_c0c58495bafd931b_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_c0c58495bafd931b_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the palette used by a texture.
 --
@@ -2136,7 +2206,8 @@ hs_bindgen_23b273d543966d78
   :: BG.Ptr SDL_Texture
   -> IO (BG.Ptr SDL3.Sys.Bindgen.Pixels.SDL_Palette)
 hs_bindgen_23b273d543966d78 =
-  BG.fromFFIType hs_bindgen_23b273d543966d78_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_23b273d543966d78_base (BG.toFFIType x0))
 
 -- | Get the palette used by a texture.
 --
@@ -2161,10 +2232,10 @@ sDL_GetTexturePalette = hs_bindgen_23b273d543966d78
 foreign import ccall safe "hs_bindgen_823afe6398e7b8c5"
   hs_bindgen_823afe6398e7b8c5_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> BG.Word8
-    -> BG.Word8
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetTextureColorMod@
 hs_bindgen_823afe6398e7b8c5
@@ -2174,7 +2245,18 @@ hs_bindgen_823afe6398e7b8c5
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_823afe6398e7b8c5 =
-  BG.fromFFIType hs_bindgen_823afe6398e7b8c5_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_823afe6398e7b8c5_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Set an additional color value multiplied into render copy operations.
 --
@@ -2217,10 +2299,10 @@ sDL_SetTextureColorMod = hs_bindgen_823afe6398e7b8c5
 foreign import ccall safe "hs_bindgen_7ad37bb707c0047a"
   hs_bindgen_7ad37bb707c0047a_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> Float
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetTextureColorModFloat@
 hs_bindgen_7ad37bb707c0047a
@@ -2230,7 +2312,18 @@ hs_bindgen_7ad37bb707c0047a
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_7ad37bb707c0047a =
-  BG.fromFFIType hs_bindgen_7ad37bb707c0047a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_7ad37bb707c0047a_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Set an additional color value multiplied into render copy operations.
 --
@@ -2277,7 +2370,7 @@ foreign import ccall safe "hs_bindgen_7a0ccf77a4fdfc3e"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetTextureColorMod@
 hs_bindgen_7a0ccf77a4fdfc3e
@@ -2287,7 +2380,18 @@ hs_bindgen_7a0ccf77a4fdfc3e
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_7a0ccf77a4fdfc3e =
-  BG.fromFFIType hs_bindgen_7a0ccf77a4fdfc3e_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_7a0ccf77a4fdfc3e_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Get the additional color value multiplied into render copy operations.
 --
@@ -2327,7 +2431,7 @@ foreign import ccall safe "hs_bindgen_842e59bbba82a5a3"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetTextureColorModFloat@
 hs_bindgen_842e59bbba82a5a3
@@ -2337,7 +2441,18 @@ hs_bindgen_842e59bbba82a5a3
   -> BG.Ptr BG.CFloat
   -> IO BG.CBool
 hs_bindgen_842e59bbba82a5a3 =
-  BG.fromFFIType hs_bindgen_842e59bbba82a5a3_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_842e59bbba82a5a3_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Get the additional color value multiplied into render copy operations.
 --
@@ -2375,8 +2490,8 @@ sDL_GetTextureColorModFloat =
 foreign import ccall safe "hs_bindgen_cd0da7f365c5d74f"
   hs_bindgen_cd0da7f365c5d74f_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetTextureAlphaMod@
 hs_bindgen_cd0da7f365c5d74f
@@ -2384,7 +2499,9 @@ hs_bindgen_cd0da7f365c5d74f
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_cd0da7f365c5d74f =
-  BG.fromFFIType hs_bindgen_cd0da7f365c5d74f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_cd0da7f365c5d74f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set an additional alpha value multiplied into render copy operations.
 --
@@ -2419,8 +2536,8 @@ sDL_SetTextureAlphaMod = hs_bindgen_cd0da7f365c5d74f
 foreign import ccall safe "hs_bindgen_3c8a499336e4d5a3"
   hs_bindgen_3c8a499336e4d5a3_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetTextureAlphaModFloat@
 hs_bindgen_3c8a499336e4d5a3
@@ -2428,7 +2545,9 @@ hs_bindgen_3c8a499336e4d5a3
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_3c8a499336e4d5a3 =
-  BG.fromFFIType hs_bindgen_3c8a499336e4d5a3_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_3c8a499336e4d5a3_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set an additional alpha value multiplied into render copy operations.
 --
@@ -2465,7 +2584,7 @@ foreign import ccall safe "hs_bindgen_d0b8db7f236a27d6"
   hs_bindgen_d0b8db7f236a27d6_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetTextureAlphaMod@
 hs_bindgen_d0b8db7f236a27d6
@@ -2473,7 +2592,9 @@ hs_bindgen_d0b8db7f236a27d6
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_d0b8db7f236a27d6 =
-  BG.fromFFIType hs_bindgen_d0b8db7f236a27d6_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_d0b8db7f236a27d6_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the additional alpha value multiplied into render copy operations.
 --
@@ -2503,7 +2624,7 @@ foreign import ccall safe "hs_bindgen_10d5dcf405fda170"
   hs_bindgen_10d5dcf405fda170_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetTextureAlphaModFloat@
 hs_bindgen_10d5dcf405fda170
@@ -2511,7 +2632,9 @@ hs_bindgen_10d5dcf405fda170
   -> BG.Ptr BG.CFloat
   -> IO BG.CBool
 hs_bindgen_10d5dcf405fda170 =
-  BG.fromFFIType hs_bindgen_10d5dcf405fda170_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_10d5dcf405fda170_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the additional alpha value multiplied into render copy operations.
 --
@@ -2541,8 +2664,8 @@ sDL_GetTextureAlphaModFloat =
 foreign import ccall safe "hs_bindgen_2881e5a760914ac5"
   hs_bindgen_2881e5a760914ac5_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetTextureBlendMode@
 hs_bindgen_2881e5a760914ac5
@@ -2550,7 +2673,9 @@ hs_bindgen_2881e5a760914ac5
   -> SDL3.Sys.Bindgen.Blendmode.SDL_BlendMode
   -> IO BG.CBool
 hs_bindgen_2881e5a760914ac5 =
-  BG.fromFFIType hs_bindgen_2881e5a760914ac5_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_2881e5a760914ac5_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the blend mode for a texture, used by @SDL_RenderTexture()@.
 --
@@ -2584,7 +2709,7 @@ foreign import ccall safe "hs_bindgen_816bbcb1b4c3283a"
   hs_bindgen_816bbcb1b4c3283a_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetTextureBlendMode@
 hs_bindgen_816bbcb1b4c3283a
@@ -2592,7 +2717,9 @@ hs_bindgen_816bbcb1b4c3283a
   -> BG.Ptr SDL3.Sys.Bindgen.Blendmode.SDL_BlendMode
   -> IO BG.CBool
 hs_bindgen_816bbcb1b4c3283a =
-  BG.fromFFIType hs_bindgen_816bbcb1b4c3283a_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_816bbcb1b4c3283a_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the blend mode used for texture copy operations.
 --
@@ -2621,8 +2748,8 @@ sDL_GetTextureBlendMode = hs_bindgen_816bbcb1b4c3283a
 foreign import ccall safe "hs_bindgen_f9ee16ea95e7fdf6"
   hs_bindgen_f9ee16ea95e7fdf6_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.Support.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetTextureScaleMode@
 hs_bindgen_f9ee16ea95e7fdf6
@@ -2630,7 +2757,9 @@ hs_bindgen_f9ee16ea95e7fdf6
   -> SDL3.Sys.Bindgen.Surface.SDL_ScaleMode
   -> IO BG.CBool
 hs_bindgen_f9ee16ea95e7fdf6 =
-  BG.fromFFIType hs_bindgen_f9ee16ea95e7fdf6_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_f9ee16ea95e7fdf6_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the scale mode used for texture scale operations.
 --
@@ -2664,7 +2793,7 @@ foreign import ccall safe "hs_bindgen_6de3c22a0ac3ed25"
   hs_bindgen_6de3c22a0ac3ed25_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetTextureScaleMode@
 hs_bindgen_6de3c22a0ac3ed25
@@ -2672,7 +2801,9 @@ hs_bindgen_6de3c22a0ac3ed25
   -> BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_ScaleMode
   -> IO BG.CBool
 hs_bindgen_6de3c22a0ac3ed25 =
-  BG.fromFFIType hs_bindgen_6de3c22a0ac3ed25_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_6de3c22a0ac3ed25_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the scale mode used for texture scale operations.
 --
@@ -2703,8 +2834,8 @@ foreign import ccall safe "hs_bindgen_34af457e8db29591"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_UpdateTexture@
 hs_bindgen_34af457e8db29591
@@ -2714,7 +2845,18 @@ hs_bindgen_34af457e8db29591
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_34af457e8db29591 =
-  BG.fromFFIType hs_bindgen_34af457e8db29591_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_34af457e8db29591_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Update the given texture rectangle with new pixel data.
 --
@@ -2759,12 +2901,12 @@ foreign import ccall safe "hs_bindgen_a7b149fabb767cd5"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_UpdateYUVTexture@
 hs_bindgen_a7b149fabb767cd5
@@ -2778,7 +2920,26 @@ hs_bindgen_a7b149fabb767cd5
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_a7b149fabb767cd5 =
-  BG.fromFFIType hs_bindgen_a7b149fabb767cd5_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                \x7 ->
+                  fmap
+                    BG.fromFFIType
+                    ( hs_bindgen_a7b149fabb767cd5_base
+                        (BG.toFFIType x0)
+                        (BG.toFFIType x1)
+                        (BG.toFFIType x2)
+                        (BG.toFFIType x3)
+                        (BG.toFFIType x4)
+                        (BG.toFFIType x5)
+                        (BG.toFFIType x6)
+                        (BG.toFFIType x7)
+                    )
 
 -- | Update a rectangle within a planar YV12 or IYUV texture with new pixel data.
 --
@@ -2835,10 +2996,10 @@ foreign import ccall safe "hs_bindgen_2d94f5e4965716c8"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_UpdateNVTexture@
 hs_bindgen_2d94f5e4965716c8
@@ -2850,7 +3011,22 @@ hs_bindgen_2d94f5e4965716c8
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_2d94f5e4965716c8 =
-  BG.fromFFIType hs_bindgen_2d94f5e4965716c8_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_2d94f5e4965716c8_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Update a rectangle within a planar NV12 or NV21 texture with new pixels.
 --
@@ -2900,7 +3076,7 @@ foreign import ccall safe "hs_bindgen_b121055dd1158359"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_LockTexture@
 hs_bindgen_b121055dd1158359
@@ -2910,7 +3086,18 @@ hs_bindgen_b121055dd1158359
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_b121055dd1158359 =
-  BG.fromFFIType hs_bindgen_b121055dd1158359_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_b121055dd1158359_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Lock a portion of the texture for __write-only__ pixel access.
 --
@@ -2953,7 +3140,7 @@ foreign import ccall safe "hs_bindgen_1526f9100ed55b03"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_LockTextureToSurface@
 hs_bindgen_1526f9100ed55b03
@@ -2962,7 +3149,12 @@ hs_bindgen_1526f9100ed55b03
   -> BG.Ptr (BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface)
   -> IO BG.CBool
 hs_bindgen_1526f9100ed55b03 =
-  BG.fromFFIType hs_bindgen_1526f9100ed55b03_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_1526f9100ed55b03_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Lock a portion of the texture for __write-only__ pixel access, and expose it as a SDL surface.
 --
@@ -3011,7 +3203,8 @@ hs_bindgen_1159217b1f34f925
   :: BG.Ptr SDL_Texture
   -> IO ()
 hs_bindgen_1159217b1f34f925 =
-  BG.fromFFIType hs_bindgen_1159217b1f34f925_base
+  \x0 ->
+    hs_bindgen_1159217b1f34f925_base (BG.toFFIType x0)
 
 -- | Unlock a texture, uploading the changes to video memory, if needed.
 --
@@ -3039,7 +3232,7 @@ foreign import ccall safe "hs_bindgen_4b272fad8dbaa9f4"
   hs_bindgen_4b272fad8dbaa9f4_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetRenderTarget@
 hs_bindgen_4b272fad8dbaa9f4
@@ -3047,7 +3240,9 @@ hs_bindgen_4b272fad8dbaa9f4
   -> BG.Ptr SDL_Texture
   -> IO BG.CBool
 hs_bindgen_4b272fad8dbaa9f4 =
-  BG.fromFFIType hs_bindgen_4b272fad8dbaa9f4_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4b272fad8dbaa9f4_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set a texture as the current rendering target.
 --
@@ -3087,7 +3282,8 @@ hs_bindgen_0f2b08c2b3c8ddb1
   :: BG.Ptr SDL_Renderer
   -> IO (BG.Ptr SDL_Texture)
 hs_bindgen_0f2b08c2b3c8ddb1 =
-  BG.fromFFIType hs_bindgen_0f2b08c2b3c8ddb1_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_0f2b08c2b3c8ddb1_base (BG.toFFIType x0))
 
 -- | Get the current render target.
 --
@@ -3114,10 +3310,10 @@ sDL_GetRenderTarget = hs_bindgen_0f2b08c2b3c8ddb1
 foreign import ccall safe "hs_bindgen_c8bfb4ad8baf9874"
   hs_bindgen_c8bfb4ad8baf9874_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> BG.Word32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CInt
+    -> BG.CUInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetRenderLogicalPresentation@
 hs_bindgen_c8bfb4ad8baf9874
@@ -3127,7 +3323,18 @@ hs_bindgen_c8bfb4ad8baf9874
   -> SDL_RendererLogicalPresentation
   -> IO BG.CBool
 hs_bindgen_c8bfb4ad8baf9874 =
-  BG.fromFFIType hs_bindgen_c8bfb4ad8baf9874_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_c8bfb4ad8baf9874_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Set a device-independent resolution and presentation mode for rendering.
 --
@@ -3178,7 +3385,7 @@ foreign import ccall safe "hs_bindgen_88acfc55c8872d4d"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderLogicalPresentation@
 hs_bindgen_88acfc55c8872d4d
@@ -3188,7 +3395,18 @@ hs_bindgen_88acfc55c8872d4d
   -> BG.Ptr SDL_RendererLogicalPresentation
   -> IO BG.CBool
 hs_bindgen_88acfc55c8872d4d =
-  BG.fromFFIType hs_bindgen_88acfc55c8872d4d_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_88acfc55c8872d4d_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Get device independent resolution and presentation mode for rendering.
 --
@@ -3231,7 +3449,7 @@ foreign import ccall safe "hs_bindgen_e6080eb5475f066e"
   hs_bindgen_e6080eb5475f066e_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderLogicalPresentationRect@
 hs_bindgen_e6080eb5475f066e
@@ -3239,7 +3457,9 @@ hs_bindgen_e6080eb5475f066e
   -> BG.Ptr SDL3.Sys.Bindgen.Rect.SDL_FRect
   -> IO BG.CBool
 hs_bindgen_e6080eb5475f066e =
-  BG.fromFFIType hs_bindgen_e6080eb5475f066e_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_e6080eb5475f066e_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the final presentation rectangle for rendering.
 --
@@ -3273,11 +3493,11 @@ sDL_GetRenderLogicalPresentationRect =
 foreign import ccall safe "hs_bindgen_2ed6b3e16ff69faf"
   hs_bindgen_2ed6b3e16ff69faf_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> Float
+    -> BG.CFloat
+    -> BG.CFloat
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderCoordinatesFromWindow@
 hs_bindgen_2ed6b3e16ff69faf
@@ -3288,7 +3508,20 @@ hs_bindgen_2ed6b3e16ff69faf
   -> BG.Ptr BG.CFloat
   -> IO BG.CBool
 hs_bindgen_2ed6b3e16ff69faf =
-  BG.fromFFIType hs_bindgen_2ed6b3e16ff69faf_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_2ed6b3e16ff69faf_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Get a point in render coordinates when given a point in window coordinates.
 --
@@ -3340,11 +3573,11 @@ sDL_RenderCoordinatesFromWindow =
 foreign import ccall safe "hs_bindgen_694297dc8b16c606"
   hs_bindgen_694297dc8b16c606_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> Float
+    -> BG.CFloat
+    -> BG.CFloat
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderCoordinatesToWindow@
 hs_bindgen_694297dc8b16c606
@@ -3355,7 +3588,20 @@ hs_bindgen_694297dc8b16c606
   -> BG.Ptr BG.CFloat
   -> IO BG.CBool
 hs_bindgen_694297dc8b16c606 =
-  BG.fromFFIType hs_bindgen_694297dc8b16c606_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_694297dc8b16c606_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Get a point in window coordinates when given a point in render coordinates.
 --
@@ -3408,7 +3654,7 @@ foreign import ccall safe "hs_bindgen_4d63449cf75fd80c"
   hs_bindgen_4d63449cf75fd80c_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_ConvertEventToRenderCoordinates@
 hs_bindgen_4d63449cf75fd80c
@@ -3416,7 +3662,9 @@ hs_bindgen_4d63449cf75fd80c
   -> BG.Ptr SDL3.Sys.Bindgen.Events.SDL_Event
   -> IO BG.CBool
 hs_bindgen_4d63449cf75fd80c =
-  BG.fromFFIType hs_bindgen_4d63449cf75fd80c_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4d63449cf75fd80c_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Convert the coordinates in an event to render coordinates.
 --
@@ -3465,7 +3713,7 @@ foreign import ccall safe "hs_bindgen_6d15f83fef90049f"
   hs_bindgen_6d15f83fef90049f_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetRenderViewport@
 hs_bindgen_6d15f83fef90049f
@@ -3473,7 +3721,9 @@ hs_bindgen_6d15f83fef90049f
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_6d15f83fef90049f =
-  BG.fromFFIType hs_bindgen_6d15f83fef90049f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_6d15f83fef90049f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the drawing area for rendering on the current target.
 --
@@ -3509,7 +3759,7 @@ foreign import ccall safe "hs_bindgen_b94438b981f1f14c"
   hs_bindgen_b94438b981f1f14c_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderViewport@
 hs_bindgen_b94438b981f1f14c
@@ -3517,7 +3767,9 @@ hs_bindgen_b94438b981f1f14c
   -> BG.Ptr SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_b94438b981f1f14c =
-  BG.fromFFIType hs_bindgen_b94438b981f1f14c_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b94438b981f1f14c_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the drawing area for the current target.
 --
@@ -3548,14 +3800,15 @@ sDL_GetRenderViewport = hs_bindgen_b94438b981f1f14c
 foreign import ccall safe "hs_bindgen_a3207f3fc59e8dc9"
   hs_bindgen_a3207f3fc59e8dc9_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderViewportSet@
 hs_bindgen_a3207f3fc59e8dc9
   :: BG.Ptr SDL_Renderer
   -> IO BG.CBool
 hs_bindgen_a3207f3fc59e8dc9 =
-  BG.fromFFIType hs_bindgen_a3207f3fc59e8dc9_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a3207f3fc59e8dc9_base (BG.toFFIType x0))
 
 -- | Return whether an explicit rectangle was set as the viewport.
 --
@@ -3585,7 +3838,7 @@ foreign import ccall safe "hs_bindgen_4eb48f61abc48f1f"
   hs_bindgen_4eb48f61abc48f1f_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderSafeArea@
 hs_bindgen_4eb48f61abc48f1f
@@ -3593,7 +3846,9 @@ hs_bindgen_4eb48f61abc48f1f
   -> BG.Ptr SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_4eb48f61abc48f1f =
-  BG.fromFFIType hs_bindgen_4eb48f61abc48f1f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4eb48f61abc48f1f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the safe area for rendering within the current viewport.
 --
@@ -3623,7 +3878,7 @@ foreign import ccall safe "hs_bindgen_8baf3dc3de980190"
   hs_bindgen_8baf3dc3de980190_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetRenderClipRect@
 hs_bindgen_8baf3dc3de980190
@@ -3631,7 +3886,9 @@ hs_bindgen_8baf3dc3de980190
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_8baf3dc3de980190 =
-  BG.fromFFIType hs_bindgen_8baf3dc3de980190_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_8baf3dc3de980190_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the clip rectangle for rendering on the specified target.
 --
@@ -3663,7 +3920,7 @@ foreign import ccall safe "hs_bindgen_5b7acae61b400f09"
   hs_bindgen_5b7acae61b400f09_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderClipRect@
 hs_bindgen_5b7acae61b400f09
@@ -3671,7 +3928,9 @@ hs_bindgen_5b7acae61b400f09
   -> BG.Ptr SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_5b7acae61b400f09 =
-  BG.fromFFIType hs_bindgen_5b7acae61b400f09_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_5b7acae61b400f09_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the clip rectangle for the current target.
 --
@@ -3702,14 +3961,15 @@ sDL_GetRenderClipRect = hs_bindgen_5b7acae61b400f09
 foreign import ccall safe "hs_bindgen_151563301b587559"
   hs_bindgen_151563301b587559_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderClipEnabled@
 hs_bindgen_151563301b587559
   :: BG.Ptr SDL_Renderer
   -> IO BG.CBool
 hs_bindgen_151563301b587559 =
-  BG.fromFFIType hs_bindgen_151563301b587559_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_151563301b587559_base (BG.toFFIType x0))
 
 -- | Get whether clipping is enabled on the given render target.
 --
@@ -3736,9 +3996,9 @@ sDL_RenderClipEnabled = hs_bindgen_151563301b587559
 foreign import ccall safe "hs_bindgen_edd164833dbcbd86"
   hs_bindgen_edd164833dbcbd86_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetRenderScale@
 hs_bindgen_edd164833dbcbd86
@@ -3747,7 +4007,12 @@ hs_bindgen_edd164833dbcbd86
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_edd164833dbcbd86 =
-  BG.fromFFIType hs_bindgen_edd164833dbcbd86_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_edd164833dbcbd86_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set the drawing scale for rendering on the current target.
 --
@@ -3788,7 +4053,7 @@ foreign import ccall safe "hs_bindgen_b47b8598441289bb"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderScale@
 hs_bindgen_b47b8598441289bb
@@ -3797,7 +4062,12 @@ hs_bindgen_b47b8598441289bb
   -> BG.Ptr BG.CFloat
   -> IO BG.CBool
 hs_bindgen_b47b8598441289bb =
-  BG.fromFFIType hs_bindgen_b47b8598441289bb_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_b47b8598441289bb_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the drawing scale for the current target.
 --
@@ -3832,11 +4102,11 @@ sDL_GetRenderScale = hs_bindgen_b47b8598441289bb
 foreign import ccall safe "hs_bindgen_2a1d5a5e6763970a"
   hs_bindgen_2a1d5a5e6763970a_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> BG.Word8
-    -> BG.Word8
-    -> BG.Word8
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetRenderDrawColor@
 hs_bindgen_2a1d5a5e6763970a
@@ -3847,7 +4117,20 @@ hs_bindgen_2a1d5a5e6763970a
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_2a1d5a5e6763970a =
-  BG.fromFFIType hs_bindgen_2a1d5a5e6763970a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_2a1d5a5e6763970a_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Set the color used for drawing operations.
 --
@@ -3890,11 +4173,11 @@ sDL_SetRenderDrawColor = hs_bindgen_2a1d5a5e6763970a
 foreign import ccall safe "hs_bindgen_deb567c32a3b304a"
   hs_bindgen_deb567c32a3b304a_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> Float
-    -> Float
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetRenderDrawColorFloat@
 hs_bindgen_deb567c32a3b304a
@@ -3905,7 +4188,20 @@ hs_bindgen_deb567c32a3b304a
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_deb567c32a3b304a =
-  BG.fromFFIType hs_bindgen_deb567c32a3b304a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_deb567c32a3b304a_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Set the color used for drawing operations (Rect, Line and Clear).
 --
@@ -3953,7 +4249,7 @@ foreign import ccall safe "hs_bindgen_4b8538e6f2e6330e"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderDrawColor@
 hs_bindgen_4b8538e6f2e6330e
@@ -3964,7 +4260,20 @@ hs_bindgen_4b8538e6f2e6330e
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_4b8538e6f2e6330e =
-  BG.fromFFIType hs_bindgen_4b8538e6f2e6330e_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_4b8538e6f2e6330e_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Get the color used for drawing operations (Rect, Line and Clear).
 --
@@ -4009,7 +4318,7 @@ foreign import ccall safe "hs_bindgen_02be3e3dad551497"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderDrawColorFloat@
 hs_bindgen_02be3e3dad551497
@@ -4020,7 +4329,20 @@ hs_bindgen_02be3e3dad551497
   -> BG.Ptr BG.CFloat
   -> IO BG.CBool
 hs_bindgen_02be3e3dad551497 =
-  BG.fromFFIType hs_bindgen_02be3e3dad551497_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_02be3e3dad551497_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Get the color used for drawing operations (Rect, Line and Clear).
 --
@@ -4062,8 +4384,8 @@ sDL_GetRenderDrawColorFloat =
 foreign import ccall safe "hs_bindgen_4b5898833d8f7966"
   hs_bindgen_4b5898833d8f7966_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetRenderColorScale@
 hs_bindgen_4b5898833d8f7966
@@ -4071,7 +4393,9 @@ hs_bindgen_4b5898833d8f7966
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_4b5898833d8f7966 =
-  BG.fromFFIType hs_bindgen_4b5898833d8f7966_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_4b5898833d8f7966_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the color scale used for render operations.
 --
@@ -4105,7 +4429,7 @@ foreign import ccall safe "hs_bindgen_107aa0fcfa767aa5"
   hs_bindgen_107aa0fcfa767aa5_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderColorScale@
 hs_bindgen_107aa0fcfa767aa5
@@ -4113,7 +4437,9 @@ hs_bindgen_107aa0fcfa767aa5
   -> BG.Ptr BG.CFloat
   -> IO BG.CBool
 hs_bindgen_107aa0fcfa767aa5 =
-  BG.fromFFIType hs_bindgen_107aa0fcfa767aa5_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_107aa0fcfa767aa5_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the color scale used for render operations.
 --
@@ -4142,8 +4468,8 @@ sDL_GetRenderColorScale = hs_bindgen_107aa0fcfa767aa5
 foreign import ccall safe "hs_bindgen_b9c067d52917b47d"
   hs_bindgen_b9c067d52917b47d_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetRenderDrawBlendMode@
 hs_bindgen_b9c067d52917b47d
@@ -4151,7 +4477,9 @@ hs_bindgen_b9c067d52917b47d
   -> SDL3.Sys.Bindgen.Blendmode.SDL_BlendMode
   -> IO BG.CBool
 hs_bindgen_b9c067d52917b47d =
-  BG.fromFFIType hs_bindgen_b9c067d52917b47d_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b9c067d52917b47d_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the blend mode used for drawing operations.
 --
@@ -4186,7 +4514,7 @@ foreign import ccall safe "hs_bindgen_167da6f1eb78062a"
   hs_bindgen_167da6f1eb78062a_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderDrawBlendMode@
 hs_bindgen_167da6f1eb78062a
@@ -4194,7 +4522,9 @@ hs_bindgen_167da6f1eb78062a
   -> BG.Ptr SDL3.Sys.Bindgen.Blendmode.SDL_BlendMode
   -> IO BG.CBool
 hs_bindgen_167da6f1eb78062a =
-  BG.fromFFIType hs_bindgen_167da6f1eb78062a_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_167da6f1eb78062a_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the blend mode used for drawing operations.
 --
@@ -4224,14 +4554,15 @@ sDL_GetRenderDrawBlendMode =
 foreign import ccall safe "hs_bindgen_cde099ce5b1cfc9d"
   hs_bindgen_cde099ce5b1cfc9d_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderClear@
 hs_bindgen_cde099ce5b1cfc9d
   :: BG.Ptr SDL_Renderer
   -> IO BG.CBool
 hs_bindgen_cde099ce5b1cfc9d =
-  BG.fromFFIType hs_bindgen_cde099ce5b1cfc9d_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_cde099ce5b1cfc9d_base (BG.toFFIType x0))
 
 -- | Clear the current rendering target with the drawing color.
 --
@@ -4258,9 +4589,9 @@ sDL_RenderClear = hs_bindgen_cde099ce5b1cfc9d
 foreign import ccall safe "hs_bindgen_9685ef9bec873fd9"
   hs_bindgen_9685ef9bec873fd9_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderPoint@
 hs_bindgen_9685ef9bec873fd9
@@ -4269,7 +4600,12 @@ hs_bindgen_9685ef9bec873fd9
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_9685ef9bec873fd9 =
-  BG.fromFFIType hs_bindgen_9685ef9bec873fd9_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_9685ef9bec873fd9_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Draw a point on the current rendering target at subpixel precision.
 --
@@ -4303,8 +4639,8 @@ foreign import ccall safe "hs_bindgen_a2f27901d75ff412"
   hs_bindgen_a2f27901d75ff412_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderPoints@
 hs_bindgen_a2f27901d75ff412
@@ -4313,7 +4649,12 @@ hs_bindgen_a2f27901d75ff412
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_a2f27901d75ff412 =
-  BG.fromFFIType hs_bindgen_a2f27901d75ff412_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_a2f27901d75ff412_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Draw multiple points on the current rendering target at subpixel precision.
 --
@@ -4346,11 +4687,11 @@ sDL_RenderPoints = hs_bindgen_a2f27901d75ff412
 foreign import ccall safe "hs_bindgen_a22413e4506d153a"
   hs_bindgen_a22413e4506d153a_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> Float
-    -> Float
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderLine@
 hs_bindgen_a22413e4506d153a
@@ -4361,7 +4702,20 @@ hs_bindgen_a22413e4506d153a
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_a22413e4506d153a =
-  BG.fromFFIType hs_bindgen_a22413e4506d153a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_a22413e4506d153a_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Draw a line on the current rendering target at subpixel precision.
 --
@@ -4403,8 +4757,8 @@ foreign import ccall safe "hs_bindgen_139f9e9bbb114174"
   hs_bindgen_139f9e9bbb114174_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderLines@
 hs_bindgen_139f9e9bbb114174
@@ -4413,7 +4767,12 @@ hs_bindgen_139f9e9bbb114174
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_139f9e9bbb114174 =
-  BG.fromFFIType hs_bindgen_139f9e9bbb114174_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_139f9e9bbb114174_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Draw a series of connected lines on the current rendering target at subpixel precision.
 --
@@ -4447,7 +4806,7 @@ foreign import ccall safe "hs_bindgen_c336b07d3c7c70e0"
   hs_bindgen_c336b07d3c7c70e0_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderRect@
 hs_bindgen_c336b07d3c7c70e0
@@ -4455,7 +4814,9 @@ hs_bindgen_c336b07d3c7c70e0
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_FRect
   -> IO BG.CBool
 hs_bindgen_c336b07d3c7c70e0 =
-  BG.fromFFIType hs_bindgen_c336b07d3c7c70e0_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_c336b07d3c7c70e0_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Draw a rectangle on the current rendering target at subpixel precision.
 --
@@ -4485,8 +4846,8 @@ foreign import ccall safe "hs_bindgen_4402e93d7e0ba929"
   hs_bindgen_4402e93d7e0ba929_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderRects@
 hs_bindgen_4402e93d7e0ba929
@@ -4495,7 +4856,12 @@ hs_bindgen_4402e93d7e0ba929
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_4402e93d7e0ba929 =
-  BG.fromFFIType hs_bindgen_4402e93d7e0ba929_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_4402e93d7e0ba929_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Draw some number of rectangles on the current rendering target at subpixel precision.
 --
@@ -4529,7 +4895,7 @@ foreign import ccall safe "hs_bindgen_2904f549c42ca454"
   hs_bindgen_2904f549c42ca454_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderFillRect@
 hs_bindgen_2904f549c42ca454
@@ -4537,7 +4903,9 @@ hs_bindgen_2904f549c42ca454
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_FRect
   -> IO BG.CBool
 hs_bindgen_2904f549c42ca454 =
-  BG.fromFFIType hs_bindgen_2904f549c42ca454_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_2904f549c42ca454_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Fill a rectangle on the current rendering target with the drawing color at subpixel precision.
 --
@@ -4567,8 +4935,8 @@ foreign import ccall safe "hs_bindgen_8e1470eae177aaca"
   hs_bindgen_8e1470eae177aaca_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderFillRects@
 hs_bindgen_8e1470eae177aaca
@@ -4577,7 +4945,12 @@ hs_bindgen_8e1470eae177aaca
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_8e1470eae177aaca =
-  BG.fromFFIType hs_bindgen_8e1470eae177aaca_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_8e1470eae177aaca_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Fill some number of rectangles on the current rendering target with the drawing color at subpixel precision.
 --
@@ -4613,7 +4986,7 @@ foreign import ccall safe "hs_bindgen_25ce1a6520376b45"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderTexture@
 hs_bindgen_25ce1a6520376b45
@@ -4623,7 +4996,18 @@ hs_bindgen_25ce1a6520376b45
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_FRect
   -> IO BG.CBool
 hs_bindgen_25ce1a6520376b45 =
-  BG.fromFFIType hs_bindgen_25ce1a6520376b45_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_25ce1a6520376b45_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Copy a portion of the texture to the current rendering target at subpixel precision.
 --
@@ -4663,10 +5047,10 @@ foreign import ccall safe "hs_bindgen_7784d7195eaae275"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> Double
+    -> BG.CDouble
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.Support.CUInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderTextureRotated@
 hs_bindgen_7784d7195eaae275
@@ -4679,7 +5063,24 @@ hs_bindgen_7784d7195eaae275
   -> SDL3.Sys.Bindgen.Surface.SDL_FlipMode
   -> IO BG.CBool
 hs_bindgen_7784d7195eaae275 =
-  BG.fromFFIType hs_bindgen_7784d7195eaae275_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                fmap
+                  BG.fromFFIType
+                  ( hs_bindgen_7784d7195eaae275_base
+                      (BG.toFFIType x0)
+                      (BG.toFFIType x1)
+                      (BG.toFFIType x2)
+                      (BG.toFFIType x3)
+                      (BG.toFFIType x4)
+                      (BG.toFFIType x5)
+                      (BG.toFFIType x6)
+                  )
 
 -- | Copy a portion of the source texture to the current rendering target, with rotation and flipping, at subpixel precision.
 --
@@ -4734,7 +5135,7 @@ foreign import ccall safe "hs_bindgen_add42f94463f73c6"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderTextureAffine@
 hs_bindgen_add42f94463f73c6
@@ -4746,7 +5147,22 @@ hs_bindgen_add42f94463f73c6
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_FPoint
   -> IO BG.CBool
 hs_bindgen_add42f94463f73c6 =
-  BG.fromFFIType hs_bindgen_add42f94463f73c6_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_add42f94463f73c6_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Copy a portion of the source texture to the current rendering target, with affine transform, at subpixel precision.
 --
@@ -4793,9 +5209,9 @@ foreign import ccall safe "hs_bindgen_74aa5a13c76159fa"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> Float
+    -> BG.CFloat
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderTextureTiled@
 hs_bindgen_74aa5a13c76159fa
@@ -4806,7 +5222,20 @@ hs_bindgen_74aa5a13c76159fa
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_FRect
   -> IO BG.CBool
 hs_bindgen_74aa5a13c76159fa =
-  BG.fromFFIType hs_bindgen_74aa5a13c76159fa_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_74aa5a13c76159fa_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Tile a portion of the texture to the current rendering target at subpixel precision.
 --
@@ -4851,13 +5280,13 @@ foreign import ccall safe "hs_bindgen_6b75253c3413f458"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> Float
-    -> Float
-    -> Float
-    -> Float
-    -> Float
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderTexture9Grid@
 hs_bindgen_6b75253c3413f458
@@ -4872,7 +5301,28 @@ hs_bindgen_6b75253c3413f458
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_FRect
   -> IO BG.CBool
 hs_bindgen_6b75253c3413f458 =
-  BG.fromFFIType hs_bindgen_6b75253c3413f458_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                \x7 ->
+                  \x8 ->
+                    fmap
+                      BG.fromFFIType
+                      ( hs_bindgen_6b75253c3413f458_base
+                          (BG.toFFIType x0)
+                          (BG.toFFIType x1)
+                          (BG.toFFIType x2)
+                          (BG.toFFIType x3)
+                          (BG.toFFIType x4)
+                          (BG.toFFIType x5)
+                          (BG.toFFIType x6)
+                          (BG.toFFIType x7)
+                          (BG.toFFIType x8)
+                      )
 
 -- | Perform a scaled copy using the 9-grid algorithm to the current rendering target at subpixel precision.
 --
@@ -4933,14 +5383,14 @@ foreign import ccall safe "hs_bindgen_2d9cf263c1277f5b"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> Float
-    -> Float
-    -> Float
-    -> Float
-    -> Float
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
     -> BG.Ptr BG.Void
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderTexture9GridTiled@
 hs_bindgen_2d9cf263c1277f5b
@@ -4956,7 +5406,30 @@ hs_bindgen_2d9cf263c1277f5b
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_2d9cf263c1277f5b =
-  BG.fromFFIType hs_bindgen_2d9cf263c1277f5b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                \x7 ->
+                  \x8 ->
+                    \x9 ->
+                      fmap
+                        BG.fromFFIType
+                        ( hs_bindgen_2d9cf263c1277f5b_base
+                            (BG.toFFIType x0)
+                            (BG.toFFIType x1)
+                            (BG.toFFIType x2)
+                            (BG.toFFIType x3)
+                            (BG.toFFIType x4)
+                            (BG.toFFIType x5)
+                            (BG.toFFIType x6)
+                            (BG.toFFIType x7)
+                            (BG.toFFIType x8)
+                            (BG.toFFIType x9)
+                        )
 
 -- | Perform a scaled copy using the 9-grid algorithm to the current rendering target at subpixel precision.
 --
@@ -5022,10 +5495,10 @@ foreign import ccall safe "hs_bindgen_778c782602e7d6de"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderGeometry@
 hs_bindgen_778c782602e7d6de
@@ -5037,7 +5510,22 @@ hs_bindgen_778c782602e7d6de
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_778c782602e7d6de =
-  BG.fromFFIType hs_bindgen_778c782602e7d6de_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_778c782602e7d6de_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Render a list of triangles, optionally using a texture and indices into the vertex array Color and alpha modulation is done per vertex (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).
 --
@@ -5084,16 +5572,16 @@ foreign import ccall safe "hs_bindgen_32080687747fa83c"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
+    -> BG.CInt
+    -> BG.CInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderGeometryRaw@
 hs_bindgen_32080687747fa83c
@@ -5111,7 +5599,34 @@ hs_bindgen_32080687747fa83c
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_32080687747fa83c =
-  BG.fromFFIType hs_bindgen_32080687747fa83c_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                \x7 ->
+                  \x8 ->
+                    \x9 ->
+                      \x10 ->
+                        \x11 ->
+                          fmap
+                            BG.fromFFIType
+                            ( hs_bindgen_32080687747fa83c_base
+                                (BG.toFFIType x0)
+                                (BG.toFFIType x1)
+                                (BG.toFFIType x2)
+                                (BG.toFFIType x3)
+                                (BG.toFFIType x4)
+                                (BG.toFFIType x5)
+                                (BG.toFFIType x6)
+                                (BG.toFFIType x7)
+                                (BG.toFFIType x8)
+                                (BG.toFFIType x9)
+                                (BG.toFFIType x10)
+                                (BG.toFFIType x11)
+                            )
 
 -- | Render a list of triangles, optionally using a texture and indices into the vertex arrays Color and alpha modulation is done per vertex (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).
 --
@@ -5180,9 +5695,9 @@ sDL_RenderGeometryRaw = hs_bindgen_32080687747fa83c
 foreign import ccall safe "hs_bindgen_56e605702d9776b5"
   hs_bindgen_56e605702d9776b5_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetRenderTextureAddressMode@
 hs_bindgen_56e605702d9776b5
@@ -5191,7 +5706,12 @@ hs_bindgen_56e605702d9776b5
   -> SDL_TextureAddressMode
   -> IO BG.CBool
 hs_bindgen_56e605702d9776b5 =
-  BG.fromFFIType hs_bindgen_56e605702d9776b5_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_56e605702d9776b5_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set the texture addressing mode used in @SDL_RenderGeometry()@.
 --
@@ -5227,7 +5747,7 @@ foreign import ccall safe "hs_bindgen_b63dbaffb6d53264"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderTextureAddressMode@
 hs_bindgen_b63dbaffb6d53264
@@ -5236,7 +5756,12 @@ hs_bindgen_b63dbaffb6d53264
   -> BG.Ptr SDL_TextureAddressMode
   -> IO BG.CBool
 hs_bindgen_b63dbaffb6d53264 =
-  BG.fromFFIType hs_bindgen_b63dbaffb6d53264_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_b63dbaffb6d53264_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get the texture addressing mode used in @SDL_RenderGeometry()@.
 --
@@ -5279,7 +5804,9 @@ hs_bindgen_8e39bba88c8b590b
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO (BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface)
 hs_bindgen_8e39bba88c8b590b =
-  BG.fromFFIType hs_bindgen_8e39bba88c8b590b_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_8e39bba88c8b590b_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Read pixels from the current rendering target.
 --
@@ -5312,14 +5839,15 @@ sDL_RenderReadPixels = hs_bindgen_8e39bba88c8b590b
 foreign import ccall safe "hs_bindgen_7c3d5531ae54aea4"
   hs_bindgen_7c3d5531ae54aea4_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderPresent@
 hs_bindgen_7c3d5531ae54aea4
   :: BG.Ptr SDL_Renderer
   -> IO BG.CBool
 hs_bindgen_7c3d5531ae54aea4 =
-  BG.fromFFIType hs_bindgen_7c3d5531ae54aea4_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_7c3d5531ae54aea4_base (BG.toFFIType x0))
 
 -- | Update the screen with any rendering performed since the previous call.
 --
@@ -5359,7 +5887,8 @@ hs_bindgen_8bed4d77b35c687f
   :: BG.Ptr SDL_Texture
   -> IO ()
 hs_bindgen_8bed4d77b35c687f =
-  BG.fromFFIType hs_bindgen_8bed4d77b35c687f_base
+  \x0 ->
+    hs_bindgen_8bed4d77b35c687f_base (BG.toFFIType x0)
 
 -- | Destroy the specified texture.
 --
@@ -5391,7 +5920,8 @@ hs_bindgen_1d20db71cb8b3442
   :: BG.Ptr SDL_Renderer
   -> IO ()
 hs_bindgen_1d20db71cb8b3442 =
-  BG.fromFFIType hs_bindgen_1d20db71cb8b3442_base
+  \x0 ->
+    hs_bindgen_1d20db71cb8b3442_base (BG.toFFIType x0)
 
 -- | Destroy the rendering context for a window and free all associated textures.
 --
@@ -5416,14 +5946,15 @@ sDL_DestroyRenderer = hs_bindgen_1d20db71cb8b3442
 foreign import ccall safe "hs_bindgen_541ef4edd41b43f3"
   hs_bindgen_541ef4edd41b43f3_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_FlushRenderer@
 hs_bindgen_541ef4edd41b43f3
   :: BG.Ptr SDL_Renderer
   -> IO BG.CBool
 hs_bindgen_541ef4edd41b43f3 =
-  BG.fromFFIType hs_bindgen_541ef4edd41b43f3_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_541ef4edd41b43f3_base (BG.toFFIType x0))
 
 -- | Force the rendering context to flush any pending commands and state.
 --
@@ -5463,7 +5994,8 @@ hs_bindgen_b665c5f20441fcd2
   :: BG.Ptr SDL_Renderer
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_b665c5f20441fcd2 =
-  BG.fromFFIType hs_bindgen_b665c5f20441fcd2_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b665c5f20441fcd2_base (BG.toFFIType x0))
 
 -- | Get the CAMetalLayer associated with the given Metal renderer.
 --
@@ -5497,7 +6029,8 @@ hs_bindgen_4cc0199f9267bab8
   :: BG.Ptr SDL_Renderer
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_4cc0199f9267bab8 =
-  BG.fromFFIType hs_bindgen_4cc0199f9267bab8_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_4cc0199f9267bab8_base (BG.toFFIType x0))
 
 -- | Get the Metal command encoder for the current frame.
 --
@@ -5527,10 +6060,10 @@ sDL_GetRenderMetalCommandEncoder =
 foreign import ccall safe "hs_bindgen_91025902db96959c"
   hs_bindgen_91025902db96959c_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Int64
-    -> BG.Int64
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Int64
+    -> HsBindgen.Runtime.LibC.Int64
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_AddVulkanRenderSemaphores@
 hs_bindgen_91025902db96959c
@@ -5540,7 +6073,18 @@ hs_bindgen_91025902db96959c
   -> SDL3.Sys.Bindgen.Stdinc.Sint64
   -> IO BG.CBool
 hs_bindgen_91025902db96959c =
-  BG.fromFFIType hs_bindgen_91025902db96959c_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_91025902db96959c_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Add a set of synchronization semaphores for the current frame.
 --
@@ -5580,8 +6124,8 @@ sDL_AddVulkanRenderSemaphores =
 foreign import ccall safe "hs_bindgen_6f4a42b49f0de954"
   hs_bindgen_6f4a42b49f0de954_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetRenderVSync@
 hs_bindgen_6f4a42b49f0de954
@@ -5589,7 +6133,9 @@ hs_bindgen_6f4a42b49f0de954
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_6f4a42b49f0de954 =
-  BG.fromFFIType hs_bindgen_6f4a42b49f0de954_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_6f4a42b49f0de954_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Toggle VSync of the given renderer.
 --
@@ -5623,7 +6169,7 @@ foreign import ccall safe "hs_bindgen_eb1ce0cdf3d11c86"
   hs_bindgen_eb1ce0cdf3d11c86_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetRenderVSync@
 hs_bindgen_eb1ce0cdf3d11c86
@@ -5631,7 +6177,9 @@ hs_bindgen_eb1ce0cdf3d11c86
   -> BG.Ptr BG.CInt
   -> IO BG.CBool
 hs_bindgen_eb1ce0cdf3d11c86 =
-  BG.fromFFIType hs_bindgen_eb1ce0cdf3d11c86_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_eb1ce0cdf3d11c86_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get VSync of the given renderer.
 --
@@ -5660,10 +6208,10 @@ sDL_GetRenderVSync = hs_bindgen_eb1ce0cdf3d11c86
 foreign import ccall safe "hs_bindgen_54ec6a89b17b55b6"
   hs_bindgen_54ec6a89b17b55b6_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> Float
+    -> BG.CFloat
+    -> BG.CFloat
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_RenderDebugText@
 hs_bindgen_54ec6a89b17b55b6
@@ -5673,7 +6221,18 @@ hs_bindgen_54ec6a89b17b55b6
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_54ec6a89b17b55b6 =
-  BG.fromFFIType hs_bindgen_54ec6a89b17b55b6_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_54ec6a89b17b55b6_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Draw debug text to an 'SDL_Renderer'.
 --
@@ -5728,8 +6287,8 @@ sDL_RenderDebugText = hs_bindgen_54ec6a89b17b55b6
 foreign import ccall safe "hs_bindgen_3e694d41804c455e"
   hs_bindgen_3e694d41804c455e_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.Support.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetDefaultTextureScaleMode@
 hs_bindgen_3e694d41804c455e
@@ -5737,7 +6296,9 @@ hs_bindgen_3e694d41804c455e
   -> SDL3.Sys.Bindgen.Surface.SDL_ScaleMode
   -> IO BG.CBool
 hs_bindgen_3e694d41804c455e =
-  BG.fromFFIType hs_bindgen_3e694d41804c455e_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_3e694d41804c455e_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set default scale mode for new textures for given renderer.
 --
@@ -5770,7 +6331,7 @@ foreign import ccall safe "hs_bindgen_3782129e34172c40"
   hs_bindgen_3782129e34172c40_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_GetDefaultTextureScaleMode@
 hs_bindgen_3782129e34172c40
@@ -5778,7 +6339,9 @@ hs_bindgen_3782129e34172c40
   -> BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_ScaleMode
   -> IO BG.CBool
 hs_bindgen_3782129e34172c40 =
-  BG.fromFFIType hs_bindgen_3782129e34172c40_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_3782129e34172c40_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get default texture scale mode of the given renderer.
 --
@@ -5817,7 +6380,9 @@ hs_bindgen_b6fd9bfda38a61c5
   -> PtrConst.PtrConst SDL_GPURenderStateCreateInfo
   -> IO (BG.Ptr SDL_GPURenderState)
 hs_bindgen_b6fd9bfda38a61c5 =
-  BG.fromFFIType hs_bindgen_b6fd9bfda38a61c5_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b6fd9bfda38a61c5_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Create custom GPU render state.
 --
@@ -5847,10 +6412,10 @@ sDL_CreateGPURenderState =
 foreign import ccall safe "hs_bindgen_18aafc7283600d91"
   hs_bindgen_18aafc7283600d91_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetGPURenderStateFragmentUniforms@
 hs_bindgen_18aafc7283600d91
@@ -5860,7 +6425,18 @@ hs_bindgen_18aafc7283600d91
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_18aafc7283600d91 =
-  BG.fromFFIType hs_bindgen_18aafc7283600d91_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_18aafc7283600d91_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Set fragment shader uniform variables in a custom GPU render state.
 --
@@ -5899,7 +6475,7 @@ foreign import ccall safe "hs_bindgen_707dc041c39c56ad"
   hs_bindgen_707dc041c39c56ad_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Render_Safe_SDL_SetGPURenderState@
 hs_bindgen_707dc041c39c56ad
@@ -5907,7 +6483,9 @@ hs_bindgen_707dc041c39c56ad
   -> BG.Ptr SDL_GPURenderState
   -> IO BG.CBool
 hs_bindgen_707dc041c39c56ad =
-  BG.fromFFIType hs_bindgen_707dc041c39c56ad_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_707dc041c39c56ad_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set custom GPU render state.
 --
@@ -5943,7 +6521,8 @@ hs_bindgen_ef5a4d7453634025
   :: BG.Ptr SDL_GPURenderState
   -> IO ()
 hs_bindgen_ef5a4d7453634025 =
-  BG.fromFFIType hs_bindgen_ef5a4d7453634025_base
+  \x0 ->
+    hs_bindgen_ef5a4d7453634025_base (BG.toFFIType x0)
 
 -- | Destroy custom GPU render state.
 --

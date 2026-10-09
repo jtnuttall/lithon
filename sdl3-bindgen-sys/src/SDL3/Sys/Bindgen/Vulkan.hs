@@ -13,6 +13,7 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module SDL3.Sys.Bindgen.Vulkan (
   SDL3.Sys.Bindgen.Vulkan.VkInstance (..),
@@ -24,6 +25,8 @@ module SDL3.Sys.Bindgen.Vulkan (
   SDL3.Sys.Bindgen.Vulkan.VkAllocationCallbacks,
 )
 where
+
+import Prelude (Eq, Ord, Show, type (~))
 
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal

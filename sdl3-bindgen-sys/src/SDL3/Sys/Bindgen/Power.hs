@@ -16,6 +16,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL power management routines.
 --
@@ -36,6 +37,8 @@ module SDL3.Sys.Bindgen.Power (
   pattern SDL3.Sys.Bindgen.Power.SDL_POWERSTATE_CHARGED,
 )
 where
+
+import Prelude (Eq, Int, Ord, Read, Show, pure, (<*>), type (~))
 
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField

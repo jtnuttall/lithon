@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | System-dependent library loading routines.
 --
 --     Shared objects are code that is programmatically loadable at runtime. Windows calls these \"DLLs\", Linux calls them \"shared libraries\", etc.
@@ -35,6 +37,8 @@ module SDL3.Sys.Loadso (
   SDL3.Sys.Loadso.unloadObjectSafe,
 )
 where
+
+import Prelude (IO)
 
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG

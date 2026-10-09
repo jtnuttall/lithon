@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Init.FunPtr (
@@ -16,6 +18,8 @@ module SDL3.Sys.Bindgen.Init.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -23,7 +27,8 @@ import SDL3.Sys.Bindgen.Init
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_init.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_init.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Init_get_SDL_Init */"
          , "__attribute__ ((const))"
          , "_Bool (*hs_bindgen_dfba4f22209c9554 (void)) ("
@@ -117,7 +122,7 @@ foreign import ccall unsafe "hs_bindgen_dfba4f22209c9554"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_get_SDL_Init@
 hs_bindgen_dfba4f22209c9554 :: IO (BG.FunPtr (SDL_InitFlags -> IO BG.CBool))
 hs_bindgen_dfba4f22209c9554 =
-  BG.fromFFIType hs_bindgen_dfba4f22209c9554_base
+  fmap BG.fromFFIType hs_bindgen_dfba4f22209c9554_base
 
 {-# NOINLINE sDL_Init #-}
 
@@ -174,7 +179,7 @@ foreign import ccall unsafe "hs_bindgen_5bce25b55e9d45e3"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_get_SDL_InitSubSystem@
 hs_bindgen_5bce25b55e9d45e3 :: IO (BG.FunPtr (SDL_InitFlags -> IO BG.CBool))
 hs_bindgen_5bce25b55e9d45e3 =
-  BG.fromFFIType hs_bindgen_5bce25b55e9d45e3_base
+  fmap BG.fromFFIType hs_bindgen_5bce25b55e9d45e3_base
 
 {-# NOINLINE sDL_InitSubSystem #-}
 
@@ -205,7 +210,7 @@ foreign import ccall unsafe "hs_bindgen_149d9b7709db6751"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_get_SDL_QuitSubSystem@
 hs_bindgen_149d9b7709db6751 :: IO (BG.FunPtr (SDL_InitFlags -> IO ()))
 hs_bindgen_149d9b7709db6751 =
-  BG.fromFFIType hs_bindgen_149d9b7709db6751_base
+  fmap BG.fromFFIType hs_bindgen_149d9b7709db6751_base
 
 {-# NOINLINE sDL_QuitSubSystem #-}
 
@@ -234,7 +239,7 @@ foreign import ccall unsafe "hs_bindgen_53dd2f1aac19a298"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_get_SDL_WasInit@
 hs_bindgen_53dd2f1aac19a298 :: IO (BG.FunPtr (SDL_InitFlags -> IO SDL_InitFlags))
 hs_bindgen_53dd2f1aac19a298 =
-  BG.fromFFIType hs_bindgen_53dd2f1aac19a298_base
+  fmap BG.fromFFIType hs_bindgen_53dd2f1aac19a298_base
 
 {-# NOINLINE sDL_WasInit #-}
 
@@ -263,7 +268,7 @@ foreign import ccall unsafe "hs_bindgen_9b631cb78cf1671f"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_get_SDL_Quit@
 hs_bindgen_9b631cb78cf1671f :: IO (BG.FunPtr (IO ()))
 hs_bindgen_9b631cb78cf1671f =
-  BG.fromFFIType hs_bindgen_9b631cb78cf1671f_base
+  fmap BG.fromFFIType hs_bindgen_9b631cb78cf1671f_base
 
 {-# NOINLINE sDL_Quit #-}
 
@@ -292,7 +297,7 @@ foreign import ccall unsafe "hs_bindgen_a902ff5ab130bb25"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Init_get_SDL_IsMainThread@
 hs_bindgen_a902ff5ab130bb25 :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_a902ff5ab130bb25 =
-  BG.fromFFIType hs_bindgen_a902ff5ab130bb25_base
+  fmap BG.fromFFIType hs_bindgen_a902ff5ab130bb25_base
 
 {-# NOINLINE sDL_IsMainThread #-}
 
@@ -322,7 +327,7 @@ foreign import ccall unsafe "hs_bindgen_1cff011229869063"
 hs_bindgen_1cff011229869063
   :: IO (BG.FunPtr (SDL_MainThreadCallback -> BG.Ptr BG.Void -> BG.CBool -> IO BG.CBool))
 hs_bindgen_1cff011229869063 =
-  BG.fromFFIType hs_bindgen_1cff011229869063_base
+  fmap BG.fromFFIType hs_bindgen_1cff011229869063_base
 
 {-# NOINLINE sDL_RunOnMainThread #-}
 
@@ -368,7 +373,7 @@ hs_bindgen_7a68851346541d78
            )
        )
 hs_bindgen_7a68851346541d78 =
-  BG.fromFFIType hs_bindgen_7a68851346541d78_base
+  fmap BG.fromFFIType hs_bindgen_7a68851346541d78_base
 
 {-# NOINLINE sDL_SetAppMetadata #-}
 
@@ -418,7 +423,7 @@ foreign import ccall unsafe "hs_bindgen_d0081e390d662467"
 hs_bindgen_d0081e390d662467
   :: IO (BG.FunPtr (PtrConst.PtrConst BG.CChar -> PtrConst.PtrConst BG.CChar -> IO BG.CBool))
 hs_bindgen_d0081e390d662467 =
-  BG.fromFFIType hs_bindgen_d0081e390d662467_base
+  fmap BG.fromFFIType hs_bindgen_d0081e390d662467_base
 
 {-# NOINLINE sDL_SetAppMetadataProperty #-}
 
@@ -475,7 +480,7 @@ foreign import ccall unsafe "hs_bindgen_fdbd2caae5327fdc"
 hs_bindgen_fdbd2caae5327fdc
   :: IO (BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_fdbd2caae5327fdc =
-  BG.fromFFIType hs_bindgen_fdbd2caae5327fdc_base
+  fmap BG.fromFFIType hs_bindgen_fdbd2caae5327fdc_base
 
 {-# NOINLINE sDL_GetAppMetadataProperty #-}
 

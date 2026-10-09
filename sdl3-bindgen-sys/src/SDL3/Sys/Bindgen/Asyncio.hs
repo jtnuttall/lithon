@@ -17,6 +17,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL offers a way to perform I\/O asynchronously. This allows an app to read or write files without waiting for data to actually transfer; the functions that request I\/O never block while the request is fulfilled.
 --
@@ -76,9 +77,12 @@ module SDL3.Sys.Bindgen.Asyncio (
 )
 where
 
+import Prelude (Eq, Int, Ord, Read, Show, pure, (<*>), (>>), type (~))
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -400,6 +404,14 @@ instance Marshal.WriteRaw SDL_AsyncIOOutcome where
 
 deriving via Marshal.EquivStorable SDL_AsyncIOOutcome instance BG.Storable SDL_AsyncIOOutcome
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_AsyncIOOutcome
+  instance
+    Struct.IsStruct SDL_AsyncIOOutcome
+
+-- | what generated this task. This pointer will be invalid if it was closed!
+--
+--     [C declaration]: @asyncio@, defined at @SDL3\/SDL_asyncio.h 157:18@
 instance
   (ty ~ BG.Ptr SDL_AsyncIO)
   => BG.CompatHasField.HasField "asyncio" SDL_AsyncIOOutcome ty
@@ -433,6 +445,9 @@ instance HasCField.HasCField SDL_AsyncIOOutcome "asyncio" where
 
   offset# = \_ -> \_ -> 0
 
+-- | What sort of task was this? Read, write, etc?
+--
+--     [C declaration]: @type@, defined at @SDL3\/SDL_asyncio.h 158:25@
 instance
   (ty ~ SDL_AsyncIOTaskType)
   => BG.CompatHasField.HasField "type'" SDL_AsyncIOOutcome ty
@@ -466,6 +481,9 @@ instance HasCField.HasCField SDL_AsyncIOOutcome "type'" where
 
   offset# = \_ -> \_ -> 8
 
+-- | the result of the work (success, failure, cancellation).
+--
+--     [C declaration]: @result@, defined at @SDL3\/SDL_asyncio.h 159:23@
 instance
   (ty ~ SDL_AsyncIOResult)
   => BG.CompatHasField.HasField "result" SDL_AsyncIOOutcome ty
@@ -499,6 +517,9 @@ instance HasCField.HasCField SDL_AsyncIOOutcome "result" where
 
   offset# = \_ -> \_ -> 12
 
+-- | buffer where data was read\/written.
+--
+--     [C declaration]: @buffer@, defined at @SDL3\/SDL_asyncio.h 160:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "buffer" SDL_AsyncIOOutcome ty
@@ -532,6 +553,9 @@ instance HasCField.HasCField SDL_AsyncIOOutcome "buffer" where
 
   offset# = \_ -> \_ -> 16
 
+-- | offset in the 'SDL_AsyncIO' where data was read\/written.
+--
+--     [C declaration]: @offset@, defined at @SDL3\/SDL_asyncio.h 161:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "offset" SDL_AsyncIOOutcome ty
@@ -565,6 +589,9 @@ instance HasCField.HasCField SDL_AsyncIOOutcome "offset" where
 
   offset# = \_ -> \_ -> 24
 
+-- | number of bytes the task was to read\/write.
+--
+--     [C declaration]: @bytes_requested@, defined at @SDL3\/SDL_asyncio.h 162:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "bytes_requested" SDL_AsyncIOOutcome ty
@@ -599,6 +626,9 @@ instance HasCField.HasCField SDL_AsyncIOOutcome "bytes_requested" where
 
   offset# = \_ -> \_ -> 32
 
+-- | actual number of bytes that were read\/written.
+--
+--     [C declaration]: @bytes_transferred@, defined at @SDL3\/SDL_asyncio.h 163:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "bytes_transferred" SDL_AsyncIOOutcome ty
@@ -633,6 +663,9 @@ instance HasCField.HasCField SDL_AsyncIOOutcome "bytes_transferred" where
 
   offset# = \_ -> \_ -> 40
 
+-- | pointer provided by the app when starting the task
+--
+--     [C declaration]: @userdata@, defined at @SDL3\/SDL_asyncio.h 164:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "userdata" SDL_AsyncIOOutcome ty

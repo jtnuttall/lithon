@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Events.Safe (
@@ -26,6 +28,9 @@ module SDL3.Sys.Bindgen.Events.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -35,7 +40,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_events.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_events.h>"
          , "void hs_bindgen_1f67d12e30b7c737 (void)"
          , "{"
          , "  (SDL_PumpEvents)();"
@@ -187,7 +193,7 @@ foreign import ccall safe "hs_bindgen_1f67d12e30b7c737"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_PumpEvents@
 hs_bindgen_1f67d12e30b7c737 :: IO ()
 hs_bindgen_1f67d12e30b7c737 =
-  BG.fromFFIType hs_bindgen_1f67d12e30b7c737_base
+  hs_bindgen_1f67d12e30b7c737_base
 
 -- | Pump the event loop, gathering events from the input devices.
 --
@@ -209,11 +215,11 @@ sDL_PumpEvents = hs_bindgen_1f67d12e30b7c737
 foreign import ccall safe "hs_bindgen_955ad135478289d8"
   hs_bindgen_955ad135478289d8_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
-    -> IO BG.Int32
+    -> BG.CInt
+    -> BG.CUInt
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_PeepEvents@
 hs_bindgen_955ad135478289d8
@@ -224,7 +230,20 @@ hs_bindgen_955ad135478289d8
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CInt
 hs_bindgen_955ad135478289d8 =
-  BG.fromFFIType hs_bindgen_955ad135478289d8_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_955ad135478289d8_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Check the event queue for messages and optionally return them.
 --
@@ -274,15 +293,16 @@ sDL_PeepEvents = hs_bindgen_955ad135478289d8
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_HasEvent@
 foreign import ccall safe "hs_bindgen_97c2d6376377c17b"
   hs_bindgen_97c2d6376377c17b_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_HasEvent@
 hs_bindgen_97c2d6376377c17b
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_97c2d6376377c17b =
-  BG.fromFFIType hs_bindgen_97c2d6376377c17b_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_97c2d6376377c17b_base (BG.toFFIType x0))
 
 -- | Check for the existence of a certain event type in the event queue.
 --
@@ -308,9 +328,9 @@ sDL_HasEvent = hs_bindgen_97c2d6376377c17b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_HasEvents@
 foreign import ccall safe "hs_bindgen_313622652a8473b1"
   hs_bindgen_313622652a8473b1_base
-    :: BG.Word32
-    -> BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_HasEvents@
 hs_bindgen_313622652a8473b1
@@ -318,7 +338,9 @@ hs_bindgen_313622652a8473b1
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_313622652a8473b1 =
-  BG.fromFFIType hs_bindgen_313622652a8473b1_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_313622652a8473b1_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Check for the existence of certain event types in the event queue.
 --
@@ -348,7 +370,7 @@ sDL_HasEvents = hs_bindgen_313622652a8473b1
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_FlushEvent@
 foreign import ccall safe "hs_bindgen_2d03a2b249bf7669"
   hs_bindgen_2d03a2b249bf7669_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_FlushEvent@
@@ -356,7 +378,8 @@ hs_bindgen_2d03a2b249bf7669
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_2d03a2b249bf7669 =
-  BG.fromFFIType hs_bindgen_2d03a2b249bf7669_base
+  \x0 ->
+    hs_bindgen_2d03a2b249bf7669_base (BG.toFFIType x0)
 
 -- | Clear events of a specific type from the event queue.
 --
@@ -386,8 +409,8 @@ sDL_FlushEvent = hs_bindgen_2d03a2b249bf7669
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_FlushEvents@
 foreign import ccall safe "hs_bindgen_445ea0272a2d7d08"
   hs_bindgen_445ea0272a2d7d08_base
-    :: BG.Word32
-    -> BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_FlushEvents@
@@ -396,7 +419,9 @@ hs_bindgen_445ea0272a2d7d08
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_445ea0272a2d7d08 =
-  BG.fromFFIType hs_bindgen_445ea0272a2d7d08_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_445ea0272a2d7d08_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Clear events of a range of types from the event queue.
 --
@@ -429,14 +454,15 @@ sDL_FlushEvents = hs_bindgen_445ea0272a2d7d08
 foreign import ccall safe "hs_bindgen_ceef91a4b9f5e02b"
   hs_bindgen_ceef91a4b9f5e02b_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_PollEvent@
 hs_bindgen_ceef91a4b9f5e02b
   :: BG.Ptr SDL_Event
   -> IO BG.CBool
 hs_bindgen_ceef91a4b9f5e02b =
-  BG.fromFFIType hs_bindgen_ceef91a4b9f5e02b_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_ceef91a4b9f5e02b_base (BG.toFFIType x0))
 
 -- | Poll for currently pending events.
 --
@@ -486,14 +512,15 @@ sDL_PollEvent = hs_bindgen_ceef91a4b9f5e02b
 foreign import ccall safe "hs_bindgen_23e78ed0fb51a6da"
   hs_bindgen_23e78ed0fb51a6da_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_WaitEvent@
 hs_bindgen_23e78ed0fb51a6da
   :: BG.Ptr SDL_Event
   -> IO BG.CBool
 hs_bindgen_23e78ed0fb51a6da =
-  BG.fromFFIType hs_bindgen_23e78ed0fb51a6da_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_23e78ed0fb51a6da_base (BG.toFFIType x0))
 
 -- | Wait indefinitely for the next available event.
 --
@@ -522,8 +549,8 @@ sDL_WaitEvent = hs_bindgen_23e78ed0fb51a6da
 foreign import ccall safe "hs_bindgen_556eff19f5f71f6a"
   hs_bindgen_556eff19f5f71f6a_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Int32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_WaitEventTimeout@
 hs_bindgen_556eff19f5f71f6a
@@ -531,7 +558,9 @@ hs_bindgen_556eff19f5f71f6a
   -> SDL3.Sys.Bindgen.Stdinc.Sint32
   -> IO BG.CBool
 hs_bindgen_556eff19f5f71f6a =
-  BG.fromFFIType hs_bindgen_556eff19f5f71f6a_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_556eff19f5f71f6a_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Wait until the specified timeout (in milliseconds) for the next available event.
 --
@@ -566,14 +595,15 @@ sDL_WaitEventTimeout = hs_bindgen_556eff19f5f71f6a
 foreign import ccall safe "hs_bindgen_b43b72b75f8fc0a4"
   hs_bindgen_b43b72b75f8fc0a4_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_PushEvent@
 hs_bindgen_b43b72b75f8fc0a4
   :: BG.Ptr SDL_Event
   -> IO BG.CBool
 hs_bindgen_b43b72b75f8fc0a4 =
-  BG.fromFFIType hs_bindgen_b43b72b75f8fc0a4_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b43b72b75f8fc0a4_base (BG.toFFIType x0))
 
 -- | Add an event to the event queue.
 --
@@ -615,7 +645,9 @@ hs_bindgen_2af28699d7398805
   -> BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_2af28699d7398805 =
-  BG.fromFFIType hs_bindgen_2af28699d7398805_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_2af28699d7398805_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Set up a filter to process all events before they are added to the internal event queue.
 --
@@ -655,7 +687,7 @@ foreign import ccall safe "hs_bindgen_be8f273c9471fe63"
   hs_bindgen_be8f273c9471fe63_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_GetEventFilter@
 hs_bindgen_be8f273c9471fe63
@@ -663,7 +695,9 @@ hs_bindgen_be8f273c9471fe63
   -> BG.Ptr (BG.Ptr BG.Void)
   -> IO BG.CBool
 hs_bindgen_be8f273c9471fe63 =
-  BG.fromFFIType hs_bindgen_be8f273c9471fe63_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_be8f273c9471fe63_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Query the current event filter.
 --
@@ -695,7 +729,7 @@ foreign import ccall safe "hs_bindgen_1032b9b1e1b3559e"
   hs_bindgen_1032b9b1e1b3559e_base
     :: BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_AddEventWatch@
 hs_bindgen_1032b9b1e1b3559e
@@ -703,7 +737,9 @@ hs_bindgen_1032b9b1e1b3559e
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_1032b9b1e1b3559e =
-  BG.fromFFIType hs_bindgen_1032b9b1e1b3559e_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_1032b9b1e1b3559e_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Add a callback to be triggered when an event is added to the event queue.
 --
@@ -749,7 +785,9 @@ hs_bindgen_3dfeb3d0c0d67825
   -> BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_3dfeb3d0c0d67825 =
-  BG.fromFFIType hs_bindgen_3dfeb3d0c0d67825_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_3dfeb3d0c0d67825_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Remove an event watch callback added with @SDL_AddEventWatch()@.
 --
@@ -787,7 +825,9 @@ hs_bindgen_6c8e2afc32ccc02a
   -> BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_6c8e2afc32ccc02a =
-  BG.fromFFIType hs_bindgen_6c8e2afc32ccc02a_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_6c8e2afc32ccc02a_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Run a specific filter function on the current event queue, removing any events for which the filter returns false.
 --
@@ -815,8 +855,8 @@ sDL_FilterEvents = hs_bindgen_6c8e2afc32ccc02a
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_SetEventEnabled@
 foreign import ccall safe "hs_bindgen_980b7ed1ad20c98e"
   hs_bindgen_980b7ed1ad20c98e_base
-    :: BG.Word32
-    -> BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> BG.CBool
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_SetEventEnabled@
@@ -825,7 +865,9 @@ hs_bindgen_980b7ed1ad20c98e
   -> BG.CBool
   -> IO ()
 hs_bindgen_980b7ed1ad20c98e =
-  BG.fromFFIType hs_bindgen_980b7ed1ad20c98e_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_980b7ed1ad20c98e_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Set the state of processing events by type.
 --
@@ -851,15 +893,16 @@ sDL_SetEventEnabled = hs_bindgen_980b7ed1ad20c98e
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_EventEnabled@
 foreign import ccall safe "hs_bindgen_581f5ed4b389f9ad"
   hs_bindgen_581f5ed4b389f9ad_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_EventEnabled@
 hs_bindgen_581f5ed4b389f9ad
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_581f5ed4b389f9ad =
-  BG.fromFFIType hs_bindgen_581f5ed4b389f9ad_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_581f5ed4b389f9ad_base (BG.toFFIType x0))
 
 -- | Query the state of processing events by type.
 --
@@ -883,15 +926,16 @@ sDL_EventEnabled = hs_bindgen_581f5ed4b389f9ad
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_RegisterEvents@
 foreign import ccall safe "hs_bindgen_68df500d3720ae65"
   hs_bindgen_68df500d3720ae65_base
-    :: BG.Int32
-    -> IO BG.Word32
+    :: BG.CInt
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_RegisterEvents@
 hs_bindgen_68df500d3720ae65
   :: BG.CInt
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint32
 hs_bindgen_68df500d3720ae65 =
-  BG.fromFFIType hs_bindgen_68df500d3720ae65_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_68df500d3720ae65_base (BG.toFFIType x0))
 
 -- | Allocate a set of user-defined events, and return the beginning event number for that set of events.
 --
@@ -923,7 +967,8 @@ hs_bindgen_bf32d25772bf7533
   :: PtrConst.PtrConst SDL_Event
   -> IO (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window)
 hs_bindgen_bf32d25772bf7533 =
-  BG.fromFFIType hs_bindgen_bf32d25772bf7533_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_bf32d25772bf7533_base (BG.toFFIType x0))
 
 -- | Get window associated with an event.
 --
@@ -949,8 +994,8 @@ foreign import ccall safe "hs_bindgen_791dc84efb7c9255"
   hs_bindgen_791dc84efb7c9255_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Int32
+    -> BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_Safe_SDL_GetEventDescription@
 hs_bindgen_791dc84efb7c9255
@@ -959,7 +1004,12 @@ hs_bindgen_791dc84efb7c9255
   -> BG.CInt
   -> IO BG.CInt
 hs_bindgen_791dc84efb7c9255 =
-  BG.fromFFIType hs_bindgen_791dc84efb7c9255_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_791dc84efb7c9255_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Generate an English description of an event.
 --

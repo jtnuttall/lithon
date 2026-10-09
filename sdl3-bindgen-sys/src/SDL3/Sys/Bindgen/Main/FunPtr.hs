@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Main.FunPtr (
@@ -9,6 +11,8 @@ module SDL3.Sys.Bindgen.Main.FunPtr (
   SDL3.Sys.Bindgen.Main.FunPtr.sDL_GDKSuspendComplete,
 )
 where
+
+import Prelude (IO, fmap)
 
 import HsBindgen.Runtime.IncompleteArray qualified as IA
 import HsBindgen.Runtime.IsArray qualified as IsA
@@ -69,7 +73,7 @@ foreign import ccall unsafe "hs_bindgen_a748be6c08507093"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Main_get_SDL_SetMainReady@
 hs_bindgen_a748be6c08507093 :: IO (BG.FunPtr (IO ()))
 hs_bindgen_a748be6c08507093 =
-  BG.fromFFIType hs_bindgen_a748be6c08507093_base
+  fmap BG.fromFFIType hs_bindgen_a748be6c08507093_base
 
 {-# NOINLINE sDL_SetMainReady #-}
 
@@ -105,7 +109,7 @@ hs_bindgen_9ddd66f3bccdd116
            )
        )
 hs_bindgen_9ddd66f3bccdd116 =
-  BG.fromFFIType hs_bindgen_9ddd66f3bccdd116_base
+  fmap BG.fromFFIType hs_bindgen_9ddd66f3bccdd116_base
 
 {-# NOINLINE sDL_RunApp #-}
 
@@ -160,7 +164,7 @@ hs_bindgen_50b435e689e12498
            )
        )
 hs_bindgen_50b435e689e12498 =
-  BG.fromFFIType hs_bindgen_50b435e689e12498_base
+  fmap BG.fromFFIType hs_bindgen_50b435e689e12498_base
 
 {-# NOINLINE sDL_EnterAppMainCallbacks #-}
 
@@ -210,7 +214,7 @@ foreign import ccall unsafe "hs_bindgen_07ea6ee797596218"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Main_get_SDL_GDKSuspendComplete@
 hs_bindgen_07ea6ee797596218 :: IO (BG.FunPtr (IO ()))
 hs_bindgen_07ea6ee797596218 =
-  BG.fromFFIType hs_bindgen_07ea6ee797596218_base
+  fmap BG.fromFFIType hs_bindgen_07ea6ee797596218_base
 
 {-# NOINLINE sDL_GDKSuspendComplete #-}
 

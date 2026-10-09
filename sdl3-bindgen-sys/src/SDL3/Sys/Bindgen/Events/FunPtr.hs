@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Events.FunPtr (
@@ -26,6 +28,8 @@ module SDL3.Sys.Bindgen.Events.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -35,7 +39,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_events.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_events.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Events_get_SDL_PumpEvents */"
          , "__attribute__ ((const))"
          , "void (*hs_bindgen_9917baac4ce08ba8 (void)) (void)"
@@ -227,7 +232,7 @@ foreign import ccall unsafe "hs_bindgen_9917baac4ce08ba8"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_get_SDL_PumpEvents@
 hs_bindgen_9917baac4ce08ba8 :: IO (BG.FunPtr (IO ()))
 hs_bindgen_9917baac4ce08ba8 =
-  BG.fromFFIType hs_bindgen_9917baac4ce08ba8_base
+  fmap BG.fromFFIType hs_bindgen_9917baac4ce08ba8_base
 
 {-# NOINLINE sDL_PumpEvents #-}
 
@@ -266,7 +271,7 @@ hs_bindgen_a86a903c6648c81b
            )
        )
 hs_bindgen_a86a903c6648c81b =
-  BG.fromFFIType hs_bindgen_a86a903c6648c81b_base
+  fmap BG.fromFFIType hs_bindgen_a86a903c6648c81b_base
 
 {-# NOINLINE sDL_PeepEvents #-}
 
@@ -321,7 +326,7 @@ foreign import ccall unsafe "hs_bindgen_7e16852183b91d19"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_get_SDL_HasEvent@
 hs_bindgen_7e16852183b91d19 :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO BG.CBool))
 hs_bindgen_7e16852183b91d19 =
-  BG.fromFFIType hs_bindgen_7e16852183b91d19_base
+  fmap BG.fromFFIType hs_bindgen_7e16852183b91d19_base
 
 {-# NOINLINE sDL_HasEvent #-}
 
@@ -353,7 +358,7 @@ foreign import ccall unsafe "hs_bindgen_87deab19d987ab47"
 hs_bindgen_87deab19d987ab47
   :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO BG.CBool))
 hs_bindgen_87deab19d987ab47 =
-  BG.fromFFIType hs_bindgen_87deab19d987ab47_base
+  fmap BG.fromFFIType hs_bindgen_87deab19d987ab47_base
 
 {-# NOINLINE sDL_HasEvents #-}
 
@@ -387,7 +392,7 @@ foreign import ccall unsafe "hs_bindgen_3d397e2de8f614cb"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_get_SDL_FlushEvent@
 hs_bindgen_3d397e2de8f614cb :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO ()))
 hs_bindgen_3d397e2de8f614cb =
-  BG.fromFFIType hs_bindgen_3d397e2de8f614cb_base
+  fmap BG.fromFFIType hs_bindgen_3d397e2de8f614cb_base
 
 {-# NOINLINE sDL_FlushEvent #-}
 
@@ -423,7 +428,7 @@ foreign import ccall unsafe "hs_bindgen_7409f3af10ababea"
 hs_bindgen_7409f3af10ababea
   :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO ()))
 hs_bindgen_7409f3af10ababea =
-  BG.fromFFIType hs_bindgen_7409f3af10ababea_base
+  fmap BG.fromFFIType hs_bindgen_7409f3af10ababea_base
 
 {-# NOINLINE sDL_FlushEvents #-}
 
@@ -459,7 +464,7 @@ foreign import ccall unsafe "hs_bindgen_e695618acb9426fb"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_get_SDL_PollEvent@
 hs_bindgen_e695618acb9426fb :: IO (BG.FunPtr (BG.Ptr SDL_Event -> IO BG.CBool))
 hs_bindgen_e695618acb9426fb =
-  BG.fromFFIType hs_bindgen_e695618acb9426fb_base
+  fmap BG.fromFFIType hs_bindgen_e695618acb9426fb_base
 
 {-# NOINLINE sDL_PollEvent #-}
 
@@ -513,7 +518,7 @@ foreign import ccall unsafe "hs_bindgen_94029194304d5c31"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_get_SDL_WaitEvent@
 hs_bindgen_94029194304d5c31 :: IO (BG.FunPtr (BG.Ptr SDL_Event -> IO BG.CBool))
 hs_bindgen_94029194304d5c31 =
-  BG.fromFFIType hs_bindgen_94029194304d5c31_base
+  fmap BG.fromFFIType hs_bindgen_94029194304d5c31_base
 
 {-# NOINLINE sDL_WaitEvent #-}
 
@@ -547,7 +552,7 @@ foreign import ccall unsafe "hs_bindgen_7e78b9d3527f4720"
 hs_bindgen_7e78b9d3527f4720
   :: IO (BG.FunPtr (BG.Ptr SDL_Event -> SDL3.Sys.Bindgen.Stdinc.Sint32 -> IO BG.CBool))
 hs_bindgen_7e78b9d3527f4720 =
-  BG.fromFFIType hs_bindgen_7e78b9d3527f4720_base
+  fmap BG.fromFFIType hs_bindgen_7e78b9d3527f4720_base
 
 {-# NOINLINE sDL_WaitEventTimeout #-}
 
@@ -585,7 +590,7 @@ foreign import ccall unsafe "hs_bindgen_949def362b6a6d49"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_get_SDL_PushEvent@
 hs_bindgen_949def362b6a6d49 :: IO (BG.FunPtr (BG.Ptr SDL_Event -> IO BG.CBool))
 hs_bindgen_949def362b6a6d49 =
-  BG.fromFFIType hs_bindgen_949def362b6a6d49_base
+  fmap BG.fromFFIType hs_bindgen_949def362b6a6d49_base
 
 {-# NOINLINE sDL_PushEvent #-}
 
@@ -622,7 +627,7 @@ foreign import ccall unsafe "hs_bindgen_b512227bb5014eea"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_get_SDL_SetEventFilter@
 hs_bindgen_b512227bb5014eea :: IO (BG.FunPtr (SDL_EventFilter -> BG.Ptr BG.Void -> IO ()))
 hs_bindgen_b512227bb5014eea =
-  BG.fromFFIType hs_bindgen_b512227bb5014eea_base
+  fmap BG.fromFFIType hs_bindgen_b512227bb5014eea_base
 
 {-# NOINLINE sDL_SetEventFilter #-}
 
@@ -664,7 +669,7 @@ foreign import ccall unsafe "hs_bindgen_55ed84f0612cc8ac"
 hs_bindgen_55ed84f0612cc8ac
   :: IO (BG.FunPtr (BG.Ptr SDL_EventFilter -> BG.Ptr (BG.Ptr BG.Void) -> IO BG.CBool))
 hs_bindgen_55ed84f0612cc8ac =
-  BG.fromFFIType hs_bindgen_55ed84f0612cc8ac_base
+  fmap BG.fromFFIType hs_bindgen_55ed84f0612cc8ac_base
 
 {-# NOINLINE sDL_GetEventFilter #-}
 
@@ -697,7 +702,7 @@ foreign import ccall unsafe "hs_bindgen_a03e121760f6b6d3"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_get_SDL_AddEventWatch@
 hs_bindgen_a03e121760f6b6d3 :: IO (BG.FunPtr (SDL_EventFilter -> BG.Ptr BG.Void -> IO BG.CBool))
 hs_bindgen_a03e121760f6b6d3 =
-  BG.fromFFIType hs_bindgen_a03e121760f6b6d3_base
+  fmap BG.fromFFIType hs_bindgen_a03e121760f6b6d3_base
 
 {-# NOINLINE sDL_AddEventWatch #-}
 
@@ -736,7 +741,7 @@ foreign import ccall unsafe "hs_bindgen_25dfb37d4e519ab9"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_get_SDL_RemoveEventWatch@
 hs_bindgen_25dfb37d4e519ab9 :: IO (BG.FunPtr (SDL_EventFilter -> BG.Ptr BG.Void -> IO ()))
 hs_bindgen_25dfb37d4e519ab9 =
-  BG.fromFFIType hs_bindgen_25dfb37d4e519ab9_base
+  fmap BG.fromFFIType hs_bindgen_25dfb37d4e519ab9_base
 
 {-# NOINLINE sDL_RemoveEventWatch #-}
 
@@ -767,7 +772,7 @@ foreign import ccall unsafe "hs_bindgen_53f4b12fdab2103a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_get_SDL_FilterEvents@
 hs_bindgen_53f4b12fdab2103a :: IO (BG.FunPtr (SDL_EventFilter -> BG.Ptr BG.Void -> IO ()))
 hs_bindgen_53f4b12fdab2103a =
-  BG.fromFFIType hs_bindgen_53f4b12fdab2103a_base
+  fmap BG.fromFFIType hs_bindgen_53f4b12fdab2103a_base
 
 {-# NOINLINE sDL_FilterEvents #-}
 
@@ -798,7 +803,7 @@ foreign import ccall unsafe "hs_bindgen_aa066d1126b2d52a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_get_SDL_SetEventEnabled@
 hs_bindgen_aa066d1126b2d52a :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> BG.CBool -> IO ()))
 hs_bindgen_aa066d1126b2d52a =
-  BG.fromFFIType hs_bindgen_aa066d1126b2d52a_base
+  fmap BG.fromFFIType hs_bindgen_aa066d1126b2d52a_base
 
 {-# NOINLINE sDL_SetEventEnabled #-}
 
@@ -827,7 +832,7 @@ foreign import ccall unsafe "hs_bindgen_22ccd2bcfeb8819e"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_get_SDL_EventEnabled@
 hs_bindgen_22ccd2bcfeb8819e :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO BG.CBool))
 hs_bindgen_22ccd2bcfeb8819e =
-  BG.fromFFIType hs_bindgen_22ccd2bcfeb8819e_base
+  fmap BG.fromFFIType hs_bindgen_22ccd2bcfeb8819e_base
 
 {-# NOINLINE sDL_EventEnabled #-}
 
@@ -856,7 +861,7 @@ foreign import ccall unsafe "hs_bindgen_1bc1c2cf7c7f16d2"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Events_get_SDL_RegisterEvents@
 hs_bindgen_1bc1c2cf7c7f16d2 :: IO (BG.FunPtr (BG.CInt -> IO SDL3.Sys.Bindgen.Stdinc.Uint32))
 hs_bindgen_1bc1c2cf7c7f16d2 =
-  BG.fromFFIType hs_bindgen_1bc1c2cf7c7f16d2_base
+  fmap BG.fromFFIType hs_bindgen_1bc1c2cf7c7f16d2_base
 
 {-# NOINLINE sDL_RegisterEvents #-}
 
@@ -886,7 +891,7 @@ foreign import ccall unsafe "hs_bindgen_9835b9a553ca5082"
 hs_bindgen_9835b9a553ca5082
   :: IO (BG.FunPtr (PtrConst.PtrConst SDL_Event -> IO (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window)))
 hs_bindgen_9835b9a553ca5082 =
-  BG.fromFFIType hs_bindgen_9835b9a553ca5082_base
+  fmap BG.fromFFIType hs_bindgen_9835b9a553ca5082_base
 
 {-# NOINLINE sDL_GetWindowFromEvent #-}
 
@@ -917,7 +922,7 @@ foreign import ccall unsafe "hs_bindgen_1326a7cde53572c5"
 hs_bindgen_1326a7cde53572c5
   :: IO (BG.FunPtr (PtrConst.PtrConst SDL_Event -> BG.Ptr BG.CChar -> BG.CInt -> IO BG.CInt))
 hs_bindgen_1326a7cde53572c5 =
-  BG.fromFFIType hs_bindgen_1326a7cde53572c5_base
+  fmap BG.fromFFIType hs_bindgen_1326a7cde53572c5_base
 
 {-# NOINLINE sDL_GetEventDescription #-}
 

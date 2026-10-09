@@ -17,6 +17,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL offers a simple message box API, which is useful for simple alerts, such as informing the user when something fatal happens at startup without the need to build a UI for it (or informing the user /before/ your UI is ready).
 --
@@ -51,11 +52,29 @@ module SDL3.Sys.Bindgen.Messagebox (
 )
 where
 
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  pure,
+  (<*>),
+  (>>),
+  type (~),
+ )
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.ConstantArray qualified as CA
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -252,6 +271,12 @@ deriving via
   instance
     BG.Storable SDL_MessageBoxButtonData
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_MessageBoxButtonData
+  instance
+    Struct.IsStruct SDL_MessageBoxButtonData
+
+-- | [C declaration]: @flags@, defined at @SDL3\/SDL_messagebox.h 84:31@
 instance
   (ty ~ SDL_MessageBoxButtonFlags)
   => BG.CompatHasField.HasField "flags" SDL_MessageBoxButtonData ty
@@ -280,6 +305,9 @@ instance HasCField.HasCField SDL_MessageBoxButtonData "flags" where
 
   offset# = \_ -> \_ -> 0
 
+-- | User defined button id (value returned via SDL_ShowMessageBox)
+--
+--     [C declaration]: @buttonID@, defined at @SDL3\/SDL_messagebox.h 85:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "buttonID" SDL_MessageBoxButtonData ty
@@ -308,6 +336,9 @@ instance HasCField.HasCField SDL_MessageBoxButtonData "buttonID" where
 
   offset# = \_ -> \_ -> 4
 
+-- | The UTF-8 button text
+--
+--     [C declaration]: @text@, defined at @SDL3\/SDL_messagebox.h 86:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "text" SDL_MessageBoxButtonData ty
@@ -376,6 +407,12 @@ instance Marshal.WriteRaw SDL_MessageBoxColor where
 
 deriving via Marshal.EquivStorable SDL_MessageBoxColor instance BG.Storable SDL_MessageBoxColor
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_MessageBoxColor
+  instance
+    Struct.IsStruct SDL_MessageBoxColor
+
+-- | [C declaration]: @r@, defined at @SDL3\/SDL_messagebox.h 96:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "r" SDL_MessageBoxColor ty
@@ -400,6 +437,7 @@ instance HasCField.HasCField SDL_MessageBoxColor "r" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @g@, defined at @SDL3\/SDL_messagebox.h 96:14@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "g" SDL_MessageBoxColor ty
@@ -424,6 +462,7 @@ instance HasCField.HasCField SDL_MessageBoxColor "g" where
 
   offset# = \_ -> \_ -> 1
 
+-- | [C declaration]: @b@, defined at @SDL3\/SDL_messagebox.h 96:17@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "b" SDL_MessageBoxColor ty
@@ -611,6 +650,12 @@ deriving via
   instance
     BG.Storable SDL_MessageBoxColorScheme
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_MessageBoxColorScheme
+  instance
+    Struct.IsStruct SDL_MessageBoxColorScheme
+
+-- | [C declaration]: @colors@, defined at @SDL3\/SDL_messagebox.h 120:25@
 instance
   (ty ~ CA.ConstantArray 5 SDL_MessageBoxColor)
   => BG.CompatHasField.HasField "colors" SDL_MessageBoxColorScheme ty
@@ -706,6 +751,12 @@ instance Marshal.WriteRaw SDL_MessageBoxData where
 
 deriving via Marshal.EquivStorable SDL_MessageBoxData instance BG.Storable SDL_MessageBoxData
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_MessageBoxData
+  instance
+    Struct.IsStruct SDL_MessageBoxData
+
+-- | [C declaration]: @flags@, defined at @SDL3\/SDL_messagebox.h 130:25@
 instance
   (ty ~ SDL_MessageBoxFlags)
   => BG.CompatHasField.HasField "flags" SDL_MessageBoxData ty
@@ -738,6 +789,9 @@ instance HasCField.HasCField SDL_MessageBoxData "flags" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Parent window, can be NULL
+--
+--     [C declaration]: @window@, defined at @SDL3\/SDL_messagebox.h 131:17@
 instance
   (ty ~ BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window)
   => BG.CompatHasField.HasField "window" SDL_MessageBoxData ty
@@ -770,6 +824,9 @@ instance HasCField.HasCField SDL_MessageBoxData "window" where
 
   offset# = \_ -> \_ -> 8
 
+-- | UTF-8 title
+--
+--     [C declaration]: @title@, defined at @SDL3\/SDL_messagebox.h 132:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "title" SDL_MessageBoxData ty
@@ -802,6 +859,9 @@ instance HasCField.HasCField SDL_MessageBoxData "title" where
 
   offset# = \_ -> \_ -> 16
 
+-- | UTF-8 message text
+--
+--     [C declaration]: @message@, defined at @SDL3\/SDL_messagebox.h 133:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "message" SDL_MessageBoxData ty
@@ -834,6 +894,7 @@ instance HasCField.HasCField SDL_MessageBoxData "message" where
 
   offset# = \_ -> \_ -> 24
 
+-- | [C declaration]: @numbuttons@, defined at @SDL3\/SDL_messagebox.h 135:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "numbuttons" SDL_MessageBoxData ty
@@ -866,6 +927,7 @@ instance HasCField.HasCField SDL_MessageBoxData "numbuttons" where
 
   offset# = \_ -> \_ -> 32
 
+-- | [C declaration]: @buttons@, defined at @SDL3\/SDL_messagebox.h 136:37@
 instance
   (ty ~ PtrConst.PtrConst SDL_MessageBoxButtonData)
   => BG.CompatHasField.HasField "buttons" SDL_MessageBoxData ty
@@ -898,6 +960,9 @@ instance HasCField.HasCField SDL_MessageBoxData "buttons" where
 
   offset# = \_ -> \_ -> 40
 
+-- | 'SDL_MessageBoxColorScheme', can be NULL to use system settings
+--
+--     [C declaration]: @colorScheme@, defined at @SDL3\/SDL_messagebox.h 138:38@
 instance
   (ty ~ PtrConst.PtrConst SDL_MessageBoxColorScheme)
   => BG.CompatHasField.HasField "colorScheme" SDL_MessageBoxData ty

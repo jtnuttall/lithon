@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Blendmode.Safe (
@@ -7,13 +9,17 @@ module SDL3.Sys.Bindgen.Blendmode.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Blendmode
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_blendmode.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_blendmode.h>"
          , "SDL_BlendMode hs_bindgen_c265ba8d4db542f2 ("
          , "  SDL_BlendFactor arg1,"
          , "  SDL_BlendFactor arg2,"
@@ -32,13 +38,13 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Blendmode_Safe_SDL_ComposeCustomBlendMode@
 foreign import ccall safe "hs_bindgen_c265ba8d4db542f2"
   hs_bindgen_c265ba8d4db542f2_base
-    :: BG.Word32
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
-    -> IO BG.Word32
+    :: BG.CUInt
+    -> BG.CUInt
+    -> BG.CUInt
+    -> BG.CUInt
+    -> BG.CUInt
+    -> BG.CUInt
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Blendmode_Safe_SDL_ComposeCustomBlendMode@
 hs_bindgen_c265ba8d4db542f2
@@ -50,7 +56,22 @@ hs_bindgen_c265ba8d4db542f2
   -> SDL_BlendOperation
   -> IO SDL_BlendMode
 hs_bindgen_c265ba8d4db542f2 =
-  BG.fromFFIType hs_bindgen_c265ba8d4db542f2_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_c265ba8d4db542f2_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Compose a custom blend mode for renderers.
 --

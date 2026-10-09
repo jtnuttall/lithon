@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Video capture for the SDL library.
 --
 --     This API lets apps read input from video sources, like webcams. Camera devices can be enumerated, queried, and opened. Once opened, it will provide SDL_Surface objects as new frames of video come in. These surfaces can be uploaded to an SDL_Texture or processed as pixels in memory.
@@ -63,6 +65,7 @@ module SDL3.Sys.Camera (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

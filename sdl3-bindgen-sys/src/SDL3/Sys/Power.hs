@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL power management routines.
 --
 --     There is a single function in this category: @'getPowerInfo'@.
@@ -21,6 +23,8 @@ module SDL3.Sys.Power (
   SDL3.Sys.Power.getPowerInfoSafe,
 )
 where
+
+import Prelude (IO)
 
 import HsBindgen.Runtime.Support qualified as BG
 import SDL3.Sys.Bindgen.Power

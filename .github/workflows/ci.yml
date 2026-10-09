@@ -191,7 +191,7 @@ jobs:
           cd rapidhash-*/
           cabal update
           cabal build --enable-tests --write-ghc-environment-files=always
-          cabal test rapidhash-test --test-show-details=direct
+          cabal test rapidhash-test --enable-tests --write-ghc-environment-files=always --test-show-details=direct
           cabal run rapidhash:rapidhash-doctest --enable-tests --write-ghc-environment-files=always
           cabal haddock
           cabal check

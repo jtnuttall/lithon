@@ -1,4 +1,5 @@
 {-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL offers a way to add items to the \"system tray\" (more correctly called the \"notification area\" on Windows). On platforms that offer this concept, an SDL app can add a tray icon, submenus, checkboxes, and clickable entries, and register a callback that is fired when the user clicks on these pieces. An opaque handle representing a toplevel system tray object.
 --
@@ -70,6 +71,7 @@ module SDL3.Sys.Tray (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

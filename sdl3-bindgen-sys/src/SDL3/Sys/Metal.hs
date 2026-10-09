@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Functions to creating Metal layers and views on SDL windows.
 --
 --     This provides some platform-specific glue for Apple platforms. Most macOS and iOS apps can use SDL without these functions, but this API they can be useful for specific OS-level integration tasks. A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS\/tvOS).
@@ -21,6 +23,8 @@ module SDL3.Sys.Metal (
   SDL3.Sys.Metal.metalGetLayerSafe,
 )
 where
+
+import Prelude (IO)
 
 import HsBindgen.Runtime.Support qualified as BG
 import SDL3.Sys.Bindgen.Metal

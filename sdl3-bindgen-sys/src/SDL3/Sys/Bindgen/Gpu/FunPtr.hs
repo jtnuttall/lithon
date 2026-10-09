@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Gpu.FunPtr (
@@ -101,6 +103,8 @@ module SDL3.Sys.Bindgen.Gpu.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -113,7 +117,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_gpu.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_gpu.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_get_SDL_GPUSupportsShaderFormats */"
          , "__attribute__ ((const))"
          , "_Bool (*hs_bindgen_730746f3f6b80bd4 (void)) ("
@@ -1058,7 +1063,7 @@ foreign import ccall unsafe "hs_bindgen_730746f3f6b80bd4"
 hs_bindgen_730746f3f6b80bd4
   :: IO (BG.FunPtr (SDL_GPUShaderFormat -> PtrConst.PtrConst BG.CChar -> IO BG.CBool))
 hs_bindgen_730746f3f6b80bd4 =
-  BG.fromFFIType hs_bindgen_730746f3f6b80bd4_base
+  fmap BG.fromFFIType hs_bindgen_730746f3f6b80bd4_base
 
 {-# NOINLINE sDL_GPUSupportsShaderFormats #-}
 
@@ -1089,7 +1094,7 @@ foreign import ccall unsafe "hs_bindgen_df6bcb319e7313a0"
 hs_bindgen_df6bcb319e7313a0
   :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Properties.SDL_PropertiesID -> IO BG.CBool))
 hs_bindgen_df6bcb319e7313a0 =
-  BG.fromFFIType hs_bindgen_df6bcb319e7313a0_base
+  fmap BG.fromFFIType hs_bindgen_df6bcb319e7313a0_base
 
 {-# NOINLINE sDL_GPUSupportsProperties #-}
 
@@ -1120,7 +1125,7 @@ hs_bindgen_5a2c70cfbb51d0a5
            (SDL_GPUShaderFormat -> BG.CBool -> PtrConst.PtrConst BG.CChar -> IO (BG.Ptr SDL_GPUDevice))
        )
 hs_bindgen_5a2c70cfbb51d0a5 =
-  BG.fromFFIType hs_bindgen_5a2c70cfbb51d0a5_base
+  fmap BG.fromFFIType hs_bindgen_5a2c70cfbb51d0a5_base
 
 {-# NOINLINE sDL_CreateGPUDevice #-}
 
@@ -1164,7 +1169,7 @@ foreign import ccall unsafe "hs_bindgen_e9b4dabe0fdafe0a"
 hs_bindgen_e9b4dabe0fdafe0a
   :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Properties.SDL_PropertiesID -> IO (BG.Ptr SDL_GPUDevice)))
 hs_bindgen_e9b4dabe0fdafe0a =
-  BG.fromFFIType hs_bindgen_e9b4dabe0fdafe0a_base
+  fmap BG.fromFFIType hs_bindgen_e9b4dabe0fdafe0a_base
 
 {-# NOINLINE sDL_CreateGPUDeviceWithProperties #-}
 
@@ -1242,7 +1247,7 @@ foreign import ccall unsafe "hs_bindgen_3d36d3936e535445"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_get_SDL_DestroyGPUDevice@
 hs_bindgen_3d36d3936e535445 :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> IO ()))
 hs_bindgen_3d36d3936e535445 =
-  BG.fromFFIType hs_bindgen_3d36d3936e535445_base
+  fmap BG.fromFFIType hs_bindgen_3d36d3936e535445_base
 
 {-# NOINLINE sDL_DestroyGPUDevice #-}
 
@@ -1267,7 +1272,7 @@ foreign import ccall unsafe "hs_bindgen_724c599cc9199701"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_get_SDL_GetNumGPUDrivers@
 hs_bindgen_724c599cc9199701 :: IO (BG.FunPtr (IO BG.CInt))
 hs_bindgen_724c599cc9199701 =
-  BG.fromFFIType hs_bindgen_724c599cc9199701_base
+  fmap BG.fromFFIType hs_bindgen_724c599cc9199701_base
 
 {-# NOINLINE sDL_GetNumGPUDrivers #-}
 
@@ -1292,7 +1297,7 @@ foreign import ccall unsafe "hs_bindgen_878ed2fb40f693fc"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_get_SDL_GetGPUDriver@
 hs_bindgen_878ed2fb40f693fc :: IO (BG.FunPtr (BG.CInt -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_878ed2fb40f693fc =
-  BG.fromFFIType hs_bindgen_878ed2fb40f693fc_base
+  fmap BG.fromFFIType hs_bindgen_878ed2fb40f693fc_base
 
 {-# NOINLINE sDL_GetGPUDriver #-}
 
@@ -1324,7 +1329,7 @@ foreign import ccall unsafe "hs_bindgen_61e30ecd9dcd6a0d"
 hs_bindgen_61e30ecd9dcd6a0d
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_61e30ecd9dcd6a0d =
-  BG.fromFFIType hs_bindgen_61e30ecd9dcd6a0d_base
+  fmap BG.fromFFIType hs_bindgen_61e30ecd9dcd6a0d_base
 
 {-# NOINLINE sDL_GetGPUDeviceDriver #-}
 
@@ -1349,7 +1354,7 @@ foreign import ccall unsafe "hs_bindgen_1588f64687b7a181"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_get_SDL_GetGPUShaderFormats@
 hs_bindgen_1588f64687b7a181 :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> IO SDL_GPUShaderFormat))
 hs_bindgen_1588f64687b7a181 =
-  BG.fromFFIType hs_bindgen_1588f64687b7a181_base
+  fmap BG.fromFFIType hs_bindgen_1588f64687b7a181_base
 
 {-# NOINLINE sDL_GetGPUShaderFormats #-}
 
@@ -1375,7 +1380,7 @@ foreign import ccall unsafe "hs_bindgen_d9a18bd5c77f3076"
 hs_bindgen_d9a18bd5c77f3076
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID))
 hs_bindgen_d9a18bd5c77f3076 =
-  BG.fromFFIType hs_bindgen_d9a18bd5c77f3076_base
+  fmap BG.fromFFIType hs_bindgen_d9a18bd5c77f3076_base
 
 {-# NOINLINE sDL_GetGPUDeviceProperties #-}
 
@@ -1503,7 +1508,7 @@ hs_bindgen_b4882831b991328b
            )
        )
 hs_bindgen_b4882831b991328b =
-  BG.fromFFIType hs_bindgen_b4882831b991328b_base
+  fmap BG.fromFFIType hs_bindgen_b4882831b991328b_base
 
 {-# NOINLINE sDL_CreateGPUComputePipeline #-}
 
@@ -1572,7 +1577,7 @@ hs_bindgen_6b24737f0e188591
            )
        )
 hs_bindgen_6b24737f0e188591 =
-  BG.fromFFIType hs_bindgen_6b24737f0e188591_base
+  fmap BG.fromFFIType hs_bindgen_6b24737f0e188591_base
 
 {-# NOINLINE sDL_CreateGPUGraphicsPipeline #-}
 
@@ -1614,7 +1619,7 @@ hs_bindgen_d26b045cc9bb0074
            (BG.Ptr SDL_GPUDevice -> PtrConst.PtrConst SDL_GPUSamplerCreateInfo -> IO (BG.Ptr SDL_GPUSampler))
        )
 hs_bindgen_d26b045cc9bb0074 =
-  BG.fromFFIType hs_bindgen_d26b045cc9bb0074_base
+  fmap BG.fromFFIType hs_bindgen_d26b045cc9bb0074_base
 
 {-# NOINLINE sDL_CreateGPUSampler #-}
 
@@ -1653,7 +1658,7 @@ hs_bindgen_268ad47187462489
            (BG.Ptr SDL_GPUDevice -> PtrConst.PtrConst SDL_GPUShaderCreateInfo -> IO (BG.Ptr SDL_GPUShader))
        )
 hs_bindgen_268ad47187462489 =
-  BG.fromFFIType hs_bindgen_268ad47187462489_base
+  fmap BG.fromFFIType hs_bindgen_268ad47187462489_base
 
 {-# NOINLINE sDL_CreateGPUShader #-}
 
@@ -1736,7 +1741,7 @@ hs_bindgen_8868d47614851449
            (BG.Ptr SDL_GPUDevice -> PtrConst.PtrConst SDL_GPUTextureCreateInfo -> IO (BG.Ptr SDL_GPUTexture))
        )
 hs_bindgen_8868d47614851449 =
-  BG.fromFFIType hs_bindgen_8868d47614851449_base
+  fmap BG.fromFFIType hs_bindgen_8868d47614851449_base
 
 {-# NOINLINE sDL_CreateGPUTexture #-}
 
@@ -1793,7 +1798,7 @@ hs_bindgen_0e8ef224f7419576
            (BG.Ptr SDL_GPUDevice -> PtrConst.PtrConst SDL_GPUBufferCreateInfo -> IO (BG.Ptr SDL_GPUBuffer))
        )
 hs_bindgen_0e8ef224f7419576 =
-  BG.fromFFIType hs_bindgen_0e8ef224f7419576_base
+  fmap BG.fromFFIType hs_bindgen_0e8ef224f7419576_base
 
 {-# NOINLINE sDL_CreateGPUBuffer #-}
 
@@ -1841,7 +1846,7 @@ hs_bindgen_d99ca9bfb892bc36
            )
        )
 hs_bindgen_d99ca9bfb892bc36 =
-  BG.fromFFIType hs_bindgen_d99ca9bfb892bc36_base
+  fmap BG.fromFFIType hs_bindgen_d99ca9bfb892bc36_base
 
 {-# NOINLINE sDL_CreateGPUTransferBuffer #-}
 
@@ -1882,7 +1887,7 @@ foreign import ccall unsafe "hs_bindgen_ddb180594f35b8be"
 hs_bindgen_ddb180594f35b8be
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL_GPUBuffer -> PtrConst.PtrConst BG.CChar -> IO ()))
 hs_bindgen_ddb180594f35b8be =
-  BG.fromFFIType hs_bindgen_ddb180594f35b8be_base
+  fmap BG.fromFFIType hs_bindgen_ddb180594f35b8be_base
 
 {-# NOINLINE sDL_SetGPUBufferName #-}
 
@@ -1918,7 +1923,7 @@ hs_bindgen_8e9612fc267feeaa
   :: IO
        (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL_GPUTexture -> PtrConst.PtrConst BG.CChar -> IO ()))
 hs_bindgen_8e9612fc267feeaa =
-  BG.fromFFIType hs_bindgen_8e9612fc267feeaa_base
+  fmap BG.fromFFIType hs_bindgen_8e9612fc267feeaa_base
 
 {-# NOINLINE sDL_SetGPUTextureName #-}
 
@@ -1953,7 +1958,7 @@ foreign import ccall unsafe "hs_bindgen_53b6f5854610b06f"
 hs_bindgen_53b6f5854610b06f
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUCommandBuffer -> PtrConst.PtrConst BG.CChar -> IO ()))
 hs_bindgen_53b6f5854610b06f =
-  BG.fromFFIType hs_bindgen_53b6f5854610b06f_base
+  fmap BG.fromFFIType hs_bindgen_53b6f5854610b06f_base
 
 {-# NOINLINE sDL_InsertGPUDebugLabel #-}
 
@@ -1984,7 +1989,7 @@ foreign import ccall unsafe "hs_bindgen_1ff675bf6c0d06d5"
 hs_bindgen_1ff675bf6c0d06d5
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUCommandBuffer -> PtrConst.PtrConst BG.CChar -> IO ()))
 hs_bindgen_1ff675bf6c0d06d5 =
-  BG.fromFFIType hs_bindgen_1ff675bf6c0d06d5_base
+  fmap BG.fromFFIType hs_bindgen_1ff675bf6c0d06d5_base
 
 {-# NOINLINE sDL_PushGPUDebugGroup #-}
 
@@ -2020,7 +2025,7 @@ foreign import ccall unsafe "hs_bindgen_a00c28c817c76943"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_get_SDL_PopGPUDebugGroup@
 hs_bindgen_a00c28c817c76943 :: IO (BG.FunPtr (BG.Ptr SDL_GPUCommandBuffer -> IO ()))
 hs_bindgen_a00c28c817c76943 =
-  BG.fromFFIType hs_bindgen_a00c28c817c76943_base
+  fmap BG.fromFFIType hs_bindgen_a00c28c817c76943_base
 
 {-# NOINLINE sDL_PopGPUDebugGroup #-}
 
@@ -2048,7 +2053,7 @@ foreign import ccall unsafe "hs_bindgen_542853e6548e89bb"
 hs_bindgen_542853e6548e89bb
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL_GPUTexture -> IO ()))
 hs_bindgen_542853e6548e89bb =
-  BG.fromFFIType hs_bindgen_542853e6548e89bb_base
+  fmap BG.fromFFIType hs_bindgen_542853e6548e89bb_base
 
 {-# NOINLINE sDL_ReleaseGPUTexture #-}
 
@@ -2076,7 +2081,7 @@ foreign import ccall unsafe "hs_bindgen_56055ccd136d71a1"
 hs_bindgen_56055ccd136d71a1
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL_GPUSampler -> IO ()))
 hs_bindgen_56055ccd136d71a1 =
-  BG.fromFFIType hs_bindgen_56055ccd136d71a1_base
+  fmap BG.fromFFIType hs_bindgen_56055ccd136d71a1_base
 
 {-# NOINLINE sDL_ReleaseGPUSampler #-}
 
@@ -2104,7 +2109,7 @@ foreign import ccall unsafe "hs_bindgen_f8bfa8ea14116360"
 hs_bindgen_f8bfa8ea14116360
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL_GPUBuffer -> IO ()))
 hs_bindgen_f8bfa8ea14116360 =
-  BG.fromFFIType hs_bindgen_f8bfa8ea14116360_base
+  fmap BG.fromFFIType hs_bindgen_f8bfa8ea14116360_base
 
 {-# NOINLINE sDL_ReleaseGPUBuffer #-}
 
@@ -2132,7 +2137,7 @@ foreign import ccall unsafe "hs_bindgen_14c942c8fbf2f3dc"
 hs_bindgen_14c942c8fbf2f3dc
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL_GPUTransferBuffer -> IO ()))
 hs_bindgen_14c942c8fbf2f3dc =
-  BG.fromFFIType hs_bindgen_14c942c8fbf2f3dc_base
+  fmap BG.fromFFIType hs_bindgen_14c942c8fbf2f3dc_base
 
 {-# NOINLINE sDL_ReleaseGPUTransferBuffer #-}
 
@@ -2161,7 +2166,7 @@ foreign import ccall unsafe "hs_bindgen_5f269731a3ef8faa"
 hs_bindgen_5f269731a3ef8faa
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL_GPUComputePipeline -> IO ()))
 hs_bindgen_5f269731a3ef8faa =
-  BG.fromFFIType hs_bindgen_5f269731a3ef8faa_base
+  fmap BG.fromFFIType hs_bindgen_5f269731a3ef8faa_base
 
 {-# NOINLINE sDL_ReleaseGPUComputePipeline #-}
 
@@ -2190,7 +2195,7 @@ foreign import ccall unsafe "hs_bindgen_f3e9c0034d2a2db0"
 hs_bindgen_f3e9c0034d2a2db0
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL_GPUShader -> IO ()))
 hs_bindgen_f3e9c0034d2a2db0 =
-  BG.fromFFIType hs_bindgen_f3e9c0034d2a2db0_base
+  fmap BG.fromFFIType hs_bindgen_f3e9c0034d2a2db0_base
 
 {-# NOINLINE sDL_ReleaseGPUShader #-}
 
@@ -2218,7 +2223,7 @@ foreign import ccall unsafe "hs_bindgen_29c94f86e013a8af"
 hs_bindgen_29c94f86e013a8af
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL_GPUGraphicsPipeline -> IO ()))
 hs_bindgen_29c94f86e013a8af =
-  BG.fromFFIType hs_bindgen_29c94f86e013a8af_base
+  fmap BG.fromFFIType hs_bindgen_29c94f86e013a8af_base
 
 {-# NOINLINE sDL_ReleaseGPUGraphicsPipeline #-}
 
@@ -2247,7 +2252,7 @@ foreign import ccall unsafe "hs_bindgen_d8255a52c3043feb"
 hs_bindgen_d8255a52c3043feb
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> IO (BG.Ptr SDL_GPUCommandBuffer)))
 hs_bindgen_d8255a52c3043feb =
-  BG.fromFFIType hs_bindgen_d8255a52c3043feb_base
+  fmap BG.fromFFIType hs_bindgen_d8255a52c3043feb_base
 
 {-# NOINLINE sDL_AcquireGPUCommandBuffer #-}
 
@@ -2287,7 +2292,7 @@ hs_bindgen_fd67ffdf6fb8985a
            )
        )
 hs_bindgen_fd67ffdf6fb8985a =
-  BG.fromFFIType hs_bindgen_fd67ffdf6fb8985a_base
+  fmap BG.fromFFIType hs_bindgen_fd67ffdf6fb8985a_base
 
 {-# NOINLINE sDL_PushGPUVertexUniformData #-}
 
@@ -2338,7 +2343,7 @@ hs_bindgen_fee6bedc8b88a7fb
            )
        )
 hs_bindgen_fee6bedc8b88a7fb =
-  BG.fromFFIType hs_bindgen_fee6bedc8b88a7fb_base
+  fmap BG.fromFFIType hs_bindgen_fee6bedc8b88a7fb_base
 
 {-# NOINLINE sDL_PushGPUFragmentUniformData #-}
 
@@ -2387,7 +2392,7 @@ hs_bindgen_f0981542878473d3
            )
        )
 hs_bindgen_f0981542878473d3 =
-  BG.fromFFIType hs_bindgen_f0981542878473d3_base
+  fmap BG.fromFFIType hs_bindgen_f0981542878473d3_base
 
 {-# NOINLINE sDL_PushGPUComputeUniformData #-}
 
@@ -2436,7 +2441,7 @@ hs_bindgen_154c2af06893d306
            )
        )
 hs_bindgen_154c2af06893d306 =
-  BG.fromFFIType hs_bindgen_154c2af06893d306_base
+  fmap BG.fromFFIType hs_bindgen_154c2af06893d306_base
 
 {-# NOINLINE sDL_BeginGPURenderPass #-}
 
@@ -2481,7 +2486,7 @@ foreign import ccall unsafe "hs_bindgen_f8d4e69cba96f49a"
 hs_bindgen_f8d4e69cba96f49a
   :: IO (BG.FunPtr (BG.Ptr SDL_GPURenderPass -> BG.Ptr SDL_GPUGraphicsPipeline -> IO ()))
 hs_bindgen_f8d4e69cba96f49a =
-  BG.fromFFIType hs_bindgen_f8d4e69cba96f49a_base
+  fmap BG.fromFFIType hs_bindgen_f8d4e69cba96f49a_base
 
 {-# NOINLINE sDL_BindGPUGraphicsPipeline #-}
 
@@ -2510,7 +2515,7 @@ foreign import ccall unsafe "hs_bindgen_ef13d72a5a37e0cd"
 hs_bindgen_ef13d72a5a37e0cd
   :: IO (BG.FunPtr (BG.Ptr SDL_GPURenderPass -> PtrConst.PtrConst SDL_GPUViewport -> IO ()))
 hs_bindgen_ef13d72a5a37e0cd =
-  BG.fromFFIType hs_bindgen_ef13d72a5a37e0cd_base
+  fmap BG.fromFFIType hs_bindgen_ef13d72a5a37e0cd_base
 
 {-# NOINLINE sDL_SetGPUViewport #-}
 
@@ -2538,7 +2543,7 @@ hs_bindgen_15e571926b2f0a64
   :: IO
        (BG.FunPtr (BG.Ptr SDL_GPURenderPass -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect -> IO ()))
 hs_bindgen_15e571926b2f0a64 =
-  BG.fromFFIType hs_bindgen_15e571926b2f0a64_base
+  fmap BG.fromFFIType hs_bindgen_15e571926b2f0a64_base
 
 {-# NOINLINE sDL_SetGPUScissor #-}
 
@@ -2565,7 +2570,7 @@ foreign import ccall unsafe "hs_bindgen_82c20e8c6db3156f"
 hs_bindgen_82c20e8c6db3156f
   :: IO (BG.FunPtr (BG.Ptr SDL_GPURenderPass -> SDL3.Sys.Bindgen.Pixels.SDL_FColor -> IO ()))
 hs_bindgen_82c20e8c6db3156f =
-  BG.fromFFIType hs_bindgen_82c20e8c6db3156f_base
+  fmap BG.fromFFIType hs_bindgen_82c20e8c6db3156f_base
 
 {-# NOINLINE sDL_SetGPUBlendConstants #-}
 
@@ -2594,7 +2599,7 @@ foreign import ccall unsafe "hs_bindgen_80029d033dcd3cde"
 hs_bindgen_80029d033dcd3cde
   :: IO (BG.FunPtr (BG.Ptr SDL_GPURenderPass -> SDL3.Sys.Bindgen.Stdinc.Uint8 -> IO ()))
 hs_bindgen_80029d033dcd3cde =
-  BG.fromFFIType hs_bindgen_80029d033dcd3cde_base
+  fmap BG.fromFFIType hs_bindgen_80029d033dcd3cde_base
 
 {-# NOINLINE sDL_SetGPUStencilReference #-}
 
@@ -2629,7 +2634,7 @@ hs_bindgen_688e80f65b7efc4b
            )
        )
 hs_bindgen_688e80f65b7efc4b =
-  BG.fromFFIType hs_bindgen_688e80f65b7efc4b_base
+  fmap BG.fromFFIType hs_bindgen_688e80f65b7efc4b_base
 
 {-# NOINLINE sDL_BindGPUVertexBuffers #-}
 
@@ -2673,7 +2678,7 @@ hs_bindgen_bea706d6a8ba9b69
            )
        )
 hs_bindgen_bea706d6a8ba9b69 =
-  BG.fromFFIType hs_bindgen_bea706d6a8ba9b69_base
+  fmap BG.fromFFIType hs_bindgen_bea706d6a8ba9b69_base
 
 {-# NOINLINE sDL_BindGPUIndexBuffer #-}
 
@@ -2715,7 +2720,7 @@ hs_bindgen_aaec001b714f4f20
            )
        )
 hs_bindgen_aaec001b714f4f20 =
-  BG.fromFFIType hs_bindgen_aaec001b714f4f20_base
+  fmap BG.fromFFIType hs_bindgen_aaec001b714f4f20_base
 
 {-# NOINLINE sDL_BindGPUVertexSamplers #-}
 
@@ -2766,7 +2771,7 @@ hs_bindgen_f3926e087d94d216
            )
        )
 hs_bindgen_f3926e087d94d216 =
-  BG.fromFFIType hs_bindgen_f3926e087d94d216_base
+  fmap BG.fromFFIType hs_bindgen_f3926e087d94d216_base
 
 {-# NOINLINE sDL_BindGPUVertexStorageTextures #-}
 
@@ -2817,7 +2822,7 @@ hs_bindgen_0441f25c46dc0237
            )
        )
 hs_bindgen_0441f25c46dc0237 =
-  BG.fromFFIType hs_bindgen_0441f25c46dc0237_base
+  fmap BG.fromFFIType hs_bindgen_0441f25c46dc0237_base
 
 {-# NOINLINE sDL_BindGPUVertexStorageBuffers #-}
 
@@ -2868,7 +2873,7 @@ hs_bindgen_31e74f680706f272
            )
        )
 hs_bindgen_31e74f680706f272 =
-  BG.fromFFIType hs_bindgen_31e74f680706f272_base
+  fmap BG.fromFFIType hs_bindgen_31e74f680706f272_base
 
 {-# NOINLINE sDL_BindGPUFragmentSamplers #-}
 
@@ -2919,7 +2924,7 @@ hs_bindgen_891de4ebe4443cb5
            )
        )
 hs_bindgen_891de4ebe4443cb5 =
-  BG.fromFFIType hs_bindgen_891de4ebe4443cb5_base
+  fmap BG.fromFFIType hs_bindgen_891de4ebe4443cb5_base
 
 {-# NOINLINE sDL_BindGPUFragmentStorageTextures #-}
 
@@ -2970,7 +2975,7 @@ hs_bindgen_f0f46723815c3df1
            )
        )
 hs_bindgen_f0f46723815c3df1 =
-  BG.fromFFIType hs_bindgen_f0f46723815c3df1_base
+  fmap BG.fromFFIType hs_bindgen_f0f46723815c3df1_base
 
 {-# NOINLINE sDL_BindGPUFragmentStorageBuffers #-}
 
@@ -3023,7 +3028,7 @@ hs_bindgen_534a1c06f3f9ed05
            )
        )
 hs_bindgen_534a1c06f3f9ed05 =
-  BG.fromFFIType hs_bindgen_534a1c06f3f9ed05_base
+  fmap BG.fromFFIType hs_bindgen_534a1c06f3f9ed05_base
 
 {-# NOINLINE sDL_DrawGPUIndexedPrimitives #-}
 
@@ -3079,7 +3084,7 @@ hs_bindgen_b37844ed8f8b5582
            )
        )
 hs_bindgen_b37844ed8f8b5582 =
-  BG.fromFFIType hs_bindgen_b37844ed8f8b5582_base
+  fmap BG.fromFFIType hs_bindgen_b37844ed8f8b5582_base
 
 {-# NOINLINE sDL_DrawGPUPrimitives #-}
 
@@ -3131,7 +3136,7 @@ hs_bindgen_420bc7bd5da8d431
            )
        )
 hs_bindgen_420bc7bd5da8d431 =
-  BG.fromFFIType hs_bindgen_420bc7bd5da8d431_base
+  fmap BG.fromFFIType hs_bindgen_420bc7bd5da8d431_base
 
 {-# NOINLINE sDL_DrawGPUPrimitivesIndirect #-}
 
@@ -3178,7 +3183,7 @@ hs_bindgen_8f8e2fe5f315620c
            )
        )
 hs_bindgen_8f8e2fe5f315620c =
-  BG.fromFFIType hs_bindgen_8f8e2fe5f315620c_base
+  fmap BG.fromFFIType hs_bindgen_8f8e2fe5f315620c_base
 
 {-# NOINLINE sDL_DrawGPUIndexedPrimitivesIndirect #-}
 
@@ -3216,7 +3221,7 @@ foreign import ccall unsafe "hs_bindgen_d2969701500cfc55"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_get_SDL_EndGPURenderPass@
 hs_bindgen_d2969701500cfc55 :: IO (BG.FunPtr (BG.Ptr SDL_GPURenderPass -> IO ()))
 hs_bindgen_d2969701500cfc55 =
-  BG.fromFFIType hs_bindgen_d2969701500cfc55_base
+  fmap BG.fromFFIType hs_bindgen_d2969701500cfc55_base
 
 {-# NOINLINE sDL_EndGPURenderPass #-}
 
@@ -3251,7 +3256,7 @@ hs_bindgen_774d008d25b51181
            )
        )
 hs_bindgen_774d008d25b51181 =
-  BG.fromFFIType hs_bindgen_774d008d25b51181_base
+  fmap BG.fromFFIType hs_bindgen_774d008d25b51181_base
 
 {-# NOINLINE sDL_BeginGPUComputePass #-}
 
@@ -3299,7 +3304,7 @@ foreign import ccall unsafe "hs_bindgen_4ad31c9180a8f4c7"
 hs_bindgen_4ad31c9180a8f4c7
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUComputePass -> BG.Ptr SDL_GPUComputePipeline -> IO ()))
 hs_bindgen_4ad31c9180a8f4c7 =
-  BG.fromFFIType hs_bindgen_4ad31c9180a8f4c7_base
+  fmap BG.fromFFIType hs_bindgen_4ad31c9180a8f4c7_base
 
 {-# NOINLINE sDL_BindGPUComputePipeline #-}
 
@@ -3334,7 +3339,7 @@ hs_bindgen_29656bc1e0885584
            )
        )
 hs_bindgen_29656bc1e0885584 =
-  BG.fromFFIType hs_bindgen_29656bc1e0885584_base
+  fmap BG.fromFFIType hs_bindgen_29656bc1e0885584_base
 
 {-# NOINLINE sDL_BindGPUComputeSamplers #-}
 
@@ -3385,7 +3390,7 @@ hs_bindgen_01575e615d9f9179
            )
        )
 hs_bindgen_01575e615d9f9179 =
-  BG.fromFFIType hs_bindgen_01575e615d9f9179_base
+  fmap BG.fromFFIType hs_bindgen_01575e615d9f9179_base
 
 {-# NOINLINE sDL_BindGPUComputeStorageTextures #-}
 
@@ -3436,7 +3441,7 @@ hs_bindgen_589adbdedcb7e5de
            )
        )
 hs_bindgen_589adbdedcb7e5de =
-  BG.fromFFIType hs_bindgen_589adbdedcb7e5de_base
+  fmap BG.fromFFIType hs_bindgen_589adbdedcb7e5de_base
 
 {-# NOINLINE sDL_BindGPUComputeStorageBuffers #-}
 
@@ -3487,7 +3492,7 @@ hs_bindgen_050145c7c0eda2a0
            )
        )
 hs_bindgen_050145c7c0eda2a0 =
-  BG.fromFFIType hs_bindgen_050145c7c0eda2a0_base
+  fmap BG.fromFFIType hs_bindgen_050145c7c0eda2a0_base
 
 {-# NOINLINE sDL_DispatchGPUCompute #-}
 
@@ -3531,7 +3536,7 @@ hs_bindgen_6eed39e21086610c
            (BG.Ptr SDL_GPUComputePass -> BG.Ptr SDL_GPUBuffer -> SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO ())
        )
 hs_bindgen_6eed39e21086610c =
-  BG.fromFFIType hs_bindgen_6eed39e21086610c_base
+  fmap BG.fromFFIType hs_bindgen_6eed39e21086610c_base
 
 {-# NOINLINE sDL_DispatchGPUComputeIndirect #-}
 
@@ -3564,7 +3569,7 @@ foreign import ccall unsafe "hs_bindgen_3d69c010dbe2273d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_get_SDL_EndGPUComputePass@
 hs_bindgen_3d69c010dbe2273d :: IO (BG.FunPtr (BG.Ptr SDL_GPUComputePass -> IO ()))
 hs_bindgen_3d69c010dbe2273d =
-  BG.fromFFIType hs_bindgen_3d69c010dbe2273d_base
+  fmap BG.fromFFIType hs_bindgen_3d69c010dbe2273d_base
 
 {-# NOINLINE sDL_EndGPUComputePass #-}
 
@@ -3591,7 +3596,7 @@ hs_bindgen_683b5935cd3f5940
   :: IO
        (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL_GPUTransferBuffer -> BG.CBool -> IO (BG.Ptr BG.Void)))
 hs_bindgen_683b5935cd3f5940 =
-  BG.fromFFIType hs_bindgen_683b5935cd3f5940_base
+  fmap BG.fromFFIType hs_bindgen_683b5935cd3f5940_base
 
 {-# NOINLINE sDL_MapGPUTransferBuffer #-}
 
@@ -3624,7 +3629,7 @@ foreign import ccall unsafe "hs_bindgen_e33fd3a1127b2473"
 hs_bindgen_e33fd3a1127b2473
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL_GPUTransferBuffer -> IO ()))
 hs_bindgen_e33fd3a1127b2473 =
-  BG.fromFFIType hs_bindgen_e33fd3a1127b2473_base
+  fmap BG.fromFFIType hs_bindgen_e33fd3a1127b2473_base
 
 {-# NOINLINE sDL_UnmapGPUTransferBuffer #-}
 
@@ -3651,7 +3656,7 @@ foreign import ccall unsafe "hs_bindgen_26ebd2bad4c071ad"
 hs_bindgen_26ebd2bad4c071ad
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUCommandBuffer -> IO (BG.Ptr SDL_GPUCopyPass)))
 hs_bindgen_26ebd2bad4c071ad =
-  BG.fromFFIType hs_bindgen_26ebd2bad4c071ad_base
+  fmap BG.fromFFIType hs_bindgen_26ebd2bad4c071ad_base
 
 {-# NOINLINE sDL_BeginGPUCopyPass #-}
 
@@ -3689,7 +3694,7 @@ hs_bindgen_ab0f032d9686e81d
            )
        )
 hs_bindgen_ab0f032d9686e81d =
-  BG.fromFFIType hs_bindgen_ab0f032d9686e81d_base
+  fmap BG.fromFFIType hs_bindgen_ab0f032d9686e81d_base
 
 {-# NOINLINE sDL_UploadToGPUTexture #-}
 
@@ -3738,7 +3743,7 @@ hs_bindgen_d5ff839503d8766f
            )
        )
 hs_bindgen_d5ff839503d8766f =
-  BG.fromFFIType hs_bindgen_d5ff839503d8766f_base
+  fmap BG.fromFFIType hs_bindgen_d5ff839503d8766f_base
 
 {-# NOINLINE sDL_UploadToGPUBuffer #-}
 
@@ -3788,7 +3793,7 @@ hs_bindgen_1cd400910067ddd5
            )
        )
 hs_bindgen_1cd400910067ddd5 =
-  BG.fromFFIType hs_bindgen_1cd400910067ddd5_base
+  fmap BG.fromFFIType hs_bindgen_1cd400910067ddd5_base
 
 {-# NOINLINE sDL_CopyGPUTextureToTexture #-}
 
@@ -3847,7 +3852,7 @@ hs_bindgen_f1c8dff3576eacd7
            )
        )
 hs_bindgen_f1c8dff3576eacd7 =
-  BG.fromFFIType hs_bindgen_f1c8dff3576eacd7_base
+  fmap BG.fromFFIType hs_bindgen_f1c8dff3576eacd7_base
 
 {-# NOINLINE sDL_CopyGPUBufferToBuffer #-}
 
@@ -3896,7 +3901,7 @@ hs_bindgen_de2075aa3b528189
            )
        )
 hs_bindgen_de2075aa3b528189 =
-  BG.fromFFIType hs_bindgen_de2075aa3b528189_base
+  fmap BG.fromFFIType hs_bindgen_de2075aa3b528189_base
 
 {-# NOINLINE sDL_DownloadFromGPUTexture #-}
 
@@ -3939,7 +3944,7 @@ hs_bindgen_ba4b40201f2134bd
            )
        )
 hs_bindgen_ba4b40201f2134bd =
-  BG.fromFFIType hs_bindgen_ba4b40201f2134bd_base
+  fmap BG.fromFFIType hs_bindgen_ba4b40201f2134bd_base
 
 {-# NOINLINE sDL_DownloadFromGPUBuffer #-}
 
@@ -3974,7 +3979,7 @@ foreign import ccall unsafe "hs_bindgen_b4b5fc61adee338e"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_get_SDL_EndGPUCopyPass@
 hs_bindgen_b4b5fc61adee338e :: IO (BG.FunPtr (BG.Ptr SDL_GPUCopyPass -> IO ()))
 hs_bindgen_b4b5fc61adee338e =
-  BG.fromFFIType hs_bindgen_b4b5fc61adee338e_base
+  fmap BG.fromFFIType hs_bindgen_b4b5fc61adee338e_base
 
 {-# NOINLINE sDL_EndGPUCopyPass #-}
 
@@ -3998,7 +4003,7 @@ foreign import ccall unsafe "hs_bindgen_9678149e861907fc"
 hs_bindgen_9678149e861907fc
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUCommandBuffer -> BG.Ptr SDL_GPUTexture -> IO ()))
 hs_bindgen_9678149e861907fc =
-  BG.fromFFIType hs_bindgen_9678149e861907fc_base
+  fmap BG.fromFFIType hs_bindgen_9678149e861907fc_base
 
 {-# NOINLINE sDL_GenerateMipmapsForGPUTexture #-}
 
@@ -4027,7 +4032,7 @@ foreign import ccall unsafe "hs_bindgen_7f45139e78bf4f56"
 hs_bindgen_7f45139e78bf4f56
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUCommandBuffer -> PtrConst.PtrConst SDL_GPUBlitInfo -> IO ()))
 hs_bindgen_7f45139e78bf4f56 =
-  BG.fromFFIType hs_bindgen_7f45139e78bf4f56_base
+  fmap BG.fromFFIType hs_bindgen_7f45139e78bf4f56_base
 
 {-# NOINLINE sDL_BlitGPUTexture #-}
 
@@ -4063,7 +4068,7 @@ hs_bindgen_c59f48ad030d3274
            )
        )
 hs_bindgen_c59f48ad030d3274 =
-  BG.fromFFIType hs_bindgen_c59f48ad030d3274_base
+  fmap BG.fromFFIType hs_bindgen_c59f48ad030d3274_base
 
 {-# NOINLINE sDL_WindowSupportsGPUSwapchainComposition #-}
 
@@ -4110,7 +4115,7 @@ hs_bindgen_bf576ab13c340f27
            )
        )
 hs_bindgen_bf576ab13c340f27 =
-  BG.fromFFIType hs_bindgen_bf576ab13c340f27_base
+  fmap BG.fromFFIType hs_bindgen_bf576ab13c340f27_base
 
 {-# NOINLINE sDL_WindowSupportsGPUPresentMode #-}
 
@@ -4150,7 +4155,7 @@ foreign import ccall unsafe "hs_bindgen_4ecaa5beccefec7a"
 hs_bindgen_4ecaa5beccefec7a
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window -> IO BG.CBool))
 hs_bindgen_4ecaa5beccefec7a =
-  BG.fromFFIType hs_bindgen_4ecaa5beccefec7a_base
+  fmap BG.fromFFIType hs_bindgen_4ecaa5beccefec7a_base
 
 {-# NOINLINE sDL_ClaimWindowForGPUDevice #-}
 
@@ -4187,7 +4192,7 @@ foreign import ccall unsafe "hs_bindgen_196ff3ee33dc8751"
 hs_bindgen_196ff3ee33dc8751
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window -> IO ()))
 hs_bindgen_196ff3ee33dc8751 =
-  BG.fromFFIType hs_bindgen_196ff3ee33dc8751_base
+  fmap BG.fromFFIType hs_bindgen_196ff3ee33dc8751_base
 
 {-# NOINLINE sDL_ReleaseWindowFromGPUDevice #-}
 
@@ -4224,7 +4229,7 @@ hs_bindgen_31ee67753f7ce365
            )
        )
 hs_bindgen_31ee67753f7ce365 =
-  BG.fromFFIType hs_bindgen_31ee67753f7ce365_base
+  fmap BG.fromFFIType hs_bindgen_31ee67753f7ce365_base
 
 {-# NOINLINE sDL_SetGPUSwapchainParameters #-}
 
@@ -4269,7 +4274,7 @@ foreign import ccall unsafe "hs_bindgen_cf8859de2d063dde"
 hs_bindgen_cf8859de2d063dde
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO BG.CBool))
 hs_bindgen_cf8859de2d063dde =
-  BG.fromFFIType hs_bindgen_cf8859de2d063dde_base
+  fmap BG.fromFFIType hs_bindgen_cf8859de2d063dde_base
 
 {-# NOINLINE sDL_SetGPUAllowedFramesInFlight #-}
 
@@ -4309,7 +4314,7 @@ hs_bindgen_2edc1414ddc93ec8
            (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window -> IO SDL_GPUTextureFormat)
        )
 hs_bindgen_2edc1414ddc93ec8 =
-  BG.fromFFIType hs_bindgen_2edc1414ddc93ec8_base
+  fmap BG.fromFFIType hs_bindgen_2edc1414ddc93ec8_base
 
 {-# NOINLINE sDL_GetGPUSwapchainTextureFormat #-}
 
@@ -4350,7 +4355,7 @@ hs_bindgen_3683da9bdd7123ad
            )
        )
 hs_bindgen_3683da9bdd7123ad =
-  BG.fromFFIType hs_bindgen_3683da9bdd7123ad_base
+  fmap BG.fromFFIType hs_bindgen_3683da9bdd7123ad_base
 
 {-# NOINLINE sDL_AcquireGPUSwapchainTexture #-}
 
@@ -4404,7 +4409,7 @@ foreign import ccall unsafe "hs_bindgen_ea0675458d59e8d7"
 hs_bindgen_ea0675458d59e8d7
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window -> IO BG.CBool))
 hs_bindgen_ea0675458d59e8d7 =
-  BG.fromFFIType hs_bindgen_ea0675458d59e8d7_base
+  fmap BG.fromFFIType hs_bindgen_ea0675458d59e8d7_base
 
 {-# NOINLINE sDL_WaitForGPUSwapchain #-}
 
@@ -4446,7 +4451,7 @@ hs_bindgen_bd7e7771ebd38df5
            )
        )
 hs_bindgen_bd7e7771ebd38df5 =
-  BG.fromFFIType hs_bindgen_bd7e7771ebd38df5_base
+  fmap BG.fromFFIType hs_bindgen_bd7e7771ebd38df5_base
 
 {-# NOINLINE sDL_WaitAndAcquireGPUSwapchainTexture #-}
 
@@ -4499,7 +4504,7 @@ foreign import ccall unsafe "hs_bindgen_8d4a9ce464622085"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_get_SDL_SubmitGPUCommandBuffer@
 hs_bindgen_8d4a9ce464622085 :: IO (BG.FunPtr (BG.Ptr SDL_GPUCommandBuffer -> IO BG.CBool))
 hs_bindgen_8d4a9ce464622085 =
-  BG.fromFFIType hs_bindgen_8d4a9ce464622085_base
+  fmap BG.fromFFIType hs_bindgen_8d4a9ce464622085_base
 
 {-# NOINLINE sDL_SubmitGPUCommandBuffer #-}
 
@@ -4533,7 +4538,7 @@ foreign import ccall unsafe "hs_bindgen_093495cd0f5ce3be"
 hs_bindgen_093495cd0f5ce3be
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUCommandBuffer -> IO (BG.Ptr SDL_GPUFence)))
 hs_bindgen_093495cd0f5ce3be =
-  BG.fromFFIType hs_bindgen_093495cd0f5ce3be_base
+  fmap BG.fromFFIType hs_bindgen_093495cd0f5ce3be_base
 
 {-# NOINLINE sDL_SubmitGPUCommandBufferAndAcquireFence #-}
 
@@ -4567,7 +4572,7 @@ foreign import ccall unsafe "hs_bindgen_83b736c86816e554"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_get_SDL_CancelGPUCommandBuffer@
 hs_bindgen_83b736c86816e554 :: IO (BG.FunPtr (BG.Ptr SDL_GPUCommandBuffer -> IO BG.CBool))
 hs_bindgen_83b736c86816e554 =
-  BG.fromFFIType hs_bindgen_83b736c86816e554_base
+  fmap BG.fromFFIType hs_bindgen_83b736c86816e554_base
 
 {-# NOINLINE sDL_CancelGPUCommandBuffer #-}
 
@@ -4602,7 +4607,7 @@ foreign import ccall unsafe "hs_bindgen_34c07d40aff698e2"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_get_SDL_WaitForGPUIdle@
 hs_bindgen_34c07d40aff698e2 :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> IO BG.CBool))
 hs_bindgen_34c07d40aff698e2 =
-  BG.fromFFIType hs_bindgen_34c07d40aff698e2_base
+  fmap BG.fromFFIType hs_bindgen_34c07d40aff698e2_base
 
 {-# NOINLINE sDL_WaitForGPUIdle #-}
 
@@ -4638,7 +4643,7 @@ hs_bindgen_4cb9d239bc32f759
            )
        )
 hs_bindgen_4cb9d239bc32f759 =
-  BG.fromFFIType hs_bindgen_4cb9d239bc32f759_base
+  fmap BG.fromFFIType hs_bindgen_4cb9d239bc32f759_base
 
 {-# NOINLINE sDL_WaitForGPUFences #-}
 
@@ -4679,7 +4684,7 @@ foreign import ccall unsafe "hs_bindgen_67c5db65f97a1de0"
 hs_bindgen_67c5db65f97a1de0
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL_GPUFence -> IO BG.CBool))
 hs_bindgen_67c5db65f97a1de0 =
-  BG.fromFFIType hs_bindgen_67c5db65f97a1de0_base
+  fmap BG.fromFFIType hs_bindgen_67c5db65f97a1de0_base
 
 {-# NOINLINE sDL_QueryGPUFence #-}
 
@@ -4708,7 +4713,7 @@ foreign import ccall unsafe "hs_bindgen_8f9e7c0ed3e519a2"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Gpu_get_SDL_ReleaseGPUFence@
 hs_bindgen_8f9e7c0ed3e519a2 :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> BG.Ptr SDL_GPUFence -> IO ()))
 hs_bindgen_8f9e7c0ed3e519a2 =
-  BG.fromFFIType hs_bindgen_8f9e7c0ed3e519a2_base
+  fmap BG.fromFFIType hs_bindgen_8f9e7c0ed3e519a2_base
 
 {-# NOINLINE sDL_ReleaseGPUFence #-}
 
@@ -4738,7 +4743,7 @@ foreign import ccall unsafe "hs_bindgen_7020eb5f7daa1796"
 hs_bindgen_7020eb5f7daa1796
   :: IO (BG.FunPtr (SDL_GPUTextureFormat -> IO SDL3.Sys.Bindgen.Stdinc.Uint32))
 hs_bindgen_7020eb5f7daa1796 =
-  BG.fromFFIType hs_bindgen_7020eb5f7daa1796_base
+  fmap BG.fromFFIType hs_bindgen_7020eb5f7daa1796_base
 
 {-# NOINLINE sDL_GPUTextureFormatTexelBlockSize #-}
 
@@ -4775,7 +4780,7 @@ hs_bindgen_3c6e764809d2a384
            )
        )
 hs_bindgen_3c6e764809d2a384 =
-  BG.fromFFIType hs_bindgen_3c6e764809d2a384_base
+  fmap BG.fromFFIType hs_bindgen_3c6e764809d2a384_base
 
 {-# NOINLINE sDL_GPUTextureSupportsFormat #-}
 
@@ -4814,7 +4819,7 @@ foreign import ccall unsafe "hs_bindgen_6b69a9c844393ce7"
 hs_bindgen_6b69a9c844393ce7
   :: IO (BG.FunPtr (BG.Ptr SDL_GPUDevice -> SDL_GPUTextureFormat -> SDL_GPUSampleCount -> IO BG.CBool))
 hs_bindgen_6b69a9c844393ce7 =
-  BG.fromFFIType hs_bindgen_6b69a9c844393ce7_base
+  fmap BG.fromFFIType hs_bindgen_6b69a9c844393ce7_base
 
 {-# NOINLINE sDL_GPUTextureSupportsSampleCount #-}
 
@@ -4853,7 +4858,7 @@ hs_bindgen_fab34fd075b25f9a
            )
        )
 hs_bindgen_fab34fd075b25f9a =
-  BG.fromFFIType hs_bindgen_fab34fd075b25f9a_base
+  fmap BG.fromFFIType hs_bindgen_fab34fd075b25f9a_base
 
 {-# NOINLINE sDL_CalculateGPUTextureFormatSize #-}
 
@@ -4892,7 +4897,7 @@ foreign import ccall unsafe "hs_bindgen_8fe9348f3a2816f5"
 hs_bindgen_8fe9348f3a2816f5
   :: IO (BG.FunPtr (SDL_GPUTextureFormat -> IO SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat))
 hs_bindgen_8fe9348f3a2816f5 =
-  BG.fromFFIType hs_bindgen_8fe9348f3a2816f5_base
+  fmap BG.fromFFIType hs_bindgen_8fe9348f3a2816f5_base
 
 {-# NOINLINE sDL_GetPixelFormatFromGPUTextureFormat #-}
 
@@ -4919,7 +4924,7 @@ foreign import ccall unsafe "hs_bindgen_372069e59fc19080"
 hs_bindgen_372069e59fc19080
   :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat -> IO SDL_GPUTextureFormat))
 hs_bindgen_372069e59fc19080 =
-  BG.fromFFIType hs_bindgen_372069e59fc19080_base
+  fmap BG.fromFFIType hs_bindgen_372069e59fc19080_base
 
 {-# NOINLINE sDL_GetGPUTextureFormatFromPixelFormat #-}
 

@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Haptic.FunPtr (
@@ -37,6 +39,8 @@ module SDL3.Sys.Bindgen.Haptic.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -46,7 +50,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_haptic.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_haptic.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_GetHaptics */"
          , "__attribute__ ((const))"
          , "SDL_HapticID *(*hs_bindgen_d1b059ba233bbd57 (void)) ("
@@ -340,7 +345,7 @@ foreign import ccall unsafe "hs_bindgen_d1b059ba233bbd57"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_GetHaptics@
 hs_bindgen_d1b059ba233bbd57 :: IO (BG.FunPtr (BG.Ptr BG.CInt -> IO (BG.Ptr SDL_HapticID)))
 hs_bindgen_d1b059ba233bbd57 =
-  BG.fromFFIType hs_bindgen_d1b059ba233bbd57_base
+  fmap BG.fromFFIType hs_bindgen_d1b059ba233bbd57_base
 
 {-# NOINLINE sDL_GetHaptics #-}
 
@@ -367,7 +372,7 @@ foreign import ccall unsafe "hs_bindgen_001c4531a8b9b26b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_GetHapticNameForID@
 hs_bindgen_001c4531a8b9b26b :: IO (BG.FunPtr (SDL_HapticID -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_001c4531a8b9b26b =
-  BG.fromFFIType hs_bindgen_001c4531a8b9b26b_base
+  fmap BG.fromFFIType hs_bindgen_001c4531a8b9b26b_base
 
 {-# NOINLINE sDL_GetHapticNameForID #-}
 
@@ -396,7 +401,7 @@ foreign import ccall unsafe "hs_bindgen_90101d520a764d47"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_OpenHaptic@
 hs_bindgen_90101d520a764d47 :: IO (BG.FunPtr (SDL_HapticID -> IO (BG.Ptr SDL_Haptic)))
 hs_bindgen_90101d520a764d47 =
-  BG.fromFFIType hs_bindgen_90101d520a764d47_base
+  fmap BG.fromFFIType hs_bindgen_90101d520a764d47_base
 
 {-# NOINLINE sDL_OpenHaptic #-}
 
@@ -427,7 +432,7 @@ foreign import ccall unsafe "hs_bindgen_3a7e21ae2b159d8e"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_GetHapticFromID@
 hs_bindgen_3a7e21ae2b159d8e :: IO (BG.FunPtr (SDL_HapticID -> IO (BG.Ptr SDL_Haptic)))
 hs_bindgen_3a7e21ae2b159d8e =
-  BG.fromFFIType hs_bindgen_3a7e21ae2b159d8e_base
+  fmap BG.fromFFIType hs_bindgen_3a7e21ae2b159d8e_base
 
 {-# NOINLINE sDL_GetHapticFromID #-}
 
@@ -452,7 +457,7 @@ foreign import ccall unsafe "hs_bindgen_13f07892e26e3cf7"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_GetHapticID@
 hs_bindgen_13f07892e26e3cf7 :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> IO SDL_HapticID))
 hs_bindgen_13f07892e26e3cf7 =
-  BG.fromFFIType hs_bindgen_13f07892e26e3cf7_base
+  fmap BG.fromFFIType hs_bindgen_13f07892e26e3cf7_base
 
 {-# NOINLINE sDL_GetHapticID #-}
 
@@ -477,7 +482,7 @@ foreign import ccall unsafe "hs_bindgen_85514e3e9f32e1c1"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_GetHapticName@
 hs_bindgen_85514e3e9f32e1c1 :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_85514e3e9f32e1c1 =
-  BG.fromFFIType hs_bindgen_85514e3e9f32e1c1_base
+  fmap BG.fromFFIType hs_bindgen_85514e3e9f32e1c1_base
 
 {-# NOINLINE sDL_GetHapticName #-}
 
@@ -504,7 +509,7 @@ foreign import ccall unsafe "hs_bindgen_65b6f3b19cf6ac88"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_IsMouseHaptic@
 hs_bindgen_65b6f3b19cf6ac88 :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_65b6f3b19cf6ac88 =
-  BG.fromFFIType hs_bindgen_65b6f3b19cf6ac88_base
+  fmap BG.fromFFIType hs_bindgen_65b6f3b19cf6ac88_base
 
 {-# NOINLINE sDL_IsMouseHaptic #-}
 
@@ -529,7 +534,7 @@ foreign import ccall unsafe "hs_bindgen_b758521fa797c2c0"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_OpenHapticFromMouse@
 hs_bindgen_b758521fa797c2c0 :: IO (BG.FunPtr (IO (BG.Ptr SDL_Haptic)))
 hs_bindgen_b758521fa797c2c0 =
-  BG.fromFFIType hs_bindgen_b758521fa797c2c0_base
+  fmap BG.fromFFIType hs_bindgen_b758521fa797c2c0_base
 
 {-# NOINLINE sDL_OpenHapticFromMouse #-}
 
@@ -555,7 +560,7 @@ foreign import ccall unsafe "hs_bindgen_67654cd95ff86143"
 hs_bindgen_67654cd95ff86143
   :: IO (BG.FunPtr (BG.Ptr SDL3.Sys.Bindgen.Joystick.SDL_Joystick -> IO BG.CBool))
 hs_bindgen_67654cd95ff86143 =
-  BG.fromFFIType hs_bindgen_67654cd95ff86143_base
+  fmap BG.fromFFIType hs_bindgen_67654cd95ff86143_base
 
 {-# NOINLINE sDL_IsJoystickHaptic #-}
 
@@ -583,7 +588,7 @@ foreign import ccall unsafe "hs_bindgen_fc6652b37d40c658"
 hs_bindgen_fc6652b37d40c658
   :: IO (BG.FunPtr (BG.Ptr SDL3.Sys.Bindgen.Joystick.SDL_Joystick -> IO (BG.Ptr SDL_Haptic)))
 hs_bindgen_fc6652b37d40c658 =
-  BG.fromFFIType hs_bindgen_fc6652b37d40c658_base
+  fmap BG.fromFFIType hs_bindgen_fc6652b37d40c658_base
 
 {-# NOINLINE sDL_OpenHapticFromJoystick #-}
 
@@ -615,7 +620,7 @@ foreign import ccall unsafe "hs_bindgen_6b737e2ed08a147c"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_CloseHaptic@
 hs_bindgen_6b737e2ed08a147c :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> IO ()))
 hs_bindgen_6b737e2ed08a147c =
-  BG.fromFFIType hs_bindgen_6b737e2ed08a147c_base
+  fmap BG.fromFFIType hs_bindgen_6b737e2ed08a147c_base
 
 {-# NOINLINE sDL_CloseHaptic #-}
 
@@ -640,7 +645,7 @@ foreign import ccall unsafe "hs_bindgen_31a97143613121ea"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_GetMaxHapticEffects@
 hs_bindgen_31a97143613121ea :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> IO BG.CInt))
 hs_bindgen_31a97143613121ea =
-  BG.fromFFIType hs_bindgen_31a97143613121ea_base
+  fmap BG.fromFFIType hs_bindgen_31a97143613121ea_base
 
 {-# NOINLINE sDL_GetMaxHapticEffects #-}
 
@@ -669,7 +674,7 @@ foreign import ccall unsafe "hs_bindgen_f659a245012233bf"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_GetMaxHapticEffectsPlaying@
 hs_bindgen_f659a245012233bf :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> IO BG.CInt))
 hs_bindgen_f659a245012233bf =
-  BG.fromFFIType hs_bindgen_f659a245012233bf_base
+  fmap BG.fromFFIType hs_bindgen_f659a245012233bf_base
 
 {-# NOINLINE sDL_GetMaxHapticEffectsPlaying #-}
 
@@ -699,7 +704,7 @@ foreign import ccall unsafe "hs_bindgen_dbbb380d4518b29f"
 hs_bindgen_dbbb380d4518b29f
   :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> IO SDL3.Sys.Bindgen.Stdinc.Uint32))
 hs_bindgen_dbbb380d4518b29f =
-  BG.fromFFIType hs_bindgen_dbbb380d4518b29f_base
+  fmap BG.fromFFIType hs_bindgen_dbbb380d4518b29f_base
 
 {-# NOINLINE sDL_GetHapticFeatures #-}
 
@@ -726,7 +731,7 @@ foreign import ccall unsafe "hs_bindgen_da903e5d3b66ca38"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_GetNumHapticAxes@
 hs_bindgen_da903e5d3b66ca38 :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> IO BG.CInt))
 hs_bindgen_da903e5d3b66ca38 =
-  BG.fromFFIType hs_bindgen_da903e5d3b66ca38_base
+  fmap BG.fromFFIType hs_bindgen_da903e5d3b66ca38_base
 
 {-# NOINLINE sDL_GetNumHapticAxes #-}
 
@@ -754,7 +759,7 @@ foreign import ccall unsafe "hs_bindgen_e66937f5ebbed3b2"
 hs_bindgen_e66937f5ebbed3b2
   :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> PtrConst.PtrConst SDL_HapticEffect -> IO BG.CBool))
 hs_bindgen_e66937f5ebbed3b2 =
-  BG.fromFFIType hs_bindgen_e66937f5ebbed3b2_base
+  fmap BG.fromFFIType hs_bindgen_e66937f5ebbed3b2_base
 
 {-# NOINLINE sDL_HapticEffectSupported #-}
 
@@ -785,7 +790,7 @@ foreign import ccall unsafe "hs_bindgen_4f599110559e7af3"
 hs_bindgen_4f599110559e7af3
   :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> PtrConst.PtrConst SDL_HapticEffect -> IO SDL_HapticEffectID))
 hs_bindgen_4f599110559e7af3 =
-  BG.fromFFIType hs_bindgen_4f599110559e7af3_base
+  fmap BG.fromFFIType hs_bindgen_4f599110559e7af3_base
 
 {-# NOINLINE sDL_CreateHapticEffect #-}
 
@@ -819,7 +824,7 @@ hs_bindgen_6d9817b120393c0f
            (BG.Ptr SDL_Haptic -> SDL_HapticEffectID -> PtrConst.PtrConst SDL_HapticEffect -> IO BG.CBool)
        )
 hs_bindgen_6d9817b120393c0f =
-  BG.fromFFIType hs_bindgen_6d9817b120393c0f_base
+  fmap BG.fromFFIType hs_bindgen_6d9817b120393c0f_base
 
 {-# NOINLINE sDL_UpdateHapticEffect #-}
 
@@ -856,7 +861,7 @@ hs_bindgen_a02a57984673b21e
   :: IO
        (BG.FunPtr (BG.Ptr SDL_Haptic -> SDL_HapticEffectID -> SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO BG.CBool))
 hs_bindgen_a02a57984673b21e =
-  BG.fromFFIType hs_bindgen_a02a57984673b21e_base
+  fmap BG.fromFFIType hs_bindgen_a02a57984673b21e_base
 
 {-# NOINLINE sDL_RunHapticEffect #-}
 
@@ -891,7 +896,7 @@ foreign import ccall unsafe "hs_bindgen_30eca5319f79857b"
 hs_bindgen_30eca5319f79857b
   :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> SDL_HapticEffectID -> IO BG.CBool))
 hs_bindgen_30eca5319f79857b =
-  BG.fromFFIType hs_bindgen_30eca5319f79857b_base
+  fmap BG.fromFFIType hs_bindgen_30eca5319f79857b_base
 
 {-# NOINLINE sDL_StopHapticEffect #-}
 
@@ -920,7 +925,7 @@ foreign import ccall unsafe "hs_bindgen_ac32175b5d132b5c"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_DestroyHapticEffect@
 hs_bindgen_ac32175b5d132b5c :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> SDL_HapticEffectID -> IO ()))
 hs_bindgen_ac32175b5d132b5c =
-  BG.fromFFIType hs_bindgen_ac32175b5d132b5c_base
+  fmap BG.fromFFIType hs_bindgen_ac32175b5d132b5c_base
 
 {-# NOINLINE sDL_DestroyHapticEffect #-}
 
@@ -950,7 +955,7 @@ foreign import ccall unsafe "hs_bindgen_c5abea2492dab75a"
 hs_bindgen_c5abea2492dab75a
   :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> SDL_HapticEffectID -> IO BG.CBool))
 hs_bindgen_c5abea2492dab75a =
-  BG.fromFFIType hs_bindgen_c5abea2492dab75a_base
+  fmap BG.fromFFIType hs_bindgen_c5abea2492dab75a_base
 
 {-# NOINLINE sDL_GetHapticEffectStatus #-}
 
@@ -981,7 +986,7 @@ foreign import ccall unsafe "hs_bindgen_2c6528b48cffc964"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_SetHapticGain@
 hs_bindgen_2c6528b48cffc964 :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> BG.CInt -> IO BG.CBool))
 hs_bindgen_2c6528b48cffc964 =
-  BG.fromFFIType hs_bindgen_2c6528b48cffc964_base
+  fmap BG.fromFFIType hs_bindgen_2c6528b48cffc964_base
 
 {-# NOINLINE sDL_SetHapticGain #-}
 
@@ -1014,7 +1019,7 @@ foreign import ccall unsafe "hs_bindgen_568d338611d0f80d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_SetHapticAutocenter@
 hs_bindgen_568d338611d0f80d :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> BG.CInt -> IO BG.CBool))
 hs_bindgen_568d338611d0f80d =
-  BG.fromFFIType hs_bindgen_568d338611d0f80d_base
+  fmap BG.fromFFIType hs_bindgen_568d338611d0f80d_base
 
 {-# NOINLINE sDL_SetHapticAutocenter #-}
 
@@ -1047,7 +1052,7 @@ foreign import ccall unsafe "hs_bindgen_2300eaaf5179d227"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_PauseHaptic@
 hs_bindgen_2300eaaf5179d227 :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> IO BG.CBool))
 hs_bindgen_2300eaaf5179d227 =
-  BG.fromFFIType hs_bindgen_2300eaaf5179d227_base
+  fmap BG.fromFFIType hs_bindgen_2300eaaf5179d227_base
 
 {-# NOINLINE sDL_PauseHaptic #-}
 
@@ -1078,7 +1083,7 @@ foreign import ccall unsafe "hs_bindgen_d1b63d6dd09df218"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_ResumeHaptic@
 hs_bindgen_d1b63d6dd09df218 :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> IO BG.CBool))
 hs_bindgen_d1b63d6dd09df218 =
-  BG.fromFFIType hs_bindgen_d1b63d6dd09df218_base
+  fmap BG.fromFFIType hs_bindgen_d1b63d6dd09df218_base
 
 {-# NOINLINE sDL_ResumeHaptic #-}
 
@@ -1107,7 +1112,7 @@ foreign import ccall unsafe "hs_bindgen_5cc314419a9f2703"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_StopHapticEffects@
 hs_bindgen_5cc314419a9f2703 :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> IO BG.CBool))
 hs_bindgen_5cc314419a9f2703 =
-  BG.fromFFIType hs_bindgen_5cc314419a9f2703_base
+  fmap BG.fromFFIType hs_bindgen_5cc314419a9f2703_base
 
 {-# NOINLINE sDL_StopHapticEffects #-}
 
@@ -1134,7 +1139,7 @@ foreign import ccall unsafe "hs_bindgen_62fc953aa6c9d61a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_HapticRumbleSupported@
 hs_bindgen_62fc953aa6c9d61a :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> IO BG.CBool))
 hs_bindgen_62fc953aa6c9d61a =
-  BG.fromFFIType hs_bindgen_62fc953aa6c9d61a_base
+  fmap BG.fromFFIType hs_bindgen_62fc953aa6c9d61a_base
 
 {-# NOINLINE sDL_HapticRumbleSupported #-}
 
@@ -1161,7 +1166,7 @@ foreign import ccall unsafe "hs_bindgen_7d0705a7e6ebb724"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_InitHapticRumble@
 hs_bindgen_7d0705a7e6ebb724 :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> IO BG.CBool))
 hs_bindgen_7d0705a7e6ebb724 =
-  BG.fromFFIType hs_bindgen_7d0705a7e6ebb724_base
+  fmap BG.fromFFIType hs_bindgen_7d0705a7e6ebb724_base
 
 {-# NOINLINE sDL_InitHapticRumble #-}
 
@@ -1189,7 +1194,7 @@ foreign import ccall unsafe "hs_bindgen_41c52ad08dc2e874"
 hs_bindgen_41c52ad08dc2e874
   :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> BG.CFloat -> SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO BG.CBool))
 hs_bindgen_41c52ad08dc2e874 =
-  BG.fromFFIType hs_bindgen_41c52ad08dc2e874_base
+  fmap BG.fromFFIType hs_bindgen_41c52ad08dc2e874_base
 
 {-# NOINLINE sDL_PlayHapticRumble #-}
 
@@ -1221,7 +1226,7 @@ foreign import ccall unsafe "hs_bindgen_e3ee0b83eaad3e1f"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Haptic_get_SDL_StopHapticRumble@
 hs_bindgen_e3ee0b83eaad3e1f :: IO (BG.FunPtr (BG.Ptr SDL_Haptic -> IO BG.CBool))
 hs_bindgen_e3ee0b83eaad3e1f =
-  BG.fromFFIType hs_bindgen_e3ee0b83eaad3e1f_base
+  fmap BG.fromFFIType hs_bindgen_e3ee0b83eaad3e1f_base
 
 {-# NOINLINE sDL_StopHapticRumble #-}
 

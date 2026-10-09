@@ -63,7 +63,7 @@ library
     , filepath
     , hs-bindgen
     , lens
-    , libclang-bindings
+    , libclang-bindings ==0.2.*
     , lithon-prelude
     , mtl
     , text

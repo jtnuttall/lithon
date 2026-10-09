@@ -18,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL provides an abstract interface for reading and writing data streams. It offers implementations for files, memory, etc, and the app can provide their own implementations, too.
 --
@@ -50,11 +51,14 @@ module SDL3.Sys.Bindgen.Iostream (
 )
 where
 
+import Prelude (Eq, IO, Int, Ord, Read, Show, pure, (<*>), (>>), type (~))
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -388,6 +392,12 @@ instance Marshal.WriteRaw SDL_IOStreamInterface where
 
 deriving via Marshal.EquivStorable SDL_IOStreamInterface instance BG.Storable SDL_IOStreamInterface
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_IOStreamInterface
+  instance
+    Struct.IsStruct SDL_IOStreamInterface
+
+-- | [C declaration]: @version@, defined at @SDL3\/SDL_iostream.h 95:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "version" SDL_IOStreamInterface ty
@@ -420,6 +430,7 @@ instance HasCField.HasCField SDL_IOStreamInterface "version" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @size@, defined at @SDL3\/SDL_iostream.h 102:22@
 instance
   (ty ~ BG.FunPtr (BG.Ptr BG.Void -> IO SDL3.Sys.Bindgen.Stdinc.Sint64))
   => BG.CompatHasField.HasField "size" SDL_IOStreamInterface ty
@@ -452,6 +463,7 @@ instance HasCField.HasCField SDL_IOStreamInterface "size" where
 
   offset# = \_ -> \_ -> 8
 
+-- | [C declaration]: @seek@, defined at @SDL3\/SDL_iostream.h 110:22@
 instance
   ( ty
       ~ BG.FunPtr
@@ -503,6 +515,7 @@ instance HasCField.HasCField SDL_IOStreamInterface "seek" where
 
   offset# = \_ -> \_ -> 16
 
+-- | [C declaration]: @read@, defined at @SDL3\/SDL_iostream.h 122:22@
 instance
   ( ty
       ~ BG.FunPtr
@@ -557,6 +570,7 @@ instance HasCField.HasCField SDL_IOStreamInterface "read" where
 
   offset# = \_ -> \_ -> 24
 
+-- | [C declaration]: @write@, defined at @SDL3\/SDL_iostream.h 134:22@
 instance
   ( ty
       ~ BG.FunPtr
@@ -611,6 +625,7 @@ instance HasCField.HasCField SDL_IOStreamInterface "write" where
 
   offset# = \_ -> \_ -> 32
 
+-- | [C declaration]: @flush@, defined at @SDL3\/SDL_iostream.h 145:20@
 instance
   (ty ~ BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr SDL_IOStatus -> IO BG.CBool))
   => BG.CompatHasField.HasField "flush" SDL_IOStreamInterface ty
@@ -643,6 +658,7 @@ instance HasCField.HasCField SDL_IOStreamInterface "flush" where
 
   offset# = \_ -> \_ -> 40
 
+-- | [C declaration]: @close@, defined at @SDL3\/SDL_iostream.h 158:20@
 instance
   (ty ~ BG.FunPtr (BG.Ptr BG.Void -> IO BG.CBool))
   => BG.CompatHasField.HasField "close" SDL_IOStreamInterface ty

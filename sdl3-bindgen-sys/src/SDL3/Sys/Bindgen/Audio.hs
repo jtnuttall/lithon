@@ -7,6 +7,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -18,6 +19,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Audio functionality for the SDL library.
 --
@@ -131,11 +133,31 @@ module SDL3.Sys.Bindgen.Audio (
 )
 where
 
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  IO,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  fmap,
+  pure,
+  (<*>),
+  (>>),
+  type (~),
+ )
+
 import C.Expr.HostPlatform qualified
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -602,6 +624,11 @@ instance Marshal.WriteRaw SDL_AudioSpec where
 
 deriving via Marshal.EquivStorable SDL_AudioSpec instance BG.Storable SDL_AudioSpec
 
+deriving via Struct.IsStructViaReadRaw SDL_AudioSpec instance Struct.IsStruct SDL_AudioSpec
+
+-- | Audio data format
+--
+--     [C declaration]: @format@, defined at @SDL3\/SDL_audio.h 407:21@
 instance
   (ty ~ SDL_AudioFormat)
   => BG.CompatHasField.HasField "format" SDL_AudioSpec ty
@@ -630,6 +657,9 @@ instance HasCField.HasCField SDL_AudioSpec "format" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Number of channels: 1 mono, 2 stereo, etc
+--
+--     [C declaration]: @channels@, defined at @SDL3\/SDL_audio.h 408:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "channels" SDL_AudioSpec ty
@@ -656,6 +686,9 @@ instance HasCField.HasCField SDL_AudioSpec "channels" where
 
   offset# = \_ -> \_ -> 4
 
+-- | sample rate: sample frames per second
+--
+--     [C declaration]: @freq@, defined at @SDL3\/SDL_audio.h 409:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "freq" SDL_AudioSpec ty
@@ -750,13 +783,12 @@ newtype SDL_AudioStreamDataCompleteCallback_Aux = SDL_AudioStreamDataCompleteCal
   { unwrap :: BG.Ptr BG.Void -> PtrConst.PtrConst BG.Void -> BG.CInt -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_AudioStreamDataCompleteCallback_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_d632898096a732d7_base
-    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Int32 -> IO ())
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Int32 -> IO ()))
+    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.CInt -> IO ())
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.CInt -> IO ()))
 
 -- __unique:__ @toSDL_AudioStreamDataCompleteCallback_Aux@
 hs_bindgen_d632898096a732d7
@@ -764,15 +796,23 @@ hs_bindgen_d632898096a732d7
   -> IO (BG.FunPtr SDL_AudioStreamDataCompleteCallback_Aux)
 hs_bindgen_d632898096a732d7 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_d632898096a732d7_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_d632898096a732d7_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2) (BG.fromFFIType x3)
+          )
+      )
 
 -- __unique:__ @fromSDL_AudioStreamDataCompleteCallback_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_13d85e7076fc6ef1_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Int32 -> IO ())
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.CInt -> IO ())
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> IO ()
 
 -- __unique:__ @fromSDL_AudioStreamDataCompleteCallback_Aux@
@@ -781,7 +821,16 @@ hs_bindgen_13d85e7076fc6ef1
   -> SDL_AudioStreamDataCompleteCallback_Aux
 hs_bindgen_13d85e7076fc6ef1 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_13d85e7076fc6ef1_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_AudioStreamDataCompleteCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              hs_bindgen_13d85e7076fc6ef1_base
+                (BG.castFunPtr funPtr0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+      )
 
 instance BG.ToFunPtr SDL_AudioStreamDataCompleteCallback_Aux where
   toFunPtr = hs_bindgen_d632898096a732d7
@@ -875,13 +924,12 @@ newtype SDL_AudioStreamCallback_Aux = SDL_AudioStreamCallback_Aux
   { unwrap :: BG.Ptr BG.Void -> BG.Ptr SDL_AudioStream -> BG.CInt -> BG.CInt -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_AudioStreamCallback_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_2ba16e119c56cb1b_base
-    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Int32 -> BG.Int32 -> IO ())
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Int32 -> BG.Int32 -> IO ()))
+    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.CInt -> BG.CInt -> IO ())
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.CInt -> BG.CInt -> IO ()))
 
 -- __unique:__ @toSDL_AudioStreamCallback_Aux@
 hs_bindgen_2ba16e119c56cb1b
@@ -889,16 +937,30 @@ hs_bindgen_2ba16e119c56cb1b
   -> IO (BG.FunPtr SDL_AudioStreamCallback_Aux)
 hs_bindgen_2ba16e119c56cb1b =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_2ba16e119c56cb1b_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_2ba16e119c56cb1b_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  \x4 ->
+                    BG.getField @"unwrap"
+                      fun0
+                      (BG.fromFFIType x1)
+                      (BG.fromFFIType x2)
+                      (BG.fromFFIType x3)
+                      (BG.fromFFIType x4)
+          )
+      )
 
 -- __unique:__ @fromSDL_AudioStreamCallback_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_a0fafe03b8b6d008_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Int32 -> BG.Int32 -> IO ())
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.CInt -> BG.CInt -> IO ())
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
+    -> BG.CInt
+    -> BG.CInt
     -> IO ()
 
 -- __unique:__ @fromSDL_AudioStreamCallback_Aux@
@@ -907,7 +969,18 @@ hs_bindgen_a0fafe03b8b6d008
   -> SDL_AudioStreamCallback_Aux
 hs_bindgen_a0fafe03b8b6d008 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_a0fafe03b8b6d008_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_AudioStreamCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              \x4 ->
+                hs_bindgen_a0fafe03b8b6d008_base
+                  (BG.castFunPtr funPtr0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+      )
 
 instance BG.ToFunPtr SDL_AudioStreamCallback_Aux where
   toFunPtr = hs_bindgen_2ba16e119c56cb1b
@@ -1009,13 +1082,12 @@ newtype SDL_AudioPostmixCallback_Aux = SDL_AudioPostmixCallback_Aux
   { unwrap :: BG.Ptr BG.Void -> PtrConst.PtrConst SDL_AudioSpec -> BG.Ptr BG.CFloat -> BG.CInt -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_AudioPostmixCallback_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_303b6f766f2a421d_base
-    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Int32 -> IO ())
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Int32 -> IO ()))
+    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.CInt -> IO ())
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.CInt -> IO ()))
 
 -- __unique:__ @toSDL_AudioPostmixCallback_Aux@
 hs_bindgen_303b6f766f2a421d
@@ -1023,16 +1095,30 @@ hs_bindgen_303b6f766f2a421d
   -> IO (BG.FunPtr SDL_AudioPostmixCallback_Aux)
 hs_bindgen_303b6f766f2a421d =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_303b6f766f2a421d_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_303b6f766f2a421d_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  \x4 ->
+                    BG.getField @"unwrap"
+                      fun0
+                      (BG.fromFFIType x1)
+                      (BG.fromFFIType x2)
+                      (BG.fromFFIType x3)
+                      (BG.fromFFIType x4)
+          )
+      )
 
 -- __unique:__ @fromSDL_AudioPostmixCallback_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_148fa618325eaf19_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Int32 -> IO ())
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.CInt -> IO ())
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> IO ()
 
 -- __unique:__ @fromSDL_AudioPostmixCallback_Aux@
@@ -1041,7 +1127,18 @@ hs_bindgen_148fa618325eaf19
   -> SDL_AudioPostmixCallback_Aux
 hs_bindgen_148fa618325eaf19 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_148fa618325eaf19_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_AudioPostmixCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              \x4 ->
+                hs_bindgen_148fa618325eaf19_base
+                  (BG.castFunPtr funPtr0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+      )
 
 instance BG.ToFunPtr SDL_AudioPostmixCallback_Aux where
   toFunPtr = hs_bindgen_303b6f766f2a421d

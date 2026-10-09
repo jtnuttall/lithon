@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Cpuinfo.Safe (
@@ -25,13 +27,16 @@ module SDL3.Sys.Bindgen.Cpuinfo.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_cpuinfo.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_cpuinfo.h>"
          , "signed int hs_bindgen_021d38423efa2894 (void)"
          , "{"
          , "  return (SDL_GetNumLogicalCPUCores)();"
@@ -121,12 +126,12 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_GetNumLogicalCPUCores@
 foreign import ccall safe "hs_bindgen_021d38423efa2894"
   hs_bindgen_021d38423efa2894_base
-    :: IO BG.Int32
+    :: IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_GetNumLogicalCPUCores@
 hs_bindgen_021d38423efa2894 :: IO BG.CInt
 hs_bindgen_021d38423efa2894 =
-  BG.fromFFIType hs_bindgen_021d38423efa2894_base
+  fmap BG.fromFFIType hs_bindgen_021d38423efa2894_base
 
 -- | Get the number of logical CPU cores available.
 --
@@ -144,12 +149,12 @@ sDL_GetNumLogicalCPUCores =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_GetCPUCacheLineSize@
 foreign import ccall safe "hs_bindgen_0ca909a81c077ab1"
   hs_bindgen_0ca909a81c077ab1_base
-    :: IO BG.Int32
+    :: IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_GetCPUCacheLineSize@
 hs_bindgen_0ca909a81c077ab1 :: IO BG.CInt
 hs_bindgen_0ca909a81c077ab1 =
-  BG.fromFFIType hs_bindgen_0ca909a81c077ab1_base
+  fmap BG.fromFFIType hs_bindgen_0ca909a81c077ab1_base
 
 -- | Determine the L1 cache line size of the CPU.
 --
@@ -168,12 +173,12 @@ sDL_GetCPUCacheLineSize = hs_bindgen_0ca909a81c077ab1
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasAltiVec@
 foreign import ccall safe "hs_bindgen_12f0f738ad7e36de"
   hs_bindgen_12f0f738ad7e36de_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasAltiVec@
 hs_bindgen_12f0f738ad7e36de :: IO BG.CBool
 hs_bindgen_12f0f738ad7e36de =
-  BG.fromFFIType hs_bindgen_12f0f738ad7e36de_base
+  fmap BG.fromFFIType hs_bindgen_12f0f738ad7e36de_base
 
 -- | Determine whether the CPU has AltiVec features.
 --
@@ -192,12 +197,12 @@ sDL_HasAltiVec = hs_bindgen_12f0f738ad7e36de
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasMMX@
 foreign import ccall safe "hs_bindgen_7b773ae3e33864af"
   hs_bindgen_7b773ae3e33864af_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasMMX@
 hs_bindgen_7b773ae3e33864af :: IO BG.CBool
 hs_bindgen_7b773ae3e33864af =
-  BG.fromFFIType hs_bindgen_7b773ae3e33864af_base
+  fmap BG.fromFFIType hs_bindgen_7b773ae3e33864af_base
 
 -- | Determine whether the CPU has MMX features.
 --
@@ -216,12 +221,12 @@ sDL_HasMMX = hs_bindgen_7b773ae3e33864af
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasSSE@
 foreign import ccall safe "hs_bindgen_9fc6d41bd7e06a8c"
   hs_bindgen_9fc6d41bd7e06a8c_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasSSE@
 hs_bindgen_9fc6d41bd7e06a8c :: IO BG.CBool
 hs_bindgen_9fc6d41bd7e06a8c =
-  BG.fromFFIType hs_bindgen_9fc6d41bd7e06a8c_base
+  fmap BG.fromFFIType hs_bindgen_9fc6d41bd7e06a8c_base
 
 -- | Determine whether the CPU has SSE features.
 --
@@ -242,12 +247,12 @@ sDL_HasSSE = hs_bindgen_9fc6d41bd7e06a8c
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasSSE2@
 foreign import ccall safe "hs_bindgen_87bc5fc8be1bca92"
   hs_bindgen_87bc5fc8be1bca92_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasSSE2@
 hs_bindgen_87bc5fc8be1bca92 :: IO BG.CBool
 hs_bindgen_87bc5fc8be1bca92 =
-  BG.fromFFIType hs_bindgen_87bc5fc8be1bca92_base
+  fmap BG.fromFFIType hs_bindgen_87bc5fc8be1bca92_base
 
 -- | Determine whether the CPU has SSE2 features.
 --
@@ -268,12 +273,12 @@ sDL_HasSSE2 = hs_bindgen_87bc5fc8be1bca92
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasSSE3@
 foreign import ccall safe "hs_bindgen_8c78b2fb7d6ba035"
   hs_bindgen_8c78b2fb7d6ba035_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasSSE3@
 hs_bindgen_8c78b2fb7d6ba035 :: IO BG.CBool
 hs_bindgen_8c78b2fb7d6ba035 =
-  BG.fromFFIType hs_bindgen_8c78b2fb7d6ba035_base
+  fmap BG.fromFFIType hs_bindgen_8c78b2fb7d6ba035_base
 
 -- | Determine whether the CPU has SSE3 features.
 --
@@ -294,12 +299,12 @@ sDL_HasSSE3 = hs_bindgen_8c78b2fb7d6ba035
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasSSE41@
 foreign import ccall safe "hs_bindgen_ad68eac9c65daa8b"
   hs_bindgen_ad68eac9c65daa8b_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasSSE41@
 hs_bindgen_ad68eac9c65daa8b :: IO BG.CBool
 hs_bindgen_ad68eac9c65daa8b =
-  BG.fromFFIType hs_bindgen_ad68eac9c65daa8b_base
+  fmap BG.fromFFIType hs_bindgen_ad68eac9c65daa8b_base
 
 -- | Determine whether the CPU has SSE4.1 features.
 --
@@ -320,12 +325,12 @@ sDL_HasSSE41 = hs_bindgen_ad68eac9c65daa8b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasSSE42@
 foreign import ccall safe "hs_bindgen_45773d656848547a"
   hs_bindgen_45773d656848547a_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasSSE42@
 hs_bindgen_45773d656848547a :: IO BG.CBool
 hs_bindgen_45773d656848547a =
-  BG.fromFFIType hs_bindgen_45773d656848547a_base
+  fmap BG.fromFFIType hs_bindgen_45773d656848547a_base
 
 -- | Determine whether the CPU has SSE4.2 features.
 --
@@ -346,12 +351,12 @@ sDL_HasSSE42 = hs_bindgen_45773d656848547a
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasAVX@
 foreign import ccall safe "hs_bindgen_09d9c1ee75214203"
   hs_bindgen_09d9c1ee75214203_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasAVX@
 hs_bindgen_09d9c1ee75214203 :: IO BG.CBool
 hs_bindgen_09d9c1ee75214203 =
-  BG.fromFFIType hs_bindgen_09d9c1ee75214203_base
+  fmap BG.fromFFIType hs_bindgen_09d9c1ee75214203_base
 
 -- | Determine whether the CPU has AVX features.
 --
@@ -372,12 +377,12 @@ sDL_HasAVX = hs_bindgen_09d9c1ee75214203
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasAVX2@
 foreign import ccall safe "hs_bindgen_dccd2628b251a266"
   hs_bindgen_dccd2628b251a266_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasAVX2@
 hs_bindgen_dccd2628b251a266 :: IO BG.CBool
 hs_bindgen_dccd2628b251a266 =
-  BG.fromFFIType hs_bindgen_dccd2628b251a266_base
+  fmap BG.fromFFIType hs_bindgen_dccd2628b251a266_base
 
 -- | Determine whether the CPU has AVX2 features.
 --
@@ -398,12 +403,12 @@ sDL_HasAVX2 = hs_bindgen_dccd2628b251a266
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasAVX512F@
 foreign import ccall safe "hs_bindgen_963390989096b612"
   hs_bindgen_963390989096b612_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasAVX512F@
 hs_bindgen_963390989096b612 :: IO BG.CBool
 hs_bindgen_963390989096b612 =
-  BG.fromFFIType hs_bindgen_963390989096b612_base
+  fmap BG.fromFFIType hs_bindgen_963390989096b612_base
 
 -- | Determine whether the CPU has AVX-512F (foundation) features.
 --
@@ -424,12 +429,12 @@ sDL_HasAVX512F = hs_bindgen_963390989096b612
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasARMSIMD@
 foreign import ccall safe "hs_bindgen_7f5bde151d49ba8f"
   hs_bindgen_7f5bde151d49ba8f_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasARMSIMD@
 hs_bindgen_7f5bde151d49ba8f :: IO BG.CBool
 hs_bindgen_7f5bde151d49ba8f =
-  BG.fromFFIType hs_bindgen_7f5bde151d49ba8f_base
+  fmap BG.fromFFIType hs_bindgen_7f5bde151d49ba8f_base
 
 -- | Determine whether the CPU has ARM SIMD (ARMv6) features.
 --
@@ -452,12 +457,12 @@ sDL_HasARMSIMD = hs_bindgen_7f5bde151d49ba8f
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasNEON@
 foreign import ccall safe "hs_bindgen_4bb569121e6831a2"
   hs_bindgen_4bb569121e6831a2_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasNEON@
 hs_bindgen_4bb569121e6831a2 :: IO BG.CBool
 hs_bindgen_4bb569121e6831a2 =
-  BG.fromFFIType hs_bindgen_4bb569121e6831a2_base
+  fmap BG.fromFFIType hs_bindgen_4bb569121e6831a2_base
 
 -- | Determine whether the CPU has NEON (ARM SIMD) features.
 --
@@ -476,12 +481,12 @@ sDL_HasNEON = hs_bindgen_4bb569121e6831a2
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasLSX@
 foreign import ccall safe "hs_bindgen_56a380fc3630f88f"
   hs_bindgen_56a380fc3630f88f_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasLSX@
 hs_bindgen_56a380fc3630f88f :: IO BG.CBool
 hs_bindgen_56a380fc3630f88f =
-  BG.fromFFIType hs_bindgen_56a380fc3630f88f_base
+  fmap BG.fromFFIType hs_bindgen_56a380fc3630f88f_base
 
 -- | Determine whether the CPU has LSX (LOONGARCH SIMD) features.
 --
@@ -500,12 +505,12 @@ sDL_HasLSX = hs_bindgen_56a380fc3630f88f
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasLASX@
 foreign import ccall safe "hs_bindgen_18257ff80297cf49"
   hs_bindgen_18257ff80297cf49_base
-    :: IO BG.Word8
+    :: IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_HasLASX@
 hs_bindgen_18257ff80297cf49 :: IO BG.CBool
 hs_bindgen_18257ff80297cf49 =
-  BG.fromFFIType hs_bindgen_18257ff80297cf49_base
+  fmap BG.fromFFIType hs_bindgen_18257ff80297cf49_base
 
 -- | Determine whether the CPU has LASX (LOONGARCH SIMD) features.
 --
@@ -524,12 +529,12 @@ sDL_HasLASX = hs_bindgen_18257ff80297cf49
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_GetSystemRAM@
 foreign import ccall safe "hs_bindgen_cd53f670bd0bc729"
   hs_bindgen_cd53f670bd0bc729_base
-    :: IO BG.Int32
+    :: IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_GetSystemRAM@
 hs_bindgen_cd53f670bd0bc729 :: IO BG.CInt
 hs_bindgen_cd53f670bd0bc729 =
-  BG.fromFFIType hs_bindgen_cd53f670bd0bc729_base
+  fmap BG.fromFFIType hs_bindgen_cd53f670bd0bc729_base
 
 -- | Get the amount of RAM configured in the system.
 --
@@ -546,12 +551,12 @@ sDL_GetSystemRAM = hs_bindgen_cd53f670bd0bc729
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_GetSIMDAlignment@
 foreign import ccall safe "hs_bindgen_db11c36832e4fbf2"
   hs_bindgen_db11c36832e4fbf2_base
-    :: IO BG.Word64
+    :: IO HsBindgen.Runtime.LibC.CSize
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_GetSIMDAlignment@
 hs_bindgen_db11c36832e4fbf2 :: IO HsBindgen.Runtime.LibC.CSize
 hs_bindgen_db11c36832e4fbf2 =
-  BG.fromFFIType hs_bindgen_db11c36832e4fbf2_base
+  fmap BG.fromFFIType hs_bindgen_db11c36832e4fbf2_base
 
 -- | Report the alignment this system needs for SIMD allocations.
 --
@@ -572,12 +577,12 @@ sDL_GetSIMDAlignment = hs_bindgen_db11c36832e4fbf2
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_GetSystemPageSize@
 foreign import ccall safe "hs_bindgen_a5c1dbf29e777b88"
   hs_bindgen_a5c1dbf29e777b88_base
-    :: IO BG.Int32
+    :: IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Cpuinfo_Safe_SDL_GetSystemPageSize@
 hs_bindgen_a5c1dbf29e777b88 :: IO BG.CInt
 hs_bindgen_a5c1dbf29e777b88 =
-  BG.fromFFIType hs_bindgen_a5c1dbf29e777b88_base
+  fmap BG.fromFFIType hs_bindgen_a5c1dbf29e777b88_base
 
 -- | Report the size of a page of memory.
 --

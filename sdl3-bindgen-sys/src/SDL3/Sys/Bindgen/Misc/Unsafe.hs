@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Misc.Unsafe (
@@ -7,13 +9,16 @@ module SDL3.Sys.Bindgen.Misc.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_misc.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_misc.h>"
          , "_Bool hs_bindgen_25f6c968529203db ("
          , "  char const *arg1"
          , ")"
@@ -28,14 +33,15 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 foreign import ccall unsafe "hs_bindgen_25f6c968529203db"
   hs_bindgen_25f6c968529203db_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Misc_Unsafe_SDL_OpenURL@
 hs_bindgen_25f6c968529203db
   :: PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_25f6c968529203db =
-  BG.fromFFIType hs_bindgen_25f6c968529203db_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_25f6c968529203db_base (BG.toFFIType x0))
 
 -- | [C declaration]: @SDL_OpenURL@, defined at @SDL3\/SDL_misc.h 72:34@
 sDL_OpenURL

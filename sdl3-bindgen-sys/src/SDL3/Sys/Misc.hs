@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL API functions that don\'t fit elsewhere. Open a URL\/URI in the browser or other appropriate external application.
 --
 --     Open a URL in a separate, system-provided application. How this works will vary wildly depending on the platform. This will likely launch what makes sense to handle a specific URL\'s protocol (a web browser for @[http:\/\/](http://)@, etc), but it might also be able to launch file managers for directories and other things.
@@ -27,6 +29,8 @@ module SDL3.Sys.Misc (
   SDL3.Sys.Misc.openURLSafe,
 )
 where
+
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.PtrConst qualified as PtrConst

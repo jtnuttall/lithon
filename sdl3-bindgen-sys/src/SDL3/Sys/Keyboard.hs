@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL keyboard management.
 --
 --     Please refer to the Best Keyboard Practices document for details on how best to accept keyboard input in various types of programs:
@@ -71,6 +73,7 @@ module SDL3.Sys.Keyboard (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

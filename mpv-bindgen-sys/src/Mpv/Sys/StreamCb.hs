@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Custom stream protocols via user callbacks.
 --
 --     == FFI conventions
@@ -15,6 +17,7 @@ module Mpv.Sys.StreamCb (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (IO, fmap)
 
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst

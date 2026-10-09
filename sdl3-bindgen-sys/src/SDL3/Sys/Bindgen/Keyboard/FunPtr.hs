@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Keyboard.FunPtr (
@@ -30,6 +32,8 @@ module SDL3.Sys.Bindgen.Keyboard.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -42,7 +46,8 @@ import SDL3.Sys.Bindgen.Video qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_keyboard.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_keyboard.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_get_SDL_HasKeyboard */"
          , "__attribute__ ((const))"
          , "_Bool (*hs_bindgen_f2d4cba2f0ac16c1 (void)) (void)"
@@ -246,7 +251,7 @@ foreign import ccall unsafe "hs_bindgen_f2d4cba2f0ac16c1"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_get_SDL_HasKeyboard@
 hs_bindgen_f2d4cba2f0ac16c1 :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_f2d4cba2f0ac16c1 =
-  BG.fromFFIType hs_bindgen_f2d4cba2f0ac16c1_base
+  fmap BG.fromFFIType hs_bindgen_f2d4cba2f0ac16c1_base
 
 {-# NOINLINE sDL_HasKeyboard #-}
 
@@ -273,7 +278,7 @@ foreign import ccall unsafe "hs_bindgen_07570de4c113f860"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_get_SDL_GetKeyboards@
 hs_bindgen_07570de4c113f860 :: IO (BG.FunPtr (BG.Ptr BG.CInt -> IO (BG.Ptr SDL_KeyboardID)))
 hs_bindgen_07570de4c113f860 =
-  BG.fromFFIType hs_bindgen_07570de4c113f860_base
+  fmap BG.fromFFIType hs_bindgen_07570de4c113f860_base
 
 {-# NOINLINE sDL_GetKeyboards #-}
 
@@ -304,7 +309,7 @@ foreign import ccall unsafe "hs_bindgen_83b903949cfcfe63"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_get_SDL_GetKeyboardNameForID@
 hs_bindgen_83b903949cfcfe63 :: IO (BG.FunPtr (SDL_KeyboardID -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_83b903949cfcfe63 =
-  BG.fromFFIType hs_bindgen_83b903949cfcfe63_base
+  fmap BG.fromFFIType hs_bindgen_83b903949cfcfe63_base
 
 {-# NOINLINE sDL_GetKeyboardNameForID #-}
 
@@ -335,7 +340,7 @@ foreign import ccall unsafe "hs_bindgen_8df2b4d534724c71"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_get_SDL_GetKeyboardFocus@
 hs_bindgen_8df2b4d534724c71 :: IO (BG.FunPtr (IO (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window)))
 hs_bindgen_8df2b4d534724c71 =
-  BG.fromFFIType hs_bindgen_8df2b4d534724c71_base
+  fmap BG.fromFFIType hs_bindgen_8df2b4d534724c71_base
 
 {-# NOINLINE sDL_GetKeyboardFocus #-}
 
@@ -360,7 +365,7 @@ foreign import ccall unsafe "hs_bindgen_d62d5a74819a4670"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_get_SDL_GetKeyboardState@
 hs_bindgen_d62d5a74819a4670 :: IO (BG.FunPtr (BG.Ptr BG.CInt -> IO (PtrConst.PtrConst BG.CBool)))
 hs_bindgen_d62d5a74819a4670 =
-  BG.fromFFIType hs_bindgen_d62d5a74819a4670_base
+  fmap BG.fromFFIType hs_bindgen_d62d5a74819a4670_base
 
 {-# NOINLINE sDL_GetKeyboardState #-}
 
@@ -399,7 +404,7 @@ foreign import ccall unsafe "hs_bindgen_d91e3b4a0a33939a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_get_SDL_ResetKeyboard@
 hs_bindgen_d91e3b4a0a33939a :: IO (BG.FunPtr (IO ()))
 hs_bindgen_d91e3b4a0a33939a =
-  BG.fromFFIType hs_bindgen_d91e3b4a0a33939a_base
+  fmap BG.fromFFIType hs_bindgen_d91e3b4a0a33939a_base
 
 {-# NOINLINE sDL_ResetKeyboard #-}
 
@@ -426,7 +431,7 @@ foreign import ccall unsafe "hs_bindgen_cc0f02de8bc450f1"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_get_SDL_GetModState@
 hs_bindgen_cc0f02de8bc450f1 :: IO (BG.FunPtr (IO SDL3.Sys.Bindgen.Keycode.SDL_Keymod))
 hs_bindgen_cc0f02de8bc450f1 =
-  BG.fromFFIType hs_bindgen_cc0f02de8bc450f1_base
+  fmap BG.fromFFIType hs_bindgen_cc0f02de8bc450f1_base
 
 {-# NOINLINE sDL_GetModState #-}
 
@@ -453,7 +458,7 @@ foreign import ccall unsafe "hs_bindgen_6bbf695b3fa0e177"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_get_SDL_SetModState@
 hs_bindgen_6bbf695b3fa0e177 :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Keycode.SDL_Keymod -> IO ()))
 hs_bindgen_6bbf695b3fa0e177 =
-  BG.fromFFIType hs_bindgen_6bbf695b3fa0e177_base
+  fmap BG.fromFFIType hs_bindgen_6bbf695b3fa0e177_base
 
 {-# NOINLINE sDL_SetModState #-}
 
@@ -492,7 +497,7 @@ hs_bindgen_c9f6615acff7b796
            )
        )
 hs_bindgen_c9f6615acff7b796 =
-  BG.fromFFIType hs_bindgen_c9f6615acff7b796_base
+  fmap BG.fromFFIType hs_bindgen_c9f6615acff7b796_base
 
 {-# NOINLINE sDL_GetKeyFromScancode #-}
 
@@ -540,7 +545,7 @@ hs_bindgen_435c07f787a65684
            )
        )
 hs_bindgen_435c07f787a65684 =
-  BG.fromFFIType hs_bindgen_435c07f787a65684_base
+  fmap BG.fromFFIType hs_bindgen_435c07f787a65684_base
 
 {-# NOINLINE sDL_GetScancodeFromKey #-}
 
@@ -579,7 +584,7 @@ foreign import ccall unsafe "hs_bindgen_087c95eefbd6f76f"
 hs_bindgen_087c95eefbd6f76f
   :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Scancode.SDL_Scancode -> PtrConst.PtrConst BG.CChar -> IO BG.CBool))
 hs_bindgen_087c95eefbd6f76f =
-  BG.fromFFIType hs_bindgen_087c95eefbd6f76f_base
+  fmap BG.fromFFIType hs_bindgen_087c95eefbd6f76f_base
 
 {-# NOINLINE sDL_SetScancodeName #-}
 
@@ -612,7 +617,7 @@ foreign import ccall unsafe "hs_bindgen_8a2bf360adc31889"
 hs_bindgen_8a2bf360adc31889
   :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Scancode.SDL_Scancode -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_8a2bf360adc31889 =
-  BG.fromFFIType hs_bindgen_8a2bf360adc31889_base
+  fmap BG.fromFFIType hs_bindgen_8a2bf360adc31889_base
 
 {-# NOINLINE sDL_GetScancodeName #-}
 
@@ -645,7 +650,7 @@ foreign import ccall unsafe "hs_bindgen_b93acbb95d9d0d72"
 hs_bindgen_b93acbb95d9d0d72
   :: IO (BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO SDL3.Sys.Bindgen.Scancode.SDL_Scancode))
 hs_bindgen_b93acbb95d9d0d72 =
-  BG.fromFFIType hs_bindgen_b93acbb95d9d0d72_base
+  fmap BG.fromFFIType hs_bindgen_b93acbb95d9d0d72_base
 
 {-# NOINLINE sDL_GetScancodeFromName #-}
 
@@ -676,7 +681,7 @@ foreign import ccall unsafe "hs_bindgen_f93a8976e79ac924"
 hs_bindgen_f93a8976e79ac924
   :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Keycode.SDL_Keycode -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_f93a8976e79ac924 =
-  BG.fromFFIType hs_bindgen_f93a8976e79ac924_base
+  fmap BG.fromFFIType hs_bindgen_f93a8976e79ac924_base
 
 {-# NOINLINE sDL_GetKeyName #-}
 
@@ -711,7 +716,7 @@ foreign import ccall unsafe "hs_bindgen_b72924cf51764a24"
 hs_bindgen_b72924cf51764a24
   :: IO (BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO SDL3.Sys.Bindgen.Keycode.SDL_Keycode))
 hs_bindgen_b72924cf51764a24 =
-  BG.fromFFIType hs_bindgen_b72924cf51764a24_base
+  fmap BG.fromFFIType hs_bindgen_b72924cf51764a24_base
 
 {-# NOINLINE sDL_GetKeyFromName #-}
 
@@ -742,7 +747,7 @@ foreign import ccall unsafe "hs_bindgen_4b6d937c5c094fac"
 hs_bindgen_4b6d937c5c094fac
   :: IO (BG.FunPtr (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window -> IO BG.CBool))
 hs_bindgen_4b6d937c5c094fac =
-  BG.fromFFIType hs_bindgen_4b6d937c5c094fac_base
+  fmap BG.fromFFIType hs_bindgen_4b6d937c5c094fac_base
 
 {-# NOINLINE sDL_StartTextInput #-}
 
@@ -784,7 +789,7 @@ hs_bindgen_cef63a814fd09fce
            )
        )
 hs_bindgen_cef63a814fd09fce =
-  BG.fromFFIType hs_bindgen_cef63a814fd09fce_base
+  fmap BG.fromFFIType hs_bindgen_cef63a814fd09fce_base
 
 {-# NOINLINE sDL_StartTextInputWithProperties #-}
 
@@ -841,7 +846,7 @@ foreign import ccall unsafe "hs_bindgen_1f67969c2fa5317a"
 hs_bindgen_1f67969c2fa5317a
   :: IO (BG.FunPtr (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window -> IO BG.CBool))
 hs_bindgen_1f67969c2fa5317a =
-  BG.fromFFIType hs_bindgen_1f67969c2fa5317a_base
+  fmap BG.fromFFIType hs_bindgen_1f67969c2fa5317a_base
 
 {-# NOINLINE sDL_TextInputActive #-}
 
@@ -871,7 +876,7 @@ foreign import ccall unsafe "hs_bindgen_9b542f1ba0dfe34d"
 hs_bindgen_9b542f1ba0dfe34d
   :: IO (BG.FunPtr (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window -> IO BG.CBool))
 hs_bindgen_9b542f1ba0dfe34d =
-  BG.fromFFIType hs_bindgen_9b542f1ba0dfe34d_base
+  fmap BG.fromFFIType hs_bindgen_9b542f1ba0dfe34d_base
 
 {-# NOINLINE sDL_StopTextInput #-}
 
@@ -903,7 +908,7 @@ foreign import ccall unsafe "hs_bindgen_60c12ad8dda93779"
 hs_bindgen_60c12ad8dda93779
   :: IO (BG.FunPtr (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window -> IO BG.CBool))
 hs_bindgen_60c12ad8dda93779 =
-  BG.fromFFIType hs_bindgen_60c12ad8dda93779_base
+  fmap BG.fromFFIType hs_bindgen_60c12ad8dda93779_base
 
 {-# NOINLINE sDL_ClearComposition #-}
 
@@ -940,7 +945,7 @@ hs_bindgen_a46b72607b603a3c
            )
        )
 hs_bindgen_a46b72607b603a3c =
-  BG.fromFFIType hs_bindgen_a46b72607b603a3c_base
+  fmap BG.fromFFIType hs_bindgen_a46b72607b603a3c_base
 
 {-# NOINLINE sDL_SetTextInputArea #-}
 
@@ -989,7 +994,7 @@ hs_bindgen_b5c6f5df66854547
            )
        )
 hs_bindgen_b5c6f5df66854547 =
-  BG.fromFFIType hs_bindgen_b5c6f5df66854547_base
+  fmap BG.fromFFIType hs_bindgen_b5c6f5df66854547_base
 
 {-# NOINLINE sDL_GetTextInputArea #-}
 
@@ -1030,7 +1035,7 @@ foreign import ccall unsafe "hs_bindgen_e8fffc349e61bb9c"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Keyboard_get_SDL_HasScreenKeyboardSupport@
 hs_bindgen_e8fffc349e61bb9c :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_e8fffc349e61bb9c =
-  BG.fromFFIType hs_bindgen_e8fffc349e61bb9c_base
+  fmap BG.fromFFIType hs_bindgen_e8fffc349e61bb9c_base
 
 {-# NOINLINE sDL_HasScreenKeyboardSupport #-}
 
@@ -1058,7 +1063,7 @@ foreign import ccall unsafe "hs_bindgen_f094fa8f75a49f31"
 hs_bindgen_f094fa8f75a49f31
   :: IO (BG.FunPtr (BG.Ptr SDL3.Sys.Bindgen.Video.SDL_Window -> IO BG.CBool))
 hs_bindgen_f094fa8f75a49f31 =
-  BG.fromFFIType hs_bindgen_f094fa8f75a49f31_base
+  fmap BG.fromFFIType hs_bindgen_f094fa8f75a49f31_base
 
 {-# NOINLINE sDL_ScreenKeyboardShown #-}
 

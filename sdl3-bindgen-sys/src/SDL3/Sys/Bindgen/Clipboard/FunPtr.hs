@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Clipboard.FunPtr (
@@ -17,6 +19,8 @@ module SDL3.Sys.Bindgen.Clipboard.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
@@ -25,7 +29,8 @@ import SDL3.Sys.Bindgen.Clipboard
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_clipboard.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_clipboard.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_get_SDL_SetClipboardText */"
          , "__attribute__ ((const))"
          , "_Bool (*hs_bindgen_e6a081b49815ff9d (void)) ("
@@ -121,7 +126,7 @@ foreign import ccall unsafe "hs_bindgen_e6a081b49815ff9d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_get_SDL_SetClipboardText@
 hs_bindgen_e6a081b49815ff9d :: IO (BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO BG.CBool))
 hs_bindgen_e6a081b49815ff9d =
-  BG.fromFFIType hs_bindgen_e6a081b49815ff9d_base
+  fmap BG.fromFFIType hs_bindgen_e6a081b49815ff9d_base
 
 {-# NOINLINE sDL_SetClipboardText #-}
 
@@ -138,7 +143,7 @@ foreign import ccall unsafe "hs_bindgen_e073f17299d97161"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_get_SDL_GetClipboardText@
 hs_bindgen_e073f17299d97161 :: IO (BG.FunPtr (IO (BG.Ptr BG.CChar)))
 hs_bindgen_e073f17299d97161 =
-  BG.fromFFIType hs_bindgen_e073f17299d97161_base
+  fmap BG.fromFFIType hs_bindgen_e073f17299d97161_base
 
 {-# NOINLINE sDL_GetClipboardText #-}
 
@@ -167,7 +172,7 @@ foreign import ccall unsafe "hs_bindgen_0110b0e19d65293a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_get_SDL_HasClipboardText@
 hs_bindgen_0110b0e19d65293a :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_0110b0e19d65293a =
-  BG.fromFFIType hs_bindgen_0110b0e19d65293a_base
+  fmap BG.fromFFIType hs_bindgen_0110b0e19d65293a_base
 
 {-# NOINLINE sDL_HasClipboardText #-}
 
@@ -194,7 +199,7 @@ foreign import ccall unsafe "hs_bindgen_2780901b25e68105"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_get_SDL_SetPrimarySelectionText@
 hs_bindgen_2780901b25e68105 :: IO (BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO BG.CBool))
 hs_bindgen_2780901b25e68105 =
-  BG.fromFFIType hs_bindgen_2780901b25e68105_base
+  fmap BG.fromFFIType hs_bindgen_2780901b25e68105_base
 
 {-# NOINLINE sDL_SetPrimarySelectionText #-}
 
@@ -223,7 +228,7 @@ foreign import ccall unsafe "hs_bindgen_a50a077372a1275b"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_get_SDL_GetPrimarySelectionText@
 hs_bindgen_a50a077372a1275b :: IO (BG.FunPtr (IO (BG.Ptr BG.CChar)))
 hs_bindgen_a50a077372a1275b =
-  BG.fromFFIType hs_bindgen_a50a077372a1275b_base
+  fmap BG.fromFFIType hs_bindgen_a50a077372a1275b_base
 
 {-# NOINLINE sDL_GetPrimarySelectionText #-}
 
@@ -252,7 +257,7 @@ foreign import ccall unsafe "hs_bindgen_ed5cec4a17949538"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_get_SDL_HasPrimarySelectionText@
 hs_bindgen_ed5cec4a17949538 :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_ed5cec4a17949538 =
-  BG.fromFFIType hs_bindgen_ed5cec4a17949538_base
+  fmap BG.fromFFIType hs_bindgen_ed5cec4a17949538_base
 
 {-# NOINLINE sDL_HasPrimarySelectionText #-}
 
@@ -289,7 +294,7 @@ hs_bindgen_407833da207603f1
            )
        )
 hs_bindgen_407833da207603f1 =
-  BG.fromFFIType hs_bindgen_407833da207603f1_base
+  fmap BG.fromFFIType hs_bindgen_407833da207603f1_base
 
 {-# NOINLINE sDL_SetClipboardData #-}
 
@@ -338,7 +343,7 @@ foreign import ccall unsafe "hs_bindgen_6b6d9f04b710100d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_get_SDL_ClearClipboardData@
 hs_bindgen_6b6d9f04b710100d :: IO (BG.FunPtr (IO BG.CBool))
 hs_bindgen_6b6d9f04b710100d =
-  BG.fromFFIType hs_bindgen_6b6d9f04b710100d_base
+  fmap BG.fromFFIType hs_bindgen_6b6d9f04b710100d_base
 
 {-# NOINLINE sDL_ClearClipboardData #-}
 
@@ -367,7 +372,7 @@ hs_bindgen_4936992218b0c564
   :: IO
        (BG.FunPtr (PtrConst.PtrConst BG.CChar -> BG.Ptr HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void)))
 hs_bindgen_4936992218b0c564 =
-  BG.fromFFIType hs_bindgen_4936992218b0c564_base
+  fmap BG.fromFFIType hs_bindgen_4936992218b0c564_base
 
 {-# NOINLINE sDL_GetClipboardData #-}
 
@@ -401,7 +406,7 @@ foreign import ccall unsafe "hs_bindgen_a0c05f57097b9fe0"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Clipboard_get_SDL_HasClipboardData@
 hs_bindgen_a0c05f57097b9fe0 :: IO (BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO BG.CBool))
 hs_bindgen_a0c05f57097b9fe0 =
-  BG.fromFFIType hs_bindgen_a0c05f57097b9fe0_base
+  fmap BG.fromFFIType hs_bindgen_a0c05f57097b9fe0_base
 
 {-# NOINLINE sDL_HasClipboardData #-}
 
@@ -431,7 +436,7 @@ foreign import ccall unsafe "hs_bindgen_fa141967047535cc"
 hs_bindgen_fa141967047535cc
   :: IO (BG.FunPtr (BG.Ptr HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr (BG.Ptr BG.CChar))))
 hs_bindgen_fa141967047535cc =
-  BG.fromFFIType hs_bindgen_fa141967047535cc_base
+  fmap BG.fromFFIType hs_bindgen_fa141967047535cc_base
 
 {-# NOINLINE sDL_GetClipboardMimeTypes #-}
 

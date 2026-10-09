@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Timer.Safe (
@@ -16,6 +18,9 @@ module SDL3.Sys.Bindgen.Timer.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -23,7 +28,8 @@ import SDL3.Sys.Bindgen.Timer
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_timer.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_timer.h>"
          , "Uint64 hs_bindgen_c6153618a018e856 (void)"
          , "{"
          , "  return (SDL_GetTicks)();"
@@ -87,12 +93,12 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_GetTicks@
 foreign import ccall safe "hs_bindgen_c6153618a018e856"
   hs_bindgen_c6153618a018e856_base
-    :: IO BG.Word64
+    :: IO HsBindgen.Runtime.LibC.Word64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_GetTicks@
 hs_bindgen_c6153618a018e856 :: IO SDL3.Sys.Bindgen.Stdinc.Uint64
 hs_bindgen_c6153618a018e856 =
-  BG.fromFFIType hs_bindgen_c6153618a018e856_base
+  fmap BG.fromFFIType hs_bindgen_c6153618a018e856_base
 
 -- | Get the number of milliseconds that have elapsed since the SDL library initialization.
 --
@@ -111,12 +117,12 @@ sDL_GetTicks = hs_bindgen_c6153618a018e856
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_GetTicksNS@
 foreign import ccall safe "hs_bindgen_47e2e360ac6e112d"
   hs_bindgen_47e2e360ac6e112d_base
-    :: IO BG.Word64
+    :: IO HsBindgen.Runtime.LibC.Word64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_GetTicksNS@
 hs_bindgen_47e2e360ac6e112d :: IO SDL3.Sys.Bindgen.Stdinc.Uint64
 hs_bindgen_47e2e360ac6e112d =
-  BG.fromFFIType hs_bindgen_47e2e360ac6e112d_base
+  fmap BG.fromFFIType hs_bindgen_47e2e360ac6e112d_base
 
 -- | Get the number of nanoseconds since SDL library initialization.
 --
@@ -133,12 +139,12 @@ sDL_GetTicksNS = hs_bindgen_47e2e360ac6e112d
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_GetPerformanceCounter@
 foreign import ccall safe "hs_bindgen_e58f7e74d5dfd2f6"
   hs_bindgen_e58f7e74d5dfd2f6_base
-    :: IO BG.Word64
+    :: IO HsBindgen.Runtime.LibC.Word64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_GetPerformanceCounter@
 hs_bindgen_e58f7e74d5dfd2f6 :: IO SDL3.Sys.Bindgen.Stdinc.Uint64
 hs_bindgen_e58f7e74d5dfd2f6 =
-  BG.fromFFIType hs_bindgen_e58f7e74d5dfd2f6_base
+  fmap BG.fromFFIType hs_bindgen_e58f7e74d5dfd2f6_base
 
 -- | Get the current value of the high resolution counter.
 --
@@ -162,12 +168,12 @@ sDL_GetPerformanceCounter =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_GetPerformanceFrequency@
 foreign import ccall safe "hs_bindgen_3a4825ac03082c11"
   hs_bindgen_3a4825ac03082c11_base
-    :: IO BG.Word64
+    :: IO HsBindgen.Runtime.LibC.Word64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_GetPerformanceFrequency@
 hs_bindgen_3a4825ac03082c11 :: IO SDL3.Sys.Bindgen.Stdinc.Uint64
 hs_bindgen_3a4825ac03082c11 =
-  BG.fromFFIType hs_bindgen_3a4825ac03082c11_base
+  fmap BG.fromFFIType hs_bindgen_3a4825ac03082c11_base
 
 -- | Get the count per second of the high resolution counter.
 --
@@ -187,7 +193,7 @@ sDL_GetPerformanceFrequency =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_Delay@
 foreign import ccall safe "hs_bindgen_8754cd6d3f04ccff"
   hs_bindgen_8754cd6d3f04ccff_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_Delay@
@@ -195,7 +201,8 @@ hs_bindgen_8754cd6d3f04ccff
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO ()
 hs_bindgen_8754cd6d3f04ccff =
-  BG.fromFFIType hs_bindgen_8754cd6d3f04ccff_base
+  \x0 ->
+    hs_bindgen_8754cd6d3f04ccff_base (BG.toFFIType x0)
 
 -- | Wait a specified number of milliseconds before returning.
 --
@@ -219,7 +226,7 @@ sDL_Delay = hs_bindgen_8754cd6d3f04ccff
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_DelayNS@
 foreign import ccall safe "hs_bindgen_4581488a34fdd3e7"
   hs_bindgen_4581488a34fdd3e7_base
-    :: BG.Word64
+    :: HsBindgen.Runtime.LibC.Word64
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_DelayNS@
@@ -227,7 +234,8 @@ hs_bindgen_4581488a34fdd3e7
   :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -> IO ()
 hs_bindgen_4581488a34fdd3e7 =
-  BG.fromFFIType hs_bindgen_4581488a34fdd3e7_base
+  \x0 ->
+    hs_bindgen_4581488a34fdd3e7_base (BG.toFFIType x0)
 
 -- | Wait a specified number of nanoseconds before returning.
 --
@@ -251,7 +259,7 @@ sDL_DelayNS = hs_bindgen_4581488a34fdd3e7
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_DelayPrecise@
 foreign import ccall safe "hs_bindgen_19457ba0f1d978a7"
   hs_bindgen_19457ba0f1d978a7_base
-    :: BG.Word64
+    :: HsBindgen.Runtime.LibC.Word64
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_DelayPrecise@
@@ -259,7 +267,8 @@ hs_bindgen_19457ba0f1d978a7
   :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -> IO ()
 hs_bindgen_19457ba0f1d978a7 =
-  BG.fromFFIType hs_bindgen_19457ba0f1d978a7_base
+  \x0 ->
+    hs_bindgen_19457ba0f1d978a7_base (BG.toFFIType x0)
 
 -- | Wait a specified number of nanoseconds before returning.
 --
@@ -283,10 +292,10 @@ sDL_DelayPrecise = hs_bindgen_19457ba0f1d978a7
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_AddTimer@
 foreign import ccall safe "hs_bindgen_1eb4863b9e459f9b"
   hs_bindgen_1eb4863b9e459f9b_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_AddTimer@
 hs_bindgen_1eb4863b9e459f9b
@@ -295,7 +304,12 @@ hs_bindgen_1eb4863b9e459f9b
   -> BG.Ptr BG.Void
   -> IO SDL_TimerID
 hs_bindgen_1eb4863b9e459f9b =
-  BG.fromFFIType hs_bindgen_1eb4863b9e459f9b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_1eb4863b9e459f9b_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Call a callback function at a future time.
 --
@@ -335,10 +349,10 @@ sDL_AddTimer = hs_bindgen_1eb4863b9e459f9b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_AddTimerNS@
 foreign import ccall safe "hs_bindgen_04843533c2eea6bf"
   hs_bindgen_04843533c2eea6bf_base
-    :: BG.Word64
+    :: HsBindgen.Runtime.LibC.Word64
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_AddTimerNS@
 hs_bindgen_04843533c2eea6bf
@@ -347,7 +361,12 @@ hs_bindgen_04843533c2eea6bf
   -> BG.Ptr BG.Void
   -> IO SDL_TimerID
 hs_bindgen_04843533c2eea6bf =
-  BG.fromFFIType hs_bindgen_04843533c2eea6bf_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_04843533c2eea6bf_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Call a callback function at a future time.
 --
@@ -387,15 +406,16 @@ sDL_AddTimerNS = hs_bindgen_04843533c2eea6bf
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_RemoveTimer@
 foreign import ccall safe "hs_bindgen_3794f4416b9527ed"
   hs_bindgen_3794f4416b9527ed_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Timer_Safe_SDL_RemoveTimer@
 hs_bindgen_3794f4416b9527ed
   :: SDL_TimerID
   -> IO BG.CBool
 hs_bindgen_3794f4416b9527ed =
-  BG.fromFFIType hs_bindgen_3794f4416b9527ed_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_3794f4416b9527ed_base (BG.toFFIType x0))
 
 -- | Remove a timer created with @SDL_AddTimer()@.
 --

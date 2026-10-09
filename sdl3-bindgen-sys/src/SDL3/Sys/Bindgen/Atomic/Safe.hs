@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Atomic.Safe (
@@ -22,6 +24,9 @@ module SDL3.Sys.Bindgen.Atomic.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Atomic
@@ -29,7 +34,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_atomic.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_atomic.h>"
          , "_Bool hs_bindgen_172686d1676cd710 ("
          , "  SDL_SpinLock *arg1"
          , ")"
@@ -147,14 +153,15 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 foreign import ccall safe "hs_bindgen_172686d1676cd710"
   hs_bindgen_172686d1676cd710_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_Safe_SDL_TryLockSpinlock@
 hs_bindgen_172686d1676cd710
   :: BG.Ptr SDL_SpinLock
   -> IO BG.CBool
 hs_bindgen_172686d1676cd710 =
-  BG.fromFFIType hs_bindgen_172686d1676cd710_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_172686d1676cd710_base (BG.toFFIType x0))
 
 -- | Try to lock a spin lock by setting it to a non-zero value.
 --
@@ -188,7 +195,8 @@ hs_bindgen_24dd21497804fb35
   :: BG.Ptr SDL_SpinLock
   -> IO ()
 hs_bindgen_24dd21497804fb35 =
-  BG.fromFFIType hs_bindgen_24dd21497804fb35_base
+  \x0 ->
+    hs_bindgen_24dd21497804fb35_base (BG.toFFIType x0)
 
 -- | Lock a spin lock by setting it to a non-zero value.
 --
@@ -220,7 +228,8 @@ hs_bindgen_db995a2e290168e8
   :: BG.Ptr SDL_SpinLock
   -> IO ()
 hs_bindgen_db995a2e290168e8 =
-  BG.fromFFIType hs_bindgen_db995a2e290168e8_base
+  \x0 ->
+    hs_bindgen_db995a2e290168e8_base (BG.toFFIType x0)
 
 -- | Unlock a spin lock by setting it to 0.
 --
@@ -251,7 +260,7 @@ foreign import ccall safe "hs_bindgen_242899706a6f2e17"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_Safe_SDL_MemoryBarrierReleaseFunction@
 hs_bindgen_242899706a6f2e17 :: IO ()
 hs_bindgen_242899706a6f2e17 =
-  BG.fromFFIType hs_bindgen_242899706a6f2e17_base
+  hs_bindgen_242899706a6f2e17_base
 
 -- | Insert a memory release barrier (function version).
 --
@@ -276,7 +285,7 @@ foreign import ccall safe "hs_bindgen_4e0cd51f93ed2a72"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_Safe_SDL_MemoryBarrierAcquireFunction@
 hs_bindgen_4e0cd51f93ed2a72 :: IO ()
 hs_bindgen_4e0cd51f93ed2a72 =
-  BG.fromFFIType hs_bindgen_4e0cd51f93ed2a72_base
+  hs_bindgen_4e0cd51f93ed2a72_base
 
 -- | Insert a memory acquire barrier (function version).
 --
@@ -297,9 +306,9 @@ sDL_MemoryBarrierAcquireFunction =
 foreign import ccall safe "hs_bindgen_e3e24329b42ecc89"
   hs_bindgen_e3e24329b42ecc89_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_Safe_SDL_CompareAndSwapAtomicInt@
 hs_bindgen_e3e24329b42ecc89
@@ -308,7 +317,12 @@ hs_bindgen_e3e24329b42ecc89
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_e3e24329b42ecc89 =
-  BG.fromFFIType hs_bindgen_e3e24329b42ecc89_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_e3e24329b42ecc89_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set an atomic variable to a new value if it is currently an old value.
 --
@@ -344,8 +358,8 @@ sDL_CompareAndSwapAtomicInt =
 foreign import ccall safe "hs_bindgen_0b591b00447451f3"
   hs_bindgen_0b591b00447451f3_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Int32
+    -> BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_Safe_SDL_SetAtomicInt@
 hs_bindgen_0b591b00447451f3
@@ -353,7 +367,9 @@ hs_bindgen_0b591b00447451f3
   -> BG.CInt
   -> IO BG.CInt
 hs_bindgen_0b591b00447451f3 =
-  BG.fromFFIType hs_bindgen_0b591b00447451f3_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_0b591b00447451f3_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set an atomic variable to a value.
 --
@@ -386,14 +402,15 @@ sDL_SetAtomicInt = hs_bindgen_0b591b00447451f3
 foreign import ccall safe "hs_bindgen_a79c0e141e6af2a9"
   hs_bindgen_a79c0e141e6af2a9_base
     :: BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_Safe_SDL_GetAtomicInt@
 hs_bindgen_a79c0e141e6af2a9
   :: BG.Ptr SDL_AtomicInt
   -> IO BG.CInt
 hs_bindgen_a79c0e141e6af2a9 =
-  BG.fromFFIType hs_bindgen_a79c0e141e6af2a9_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_a79c0e141e6af2a9_base (BG.toFFIType x0))
 
 -- | Get the value of an atomic variable.
 --
@@ -420,8 +437,8 @@ sDL_GetAtomicInt = hs_bindgen_a79c0e141e6af2a9
 foreign import ccall safe "hs_bindgen_8436b21863a9d6bb"
   hs_bindgen_8436b21863a9d6bb_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Int32
+    -> BG.CInt
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_Safe_SDL_AddAtomicInt@
 hs_bindgen_8436b21863a9d6bb
@@ -429,7 +446,9 @@ hs_bindgen_8436b21863a9d6bb
   -> BG.CInt
   -> IO BG.CInt
 hs_bindgen_8436b21863a9d6bb =
-  BG.fromFFIType hs_bindgen_8436b21863a9d6bb_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_8436b21863a9d6bb_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Add to an atomic variable.
 --
@@ -462,9 +481,9 @@ sDL_AddAtomicInt = hs_bindgen_8436b21863a9d6bb
 foreign import ccall safe "hs_bindgen_935e1a8a131d0775"
   hs_bindgen_935e1a8a131d0775_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_Safe_SDL_CompareAndSwapAtomicU32@
 hs_bindgen_935e1a8a131d0775
@@ -473,7 +492,12 @@ hs_bindgen_935e1a8a131d0775
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_935e1a8a131d0775 =
-  BG.fromFFIType hs_bindgen_935e1a8a131d0775_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_935e1a8a131d0775_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set an atomic variable to a new value if it is currently an old value.
 --
@@ -509,8 +533,8 @@ sDL_CompareAndSwapAtomicU32 =
 foreign import ccall safe "hs_bindgen_14474ef0e01d438d"
   hs_bindgen_14474ef0e01d438d_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_Safe_SDL_SetAtomicU32@
 hs_bindgen_14474ef0e01d438d
@@ -518,7 +542,9 @@ hs_bindgen_14474ef0e01d438d
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint32
 hs_bindgen_14474ef0e01d438d =
-  BG.fromFFIType hs_bindgen_14474ef0e01d438d_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_14474ef0e01d438d_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set an atomic variable to a value.
 --
@@ -551,14 +577,15 @@ sDL_SetAtomicU32 = hs_bindgen_14474ef0e01d438d
 foreign import ccall safe "hs_bindgen_141a90ab67d079cd"
   hs_bindgen_141a90ab67d079cd_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_Safe_SDL_GetAtomicU32@
 hs_bindgen_141a90ab67d079cd
   :: BG.Ptr SDL_AtomicU32
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint32
 hs_bindgen_141a90ab67d079cd =
-  BG.fromFFIType hs_bindgen_141a90ab67d079cd_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_141a90ab67d079cd_base (BG.toFFIType x0))
 
 -- | Get the value of an atomic variable.
 --
@@ -585,8 +612,8 @@ sDL_GetAtomicU32 = hs_bindgen_141a90ab67d079cd
 foreign import ccall safe "hs_bindgen_a1640976428ead6d"
   hs_bindgen_a1640976428ead6d_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word32
+    -> BG.CInt
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_Safe_SDL_AddAtomicU32@
 hs_bindgen_a1640976428ead6d
@@ -594,7 +621,9 @@ hs_bindgen_a1640976428ead6d
   -> BG.CInt
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint32
 hs_bindgen_a1640976428ead6d =
-  BG.fromFFIType hs_bindgen_a1640976428ead6d_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_a1640976428ead6d_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Add to an atomic variable.
 --
@@ -627,7 +656,7 @@ foreign import ccall safe "hs_bindgen_7fbbd1e4574eb707"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Atomic_Safe_SDL_CompareAndSwapAtomicPointer@
 hs_bindgen_7fbbd1e4574eb707
@@ -636,7 +665,12 @@ hs_bindgen_7fbbd1e4574eb707
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_7fbbd1e4574eb707 =
-  BG.fromFFIType hs_bindgen_7fbbd1e4574eb707_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_7fbbd1e4574eb707_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set a pointer to a new value if it is currently an old value.
 --
@@ -681,7 +715,9 @@ hs_bindgen_169f34ca098fd557
   -> BG.Ptr BG.Void
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_169f34ca098fd557 =
-  BG.fromFFIType hs_bindgen_169f34ca098fd557_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_169f34ca098fd557_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set a pointer to a value atomically.
 --
@@ -719,7 +755,8 @@ hs_bindgen_330ea044308fd995
   :: BG.Ptr (BG.Ptr BG.Void)
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_330ea044308fd995 =
-  BG.fromFFIType hs_bindgen_330ea044308fd995_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_330ea044308fd995_base (BG.toFFIType x0))
 
 -- | Get the value of a pointer atomically.
 --

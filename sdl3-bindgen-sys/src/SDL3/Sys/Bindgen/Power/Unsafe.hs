@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Power.Unsafe (
@@ -7,13 +9,16 @@ module SDL3.Sys.Bindgen.Power.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Power
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_power.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_power.h>"
          , "SDL_PowerState hs_bindgen_abe28022c5038f4a ("
          , "  signed int *arg1,"
          , "  signed int *arg2"
@@ -30,7 +35,7 @@ foreign import ccall unsafe "hs_bindgen_abe28022c5038f4a"
   hs_bindgen_abe28022c5038f4a_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Power_Unsafe_SDL_GetPowerInfo@
 hs_bindgen_abe28022c5038f4a
@@ -38,7 +43,9 @@ hs_bindgen_abe28022c5038f4a
   -> BG.Ptr BG.CInt
   -> IO SDL_PowerState
 hs_bindgen_abe28022c5038f4a =
-  BG.fromFFIType hs_bindgen_abe28022c5038f4a_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_abe28022c5038f4a_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the current power supply details.
 --

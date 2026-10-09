@@ -36,6 +36,8 @@
   wrapper returns below its gate (default `0`; the parameters are
   `arg1`…`argN`). A `stub-return` on a decl no header gates, or on a void
   function, is an error.
+- Runtime facades (`<namespace>.Bindgen.Runtime.*`) for the four modules
+  hs-bindgen-runtime 1.0 adds: `HasFFIType`, `Macro`, `Overloading`, `Struct`.
 
 ### Changed
 
@@ -55,6 +57,16 @@
   `data/sdl3/static/LICENSE_SDL`).
 - Manifests record the library version as `libraryVersion` (was
   `sdlVersion`).
+- hs-bindgen is upgraded to 1.0.0.0 (fork branch `lithon/vendor-patches-2`),
+  and `sdl3-bindgen-sys` and `mpv-bindgen-sys` are regenerated with it. The
+  vendored runtime's `template-haskell` bound is `>=2.19`.
+- Target defines are root directives, emitted ahead of the includes, instead
+  of `-D` flags. 1.0 renders them at the top of every wrapper translation
+  unit, so `SDL_MAIN_HANDLED` already precedes `<SDL3/SDL_main.h>`; this
+  retires the `SDL_main.h` text shim.
+- The include graph's paths are canonical real paths, not source paths.
+- lithon-codegen no longer depends on doxygen-parser directly; doxygen
+  sections are read through `Lithon.HsBindgen.C`.
 
 ## 0.1.1.0 - 2026-07-30
 

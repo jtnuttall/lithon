@@ -7,6 +7,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -18,6 +19,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module Mpv.Sys.Bindgen.Render (
   Mpv.Sys.Bindgen.Render.Mpv_render_context,
@@ -59,10 +61,13 @@ module Mpv.Sys.Bindgen.Render (
 )
 where
 
+import Prelude (Eq, IO, Int, Ord, Read, Show, fmap, pure, (<*>), (>>), type (~))
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 
@@ -479,6 +484,9 @@ instance Marshal.WriteRaw Mpv_render_param where
 
 deriving via Marshal.EquivStorable Mpv_render_param instance BG.Storable Mpv_render_param
 
+deriving via Struct.IsStructViaReadRaw Mpv_render_param instance Struct.IsStruct Mpv_render_param
+
+-- | [C declaration]: @type@, defined at @mpv\/render.h 459:32@
 instance
   (ty ~ Mpv_render_param_type)
   => BG.CompatHasField.HasField "type'" Mpv_render_param ty
@@ -503,6 +511,7 @@ instance HasCField.HasCField Mpv_render_param "type'" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @data@, defined at @mpv\/render.h 460:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "data'" Mpv_render_param ty
@@ -705,6 +714,14 @@ instance Marshal.WriteRaw Mpv_render_frame_info where
 
 deriving via Marshal.EquivStorable Mpv_render_frame_info instance BG.Storable Mpv_render_frame_info
 
+deriving via
+  Struct.IsStructViaReadRaw Mpv_render_frame_info
+  instance
+    Struct.IsStruct Mpv_render_frame_info
+
+-- | A bitset of 'Mpv_render_frame_info_flag' values (i.e. multiple flags are combined with bitwise or).
+--
+--     [C declaration]: @flags@, defined at @mpv\/render.h 530:14@
 instance
   (ty ~ HsBindgen.Runtime.LibC.Word64)
   => BG.CompatHasField.HasField "flags" Mpv_render_frame_info ty
@@ -729,6 +746,9 @@ instance HasCField.HasCField Mpv_render_frame_info "flags" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Absolute time at which the frame is supposed to be displayed. This is in the same unit and base as the time returned by mpv_get_time_us(). For frames that are redrawn, or if vsync locked video timing is used (see \"video-sync\" option), then this can be 0. The \"video-timing-offset\" option determines how much \"headroom\" the render thread gets (but a high enough frame rate can reduce it anyway). @mpv_render_context_render()@ will normally block until the time is elapsed, unless you pass it MPV_RENDER_PARAM_BLOCK_FOR_TARGET_TIME = 0.
+--
+--     [C declaration]: @target_time@, defined at @mpv\/render.h 541:13@
 instance
   (ty ~ HsBindgen.Runtime.LibC.Int64)
   => BG.CompatHasField.HasField "target_time" Mpv_render_frame_info ty
@@ -761,7 +781,6 @@ newtype Mpv_render_update_fn_Aux = Mpv_render_update_fn_Aux
   { unwrap :: BG.Ptr BG.Void -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toMpv_render_update_fn_Aux@
 foreign import ccall safe "wrapper"
@@ -775,7 +794,13 @@ hs_bindgen_cb89ea8b25ac266d
   -> IO (BG.FunPtr Mpv_render_update_fn_Aux)
 hs_bindgen_cb89ea8b25ac266d =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_cb89ea8b25ac266d_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_cb89ea8b25ac266d_base
+          ( \x1 ->
+              BG.getField @"unwrap" fun0 (BG.fromFFIType x1)
+          )
+      )
 
 -- __unique:__ @fromMpv_render_update_fn_Aux@
 foreign import ccall safe "dynamic"
@@ -790,7 +815,10 @@ hs_bindgen_ab3ba437b898317b
   -> Mpv_render_update_fn_Aux
 hs_bindgen_ab3ba437b898317b =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_ab3ba437b898317b_base (BG.castFunPtrToFFIType funPtr0))
+    Mpv_render_update_fn_Aux
+      ( \x1 ->
+          hs_bindgen_ab3ba437b898317b_base (BG.castFunPtr funPtr0) (BG.toFFIType x1)
+      )
 
 instance BG.ToFunPtr Mpv_render_update_fn_Aux where
   toFunPtr = hs_bindgen_cb89ea8b25ac266d

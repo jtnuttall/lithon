@@ -18,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Header file for SDL HIDAPI functions.
 --
@@ -53,10 +54,13 @@ module SDL3.Sys.Bindgen.Hidapi (
 )
 where
 
+import Prelude (Eq, Int, Ord, Read, Show, pure, (<*>), (>>), type (~))
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 
@@ -322,6 +326,14 @@ instance Marshal.WriteRaw SDL_hid_device_info where
 
 deriving via Marshal.EquivStorable SDL_hid_device_info instance BG.Storable SDL_hid_device_info
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_hid_device_info
+  instance
+    Struct.IsStruct SDL_hid_device_info
+
+-- | Platform-specific device path
+--
+--     [C declaration]: @path@, defined at @SDL3\/SDL_hidapi.h 116:11@
 instance
   (ty ~ BG.Ptr BG.CChar)
   => BG.CompatHasField.HasField "path" SDL_hid_device_info ty
@@ -362,6 +374,9 @@ instance HasCField.HasCField SDL_hid_device_info "path" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Device Vendor ID
+--
+--     [C declaration]: @vendor_id@, defined at @SDL3\/SDL_hidapi.h 118:20@
 instance
   (ty ~ BG.CUShort)
   => BG.CompatHasField.HasField "vendor_id" SDL_hid_device_info ty
@@ -402,6 +417,9 @@ instance HasCField.HasCField SDL_hid_device_info "vendor_id" where
 
   offset# = \_ -> \_ -> 8
 
+-- | Device Product ID
+--
+--     [C declaration]: @product_id@, defined at @SDL3\/SDL_hidapi.h 120:20@
 instance
   (ty ~ BG.CUShort)
   => BG.CompatHasField.HasField "product_id" SDL_hid_device_info ty
@@ -442,6 +460,9 @@ instance HasCField.HasCField SDL_hid_device_info "product_id" where
 
   offset# = \_ -> \_ -> 10
 
+-- | Serial Number
+--
+--     [C declaration]: @serial_number@, defined at @SDL3\/SDL_hidapi.h 122:14@
 instance
   (ty ~ BG.Ptr HsBindgen.Runtime.LibC.CWchar)
   => BG.CompatHasField.HasField "serial_number" SDL_hid_device_info ty
@@ -483,6 +504,9 @@ instance HasCField.HasCField SDL_hid_device_info "serial_number" where
 
   offset# = \_ -> \_ -> 16
 
+-- | Device Release Number in binary-coded decimal, also known as Device Version Number
+--
+--     [C declaration]: @release_number@, defined at @SDL3\/SDL_hidapi.h 125:20@
 instance
   (ty ~ BG.CUShort)
   => BG.CompatHasField.HasField "release_number" SDL_hid_device_info ty
@@ -524,6 +548,9 @@ instance HasCField.HasCField SDL_hid_device_info "release_number" where
 
   offset# = \_ -> \_ -> 24
 
+-- | Manufacturer String
+--
+--     [C declaration]: @manufacturer_string@, defined at @SDL3\/SDL_hidapi.h 127:14@
 instance
   (ty ~ BG.Ptr HsBindgen.Runtime.LibC.CWchar)
   => BG.CompatHasField.HasField "manufacturer_string" SDL_hid_device_info ty
@@ -565,6 +592,9 @@ instance HasCField.HasCField SDL_hid_device_info "manufacturer_string" where
 
   offset# = \_ -> \_ -> 32
 
+-- | Product string
+--
+--     [C declaration]: @product_string@, defined at @SDL3\/SDL_hidapi.h 129:14@
 instance
   (ty ~ BG.Ptr HsBindgen.Runtime.LibC.CWchar)
   => BG.CompatHasField.HasField "product_string" SDL_hid_device_info ty
@@ -606,6 +636,9 @@ instance HasCField.HasCField SDL_hid_device_info "product_string" where
 
   offset# = \_ -> \_ -> 40
 
+-- | Usage Page for this Device\/Interface (Windows\/Mac\/hidraw only)
+--
+--     [C declaration]: @usage_page@, defined at @SDL3\/SDL_hidapi.h 132:20@
 instance
   (ty ~ BG.CUShort)
   => BG.CompatHasField.HasField "usage_page" SDL_hid_device_info ty
@@ -646,6 +679,9 @@ instance HasCField.HasCField SDL_hid_device_info "usage_page" where
 
   offset# = \_ -> \_ -> 48
 
+-- | Usage for this Device\/Interface (Windows\/Mac\/hidraw only)
+--
+--     [C declaration]: @usage@, defined at @SDL3\/SDL_hidapi.h 135:20@
 instance
   (ty ~ BG.CUShort)
   => BG.CompatHasField.HasField "usage" SDL_hid_device_info ty
@@ -686,6 +722,11 @@ instance HasCField.HasCField SDL_hid_device_info "usage" where
 
   offset# = \_ -> \_ -> 50
 
+-- | The USB interface which this logical device represents.
+--
+--     Valid only if the device is a USB HID device. Set to -1 in all other cases.
+--
+--     [C declaration]: @interface_number@, defined at @SDL3\/SDL_hidapi.h 142:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "interface_number" SDL_hid_device_info ty
@@ -727,6 +768,9 @@ instance HasCField.HasCField SDL_hid_device_info "interface_number" where
 
   offset# = \_ -> \_ -> 52
 
+-- | Additional information about the USB interface. Valid on libusb and Android implementations.
+--
+--     [C declaration]: @interface_class@, defined at @SDL3\/SDL_hidapi.h 146:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "interface_class" SDL_hid_device_info ty
@@ -768,6 +812,7 @@ instance HasCField.HasCField SDL_hid_device_info "interface_class" where
 
   offset# = \_ -> \_ -> 56
 
+-- | [C declaration]: @interface_subclass@, defined at @SDL3\/SDL_hidapi.h 147:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "interface_subclass" SDL_hid_device_info ty
@@ -809,6 +854,7 @@ instance HasCField.HasCField SDL_hid_device_info "interface_subclass" where
 
   offset# = \_ -> \_ -> 60
 
+-- | [C declaration]: @interface_protocol@, defined at @SDL3\/SDL_hidapi.h 148:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "interface_protocol" SDL_hid_device_info ty
@@ -850,6 +896,9 @@ instance HasCField.HasCField SDL_hid_device_info "interface_protocol" where
 
   offset# = \_ -> \_ -> 64
 
+-- | Underlying bus type
+--
+--     [C declaration]: @bus_type@, defined at @SDL3\/SDL_hidapi.h 151:22@
 instance
   (ty ~ SDL_hid_bus_type)
   => BG.CompatHasField.HasField "bus_type" SDL_hid_device_info ty
@@ -890,6 +939,9 @@ instance HasCField.HasCField SDL_hid_device_info "bus_type" where
 
   offset# = \_ -> \_ -> 68
 
+-- | Pointer to the next device
+--
+--     [C declaration]: @next@, defined at @SDL3\/SDL_hidapi.h 154:33@
 instance
   (ty ~ BG.Ptr SDL_hid_device_info)
   => BG.CompatHasField.HasField "next" SDL_hid_device_info ty

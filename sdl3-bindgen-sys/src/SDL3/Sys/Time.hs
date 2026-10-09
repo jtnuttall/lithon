@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL realtime clock and date\/time routines.
 --
 --     There are two data types that are used in this category: SDL_Time, which represents the nanoseconds since a specific moment (an \"epoch\"), and 'SDL_DateTime', which breaks time down into human-understandable components: years, months, days, hours, etc.
@@ -37,6 +39,7 @@ module SDL3.Sys.Time (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

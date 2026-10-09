@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Bits.FunPtr (
@@ -8,13 +10,16 @@ module SDL3.Sys.Bindgen.Bits.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_bits.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_bits.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Bits_get_SDL_MostSignificantBitIndex32 */"
          , "__attribute__ ((const))"
          , "signed int (*hs_bindgen_ef0d609239e2f97c (void)) ("
@@ -43,7 +48,7 @@ foreign import ccall unsafe "hs_bindgen_ef0d609239e2f97c"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Bits_get_SDL_MostSignificantBitIndex32@
 hs_bindgen_ef0d609239e2f97c :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO BG.CInt))
 hs_bindgen_ef0d609239e2f97c =
-  BG.fromFFIType hs_bindgen_ef0d609239e2f97c_base
+  fmap BG.fromFFIType hs_bindgen_ef0d609239e2f97c_base
 
 {-# NOINLINE sDL_MostSignificantBitIndex32 #-}
 
@@ -60,7 +65,7 @@ foreign import ccall unsafe "hs_bindgen_424cf674227955df"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Bits_get_SDL_HasExactlyOneBitSet32@
 hs_bindgen_424cf674227955df :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO BG.CBool))
 hs_bindgen_424cf674227955df =
-  BG.fromFFIType hs_bindgen_424cf674227955df_base
+  fmap BG.fromFFIType hs_bindgen_424cf674227955df_base
 
 {-# NOINLINE sDL_HasExactlyOneBitSet32 #-}
 

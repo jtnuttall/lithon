@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Time.FunPtr (
@@ -15,6 +17,8 @@ module SDL3.Sys.Bindgen.Time.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -23,7 +27,8 @@ import SDL3.Sys.Bindgen.Time
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_time.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_time.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Time_get_SDL_GetDateTimeLocalePreferences */"
          , "__attribute__ ((const))"
          , "_Bool (*hs_bindgen_652b921a3c9bf987 (void)) ("
@@ -121,7 +126,7 @@ foreign import ccall unsafe "hs_bindgen_652b921a3c9bf987"
 hs_bindgen_652b921a3c9bf987
   :: IO (BG.FunPtr (BG.Ptr SDL_DateFormat -> BG.Ptr SDL_TimeFormat -> IO BG.CBool))
 hs_bindgen_652b921a3c9bf987 =
-  BG.fromFFIType hs_bindgen_652b921a3c9bf987_base
+  fmap BG.fromFFIType hs_bindgen_652b921a3c9bf987_base
 
 {-# NOINLINE sDL_GetDateTimeLocalePreferences #-}
 
@@ -154,7 +159,7 @@ foreign import ccall unsafe "hs_bindgen_2e0928febd227948"
 hs_bindgen_2e0928febd227948
   :: IO (BG.FunPtr (BG.Ptr SDL3.Sys.Bindgen.Stdinc.SDL_Time -> IO BG.CBool))
 hs_bindgen_2e0928febd227948 =
-  BG.fromFFIType hs_bindgen_2e0928febd227948_base
+  fmap BG.fromFFIType hs_bindgen_2e0928febd227948_base
 
 {-# NOINLINE sDL_GetCurrentTime #-}
 
@@ -182,7 +187,7 @@ foreign import ccall unsafe "hs_bindgen_ccc14802da98ebc1"
 hs_bindgen_ccc14802da98ebc1
   :: IO (BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.SDL_Time -> BG.Ptr SDL_DateTime -> BG.CBool -> IO BG.CBool))
 hs_bindgen_ccc14802da98ebc1 =
-  BG.fromFFIType hs_bindgen_ccc14802da98ebc1_base
+  fmap BG.fromFFIType hs_bindgen_ccc14802da98ebc1_base
 
 {-# NOINLINE sDL_TimeToDateTime #-}
 
@@ -216,7 +221,7 @@ hs_bindgen_6a3b281635772606
   :: IO
        (BG.FunPtr (PtrConst.PtrConst SDL_DateTime -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.SDL_Time -> IO BG.CBool))
 hs_bindgen_6a3b281635772606 =
-  BG.fromFFIType hs_bindgen_6a3b281635772606_base
+  fmap BG.fromFFIType hs_bindgen_6a3b281635772606_base
 
 {-# NOINLINE sDL_DateTimeToTime #-}
 
@@ -256,7 +261,7 @@ hs_bindgen_06ec16aebabe56e2
            )
        )
 hs_bindgen_06ec16aebabe56e2 =
-  BG.fromFFIType hs_bindgen_06ec16aebabe56e2_base
+  fmap BG.fromFFIType hs_bindgen_06ec16aebabe56e2_base
 
 {-# NOINLINE sDL_TimeToWindows #-}
 
@@ -300,7 +305,7 @@ hs_bindgen_c98ae78917a45694
            )
        )
 hs_bindgen_c98ae78917a45694 =
-  BG.fromFFIType hs_bindgen_c98ae78917a45694_base
+  fmap BG.fromFFIType hs_bindgen_c98ae78917a45694_base
 
 {-# NOINLINE sDL_TimeFromWindows #-}
 
@@ -336,7 +341,7 @@ foreign import ccall unsafe "hs_bindgen_53993d062e70ae21"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_get_SDL_GetDaysInMonth@
 hs_bindgen_53993d062e70ae21 :: IO (BG.FunPtr (BG.CInt -> BG.CInt -> IO BG.CInt))
 hs_bindgen_53993d062e70ae21 =
-  BG.fromFFIType hs_bindgen_53993d062e70ae21_base
+  fmap BG.fromFFIType hs_bindgen_53993d062e70ae21_base
 
 {-# NOINLINE sDL_GetDaysInMonth #-}
 
@@ -365,7 +370,7 @@ foreign import ccall unsafe "hs_bindgen_040f71197ea113df"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_get_SDL_GetDayOfYear@
 hs_bindgen_040f71197ea113df :: IO (BG.FunPtr (BG.CInt -> BG.CInt -> BG.CInt -> IO BG.CInt))
 hs_bindgen_040f71197ea113df =
-  BG.fromFFIType hs_bindgen_040f71197ea113df_base
+  fmap BG.fromFFIType hs_bindgen_040f71197ea113df_base
 
 {-# NOINLINE sDL_GetDayOfYear #-}
 
@@ -396,7 +401,7 @@ foreign import ccall unsafe "hs_bindgen_6d1532a314d875ae"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Time_get_SDL_GetDayOfWeek@
 hs_bindgen_6d1532a314d875ae :: IO (BG.FunPtr (BG.CInt -> BG.CInt -> BG.CInt -> IO BG.CInt))
 hs_bindgen_6d1532a314d875ae =
-  BG.fromFFIType hs_bindgen_6d1532a314d875ae_base
+  fmap BG.fromFFIType hs_bindgen_6d1532a314d875ae_base
 
 {-# NOINLINE sDL_GetDayOfWeek #-}
 

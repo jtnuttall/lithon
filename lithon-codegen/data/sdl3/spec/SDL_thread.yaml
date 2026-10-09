@@ -1,5 +1,5 @@
 version:
-  hs_bindgen: 0.1.0
+  hs_bindgen: 1.0.0.0
   binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Thread
 ctypes:
@@ -63,6 +63,9 @@ hstypes:
         constructor: SDL_TLSDestructorCallback
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -103,6 +106,9 @@ hstypes:
         constructor: SDL_ThreadFunction
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
     instances:
       - Eq
       - Generic
@@ -123,6 +129,9 @@ hstypes:
         constructor: SDL_ThreadID
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word64
     instances:
       - Bitfield
       - Bits
@@ -154,6 +163,9 @@ hstypes:
         constructor: SDL_ThreadPriority
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq
@@ -178,6 +190,9 @@ hstypes:
         constructor: SDL_ThreadState
         fields:
           - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
     instances:
       - CEnum
       - Eq

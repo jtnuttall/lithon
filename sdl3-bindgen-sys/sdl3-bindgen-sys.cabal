@@ -4,7 +4,7 @@ cabal-version: 2.2
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: "X\240\179\139\175\224\139\FS\230\&6\158\CAN\n\183\137\239\SI\133b~\t\226\ng\228u\210\209\245\"Bw"
+-- hash: "x\137\GS\243b\192\175>Dd\239bw\180iz\FS\209>P\140*}MjA\STX\a\253\130\251\132"
 
 name:           sdl3-bindgen-sys
 version:        0.0.0.3
@@ -268,10 +268,14 @@ library
       SDL3.Sys.Bindgen.Runtime.FLAM
       SDL3.Sys.Bindgen.Runtime.HasCBitfield
       SDL3.Sys.Bindgen.Runtime.HasCField
+      SDL3.Sys.Bindgen.Runtime.HasFFIType
       SDL3.Sys.Bindgen.Runtime.IncompleteArray
       SDL3.Sys.Bindgen.Runtime.IsArray
+      SDL3.Sys.Bindgen.Runtime.Macro
       SDL3.Sys.Bindgen.Runtime.Marshal
+      SDL3.Sys.Bindgen.Runtime.Overloading
       SDL3.Sys.Bindgen.Runtime.PtrConst
+      SDL3.Sys.Bindgen.Runtime.Struct
       SDL3.Sys.Bindgen.Runtime.Union
       SDL3.Sys.Bindgen.Scancode
       SDL3.Sys.Bindgen.Sensor
@@ -421,21 +425,23 @@ library bindgen-runtime
       HsBindgen.Runtime.FLAM
       HsBindgen.Runtime.HasCBitfield
       HsBindgen.Runtime.HasCField
+      HsBindgen.Runtime.HasFFIType
       HsBindgen.Runtime.IncompleteArray
       HsBindgen.Runtime.IsArray
       HsBindgen.Runtime.LibC
+      HsBindgen.Runtime.Macro
       HsBindgen.Runtime.Marshal
+      HsBindgen.Runtime.Overloading
       HsBindgen.Runtime.Prelude
       HsBindgen.Runtime.PtrConst
+      HsBindgen.Runtime.Struct
       HsBindgen.Runtime.Support
       HsBindgen.Runtime.Support.Bitfield
       HsBindgen.Runtime.Support.ByteArray
       HsBindgen.Runtime.Support.CAPI
       HsBindgen.Runtime.Support.CompatHasField
-      HsBindgen.Runtime.Support.FFIType
       HsBindgen.Runtime.Support.FunPtr
       HsBindgen.Runtime.Support.FunPtr.Class
-      HsBindgen.Runtime.Support.HasFFIType
       HsBindgen.Runtime.Support.LibC.Auxiliary
       HsBindgen.Runtime.Support.Ptr
       HsBindgen.Runtime.Support.SizedByteArray
@@ -471,7 +477,7 @@ library bindgen-runtime
     , containers >=0.6 && <0.9
     , primitive ==0.9.*
     , record-hasfield >=1.0 && <2
-    , template-haskell >=2.18 && <2.25
+    , template-haskell >=2.19 && <2.25
     , vector ==0.13.*
   default-language: GHC2021
   if flag(optimize)

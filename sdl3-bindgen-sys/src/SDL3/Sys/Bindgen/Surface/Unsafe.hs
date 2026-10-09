@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Surface.Unsafe (
@@ -71,7 +73,11 @@ module SDL3.Sys.Bindgen.Surface.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Support qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Blendmode qualified
@@ -84,7 +90,8 @@ import SDL3.Sys.Bindgen.Surface
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_surface.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_surface.h>"
          , "SDL_Surface *hs_bindgen_168e356f6cfde2ca ("
          , "  signed int arg1,"
          , "  signed int arg2,"
@@ -677,9 +684,9 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_CreateSurface@
 foreign import ccall unsafe "hs_bindgen_168e356f6cfde2ca"
   hs_bindgen_168e356f6cfde2ca_base
-    :: BG.Int32
-    -> BG.Int32
-    -> BG.Word32
+    :: BG.CInt
+    -> BG.CInt
+    -> HsBindgen.Runtime.Support.CUInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_CreateSurface@
@@ -689,7 +696,12 @@ hs_bindgen_168e356f6cfde2ca
   -> SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
   -> IO (BG.Ptr SDL_Surface)
 hs_bindgen_168e356f6cfde2ca =
-  BG.fromFFIType hs_bindgen_168e356f6cfde2ca_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_168e356f6cfde2ca_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Allocate a new surface with a specific pixel format.
 --
@@ -723,11 +735,11 @@ sDL_CreateSurface = hs_bindgen_168e356f6cfde2ca
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_CreateSurfaceFrom@
 foreign import ccall unsafe "hs_bindgen_19204ffb79c10370"
   hs_bindgen_19204ffb79c10370_base
-    :: BG.Int32
-    -> BG.Int32
-    -> BG.Word32
+    :: BG.CInt
+    -> BG.CInt
+    -> HsBindgen.Runtime.Support.CUInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_CreateSurfaceFrom@
@@ -739,7 +751,20 @@ hs_bindgen_19204ffb79c10370
   -> BG.CInt
   -> IO (BG.Ptr SDL_Surface)
 hs_bindgen_19204ffb79c10370 =
-  BG.fromFFIType hs_bindgen_19204ffb79c10370_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_19204ffb79c10370_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Allocate a new surface with a specific pixel format and existing pixel data.
 --
@@ -793,7 +818,8 @@ hs_bindgen_173baf44c4ee5552
   :: BG.Ptr SDL_Surface
   -> IO ()
 hs_bindgen_173baf44c4ee5552 =
-  BG.fromFFIType hs_bindgen_173baf44c4ee5552_base
+  \x0 ->
+    hs_bindgen_173baf44c4ee5552_base (BG.toFFIType x0)
 
 -- | Free a surface.
 --
@@ -818,14 +844,15 @@ sDL_DestroySurface = hs_bindgen_173baf44c4ee5552
 foreign import ccall unsafe "hs_bindgen_104a480f6f0ca65f"
   hs_bindgen_104a480f6f0ca65f_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_GetSurfaceProperties@
 hs_bindgen_104a480f6f0ca65f
   :: BG.Ptr SDL_Surface
   -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
 hs_bindgen_104a480f6f0ca65f =
-  BG.fromFFIType hs_bindgen_104a480f6f0ca65f_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_104a480f6f0ca65f_base (BG.toFFIType x0))
 
 -- | Get the properties associated with a surface.
 --
@@ -864,8 +891,8 @@ sDL_GetSurfaceProperties =
 foreign import ccall unsafe "hs_bindgen_0511900fd59c0e54"
   hs_bindgen_0511900fd59c0e54_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.Support.CUInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SetSurfaceColorspace@
 hs_bindgen_0511900fd59c0e54
@@ -873,7 +900,9 @@ hs_bindgen_0511900fd59c0e54
   -> SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
   -> IO BG.CBool
 hs_bindgen_0511900fd59c0e54 =
-  BG.fromFFIType hs_bindgen_0511900fd59c0e54_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_0511900fd59c0e54_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the colorspace used by a surface.
 --
@@ -905,14 +934,15 @@ sDL_SetSurfaceColorspace =
 foreign import ccall unsafe "hs_bindgen_e144267d4a5dc8c1"
   hs_bindgen_e144267d4a5dc8c1_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO HsBindgen.Runtime.Support.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_GetSurfaceColorspace@
 hs_bindgen_e144267d4a5dc8c1
   :: BG.Ptr SDL_Surface
   -> IO SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
 hs_bindgen_e144267d4a5dc8c1 =
-  BG.fromFFIType hs_bindgen_e144267d4a5dc8c1_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_e144267d4a5dc8c1_base (BG.toFFIType x0))
 
 -- | Get the colorspace used by a surface.
 --
@@ -947,7 +977,8 @@ hs_bindgen_518323a2443a645c
   :: BG.Ptr SDL_Surface
   -> IO (BG.Ptr SDL3.Sys.Bindgen.Pixels.SDL_Palette)
 hs_bindgen_518323a2443a645c =
-  BG.fromFFIType hs_bindgen_518323a2443a645c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_518323a2443a645c_base (BG.toFFIType x0))
 
 -- | Create a palette and associate it with a surface.
 --
@@ -980,7 +1011,7 @@ foreign import ccall unsafe "hs_bindgen_6cb3893d72b38425"
   hs_bindgen_6cb3893d72b38425_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SetSurfacePalette@
 hs_bindgen_6cb3893d72b38425
@@ -988,7 +1019,9 @@ hs_bindgen_6cb3893d72b38425
   -> BG.Ptr SDL3.Sys.Bindgen.Pixels.SDL_Palette
   -> IO BG.CBool
 hs_bindgen_6cb3893d72b38425 =
-  BG.fromFFIType hs_bindgen_6cb3893d72b38425_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_6cb3893d72b38425_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the palette used by a surface.
 --
@@ -1028,7 +1061,8 @@ hs_bindgen_c36a6adcce04e3d9
   :: BG.Ptr SDL_Surface
   -> IO (BG.Ptr SDL3.Sys.Bindgen.Pixels.SDL_Palette)
 hs_bindgen_c36a6adcce04e3d9 =
-  BG.fromFFIType hs_bindgen_c36a6adcce04e3d9_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c36a6adcce04e3d9_base (BG.toFFIType x0))
 
 -- | Get the palette used by a surface.
 --
@@ -1054,7 +1088,7 @@ foreign import ccall unsafe "hs_bindgen_36366ea481866b40"
   hs_bindgen_36366ea481866b40_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_AddSurfaceAlternateImage@
 hs_bindgen_36366ea481866b40
@@ -1062,7 +1096,9 @@ hs_bindgen_36366ea481866b40
   -> BG.Ptr SDL_Surface
   -> IO BG.CBool
 hs_bindgen_36366ea481866b40 =
-  BG.fromFFIType hs_bindgen_36366ea481866b40_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_36366ea481866b40_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Add an alternate version of a surface.
 --
@@ -1096,14 +1132,15 @@ sDL_AddSurfaceAlternateImage =
 foreign import ccall unsafe "hs_bindgen_c8c9d6b2ea4d4292"
   hs_bindgen_c8c9d6b2ea4d4292_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SurfaceHasAlternateImages@
 hs_bindgen_c8c9d6b2ea4d4292
   :: BG.Ptr SDL_Surface
   -> IO BG.CBool
 hs_bindgen_c8c9d6b2ea4d4292 =
-  BG.fromFFIType hs_bindgen_c8c9d6b2ea4d4292_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_c8c9d6b2ea4d4292_base (BG.toFFIType x0))
 
 -- | Return whether a surface has alternate versions available.
 --
@@ -1138,7 +1175,9 @@ hs_bindgen_b3d55dcc42d5db12
   -> BG.Ptr BG.CInt
   -> IO (BG.Ptr (BG.Ptr SDL_Surface))
 hs_bindgen_b3d55dcc42d5db12 =
-  BG.fromFFIType hs_bindgen_b3d55dcc42d5db12_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b3d55dcc42d5db12_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get an array including all versions of a surface.
 --
@@ -1178,7 +1217,8 @@ hs_bindgen_1adedb2719efa1bf
   :: BG.Ptr SDL_Surface
   -> IO ()
 hs_bindgen_1adedb2719efa1bf =
-  BG.fromFFIType hs_bindgen_1adedb2719efa1bf_base
+  \x0 ->
+    hs_bindgen_1adedb2719efa1bf_base (BG.toFFIType x0)
 
 -- | Remove all alternate versions of a surface.
 --
@@ -1204,14 +1244,15 @@ sDL_RemoveSurfaceAlternateImages =
 foreign import ccall unsafe "hs_bindgen_8363af1ae03d45b9"
   hs_bindgen_8363af1ae03d45b9_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_LockSurface@
 hs_bindgen_8363af1ae03d45b9
   :: BG.Ptr SDL_Surface
   -> IO BG.CBool
 hs_bindgen_8363af1ae03d45b9 =
-  BG.fromFFIType hs_bindgen_8363af1ae03d45b9_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_8363af1ae03d45b9_base (BG.toFFIType x0))
 
 -- | Set up a surface for directly accessing the pixels.
 --
@@ -1247,7 +1288,8 @@ hs_bindgen_0b94cbec8aca2abc
   :: BG.Ptr SDL_Surface
   -> IO ()
 hs_bindgen_0b94cbec8aca2abc =
-  BG.fromFFIType hs_bindgen_0b94cbec8aca2abc_base
+  \x0 ->
+    hs_bindgen_0b94cbec8aca2abc_base (BG.toFFIType x0)
 
 -- | Release a surface after directly accessing the pixels.
 --
@@ -1270,7 +1312,7 @@ sDL_UnlockSurface = hs_bindgen_0b94cbec8aca2abc
 foreign import ccall unsafe "hs_bindgen_1a1549d61e2d7c6f"
   hs_bindgen_1a1549d61e2d7c6f_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_LoadSurface_IO@
@@ -1279,7 +1321,9 @@ hs_bindgen_1a1549d61e2d7c6f
   -> BG.CBool
   -> IO (BG.Ptr SDL_Surface)
 hs_bindgen_1a1549d61e2d7c6f =
-  BG.fromFFIType hs_bindgen_1a1549d61e2d7c6f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_1a1549d61e2d7c6f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Load a BMP or PNG image from a seekable SDL data stream.
 --
@@ -1317,7 +1361,8 @@ hs_bindgen_84c82bda97a82d45
   :: PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr SDL_Surface)
 hs_bindgen_84c82bda97a82d45 =
-  BG.fromFFIType hs_bindgen_84c82bda97a82d45_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_84c82bda97a82d45_base (BG.toFFIType x0))
 
 -- | Load a BMP or PNG image from a file.
 --
@@ -1344,7 +1389,7 @@ sDL_LoadSurface = hs_bindgen_84c82bda97a82d45
 foreign import ccall unsafe "hs_bindgen_04dc7704680e62ca"
   hs_bindgen_04dc7704680e62ca_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_LoadBMP_IO@
@@ -1353,7 +1398,9 @@ hs_bindgen_04dc7704680e62ca
   -> BG.CBool
   -> IO (BG.Ptr SDL_Surface)
 hs_bindgen_04dc7704680e62ca =
-  BG.fromFFIType hs_bindgen_04dc7704680e62ca_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_04dc7704680e62ca_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Load a BMP image from a seekable SDL data stream.
 --
@@ -1391,7 +1438,8 @@ hs_bindgen_fade244cdadaaa01
   :: PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr SDL_Surface)
 hs_bindgen_fade244cdadaaa01 =
-  BG.fromFFIType hs_bindgen_fade244cdadaaa01_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_fade244cdadaaa01_base (BG.toFFIType x0))
 
 -- | Load a BMP image from a file.
 --
@@ -1419,8 +1467,8 @@ foreign import ccall unsafe "hs_bindgen_9c98f1ae4256924d"
   hs_bindgen_9c98f1ae4256924d_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SaveBMP_IO@
 hs_bindgen_9c98f1ae4256924d
@@ -1429,7 +1477,12 @@ hs_bindgen_9c98f1ae4256924d
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_9c98f1ae4256924d =
-  BG.fromFFIType hs_bindgen_9c98f1ae4256924d_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_9c98f1ae4256924d_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Save a surface to a seekable SDL data stream in BMP format.
 --
@@ -1465,7 +1518,7 @@ foreign import ccall unsafe "hs_bindgen_66fb79ef3bca90df"
   hs_bindgen_66fb79ef3bca90df_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SaveBMP@
 hs_bindgen_66fb79ef3bca90df
@@ -1473,7 +1526,9 @@ hs_bindgen_66fb79ef3bca90df
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_66fb79ef3bca90df =
-  BG.fromFFIType hs_bindgen_66fb79ef3bca90df_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_66fb79ef3bca90df_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Save a surface to a file in BMP format.
 --
@@ -1504,7 +1559,7 @@ sDL_SaveBMP = hs_bindgen_66fb79ef3bca90df
 foreign import ccall unsafe "hs_bindgen_7160fe58e1c51f22"
   hs_bindgen_7160fe58e1c51f22_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
+    -> BG.CBool
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_LoadPNG_IO@
@@ -1513,7 +1568,9 @@ hs_bindgen_7160fe58e1c51f22
   -> BG.CBool
   -> IO (BG.Ptr SDL_Surface)
 hs_bindgen_7160fe58e1c51f22 =
-  BG.fromFFIType hs_bindgen_7160fe58e1c51f22_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_7160fe58e1c51f22_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Load a PNG image from a seekable SDL data stream.
 --
@@ -1553,7 +1610,8 @@ hs_bindgen_bc316d886d9c3957
   :: PtrConst.PtrConst BG.CChar
   -> IO (BG.Ptr SDL_Surface)
 hs_bindgen_bc316d886d9c3957 =
-  BG.fromFFIType hs_bindgen_bc316d886d9c3957_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_bc316d886d9c3957_base (BG.toFFIType x0))
 
 -- | Load a PNG image from a file.
 --
@@ -1583,8 +1641,8 @@ foreign import ccall unsafe "hs_bindgen_9c8e4c9fc901ee28"
   hs_bindgen_9c8e4c9fc901ee28_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SavePNG_IO@
 hs_bindgen_9c8e4c9fc901ee28
@@ -1593,7 +1651,12 @@ hs_bindgen_9c8e4c9fc901ee28
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_9c8e4c9fc901ee28 =
-  BG.fromFFIType hs_bindgen_9c8e4c9fc901ee28_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_9c8e4c9fc901ee28_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Save a surface to a seekable SDL data stream in PNG format.
 --
@@ -1627,7 +1690,7 @@ foreign import ccall unsafe "hs_bindgen_759469fef46a8cd4"
   hs_bindgen_759469fef46a8cd4_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SavePNG@
 hs_bindgen_759469fef46a8cd4
@@ -1635,7 +1698,9 @@ hs_bindgen_759469fef46a8cd4
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_759469fef46a8cd4 =
-  BG.fromFFIType hs_bindgen_759469fef46a8cd4_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_759469fef46a8cd4_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Save a surface to a file in PNG format.
 --
@@ -1664,8 +1729,8 @@ sDL_SavePNG = hs_bindgen_759469fef46a8cd4
 foreign import ccall unsafe "hs_bindgen_5d1b864a1323d92d"
   hs_bindgen_5d1b864a1323d92d_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SetSurfaceRLE@
 hs_bindgen_5d1b864a1323d92d
@@ -1673,7 +1738,9 @@ hs_bindgen_5d1b864a1323d92d
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_5d1b864a1323d92d =
-  BG.fromFFIType hs_bindgen_5d1b864a1323d92d_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_5d1b864a1323d92d_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the RLE acceleration hint for a surface.
 --
@@ -1704,14 +1771,15 @@ sDL_SetSurfaceRLE = hs_bindgen_5d1b864a1323d92d
 foreign import ccall unsafe "hs_bindgen_b51ce9068c82d3d0"
   hs_bindgen_b51ce9068c82d3d0_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SurfaceHasRLE@
 hs_bindgen_b51ce9068c82d3d0
   :: BG.Ptr SDL_Surface
   -> IO BG.CBool
 hs_bindgen_b51ce9068c82d3d0 =
-  BG.fromFFIType hs_bindgen_b51ce9068c82d3d0_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_b51ce9068c82d3d0_base (BG.toFFIType x0))
 
 -- | Returns whether the surface is RLE enabled.
 --
@@ -1738,9 +1806,9 @@ sDL_SurfaceHasRLE = hs_bindgen_b51ce9068c82d3d0
 foreign import ccall unsafe "hs_bindgen_13efdbaff73dc30f"
   hs_bindgen_13efdbaff73dc30f_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> BG.Word32
-    -> IO BG.Word8
+    -> BG.CBool
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SetSurfaceColorKey@
 hs_bindgen_13efdbaff73dc30f
@@ -1749,7 +1817,12 @@ hs_bindgen_13efdbaff73dc30f
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_13efdbaff73dc30f =
-  BG.fromFFIType hs_bindgen_13efdbaff73dc30f_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_13efdbaff73dc30f_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set the color key (transparent pixel) in a surface.
 --
@@ -1786,14 +1859,15 @@ sDL_SetSurfaceColorKey = hs_bindgen_13efdbaff73dc30f
 foreign import ccall unsafe "hs_bindgen_998ae6f993d45bac"
   hs_bindgen_998ae6f993d45bac_base
     :: BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SurfaceHasColorKey@
 hs_bindgen_998ae6f993d45bac
   :: BG.Ptr SDL_Surface
   -> IO BG.CBool
 hs_bindgen_998ae6f993d45bac =
-  BG.fromFFIType hs_bindgen_998ae6f993d45bac_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_998ae6f993d45bac_base (BG.toFFIType x0))
 
 -- | Returns whether the surface has a color key.
 --
@@ -1821,7 +1895,7 @@ foreign import ccall unsafe "hs_bindgen_463737aa98969701"
   hs_bindgen_463737aa98969701_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_GetSurfaceColorKey@
 hs_bindgen_463737aa98969701
@@ -1829,7 +1903,9 @@ hs_bindgen_463737aa98969701
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_463737aa98969701 =
-  BG.fromFFIType hs_bindgen_463737aa98969701_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_463737aa98969701_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the color key (transparent pixel) for a surface.
 --
@@ -1862,10 +1938,10 @@ sDL_GetSurfaceColorKey = hs_bindgen_463737aa98969701
 foreign import ccall unsafe "hs_bindgen_5802144e4d11fa38"
   hs_bindgen_5802144e4d11fa38_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> BG.Word8
-    -> BG.Word8
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SetSurfaceColorMod@
 hs_bindgen_5802144e4d11fa38
@@ -1875,7 +1951,18 @@ hs_bindgen_5802144e4d11fa38
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_5802144e4d11fa38 =
-  BG.fromFFIType hs_bindgen_5802144e4d11fa38_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_5802144e4d11fa38_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Set an additional color value multiplied into blit operations.
 --
@@ -1919,7 +2006,7 @@ foreign import ccall unsafe "hs_bindgen_8f67dce9db98e6f9"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_GetSurfaceColorMod@
 hs_bindgen_8f67dce9db98e6f9
@@ -1929,7 +2016,18 @@ hs_bindgen_8f67dce9db98e6f9
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_8f67dce9db98e6f9 =
-  BG.fromFFIType hs_bindgen_8f67dce9db98e6f9_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_8f67dce9db98e6f9_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Get the additional color value multiplied into blit operations.
 --
@@ -1966,8 +2064,8 @@ sDL_GetSurfaceColorMod = hs_bindgen_8f67dce9db98e6f9
 foreign import ccall unsafe "hs_bindgen_2f27871d133fe193"
   hs_bindgen_2f27871d133fe193_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SetSurfaceAlphaMod@
 hs_bindgen_2f27871d133fe193
@@ -1975,7 +2073,9 @@ hs_bindgen_2f27871d133fe193
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_2f27871d133fe193 =
-  BG.fromFFIType hs_bindgen_2f27871d133fe193_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_2f27871d133fe193_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set an additional alpha value used in blit operations.
 --
@@ -2009,7 +2109,7 @@ foreign import ccall unsafe "hs_bindgen_62e7ffa57cc86c89"
   hs_bindgen_62e7ffa57cc86c89_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_GetSurfaceAlphaMod@
 hs_bindgen_62e7ffa57cc86c89
@@ -2017,7 +2117,9 @@ hs_bindgen_62e7ffa57cc86c89
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_62e7ffa57cc86c89 =
-  BG.fromFFIType hs_bindgen_62e7ffa57cc86c89_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_62e7ffa57cc86c89_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the additional alpha value used in blit operations.
 --
@@ -2046,8 +2148,8 @@ sDL_GetSurfaceAlphaMod = hs_bindgen_62e7ffa57cc86c89
 foreign import ccall unsafe "hs_bindgen_31b5f1226bf51118"
   hs_bindgen_31b5f1226bf51118_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SetSurfaceBlendMode@
 hs_bindgen_31b5f1226bf51118
@@ -2055,7 +2157,9 @@ hs_bindgen_31b5f1226bf51118
   -> SDL3.Sys.Bindgen.Blendmode.SDL_BlendMode
   -> IO BG.CBool
 hs_bindgen_31b5f1226bf51118 =
-  BG.fromFFIType hs_bindgen_31b5f1226bf51118_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_31b5f1226bf51118_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the blend mode used for blit operations.
 --
@@ -2087,7 +2191,7 @@ foreign import ccall unsafe "hs_bindgen_e69bee46110b6faa"
   hs_bindgen_e69bee46110b6faa_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_GetSurfaceBlendMode@
 hs_bindgen_e69bee46110b6faa
@@ -2095,7 +2199,9 @@ hs_bindgen_e69bee46110b6faa
   -> BG.Ptr SDL3.Sys.Bindgen.Blendmode.SDL_BlendMode
   -> IO BG.CBool
 hs_bindgen_e69bee46110b6faa =
-  BG.fromFFIType hs_bindgen_e69bee46110b6faa_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_e69bee46110b6faa_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the blend mode used for blit operations.
 --
@@ -2125,7 +2231,7 @@ foreign import ccall unsafe "hs_bindgen_d3f690ca2bc82289"
   hs_bindgen_d3f690ca2bc82289_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_SetSurfaceClipRect@
 hs_bindgen_d3f690ca2bc82289
@@ -2133,7 +2239,9 @@ hs_bindgen_d3f690ca2bc82289
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_d3f690ca2bc82289 =
-  BG.fromFFIType hs_bindgen_d3f690ca2bc82289_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_d3f690ca2bc82289_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Set the clipping rectangle for a surface.
 --
@@ -2167,7 +2275,7 @@ foreign import ccall unsafe "hs_bindgen_510cbf12ad718ad5"
   hs_bindgen_510cbf12ad718ad5_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_GetSurfaceClipRect@
 hs_bindgen_510cbf12ad718ad5
@@ -2175,7 +2283,9 @@ hs_bindgen_510cbf12ad718ad5
   -> BG.Ptr SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_510cbf12ad718ad5 =
-  BG.fromFFIType hs_bindgen_510cbf12ad718ad5_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_510cbf12ad718ad5_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the clipping rectangle for a surface.
 --
@@ -2206,8 +2316,8 @@ sDL_GetSurfaceClipRect = hs_bindgen_510cbf12ad718ad5
 foreign import ccall unsafe "hs_bindgen_c9050e1a6dbcc389"
   hs_bindgen_c9050e1a6dbcc389_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> BG.CUInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_FlipSurface@
 hs_bindgen_c9050e1a6dbcc389
@@ -2215,7 +2325,9 @@ hs_bindgen_c9050e1a6dbcc389
   -> SDL_FlipMode
   -> IO BG.CBool
 hs_bindgen_c9050e1a6dbcc389 =
-  BG.fromFFIType hs_bindgen_c9050e1a6dbcc389_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_c9050e1a6dbcc389_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Flip a surface vertically or horizontally.
 --
@@ -2242,7 +2354,7 @@ sDL_FlipSurface = hs_bindgen_c9050e1a6dbcc389
 foreign import ccall unsafe "hs_bindgen_b68c60a70d17f528"
   hs_bindgen_b68c60a70d17f528_base
     :: BG.Ptr BG.Void
-    -> Float
+    -> BG.CFloat
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_RotateSurface@
@@ -2251,7 +2363,9 @@ hs_bindgen_b68c60a70d17f528
   -> BG.CFloat
   -> IO (BG.Ptr SDL_Surface)
 hs_bindgen_b68c60a70d17f528 =
-  BG.fromFFIType hs_bindgen_b68c60a70d17f528_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_b68c60a70d17f528_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Return a copy of a surface rotated clockwise a number of degrees.
 --
@@ -2291,7 +2405,8 @@ hs_bindgen_fb5b3c5560c73662
   :: BG.Ptr SDL_Surface
   -> IO (BG.Ptr SDL_Surface)
 hs_bindgen_fb5b3c5560c73662 =
-  BG.fromFFIType hs_bindgen_fb5b3c5560c73662_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_fb5b3c5560c73662_base (BG.toFFIType x0))
 
 -- | Creates a new surface identical to the existing surface.
 --
@@ -2320,9 +2435,9 @@ sDL_DuplicateSurface = hs_bindgen_fb5b3c5560c73662
 foreign import ccall unsafe "hs_bindgen_302fe5f6d166cef5"
   hs_bindgen_302fe5f6d166cef5_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> BG.Int32
+    -> BG.CInt
+    -> BG.CInt
+    -> BG.CInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_ScaleSurface@
@@ -2333,7 +2448,18 @@ hs_bindgen_302fe5f6d166cef5
   -> SDL_ScaleMode
   -> IO (BG.Ptr SDL_Surface)
 hs_bindgen_302fe5f6d166cef5 =
-  BG.fromFFIType hs_bindgen_302fe5f6d166cef5_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_302fe5f6d166cef5_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Creates a new surface identical to the existing surface, scaled to the desired size.
 --
@@ -2372,7 +2498,7 @@ sDL_ScaleSurface = hs_bindgen_302fe5f6d166cef5
 foreign import ccall unsafe "hs_bindgen_2d38a11d9ed40ec3"
   hs_bindgen_2d38a11d9ed40ec3_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.Support.CUInt
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_ConvertSurface@
@@ -2381,7 +2507,9 @@ hs_bindgen_2d38a11d9ed40ec3
   -> SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
   -> IO (BG.Ptr SDL_Surface)
 hs_bindgen_2d38a11d9ed40ec3 =
-  BG.fromFFIType hs_bindgen_2d38a11d9ed40ec3_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_2d38a11d9ed40ec3_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Copy an existing surface to a new surface of the specified format.
 --
@@ -2416,10 +2544,10 @@ sDL_ConvertSurface = hs_bindgen_2d38a11d9ed40ec3
 foreign import ccall unsafe "hs_bindgen_589af8fb0fd3b451"
   hs_bindgen_589af8fb0fd3b451_base
     :: BG.Ptr BG.Void
-    -> BG.Word32
+    -> HsBindgen.Runtime.Support.CUInt
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word32
+    -> HsBindgen.Runtime.Support.CUInt
+    -> HsBindgen.Runtime.LibC.Word32
     -> IO (BG.Ptr BG.Void)
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_ConvertSurfaceAndColorspace@
@@ -2431,7 +2559,20 @@ hs_bindgen_589af8fb0fd3b451
   -> SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -> IO (BG.Ptr SDL_Surface)
 hs_bindgen_589af8fb0fd3b451 =
-  BG.fromFFIType hs_bindgen_589af8fb0fd3b451_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_589af8fb0fd3b451_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Copy an existing surface to a new surface of the specified format and colorspace.
 --
@@ -2476,15 +2617,15 @@ sDL_ConvertSurfaceAndColorspace =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_ConvertPixels@
 foreign import ccall unsafe "hs_bindgen_c4ac87b53bb7fbaa"
   hs_bindgen_c4ac87b53bb7fbaa_base
-    :: BG.Int32
-    -> BG.Int32
-    -> BG.Word32
+    :: BG.CInt
+    -> BG.CInt
+    -> HsBindgen.Runtime.Support.CUInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Word32
+    -> BG.CInt
+    -> HsBindgen.Runtime.Support.CUInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_ConvertPixels@
 hs_bindgen_c4ac87b53bb7fbaa
@@ -2498,7 +2639,26 @@ hs_bindgen_c4ac87b53bb7fbaa
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_c4ac87b53bb7fbaa =
-  BG.fromFFIType hs_bindgen_c4ac87b53bb7fbaa_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                \x7 ->
+                  fmap
+                    BG.fromFFIType
+                    ( hs_bindgen_c4ac87b53bb7fbaa_base
+                        (BG.toFFIType x0)
+                        (BG.toFFIType x1)
+                        (BG.toFFIType x2)
+                        (BG.toFFIType x3)
+                        (BG.toFFIType x4)
+                        (BG.toFFIType x5)
+                        (BG.toFFIType x6)
+                        (BG.toFFIType x7)
+                    )
 
 -- | Copy a block of pixels of one format to another format.
 --
@@ -2550,19 +2710,19 @@ sDL_ConvertPixels = hs_bindgen_c4ac87b53bb7fbaa
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_ConvertPixelsAndColorspace@
 foreign import ccall unsafe "hs_bindgen_384b325525f7f1f3"
   hs_bindgen_384b325525f7f1f3_base
-    :: BG.Int32
-    -> BG.Int32
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
+    :: BG.CInt
+    -> BG.CInt
+    -> HsBindgen.Runtime.Support.CUInt
+    -> HsBindgen.Runtime.Support.CUInt
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Word32
-    -> BG.Word32
-    -> BG.Word32
+    -> BG.CInt
+    -> HsBindgen.Runtime.Support.CUInt
+    -> HsBindgen.Runtime.Support.CUInt
+    -> HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_ConvertPixelsAndColorspace@
 hs_bindgen_384b325525f7f1f3
@@ -2580,7 +2740,34 @@ hs_bindgen_384b325525f7f1f3
   -> BG.CInt
   -> IO BG.CBool
 hs_bindgen_384b325525f7f1f3 =
-  BG.fromFFIType hs_bindgen_384b325525f7f1f3_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                \x7 ->
+                  \x8 ->
+                    \x9 ->
+                      \x10 ->
+                        \x11 ->
+                          fmap
+                            BG.fromFFIType
+                            ( hs_bindgen_384b325525f7f1f3_base
+                                (BG.toFFIType x0)
+                                (BG.toFFIType x1)
+                                (BG.toFFIType x2)
+                                (BG.toFFIType x3)
+                                (BG.toFFIType x4)
+                                (BG.toFFIType x5)
+                                (BG.toFFIType x6)
+                                (BG.toFFIType x7)
+                                (BG.toFFIType x8)
+                                (BG.toFFIType x9)
+                                (BG.toFFIType x10)
+                                (BG.toFFIType x11)
+                            )
 
 -- | Copy a block of pixels of one format and colorspace to another format and colorspace.
 --
@@ -2649,16 +2836,16 @@ sDL_ConvertPixelsAndColorspace =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_PremultiplyAlpha@
 foreign import ccall unsafe "hs_bindgen_9a5c070f0253ae0a"
   hs_bindgen_9a5c070f0253ae0a_base
-    :: BG.Int32
-    -> BG.Int32
-    -> BG.Word32
+    :: BG.CInt
+    -> BG.CInt
+    -> HsBindgen.Runtime.Support.CUInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Word32
+    -> BG.CInt
+    -> HsBindgen.Runtime.Support.CUInt
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_PremultiplyAlpha@
 hs_bindgen_9a5c070f0253ae0a
@@ -2673,7 +2860,28 @@ hs_bindgen_9a5c070f0253ae0a
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_9a5c070f0253ae0a =
-  BG.fromFFIType hs_bindgen_9a5c070f0253ae0a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                \x7 ->
+                  \x8 ->
+                    fmap
+                      BG.fromFFIType
+                      ( hs_bindgen_9a5c070f0253ae0a_base
+                          (BG.toFFIType x0)
+                          (BG.toFFIType x1)
+                          (BG.toFFIType x2)
+                          (BG.toFFIType x3)
+                          (BG.toFFIType x4)
+                          (BG.toFFIType x5)
+                          (BG.toFFIType x6)
+                          (BG.toFFIType x7)
+                          (BG.toFFIType x8)
+                      )
 
 -- | Premultiply the alpha on a block of pixels.
 --
@@ -2730,8 +2938,8 @@ sDL_PremultiplyAlpha = hs_bindgen_9a5c070f0253ae0a
 foreign import ccall unsafe "hs_bindgen_7065a7a3bd7041c8"
   hs_bindgen_7065a7a3bd7041c8_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_PremultiplySurfaceAlpha@
 hs_bindgen_7065a7a3bd7041c8
@@ -2739,7 +2947,9 @@ hs_bindgen_7065a7a3bd7041c8
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_7065a7a3bd7041c8 =
-  BG.fromFFIType hs_bindgen_7065a7a3bd7041c8_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_7065a7a3bd7041c8_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Premultiply the alpha in a surface.
 --
@@ -2769,11 +2979,11 @@ sDL_PremultiplySurfaceAlpha =
 foreign import ccall unsafe "hs_bindgen_de44f8d6106c7e71"
   hs_bindgen_de44f8d6106c7e71_base
     :: BG.Ptr BG.Void
-    -> Float
-    -> Float
-    -> Float
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_ClearSurface@
 hs_bindgen_de44f8d6106c7e71
@@ -2784,7 +2994,20 @@ hs_bindgen_de44f8d6106c7e71
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_de44f8d6106c7e71 =
-  BG.fromFFIType hs_bindgen_de44f8d6106c7e71_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_de44f8d6106c7e71_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Clear a surface with a specific color, with floating point precision.
 --
@@ -2828,8 +3051,8 @@ foreign import ccall unsafe "hs_bindgen_8e254769393349cc"
   hs_bindgen_8e254769393349cc_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_FillSurfaceRect@
 hs_bindgen_8e254769393349cc
@@ -2838,7 +3061,12 @@ hs_bindgen_8e254769393349cc
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_8e254769393349cc =
-  BG.fromFFIType hs_bindgen_8e254769393349cc_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_8e254769393349cc_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Perform a fast fill of a rectangle with a specific color.
 --
@@ -2876,9 +3104,9 @@ foreign import ccall unsafe "hs_bindgen_4eb2bdf51787fb5f"
   hs_bindgen_4eb2bdf51787fb5f_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Word32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_FillSurfaceRects@
 hs_bindgen_4eb2bdf51787fb5f
@@ -2888,7 +3116,18 @@ hs_bindgen_4eb2bdf51787fb5f
   -> SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_4eb2bdf51787fb5f =
-  BG.fromFFIType hs_bindgen_4eb2bdf51787fb5f_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_4eb2bdf51787fb5f_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Perform a fast fill of a set of rectangles with a specific color.
 --
@@ -2932,7 +3171,7 @@ foreign import ccall unsafe "hs_bindgen_dd9a2fd8000655e0"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_BlitSurface@
 hs_bindgen_dd9a2fd8000655e0
@@ -2942,7 +3181,18 @@ hs_bindgen_dd9a2fd8000655e0
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_dd9a2fd8000655e0 =
-  BG.fromFFIType hs_bindgen_dd9a2fd8000655e0_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_dd9a2fd8000655e0_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Performs a fast blit from the source surface to the destination surface with clipping.
 --
@@ -3028,7 +3278,7 @@ foreign import ccall unsafe "hs_bindgen_f1d3fd72bc95a376"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_BlitSurfaceUnchecked@
 hs_bindgen_f1d3fd72bc95a376
@@ -3038,7 +3288,18 @@ hs_bindgen_f1d3fd72bc95a376
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_f1d3fd72bc95a376 =
-  BG.fromFFIType hs_bindgen_f1d3fd72bc95a376_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_f1d3fd72bc95a376_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Perform low-level surface blitting only.
 --
@@ -3081,8 +3342,8 @@ foreign import ccall unsafe "hs_bindgen_ca439260becd97fa"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_BlitSurfaceScaled@
 hs_bindgen_ca439260becd97fa
@@ -3093,7 +3354,20 @@ hs_bindgen_ca439260becd97fa
   -> SDL_ScaleMode
   -> IO BG.CBool
 hs_bindgen_ca439260becd97fa =
-  BG.fromFFIType hs_bindgen_ca439260becd97fa_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_ca439260becd97fa_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Perform a scaled blit to a destination surface, which may be of a different format.
 --
@@ -3137,8 +3411,8 @@ foreign import ccall unsafe "hs_bindgen_273462ee987888b2"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_BlitSurfaceUncheckedScaled@
 hs_bindgen_273462ee987888b2
@@ -3149,7 +3423,20 @@ hs_bindgen_273462ee987888b2
   -> SDL_ScaleMode
   -> IO BG.CBool
 hs_bindgen_273462ee987888b2 =
-  BG.fromFFIType hs_bindgen_273462ee987888b2_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_273462ee987888b2_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Perform low-level surface scaled blitting only.
 --
@@ -3196,8 +3483,8 @@ foreign import ccall unsafe "hs_bindgen_cbba042ce7137c9a"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word8
+    -> BG.CInt
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_StretchSurface@
 hs_bindgen_cbba042ce7137c9a
@@ -3208,7 +3495,20 @@ hs_bindgen_cbba042ce7137c9a
   -> SDL_ScaleMode
   -> IO BG.CBool
 hs_bindgen_cbba042ce7137c9a =
-  BG.fromFFIType hs_bindgen_cbba042ce7137c9a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_cbba042ce7137c9a_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Perform a stretched pixel copy from one surface to another.
 --
@@ -3252,7 +3552,7 @@ foreign import ccall unsafe "hs_bindgen_cc06339086116f6d"
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_BlitSurfaceTiled@
 hs_bindgen_cc06339086116f6d
@@ -3262,7 +3562,18 @@ hs_bindgen_cc06339086116f6d
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_cc06339086116f6d =
-  BG.fromFFIType hs_bindgen_cc06339086116f6d_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_cc06339086116f6d_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Perform a tiled blit to a destination surface, which may be of a different format.
 --
@@ -3302,11 +3613,11 @@ foreign import ccall unsafe "hs_bindgen_50d8214074d2e91b"
   hs_bindgen_50d8214074d2e91b_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> Float
-    -> BG.Int32
+    -> BG.CFloat
+    -> BG.CInt
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_BlitSurfaceTiledWithScale@
 hs_bindgen_50d8214074d2e91b
@@ -3318,7 +3629,22 @@ hs_bindgen_50d8214074d2e91b
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_50d8214074d2e91b =
-  BG.fromFFIType hs_bindgen_50d8214074d2e91b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_50d8214074d2e91b_base
+                    (BG.toFFIType x0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                    (BG.toFFIType x4)
+                    (BG.toFFIType x5)
+                )
 
 -- | Perform a scaled and tiled blit to a destination surface, which may be of a different format.
 --
@@ -3367,15 +3693,15 @@ foreign import ccall unsafe "hs_bindgen_84940b463dd6473c"
   hs_bindgen_84940b463dd6473c_base
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> BG.Int32
-    -> BG.Int32
-    -> Float
-    -> BG.Int32
+    -> BG.CInt
+    -> BG.CInt
+    -> BG.CInt
+    -> BG.CInt
+    -> BG.CFloat
+    -> BG.CInt
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_BlitSurface9Grid@
 hs_bindgen_84940b463dd6473c
@@ -3391,7 +3717,30 @@ hs_bindgen_84940b463dd6473c
   -> PtrConst.PtrConst SDL3.Sys.Bindgen.Rect.SDL_Rect
   -> IO BG.CBool
 hs_bindgen_84940b463dd6473c =
-  BG.fromFFIType hs_bindgen_84940b463dd6473c_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                \x7 ->
+                  \x8 ->
+                    \x9 ->
+                      fmap
+                        BG.fromFFIType
+                        ( hs_bindgen_84940b463dd6473c_base
+                            (BG.toFFIType x0)
+                            (BG.toFFIType x1)
+                            (BG.toFFIType x2)
+                            (BG.toFFIType x3)
+                            (BG.toFFIType x4)
+                            (BG.toFFIType x5)
+                            (BG.toFFIType x6)
+                            (BG.toFFIType x7)
+                            (BG.toFFIType x8)
+                            (BG.toFFIType x9)
+                        )
 
 -- | Perform a scaled blit using the 9-grid algorithm to a destination surface, which may be of a different format.
 --
@@ -3454,10 +3803,10 @@ sDL_BlitSurface9Grid = hs_bindgen_84940b463dd6473c
 foreign import ccall unsafe "hs_bindgen_5dfeeef5d5aa83da"
   hs_bindgen_5dfeeef5d5aa83da_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> BG.Word8
-    -> BG.Word8
-    -> IO BG.Word32
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_MapSurfaceRGB@
 hs_bindgen_5dfeeef5d5aa83da
@@ -3467,7 +3816,18 @@ hs_bindgen_5dfeeef5d5aa83da
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint32
 hs_bindgen_5dfeeef5d5aa83da =
-  BG.fromFFIType hs_bindgen_5dfeeef5d5aa83da_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_5dfeeef5d5aa83da_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Map an RGB triple to an opaque pixel value for a surface.
 --
@@ -3512,11 +3872,11 @@ sDL_MapSurfaceRGB = hs_bindgen_5dfeeef5d5aa83da
 foreign import ccall unsafe "hs_bindgen_456d7e009be906d0"
   hs_bindgen_456d7e009be906d0_base
     :: BG.Ptr BG.Void
-    -> BG.Word8
-    -> BG.Word8
-    -> BG.Word8
-    -> BG.Word8
-    -> IO BG.Word32
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_MapSurfaceRGBA@
 hs_bindgen_456d7e009be906d0
@@ -3527,7 +3887,20 @@ hs_bindgen_456d7e009be906d0
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO SDL3.Sys.Bindgen.Stdinc.Uint32
 hs_bindgen_456d7e009be906d0 =
-  BG.fromFFIType hs_bindgen_456d7e009be906d0_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_456d7e009be906d0_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Map an RGBA quadruple to a pixel value for a surface.
 --
@@ -3576,13 +3949,13 @@ sDL_MapSurfaceRGBA = hs_bindgen_456d7e009be906d0
 foreign import ccall unsafe "hs_bindgen_76b097df3deb39a7"
   hs_bindgen_76b097df3deb39a7_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
+    -> BG.CInt
+    -> BG.CInt
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_ReadSurfacePixel@
 hs_bindgen_76b097df3deb39a7
@@ -3595,7 +3968,24 @@ hs_bindgen_76b097df3deb39a7
   -> BG.Ptr SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_76b097df3deb39a7 =
-  BG.fromFFIType hs_bindgen_76b097df3deb39a7_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                fmap
+                  BG.fromFFIType
+                  ( hs_bindgen_76b097df3deb39a7_base
+                      (BG.toFFIType x0)
+                      (BG.toFFIType x1)
+                      (BG.toFFIType x2)
+                      (BG.toFFIType x3)
+                      (BG.toFFIType x4)
+                      (BG.toFFIType x5)
+                      (BG.toFFIType x6)
+                  )
 
 -- | Retrieves a single pixel from a surface.
 --
@@ -3646,13 +4036,13 @@ sDL_ReadSurfacePixel = hs_bindgen_76b097df3deb39a7
 foreign import ccall unsafe "hs_bindgen_1dba774402b79156"
   hs_bindgen_1dba774402b79156_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
+    -> BG.CInt
+    -> BG.CInt
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_ReadSurfacePixelFloat@
 hs_bindgen_1dba774402b79156
@@ -3665,7 +4055,24 @@ hs_bindgen_1dba774402b79156
   -> BG.Ptr BG.CFloat
   -> IO BG.CBool
 hs_bindgen_1dba774402b79156 =
-  BG.fromFFIType hs_bindgen_1dba774402b79156_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                fmap
+                  BG.fromFFIType
+                  ( hs_bindgen_1dba774402b79156_base
+                      (BG.toFFIType x0)
+                      (BG.toFFIType x1)
+                      (BG.toFFIType x2)
+                      (BG.toFFIType x3)
+                      (BG.toFFIType x4)
+                      (BG.toFFIType x5)
+                      (BG.toFFIType x6)
+                  )
 
 -- | Retrieves a single pixel from a surface.
 --
@@ -3715,13 +4122,13 @@ sDL_ReadSurfacePixelFloat =
 foreign import ccall unsafe "hs_bindgen_66bf3500cd5641bd"
   hs_bindgen_66bf3500cd5641bd_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> BG.Word8
-    -> BG.Word8
-    -> BG.Word8
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CInt
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> HsBindgen.Runtime.LibC.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_WriteSurfacePixel@
 hs_bindgen_66bf3500cd5641bd
@@ -3734,7 +4141,24 @@ hs_bindgen_66bf3500cd5641bd
   -> SDL3.Sys.Bindgen.Stdinc.Uint8
   -> IO BG.CBool
 hs_bindgen_66bf3500cd5641bd =
-  BG.fromFFIType hs_bindgen_66bf3500cd5641bd_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                fmap
+                  BG.fromFFIType
+                  ( hs_bindgen_66bf3500cd5641bd_base
+                      (BG.toFFIType x0)
+                      (BG.toFFIType x1)
+                      (BG.toFFIType x2)
+                      (BG.toFFIType x3)
+                      (BG.toFFIType x4)
+                      (BG.toFFIType x5)
+                      (BG.toFFIType x6)
+                  )
 
 -- | Writes a single pixel to a surface.
 --
@@ -3785,13 +4209,13 @@ sDL_WriteSurfacePixel = hs_bindgen_66bf3500cd5641bd
 foreign import ccall unsafe "hs_bindgen_91babb583602ef71"
   hs_bindgen_91babb583602ef71_base
     :: BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Int32
-    -> Float
-    -> Float
-    -> Float
-    -> Float
-    -> IO BG.Word8
+    -> BG.CInt
+    -> BG.CInt
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Surface_Unsafe_SDL_WriteSurfacePixelFloat@
 hs_bindgen_91babb583602ef71
@@ -3804,7 +4228,24 @@ hs_bindgen_91babb583602ef71
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_91babb583602ef71 =
-  BG.fromFFIType hs_bindgen_91babb583602ef71_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            \x5 ->
+              \x6 ->
+                fmap
+                  BG.fromFFIType
+                  ( hs_bindgen_91babb583602ef71_base
+                      (BG.toFFIType x0)
+                      (BG.toFFIType x1)
+                      (BG.toFFIType x2)
+                      (BG.toFFIType x3)
+                      (BG.toFFIType x4)
+                      (BG.toFFIType x5)
+                      (BG.toFFIType x6)
+                  )
 
 -- | Writes a single pixel to a surface.
 --

@@ -13,6 +13,7 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Some helper functions for managing rectangles and 2D points, in both integer and floating point versions. The structure that defines a point (using integers).
 --
@@ -27,8 +28,11 @@ module SDL3.Sys.Bindgen.Rect (
 )
 where
 
+import Prelude (Eq, Int, Show, pure, (<*>), (>>), type (~))
+
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 
@@ -64,6 +68,9 @@ instance Marshal.WriteRaw SDL_Point where
 
 deriving via Marshal.EquivStorable SDL_Point instance BG.Storable SDL_Point
 
+deriving via Struct.IsStructViaReadRaw SDL_Point instance Struct.IsStruct SDL_Point
+
+-- | [C declaration]: @x@, defined at @SDL3\/SDL_rect.h 51:9@
 instance (ty ~ BG.CInt) => BG.CompatHasField.HasField "x" SDL_Point ty where
   hasField =
     \x0 ->
@@ -80,6 +87,7 @@ instance HasCField.HasCField SDL_Point "x" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @y@, defined at @SDL3\/SDL_rect.h 52:9@
 instance (ty ~ BG.CInt) => BG.CompatHasField.HasField "y" SDL_Point ty where
   hasField =
     \x0 ->
@@ -134,6 +142,9 @@ instance Marshal.WriteRaw SDL_FPoint where
 
 deriving via Marshal.EquivStorable SDL_FPoint instance BG.Storable SDL_FPoint
 
+deriving via Struct.IsStructViaReadRaw SDL_FPoint instance Struct.IsStruct SDL_FPoint
+
+-- | [C declaration]: @x@, defined at @SDL3\/SDL_rect.h 65:11@
 instance (ty ~ BG.CFloat) => BG.CompatHasField.HasField "x" SDL_FPoint ty where
   hasField =
     \x0 ->
@@ -153,6 +164,7 @@ instance HasCField.HasCField SDL_FPoint "x" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @y@, defined at @SDL3\/SDL_rect.h 66:11@
 instance (ty ~ BG.CFloat) => BG.CompatHasField.HasField "y" SDL_FPoint ty where
   hasField =
     \x0 ->
@@ -218,6 +230,9 @@ instance Marshal.WriteRaw SDL_Rect where
 
 deriving via Marshal.EquivStorable SDL_Rect instance BG.Storable SDL_Rect
 
+deriving via Struct.IsStructViaReadRaw SDL_Rect instance Struct.IsStruct SDL_Rect
+
+-- | [C declaration]: @x@, defined at @SDL3\/SDL_rect.h 85:9@
 instance (ty ~ BG.CInt) => BG.CompatHasField.HasField "x" SDL_Rect ty where
   hasField =
     \x0 ->
@@ -239,6 +254,7 @@ instance HasCField.HasCField SDL_Rect "x" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @y@, defined at @SDL3\/SDL_rect.h 85:12@
 instance (ty ~ BG.CInt) => BG.CompatHasField.HasField "y" SDL_Rect ty where
   hasField =
     \x0 ->
@@ -260,6 +276,7 @@ instance HasCField.HasCField SDL_Rect "y" where
 
   offset# = \_ -> \_ -> 4
 
+-- | [C declaration]: @w@, defined at @SDL3\/SDL_rect.h 86:9@
 instance (ty ~ BG.CInt) => BG.CompatHasField.HasField "w" SDL_Rect ty where
   hasField =
     \x0 ->
@@ -281,6 +298,7 @@ instance HasCField.HasCField SDL_Rect "w" where
 
   offset# = \_ -> \_ -> 8
 
+-- | [C declaration]: @h@, defined at @SDL3\/SDL_rect.h 86:12@
 instance (ty ~ BG.CInt) => BG.CompatHasField.HasField "h" SDL_Rect ty where
   hasField =
     \x0 ->
@@ -350,6 +368,9 @@ instance Marshal.WriteRaw SDL_FRect where
 
 deriving via Marshal.EquivStorable SDL_FRect instance BG.Storable SDL_FRect
 
+deriving via Struct.IsStructViaReadRaw SDL_FRect instance Struct.IsStruct SDL_FRect
+
+-- | [C declaration]: @x@, defined at @SDL3\/SDL_rect.h 111:11@
 instance (ty ~ BG.CFloat) => BG.CompatHasField.HasField "x" SDL_FRect ty where
   hasField =
     \x0 ->
@@ -374,6 +395,7 @@ instance HasCField.HasCField SDL_FRect "x" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @y@, defined at @SDL3\/SDL_rect.h 112:11@
 instance (ty ~ BG.CFloat) => BG.CompatHasField.HasField "y" SDL_FRect ty where
   hasField =
     \x0 ->
@@ -398,6 +420,7 @@ instance HasCField.HasCField SDL_FRect "y" where
 
   offset# = \_ -> \_ -> 4
 
+-- | [C declaration]: @w@, defined at @SDL3\/SDL_rect.h 113:11@
 instance (ty ~ BG.CFloat) => BG.CompatHasField.HasField "w" SDL_FRect ty where
   hasField =
     \x0 ->
@@ -422,6 +445,7 @@ instance HasCField.HasCField SDL_FRect "w" where
 
   offset# = \_ -> \_ -> 8
 
+-- | [C declaration]: @h@, defined at @SDL3\/SDL_rect.h 114:11@
 instance (ty ~ BG.CFloat) => BG.CompatHasField.HasField "h" SDL_FRect ty where
   hasField =
     \x0 ->

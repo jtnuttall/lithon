@@ -17,6 +17,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Video capture for the SDL library.
 --
@@ -54,9 +55,27 @@ module SDL3.Sys.Bindgen.Camera (
 )
 where
 
+import Prelude (
+  Bounded,
+  Enum,
+  Eq,
+  Int,
+  Integral,
+  Num,
+  Ord,
+  Read,
+  Real,
+  Show,
+  pure,
+  (<*>),
+  (>>),
+  type (~),
+ )
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 import SDL3.Sys.Bindgen.Pixels qualified
@@ -190,6 +209,11 @@ instance Marshal.WriteRaw SDL_CameraSpec where
 
 deriving via Marshal.EquivStorable SDL_CameraSpec instance BG.Storable SDL_CameraSpec
 
+deriving via Struct.IsStructViaReadRaw SDL_CameraSpec instance Struct.IsStruct SDL_CameraSpec
+
+-- | Frame format
+--
+--     [C declaration]: @format@, defined at @SDL3\/SDL_camera.h 117:21@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat)
   => BG.CompatHasField.HasField "format" SDL_CameraSpec ty
@@ -221,6 +245,9 @@ instance HasCField.HasCField SDL_CameraSpec "format" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Frame colorspace
+--
+--     [C declaration]: @colorspace@, defined at @SDL3\/SDL_camera.h 118:20@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pixels.SDL_Colorspace)
   => BG.CompatHasField.HasField "colorspace" SDL_CameraSpec ty
@@ -252,6 +279,9 @@ instance HasCField.HasCField SDL_CameraSpec "colorspace" where
 
   offset# = \_ -> \_ -> 4
 
+-- | Frame width
+--
+--     [C declaration]: @width@, defined at @SDL3\/SDL_camera.h 119:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "width" SDL_CameraSpec ty
@@ -281,6 +311,9 @@ instance HasCField.HasCField SDL_CameraSpec "width" where
 
   offset# = \_ -> \_ -> 8
 
+-- | Frame height
+--
+--     [C declaration]: @height@, defined at @SDL3\/SDL_camera.h 120:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "height" SDL_CameraSpec ty
@@ -310,6 +343,9 @@ instance HasCField.HasCField SDL_CameraSpec "height" where
 
   offset# = \_ -> \_ -> 12
 
+-- | Frame rate numerator ((num \/ denom) == FPS, (denom \/ num) == duration in seconds)
+--
+--     [C declaration]: @framerate_numerator@, defined at @SDL3\/SDL_camera.h 121:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "framerate_numerator" SDL_CameraSpec ty
@@ -342,6 +378,9 @@ instance HasCField.HasCField SDL_CameraSpec "framerate_numerator" where
 
   offset# = \_ -> \_ -> 16
 
+-- | Frame rate denominator ((num \/ denom) == FPS, (denom \/ num) == duration in seconds)
+--
+--     [C declaration]: @framerate_denominator@, defined at @SDL3\/SDL_camera.h 122:9@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "framerate_denominator" SDL_CameraSpec ty

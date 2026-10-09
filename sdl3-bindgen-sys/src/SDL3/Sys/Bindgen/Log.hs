@@ -5,6 +5,7 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -16,6 +17,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Simple log messages with priorities and categories. A message\'s 'SDL_LogPriority' signifies how important the message is. A message\'s 'SDL_LogCategory' signifies from what domain it belongs to. Every category has a minimum priority specified: when a message belongs to that category, it will only be sent out if it has that minimum priority or higher.
 --
@@ -84,6 +86,8 @@ module SDL3.Sys.Bindgen.Log (
   SDL3.Sys.Bindgen.Log.SDL_LogOutputFunction (..),
 )
 where
+
+import Prelude (Eq, IO, Int, Ord, Read, Show, fmap, pure, (<*>), type (~))
 
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
@@ -426,13 +430,12 @@ newtype SDL_LogOutputFunction_Aux = SDL_LogOutputFunction_Aux
   { unwrap :: BG.Ptr BG.Void -> BG.CInt -> SDL_LogPriority -> PtrConst.PtrConst BG.CChar -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_LogOutputFunction_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_e51284d24485bac7_base
-    :: (BG.Ptr BG.Void -> BG.Int32 -> BG.Word32 -> BG.Ptr BG.Void -> IO ())
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Int32 -> BG.Word32 -> BG.Ptr BG.Void -> IO ()))
+    :: (BG.Ptr BG.Void -> BG.CInt -> BG.CUInt -> BG.Ptr BG.Void -> IO ())
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.CInt -> BG.CUInt -> BG.Ptr BG.Void -> IO ()))
 
 -- __unique:__ @toSDL_LogOutputFunction_Aux@
 hs_bindgen_e51284d24485bac7
@@ -440,15 +443,29 @@ hs_bindgen_e51284d24485bac7
   -> IO (BG.FunPtr SDL_LogOutputFunction_Aux)
 hs_bindgen_e51284d24485bac7 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_e51284d24485bac7_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_e51284d24485bac7_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  \x4 ->
+                    BG.getField @"unwrap"
+                      fun0
+                      (BG.fromFFIType x1)
+                      (BG.fromFFIType x2)
+                      (BG.fromFFIType x3)
+                      (BG.fromFFIType x4)
+          )
+      )
 
 -- __unique:__ @fromSDL_LogOutputFunction_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_0538751d36e72086_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Int32 -> BG.Word32 -> BG.Ptr BG.Void -> IO ())
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.CInt -> BG.CUInt -> BG.Ptr BG.Void -> IO ())
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> BG.Word32
+    -> BG.CInt
+    -> BG.CUInt
     -> BG.Ptr BG.Void
     -> IO ()
 
@@ -458,7 +475,18 @@ hs_bindgen_0538751d36e72086
   -> SDL_LogOutputFunction_Aux
 hs_bindgen_0538751d36e72086 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_0538751d36e72086_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_LogOutputFunction_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              \x4 ->
+                hs_bindgen_0538751d36e72086_base
+                  (BG.castFunPtr funPtr0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+      )
 
 instance BG.ToFunPtr SDL_LogOutputFunction_Aux where
   toFunPtr = hs_bindgen_e51284d24485bac7

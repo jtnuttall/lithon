@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Blendmode.FunPtr (
@@ -7,13 +9,16 @@ module SDL3.Sys.Bindgen.Blendmode.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Blendmode
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_blendmode.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_blendmode.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Blendmode_get_SDL_ComposeCustomBlendMode */"
          , "__attribute__ ((const))"
          , "SDL_BlendMode (*hs_bindgen_472d1766983a7c58 (void)) ("
@@ -50,7 +55,7 @@ hs_bindgen_472d1766983a7c58
            )
        )
 hs_bindgen_472d1766983a7c58 =
-  BG.fromFFIType hs_bindgen_472d1766983a7c58_base
+  fmap BG.fromFFIType hs_bindgen_472d1766983a7c58_base
 
 {-# NOINLINE sDL_ComposeCustomBlendMode #-}
 

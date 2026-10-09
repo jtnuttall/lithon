@@ -1,4 +1,5 @@
 {-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | All SDL programs need to initialize the library before starting to work with it.
 --
@@ -54,6 +55,8 @@ module SDL3.Sys.Init (
   SDL3.Sys.Init.getAppMetadataPropertySafe,
 )
 where
+
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.PtrConst qualified as PtrConst

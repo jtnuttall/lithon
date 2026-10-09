@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Camera.FunPtr (
@@ -21,6 +23,8 @@ module SDL3.Sys.Bindgen.Camera.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -31,7 +35,8 @@ import SDL3.Sys.Bindgen.Surface qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_camera.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_camera.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Camera_get_SDL_GetNumCameraDrivers */"
          , "__attribute__ ((const))"
          , "signed int (*hs_bindgen_2fe56f3f652d0579 (void)) (void)"
@@ -169,7 +174,7 @@ foreign import ccall unsafe "hs_bindgen_2fe56f3f652d0579"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_get_SDL_GetNumCameraDrivers@
 hs_bindgen_2fe56f3f652d0579 :: IO (BG.FunPtr (IO BG.CInt))
 hs_bindgen_2fe56f3f652d0579 =
-  BG.fromFFIType hs_bindgen_2fe56f3f652d0579_base
+  fmap BG.fromFFIType hs_bindgen_2fe56f3f652d0579_base
 
 {-# NOINLINE sDL_GetNumCameraDrivers #-}
 
@@ -200,7 +205,7 @@ foreign import ccall unsafe "hs_bindgen_c446a6779ba24477"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_get_SDL_GetCameraDriver@
 hs_bindgen_c446a6779ba24477 :: IO (BG.FunPtr (BG.CInt -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_c446a6779ba24477 =
-  BG.fromFFIType hs_bindgen_c446a6779ba24477_base
+  fmap BG.fromFFIType hs_bindgen_c446a6779ba24477_base
 
 {-# NOINLINE sDL_GetCameraDriver #-}
 
@@ -233,7 +238,7 @@ foreign import ccall unsafe "hs_bindgen_450b62c8a8bdad25"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_get_SDL_GetCurrentCameraDriver@
 hs_bindgen_450b62c8a8bdad25 :: IO (BG.FunPtr (IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_450b62c8a8bdad25 =
-  BG.fromFFIType hs_bindgen_450b62c8a8bdad25_base
+  fmap BG.fromFFIType hs_bindgen_450b62c8a8bdad25_base
 
 {-# NOINLINE sDL_GetCurrentCameraDriver #-}
 
@@ -260,7 +265,7 @@ foreign import ccall unsafe "hs_bindgen_bc1a5321dad7fcb1"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_get_SDL_GetCameras@
 hs_bindgen_bc1a5321dad7fcb1 :: IO (BG.FunPtr (BG.Ptr BG.CInt -> IO (BG.Ptr SDL_CameraID)))
 hs_bindgen_bc1a5321dad7fcb1 =
-  BG.fromFFIType hs_bindgen_bc1a5321dad7fcb1_base
+  fmap BG.fromFFIType hs_bindgen_bc1a5321dad7fcb1_base
 
 {-# NOINLINE sDL_GetCameras #-}
 
@@ -290,7 +295,7 @@ foreign import ccall unsafe "hs_bindgen_bf28278a90a763f1"
 hs_bindgen_bf28278a90a763f1
   :: IO (BG.FunPtr (SDL_CameraID -> BG.Ptr BG.CInt -> IO (BG.Ptr (BG.Ptr SDL_CameraSpec))))
 hs_bindgen_bf28278a90a763f1 =
-  BG.fromFFIType hs_bindgen_bf28278a90a763f1_base
+  fmap BG.fromFFIType hs_bindgen_bf28278a90a763f1_base
 
 {-# NOINLINE sDL_GetCameraSupportedFormats #-}
 
@@ -330,7 +335,7 @@ foreign import ccall unsafe "hs_bindgen_55dbe06bac2f3a2a"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_get_SDL_GetCameraName@
 hs_bindgen_55dbe06bac2f3a2a :: IO (BG.FunPtr (SDL_CameraID -> IO (PtrConst.PtrConst BG.CChar)))
 hs_bindgen_55dbe06bac2f3a2a =
-  BG.fromFFIType hs_bindgen_55dbe06bac2f3a2a_base
+  fmap BG.fromFFIType hs_bindgen_55dbe06bac2f3a2a_base
 
 {-# NOINLINE sDL_GetCameraName #-}
 
@@ -359,7 +364,7 @@ foreign import ccall unsafe "hs_bindgen_9aa8f16a3313e368"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_get_SDL_GetCameraPosition@
 hs_bindgen_9aa8f16a3313e368 :: IO (BG.FunPtr (SDL_CameraID -> IO SDL_CameraPosition))
 hs_bindgen_9aa8f16a3313e368 =
-  BG.fromFFIType hs_bindgen_9aa8f16a3313e368_base
+  fmap BG.fromFFIType hs_bindgen_9aa8f16a3313e368_base
 
 {-# NOINLINE sDL_GetCameraPosition #-}
 
@@ -391,7 +396,7 @@ foreign import ccall unsafe "hs_bindgen_b00c5599a7791662"
 hs_bindgen_b00c5599a7791662
   :: IO (BG.FunPtr (SDL_CameraID -> PtrConst.PtrConst SDL_CameraSpec -> IO (BG.Ptr SDL_Camera)))
 hs_bindgen_b00c5599a7791662 =
-  BG.fromFFIType hs_bindgen_b00c5599a7791662_base
+  fmap BG.fromFFIType hs_bindgen_b00c5599a7791662_base
 
 {-# NOINLINE sDL_OpenCamera #-}
 
@@ -433,7 +438,7 @@ foreign import ccall unsafe "hs_bindgen_48f0024f18d7e07c"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_get_SDL_GetCameraPermissionState@
 hs_bindgen_48f0024f18d7e07c :: IO (BG.FunPtr (BG.Ptr SDL_Camera -> IO SDL_CameraPermissionState))
 hs_bindgen_48f0024f18d7e07c =
-  BG.fromFFIType hs_bindgen_48f0024f18d7e07c_base
+  fmap BG.fromFFIType hs_bindgen_48f0024f18d7e07c_base
 
 {-# NOINLINE sDL_GetCameraPermissionState #-}
 
@@ -470,7 +475,7 @@ foreign import ccall unsafe "hs_bindgen_0229aa426471e9f3"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_get_SDL_GetCameraID@
 hs_bindgen_0229aa426471e9f3 :: IO (BG.FunPtr (BG.Ptr SDL_Camera -> IO SDL_CameraID))
 hs_bindgen_0229aa426471e9f3 =
-  BG.fromFFIType hs_bindgen_0229aa426471e9f3_base
+  fmap BG.fromFFIType hs_bindgen_0229aa426471e9f3_base
 
 {-# NOINLINE sDL_GetCameraID #-}
 
@@ -500,7 +505,7 @@ foreign import ccall unsafe "hs_bindgen_811d109afab05470"
 hs_bindgen_811d109afab05470
   :: IO (BG.FunPtr (BG.Ptr SDL_Camera -> IO SDL3.Sys.Bindgen.Properties.SDL_PropertiesID))
 hs_bindgen_811d109afab05470 =
-  BG.fromFFIType hs_bindgen_811d109afab05470_base
+  fmap BG.fromFFIType hs_bindgen_811d109afab05470_base
 
 {-# NOINLINE sDL_GetCameraProperties #-}
 
@@ -529,7 +534,7 @@ foreign import ccall unsafe "hs_bindgen_c31156109d01dac2"
 hs_bindgen_c31156109d01dac2
   :: IO (BG.FunPtr (BG.Ptr SDL_Camera -> BG.Ptr SDL_CameraSpec -> IO BG.CBool))
 hs_bindgen_c31156109d01dac2 =
-  BG.fromFFIType hs_bindgen_c31156109d01dac2_base
+  fmap BG.fromFFIType hs_bindgen_c31156109d01dac2_base
 
 {-# NOINLINE sDL_GetCameraFormat #-}
 
@@ -571,7 +576,7 @@ hs_bindgen_15418e0f8c1b74ab
            )
        )
 hs_bindgen_15418e0f8c1b74ab =
-  BG.fromFFIType hs_bindgen_15418e0f8c1b74ab_base
+  fmap BG.fromFFIType hs_bindgen_15418e0f8c1b74ab_base
 
 {-# NOINLINE sDL_AcquireCameraFrame #-}
 
@@ -620,7 +625,7 @@ foreign import ccall unsafe "hs_bindgen_e130359542808d09"
 hs_bindgen_e130359542808d09
   :: IO (BG.FunPtr (BG.Ptr SDL_Camera -> BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface -> IO ()))
 hs_bindgen_e130359542808d09 =
-  BG.fromFFIType hs_bindgen_e130359542808d09_base
+  fmap BG.fromFFIType hs_bindgen_e130359542808d09_base
 
 {-# NOINLINE sDL_ReleaseCameraFrame #-}
 
@@ -658,7 +663,7 @@ foreign import ccall unsafe "hs_bindgen_bdcef6daeaf762cd"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Camera_get_SDL_CloseCamera@
 hs_bindgen_bdcef6daeaf762cd :: IO (BG.FunPtr (BG.Ptr SDL_Camera -> IO ()))
 hs_bindgen_bdcef6daeaf762cd =
-  BG.fromFFIType hs_bindgen_bdcef6daeaf762cd_base
+  fmap BG.fromFFIType hs_bindgen_bdcef6daeaf762cd_base
 
 {-# NOINLINE sDL_CloseCamera #-}
 

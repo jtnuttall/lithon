@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Bits.Safe (
@@ -8,13 +10,17 @@ module SDL3.Sys.Bindgen.Bits.Safe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_bits.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_bits.h>"
          , "signed int hs_bindgen_456d262a9d645a2c ("
          , "  Uint32 arg1"
          , ")"
@@ -34,15 +40,16 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Bits_Safe_SDL_MostSignificantBitIndex32@
 foreign import ccall safe "hs_bindgen_456d262a9d645a2c"
   hs_bindgen_456d262a9d645a2c_base
-    :: BG.Word32
-    -> IO BG.Int32
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Bits_Safe_SDL_MostSignificantBitIndex32@
 hs_bindgen_456d262a9d645a2c
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CInt
 hs_bindgen_456d262a9d645a2c =
-  BG.fromFFIType hs_bindgen_456d262a9d645a2c_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_456d262a9d645a2c_base (BG.toFFIType x0))
 
 -- | [C declaration]: @SDL_MostSignificantBitIndex32@, defined at @SDL3\/SDL_bits.h 65:22@
 sDL_MostSignificantBitIndex32
@@ -55,15 +62,16 @@ sDL_MostSignificantBitIndex32 =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Bits_Safe_SDL_HasExactlyOneBitSet32@
 foreign import ccall safe "hs_bindgen_f02b1182f4d7fd03"
   hs_bindgen_f02b1182f4d7fd03_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Bits_Safe_SDL_HasExactlyOneBitSet32@
 hs_bindgen_f02b1182f4d7fd03
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -> IO BG.CBool
 hs_bindgen_f02b1182f4d7fd03 =
-  BG.fromFFIType hs_bindgen_f02b1182f4d7fd03_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_f02b1182f4d7fd03_base (BG.toFFIType x0))
 
 -- | Determine if a unsigned 32-bit value has exactly one bit set.
 --

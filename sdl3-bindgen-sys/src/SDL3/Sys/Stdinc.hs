@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL\'s C-library replacements: memory, strings, math, and conversions.
 --
 --     == FFI conventions
@@ -205,6 +207,7 @@ module SDL3.Sys.Stdinc (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, Double, Float, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | Thread synchronization primitives: mutexes, semaphores, condition variables, and read\/write locks.
 --
 --     == FFI conventions
@@ -69,6 +71,7 @@ module SDL3.Sys.Mutex (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.Support qualified as BG

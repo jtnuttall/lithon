@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Misc.FunPtr (
@@ -7,13 +9,16 @@ module SDL3.Sys.Bindgen.Misc.FunPtr (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_misc.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_misc.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Misc_get_SDL_OpenURL */"
          , "__attribute__ ((const))"
          , "_Bool (*hs_bindgen_4c967d8f61448acb (void)) ("
@@ -34,7 +39,7 @@ foreign import ccall unsafe "hs_bindgen_4c967d8f61448acb"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Misc_get_SDL_OpenURL@
 hs_bindgen_4c967d8f61448acb :: IO (BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO BG.CBool))
 hs_bindgen_4c967d8f61448acb =
-  BG.fromFFIType hs_bindgen_4c967d8f61448acb_base
+  fmap BG.fromFFIType hs_bindgen_4c967d8f61448acb_base
 
 {-# NOINLINE sDL_OpenURL #-}
 

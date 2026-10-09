@@ -232,10 +232,12 @@ intLikeTypeConversionRank plat =
 -- on this platform?
 intLikeTypeFitsInInt :: Platform -> IntLikeType -> Bool
 intLikeTypeFitsInInt plat ty =
-  -- TODO: this logic is questionable, as in theory I think we could have
-  -- an 'IntLike' type of a small size but of an entirely distinct range,
-  -- e.g. an 8-bit unsigned integer type that can store values in the range
-  -- [2^32, 2^32+2^8-1].
+  -- TODO <https://github.com/well-typed/c-expr/issues/27>
+  --
+  -- This logic is questionable, as in theory I think we could have an 'IntLike'
+  -- type of a small size but of an entirely distinct range, e.g. an 8-bit
+  -- unsigned integer type that can store values in the range [2^32,
+  -- 2^32+2^8-1].
   case intLikeTypeSign ty of
     Signed ->
       sz <= intSz

@@ -6,6 +6,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -17,6 +18,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | File dialog support.
 --
@@ -50,10 +52,13 @@ module SDL3.Sys.Bindgen.Dialog (
 )
 where
 
+import Prelude (Eq, IO, Int, Ord, Read, Show, fmap, pure, (<*>), (>>), type (~))
+
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 
@@ -89,6 +94,12 @@ instance Marshal.WriteRaw SDL_DialogFileFilter where
 
 deriving via Marshal.EquivStorable SDL_DialogFileFilter instance BG.Storable SDL_DialogFileFilter
 
+deriving via
+  Struct.IsStructViaReadRaw SDL_DialogFileFilter
+  instance
+    Struct.IsStruct SDL_DialogFileFilter
+
+-- | [C declaration]: @name@, defined at @SDL3\/SDL_dialog.h 72:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "name" SDL_DialogFileFilter ty
@@ -113,6 +124,7 @@ instance HasCField.HasCField SDL_DialogFileFilter "name" where
 
   offset# = \_ -> \_ -> 0
 
+-- | [C declaration]: @pattern@, defined at @SDL3\/SDL_dialog.h 73:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "pattern'" SDL_DialogFileFilter ty
@@ -144,13 +156,12 @@ newtype SDL_DialogFileCallback_Aux = SDL_DialogFileCallback_Aux
   { unwrap :: BG.Ptr BG.Void -> PtrConst.PtrConst (PtrConst.PtrConst BG.CChar) -> BG.CInt -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_DialogFileCallback_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_99f6498d5c37dad6_base
-    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Int32 -> IO ())
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Int32 -> IO ()))
+    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.CInt -> IO ())
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.CInt -> IO ()))
 
 -- __unique:__ @toSDL_DialogFileCallback_Aux@
 hs_bindgen_99f6498d5c37dad6
@@ -158,15 +169,23 @@ hs_bindgen_99f6498d5c37dad6
   -> IO (BG.FunPtr SDL_DialogFileCallback_Aux)
 hs_bindgen_99f6498d5c37dad6 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_99f6498d5c37dad6_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_99f6498d5c37dad6_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2) (BG.fromFFIType x3)
+          )
+      )
 
 -- __unique:__ @fromSDL_DialogFileCallback_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_10f8f9d1eb0aafd5_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Int32 -> IO ())
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.CInt -> IO ())
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
+    -> BG.CInt
     -> IO ()
 
 -- __unique:__ @fromSDL_DialogFileCallback_Aux@
@@ -175,7 +194,16 @@ hs_bindgen_10f8f9d1eb0aafd5
   -> SDL_DialogFileCallback_Aux
 hs_bindgen_10f8f9d1eb0aafd5 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_10f8f9d1eb0aafd5_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_DialogFileCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              hs_bindgen_10f8f9d1eb0aafd5_base
+                (BG.castFunPtr funPtr0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+      )
 
 instance BG.ToFunPtr SDL_DialogFileCallback_Aux where
   toFunPtr = hs_bindgen_99f6498d5c37dad6

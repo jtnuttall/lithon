@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Properties.Unsafe (
@@ -27,6 +29,9 @@ module SDL3.Sys.Bindgen.Properties.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -35,7 +40,8 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_properties.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_properties.h>"
          , "SDL_PropertiesID hs_bindgen_c42d6db8a32f055e (void)"
          , "{"
          , "  return (SDL_GetGlobalProperties)();"
@@ -195,12 +201,12 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_GetGlobalProperties@
 foreign import ccall unsafe "hs_bindgen_c42d6db8a32f055e"
   hs_bindgen_c42d6db8a32f055e_base
-    :: IO BG.Word32
+    :: IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_GetGlobalProperties@
 hs_bindgen_c42d6db8a32f055e :: IO SDL_PropertiesID
 hs_bindgen_c42d6db8a32f055e =
-  BG.fromFFIType hs_bindgen_c42d6db8a32f055e_base
+  fmap BG.fromFFIType hs_bindgen_c42d6db8a32f055e_base
 
 -- | Get the global SDL properties.
 --
@@ -217,12 +223,12 @@ sDL_GetGlobalProperties = hs_bindgen_c42d6db8a32f055e
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_CreateProperties@
 foreign import ccall unsafe "hs_bindgen_3df6eaf391028f3a"
   hs_bindgen_3df6eaf391028f3a_base
-    :: IO BG.Word32
+    :: IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_CreateProperties@
 hs_bindgen_3df6eaf391028f3a :: IO SDL_PropertiesID
 hs_bindgen_3df6eaf391028f3a =
-  BG.fromFFIType hs_bindgen_3df6eaf391028f3a_base
+  fmap BG.fromFFIType hs_bindgen_3df6eaf391028f3a_base
 
 -- | Create a group of properties.
 --
@@ -243,9 +249,9 @@ sDL_CreateProperties = hs_bindgen_3df6eaf391028f3a
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_CopyProperties@
 foreign import ccall unsafe "hs_bindgen_ec7346bf04c8fb1f"
   hs_bindgen_ec7346bf04c8fb1f_base
-    :: BG.Word32
-    -> BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_CopyProperties@
 hs_bindgen_ec7346bf04c8fb1f
@@ -253,7 +259,9 @@ hs_bindgen_ec7346bf04c8fb1f
   -> SDL_PropertiesID
   -> IO BG.CBool
 hs_bindgen_ec7346bf04c8fb1f =
-  BG.fromFFIType hs_bindgen_ec7346bf04c8fb1f_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_ec7346bf04c8fb1f_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Copy a group of properties.
 --
@@ -281,15 +289,16 @@ sDL_CopyProperties = hs_bindgen_ec7346bf04c8fb1f
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_LockProperties@
 foreign import ccall unsafe "hs_bindgen_9d2b19ecdcff5a9a"
   hs_bindgen_9d2b19ecdcff5a9a_base
-    :: BG.Word32
-    -> IO BG.Word8
+    :: HsBindgen.Runtime.LibC.Word32
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_LockProperties@
 hs_bindgen_9d2b19ecdcff5a9a
   :: SDL_PropertiesID
   -> IO BG.CBool
 hs_bindgen_9d2b19ecdcff5a9a =
-  BG.fromFFIType hs_bindgen_9d2b19ecdcff5a9a_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_9d2b19ecdcff5a9a_base (BG.toFFIType x0))
 
 -- | Lock a group of properties.
 --
@@ -317,7 +326,7 @@ sDL_LockProperties = hs_bindgen_9d2b19ecdcff5a9a
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_UnlockProperties@
 foreign import ccall unsafe "hs_bindgen_36fc1538f3f888d4"
   hs_bindgen_36fc1538f3f888d4_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_UnlockProperties@
@@ -325,7 +334,8 @@ hs_bindgen_36fc1538f3f888d4
   :: SDL_PropertiesID
   -> IO ()
 hs_bindgen_36fc1538f3f888d4 =
-  BG.fromFFIType hs_bindgen_36fc1538f3f888d4_base
+  \x0 ->
+    hs_bindgen_36fc1538f3f888d4_base (BG.toFFIType x0)
 
 -- | Unlock a group of properties.
 --
@@ -347,12 +357,12 @@ sDL_UnlockProperties = hs_bindgen_36fc1538f3f888d4
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_SetPointerPropertyWithCleanup@
 foreign import ccall unsafe "hs_bindgen_ac9cc1ad6b8fd333"
   hs_bindgen_ac9cc1ad6b8fd333_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_SetPointerPropertyWithCleanup@
 hs_bindgen_ac9cc1ad6b8fd333
@@ -363,7 +373,20 @@ hs_bindgen_ac9cc1ad6b8fd333
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_ac9cc1ad6b8fd333 =
-  BG.fromFFIType hs_bindgen_ac9cc1ad6b8fd333_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          \x4 ->
+            fmap
+              BG.fromFFIType
+              ( hs_bindgen_ac9cc1ad6b8fd333_base
+                  (BG.toFFIType x0)
+                  (BG.toFFIType x1)
+                  (BG.toFFIType x2)
+                  (BG.toFFIType x3)
+                  (BG.toFFIType x4)
+              )
 
 -- | Set a pointer property in a group of properties with a cleanup function that is called when the property is deleted.
 --
@@ -408,10 +431,10 @@ sDL_SetPointerPropertyWithCleanup =
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_SetPointerProperty@
 foreign import ccall unsafe "hs_bindgen_7470d8d3e33299dd"
   hs_bindgen_7470d8d3e33299dd_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_SetPointerProperty@
 hs_bindgen_7470d8d3e33299dd
@@ -420,7 +443,12 @@ hs_bindgen_7470d8d3e33299dd
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_7470d8d3e33299dd =
-  BG.fromFFIType hs_bindgen_7470d8d3e33299dd_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_7470d8d3e33299dd_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set a pointer property in a group of properties.
 --
@@ -452,10 +480,10 @@ sDL_SetPointerProperty = hs_bindgen_7470d8d3e33299dd
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_SetStringProperty@
 foreign import ccall unsafe "hs_bindgen_8c4e2fe0b0c344fa"
   hs_bindgen_8c4e2fe0b0c344fa_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_SetStringProperty@
 hs_bindgen_8c4e2fe0b0c344fa
@@ -464,7 +492,12 @@ hs_bindgen_8c4e2fe0b0c344fa
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_8c4e2fe0b0c344fa =
-  BG.fromFFIType hs_bindgen_8c4e2fe0b0c344fa_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_8c4e2fe0b0c344fa_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set a string property in a group of properties.
 --
@@ -498,10 +531,10 @@ sDL_SetStringProperty = hs_bindgen_8c4e2fe0b0c344fa
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_SetNumberProperty@
 foreign import ccall unsafe "hs_bindgen_adbe15832a85614f"
   hs_bindgen_adbe15832a85614f_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Int64
-    -> IO BG.Word8
+    -> HsBindgen.Runtime.LibC.Int64
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_SetNumberProperty@
 hs_bindgen_adbe15832a85614f
@@ -510,7 +543,12 @@ hs_bindgen_adbe15832a85614f
   -> SDL3.Sys.Bindgen.Stdinc.Sint64
   -> IO BG.CBool
 hs_bindgen_adbe15832a85614f =
-  BG.fromFFIType hs_bindgen_adbe15832a85614f_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_adbe15832a85614f_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set an integer property in a group of properties.
 --
@@ -542,10 +580,10 @@ sDL_SetNumberProperty = hs_bindgen_adbe15832a85614f
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_SetFloatProperty@
 foreign import ccall unsafe "hs_bindgen_cd3f1858894a3c1a"
   hs_bindgen_cd3f1858894a3c1a_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> Float
-    -> IO BG.Word8
+    -> BG.CFloat
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_SetFloatProperty@
 hs_bindgen_cd3f1858894a3c1a
@@ -554,7 +592,12 @@ hs_bindgen_cd3f1858894a3c1a
   -> BG.CFloat
   -> IO BG.CBool
 hs_bindgen_cd3f1858894a3c1a =
-  BG.fromFFIType hs_bindgen_cd3f1858894a3c1a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_cd3f1858894a3c1a_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set a floating point property in a group of properties.
 --
@@ -586,10 +629,10 @@ sDL_SetFloatProperty = hs_bindgen_cd3f1858894a3c1a
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_SetBooleanProperty@
 foreign import ccall unsafe "hs_bindgen_54a909439447714a"
   hs_bindgen_54a909439447714a_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_SetBooleanProperty@
 hs_bindgen_54a909439447714a
@@ -598,7 +641,12 @@ hs_bindgen_54a909439447714a
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_54a909439447714a =
-  BG.fromFFIType hs_bindgen_54a909439447714a_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_54a909439447714a_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Set a boolean property in a group of properties.
 --
@@ -630,9 +678,9 @@ sDL_SetBooleanProperty = hs_bindgen_54a909439447714a
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_HasProperty@
 foreign import ccall unsafe "hs_bindgen_668d738b4f14a372"
   hs_bindgen_668d738b4f14a372_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_HasProperty@
 hs_bindgen_668d738b4f14a372
@@ -640,7 +688,9 @@ hs_bindgen_668d738b4f14a372
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_668d738b4f14a372 =
-  BG.fromFFIType hs_bindgen_668d738b4f14a372_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_668d738b4f14a372_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Return whether a property exists in a group of properties.
 --
@@ -668,9 +718,9 @@ sDL_HasProperty = hs_bindgen_668d738b4f14a372
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_GetPropertyType@
 foreign import ccall unsafe "hs_bindgen_0dc114a9b956e6b4"
   hs_bindgen_0dc114a9b956e6b4_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> IO BG.Word32
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_GetPropertyType@
 hs_bindgen_0dc114a9b956e6b4
@@ -678,7 +728,9 @@ hs_bindgen_0dc114a9b956e6b4
   -> PtrConst.PtrConst BG.CChar
   -> IO SDL_PropertyType
 hs_bindgen_0dc114a9b956e6b4 =
-  BG.fromFFIType hs_bindgen_0dc114a9b956e6b4_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_0dc114a9b956e6b4_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Get the type of a property in a group of properties.
 --
@@ -706,7 +758,7 @@ sDL_GetPropertyType = hs_bindgen_0dc114a9b956e6b4
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_GetPointerProperty@
 foreign import ccall unsafe "hs_bindgen_137a3bf658fca01b"
   hs_bindgen_137a3bf658fca01b_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> IO (BG.Ptr BG.Void)
@@ -718,7 +770,12 @@ hs_bindgen_137a3bf658fca01b
   -> BG.Ptr BG.Void
   -> IO (BG.Ptr BG.Void)
 hs_bindgen_137a3bf658fca01b =
-  BG.fromFFIType hs_bindgen_137a3bf658fca01b_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_137a3bf658fca01b_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get a pointer property from a group of properties.
 --
@@ -752,7 +809,7 @@ sDL_GetPointerProperty = hs_bindgen_137a3bf658fca01b
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_GetStringProperty@
 foreign import ccall unsafe "hs_bindgen_13dfafaed8ef603e"
   hs_bindgen_13dfafaed8ef603e_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> IO (BG.Ptr BG.Void)
@@ -764,7 +821,12 @@ hs_bindgen_13dfafaed8ef603e
   -> PtrConst.PtrConst BG.CChar
   -> IO (PtrConst.PtrConst BG.CChar)
 hs_bindgen_13dfafaed8ef603e =
-  BG.fromFFIType hs_bindgen_13dfafaed8ef603e_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_13dfafaed8ef603e_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get a string property from a group of properties.
 --
@@ -796,10 +858,10 @@ sDL_GetStringProperty = hs_bindgen_13dfafaed8ef603e
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_GetNumberProperty@
 foreign import ccall unsafe "hs_bindgen_047e09cd4176f3ce"
   hs_bindgen_047e09cd4176f3ce_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Int64
-    -> IO BG.Int64
+    -> HsBindgen.Runtime.LibC.Int64
+    -> IO HsBindgen.Runtime.LibC.Int64
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_GetNumberProperty@
 hs_bindgen_047e09cd4176f3ce
@@ -808,7 +870,12 @@ hs_bindgen_047e09cd4176f3ce
   -> SDL3.Sys.Bindgen.Stdinc.Sint64
   -> IO SDL3.Sys.Bindgen.Stdinc.Sint64
 hs_bindgen_047e09cd4176f3ce =
-  BG.fromFFIType hs_bindgen_047e09cd4176f3ce_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_047e09cd4176f3ce_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get a number property from a group of properties.
 --
@@ -842,10 +909,10 @@ sDL_GetNumberProperty = hs_bindgen_047e09cd4176f3ce
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_GetFloatProperty@
 foreign import ccall unsafe "hs_bindgen_54dfc33f97564e4d"
   hs_bindgen_54dfc33f97564e4d_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> Float
-    -> IO Float
+    -> BG.CFloat
+    -> IO BG.CFloat
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_GetFloatProperty@
 hs_bindgen_54dfc33f97564e4d
@@ -854,7 +921,12 @@ hs_bindgen_54dfc33f97564e4d
   -> BG.CFloat
   -> IO BG.CFloat
 hs_bindgen_54dfc33f97564e4d =
-  BG.fromFFIType hs_bindgen_54dfc33f97564e4d_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_54dfc33f97564e4d_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get a floating point property from a group of properties.
 --
@@ -888,10 +960,10 @@ sDL_GetFloatProperty = hs_bindgen_54dfc33f97564e4d
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_GetBooleanProperty@
 foreign import ccall unsafe "hs_bindgen_ff205e1f9b9cb233"
   hs_bindgen_ff205e1f9b9cb233_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> BG.Word8
-    -> IO BG.Word8
+    -> BG.CBool
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_GetBooleanProperty@
 hs_bindgen_ff205e1f9b9cb233
@@ -900,7 +972,12 @@ hs_bindgen_ff205e1f9b9cb233
   -> BG.CBool
   -> IO BG.CBool
 hs_bindgen_ff205e1f9b9cb233 =
-  BG.fromFFIType hs_bindgen_ff205e1f9b9cb233_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_ff205e1f9b9cb233_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Get a boolean property from a group of properties.
 --
@@ -934,9 +1011,9 @@ sDL_GetBooleanProperty = hs_bindgen_ff205e1f9b9cb233
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_ClearProperty@
 foreign import ccall unsafe "hs_bindgen_2b64b35dcac92b2c"
   hs_bindgen_2b64b35dcac92b2c_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_ClearProperty@
 hs_bindgen_2b64b35dcac92b2c
@@ -944,7 +1021,9 @@ hs_bindgen_2b64b35dcac92b2c
   -> PtrConst.PtrConst BG.CChar
   -> IO BG.CBool
 hs_bindgen_2b64b35dcac92b2c =
-  BG.fromFFIType hs_bindgen_2b64b35dcac92b2c_base
+  \x0 ->
+    \x1 ->
+      fmap BG.fromFFIType (hs_bindgen_2b64b35dcac92b2c_base (BG.toFFIType x0) (BG.toFFIType x1))
 
 -- | Clear a property from a group of properties.
 --
@@ -970,10 +1049,10 @@ sDL_ClearProperty = hs_bindgen_2b64b35dcac92b2c
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_EnumerateProperties@
 foreign import ccall unsafe "hs_bindgen_568e06654af8bf56"
   hs_bindgen_568e06654af8bf56_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> BG.FunPtr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Word8
+    -> IO BG.CBool
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_EnumerateProperties@
 hs_bindgen_568e06654af8bf56
@@ -982,7 +1061,12 @@ hs_bindgen_568e06654af8bf56
   -> BG.Ptr BG.Void
   -> IO BG.CBool
 hs_bindgen_568e06654af8bf56 =
-  BG.fromFFIType hs_bindgen_568e06654af8bf56_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        fmap
+          BG.fromFFIType
+          (hs_bindgen_568e06654af8bf56_base (BG.toFFIType x0) (BG.toFFIType x1) (BG.toFFIType x2))
 
 -- | Enumerate the properties contained in a group of properties.
 --
@@ -1014,7 +1098,7 @@ sDL_EnumerateProperties = hs_bindgen_568e06654af8bf56
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_DestroyProperties@
 foreign import ccall unsafe "hs_bindgen_eeb9d2ee08b0f608"
   hs_bindgen_eeb9d2ee08b0f608_base
-    :: BG.Word32
+    :: HsBindgen.Runtime.LibC.Word32
     -> IO ()
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Properties_Unsafe_SDL_DestroyProperties@
@@ -1022,7 +1106,8 @@ hs_bindgen_eeb9d2ee08b0f608
   :: SDL_PropertiesID
   -> IO ()
 hs_bindgen_eeb9d2ee08b0f608 =
-  BG.fromFFIType hs_bindgen_eeb9d2ee08b0f608_base
+  \x0 ->
+    hs_bindgen_eeb9d2ee08b0f608_base (BG.toFFIType x0)
 
 -- | Destroy a group of properties.
 --

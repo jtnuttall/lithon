@@ -17,6 +17,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL keyboard management.
 --
@@ -53,6 +54,8 @@ module SDL3.Sys.Bindgen.Keyboard (
   SDL3.Sys.Bindgen.Keyboard.sDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER,
 )
 where
+
+import Prelude (Bounded, Enum, Eq, Int, Integral, Num, Ord, Read, Real, Show, pure, (<*>), type (~))
 
 import HsBindgen.Runtime.CEnum qualified as CEnum
 import HsBindgen.Runtime.HasCField qualified as HasCField

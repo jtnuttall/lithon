@@ -42,8 +42,8 @@ module Lithon.Codegen.Bindgen.Target (
   includeArgLine,
   projectHeaderUnder,
   registryDisplayPath,
-  defineArg,
   defineLine,
+  defineMacro,
 
   -- * The header plan
   headerPlan,
@@ -230,9 +230,9 @@ includeLine t = includeArgLine . includeArg t
 includeArgLine :: FilePath -> Text
 includeArgLine arg = "#include <" <> toText arg <> ">"
 
--- | Include-graph source path -> public-header basename: @Just@ exactly
--- when the header's parent directory is the include root (libc, clang
--- builtins, and nested directories are out of scope).
+-- | Include-graph real path (canonical, symlink-resolved) -> public-header
+-- basename: @Just@ exactly when the header's parent directory is the include
+-- root (libc, clang builtins, and nested directories are out of scope).
 projectHeaderUnder :: FilePath -> FilePath -> Maybe FilePath
 projectHeaderUnder root path =
   case reverse (splitDirectories path) of
@@ -244,14 +244,16 @@ projectHeaderUnder root path =
 registryDisplayPath :: BindgenTarget -> FilePath -> FilePath
 registryDisplayPath t file = "lithon-codegen/data/" <> toString t.key <> "/" <> file
 
--- | The define as a compiler argument (hs-bindgen's @-D@): @NAME@ or
--- @NAME=VALUE@.
-defineArg :: CDefine -> String
-defineArg d = toString (d.name <> maybe "" ("=" <>) d.value)
-
 -- | The define as a C source line.
 defineLine :: CDefine -> Text
 defineLine d = "#define " <> d.name <> maybe "" (" " <>) d.value
+
+-- | The define as the seam's @(name, body)@ pair for a root @#define@
+-- (hs-bindgen's own type is @HashDefine@). An absent value is an empty body,
+-- i.e. a bare @#define NAME@ (matching 'defineLine'), never the @-DNAME@
+-- spelling's @NAME 1@.
+defineMacro :: CDefine -> (Text, Text)
+defineMacro d = (d.name, fromMaybe "" d.value)
 
 -- | The target's header universe, as data.
 headerPlan :: BindgenTarget -> HeaderPlan

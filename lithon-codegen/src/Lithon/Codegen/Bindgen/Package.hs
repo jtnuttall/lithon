@@ -263,9 +263,13 @@ runtimeLeafhsBindgenFacades =
   , "FLAM"
   , "HasCBitfield"
   , "HasCField"
+  , "HasFFIType"
   , "IncompleteArray"
   , "IsArray"
+  , "Macro"
   , "Marshal"
+  , "Overloading"
   , "PtrConst"
+  , "Struct"
   , "Union"
   ]

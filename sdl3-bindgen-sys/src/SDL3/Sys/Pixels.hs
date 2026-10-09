@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 -- | SDL offers facilities for pixel management.
 --
 --     Largely these facilities deal with pixel /format/: what does this set of bits represent?
@@ -71,6 +73,7 @@ module SDL3.Sys.Pixels (
 where
 
 import Data.Coerce qualified as Coerce
+import Prelude (Bool, IO, fmap)
 
 import HsBindgen.Runtime.CBool qualified as CBool
 import HsBindgen.Runtime.LibC qualified

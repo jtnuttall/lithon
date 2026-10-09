@@ -5,6 +5,7 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -14,6 +15,7 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module Mpv.Sys.Bindgen.StreamCb (
   Mpv.Sys.Bindgen.StreamCb.Mpv_stream_cb_read_fn_Aux (..),
@@ -32,9 +34,12 @@ module Mpv.Sys.Bindgen.StreamCb (
 )
 where
 
+import Prelude (Eq, IO, Int, Ord, Show, fmap, pure, (<*>), (>>), type (~))
+
 import HsBindgen.Runtime.HasCField qualified as HasCField
 import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Marshal qualified as Marshal
+import HsBindgen.Runtime.Struct qualified as Struct
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
 
@@ -49,13 +54,15 @@ newtype Mpv_stream_cb_read_fn_Aux = Mpv_stream_cb_read_fn_Aux
       -> IO HsBindgen.Runtime.LibC.Int64
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toMpv_stream_cb_read_fn_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_2dd5ecc96cba74ab_base
-    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Word64 -> IO BG.Int64)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Word64 -> IO BG.Int64))
+    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.Word64 -> IO HsBindgen.Runtime.LibC.Int64)
+    -> IO
+         ( BG.FunPtr
+             (BG.Ptr BG.Void -> BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.Word64 -> IO HsBindgen.Runtime.LibC.Int64)
+         )
 
 -- __unique:__ @toMpv_stream_cb_read_fn_Aux@
 hs_bindgen_2dd5ecc96cba74ab
@@ -63,16 +70,27 @@ hs_bindgen_2dd5ecc96cba74ab
   -> IO (BG.FunPtr Mpv_stream_cb_read_fn_Aux)
 hs_bindgen_2dd5ecc96cba74ab =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_2dd5ecc96cba74ab_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_2dd5ecc96cba74ab_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  fmap
+                    BG.toFFIType
+                    (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2) (BG.fromFFIType x3))
+          )
+      )
 
 -- __unique:__ @fromMpv_stream_cb_read_fn_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_48c0f3437d2ed5e0_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Word64 -> IO BG.Int64)
+    :: BG.FunPtr
+         (BG.Ptr BG.Void -> BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.Word64 -> IO HsBindgen.Runtime.LibC.Int64)
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Word64
-    -> IO BG.Int64
+    -> HsBindgen.Runtime.LibC.Word64
+    -> IO HsBindgen.Runtime.LibC.Int64
 
 -- __unique:__ @fromMpv_stream_cb_read_fn_Aux@
 hs_bindgen_48c0f3437d2ed5e0
@@ -80,7 +98,19 @@ hs_bindgen_48c0f3437d2ed5e0
   -> Mpv_stream_cb_read_fn_Aux
 hs_bindgen_48c0f3437d2ed5e0 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_48c0f3437d2ed5e0_base (BG.castFunPtrToFFIType funPtr0))
+    Mpv_stream_cb_read_fn_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_48c0f3437d2ed5e0_base
+                    (BG.castFunPtr funPtr0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                )
+      )
 
 instance BG.ToFunPtr Mpv_stream_cb_read_fn_Aux where
   toFunPtr = hs_bindgen_2dd5ecc96cba74ab
@@ -217,13 +247,12 @@ newtype Mpv_stream_cb_seek_fn_Aux = Mpv_stream_cb_seek_fn_Aux
   { unwrap :: BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.Int64 -> IO HsBindgen.Runtime.LibC.Int64
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toMpv_stream_cb_seek_fn_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_4683101231ce5235_base
-    :: (BG.Ptr BG.Void -> BG.Int64 -> IO BG.Int64)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Int64 -> IO BG.Int64))
+    :: (BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.Int64 -> IO HsBindgen.Runtime.LibC.Int64)
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.Int64 -> IO HsBindgen.Runtime.LibC.Int64))
 
 -- __unique:__ @toMpv_stream_cb_seek_fn_Aux@
 hs_bindgen_4683101231ce5235
@@ -231,15 +260,22 @@ hs_bindgen_4683101231ce5235
   -> IO (BG.FunPtr Mpv_stream_cb_seek_fn_Aux)
 hs_bindgen_4683101231ce5235 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_4683101231ce5235_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_4683101231ce5235_base
+          ( \x1 ->
+              \x2 ->
+                fmap BG.toFFIType (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2))
+          )
+      )
 
 -- __unique:__ @fromMpv_stream_cb_seek_fn_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_4aac34fecb023ab7_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Int64 -> IO BG.Int64)
+    :: BG.FunPtr (BG.Ptr BG.Void -> HsBindgen.Runtime.LibC.Int64 -> IO HsBindgen.Runtime.LibC.Int64)
     -> BG.Ptr BG.Void
-    -> BG.Int64
-    -> IO BG.Int64
+    -> HsBindgen.Runtime.LibC.Int64
+    -> IO HsBindgen.Runtime.LibC.Int64
 
 -- __unique:__ @fromMpv_stream_cb_seek_fn_Aux@
 hs_bindgen_4aac34fecb023ab7
@@ -247,7 +283,13 @@ hs_bindgen_4aac34fecb023ab7
   -> Mpv_stream_cb_seek_fn_Aux
 hs_bindgen_4aac34fecb023ab7 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_4aac34fecb023ab7_base (BG.castFunPtrToFFIType funPtr0))
+    Mpv_stream_cb_seek_fn_Aux
+      ( \x1 ->
+          \x2 ->
+            fmap
+              BG.fromFFIType
+              (hs_bindgen_4aac34fecb023ab7_base (BG.castFunPtr funPtr0) (BG.toFFIType x1) (BG.toFFIType x2))
+      )
 
 instance BG.ToFunPtr Mpv_stream_cb_seek_fn_Aux where
   toFunPtr = hs_bindgen_4683101231ce5235
@@ -335,13 +377,12 @@ newtype Mpv_stream_cb_size_fn_Aux = Mpv_stream_cb_size_fn_Aux
   { unwrap :: BG.Ptr BG.Void -> IO HsBindgen.Runtime.LibC.Int64
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toMpv_stream_cb_size_fn_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_9e3ca992dcb70b6e_base
-    :: (BG.Ptr BG.Void -> IO BG.Int64)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> IO BG.Int64))
+    :: (BG.Ptr BG.Void -> IO HsBindgen.Runtime.LibC.Int64)
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> IO HsBindgen.Runtime.LibC.Int64))
 
 -- __unique:__ @toMpv_stream_cb_size_fn_Aux@
 hs_bindgen_9e3ca992dcb70b6e
@@ -349,14 +390,20 @@ hs_bindgen_9e3ca992dcb70b6e
   -> IO (BG.FunPtr Mpv_stream_cb_size_fn_Aux)
 hs_bindgen_9e3ca992dcb70b6e =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_9e3ca992dcb70b6e_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_9e3ca992dcb70b6e_base
+          ( \x1 ->
+              fmap BG.toFFIType (BG.getField @"unwrap" fun0 (BG.fromFFIType x1))
+          )
+      )
 
 -- __unique:__ @fromMpv_stream_cb_size_fn_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_da06c2e0886dcc58_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> IO BG.Int64)
+    :: BG.FunPtr (BG.Ptr BG.Void -> IO HsBindgen.Runtime.LibC.Int64)
     -> BG.Ptr BG.Void
-    -> IO BG.Int64
+    -> IO HsBindgen.Runtime.LibC.Int64
 
 -- __unique:__ @fromMpv_stream_cb_size_fn_Aux@
 hs_bindgen_da06c2e0886dcc58
@@ -364,7 +411,10 @@ hs_bindgen_da06c2e0886dcc58
   -> Mpv_stream_cb_size_fn_Aux
 hs_bindgen_da06c2e0886dcc58 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_da06c2e0886dcc58_base (BG.castFunPtrToFFIType funPtr0))
+    Mpv_stream_cb_size_fn_Aux
+      ( \x1 ->
+          fmap BG.fromFFIType (hs_bindgen_da06c2e0886dcc58_base (BG.castFunPtr funPtr0) (BG.toFFIType x1))
+      )
 
 instance BG.ToFunPtr Mpv_stream_cb_size_fn_Aux where
   toFunPtr = hs_bindgen_9e3ca992dcb70b6e
@@ -450,7 +500,6 @@ newtype Mpv_stream_cb_close_fn_Aux = Mpv_stream_cb_close_fn_Aux
   { unwrap :: BG.Ptr BG.Void -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toMpv_stream_cb_close_fn_Aux@
 foreign import ccall safe "wrapper"
@@ -464,7 +513,13 @@ hs_bindgen_51bca09b49bb19e0
   -> IO (BG.FunPtr Mpv_stream_cb_close_fn_Aux)
 hs_bindgen_51bca09b49bb19e0 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_51bca09b49bb19e0_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_51bca09b49bb19e0_base
+          ( \x1 ->
+              BG.getField @"unwrap" fun0 (BG.fromFFIType x1)
+          )
+      )
 
 -- __unique:__ @fromMpv_stream_cb_close_fn_Aux@
 foreign import ccall safe "dynamic"
@@ -479,7 +534,10 @@ hs_bindgen_872aa411b6bfc186
   -> Mpv_stream_cb_close_fn_Aux
 hs_bindgen_872aa411b6bfc186 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_872aa411b6bfc186_base (BG.castFunPtrToFFIType funPtr0))
+    Mpv_stream_cb_close_fn_Aux
+      ( \x1 ->
+          hs_bindgen_872aa411b6bfc186_base (BG.castFunPtr funPtr0) (BG.toFFIType x1)
+      )
 
 instance BG.ToFunPtr Mpv_stream_cb_close_fn_Aux where
   toFunPtr = hs_bindgen_51bca09b49bb19e0
@@ -559,7 +617,6 @@ newtype Mpv_stream_cb_cancel_fn_Aux = Mpv_stream_cb_cancel_fn_Aux
   { unwrap :: BG.Ptr BG.Void -> IO ()
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toMpv_stream_cb_cancel_fn_Aux@
 foreign import ccall safe "wrapper"
@@ -573,7 +630,13 @@ hs_bindgen_581512c16c2155fd
   -> IO (BG.FunPtr Mpv_stream_cb_cancel_fn_Aux)
 hs_bindgen_581512c16c2155fd =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_581512c16c2155fd_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_581512c16c2155fd_base
+          ( \x1 ->
+              BG.getField @"unwrap" fun0 (BG.fromFFIType x1)
+          )
+      )
 
 -- __unique:__ @fromMpv_stream_cb_cancel_fn_Aux@
 foreign import ccall safe "dynamic"
@@ -588,7 +651,10 @@ hs_bindgen_f8664cbcd6953214
   -> Mpv_stream_cb_cancel_fn_Aux
 hs_bindgen_f8664cbcd6953214 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_f8664cbcd6953214_base (BG.castFunPtrToFFIType funPtr0))
+    Mpv_stream_cb_cancel_fn_Aux
+      ( \x1 ->
+          hs_bindgen_f8664cbcd6953214_base (BG.castFunPtr funPtr0) (BG.toFFIType x1)
+      )
 
 instance BG.ToFunPtr Mpv_stream_cb_cancel_fn_Aux where
   toFunPtr = hs_bindgen_581512c16c2155fd
@@ -725,6 +791,16 @@ instance Marshal.WriteRaw Mpv_stream_cb_info where
 
 deriving via Marshal.EquivStorable Mpv_stream_cb_info instance BG.Storable Mpv_stream_cb_info
 
+deriving via
+  Struct.IsStructViaReadRaw Mpv_stream_cb_info
+  instance
+    Struct.IsStruct Mpv_stream_cb_info
+
+-- | Opaque user-provided value, which will be passed to the other callbacks. The close callback will be called to release the cookie. It is not interpreted by mpv. It doesn\'t even need to be a valid pointer.
+--
+--     The user sets this in the 'Mpv_stream_cb_open_ro_fn' callback.
+--
+--     [C declaration]: @cookie@, defined at @mpv\/stream_cb.h 177:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "cookie" Mpv_stream_cb_info ty
@@ -756,6 +832,11 @@ instance HasCField.HasCField Mpv_stream_cb_info "cookie" where
 
   offset# = \_ -> \_ -> 0
 
+-- | Callbacks set by the user in the 'Mpv_stream_cb_open_ro_fn' callback. Some of them are optional, and can be left unset.
+--
+--     The following callbacks are mandatory: read_fn, close_fn
+--
+--     [C declaration]: @read_fn@, defined at @mpv\/stream_cb.h 185:27@
 instance
   (ty ~ Mpv_stream_cb_read_fn)
   => BG.CompatHasField.HasField "read_fn" Mpv_stream_cb_info ty
@@ -787,6 +868,7 @@ instance HasCField.HasCField Mpv_stream_cb_info "read_fn" where
 
   offset# = \_ -> \_ -> 8
 
+-- | [C declaration]: @seek_fn@, defined at @mpv\/stream_cb.h 186:27@
 instance
   (ty ~ Mpv_stream_cb_seek_fn)
   => BG.CompatHasField.HasField "seek_fn" Mpv_stream_cb_info ty
@@ -818,6 +900,7 @@ instance HasCField.HasCField Mpv_stream_cb_info "seek_fn" where
 
   offset# = \_ -> \_ -> 16
 
+-- | [C declaration]: @size_fn@, defined at @mpv\/stream_cb.h 187:27@
 instance
   (ty ~ Mpv_stream_cb_size_fn)
   => BG.CompatHasField.HasField "size_fn" Mpv_stream_cb_info ty
@@ -849,6 +932,7 @@ instance HasCField.HasCField Mpv_stream_cb_info "size_fn" where
 
   offset# = \_ -> \_ -> 24
 
+-- | [C declaration]: @close_fn@, defined at @mpv\/stream_cb.h 188:28@
 instance
   (ty ~ Mpv_stream_cb_close_fn)
   => BG.CompatHasField.HasField "close_fn" Mpv_stream_cb_info ty
@@ -880,6 +964,7 @@ instance HasCField.HasCField Mpv_stream_cb_info "close_fn" where
 
   offset# = \_ -> \_ -> 32
 
+-- | [C declaration]: @cancel_fn@, defined at @mpv\/stream_cb.h 189:29@
 instance
   (ty ~ Mpv_stream_cb_cancel_fn)
   => BG.CompatHasField.HasField "cancel_fn" Mpv_stream_cb_info ty
@@ -918,13 +1003,12 @@ newtype Mpv_stream_cb_open_ro_fn_Aux = Mpv_stream_cb_open_ro_fn_Aux
   { unwrap :: BG.Ptr BG.Void -> BG.Ptr BG.CChar -> BG.Ptr Mpv_stream_cb_info -> IO BG.CInt
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toMpv_stream_cb_open_ro_fn_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_936d6f23ebbe3434_base
-    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Int32)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Int32))
+    :: (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CInt)
+    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CInt))
 
 -- __unique:__ @toMpv_stream_cb_open_ro_fn_Aux@
 hs_bindgen_936d6f23ebbe3434
@@ -932,16 +1016,26 @@ hs_bindgen_936d6f23ebbe3434
   -> IO (BG.FunPtr Mpv_stream_cb_open_ro_fn_Aux)
 hs_bindgen_936d6f23ebbe3434 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_936d6f23ebbe3434_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_936d6f23ebbe3434_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  fmap
+                    BG.toFFIType
+                    (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2) (BG.fromFFIType x3))
+          )
+      )
 
 -- __unique:__ @fromMpv_stream_cb_open_ro_fn_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_c4d47ff981a30a9a_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.Int32)
+    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Ptr BG.Void -> BG.Ptr BG.Void -> IO BG.CInt)
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> IO BG.Int32
+    -> IO BG.CInt
 
 -- __unique:__ @fromMpv_stream_cb_open_ro_fn_Aux@
 hs_bindgen_c4d47ff981a30a9a
@@ -949,7 +1043,19 @@ hs_bindgen_c4d47ff981a30a9a
   -> Mpv_stream_cb_open_ro_fn_Aux
 hs_bindgen_c4d47ff981a30a9a =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_c4d47ff981a30a9a_base (BG.castFunPtrToFFIType funPtr0))
+    Mpv_stream_cb_open_ro_fn_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_c4d47ff981a30a9a_base
+                    (BG.castFunPtr funPtr0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                )
+      )
 
 instance BG.ToFunPtr Mpv_stream_cb_open_ro_fn_Aux where
   toFunPtr = hs_bindgen_936d6f23ebbe3434

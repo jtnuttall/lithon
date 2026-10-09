@@ -5,6 +5,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -14,6 +15,7 @@
 {-# LANGUAGE UnboxedTuples #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | SDL provides time management functionality. It is useful for dealing with (usually) small durations of time.
 --
@@ -43,8 +45,11 @@ module SDL3.Sys.Bindgen.Timer (
 )
 where
 
+import Prelude (Bounded, Enum, Eq, IO, Integral, Num, Ord, Read, Real, Show, fmap, type (~))
+
 import C.Expr.HostPlatform qualified
 import HsBindgen.Runtime.HasCField qualified as HasCField
+import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.Marshal qualified as Marshal
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CompatHasField qualified as BG.CompatHasField
@@ -207,13 +212,23 @@ newtype SDL_TimerCallback_Aux = SDL_TimerCallback_Aux
       :: BG.Ptr BG.Void -> SDL_TimerID -> SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO SDL3.Sys.Bindgen.Stdinc.Uint32
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_TimerCallback_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_a49c51828ca7c2b2_base
-    :: (BG.Ptr BG.Void -> BG.Word32 -> BG.Word32 -> IO BG.Word32)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Word32 -> BG.Word32 -> IO BG.Word32))
+    :: ( BG.Ptr BG.Void
+         -> HsBindgen.Runtime.LibC.Word32
+         -> HsBindgen.Runtime.LibC.Word32
+         -> IO HsBindgen.Runtime.LibC.Word32
+       )
+    -> IO
+         ( BG.FunPtr
+             ( BG.Ptr BG.Void
+               -> HsBindgen.Runtime.LibC.Word32
+               -> HsBindgen.Runtime.LibC.Word32
+               -> IO HsBindgen.Runtime.LibC.Word32
+             )
+         )
 
 -- __unique:__ @toSDL_TimerCallback_Aux@
 hs_bindgen_a49c51828ca7c2b2
@@ -221,16 +236,31 @@ hs_bindgen_a49c51828ca7c2b2
   -> IO (BG.FunPtr SDL_TimerCallback_Aux)
 hs_bindgen_a49c51828ca7c2b2 =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_a49c51828ca7c2b2_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_a49c51828ca7c2b2_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  fmap
+                    BG.toFFIType
+                    (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2) (BG.fromFFIType x3))
+          )
+      )
 
 -- __unique:__ @fromSDL_TimerCallback_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_fecf80520b47dfb6_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Word32 -> BG.Word32 -> IO BG.Word32)
+    :: BG.FunPtr
+         ( BG.Ptr BG.Void
+           -> HsBindgen.Runtime.LibC.Word32
+           -> HsBindgen.Runtime.LibC.Word32
+           -> IO HsBindgen.Runtime.LibC.Word32
+         )
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word32
-    -> IO BG.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word32
+    -> IO HsBindgen.Runtime.LibC.Word32
 
 -- __unique:__ @fromSDL_TimerCallback_Aux@
 hs_bindgen_fecf80520b47dfb6
@@ -238,7 +268,19 @@ hs_bindgen_fecf80520b47dfb6
   -> SDL_TimerCallback_Aux
 hs_bindgen_fecf80520b47dfb6 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_fecf80520b47dfb6_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_TimerCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_fecf80520b47dfb6_base
+                    (BG.castFunPtr funPtr0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                )
+      )
 
 instance BG.ToFunPtr SDL_TimerCallback_Aux where
   toFunPtr = hs_bindgen_a49c51828ca7c2b2
@@ -337,13 +379,23 @@ newtype SDL_NSTimerCallback_Aux = SDL_NSTimerCallback_Aux
       :: BG.Ptr BG.Void -> SDL_TimerID -> SDL3.Sys.Bindgen.Stdinc.Uint64 -> IO SDL3.Sys.Bindgen.Stdinc.Uint64
   }
   deriving stock (BG.Generic)
-  deriving newtype (BG.HasFFIType)
 
 -- __unique:__ @toSDL_NSTimerCallback_Aux@
 foreign import ccall safe "wrapper"
   hs_bindgen_31fbeb64177dcacb_base
-    :: (BG.Ptr BG.Void -> BG.Word32 -> BG.Word64 -> IO BG.Word64)
-    -> IO (BG.FunPtr (BG.Ptr BG.Void -> BG.Word32 -> BG.Word64 -> IO BG.Word64))
+    :: ( BG.Ptr BG.Void
+         -> HsBindgen.Runtime.LibC.Word32
+         -> HsBindgen.Runtime.LibC.Word64
+         -> IO HsBindgen.Runtime.LibC.Word64
+       )
+    -> IO
+         ( BG.FunPtr
+             ( BG.Ptr BG.Void
+               -> HsBindgen.Runtime.LibC.Word32
+               -> HsBindgen.Runtime.LibC.Word64
+               -> IO HsBindgen.Runtime.LibC.Word64
+             )
+         )
 
 -- __unique:__ @toSDL_NSTimerCallback_Aux@
 hs_bindgen_31fbeb64177dcacb
@@ -351,16 +403,31 @@ hs_bindgen_31fbeb64177dcacb
   -> IO (BG.FunPtr SDL_NSTimerCallback_Aux)
 hs_bindgen_31fbeb64177dcacb =
   \fun0 ->
-    fmap BG.castFunPtrFromFFIType (hs_bindgen_31fbeb64177dcacb_base (BG.toFFIType fun0))
+    fmap
+      BG.castFunPtr
+      ( hs_bindgen_31fbeb64177dcacb_base
+          ( \x1 ->
+              \x2 ->
+                \x3 ->
+                  fmap
+                    BG.toFFIType
+                    (BG.getField @"unwrap" fun0 (BG.fromFFIType x1) (BG.fromFFIType x2) (BG.fromFFIType x3))
+          )
+      )
 
 -- __unique:__ @fromSDL_NSTimerCallback_Aux@
 foreign import ccall safe "dynamic"
   hs_bindgen_389ed0c3b28b1730_base
-    :: BG.FunPtr (BG.Ptr BG.Void -> BG.Word32 -> BG.Word64 -> IO BG.Word64)
+    :: BG.FunPtr
+         ( BG.Ptr BG.Void
+           -> HsBindgen.Runtime.LibC.Word32
+           -> HsBindgen.Runtime.LibC.Word64
+           -> IO HsBindgen.Runtime.LibC.Word64
+         )
     -> BG.Ptr BG.Void
-    -> BG.Word32
-    -> BG.Word64
-    -> IO BG.Word64
+    -> HsBindgen.Runtime.LibC.Word32
+    -> HsBindgen.Runtime.LibC.Word64
+    -> IO HsBindgen.Runtime.LibC.Word64
 
 -- __unique:__ @fromSDL_NSTimerCallback_Aux@
 hs_bindgen_389ed0c3b28b1730
@@ -368,7 +435,19 @@ hs_bindgen_389ed0c3b28b1730
   -> SDL_NSTimerCallback_Aux
 hs_bindgen_389ed0c3b28b1730 =
   \funPtr0 ->
-    BG.fromFFIType (hs_bindgen_389ed0c3b28b1730_base (BG.castFunPtrToFFIType funPtr0))
+    SDL_NSTimerCallback_Aux
+      ( \x1 ->
+          \x2 ->
+            \x3 ->
+              fmap
+                BG.fromFFIType
+                ( hs_bindgen_389ed0c3b28b1730_base
+                    (BG.castFunPtr funPtr0)
+                    (BG.toFFIType x1)
+                    (BG.toFFIType x2)
+                    (BG.toFFIType x3)
+                )
+      )
 
 instance BG.ToFunPtr SDL_NSTimerCallback_Aux where
   toFunPtr = hs_bindgen_31fbeb64177dcacb

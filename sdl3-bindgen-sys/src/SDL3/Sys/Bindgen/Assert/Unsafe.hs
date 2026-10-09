@@ -1,5 +1,7 @@
+{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE NoFieldSelectors #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module SDL3.Sys.Bindgen.Assert.Unsafe (
@@ -12,6 +14,8 @@ module SDL3.Sys.Bindgen.Assert.Unsafe (
 )
 where
 
+import Prelude (IO, fmap)
+
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import HsBindgen.Runtime.Support.CAPI qualified
@@ -19,7 +23,8 @@ import SDL3.Sys.Bindgen.Assert
 
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
-         [ "#include <SDL3/SDL_assert.h>"
+         [ "#define SDL_MAIN_HANDLED"
+         , "#include <SDL3/SDL_assert.h>"
          , "SDL_AssertState hs_bindgen_a7639e4e554aca71 ("
          , "  SDL_AssertData *arg1,"
          , "  char const *arg2,"
@@ -64,8 +69,8 @@ foreign import ccall unsafe "hs_bindgen_a7639e4e554aca71"
     :: BG.Ptr BG.Void
     -> BG.Ptr BG.Void
     -> BG.Ptr BG.Void
-    -> BG.Int32
-    -> IO BG.Word32
+    -> BG.CInt
+    -> IO BG.CUInt
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Assert_Unsafe_SDL_ReportAssertion@
 hs_bindgen_a7639e4e554aca71
@@ -75,7 +80,18 @@ hs_bindgen_a7639e4e554aca71
   -> BG.CInt
   -> IO SDL_AssertState
 hs_bindgen_a7639e4e554aca71 =
-  BG.fromFFIType hs_bindgen_a7639e4e554aca71_base
+  \x0 ->
+    \x1 ->
+      \x2 ->
+        \x3 ->
+          fmap
+            BG.fromFFIType
+            ( hs_bindgen_a7639e4e554aca71_base
+                (BG.toFFIType x0)
+                (BG.toFFIType x1)
+                (BG.toFFIType x2)
+                (BG.toFFIType x3)
+            )
 
 -- | Never call this directly.
 --
@@ -121,7 +137,9 @@ hs_bindgen_e1f2894e05101967
   -> BG.Ptr BG.Void
   -> IO ()
 hs_bindgen_e1f2894e05101967 =
-  BG.fromFFIType hs_bindgen_e1f2894e05101967_base
+  \x0 ->
+    \x1 ->
+      hs_bindgen_e1f2894e05101967_base (BG.toFFIType x0) (BG.toFFIType x1)
 
 -- | Set an application-defined assertion handler.
 --
@@ -158,7 +176,7 @@ foreign import ccall unsafe "hs_bindgen_dff5ecac8d034d8d"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Assert_Unsafe_SDL_GetDefaultAssertionHandler@
 hs_bindgen_dff5ecac8d034d8d :: IO SDL_AssertionHandler
 hs_bindgen_dff5ecac8d034d8d =
-  BG.fromFFIType hs_bindgen_dff5ecac8d034d8d_base
+  fmap BG.fromFFIType hs_bindgen_dff5ecac8d034d8d_base
 
 -- | Get the default assertion handler.
 --
@@ -188,7 +206,8 @@ hs_bindgen_0c314ac7cf70966e
   :: BG.Ptr (BG.Ptr BG.Void)
   -> IO SDL_AssertionHandler
 hs_bindgen_0c314ac7cf70966e =
-  BG.fromFFIType hs_bindgen_0c314ac7cf70966e_base
+  \x0 ->
+    fmap BG.fromFFIType (hs_bindgen_0c314ac7cf70966e_base (BG.toFFIType x0))
 
 -- | Get the current assertion handler.
 --
@@ -221,7 +240,7 @@ foreign import ccall unsafe "hs_bindgen_53829b7497744243"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Assert_Unsafe_SDL_GetAssertionReport@
 hs_bindgen_53829b7497744243 :: IO (PtrConst.PtrConst SDL_AssertData)
 hs_bindgen_53829b7497744243 =
-  BG.fromFFIType hs_bindgen_53829b7497744243_base
+  fmap BG.fromFFIType hs_bindgen_53829b7497744243_base
 
 -- | Get a list of all assertion failures.
 --
@@ -260,7 +279,7 @@ foreign import ccall unsafe "hs_bindgen_bb1d739857931f60"
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Assert_Unsafe_SDL_ResetAssertionReport@
 hs_bindgen_bb1d739857931f60 :: IO ()
 hs_bindgen_bb1d739857931f60 =
-  BG.fromFFIType hs_bindgen_bb1d739857931f60_base
+  hs_bindgen_bb1d739857931f60_base
 
 -- | Clear the list of all assertion failures.
 --
