@@ -51,5 +51,6 @@ allow-newer: hs-bindgen:aeson
 source-repository-package
    type:     git
    location: https://github.com/well-typed/libclang-bindings
-   tag:      d67fb98d54301f1ef1bce08c643808d704fec813
+   tag:      226e301ac74318df1b0c44ff6b6b583bfec82ea2
    subdir:   libclang-bindings
+   --sha256: 1hpm2d5i48mz1fl66p0nsbzn644fzzdx5srlvikkn9l8l5cq9mgw

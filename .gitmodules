@@ -5,7 +5,7 @@
 	path = lithon-hs-bindgen/vendor/hs-bindgen
 	url = https://github.com/jtnuttall/hs-bindgen.git
 	ignore = untracked
-	branch = lithon/vendor-patches
+	branch = lithon/vendor-patches-2
 [submodule "lithon-hs-bindgen/vendor/c-expr"]
 	path = lithon-hs-bindgen/vendor/c-expr
 	url = https://github.com/well-typed/c-expr.git
