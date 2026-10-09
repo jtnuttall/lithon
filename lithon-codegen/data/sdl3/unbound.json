@@ -1,0 +1,366 @@
+{
+  "groups": [
+    {
+      "disposition": "shim",
+      "note": "Variadic, so the FFI has no type for them; lithon's C shims pass the message verbatim, never as a format string.",
+      "names": [
+        "SDL_Log",
+        "SDL_LogTrace",
+        "SDL_LogVerbose",
+        "SDL_LogDebug",
+        "SDL_LogInfo",
+        "SDL_LogWarn",
+        "SDL_LogError",
+        "SDL_LogCritical",
+        "SDL_LogMessage",
+        "SDL_SetError",
+        "SDL_IOprintf"
+      ]
+    },
+    {
+      "disposition": "shim",
+      "note": "Function-like macros hs-bindgen cannot translate (casts, member access, compiler builtins, calls through variadic functions or untranslated macros); each gets a C shim function.",
+      "names": [
+        "macro SDL_Unsupported",
+        "macro SDL_InvalidParamError",
+        "macro SDL_FOURCC",
+        "macro SDL_MS_TO_NS",
+        "macro SDL_US_TO_NS",
+        "macro SDL_SECONDS_TO_NS",
+        "macro SDL_Swap16",
+        "macro SDL_Swap32",
+        "macro SDL_Swap64",
+        "macro SDL_Swap16BE",
+        "macro SDL_Swap32BE",
+        "macro SDL_Swap64BE",
+        "macro SDL_SwapFloatBE",
+        "macro SDL_CreateThread",
+        "macro SDL_CreateThreadWithProperties",
+        "macro SDL_MUSTLOCK",
+        "macro SDL_AtomicIncRef",
+        "macro SDL_AtomicDecRef",
+        "macro SDL_AUDIO_FRAMESIZE",
+        "macro SDL_DEFINE_AUDIO_FORMAT"
+      ]
+    },
+    {
+      "disposition": "shim",
+      "note": "SDL_pixels.h's format and colorspace macros: casts, enumerators, and conditionals hs-bindgen cannot translate; each gets a C shim function.",
+      "names": [
+        "macro SDL_DEFINE_PIXELFOURCC",
+        "macro SDL_BITSPERPIXEL",
+        "macro SDL_BYTESPERPIXEL",
+        "macro SDL_ISPIXELFORMAT_INDEXED",
+        "macro SDL_ISPIXELFORMAT_PACKED",
+        "macro SDL_ISPIXELFORMAT_ARRAY",
+        "macro SDL_ISPIXELFORMAT_10BIT",
+        "macro SDL_ISPIXELFORMAT_FLOAT",
+        "macro SDL_ISPIXELFORMAT_ALPHA",
+        "macro SDL_ISPIXELFORMAT_FOURCC",
+        "macro SDL_DEFINE_COLORSPACE",
+        "macro SDL_COLORSPACETYPE",
+        "macro SDL_COLORSPACERANGE",
+        "macro SDL_COLORSPACECHROMA",
+        "macro SDL_COLORSPACEPRIMARIES",
+        "macro SDL_COLORSPACETRANSFER",
+        "macro SDL_COLORSPACEMATRIX",
+        "macro SDL_ISCOLORSPACE_MATRIX_BT601",
+        "macro SDL_ISCOLORSPACE_MATRIX_BT709",
+        "macro SDL_ISCOLORSPACE_MATRIX_BT2020_NCL",
+        "macro SDL_ISCOLORSPACE_LIMITED_RANGE",
+        "macro SDL_ISCOLORSPACE_FULL_RANGE"
+      ]
+    },
+    {
+      "disposition": "constant",
+      "note": "Integer constants spelled as casts to SDL's typedefs (or through glibc's INT64_C and SIZE_MAX), which hs-bindgen's macro grammar does not cover; constants.json binds them as typed constants.",
+      "names": [
+        "macro SDL_MAX_SINT8",
+        "macro SDL_MIN_SINT8",
+        "macro SDL_MAX_UINT8",
+        "macro SDL_MIN_UINT8",
+        "macro SDL_MAX_SINT16",
+        "macro SDL_MIN_SINT16",
+        "macro SDL_MAX_UINT16",
+        "macro SDL_MIN_UINT16",
+        "macro SDL_MAX_SINT32",
+        "macro SDL_MIN_SINT32",
+        "macro SDL_MAX_UINT32",
+        "macro SDL_MIN_UINT32",
+        "macro SDL_MAX_SINT64",
+        "macro SDL_MIN_SINT64",
+        "macro SDL_MAX_UINT64",
+        "macro SDL_MIN_UINT64",
+        "macro SDL_MAX_TIME",
+        "macro SDL_MIN_TIME",
+        "macro SDL_SIZE_MAX",
+        "macro SDL_ICONV_ERROR",
+        "macro SDL_ICONV_E2BIG",
+        "macro SDL_ICONV_EILSEQ",
+        "macro SDL_ICONV_EINVAL",
+        "macro SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK",
+        "macro SDL_AUDIO_DEVICE_DEFAULT_RECORDING",
+        "macro SDL_TOUCH_MOUSEID",
+        "macro SDL_PEN_MOUSEID",
+        "macro SDL_MOUSE_TOUCHID",
+        "macro SDL_PEN_TOUCHID"
+      ]
+    },
+    {
+      "disposition": "constant",
+      "note": "SDL_WindowFlags values built with SDL_UINT64_C; constants.json binds them as SDL_WindowFlags pattern synonyms in SDL3.Sys.Video.",
+      "names": [
+        "macro SDL_WINDOW_FULLSCREEN",
+        "macro SDL_WINDOW_OPENGL",
+        "macro SDL_WINDOW_OCCLUDED",
+        "macro SDL_WINDOW_HIDDEN",
+        "macro SDL_WINDOW_BORDERLESS",
+        "macro SDL_WINDOW_RESIZABLE",
+        "macro SDL_WINDOW_MINIMIZED",
+        "macro SDL_WINDOW_MAXIMIZED",
+        "macro SDL_WINDOW_MOUSE_GRABBED",
+        "macro SDL_WINDOW_INPUT_FOCUS",
+        "macro SDL_WINDOW_MOUSE_FOCUS",
+        "macro SDL_WINDOW_EXTERNAL",
+        "macro SDL_WINDOW_MODAL",
+        "macro SDL_WINDOW_HIGH_PIXEL_DENSITY",
+        "macro SDL_WINDOW_MOUSE_CAPTURE",
+        "macro SDL_WINDOW_MOUSE_RELATIVE_MODE",
+        "macro SDL_WINDOW_ALWAYS_ON_TOP",
+        "macro SDL_WINDOW_UTILITY",
+        "macro SDL_WINDOW_TOOLTIP",
+        "macro SDL_WINDOW_POPUP_MENU",
+        "macro SDL_WINDOW_KEYBOARD_GRABBED",
+        "macro SDL_WINDOW_FILL_DOCUMENT",
+        "macro SDL_WINDOW_VULKAN",
+        "macro SDL_WINDOW_METAL",
+        "macro SDL_WINDOW_TRANSPARENT",
+        "macro SDL_WINDOW_NOT_FOCUSABLE"
+      ]
+    },
+    {
+      "disposition": "upstream",
+      "note": "SDL_stdinc.h defines each as a macro naming libc's function unless SDL_SLOW_MEMCPY (and its siblings) is set, and hs-bindgen drops both halves of a function and macro name clash.",
+      "issue": "https://github.com/well-typed/hs-bindgen/issues/2097",
+      "names": [
+        "SDL_memcpy",
+        "macro SDL_memcpy",
+        "SDL_memmove",
+        "macro SDL_memmove",
+        "SDL_memset",
+        "macro SDL_memset"
+      ]
+    },
+    {
+      "disposition": "upstream",
+      "note": "Function-like macros over same-name inline functions; hs-bindgen drops both halves of the clash. The _builtin variants are bound.",
+      "issue": "https://github.com/well-typed/hs-bindgen/issues/2097",
+      "names": [
+        "SDL_size_mul_check_overflow",
+        "macro SDL_size_mul_check_overflow",
+        "SDL_size_add_check_overflow",
+        "macro SDL_size_add_check_overflow"
+      ]
+    },
+    {
+      "disposition": "upstream",
+      "note": "Token pasting through glibc's INT64_C and UINT64_C, which hs-bindgen's macro parser cannot expand.",
+      "issue": "https://github.com/well-typed/hs-bindgen/issues/1698",
+      "names": [
+        "macro SDL_SINT64_C",
+        "macro SDL_UINT64_C"
+      ]
+    },
+    {
+      "disposition": "upstream",
+      "note": "Aliases of SDL_joystick.h's SDL_PROP_JOYSTICK_CAP_* keys, which another header's run binds; binding specs carry types, not macros. Use the joystick keys.",
+      "issue": "https://github.com/well-typed/hs-bindgen/issues/1770",
+      "names": [
+        "macro SDL_PROP_GAMEPAD_CAP_MONO_LED_BOOLEAN",
+        "macro SDL_PROP_GAMEPAD_CAP_RGB_LED_BOOLEAN",
+        "macro SDL_PROP_GAMEPAD_CAP_PLAYER_LED_BOOLEAN",
+        "macro SDL_PROP_GAMEPAD_CAP_RUMBLE_BOOLEAN",
+        "macro SDL_PROP_GAMEPAD_CAP_TRIGGER_RUMBLE_BOOLEAN"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "Variadic printf and scanf clones; Haskell formats and parses its own strings.",
+      "names": [
+        "SDL_sscanf",
+        "SDL_snprintf",
+        "SDL_swprintf",
+        "SDL_asprintf"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "Format-string fragments for C's printf (string literals, and libc's PRI* macros); Haskell formats its own strings.",
+      "names": [
+        "macro SDL_PRIs64",
+        "macro SDL_PRIu64",
+        "macro SDL_PRIx64",
+        "macro SDL_PRIX64",
+        "macro SDL_PRIs32",
+        "macro SDL_PRIu32",
+        "macro SDL_PRIx32",
+        "macro SDL_PRIX32",
+        "macro SDL_PRILLd",
+        "macro SDL_PRILLu",
+        "macro SDL_PRILLx",
+        "macro SDL_PRILLX"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "Variadic; draw a string formatted in Haskell with SDL_RenderDebugText.",
+      "names": [
+        "SDL_RenderDebugTextFormat"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "They take a va_list, which has no FFI type; the variadic functions' shims cover logging and errors.",
+      "names": [
+        "SDL_vsscanf",
+        "SDL_vsnprintf",
+        "SDL_vswprintf",
+        "SDL_vasprintf",
+        "SDL_LogMessageV",
+        "SDL_SetErrorV",
+        "SDL_IOvprintf"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "Statement macros around SDL_ReportAssertion and the debugger trap; SDL_ReportAssertion is bound, and Haskell asserts its own way.",
+      "names": [
+        "macro SDL_assert",
+        "macro SDL_assert_release",
+        "macro SDL_assert_paranoid",
+        "macro SDL_assert_always",
+        "macro SDL_enabled_assert",
+        "macro SDL_disabled_assert",
+        "macro SDL_AssertBreakpoint",
+        "macro SDL_TriggerBreakpoint"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "The calling C code's source position, which means nothing across the FFI.",
+      "names": [
+        "macro SDL_FILE",
+        "macro SDL_LINE",
+        "macro SDL_FUNCTION",
+        "macro SDL_ASSERT_FILE"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "The C runtime's thread entry and exit hooks (NULL outside Windows); the SDL_CreateThread shims pass them to SDL_CreateThreadRuntime.",
+      "names": [
+        "macro SDL_BeginThreadFunction",
+        "macro SDL_EndThreadFunction"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "Attributes for C compilers (format checking, clang's thread-safety analysis); they annotate declarations and have no value.",
+      "names": [
+        "macro SDL_PRINTF_VARARG_FUNC",
+        "macro SDL_PRINTF_VARARG_FUNCV",
+        "macro SDL_SCANF_VARARG_FUNC",
+        "macro SDL_SCANF_VARARG_FUNCV",
+        "macro SDL_CAPABILITY",
+        "macro SDL_SCOPED_CAPABILITY",
+        "macro SDL_GUARDED_BY",
+        "macro SDL_PT_GUARDED_BY",
+        "macro SDL_ACQUIRED_BEFORE",
+        "macro SDL_ACQUIRED_AFTER",
+        "macro SDL_REQUIRES",
+        "macro SDL_REQUIRES_SHARED",
+        "macro SDL_ACQUIRE",
+        "macro SDL_ACQUIRE_SHARED",
+        "macro SDL_RELEASE",
+        "macro SDL_RELEASE_SHARED",
+        "macro SDL_RELEASE_GENERIC",
+        "macro SDL_TRY_ACQUIRE",
+        "macro SDL_TRY_ACQUIRE_SHARED",
+        "macro SDL_EXCLUDES",
+        "macro SDL_ASSERT_CAPABILITY",
+        "macro SDL_ASSERT_SHARED_CAPABILITY",
+        "macro SDL_RETURN_CAPABILITY",
+        "macro SDL_NO_THREAD_SAFETY_ANALYSIS"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "Generic over C types and lvalues; use Haskell's min, max, and clamp, and the bound SDL_memset and SDL_memcpy.",
+      "names": [
+        "macro SDL_min",
+        "macro SDL_max",
+        "macro SDL_clamp",
+        "macro SDL_arraysize",
+        "macro SDL_copyp",
+        "macro SDL_zero",
+        "macro SDL_zerop",
+        "macro SDL_zeroa"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "The host's byte order, baked at generation time, would be wrong on a big-endian build; use GHC.ByteOrder.",
+      "names": [
+        "macro SDL_BYTEORDER",
+        "macro SDL_FLOATWORDORDER"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "C plumbing with nothing to call from Haskell: casts, stringification, compile-time asserts, stack allocation, compiler feature probes, and Vulkan handle typedefs.",
+      "names": [
+        "macro SDL_reinterpret_cast",
+        "macro SDL_static_cast",
+        "macro SDL_const_cast",
+        "macro SDL_STRINGIFY_ARG",
+        "macro SDL_COMPILE_TIME_ASSERT",
+        "macro alloca",
+        "macro SDL_stack_alloc",
+        "macro SDL_stack_free",
+        "macro HAS_BUILTIN_BSWAP16",
+        "macro HAS_BUILTIN_BSWAP32",
+        "macro HAS_BUILTIN_BSWAP64",
+        "macro HAS_BROKEN_BSWAP",
+        "macro VK_DEFINE_HANDLE",
+        "macro VK_DEFINE_NON_DISPATCHABLE_HANDLE"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "Compiler and CPU intrinsics, which mean nothing across an FFI call; SDL_MemoryBarrierReleaseFunction and SDL_MemoryBarrierAcquireFunction are bound.",
+      "names": [
+        "macro SDL_CompilerBarrier",
+        "macro SDL_CPUPauseInstruction",
+        "macro SDL_MemoryBarrierRelease",
+        "macro SDL_MemoryBarrierAcquire"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "A statement macro that zeroes an interface struct and sets its version to its size; poke the struct from Haskell instead.",
+      "names": [
+        "macro SDL_INIT_INTERFACE"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "Shorthands for SDL_iconv_string with fixed encoding names; call SDL_iconv_string.",
+      "names": [
+        "macro SDL_iconv_utf8_locale",
+        "macro SDL_iconv_utf8_ucs2",
+        "macro SDL_iconv_utf8_ucs4",
+        "macro SDL_iconv_wchar_utf8"
+      ]
+    }
+  ]
+}

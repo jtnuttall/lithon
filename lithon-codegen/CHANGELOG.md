@@ -38,6 +38,24 @@
   function, is an error.
 - Runtime facades (`<namespace>.Bindgen.Runtime.*`) for the four modules
   hs-bindgen-runtime 1.0 adds: `HasFFIType`, `Macro`, `Overloading`, `Struct`.
+- The skip ledger: `data/<key>/unbound.json` (a required registry) gives
+  every declaration hs-bindgen skips a disposition (`shim`, `constant`,
+  `wontfix`, or `upstream`, with a note and an optional issue), and `spec` and
+  `generate` write the joined ledger to the machine-owned
+  `data/<key>/unbound.md` (`Lithon.Codegen.Bindgen.Unbound`). A skip without
+  a disposition, or a disposition for a name that is no longer skipped, fails
+  the run before anything is written (`UnboundFailed`), and the error prints
+  a group per reason to paste. The skips come from the seam's report, so the
+  macro failures hs-bindgen logs at `Info` are on the ledger too.
+- A prescriptive override hs-bindgen rejects in its header's run (an entry
+  that applies to nothing, or a module mismatch) fails the header
+  (`OverrideRejected`).
+- The driver logs each header's skip count (`header bound`) and the chain's
+  total (`chain complete`).
+- Tests: `Bindgen.SkipsTest` (the seam's capture under `Quiet`, attribution
+  to units, and the `unbound-toy` golden, which also pins that no absolute
+  path reaches the ledger), `Bindgen.UnboundTest` (the registry codec and
+  triage), and `DriverTest.unit_unusedOverrideFails`.
 
 ### Changed
 

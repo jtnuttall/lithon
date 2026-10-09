@@ -18,7 +18,9 @@ module Bindgen.Support.Toy (
   -- * Seam invocations
   withToyRoot,
   invokeToy,
+  invokeToyReporting,
   runToy,
+  runToyReporting,
   toyArtefacts,
   renderedPairs,
   wrapperC,
@@ -116,7 +118,13 @@ withToyRoot headers k = withSystemTempDirectory "lithon-toy" \root -> do
 -- module and includes, no prior specs, no prescriptive spec. A bindgen
 -- failure fails the test.
 invokeToy :: FilePath -> ToyEnv -> Text -> [FilePath] -> HB.BindgenM a -> IO a
-invokeToy root env baseModule includes ops = do
+invokeToy root env baseModule includes ops =
+  fst <$> invokeToyReporting root env baseModule includes ops
+
+-- | 'invokeToy', with the invocation's report of what it left unbound.
+invokeToyReporting
+  :: FilePath -> ToyEnv -> Text -> [FilePath] -> HB.BindgenM a -> IO (a, HB.InvocationReport)
+invokeToyReporting root env baseModule includes ops = do
   eres <-
     HB.runBindgen
       (invocationEnv env root)
@@ -127,13 +135,19 @@ invokeToy root env baseModule includes ops = do
         , prescriptiveSpec = Nothing
         }
       ops
-  either (\err -> assertFailure ("bindgen error: " <> toString (display err))) (pure . fst) eres
+  either (\err -> assertFailure ("bindgen error: " <> toString (display err))) pure eres
 
 -- | One seam invocation over the toy headers (each one an include, in
 -- list order) under the given base module.
 runToy :: ToyEnv -> Text -> [ToyHeader] -> HB.BindgenM a -> IO a
-runToy env baseModule headers ops =
-  withToyRoot headers \root -> invokeToy root env baseModule (map (.include) headers) ops
+runToy env baseModule headers ops = fst <$> runToyReporting env baseModule headers ops
+
+-- | 'runToy', with the invocation's report of what it left unbound.
+runToyReporting
+  :: ToyEnv -> Text -> [ToyHeader] -> HB.BindgenM a -> IO (a, HB.InvocationReport)
+runToyReporting env baseModule headers ops =
+  withToyRoot headers \root ->
+    invokeToyReporting root env baseModule (map (.include) headers) ops
 
 -- | One header through the same artefact demands the generic driver
 -- makes of every header ('HB.collectArtefacts').

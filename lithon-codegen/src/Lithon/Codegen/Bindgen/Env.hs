@@ -57,8 +57,8 @@ import Lithon.Codegen.Backend.Env (DataDirError, targetDataDir)
 import Lithon.Codegen.Bindgen.Driver (DriverOpts (..), PackageInfo (..))
 import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), ParseEnv (..), defineMacro)
 
--- | The three registries every target's data directory carries.
-data Registry = VersionsJson | AliasesJson | ConstantsJson
+-- | The four registries every target's data directory carries.
+data Registry = VersionsJson | AliasesJson | ConstantsJson | UnboundJson
   deriving stock (Bounded, Enum, Eq, Generic, Show)
 
 -- | The registry's file name in @data\/\<key\>\/@, which is also how
@@ -68,6 +68,7 @@ registryFile = \case
   VersionsJson -> "versions.json"
   AliasesJson -> "aliases.json"
   ConstantsJson -> "constants.json"
+  UnboundJson -> "unbound.json"
 
 instance Display Registry where
   displayBuilder = from . registryFile
@@ -204,6 +205,9 @@ data BindgenPaths = BindgenPaths
   -- ^ @aliases.json@ (required).
   , constants :: FilePath
   -- ^ @constants.json@ (required).
+  , unbound :: FilePath
+  -- ^ @unbound.json@ (required): the skip ledger's dispositions
+  -- ("Lithon.Codegen.Bindgen.Unbound").
   , static :: FilePath
   -- ^ @static\/@: the package's hand-written root files ('loadStatics').
   , overrides :: Map FilePath FilePath
@@ -238,12 +242,14 @@ runBindgenGen target eff = do
   let versions = dataDir </> registryFile VersionsJson
       aliases = dataDir </> registryFile AliasesJson
       constants = dataDir </> registryFile ConstantsJson
+      unbound = dataDir </> registryFile UnboundJson
       static = dataDir </> "static"
       name = target.displayName
 
   assertFileExists versions (RegistryMissing VersionsJson)
   assertFileExists aliases (RegistryMissing AliasesJson)
   assertFileExists constants (RegistryMissing ConstantsJson)
+  assertFileExists unbound (RegistryMissing UnboundJson)
 
   overrides <- discoverOverrides dataDir
 
@@ -259,7 +265,7 @@ runBindgenGen target eff = do
 
   PkgVersion libraryVersion <- noteErr (VersionUnknown name) pkgDbEntry.version
 
-  let paths = BindgenPaths{dataDir, versions, aliases, constants, static, overrides}
+  let paths = BindgenPaths{dataDir, versions, aliases, constants, unbound, static, overrides}
   reinterpret
     (runReader @BindgenEnv BindgenEnv{includeDir, libraryVersion, pkgDbEntry, paths})
     ( const \case

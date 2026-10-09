@@ -154,6 +154,8 @@ A target binds one C library through hs-bindgen. There are two: `sdl3` and
 - `aliases.json` and `constants.json` plan the curated layer
   (`<namespace>.*`, e.g. `SDL3.Sys.*`) over the raw one
   (`<namespace>.Bindgen.*`).
+- Every declaration hs-bindgen skips needs a disposition in `unbound.json`.
+  The skip ledger, `unbound.md`, lists them all, with hs-bindgen's reasons.
 - Anything newer than the floor, the oldest supported release, gets a version
   gate. Availability comes from the library's docs and the availability
   annotations; the annotations win.
@@ -171,23 +173,68 @@ Every target uses the same layout in `lithon-codegen/data/<key>/`:
 | `aliases.json`          | You           | The naming rule and each function's FFI flavor, with rationales.                              |
 | `constants.json`        | You           | Typed-constant groups: which macros belong to which newtype.                                  |
 | `versions.json`         | You           | The availability annotations. See [`versions.json`](#versionsjson).                           |
+| `unbound.json`          | You           | Each skipped declaration's disposition. See [`unbound.json`](#unboundjson).                   |
 | `overrides/`            | You, optional | hs-bindgen's prescriptive binding specs, one per header: renames, representations, omissions. |
 | `static/`               | You           | The statics, copied to the package root.                                                      |
 | `spec/`                 | Generator     | The spec artifacts: one binding spec per header, committed for review.                        |
-| `.lithon-manifest.json` | Generator     | Digests of the spec artifacts.                                                                |
+| `unbound.md`            | Generator     | The skip ledger: every declaration hs-bindgen skips, by disposition.                          |
+| `.lithon-manifest.json` | Generator     | Digests of the spec artifacts and the skip ledger.                                            |
 
-The generator enforces four rules:
+The generator enforces five rules:
 
 - `aliases.json` must classify every callback-taking function as `both` or
   `safe-only`. Other functions default to `both`.
 - `constants.json` needs `groups`, even when empty: `{"groups": {}}`.
+- `unbound.json` gives every declaration hs-bindgen skips exactly one
+  disposition, and names nothing it binds. See [`unbound.json`](#unboundjson).
 - `static/` needs `package.yaml`, `README.md`, and `CHANGELOG.md`. Any other
   file is a license and must be named `LICENSE_<name>`.
 - `overrides/` holds `<header stem>.yaml` files and nothing else, each named
   like the spec artifact of the header it applies to: `overrides/SDL_main.yaml`
   pairs with `spec/SDL_main.yaml`, reaches that header's hs-bindgen run
   alone, and holds only that header's entries. A file that pairs with no
-  bound header is an error, and so is a single-file `overrides.yaml`.
+  bound header is an error, and so is a single-file `overrides.yaml`. So is
+  an entry hs-bindgen rejects, such as one its header's run does not use.
+
+#### `unbound.json`
+
+hs-bindgen skips what it cannot translate: variadic functions, unsupported
+types, most function-like macros, same-name conflicts, and everything that
+depends on those. It reports most macro failures below its default
+verbosity; the generator collects them all anyway. `unbound.json` triages
+each one:
+
+```json
+{
+  "groups": [
+    {
+      "disposition": "upstream",
+      "note": "hs-bindgen drops both halves of a function and macro name clash.",
+      "issue": "https://github.com/well-typed/hs-bindgen/issues/2097",
+      "names": ["SDL_memcpy", "macro SDL_memcpy"]
+    }
+  ]
+}
+```
+
+| Disposition | Means                                          |
+| ----------- | ---------------------------------------------- |
+| `shim`      | A lithon-authored C shim binds it instead.     |
+| `constant`  | `constants.json` binds it as a typed constant. |
+| `wontfix`   | It stays unbound on purpose.                   |
+| `upstream`  | It waits on an hs-bindgen fix.                 |
+
+- Names are spelled as hs-bindgen spells them: `SDL_Log`, `struct SDL_Foo`,
+  `macro SDL_FOURCC`.
+- Every group needs a one-line `note` saying why. `issue` is optional.
+- A skipped name without a disposition is an error, and so is a listed name
+  that is no longer skipped. A name listed twice and a group without names
+  are errors too.
+- To start one, write `{"groups": []}` and run `spec`. The error lists every
+  skip, then prints one group per reason to paste in.
+- The generator writes the joined result to `unbound.md`: one section per
+  group, the dependencies outside the bound headers that block skips, what
+  the overrides omit, and the headers the target excludes.
 
 #### `versions.json`
 
@@ -215,10 +262,10 @@ headers carry their own (SDL's `\since`); the whole set where they don't
 
 Every target has two commands. `<key>` is `sdl3` or `mpv`.
 
-| Command                         | What it does                                                     |
-| ------------------------------- | ---------------------------------------------------------------- |
-| `lithon-codegen <key> spec`     | Runs the header chain and syncs the spec artifacts into `spec/`. |
-| `lithon-codegen <key> generate` | Does the same, then emits the package.                           |
+| Command                         | What it does                                              |
+| ------------------------------- | --------------------------------------------------------- |
+| `lithon-codegen <key> spec`     | Runs the header chain and syncs `spec/` and `unbound.md`. |
+| `lithon-codegen <key> generate` | Does the same, then emits the package.                    |
 
 | Flag        | Commands           | Effect                                                       |
 | ----------- | ------------------ | ------------------------------------------------------------ |
@@ -226,8 +273,8 @@ Every target has two commands. `<key>` is `sdl3` or `mpv`.
 | `--yes`     | `spec`, `generate` | Skip the output-directory confirmation.                      |
 | `--out DIR` | `generate`         | Write the package to `DIR`. The default is the package name. |
 
-Both commands check the annotations before writing. A failure writes nothing
-and names the fix.
+Both commands check the annotations and the skip ledger before writing. A
+failure writes nothing and names the fix.
 
 <details>
 <summary><code>--help</code> output: <code>sdl3</code> and its subcommands</summary>
@@ -321,8 +368,9 @@ Available options:
 ### Add a library
 
 1. Create `lithon-codegen/data/<key>/` with `static/`. Seed `aliases.json`,
-   `constants.json`, and `versions.json` with `{"naming": "camel-segments"}`,
-   `{"groups": {}}`, and `{}`.
+   `constants.json`, `unbound.json`, and `versions.json` with
+   `{"naming": "camel-segments"}`, `{"groups": {}}`, `{"groups": []}`, and
+   `{}`.
 2. In `lithon-codegen/src/Lithon/Codegen/Bindgen/`, copy `Target/Mpv.hs` to
    `Target/<Name>.hs`. Fill every field:
    - names: `key`, `packageName`, `displayName`, `versionLabel`,

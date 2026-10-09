@@ -31,9 +31,11 @@ extra-source-files:
     data/vulkan/static/README.md
     data/mpv/aliases.json
     data/mpv/constants.json
+    data/mpv/unbound.json
     data/mpv/versions.json
     data/sdl3/aliases.json
     data/sdl3/constants.json
+    data/sdl3/unbound.json
     data/sdl3/versions.json
     data/mpv/overrides/client.yaml
     data/sdl3/overrides/SDL_main.yaml
@@ -73,6 +75,7 @@ library
       Lithon.Codegen.Bindgen.Target.Mpv
       Lithon.Codegen.Bindgen.Target.Sdl3
       Lithon.Codegen.Bindgen.Targets
+      Lithon.Codegen.Bindgen.Unbound
       Lithon.Codegen.Bindgen.Version
       Lithon.Codegen.Bindgen.Version.Doc
       Lithon.Codegen.Bindgen.Versions
@@ -364,10 +367,12 @@ test-suite lithon-codegen-test
       Bindgen.GateTest
       Bindgen.OverridesTest
       Bindgen.PlatformShimTest
+      Bindgen.SkipsTest
       Bindgen.StaticsTest
       Bindgen.Support.Targets
       Bindgen.Support.Toy
       Bindgen.TargetsTest
+      Bindgen.UnboundTest
       Bindgen.VersionsTest
       Vulkan.Curate.ClosureTest
       Vulkan.CurateTest

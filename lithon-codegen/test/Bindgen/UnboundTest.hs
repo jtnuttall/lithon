@@ -1,0 +1,174 @@
+{-# LANGUAGE OverloadedStrings #-}
+
+-- | The skip ledger's registry and triage, without hs-bindgen: the codec
+-- (dispositions are a closed set, a note may not be blank), and the
+-- two-way join of the registry with the ledger rows (a skip without a
+-- disposition, a disposition for a name no longer skipped, a name listed
+-- twice, and an empty group are each an error, all reported together),
+-- plus the bootstrap snippets.
+module Bindgen.UnboundTest (
+  unit_completeTriageGroupsRows,
+  unit_untriagedRejected,
+  unit_staleRejected,
+  unit_duplicateRejected,
+  unit_emptyGroupRejected,
+  unit_errorsAccumulate,
+  unit_snippetsGroupByClass,
+  unit_codecRoundTrips,
+  unit_codecRejectsUnknownDisposition,
+  unit_codecRejectsBlankNote,
+) where
+
+import Data.ByteString.Lazy qualified as LBS
+import Data.Text qualified as T
+import Lithon.HsBindgen qualified as HB
+import Lithon.Prelude
+import Test.Tasty.HUnit (Assertion, assertBool, assertFailure, (@?=))
+
+import Lithon.Codegen.Bindgen.Unbound (
+  Disposition (..),
+  LedgerRow (..),
+  TriagedGroup (..),
+  UnboundConfig (..),
+  UnboundError (..),
+  UnboundGroup (..),
+  decodeUnboundConfig,
+  encodeUnboundConfig,
+  untriagedSnippets,
+  validateUnbound,
+ )
+
+row :: HB.Namespace -> Text -> FilePath -> Int -> HB.SkipReason -> LedgerRow
+row namespace text header line reason =
+  LedgerRow
+    { key = HB.renderCName name
+    , name
+    , header
+    , line
+    , reasons = reason :| []
+    }
+ where
+  name = HB.CName{text, namespace, unnamed = False}
+
+variadic, typecheck :: HB.SkipReason
+variadic = HB.SkipUnusable HB.UnsupportedVariadic
+typecheck = HB.SkipUnusable (HB.MacroTypecheckFailed "Failed to typecheck macro")
+
+rows :: [LedgerRow]
+rows =
+  [ row HB.Ordinary "SDL_LogWarn" "SDL_log.h" 300 variadic
+  , row HB.Ordinary "SDL_Log" "SDL_log.h" 200 variadic
+  , row HB.Macro "SDL_MAX_SINT8" "SDL_stdinc.h" 40 typecheck
+  ]
+
+groupOf :: Disposition -> [Text] -> UnboundGroup
+groupOf disposition names =
+  UnboundGroup{disposition, note = "why " <> dispositionWord disposition, issue = Nothing, names}
+ where
+  dispositionWord = T.toLower . show
+
+complete :: UnboundConfig
+complete =
+  UnboundConfig
+    { groups =
+        [ groupOf Shim ["SDL_LogWarn", "SDL_Log"]
+        , groupOf Constant ["macro SDL_MAX_SINT8"]
+        ]
+    }
+
+errorsOf :: UnboundConfig -> [LedgerRow] -> IO [UnboundError]
+errorsOf config ledger = case validateUnbound config ledger of
+  Right _ -> assertFailure "expected the triage to fail"
+  Left errs -> pure (toList errs)
+
+-- | Every row triaged exactly once: each group gets its rows, sorted by
+-- header, then line, and the groups keep registry order.
+unit_completeTriageGroupsRows :: Assertion
+unit_completeTriageGroupsRows = case validateUnbound complete rows of
+  Left errs -> assertFailure ("triage failed:" <> toString (display errs))
+  Right groups ->
+    [(g.entry.disposition, map (.key) g.rows) | g <- groups]
+      @?= [(Shim, ["SDL_Log", "SDL_LogWarn"]), (Constant, ["macro SDL_MAX_SINT8"])]
+
+unit_untriagedRejected :: Assertion
+unit_untriagedRejected = do
+  errs <- errorsOf complete{groups = take 1 complete.groups} rows
+  errs
+    @?= [ UnboundUntriaged
+            { name = "macro SDL_MAX_SINT8"
+            , header = "SDL_stdinc.h"
+            , line = 40
+            , reasonClass = "macro-typecheck"
+            }
+        ]
+
+-- | A name that is listed but no longer skipped (bound now, or renamed
+-- upstream) is stale, with the disposition it had.
+unit_staleRejected :: Assertion
+unit_staleRejected = do
+  errs <- errorsOf complete{groups = complete.groups <> [groupOf Upstream ["SDL_memcpy"]]} rows
+  errs @?= [UnboundStale{name = "SDL_memcpy", disposition = Upstream}]
+
+unit_duplicateRejected :: Assertion
+unit_duplicateRejected = do
+  errs <- errorsOf complete{groups = complete.groups <> [groupOf WontFix ["SDL_Log"]]} rows
+  errs @?= [UnboundDuplicate{name = "SDL_Log", dispositions = [Shim, WontFix]}]
+
+unit_emptyGroupRejected :: Assertion
+unit_emptyGroupRejected = do
+  errs <- errorsOf complete{groups = complete.groups <> [groupOf WontFix []]} rows
+  errs @?= [UnboundEmptyGroup{disposition = WontFix, note = "why wontfix"}]
+
+-- | One run reports every disagreement, untriaged rows first.
+unit_errorsAccumulate :: Assertion
+unit_errorsAccumulate = do
+  errs <-
+    errorsOf
+      UnboundConfig{groups = [groupOf Shim ["SDL_Log", "SDL_gone"], groupOf WontFix []]}
+      rows
+  map kind errs @?= ["untriaged", "untriaged", "stale", "empty"]
+ where
+  kind :: UnboundError -> Text
+  kind = \case
+    UnboundUntriaged{} -> "untriaged"
+    UnboundStale{} -> "stale"
+    UnboundDuplicate{} -> "duplicate"
+    UnboundEmptyGroup{} -> "empty"
+
+-- | The bootstrap snippets: one group per reason class, in the order the
+-- classes first appear, each name once.
+unit_snippetsGroupByClass :: Assertion
+unit_snippetsGroupByClass = do
+  errs <- errorsOf UnboundConfig{groups = []} (rows <> take 1 rows)
+  let snippets = untriagedSnippets errs
+  length snippets @?= 2
+  case snippets of
+    [variadics, typechecks] -> do
+      assertBool
+        ("variadic first: " <> toString variadics)
+        ("TODO: why (variadic)" `T.isInfixOf` variadics)
+      T.count "\"SDL_LogWarn\"" variadics @?= 1
+      assertBool "the typecheck group" ("\"macro SDL_MAX_SINT8\"" `T.isInfixOf` typechecks)
+    _other -> assertFailure "expected two snippets"
+
+unit_codecRoundTrips :: Assertion
+unit_codecRoundTrips = do
+  let config = complete{groups = [(groupOf Upstream ["SDL_memcpy"]){issue = Just "https://example.org/1"}]}
+  decodeUnboundConfig (encodeUnboundConfig config) @?= Right config
+
+unit_codecRejectsUnknownDisposition :: Assertion
+unit_codecRejectsUnknownDisposition =
+  assertBool "decoded an unknown disposition"
+    . isLeft
+    . decodeUnboundConfig
+    $ registryWith "{\"disposition\": \"later\", \"note\": \"why\", \"names\": [\"SDL_Log\"]}"
+
+unit_codecRejectsBlankNote :: Assertion
+unit_codecRejectsBlankNote =
+  assertBool "decoded a blank note"
+    . isLeft
+    . decodeUnboundConfig
+    $ registryWith "{\"disposition\": \"wontfix\", \"note\": \"  \", \"names\": [\"SDL_Log\"]}"
+
+registryWith :: LBS.ByteString -> LBS.ByteString
+registryWith g = "{\"groups\": [" <> g <> "]}"

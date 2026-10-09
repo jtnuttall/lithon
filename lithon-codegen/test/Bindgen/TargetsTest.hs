@@ -112,6 +112,7 @@ unit_registeredTargetsDataDecodes = for_ bindgenTargets \target -> do
             , versions = dataDir </> "versions.json"
             , aliases = dataDir </> "aliases.json"
             , constants = dataDir </> "constants.json"
+            , unbound = dataDir </> "unbound.json"
             , static = dataDir </> "static"
             , overrides = mempty
             }

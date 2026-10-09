@@ -9,8 +9,8 @@
 -- the finalizer's payload arrives on the result, and a header reaching
 -- another through a quoted include (libmpv's shape) chains after it and
 -- binds against its spec. A prescriptive spec reaches its own header's
--- invocation alone, and one that pairs with no planned header fails the
--- run.
+-- invocation alone, one that pairs with no planned header fails the run,
+-- and so does one with an entry its header's run does not use.
 module Bindgen.DriverTest (
   unit_driverFoldsToyHeader,
   unit_requireHitMissFails,
@@ -19,6 +19,7 @@ module Bindgen.DriverTest (
   unit_quotedIncludeChains,
   unit_overrideScopedToItsUnit,
   unit_orphanOverrideFails,
+  unit_unusedOverrideFails,
 ) where
 
 import Data.Text qualified as T
@@ -291,3 +292,22 @@ unit_orphanOverrideFails = do
       assertBool
         ("does not name a paired file: " <> toString err)
         (not ("overrides/toy_a.yaml" `T.isInfixOf` err))
+
+-- | An override entry that names nothing its header declares (a typo, or
+-- a declaration the library removed) fails the header's run, naming the
+-- file and the entry; hs-bindgen alone would only warn and bind on.
+unit_unusedOverrideFails :: Assertion
+unit_unusedOverrideFails = do
+  r <-
+    runToyChain
+      (toyEnv "lithon-driver-unused")
+        { overrides = [("toy_a.yaml", T.replace "toy_a_origin" "toy_a_orgin" omitOrigin)]
+        }
+      quotedHeaders
+      toyPlan{mainIncludes = ["toy/toy_b.h"]}
+      Visitor{passes = mempty, finalize = \_ _ _ -> Right ()}
+  case r of
+    Right _ -> assertFailure "expected the unused override entry to fail the run"
+    Left err -> do
+      assertBool ("names the file: " <> toString err) ("overrides/toy_a.yaml" `T.isInfixOf` err)
+      assertBool ("names the entry: " <> toString err) ("toy_a_orgin" `T.isInfixOf` err)

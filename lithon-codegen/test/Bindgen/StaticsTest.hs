@@ -59,6 +59,7 @@ statics dir =
             , versions = dir </> "versions.json"
             , aliases = dir </> "aliases.json"
             , constants = dir </> "constants.json"
+            , unbound = dir </> "unbound.json"
             , static = dir
             , overrides = mempty
             }
