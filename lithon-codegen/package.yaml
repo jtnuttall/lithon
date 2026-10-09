@@ -46,7 +46,6 @@ dependencies:
   - base <4.22.0.0
   - lithon-hs-bindgen
   - lithon-prelude
-  - doxygen-parser
   - typed-product-builder
   - aeson ^>=2.3
   - aeson-pretty ^>=0.8
