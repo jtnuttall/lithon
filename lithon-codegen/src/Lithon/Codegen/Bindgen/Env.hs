@@ -50,7 +50,7 @@ import System.FilePath ((</>))
 
 import Lithon.Codegen.Backend.Env (DataDirError, targetDataDir)
 import Lithon.Codegen.Bindgen.Driver (DriverOpts (..), PackageInfo (..))
-import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), ParseEnv (..))
+import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), CDefine (..), ParseEnv (..))
 
 -- | The three registries every target's data directory carries.
 data Registry = VersionsJson | AliasesJson | ConstantsJson
@@ -264,10 +264,10 @@ invocationEnv :: BindgenTarget -> BindgenEnv -> HB.InvocationEnv
 invocationEnv target env =
   HB.InvocationEnv
     { extraIncludeDirs = [env.includeDir]
-    , defineMacros =
-        map
-          (\(name, bodyMay) -> HS.hashDefine (toString name) (toString (fromMaybe "" bodymay)))
-          target.parse.defines
+    , -- A define without a value is the bare @#define NAME@ (an empty body),
+      -- as 'defineLine' renders it in lithon's own C units; never the
+      -- @-DNAME@ spelling's @NAME 1@.
+      defineMacros = map (\d -> (d.name, fromMaybe "" d.value)) target.parse.defines
     , doxygenAliases = target.parse.doxygenAliases
     , fieldNaming = HB.OmitFieldPrefixes
     , uniqueId = toString target.packageName

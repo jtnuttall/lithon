@@ -21,11 +21,13 @@ module Bindgen.Support.Toy (
   runToy,
   toyArtefacts,
   renderedPairs,
+  wrapperC,
 
   -- * The generic fold
   runToyChain,
 ) where
 
+import Data.Text qualified as T
 import Data.Text.IO qualified as TIO
 import Effectful (runEff)
 import Lithon.Effect.Error
@@ -64,7 +66,8 @@ data ToyEnv = ToyEnv
   { uniqueId :: String
   , fieldNaming :: HB.FieldNamingStrategy
   , doxygenAliases :: [(Text, Text)]
-  , defineMacros :: [String]
+  , defineMacros :: [(Text, Text)]
+  -- ^ @(name, body)@; an empty body is a bare @#define name@.
   }
 
 -- | A toy environment with hs-bindgen's prefixed field naming, no doxygen
@@ -129,6 +132,16 @@ toyArtefacts env baseModule header = runToy env baseModule [header] HB.collectAr
 -- types deliberately carry no 'Eq'\/'Show'.
 renderedPairs :: [HB.NameableModule HB.RenderedHsModule] -> [(Text, Text)]
 renderedPairs = map \m -> (HB.moduleName m, m.hsModule.text)
+
+-- | The C source of a rendered module's wrapper splice
+-- (@addCSource (unlines [ "…", … ])@), one element per line.
+wrapperC :: Text -> [Text]
+wrapperC source =
+  [ toText c
+  | line <- dropWhile (not . T.isInfixOf "addCSource") (T.lines source)
+  , Just literal <- [T.stripPrefix "[ " (T.stripStart line) <|> T.stripPrefix ", " (T.stripStart line)]
+  , Just (c :: String) <- [readMaybe (toString literal)]
+  ]
 
 -- | The whole generic fold ('runHeaderChain': preflight, plan, chain)
 -- over the toy headers under the real effect stack. 'Left' carries the

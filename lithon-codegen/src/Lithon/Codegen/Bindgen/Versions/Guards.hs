@@ -122,7 +122,7 @@ gatedFunctions target registry cDecls =
       , since
       , params = length fn.args
       , stubReturn = entry >>= (.stubReturn)
-      , returnsVoid = case fn.res of
+      , returnsVoid = case fn.res.c of
           C.TypeVoid -> True
           _nonVoid -> False
       }

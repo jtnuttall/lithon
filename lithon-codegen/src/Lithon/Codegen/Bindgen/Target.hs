@@ -229,9 +229,9 @@ includeLine t = includeArgLine . includeArg t
 includeArgLine :: FilePath -> Text
 includeArgLine arg = "#include <" <> toText arg <> ">"
 
--- | Include-graph source path -> public-header basename: @Just@ exactly
--- when the header's parent directory is the include root (libc, clang
--- builtins, and nested directories are out of scope).
+-- | Include-graph real path (canonical, symlink-resolved) -> public-header
+-- basename: @Just@ exactly when the header's parent directory is the include
+-- root (libc, clang builtins, and nested directories are out of scope).
 projectHeaderUnder :: FilePath -> FilePath -> Maybe FilePath
 projectHeaderUnder root path =
   case reverse (splitDirectories path) of

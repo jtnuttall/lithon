@@ -1,3 +1,4 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE PatternSynonyms #-}
 
 {-| Toy overview prose.
@@ -39,6 +40,7 @@ import qualified HsBindgen.Runtime.LibC
 import qualified HsBindgen.Runtime.Support as BG
 import qualified SDL3.Sys.Bindgen.Toy.Safe as Safe
 import qualified SDL3.Sys.Bindgen.Toy.Unsafe as Unsafe
+import Prelude (Bool, Double, Float, IO, fmap)
 import SDL3.Sys.Bindgen.Toy
 
 {-| Create a toy thing.

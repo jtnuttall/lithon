@@ -42,7 +42,7 @@ import Test.Tasty.Golden (goldenVsStringDiff)
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
 import Bindgen.Support.Targets (toy2)
-import Bindgen.Support.Toy (ToyHeader (..), invokeToy, renderedPairs, toyEnv, withToyRoot)
+import Bindgen.Support.Toy (ToyHeader (..), invokeToy, renderedPairs, toyEnv, withToyRoot, wrapperC)
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Bindgen (bindgenVisitor)
 import Lithon.Codegen.Bindgen.Driver (
@@ -106,16 +106,6 @@ gateFamily target registry uniqueId root headerName = do
           ]
       , payload
       }
-
--- | The C source of a rendered module's wrapper splice
--- (@addCSource (unlines [ "…", … ])@), one element per line.
-wrapperC :: Text -> [Text]
-wrapperC source =
-  [ toText c
-  | line <- dropWhile (not . T.isInfixOf "addCSource") (T.lines source)
-  , Just literal <- [T.stripPrefix "[ " (T.stripStart line) <|> T.stripPrefix ", " (T.stripStart line)]
-  , Just (c :: String) <- [readMaybe (toString literal)]
-  ]
 
 registryAt :: Int -> LByteString -> IO VersionsRegistry
 registryAt arity = either (assertFailure . toString) pure . decodeVersionsRegistry arity
