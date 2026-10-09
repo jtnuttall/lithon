@@ -185,9 +185,9 @@ The generator enforces four rules:
   file is a license and must be named `LICENSE_<name>`.
 - `overrides/` holds `<header stem>.yaml` files and nothing else, each named
   like the spec artifact of the header it applies to: `overrides/SDL_main.yaml`
-  pairs with `spec/SDL_main.yaml` and reaches that header's hs-bindgen run
-  alone. A file that pairs with no bound header is an error, and so is a
-  single-file `overrides.yaml`.
+  pairs with `spec/SDL_main.yaml`, reaches that header's hs-bindgen run
+  alone, and holds only that header's entries. A file that pairs with no
+  bound header is an error, and so is a single-file `overrides.yaml`.
 
 #### `versions.json`
 

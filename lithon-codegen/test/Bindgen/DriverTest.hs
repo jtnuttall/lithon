@@ -245,7 +245,7 @@ omitOrigin =
 -- invocation alone: @toy_a.h@ drops the function and its spec records the
 -- omit, while @toy_b.h@ (which includes it) is run without the file, so
 -- its spec does not copy the omit (handing every unit the whole set did,
--- and drew an unused-entry warning from every unit that did not declare
+-- and drew an unused-entry warning from every unit that did not reach
 -- the function).
 unit_overrideScopedToItsUnit :: Assertion
 unit_overrideScopedToItsUnit = do

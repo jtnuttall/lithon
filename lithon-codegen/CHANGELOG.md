@@ -73,10 +73,10 @@
   gets none. The single `overrides.yaml` is an error (`OverridesLegacy`), as
   is anything but `.yaml` files in `overrides/` (`OverrideUnexpected`), and a
   file that pairs with no bound header (`OrphanOverrides`). This retires the
-  78 `Binding specification for type not used` warnings every other header's
-  run raised for an entry it did not declare, and the omit entries copied
-  into those headers' generated specs. `sdl3` and `mpv` are migrated
-  (`overrides/SDL_main.yaml`, `overrides/SDL_stdinc.yaml`,
+  78 `Binding specification for type not used` warnings the other headers'
+  runs raised for an entry whose declaration they did not reach, and the omit
+  entries copied into the specs of those that did reach it. `sdl3` and `mpv`
+  are migrated (`overrides/SDL_main.yaml`, `overrides/SDL_stdinc.yaml`,
   `overrides/client.yaml`); the generated packages are unchanged.
 
 ## 0.1.1.0 - 2026-07-30
