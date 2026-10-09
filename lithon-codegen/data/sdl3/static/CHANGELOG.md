@@ -55,6 +55,9 @@
 
 - README: the `C shims` section, and the variadic functions and
   function-like macros it binds are no longer listed as unbound.
+- README: "What is not bound" is shorter: it points at the hs-bindgen
+  team's survey of SDL's macros, says what differs here, lists the rest in
+  one paragraph, and links the skip ledger.
 - Regenerated with hs-bindgen 1.0.0.0.
 - Raw modules (`SDL3.Sys.Bindgen.*`): each foreign import sits behind a
   wrapper that converts argument by argument through `HasFFIType` and keeps
