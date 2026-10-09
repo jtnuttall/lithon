@@ -18,8 +18,9 @@
 -- @generate@ does the same, then plans the curated alias layer and emits
 -- the package.
 --
--- Curation inputs live beside the specs: @overrides.yaml@ (the prescriptive
--- hs-bindgen spec), @aliases.json@, @constants.json@, and @versions.json@.
+-- Curation inputs live beside the specs: @overrides\/@ (the prescriptive
+-- hs-bindgen specs, one file per header), @aliases.json@, @constants.json@,
+-- and @versions.json@.
 module Lithon.Codegen.Bindgen (
   BindgenError (..),
   BindgenCmd (..),

@@ -35,8 +35,9 @@ extra-source-files:
     data/sdl3/aliases.json
     data/sdl3/constants.json
     data/sdl3/versions.json
-    data/mpv/overrides.yaml
-    data/sdl3/overrides.yaml
+    data/mpv/overrides/client.yaml
+    data/sdl3/overrides/SDL_main.yaml
+    data/sdl3/overrides/SDL_stdinc.yaml
 extra-doc-files:
     README.md
     CHANGELOG.md
@@ -361,6 +362,7 @@ test-suite lithon-codegen-test
       Bindgen.CensusTest
       Bindgen.DriverTest
       Bindgen.GateTest
+      Bindgen.OverridesTest
       Bindgen.PlatformShimTest
       Bindgen.StaticsTest
       Bindgen.Support.Targets

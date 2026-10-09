@@ -2,8 +2,9 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 -- | Every registered bindgen-sys target is a well-formed record whose
--- data directory decodes under its own version arity, and no two targets
--- claim the same key, package, or namespace; each malformation
+-- data directory decodes under its own version arity and holds prescriptive
+-- specs only for headers it generates specs for, and no two targets claim
+-- the same key, package, or namespace; each malformation
 -- 'validateTarget' guards against is rejected with a message naming it;
 -- and the include-graph scope is exactly "the parent directory is the
 -- include root".
@@ -11,6 +12,7 @@ module Bindgen.TargetsTest (
   unit_targetsValidate,
   unit_toy2Validates,
   unit_registeredTargetsDataDecodes,
+  unit_overridesNamePlannedHeaders,
   unit_malformedTargetsRejected,
   unit_clashingTargetsRejected,
   unit_projectHeaderUnderScopesByParent,
@@ -24,7 +26,7 @@ import Effectful (runEff)
 import Effectful.Error.Dynamic (runErrorNoCallStack)
 import Language.Haskell.TH (stringE)
 import Lithon.Effect.ClangEnv (PkgDbEntry (..))
-import Lithon.Effect.FileSystem (runFileSystem)
+import Lithon.Effect.FileSystem (listDirectory, runFileSystem)
 import Lithon.Effect.Log (runLog)
 import Lithon.Prelude
 import System.FilePath ((</>))
@@ -39,6 +41,7 @@ import Lithon.Codegen.Bindgen.Env (
   BindgenPaths (..),
   BindgenResolutionError,
   PackageStatics (..),
+  discoverOverrides,
   loadStatics,
  )
 import Lithon.Codegen.Bindgen.Target (
@@ -110,9 +113,33 @@ unit_registeredTargetsDataDecodes = for_ bindgenTargets \target -> do
             , aliases = dataDir </> "aliases.json"
             , constants = dataDir </> "constants.json"
             , static = dataDir </> "static"
-            , overrides = Nothing
+            , overrides = mempty
             }
       }
+
+-- | Every committed prescriptive spec pairs with a spec artifact of the
+-- same name in @spec\/@, which is how the driver pairs it with its header:
+-- a rename, a typo, or the spec of an excluded header is caught here,
+-- before a full generation run reports it as an 'OrphanOverrides'.
+unit_overridesNamePlannedHeaders :: Assertion
+unit_overridesNamePlannedHeaders = for_ bindgenTargets \target -> do
+  let dataDir = projectDir </> "data" </> toString target.key
+  found <-
+    runEff
+      . runLog "targets-test"
+      . runFileSystem
+      . runErrorNoCallStack @BindgenResolutionError
+      $ discoverOverrides dataDir
+  overrides <-
+    either
+      (\e -> assertFailure (toString target.key <> " overrides: " <> toString (display e)))
+      pure
+      found
+  specs <- runEff . runFileSystem $ listDirectory (dataDir </> "spec")
+  let orphans = filter (`notElem` specs) (Map.keys overrides)
+  assertBool
+    (toString target.key <> ": overrides without a spec artifact: " <> show orphans)
+    (null orphans)
 
 -- | One malformation per case, each rejected with a message naming it.
 unit_malformedTargetsRejected :: Assertion

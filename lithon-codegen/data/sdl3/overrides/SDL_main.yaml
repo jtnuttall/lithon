@@ -1,0 +1,24 @@
+# Curated prescriptive binding specification for SDL3/SDL_main.h, in
+# sdl3-bindgen-sys.
+#
+# Entries here override how hs-bindgen translates the types it generates.
+#
+# This allows us to introduce renames, alter representations, define
+# enums as open or closed, pick instances, omit something entirely, and
+# so forth.
+#
+# The file is named like the header's spec artifact (spec/SDL_main.yaml),
+# and the driver hands it to that header's hs-bindgen run alone, so it
+# holds entries for that header's declarations only. The generated
+# per-header specs live in spec/ and are machine-owned and refreshed by
+# `lithon-codegen sdl3 spec`.
+version:
+  hs_bindgen: 0.1.0
+  binding_specification: "1.0"
+ctypes:
+  # SDL_main is the symbol the application defines, not one SDL exports:
+  # binding it produced a C shim (and a &SDL_main FunPtr accessor) with an
+  # undefined-symbol landmine.
+  - omit:
+      headers: SDL3/SDL_main.h
+      cname: SDL_main

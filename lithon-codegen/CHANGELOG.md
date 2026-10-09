@@ -67,6 +67,17 @@
 - The include graph's paths are canonical real paths, not source paths.
 - lithon-codegen no longer depends on doxygen-parser directly; doxygen
   sections are read through `Lithon.HsBindgen.C`.
+- The prescriptive binding spec is one file per header,
+  `data/<key>/overrides/<header stem>.yaml`, named like the header's spec
+  artifact and passed to that header's hs-bindgen run alone; the preflight
+  gets none. The single `overrides.yaml` is an error (`OverridesLegacy`), as
+  is anything but `.yaml` files in `overrides/` (`OverrideUnexpected`), and a
+  file that pairs with no bound header (`OrphanOverrides`). This retires the
+  78 `Binding specification for type not used` warnings every other header's
+  run raised for an entry it did not declare, and the omit entries copied
+  into those headers' generated specs. `sdl3` and `mpv` are migrated
+  (`overrides/SDL_main.yaml`, `overrides/SDL_stdinc.yaml`,
+  `overrides/client.yaml`); the generated packages are unchanged.
 
 ## 0.1.1.0 - 2026-07-30
 

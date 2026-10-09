@@ -60,7 +60,7 @@ statics dir =
             , aliases = dir </> "aliases.json"
             , constants = dir </> "constants.json"
             , static = dir
-            , overrides = Nothing
+            , overrides = mempty
             }
       }
 

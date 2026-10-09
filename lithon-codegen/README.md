@@ -166,23 +166,28 @@ A target binds one C library through hs-bindgen. There are two: `sdl3` and
 
 Every target uses the same layout in `lithon-codegen/data/<key>/`:
 
-| Path                    | Written by    | Holds                                                                        |
-| ----------------------- | ------------- | ---------------------------------------------------------------------------- |
-| `aliases.json`          | You           | The naming rule and each function's FFI flavor, with rationales.             |
-| `constants.json`        | You           | Typed-constant groups: which macros belong to which newtype.                 |
-| `versions.json`         | You           | The availability annotations. See [`versions.json`](#versionsjson).          |
-| `overrides.yaml`        | You, optional | hs-bindgen's prescriptive binding spec: renames, representations, omissions. |
-| `static/`               | You           | The statics, copied to the package root.                                     |
-| `spec/`                 | Generator     | The spec artifacts: one binding spec per header, committed for review.       |
-| `.lithon-manifest.json` | Generator     | Digests of the spec artifacts.                                               |
+| Path                    | Written by    | Holds                                                                                         |
+| ----------------------- | ------------- | --------------------------------------------------------------------------------------------- |
+| `aliases.json`          | You           | The naming rule and each function's FFI flavor, with rationales.                              |
+| `constants.json`        | You           | Typed-constant groups: which macros belong to which newtype.                                  |
+| `versions.json`         | You           | The availability annotations. See [`versions.json`](#versionsjson).                           |
+| `overrides/`            | You, optional | hs-bindgen's prescriptive binding specs, one per header: renames, representations, omissions. |
+| `static/`               | You           | The statics, copied to the package root.                                                      |
+| `spec/`                 | Generator     | The spec artifacts: one binding spec per header, committed for review.                        |
+| `.lithon-manifest.json` | Generator     | Digests of the spec artifacts.                                                                |
 
-The generator enforces three rules:
+The generator enforces four rules:
 
 - `aliases.json` must classify every callback-taking function as `both` or
   `safe-only`. Other functions default to `both`.
 - `constants.json` needs `groups`, even when empty: `{"groups": {}}`.
 - `static/` needs `package.yaml`, `README.md`, and `CHANGELOG.md`. Any other
   file is a license and must be named `LICENSE_<name>`.
+- `overrides/` holds `<header stem>.yaml` files and nothing else, each named
+  like the spec artifact of the header it applies to: `overrides/SDL_main.yaml`
+  pairs with `spec/SDL_main.yaml` and reaches that header's hs-bindgen run
+  alone. A file that pairs with no bound header is an error, and so is a
+  single-file `overrides.yaml`.
 
 #### `versions.json`
 

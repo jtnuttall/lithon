@@ -15,10 +15,10 @@
 -- "Lithon.Codegen.Bindgen.Targets".
 --
 -- Deliberately not fields (the same contract for every target): the
--- three registries are required, @overrides.yaml@ is optional, the
--- package statics live in @static\/@, record fields omit their prefixes,
--- the vendored runtime and facade set, the flavor rules, emission and
--- manifest mechanics, and probe compilation.
+-- three registries are required, @overrides\/@ (one prescriptive spec per
+-- header) is optional, the package statics live in @static\/@, record
+-- fields omit their prefixes, the vendored runtime and facade set, the
+-- flavor rules, emission and manifest mechanics, and probe compilation.
 module Lithon.Codegen.Bindgen.Target (
   -- * The target record
   BindgenTarget (..),

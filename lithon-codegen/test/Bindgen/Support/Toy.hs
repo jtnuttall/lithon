@@ -25,14 +25,17 @@ module Bindgen.Support.Toy (
 
   -- * The generic fold
   runToyChain,
+  runToyChainSpecs,
 ) where
 
+import Data.ByteString qualified as BS
+import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Data.Text.IO qualified as TIO
 import Effectful (runEff)
 import Lithon.Effect.Error
 import Lithon.Effect.Log (runLog)
-import Lithon.Effect.Temporary (runTemporary)
+import Lithon.Effect.Temporary (SystemTempDir (SystemTempDir), runTemporary)
 import Lithon.HsBindgen qualified as HB
 import Lithon.Prelude
 import System.Directory (createDirectoryIfMissing)
@@ -44,9 +47,11 @@ import Lithon.Codegen.Bindgen.Driver (
   DriverError,
   DriverOpts (..),
   HeaderPlan,
-  HeaderResult,
+  HeaderResult (..),
+  HeaderUnit (..),
   PackageInfo (..),
   Visitor,
+  getScratchDirectory,
   runDriver,
   runHeaderChain,
  )
@@ -68,10 +73,14 @@ data ToyEnv = ToyEnv
   , doxygenAliases :: [(Text, Text)]
   , defineMacros :: [(Text, Text)]
   -- ^ @(name, body)@; an empty body is a bare @#define name@.
+  , overrides :: [(FilePath, Text)]
+  -- ^ @(file name, text)@ of the prescriptive specs 'runToyChain' writes
+  -- under @overrides\/@ and hands the driver, by spec file name
+  -- (@toy_a.yaml@).
   }
 
 -- | A toy environment with hs-bindgen's prefixed field naming, no doxygen
--- aliases, and no defines.
+-- aliases, no defines, and no overrides.
 toyEnv :: String -> ToyEnv
 toyEnv uniqueId =
   ToyEnv
@@ -79,6 +88,7 @@ toyEnv uniqueId =
     , fieldNaming = HB.AddFieldPrefixes
     , doxygenAliases = []
     , defineMacros = []
+    , overrides = []
     }
 
 invocationEnv :: ToyEnv -> FilePath -> HB.InvocationEnv
@@ -149,7 +159,19 @@ wrapperC source =
 -- over the toy headers under the real effect stack. 'Left' carries the
 -- displayed error, so tests can assert on what a user would read.
 runToyChain :: ToyEnv -> [ToyHeader] -> HeaderPlan -> Visitor r -> IO (Either Text [HeaderResult r])
-runToyChain env headers plan visitor = withToyRoot headers \root ->
+runToyChain env headers plan visitor =
+  fmap (map fst) <$> runToyChainSpecs env headers plan visitor
+
+-- | 'runToyChain', pairing each result with the text of the binding spec
+-- its invocation wrote (the scratch directory dies with the run, so this
+-- reads them before it does).
+runToyChainSpecs
+  :: ToyEnv -> [ToyHeader] -> HeaderPlan -> Visitor r -> IO (Either Text [(HeaderResult r, Text)])
+runToyChainSpecs env headers plan visitor = withToyRoot headers \root -> do
+  let overridesDir = root </> "overrides"
+  for_ env.overrides \(file, source) -> do
+    createDirectoryIfMissing True overridesDir
+    TIO.writeFile (overridesDir </> file) source
   fmap (first snd)
     . runEff
     . runLog "toy-chain"
@@ -159,7 +181,12 @@ runToyChain env headers plan visitor = withToyRoot headers \root ->
     . runDriver
       DriverOpts
         { invocationEnv = invocationEnv env root
-        , prescriptiveSpec = Nothing
+        , prescriptiveSpecs = Map.fromList [(file, overridesDir </> file) | (file, _) <- env.overrides]
         , packageInfo = PackageInfo{name = toText env.uniqueId, dataDir = root, version = Nothing}
         }
-    $ runHeaderChain plan visitor
+    $ do
+      results <- runHeaderChain plan visitor
+      SystemTempDir specDir <- getScratchDirectory
+      for results \result -> do
+        spec <- liftIO (BS.readFile (specDir </> result.unit.specFile))
+        pure (result, decodeUtf8 spec)

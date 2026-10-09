@@ -17,6 +17,9 @@ module Lithon.Codegen.Bindgen.Env (
   -- * The driver's options
   driverOpts,
 
+  -- * Prescriptive overrides
+  discoverOverrides,
+
   -- * Package statics
   PackageStatics (..),
   loadStatics,
@@ -28,6 +31,7 @@ import Data.Aeson qualified as A
 import Data.Char (isAsciiLower, isAsciiUpper, isDigit)
 import Data.HashMap.Strict qualified as HM
 import Data.List qualified as L
+import Data.Map.Strict qualified as Map
 import Effectful
 import Effectful.Dispatch.Dynamic
 import Effectful.Error.Dynamic
@@ -40,13 +44,14 @@ import Lithon.Effect.FileSystem (
   assertDirectoryExists,
   assertFileExists,
   doesDirectoryExist,
-  doesFileExist,
   listDirectory,
+  whenFileExists,
+  withDirectoryExists,
  )
 import Lithon.Effect.Log
 import Lithon.HsBindgen qualified as HB
 import Lithon.Prelude
-import System.FilePath ((</>))
+import System.FilePath (takeExtension, (</>))
 
 import Lithon.Codegen.Backend.Env (DataDirError, targetDataDir)
 import Lithon.Codegen.Bindgen.Driver (DriverOpts (..), PackageInfo (..))
@@ -80,6 +85,12 @@ data BindgenResolutionError
     StaticMissing FilePath
   | -- | @static\/@ holds something it may not: the entry, and why.
     StaticUnexpected FilePath StaticRefusal
+  | -- | A stale single-file @overrides.yaml@: the prescriptive spec is one
+    -- file per header now ('discoverOverrides').
+    OverridesLegacy FilePath
+  | -- | @overrides\/@ holds something it may not: the entry. See
+    -- 'discoverOverrides'.
+    OverrideUnexpected FilePath
   | -- | The target record itself is malformed (its key, the problems).
     TargetInvalid Text [Text]
   | DataDirUnresolved DataDirError
@@ -145,6 +156,18 @@ instance Display BindgenResolutionError where
           " (the generator stages "
             <> intercalateTB ", " (map from reservedLicenses)
             <> " in every package itself; name the library's license LICENSE_<name>)"
+    OverridesLegacy path ->
+      "Stale prescriptive spec "
+        <> from path
+        <> ": the prescriptive spec is one file per header now. Split it into"
+        <> " overrides/<header stem>.yaml files, each named like the header's spec artifact"
+        <> " (SDL_main.h is overrides/SDL_main.yaml, pairing with spec/SDL_main.yaml) and holding"
+        <> " the version block and only that header's entries"
+    OverrideUnexpected path ->
+      "Unexpected prescriptive override "
+        <> from path
+        <> " (overrides/ holds <header stem>.yaml files, nothing else: no subdirectories,"
+        <> " no dotfiles, no other extensions)"
     TargetInvalid key problems ->
       "target "
         <> from key
@@ -183,8 +206,10 @@ data BindgenPaths = BindgenPaths
   -- ^ @constants.json@ (required).
   , static :: FilePath
   -- ^ @static\/@: the package's hand-written root files ('loadStatics').
-  , overrides :: Maybe FilePath
-  -- ^ @overrides.yaml@, the prescriptive binding spec, when present.
+  , overrides :: Map FilePath FilePath
+  -- ^ The prescriptive binding specs ('discoverOverrides'): file name in
+  -- @overrides\/@ (@SDL_main.yaml@) to its absolute path. Empty when the
+  -- directory is absent.
   }
   deriving stock (Generic, Show)
   deriving anyclass (A.ToJSON)
@@ -220,13 +245,7 @@ runBindgenGen target eff = do
   assertFileExists aliases (RegistryMissing AliasesJson)
   assertFileExists constants (RegistryMissing ConstantsJson)
 
-  overrides <- do
-    let path = dataDir </> "overrides.yaml"
-    exists <- doesFileExist path
-    if exists then
-      Just path <$ logInfo ("using prescriptive overrides" :# ["path" .= path])
-    else
-      pure Nothing
+  overrides <- discoverOverrides dataDir
 
   pkgDbEntry <-
     noteErrM (PkgConfigMissing name target.pkgConfig <$> getPkgMetaDb)
@@ -272,12 +291,12 @@ invocationEnv target env =
     }
 
 -- | The target's generation run: the shared invocation environment plus
--- the prescriptive overrides registry, when present.
+-- the per-header prescriptive overrides, when present.
 driverOpts :: BindgenTarget -> BindgenEnv -> DriverOpts
 driverOpts target env =
   DriverOpts
     { invocationEnv = invocationEnv target env
-    , prescriptiveSpec = env.paths.overrides
+    , prescriptiveSpecs = env.paths.overrides
     , packageInfo =
         PackageInfo
           { name = target.packageName
@@ -285,6 +304,41 @@ driverOpts target env =
           , version = Nothing
           }
     }
+
+-- | Find the target's prescriptive binding specs: the @.yaml@ files of
+-- @data\/\<key\>\/overrides\/@, keyed by file name, each valued by its
+-- absolute path. A file is named like the spec artifact of the header it
+-- applies to (@overrides\/SDL_main.yaml@ pairs with @spec\/SDL_main.yaml@),
+-- and the driver passes it to that header's invocation alone. An absent
+-- directory is no overrides.
+--
+-- Anything else is an error rather than a guess: a stale single-file
+-- @overrides.yaml@ ('OverridesLegacy'), and in @overrides\/@ (or in its
+-- place) a subdirectory, a dotfile, or a file without the @.yaml@ extension
+-- ('OverrideUnexpected'). Whether each file names a bound header is the
+-- driver's check, once it has planned the headers.
+discoverOverrides
+  :: (FileSystem :> es, Log :> es, Error BindgenResolutionError :> es)
+  => FilePath -> Eff es (Map FilePath FilePath)
+discoverOverrides dataDir = do
+  whenFileExists
+    (dataDir </> "overrides.yaml")
+    (throwError (OverridesLegacy (dataDir </> "overrides.yaml")))
+  whenFileExists dir (throwError (OverrideUnexpected dir))
+  withDirectoryExists dir \case
+    False -> pure Map.empty
+    True -> do
+      entries <- sort <$> listDirectory dir
+      for_ entries \entry -> do
+        isDirectory <- doesDirectoryExist (dir </> entry)
+        when (isDirectory || not (isOverrideName entry)) do
+          throwError (OverrideUnexpected (dir </> entry))
+      unless (null entries) do
+        logInfo ("using prescriptive overrides" :# ["files" .= entries])
+      pure (Map.fromList [(entry, dir </> entry) | entry <- entries])
+ where
+  dir = dataDir </> "overrides"
+  isOverrideName entry = not ("." `isPrefixOf` entry) && takeExtension entry == ".yaml"
 
 -- | The generated package's hand-written root files: @package.yaml@,
 -- @README.md@, @CHANGELOG.md@, and the library's license files.
