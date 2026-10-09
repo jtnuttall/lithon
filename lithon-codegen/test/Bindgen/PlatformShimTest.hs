@@ -11,9 +11,10 @@
 -- vanish — generation must fail instead.
 --
 -- Also pins the one shim that is no longer a shim: SDL's
--- @SDL_MAIN_HANDLED@ is a root define, and hs-bindgen renders root
--- directives (defines before includes) at the top of every wrapper
--- translation unit.
+-- @SDL_MAIN_HANDLED@ is a root define. The seam
+-- ('Lithon.HsBindgen.Invoke.runBindgen') lists the defines before the
+-- includes, and hs-bindgen renders the root directives, in order, at the top
+-- of every wrapper translation unit.
 module Bindgen.PlatformShimTest (
   unit_linuxStubsRewriteTheFamily,
   unit_rootDefinesPrecedeIncludes,
@@ -28,7 +29,8 @@ import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertEqual, assertFailure, (@?=))
 
 import Bindgen.Support.Toy (ToyEnv (..), ToyHeader (..), renderedPairs, runToy, toyEnv, wrapperC)
-import Lithon.Codegen.Bindgen.Target.Sdl3 (stubEditsFor)
+import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), ParseEnv (..), defineMacro)
+import Lithon.Codegen.Bindgen.Target.Sdl3 (sdl3, stubEditsFor)
 
 -- | Drive one toy header through the seam and hand back the translated
 -- family (pre-render).
@@ -74,15 +76,15 @@ unit_linuxStubsRewriteTheFamily = do
   let typesSrc = fromMaybe "" (L.lookup "SDL3.Sys.Bindgen.ShimToy" (renderedPairs rendered))
   T.count "#ifdef SDL_PLATFORM_LINUX" typesSrc @?= 0
 
--- | The define and the include argument mirror production (@parse.defines@
--- and @SDL3\/SDL_main.h@ of the SDL3 target): @SDL_main.h@ tests
+-- | The defines are the SDL3 target's own (@parse.defines@) and the include
+-- argument mirrors its @SDL3\/SDL_main.h@: @SDL_main.h@ tests
 -- @SDL_MAIN_HANDLED@ with @#ifndef@, so the define has to come first in
 -- the wrapper C, with no text edit to put it there.
 unit_rootDefinesPrecedeIncludes :: IO ()
 unit_rootDefinesPrecedeIncludes = do
   family <-
     toyFamilyWith
-      (toyEnv "lithon-shim-toy"){defineMacros = [("SDL_MAIN_HANDLED", "")]}
+      (toyEnv "lithon-shim-toy"){defineMacros = map defineMacro sdl3.parse.defines}
       "SDL3/SDL_main.h"
       $ unlines
         [ "#ifndef SDL_MAIN_TOY_H"

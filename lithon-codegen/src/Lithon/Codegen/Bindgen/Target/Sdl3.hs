@@ -57,10 +57,11 @@ sdl3 =
             -- Windows\/mobile headers compile a real entry point into the
             -- wrapper object (guaranteed link failure). It has to precede
             -- @#include <SDL3/SDL_main.h>@ (the header tests it with
-            -- @#ifndef@); as a root directive it does, because hs-bindgen
-            -- renders the defines before the includes at the top of every
-            -- wrapper translation unit. Harmless where @SDL_main.h@ leaves
-            -- @main@ alone.
+            -- @#ifndef@); as a root directive it does, because the seam
+            -- (@Lithon.HsBindgen.Invoke.runBindgen@) lists the defines before
+            -- the includes and hs-bindgen renders the root directives, in
+            -- order, at the top of every wrapper translation unit. Harmless
+            -- where @SDL_main.h@ leaves @main@ alone.
             defines = [CDefine{name = "SDL_MAIN_HANDLED", value = Nothing}]
           , -- SDL's Doxyfile defines \threadsafety; without the alias doxygen
             -- passes the command through as literal text and every function doc

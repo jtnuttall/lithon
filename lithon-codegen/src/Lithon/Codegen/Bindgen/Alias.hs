@@ -522,9 +522,8 @@ data ScalarBridge
 -- IEEE floats.
 --
 -- hs-bindgen 1.0's 'SHs.BindgenGlobalType' no longer lists the fixed-width
--- integers or the IEEE floats (it names the C types instead), so the native
--- twins are the curated layer's to name; 'nativeType' builds each as a
--- 'SHs.CustomGlobal'.
+-- integers or the IEEE floats, so the native twins are the curated layer's to
+-- name; 'nativeType' builds each as a 'SHs.CustomGlobal'.
 data Native
   = NativeWidth NativeScalar
   | NativeFloat

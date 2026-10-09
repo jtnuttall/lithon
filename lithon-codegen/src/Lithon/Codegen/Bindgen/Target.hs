@@ -43,6 +43,7 @@ module Lithon.Codegen.Bindgen.Target (
   projectHeaderUnder,
   registryDisplayPath,
   defineLine,
+  defineMacro,
 
   -- * The header plan
   headerPlan,
@@ -246,6 +247,13 @@ registryDisplayPath t file = "lithon-codegen/data/" <> toString t.key <> "/" <> 
 -- | The define as a C source line.
 defineLine :: CDefine -> Text
 defineLine d = "#define " <> d.name <> maybe "" (" " <>) d.value
+
+-- | The define as the seam's @(name, body)@ pair for a root @#define@
+-- (hs-bindgen's own type is @HashDefine@). An absent value is an empty body,
+-- i.e. a bare @#define NAME@ (matching 'defineLine'), never the @-DNAME@
+-- spelling's @NAME 1@.
+defineMacro :: CDefine -> (Text, Text)
+defineMacro d = (d.name, fromMaybe "" d.value)
 
 -- | The target's header universe, as data.
 headerPlan :: BindgenTarget -> HeaderPlan
