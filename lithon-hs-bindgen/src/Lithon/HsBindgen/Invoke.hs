@@ -17,6 +17,7 @@ module Lithon.HsBindgen.Invoke (
   -- * Invocation
   InvocationEnv (..),
   InvocationSpec (..),
+  Verbosity (..),
   BindgenFailure (..),
   runBindgen,
 
@@ -71,7 +72,8 @@ import HsBindgen.Frontend.Pass.Final (Final)
 import HsBindgen.IR.C qualified as C
 import HsBindgen.Language.Haskell (ModuleName (..))
 import HsBindgen.Macro (CExpr, cExpr)
-import HsBindgen.Util.Tracer
+import HsBindgen.Util.Tracer (PrettyForTrace (..))
+import HsBindgen.Util.Tracer qualified as Tracer
 import Lithon.Prelude (toString, (&), (.~))
 import Lithon.Prelude.Display (Display (..))
 
@@ -91,7 +93,23 @@ data InvocationEnv = InvocationEnv
   , fieldNaming :: FieldNamingStrategy
   , uniqueId :: String
   -- ^ Disambiguates generated global C names across packages.
+  , verbosity :: Verbosity
+  -- ^ How much of hs-bindgen's own trace output the run prints.
   }
+
+-- | How much of hs-bindgen's own trace output a run prints. Each level
+-- includes the ones before it.
+data Verbosity
+  = -- | Errors only.
+    Quiet
+  | -- | Warnings and errors, plus hs-bindgen's notices about headers that
+    -- yield no bindings.
+    Normal
+  | -- | Plus the remaining notices and progress information.
+    Verbose
+  | -- | Everything, down to hs-bindgen's own debugging traces.
+    Debug
+  deriving stock (Bounded, Enum, Eq, Ord, Show)
 
 -- | Per-invocation inputs: one header (or umbrella) run.
 data InvocationSpec = InvocationSpec
@@ -128,13 +146,38 @@ artefact = BindgenM . lift
 runBindgen :: InvocationEnv -> InvocationSpec -> BindgenM a -> IO (Either BindgenFailure a)
 runBindgen env spec (BindgenM m) = do
   res <-
-    hsBindgenEMacroLang (pure . cExpr) tracer def bindgenConfig rootDirectives (runReaderT m env)
+    hsBindgenEMacroLang
+      (pure . cExpr)
+      frontendTracer
+      safeTracer
+      bindgenConfig
+      rootDirectives
+      (runReaderT m env)
   pure $ either (Left . toFailure) Right res
  where
   toFailure e = BindgenFailure (T.pack (show (prettyForTrace e)))
 
-  -- TODO: make verbosity configurable from InvocationEnv.
-  tracer = def{verbosity = Verbosity Warning}
+  -- hs-bindgen takes two tracer configs, and a trace prints when its level
+  -- reaches the config's threshold. The unsafe one (frontendTracer) carries
+  -- the boot and frontend traces, which run up to errors. The safe one
+  -- (safeTracer) carries the backend, artefact and file-write traces, which
+  -- stop at notices: Quiet puts its threshold above all of them, and Normal
+  -- keeps hs-bindgen's default, Notice, which still shows the notices (the
+  -- seam's "no bindings" one is among them).
+  frontendTracer = def{Tracer.verbosity = Tracer.Verbosity frontendLevel}
+  safeTracer = def{Tracer.verbosity = Tracer.Verbosity safeLevel}
+
+  frontendLevel = case env.verbosity of
+    Quiet -> Tracer.Error
+    Normal -> Tracer.Warning
+    Verbose -> Tracer.Info
+    Debug -> Tracer.Debug
+
+  safeLevel = case env.verbosity of
+    Quiet -> Tracer.Warning
+    Normal -> Tracer.Notice
+    Verbose -> Tracer.Info
+    Debug -> Tracer.Debug
 
   -- 1.0 renders the root header, and the prologue of every C wrapper
   -- translation unit, from this list in order. A define therefore has to

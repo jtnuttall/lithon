@@ -268,6 +268,7 @@ invocationEnv target env =
     , doxygenAliases = target.parse.doxygenAliases
     , fieldNaming = HB.OmitFieldPrefixes
     , uniqueId = toString target.packageName
+    , verbosity = HB.Normal
     }
 
 -- | The target's generation run: the shared invocation environment plus

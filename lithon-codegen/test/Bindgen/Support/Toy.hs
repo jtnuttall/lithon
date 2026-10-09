@@ -89,6 +89,8 @@ invocationEnv env root =
     , doxygenAliases = env.doxygenAliases
     , fieldNaming = env.fieldNaming
     , uniqueId = env.uniqueId
+    , -- The tests read results, not hs-bindgen's traces.
+      verbosity = HB.Quiet
     }
 
 -- | Write the headers under a fresh temporary include root and hand the
