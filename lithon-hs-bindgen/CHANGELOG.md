@@ -12,5 +12,5 @@ All notable changes to this project will be documented in this file.
   root directives replace `-D` defines (`defineMacros` is `#define` syntax,
   emitted ahead of the includes); `BindgenM` carries the invocation
   environment; include-graph paths are canonical real paths;
-  `Lithon.HsBindgen.C` exports `TranslatedTypes` and `Type` and drops
-  `HashDefine`.
+  `Lithon.HsBindgen.C` exports `TranslatedTypes` and `Type` and renames
+  `ExplicitField` to `RegularField` (upstream rename).
