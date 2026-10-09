@@ -28,6 +28,9 @@
 #include <stddef.h>
 
 #define SDL_MAIN_HANDLED
+#define SDL_SLOW_MEMCPY
+#define SDL_SLOW_MEMMOVE
+#define SDL_SLOW_MEMSET
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_vulkan.h>
 #include <SDL3/SDL_main.h>

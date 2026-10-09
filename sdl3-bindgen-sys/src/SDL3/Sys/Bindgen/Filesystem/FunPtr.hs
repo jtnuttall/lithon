@@ -29,6 +29,9 @@ import SDL3.Sys.Bindgen.Filesystem
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_filesystem.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Filesystem_get_SDL_GetBasePath */"
          , "__attribute__ ((const))"

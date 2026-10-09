@@ -34,6 +34,9 @@ import SDL3.Sys.Bindgen.Thread
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_thread.h>"
          , "SDL_Thread *hs_bindgen_0b01e232776d1771 ("
          , "  SDL_ThreadFunction arg1,"

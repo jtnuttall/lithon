@@ -34,6 +34,9 @@ import SDL3.Sys.Bindgen.Sensor
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_sensor.h>"
          , "SDL_SensorID *hs_bindgen_ee6d720498ccfcf9 ("
          , "  signed int *arg1"

@@ -241,6 +241,12 @@ Known gaps, so you can discover them here instead of mid-build:
   for now: upstream is extending coverage, and a `capi` import or a C
   shim can reach the rest. Macro _constants_ are bound; see
   [Typed constants](#typed-constants).
+- `SDL_size_mul_check_overflow` and `SDL_size_add_check_overflow`: each
+  is an inline function with a function-like macro of the same name
+  forwarding to its `_builtin` twin, and hs-bindgen drops both
+  ([hs-bindgen#2097](https://github.com/well-typed/hs-bindgen/issues/2097)).
+  The `SDL_size_mul_check_overflow_builtin` and
+  `SDL_size_add_check_overflow_builtin` variants are bound.
 - The seven `long`-typed `SDL_stdinc.h` libc clones (`strtol`/`ltoa`
   families, `lround`/`lroundf`): their FFI types cannot be correct on
   both LP64 and LLP64, so they are omitted.

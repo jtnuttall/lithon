@@ -78,6 +78,12 @@ module SDL3.Sys.Stdinc (
   SDL3.Sys.Stdinc.crc32Safe,
   SDL3.Sys.Stdinc.murmur3_32,
   SDL3.Sys.Stdinc.murmur3_32Safe,
+  SDL3.Sys.Stdinc.memcpy,
+  SDL3.Sys.Stdinc.memcpySafe,
+  SDL3.Sys.Stdinc.memmove,
+  SDL3.Sys.Stdinc.memmoveSafe,
+  SDL3.Sys.Stdinc.memset,
+  SDL3.Sys.Stdinc.memsetSafe,
   SDL3.Sys.Stdinc.memset4,
   SDL3.Sys.Stdinc.memset4Safe,
   SDL3.Sys.Stdinc.memcmp,
@@ -2587,11 +2593,260 @@ murmur3_32Safe =
       \x22 ->
         fmap Coerce.coerce (Safe.sDL_murmur3_32 x00 (Coerce.coerce x11) (Coerce.coerce x22))
 
+-- | Copy non-overlapping memory.
+--
+--     The memory regions must not overlap. If they do, use @'memmove'@ instead.
+--
+--     [Returns]: @dst@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'memmove'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @SDL_memcpy@.
+--                   The safe flavor is 'memcpySafe'
+--                   .
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @SDL_memcpy@, defined at @SDL3\/SDL_stdinc.h 2505:36@
+memcpy
+  :: BG.Ptr BG.Void
+  -- ^
+  --
+  --           [@dst@]: The destination memory region. Must not be NULL, and must not overlap with @src@.
+  -> PtrConst.PtrConst BG.Void
+  -- ^
+  --
+  --           [@src@]: The source memory region. Must not be NULL, and must not overlap with @dst@.
+  -> BG.Word64
+  -- ^
+  --
+  --           [@len@]: The length in bytes of both @dst@ and @src@.
+  -> IO (BG.Ptr BG.Void)
+memcpy =
+  \x00 ->
+    \x11 ->
+      \x22 -> Unsafe.sDL_memcpy x00 x11 (Coerce.coerce x22)
+
+-- | Copy non-overlapping memory.
+--
+--     The memory regions must not overlap. If they do, use @'memmove'@ instead.
+--
+--     [Returns]: @dst@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'memmove'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @SDL_memcpy@.
+--                   The unsafe flavor is 'memcpy'
+--                   .
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @SDL_memcpy@, defined at @SDL3\/SDL_stdinc.h 2505:36@
+memcpySafe
+  :: BG.Ptr BG.Void
+  -- ^
+  --
+  --           [@dst@]: The destination memory region. Must not be NULL, and must not overlap with @src@.
+  -> PtrConst.PtrConst BG.Void
+  -- ^
+  --
+  --           [@src@]: The source memory region. Must not be NULL, and must not overlap with @dst@.
+  -> BG.Word64
+  -- ^
+  --
+  --           [@len@]: The length in bytes of both @dst@ and @src@.
+  -> IO (BG.Ptr BG.Void)
+memcpySafe =
+  \x00 ->
+    \x11 ->
+      \x22 -> Safe.sDL_memcpy x00 x11 (Coerce.coerce x22)
+
+-- | Copy memory ranges that might overlap.
+--
+--     It is okay for the memory regions to overlap. If you are confident that the regions never overlap, using @'memcpy'@ may improve performance.
+--
+--     [Returns]: @dst@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'memcpy'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @SDL_memmove@.
+--                   The safe flavor is 'memmoveSafe'
+--                   .
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @SDL_memmove@, defined at @SDL3\/SDL_stdinc.h 2561:36@
+memmove
+  :: BG.Ptr BG.Void
+  -- ^
+  --
+  --           [@dst@]: The destination memory region. Must not be NULL.
+  -> PtrConst.PtrConst BG.Void
+  -- ^
+  --
+  --           [@src@]: The source memory region. Must not be NULL.
+  -> BG.Word64
+  -- ^
+  --
+  --           [@len@]: The length in bytes of both @dst@ and @src@.
+  -> IO (BG.Ptr BG.Void)
+memmove =
+  \x00 ->
+    \x11 ->
+      \x22 ->
+        Unsafe.sDL_memmove x00 x11 (Coerce.coerce x22)
+
+-- | Copy memory ranges that might overlap.
+--
+--     It is okay for the memory regions to overlap. If you are confident that the regions never overlap, using @'memcpy'@ may improve performance.
+--
+--     [Returns]: @dst@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'memcpy'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @SDL_memmove@.
+--                   The unsafe flavor is 'memmove'
+--                   .
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @SDL_memmove@, defined at @SDL3\/SDL_stdinc.h 2561:36@
+memmoveSafe
+  :: BG.Ptr BG.Void
+  -- ^
+  --
+  --           [@dst@]: The destination memory region. Must not be NULL.
+  -> PtrConst.PtrConst BG.Void
+  -- ^
+  --
+  --           [@src@]: The source memory region. Must not be NULL.
+  -> BG.Word64
+  -- ^
+  --
+  --           [@len@]: The length in bytes of both @dst@ and @src@.
+  -> IO (BG.Ptr BG.Void)
+memmoveSafe =
+  \x00 ->
+    \x11 ->
+      \x22 -> Safe.sDL_memmove x00 x11 (Coerce.coerce x22)
+
+-- | Initialize all bytes of buffer of memory to a specific value.
+--
+--     This function will set @len@ bytes, pointed to by @dst@, to the value specified in @c@.
+--
+--     Despite @c@ being an @int@ instead of a @char@, this only operates on bytes; @c@ must be a value between 0 and 255, inclusive.
+--
+--     [Returns]: @dst@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @SDL_memset@.
+--                   The safe flavor is 'memsetSafe'
+--                   .
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @SDL_memset@, defined at @SDL3\/SDL_stdinc.h 2589:36@
+memset
+  :: BG.Ptr BG.Void
+  -- ^
+  --
+  --           [@dst@]: the destination memory region. Must not be NULL.
+  -> BG.Int32
+  -- ^
+  --
+  --           [@c@]: the byte value to set.
+  -> BG.Word64
+  -- ^
+  --
+  --           [@len@]: the length, in bytes, to set in @dst@.
+  -> IO (BG.Ptr BG.Void)
+memset =
+  \x00 ->
+    \x11 ->
+      \x22 ->
+        Unsafe.sDL_memset x00 (Coerce.coerce x11) (Coerce.coerce x22)
+
+-- | Initialize all bytes of buffer of memory to a specific value.
+--
+--     This function will set @len@ bytes, pointed to by @dst@, to the value specified in @c@.
+--
+--     Despite @c@ being an @int@ instead of a @char@, this only operates on bytes; @c@ must be a value between 0 and 255, inclusive.
+--
+--     [Returns]: @dst@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @SDL_memset@.
+--                   The unsafe flavor is 'memset'
+--                   .
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @SDL_memset@, defined at @SDL3\/SDL_stdinc.h 2589:36@
+memsetSafe
+  :: BG.Ptr BG.Void
+  -- ^
+  --
+  --           [@dst@]: the destination memory region. Must not be NULL.
+  -> BG.Int32
+  -- ^
+  --
+  --           [@c@]: the byte value to set.
+  -> BG.Word64
+  -- ^
+  --
+  --           [@len@]: the length, in bytes, to set in @dst@.
+  -> IO (BG.Ptr BG.Void)
+memsetSafe =
+  \x00 ->
+    \x11 ->
+      \x22 ->
+        Safe.sDL_memset x00 (Coerce.coerce x11) (Coerce.coerce x22)
+
 -- | Initialize all 32-bit words of buffer of memory to a specific value.
 --
 --     This function will set a buffer of @dwords@ 'Uint32' values, pointed to by @dst@, to the value specified in @val@.
 --
---     Unlike SDL_memset, this sets 32-bit values, not bytes, so it\'s not limited to a range of 0-255.
+--     Unlike 'memset', this sets 32-bit values, not bytes, so it\'s not limited to a range of 0-255.
 --
 --     [Returns]: @dst@.
 --
@@ -2633,7 +2888,7 @@ memset4 =
 --
 --     This function will set a buffer of @dwords@ 'Uint32' values, pointed to by @dst@, to the value specified in @val@.
 --
---     Unlike SDL_memset, this sets 32-bit values, not bytes, so it\'s not limited to a range of 0-255.
+--     Unlike 'memset', this sets 32-bit values, not bytes, so it\'s not limited to a range of 0-255.
 --
 --     [Returns]: @dst@.
 --

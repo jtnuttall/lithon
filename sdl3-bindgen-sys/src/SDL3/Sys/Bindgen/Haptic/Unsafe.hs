@@ -52,6 +52,9 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_haptic.h>"
          , "SDL_HapticID *hs_bindgen_9144fd217aed3644 ("
          , "  signed int *arg1"

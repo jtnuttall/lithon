@@ -25,6 +25,9 @@ import SDL3.Sys.Bindgen.Video qualified
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_dialog.h>"
          , "void hs_bindgen_bb279e07edff0c05 ("
          , "  SDL_DialogFileCallback arg1,"

@@ -41,6 +41,9 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_properties.h>"
          , "SDL_PropertiesID hs_bindgen_c42d6db8a32f055e (void)"
          , "{"

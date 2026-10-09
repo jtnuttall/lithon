@@ -24,6 +24,9 @@ import SDL3.Sys.Bindgen.Assert
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_assert.h>"
          , "SDL_AssertState hs_bindgen_a7639e4e554aca71 ("
          , "  SDL_AssertData *arg1,"

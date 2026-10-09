@@ -20,6 +20,9 @@ import HsBindgen.Runtime.Support.CAPI qualified
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_error.h>"
          , "_Bool hs_bindgen_b76f69013e6d2cc4 (void)"
          , "{"

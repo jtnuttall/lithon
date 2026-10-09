@@ -18,6 +18,9 @@ import SDL3.Sys.Bindgen.Locale
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_locale.h>"
          , "SDL_Locale **hs_bindgen_3153090c14b68521 ("
          , "  signed int *arg1"

@@ -9,7 +9,7 @@ hs-bindgen does not bind these declarations of the SDL 3.4.16 headers. [`unbound
 | `shim`      |    53 |
 | `constant`  |    55 |
 | `wontfix`   |    95 |
-| `upstream`  |    17 |
+| `upstream`  |    11 |
 
 - `shim`: a lithon-authored C shim binds it instead.
 - `constant`: lithon binds its value as a typed constant (`constants.json`).
@@ -148,19 +148,6 @@ SDL_WindowFlags values built with SDL_UINT64_C; constants.json binds them as SDL
 - `macro SDL_WINDOW_METAL` (SDL_video.h:220): needs `macro SDL_UINT64_C` (not selected), `macro UINT64_C` (not selected); macro-typecheck: `Failed to typecheck macro: Unbound variable: 'SDL_UINT64_C'`
 - `macro SDL_WINDOW_TRANSPARENT` (SDL_video.h:221): needs `macro SDL_UINT64_C` (not selected), `macro UINT64_C` (not selected); macro-typecheck: `Failed to typecheck macro: Unbound variable: 'SDL_UINT64_C'`
 - `macro SDL_WINDOW_NOT_FOCUSABLE` (SDL_video.h:222): needs `macro SDL_UINT64_C` (not selected), `macro UINT64_C` (not selected); macro-typecheck: `Failed to typecheck macro: Unbound variable: 'SDL_UINT64_C'`
-
-## `upstream` (6)
-
-SDL_stdinc.h defines each as a macro naming libc's function unless SDL_SLOW_MEMCPY (and its siblings) is set, and hs-bindgen drops both halves of a function and macro name clash.
-
-Issue: <https://github.com/well-typed/hs-bindgen/issues/2097>
-
-- `SDL_memcpy` (SDL_stdinc.h:2505): conflict with a same-name declaration (SDL_stdinc.h:2505, SDL_stdinc.h:2512)
-- `macro SDL_memcpy` (SDL_stdinc.h:2505): conflict with a same-name declaration (SDL_stdinc.h:2505, SDL_stdinc.h:2512)
-- `SDL_memmove` (SDL_stdinc.h:2561): conflict with a same-name declaration (SDL_stdinc.h:2561, SDL_stdinc.h:2568)
-- `macro SDL_memmove` (SDL_stdinc.h:2561): conflict with a same-name declaration (SDL_stdinc.h:2561, SDL_stdinc.h:2568)
-- `SDL_memset` (SDL_stdinc.h:2589): conflict with a same-name declaration (SDL_stdinc.h:2589, SDL_stdinc.h:2616)
-- `macro SDL_memset` (SDL_stdinc.h:2589): conflict with a same-name declaration (SDL_stdinc.h:2589, SDL_stdinc.h:2616)
 
 ## `upstream` (4)
 
