@@ -1,11 +1,11 @@
 {
   "files": {
-    "CHANGELOG.md": "rhv3:06b8cf27f260c36c",
+    "CHANGELOG.md": "rhv3:b6ccf63c80acc73c",
     "LICENSE": "rhv3:e95315cef45a1f9f",
     "LICENSE_SDL": "rhv3:3505fb0514288c9e",
     "LICENSE_c-expr-runtime": "rhv3:5134b2c7a1f80df7",
     "LICENSE_hs-bindgen-runtime": "rhv3:5134b2c7a1f80df7",
-    "README.md": "rhv3:8c8b7689268f8477",
+    "README.md": "rhv3:abc642ebb6724c5c",
     "cbits/abi_assertions.c": "rhv3:e3e7fcfcaa378ab3",
     "include/sdl3-bindgen-sys/SDL_atomic_shims.h": "rhv3:7f2cc60430994643",
     "include/sdl3-bindgen-sys/SDL_audio_shims.h": "rhv3:1c2e730edb2c307c",

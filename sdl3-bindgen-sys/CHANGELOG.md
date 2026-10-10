@@ -2,9 +2,15 @@
 
 ## Unreleased
 
-Breaking (PVP major; release as 0.0.1.0): `SDL3.Sys.Stdinc` drops the 151
-function aliases released in 0.0.0.3 (the libc clones; the raw bindings are
-unchanged), and `log` is now `SDL_Log`'s shim, not the math function.
+## 0.0.1.0
+
+Breaking: `SDL3.Sys.Stdinc` drops 151 function aliases released in 0.0.0.3.
+All of these clone `libc` functions only. If you need them, the raw bindings are
+unchanged.
+
+This allows the library to resolve a collision between `SDL_Log` (logging) and
+`SDL_log` (logarithm). Since Haskell should already provide all of these at solid
+performance, there's no clear reason to expose FFI bindings in addition.
 
 ### Added
 
@@ -29,13 +35,9 @@ unchanged), and `log` is now `SDL_Log`'s shim, not the math function.
   - `SDL3.Sys.Mouse`: `SDL_TOUCH_MOUSEID` and `SDL_PEN_MOUSEID`.
   - `SDL3.Sys.Touch`: `SDL_MOUSE_TOUCHID` and `SDL_PEN_TOUCHID`.
 - ABI assertions for the 29 constants.
-- C shims: 57 fixed-arity C functions over what the FFI cannot call, in
-  `include/sdl3-bindgen-sys/SDL_*_shims.h` (one header per SDL header,
-  raw bindings in `SDL3.Sys.Bindgen.*Shims`), exported from the module of
-  the header they extend under a new `C shims` section and named like what
-  they wrap. See the README's `C shims` section.
-  - Variadic functions, taking the message verbatim, never as a format
-    string: `log` (`SDL_Log`), `logTrace`, `logVerbose`,
+- C shims: 57 fixed-arity C functions`C shims` section and named after what
+  they wrap.
+  - Variadic functions: `log` (`SDL_Log`), `logTrace`, `logVerbose`,
     `logDebug`, `logInfo`, `logWarn`, `logError`, `logCritical`,
     `logMessage` in `SDL3.Sys.Log`; `setError` in `SDL3.Sys.Error`;
     `ioPrintf` in `SDL3.Sys.Iostream`.
