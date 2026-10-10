@@ -620,7 +620,7 @@ hs_bindgen_36135983181db04c =
 --
 --     [See also]: 'sDL_AddGamepadMappingsFromFile', 'sDL_AddGamepadMappingsFromIO', 'sDL_GetGamepadMapping', 'sDL_GetGamepadMappingForGUID', SDL_HINT_GAMECONTROLLERCONFIG, SDL_HINT_GAMECONTROLLERCONFIG_FILE, SDL_EVENT_GAMEPAD_ADDED
 --
---     [C declaration]: @SDL_AddGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 346:33@
+--     [C declaration]: @SDL_AddGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 347:33@
 sDL_AddGamepadMapping
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -666,7 +666,7 @@ hs_bindgen_7bcfa7483bb6c304 =
 --
 --     [See also]: 'sDL_AddGamepadMapping', 'sDL_AddGamepadMappingsFromFile', 'sDL_GetGamepadMapping', 'sDL_GetGamepadMappingForGUID', SDL_HINT_GAMECONTROLLERCONFIG, SDL_HINT_GAMECONTROLLERCONFIG_FILE, SDL_EVENT_GAMEPAD_ADDED
 --
---     [C declaration]: @SDL_AddGamepadMappingsFromIO@, defined at @SDL3\/SDL_gamepad.h 386:33@
+--     [C declaration]: @SDL_AddGamepadMappingsFromIO@, defined at @SDL3\/SDL_gamepad.h 387:33@
 sDL_AddGamepadMappingsFromIO
   :: BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream
   -- ^
@@ -712,7 +712,7 @@ hs_bindgen_183e11c34dd8b81f =
 --
 --     [See also]: 'sDL_AddGamepadMapping', 'sDL_AddGamepadMappingsFromIO', 'sDL_GetGamepadMapping', 'sDL_GetGamepadMappingForGUID', SDL_HINT_GAMECONTROLLERCONFIG, SDL_HINT_GAMECONTROLLERCONFIG_FILE, SDL_EVENT_GAMEPAD_ADDED
 --
---     [C declaration]: @SDL_AddGamepadMappingsFromFile@, defined at @SDL3\/SDL_gamepad.h 420:33@
+--     [C declaration]: @SDL_AddGamepadMappingsFromFile@, defined at @SDL3\/SDL_gamepad.h 421:33@
 sDL_AddGamepadMappingsFromFile
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -742,7 +742,7 @@ hs_bindgen_779c89fdca5b9a0e =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_ReloadGamepadMappings@, defined at @SDL3\/SDL_gamepad.h 434:34@
+--     [C declaration]: @SDL_ReloadGamepadMappings@, defined at @SDL3\/SDL_gamepad.h 435:34@
 sDL_ReloadGamepadMappings :: IO BG.CBool
 sDL_ReloadGamepadMappings =
   hs_bindgen_779c89fdca5b9a0e
@@ -769,7 +769,7 @@ hs_bindgen_d561ea70cab1346c =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGamepadMappings@, defined at @SDL3\/SDL_gamepad.h 450:37@
+--     [C declaration]: @SDL_GetGamepadMappings@, defined at @SDL3\/SDL_gamepad.h 451:37@
 sDL_GetGamepadMappings
   :: BG.Ptr BG.CInt
   -- ^
@@ -802,7 +802,7 @@ hs_bindgen_a9d84a5aab18bd61 =
 --
 --     [See also]: SDL_GetJoystickGUIDForID, SDL_GetJoystickGUID
 --
---     [C declaration]: @SDL_GetGamepadMappingForGUID@, defined at @SDL3\/SDL_gamepad.h 467:36@
+--     [C declaration]: @SDL_GetGamepadMappingForGUID@, defined at @SDL3\/SDL_gamepad.h 468:36@
 sDL_GetGamepadMappingForGUID
   :: SDL3.Sys.Bindgen.Guid.SDL_GUID
   -- ^
@@ -843,7 +843,7 @@ hs_bindgen_094250e7cd4814e2 =
 --
 --     [See also]: 'sDL_AddGamepadMapping', 'sDL_GetGamepadMappingForID', 'sDL_GetGamepadMappingForGUID', 'sDL_SetGamepadMapping'
 --
---     [C declaration]: @SDL_GetGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 488:36@
+--     [C declaration]: @SDL_GetGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 489:36@
 sDL_GetGamepadMapping
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -881,7 +881,7 @@ hs_bindgen_cf9c12a3e0081cba =
 --
 --     [See also]: 'sDL_AddGamepadMapping', 'sDL_GetGamepadMapping'
 --
---     [C declaration]: @SDL_SetGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 508:34@
+--     [C declaration]: @SDL_SetGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 509:34@
 sDL_SetGamepadMapping
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -914,7 +914,7 @@ hs_bindgen_5b29afb080773dd8 =
 --
 --     [See also]: 'sDL_GetGamepads'
 --
---     [C declaration]: @SDL_HasGamepad@, defined at @SDL3\/SDL_gamepad.h 521:34@
+--     [C declaration]: @SDL_HasGamepad@, defined at @SDL3\/SDL_gamepad.h 522:34@
 sDL_HasGamepad :: IO BG.CBool
 sDL_HasGamepad = hs_bindgen_5b29afb080773dd8
 
@@ -942,7 +942,7 @@ hs_bindgen_e99c053042181461 =
 --
 --     [See also]: 'sDL_HasGamepad', 'sDL_OpenGamepad'
 --
---     [C declaration]: @SDL_GetGamepads@, defined at @SDL3\/SDL_gamepad.h 539:46@
+--     [C declaration]: @SDL_GetGamepads@, defined at @SDL3\/SDL_gamepad.h 540:46@
 sDL_GetGamepads
   :: BG.Ptr BG.CInt
   -- ^
@@ -975,7 +975,7 @@ hs_bindgen_48b133a0a1a04fee =
 --
 --     [See also]: SDL_GetJoysticks, 'sDL_OpenGamepad'
 --
---     [C declaration]: @SDL_IsGamepad@, defined at @SDL3\/SDL_gamepad.h 555:34@
+--     [C declaration]: @SDL_IsGamepad@, defined at @SDL3\/SDL_gamepad.h 556:34@
 sDL_IsGamepad
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1010,7 +1010,7 @@ hs_bindgen_51b0ed9ede139ced =
 --
 --     [See also]: 'sDL_GetGamepadName', 'sDL_GetGamepads'
 --
---     [C declaration]: @SDL_GetGamepadNameForID@, defined at @SDL3\/SDL_gamepad.h 573:42@
+--     [C declaration]: @SDL_GetGamepadNameForID@, defined at @SDL3\/SDL_gamepad.h 574:42@
 sDL_GetGamepadNameForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1045,7 +1045,7 @@ hs_bindgen_c1fe082501f756ae =
 --
 --     [See also]: 'sDL_GetGamepadPath', 'sDL_GetGamepads'
 --
---     [C declaration]: @SDL_GetGamepadPathForID@, defined at @SDL3\/SDL_gamepad.h 591:42@
+--     [C declaration]: @SDL_GetGamepadPathForID@, defined at @SDL3\/SDL_gamepad.h 592:42@
 sDL_GetGamepadPathForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1080,7 +1080,7 @@ hs_bindgen_9dac07bb4aa4a0e0 =
 --
 --     [See also]: 'sDL_GetGamepadPlayerIndex', 'sDL_GetGamepads'
 --
---     [C declaration]: @SDL_GetGamepadPlayerIndexForID@, defined at @SDL3\/SDL_gamepad.h 608:33@
+--     [C declaration]: @SDL_GetGamepadPlayerIndexForID@, defined at @SDL3\/SDL_gamepad.h 609:33@
 sDL_GetGamepadPlayerIndexForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1119,7 +1119,7 @@ hs_bindgen_2280985bb32deb1f =
 --
 --     [See also]: SDL_GUIDToString, 'sDL_GetGamepads'
 --
---     [C declaration]: @SDL_GetGamepadGUIDForID@, defined at @SDL3\/SDL_gamepad.h 626:38@
+--     [C declaration]: @SDL_GetGamepadGUIDForID@, defined at @SDL3\/SDL_gamepad.h 627:38@
 sDL_GetGamepadGUIDForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1159,7 +1159,7 @@ hs_bindgen_1702db5431a9f4d5 =
 --
 --     [See also]: 'sDL_GetGamepadVendor', 'sDL_GetGamepads'
 --
---     [C declaration]: @SDL_GetGamepadVendorForID@, defined at @SDL3\/SDL_gamepad.h 645:36@
+--     [C declaration]: @SDL_GetGamepadVendorForID@, defined at @SDL3\/SDL_gamepad.h 646:36@
 sDL_GetGamepadVendorForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1195,7 +1195,7 @@ hs_bindgen_c6d0670cd6f1d312 =
 --
 --     [See also]: 'sDL_GetGamepadProduct', 'sDL_GetGamepads'
 --
---     [C declaration]: @SDL_GetGamepadProductForID@, defined at @SDL3\/SDL_gamepad.h 664:36@
+--     [C declaration]: @SDL_GetGamepadProductForID@, defined at @SDL3\/SDL_gamepad.h 665:36@
 sDL_GetGamepadProductForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1231,7 +1231,7 @@ hs_bindgen_c5762d27fdb0fe20 =
 --
 --     [See also]: 'sDL_GetGamepadProductVersion', 'sDL_GetGamepads'
 --
---     [C declaration]: @SDL_GetGamepadProductVersionForID@, defined at @SDL3\/SDL_gamepad.h 683:36@
+--     [C declaration]: @SDL_GetGamepadProductVersionForID@, defined at @SDL3\/SDL_gamepad.h 684:36@
 sDL_GetGamepadProductVersionForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1267,7 +1267,7 @@ hs_bindgen_ab8ba638efb36686 =
 --
 --     [See also]: 'sDL_GetGamepadType', 'sDL_GetGamepads', 'sDL_GetRealGamepadTypeForID'
 --
---     [C declaration]: @SDL_GetGamepadTypeForID@, defined at @SDL3\/SDL_gamepad.h 701:45@
+--     [C declaration]: @SDL_GetGamepadTypeForID@, defined at @SDL3\/SDL_gamepad.h 702:45@
 sDL_GetGamepadTypeForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1302,7 +1302,7 @@ hs_bindgen_dbd35ae44acef0c3 =
 --
 --     [See also]: 'sDL_GetGamepadTypeForID', 'sDL_GetGamepads', 'sDL_GetRealGamepadType'
 --
---     [C declaration]: @SDL_GetRealGamepadTypeForID@, defined at @SDL3\/SDL_gamepad.h 719:45@
+--     [C declaration]: @SDL_GetRealGamepadTypeForID@, defined at @SDL3\/SDL_gamepad.h 720:45@
 sDL_GetRealGamepadTypeForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1338,7 +1338,7 @@ hs_bindgen_70db76a3c7fda9bd =
 --
 --     [See also]: 'sDL_GetGamepads', 'sDL_GetGamepadMapping'
 --
---     [C declaration]: @SDL_GetGamepadMappingForID@, defined at @SDL3\/SDL_gamepad.h 737:36@
+--     [C declaration]: @SDL_GetGamepadMappingForID@, defined at @SDL3\/SDL_gamepad.h 738:36@
 sDL_GetGamepadMappingForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1372,7 +1372,7 @@ hs_bindgen_cbd487a8a2440863 =
 --
 --     [See also]: 'sDL_CloseGamepad', 'sDL_IsGamepad'
 --
---     [C declaration]: @SDL_OpenGamepad@, defined at @SDL3\/SDL_gamepad.h 753:43@
+--     [C declaration]: @SDL_OpenGamepad@, defined at @SDL3\/SDL_gamepad.h 754:43@
 sDL_OpenGamepad
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1403,7 +1403,7 @@ hs_bindgen_a76618005d317dbe =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGamepadFromID@, defined at @SDL3\/SDL_gamepad.h 767:43@
+--     [C declaration]: @SDL_GetGamepadFromID@, defined at @SDL3\/SDL_gamepad.h 768:43@
 sDL_GetGamepadFromID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1436,7 +1436,7 @@ hs_bindgen_23e0c7566ddc098f =
 --
 --     [See also]: 'sDL_GetGamepadPlayerIndex', 'sDL_SetGamepadPlayerIndex'
 --
---     [C declaration]: @SDL_GetGamepadFromPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 782:43@
+--     [C declaration]: @SDL_GetGamepadFromPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 783:43@
 sDL_GetGamepadFromPlayerIndex
   :: BG.CInt
   -- ^
@@ -1482,7 +1482,7 @@ hs_bindgen_e986873f08423af3 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGamepadProperties@, defined at @SDL3\/SDL_gamepad.h 811:46@
+--     [C declaration]: @SDL_GetGamepadProperties@, defined at @SDL3\/SDL_gamepad.h 812:46@
 sDL_GetGamepadProperties
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1514,7 +1514,7 @@ hs_bindgen_e2d0c689bb9fdafb =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGamepadID@, defined at @SDL3\/SDL_gamepad.h 831:44@
+--     [C declaration]: @SDL_GetGamepadID@, defined at @SDL3\/SDL_gamepad.h 832:44@
 sDL_GetGamepadID
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1547,7 +1547,7 @@ hs_bindgen_9d53319611fb7b21 =
 --
 --     [See also]: 'sDL_GetGamepadNameForID'
 --
---     [C declaration]: @SDL_GetGamepadName@, defined at @SDL3\/SDL_gamepad.h 847:42@
+--     [C declaration]: @SDL_GetGamepadName@, defined at @SDL3\/SDL_gamepad.h 848:42@
 sDL_GetGamepadName
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1580,7 +1580,7 @@ hs_bindgen_d7698305b32d2548 =
 --
 --     [See also]: 'sDL_GetGamepadPathForID'
 --
---     [C declaration]: @SDL_GetGamepadPath@, defined at @SDL3\/SDL_gamepad.h 863:42@
+--     [C declaration]: @SDL_GetGamepadPath@, defined at @SDL3\/SDL_gamepad.h 864:42@
 sDL_GetGamepadPath
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1613,7 +1613,7 @@ hs_bindgen_e2d440eeb9de4199 =
 --
 --     [See also]: 'sDL_GetGamepadTypeForID'
 --
---     [C declaration]: @SDL_GetGamepadType@, defined at @SDL3\/SDL_gamepad.h 878:45@
+--     [C declaration]: @SDL_GetGamepadType@, defined at @SDL3\/SDL_gamepad.h 879:45@
 sDL_GetGamepadType
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1646,7 +1646,7 @@ hs_bindgen_ee5c3fd3f0de744f =
 --
 --     [See also]: 'sDL_GetRealGamepadTypeForID'
 --
---     [C declaration]: @SDL_GetRealGamepadType@, defined at @SDL3\/SDL_gamepad.h 893:45@
+--     [C declaration]: @SDL_GetRealGamepadType@, defined at @SDL3\/SDL_gamepad.h 894:45@
 sDL_GetRealGamepadType
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1681,7 +1681,7 @@ hs_bindgen_8457d3ba6fab74fd =
 --
 --     [See also]: 'sDL_SetGamepadPlayerIndex'
 --
---     [C declaration]: @SDL_GetGamepadPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 909:33@
+--     [C declaration]: @SDL_GetGamepadPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 910:33@
 sDL_GetGamepadPlayerIndex
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1718,7 +1718,7 @@ hs_bindgen_c7a0bcec2cc038f5 =
 --
 --     [See also]: 'sDL_GetGamepadPlayerIndex'
 --
---     [C declaration]: @SDL_SetGamepadPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 926:34@
+--     [C declaration]: @SDL_SetGamepadPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 927:34@
 sDL_SetGamepadPlayerIndex
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1758,7 +1758,7 @@ hs_bindgen_2552182f80b54cf6 =
 --
 --     [See also]: 'sDL_GetGamepadVendorForID'
 --
---     [C declaration]: @SDL_GetGamepadVendor@, defined at @SDL3\/SDL_gamepad.h 942:36@
+--     [C declaration]: @SDL_GetGamepadVendor@, defined at @SDL3\/SDL_gamepad.h 943:36@
 sDL_GetGamepadVendor
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1793,7 +1793,7 @@ hs_bindgen_5aa969efd1bc8f50 =
 --
 --     [See also]: 'sDL_GetGamepadProductForID'
 --
---     [C declaration]: @SDL_GetGamepadProduct@, defined at @SDL3\/SDL_gamepad.h 958:36@
+--     [C declaration]: @SDL_GetGamepadProduct@, defined at @SDL3\/SDL_gamepad.h 959:36@
 sDL_GetGamepadProduct
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1828,7 +1828,7 @@ hs_bindgen_becbadc225729788 =
 --
 --     [See also]: 'sDL_GetGamepadProductVersionForID'
 --
---     [C declaration]: @SDL_GetGamepadProductVersion@, defined at @SDL3\/SDL_gamepad.h 974:36@
+--     [C declaration]: @SDL_GetGamepadProductVersion@, defined at @SDL3\/SDL_gamepad.h 975:36@
 sDL_GetGamepadProductVersion
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1862,7 +1862,7 @@ hs_bindgen_d97e9cb9945dd63f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGamepadFirmwareVersion@, defined at @SDL3\/SDL_gamepad.h 988:36@
+--     [C declaration]: @SDL_GetGamepadFirmwareVersion@, defined at @SDL3\/SDL_gamepad.h 989:36@
 sDL_GetGamepadFirmwareVersion
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1896,7 +1896,7 @@ hs_bindgen_c119e40b53da3b69 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGamepadSerial@, defined at @SDL3\/SDL_gamepad.h 1002:42@
+--     [C declaration]: @SDL_GetGamepadSerial@, defined at @SDL3\/SDL_gamepad.h 1003:42@
 sDL_GetGamepadSerial
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1929,7 +1929,7 @@ hs_bindgen_d965293df8f905d5 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGamepadSteamHandle@, defined at @SDL3\/SDL_gamepad.h 1017:36@
+--     [C declaration]: @SDL_GetGamepadSteamHandle@, defined at @SDL3\/SDL_gamepad.h 1018:36@
 sDL_GetGamepadSteamHandle
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1961,7 +1961,7 @@ hs_bindgen_4d7b7d6dc4affab6 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGamepadConnectionState@, defined at @SDL3\/SDL_gamepad.h 1031:57@
+--     [C declaration]: @SDL_GetGamepadConnectionState@, defined at @SDL3\/SDL_gamepad.h 1032:57@
 sDL_GetGamepadConnectionState
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1998,7 +1998,7 @@ hs_bindgen_440cd7470f43f8b7 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGamepadPowerInfo@, defined at @SDL3\/SDL_gamepad.h 1053:44@
+--     [C declaration]: @SDL_GetGamepadPowerInfo@, defined at @SDL3\/SDL_gamepad.h 1054:44@
 sDL_GetGamepadPowerInfo
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2033,7 +2033,7 @@ hs_bindgen_73bf6a166bb6fc05 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GamepadConnected@, defined at @SDL3\/SDL_gamepad.h 1067:34@
+--     [C declaration]: @SDL_GamepadConnected@, defined at @SDL3\/SDL_gamepad.h 1068:34@
 sDL_GamepadConnected
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2068,7 +2068,7 @@ hs_bindgen_cfa9e14aa308a355 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGamepadJoystick@, defined at @SDL3\/SDL_gamepad.h 1089:44@
+--     [C declaration]: @SDL_GetGamepadJoystick@, defined at @SDL3\/SDL_gamepad.h 1090:44@
 sDL_GetGamepadJoystick
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2101,7 +2101,7 @@ hs_bindgen_bfc8618e24183771 =
 --
 --     [See also]: 'sDL_GamepadEventsEnabled', 'sDL_UpdateGamepads'
 --
---     [C declaration]: @SDL_SetGamepadEventsEnabled@, defined at @SDL3\/SDL_gamepad.h 1106:34@
+--     [C declaration]: @SDL_SetGamepadEventsEnabled@, defined at @SDL3\/SDL_gamepad.h 1107:34@
 sDL_SetGamepadEventsEnabled
   :: BG.CBool
   -- ^
@@ -2133,7 +2133,7 @@ hs_bindgen_5871c031639ba44f =
 --
 --     [See also]: 'sDL_SetGamepadEventsEnabled'
 --
---     [C declaration]: @SDL_GamepadEventsEnabled@, defined at @SDL3\/SDL_gamepad.h 1122:34@
+--     [C declaration]: @SDL_GamepadEventsEnabled@, defined at @SDL3\/SDL_gamepad.h 1123:34@
 sDL_GamepadEventsEnabled :: IO BG.CBool
 sDL_GamepadEventsEnabled =
   hs_bindgen_5871c031639ba44f
@@ -2163,7 +2163,7 @@ hs_bindgen_5bc2e24705268e1e =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGamepadBindings@, defined at @SDL3\/SDL_gamepad.h 1138:51@
+--     [C declaration]: @SDL_GetGamepadBindings@, defined at @SDL3\/SDL_gamepad.h 1139:51@
 sDL_GetGamepadBindings
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2194,7 +2194,7 @@ hs_bindgen_0cb5e97304f01ed4 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_UpdateGamepads@, defined at @SDL3\/SDL_gamepad.h 1151:34@
+--     [C declaration]: @SDL_UpdateGamepads@, defined at @SDL3\/SDL_gamepad.h 1152:34@
 sDL_UpdateGamepads :: IO ()
 sDL_UpdateGamepads = hs_bindgen_0cb5e97304f01ed4
 
@@ -2224,7 +2224,7 @@ hs_bindgen_ff738f26b34db99d =
 --
 --     [See also]: 'sDL_GetGamepadStringForType'
 --
---     [C declaration]: @SDL_GetGamepadTypeFromString@, defined at @SDL3\/SDL_gamepad.h 1171:45@
+--     [C declaration]: @SDL_GetGamepadTypeFromString@, defined at @SDL3\/SDL_gamepad.h 1172:45@
 sDL_GetGamepadTypeFromString
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -2258,7 +2258,7 @@ hs_bindgen_aeff65b0b5fbbe2f =
 --
 --     [See also]: 'sDL_GetGamepadTypeFromString'
 --
---     [C declaration]: @SDL_GetGamepadStringForType@, defined at @SDL3\/SDL_gamepad.h 1187:42@
+--     [C declaration]: @SDL_GetGamepadStringForType@, defined at @SDL3\/SDL_gamepad.h 1188:42@
 sDL_GetGamepadStringForType
   :: SDL_GamepadType
   -- ^
@@ -2296,7 +2296,7 @@ hs_bindgen_9c4d3cd24f36df1d =
 --
 --     [See also]: 'sDL_GetGamepadStringForAxis'
 --
---     [C declaration]: @SDL_GetGamepadAxisFromString@, defined at @SDL3\/SDL_gamepad.h 1211:45@
+--     [C declaration]: @SDL_GetGamepadAxisFromString@, defined at @SDL3\/SDL_gamepad.h 1212:45@
 sDL_GetGamepadAxisFromString
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -2330,7 +2330,7 @@ hs_bindgen_23a85badb8b28574 =
 --
 --     [See also]: 'sDL_GetGamepadAxisFromString'
 --
---     [C declaration]: @SDL_GetGamepadStringForAxis@, defined at @SDL3\/SDL_gamepad.h 1227:42@
+--     [C declaration]: @SDL_GetGamepadStringForAxis@, defined at @SDL3\/SDL_gamepad.h 1228:42@
 sDL_GetGamepadStringForAxis
   :: SDL_GamepadAxis
   -- ^
@@ -2369,7 +2369,7 @@ hs_bindgen_25802ce0c34b6a29 =
 --
 --     [See also]: 'sDL_GamepadHasButton', 'sDL_GetGamepadAxis'
 --
---     [C declaration]: @SDL_GamepadHasAxis@, defined at @SDL3\/SDL_gamepad.h 1246:34@
+--     [C declaration]: @SDL_GamepadHasAxis@, defined at @SDL3\/SDL_gamepad.h 1247:34@
 sDL_GamepadHasAxis
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2417,7 +2417,7 @@ hs_bindgen_68503ad7a0b89c08 =
 --
 --     [See also]: 'sDL_GamepadHasAxis', 'sDL_GetGamepadButton'
 --
---     [C declaration]: @SDL_GetGamepadAxis@, defined at @SDL3\/SDL_gamepad.h 1274:36@
+--     [C declaration]: @SDL_GetGamepadAxis@, defined at @SDL3\/SDL_gamepad.h 1275:36@
 sDL_GetGamepadAxis
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2456,7 +2456,7 @@ hs_bindgen_cecec50fb2b3f9c0 =
 --
 --     [See also]: 'sDL_GetGamepadStringForButton'
 --
---     [C declaration]: @SDL_GetGamepadButtonFromString@, defined at @SDL3\/SDL_gamepad.h 1294:47@
+--     [C declaration]: @SDL_GetGamepadButtonFromString@, defined at @SDL3\/SDL_gamepad.h 1295:47@
 sDL_GetGamepadButtonFromString
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -2490,7 +2490,7 @@ hs_bindgen_65d07695662b7e7c =
 --
 --     [See also]: 'sDL_GetGamepadButtonFromString'
 --
---     [C declaration]: @SDL_GetGamepadStringForButton@, defined at @SDL3\/SDL_gamepad.h 1310:42@
+--     [C declaration]: @SDL_GetGamepadStringForButton@, defined at @SDL3\/SDL_gamepad.h 1311:42@
 sDL_GetGamepadStringForButton
   :: SDL_GamepadButton
   -- ^
@@ -2529,7 +2529,7 @@ hs_bindgen_05064f987387bd45 =
 --
 --     [See also]: 'sDL_GamepadHasAxis'
 --
---     [C declaration]: @SDL_GamepadHasButton@, defined at @SDL3\/SDL_gamepad.h 1328:34@
+--     [C declaration]: @SDL_GamepadHasButton@, defined at @SDL3\/SDL_gamepad.h 1329:34@
 sDL_GamepadHasButton
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2569,7 +2569,7 @@ hs_bindgen_a672f55d7740b70a =
 --
 --     [See also]: 'sDL_GamepadHasButton', 'sDL_GetGamepadAxis'
 --
---     [C declaration]: @SDL_GetGamepadButton@, defined at @SDL3\/SDL_gamepad.h 1344:34@
+--     [C declaration]: @SDL_GetGamepadButton@, defined at @SDL3\/SDL_gamepad.h 1345:34@
 sDL_GetGamepadButton
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2609,7 +2609,7 @@ hs_bindgen_6a6a621cfd450022 =
 --
 --     [See also]: 'sDL_GetGamepadButtonLabel'
 --
---     [C declaration]: @SDL_GetGamepadButtonLabelForType@, defined at @SDL3\/SDL_gamepad.h 1359:52@
+--     [C declaration]: @SDL_GetGamepadButtonLabelForType@, defined at @SDL3\/SDL_gamepad.h 1360:52@
 sDL_GetGamepadButtonLabelForType
   :: SDL_GamepadType
   -- ^
@@ -2650,7 +2650,7 @@ hs_bindgen_ea461caaa5e77e3a =
 --
 --     [See also]: 'sDL_GetGamepadButtonLabelForType'
 --
---     [C declaration]: @SDL_GetGamepadButtonLabel@, defined at @SDL3\/SDL_gamepad.h 1374:52@
+--     [C declaration]: @SDL_GetGamepadButtonLabel@, defined at @SDL3\/SDL_gamepad.h 1375:52@
 sDL_GetGamepadButtonLabel
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2688,7 +2688,7 @@ hs_bindgen_2d66738e85627648 =
 --
 --     [See also]: 'sDL_GetNumGamepadTouchpadFingers'
 --
---     [C declaration]: @SDL_GetNumGamepadTouchpads@, defined at @SDL3\/SDL_gamepad.h 1388:33@
+--     [C declaration]: @SDL_GetNumGamepadTouchpads@, defined at @SDL3\/SDL_gamepad.h 1389:33@
 sDL_GetNumGamepadTouchpads
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2725,7 +2725,7 @@ hs_bindgen_741e82f074f3aae4 =
 --
 --     [See also]: 'sDL_GetGamepadTouchpadFinger', 'sDL_GetNumGamepadTouchpads'
 --
---     [C declaration]: @SDL_GetNumGamepadTouchpadFingers@, defined at @SDL3\/SDL_gamepad.h 1405:33@
+--     [C declaration]: @SDL_GetNumGamepadTouchpadFingers@, defined at @SDL3\/SDL_gamepad.h 1406:33@
 sDL_GetNumGamepadTouchpadFingers
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2791,7 +2791,7 @@ hs_bindgen_1b8db5e7a78bcf2a =
 --
 --     [See also]: 'sDL_GetNumGamepadTouchpadFingers'
 --
---     [C declaration]: @SDL_GetGamepadTouchpadFinger@, defined at @SDL3\/SDL_gamepad.h 1429:34@
+--     [C declaration]: @SDL_GetGamepadTouchpadFinger@, defined at @SDL3\/SDL_gamepad.h 1430:34@
 sDL_GetGamepadTouchpadFinger
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2852,7 +2852,7 @@ hs_bindgen_d58388fe9017bfd7 =
 --
 --     [See also]: 'sDL_GetGamepadSensorData', 'sDL_GetGamepadSensorDataRate', 'sDL_SetGamepadSensorEnabled'
 --
---     [C declaration]: @SDL_GamepadHasSensor@, defined at @SDL3\/SDL_gamepad.h 1446:34@
+--     [C declaration]: @SDL_GamepadHasSensor@, defined at @SDL3\/SDL_gamepad.h 1447:34@
 sDL_GamepadHasSensor
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2897,7 +2897,7 @@ hs_bindgen_5229480da62895d3 =
 --
 --     [See also]: 'sDL_GamepadHasSensor', 'sDL_GamepadSensorEnabled'
 --
---     [C declaration]: @SDL_SetGamepadSensorEnabled@, defined at @SDL3\/SDL_gamepad.h 1464:34@
+--     [C declaration]: @SDL_SetGamepadSensorEnabled@, defined at @SDL3\/SDL_gamepad.h 1465:34@
 sDL_SetGamepadSensorEnabled
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2942,7 +2942,7 @@ hs_bindgen_cf910522abc1f0a2 =
 --
 --     [See also]: 'sDL_SetGamepadSensorEnabled'
 --
---     [C declaration]: @SDL_GamepadSensorEnabled@, defined at @SDL3\/SDL_gamepad.h 1479:34@
+--     [C declaration]: @SDL_GamepadSensorEnabled@, defined at @SDL3\/SDL_gamepad.h 1480:34@
 sDL_GamepadSensorEnabled
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2981,7 +2981,7 @@ hs_bindgen_523e72497fe70de7 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGamepadSensorDataRate@, defined at @SDL3\/SDL_gamepad.h 1492:35@
+--     [C declaration]: @SDL_GetGamepadSensorDataRate@, defined at @SDL3\/SDL_gamepad.h 1493:35@
 sDL_GetGamepadSensorDataRate
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3035,7 +3035,7 @@ hs_bindgen_772b88104300cbe9 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_GetGamepadSensorData@, defined at @SDL3\/SDL_gamepad.h 1511:34@
+--     [C declaration]: @SDL_GetGamepadSensorData@, defined at @SDL3\/SDL_gamepad.h 1512:34@
 sDL_GetGamepadSensorData
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3099,7 +3099,7 @@ hs_bindgen_8a8a058abd787e14 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_RumbleGamepad@, defined at @SDL3\/SDL_gamepad.h 1535:34@
+--     [C declaration]: @SDL_RumbleGamepad@, defined at @SDL3\/SDL_gamepad.h 1536:34@
 sDL_RumbleGamepad
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3166,7 +3166,7 @@ hs_bindgen_70ab0a767dbce57a =
 --
 --     [See also]: 'sDL_RumbleGamepad'
 --
---     [C declaration]: @SDL_RumbleGamepadTriggers@, defined at @SDL3\/SDL_gamepad.h 1565:34@
+--     [C declaration]: @SDL_RumbleGamepadTriggers@, defined at @SDL3\/SDL_gamepad.h 1566:34@
 sDL_RumbleGamepadTriggers
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3230,7 +3230,7 @@ hs_bindgen_2ae54d3de778ff13 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_SetGamepadLED@, defined at @SDL3\/SDL_gamepad.h 1587:34@
+--     [C declaration]: @SDL_SetGamepadLED@, defined at @SDL3\/SDL_gamepad.h 1588:34@
 sDL_SetGamepadLED
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3281,7 +3281,7 @@ hs_bindgen_d29e9a9cdc821a93 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_SendGamepadEffect@, defined at @SDL3\/SDL_gamepad.h 1602:34@
+--     [C declaration]: @SDL_SendGamepadEffect@, defined at @SDL3\/SDL_gamepad.h 1603:34@
 sDL_SendGamepadEffect
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3320,7 +3320,7 @@ hs_bindgen_49ebda4983cdcbad =
 --
 --     [See also]: 'sDL_OpenGamepad'
 --
---     [C declaration]: @SDL_CloseGamepad@, defined at @SDL3\/SDL_gamepad.h 1616:34@
+--     [C declaration]: @SDL_CloseGamepad@, defined at @SDL3\/SDL_gamepad.h 1617:34@
 sDL_CloseGamepad
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3356,7 +3356,7 @@ hs_bindgen_3b3870e2dc35c94a =
 --
 --     [See also]: 'sDL_GetGamepadAppleSFSymbolsNameForAxis'
 --
---     [C declaration]: @SDL_GetGamepadAppleSFSymbolsNameForButton@, defined at @SDL3\/SDL_gamepad.h 1632:42@
+--     [C declaration]: @SDL_GetGamepadAppleSFSymbolsNameForButton@, defined at @SDL3\/SDL_gamepad.h 1633:42@
 sDL_GetGamepadAppleSFSymbolsNameForButton
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3397,7 +3397,7 @@ hs_bindgen_d904c8d057a68120 =
 --
 --     [See also]: 'sDL_GetGamepadAppleSFSymbolsNameForButton'
 --
---     [C declaration]: @SDL_GetGamepadAppleSFSymbolsNameForAxis@, defined at @SDL3\/SDL_gamepad.h 1647:42@
+--     [C declaration]: @SDL_GetGamepadAppleSFSymbolsNameForAxis@, defined at @SDL3\/SDL_gamepad.h 1648:42@
 sDL_GetGamepadAppleSFSymbolsNameForAxis
   :: BG.Ptr SDL_Gamepad
   -- ^

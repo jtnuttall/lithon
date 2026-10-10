@@ -10776,6 +10776,10 @@ data SDL_PenProximityEvent = SDL_PenProximityEvent
   -- ^ Complete pen input state at time of event (added in 3.4.16).
   --
   --          [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 833:23@
+  , device_type :: SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType
+  -- ^ the device type of the pen, if known (added in 3.4.18).
+  --
+  --          [C declaration]: @device_type@, defined at @SDL3\/SDL_events.h 834:23@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -10794,19 +10798,28 @@ instance Marshal.ReadRaw SDL_PenProximityEvent where
         <*> HasCField.readRaw (BG.Proxy @"windowID") ptr0
         <*> HasCField.readRaw (BG.Proxy @"which") ptr0
         <*> HasCField.readRaw (BG.Proxy @"pen_state") ptr0
+        <*> HasCField.readRaw (BG.Proxy @"device_type") ptr0
 
 instance Marshal.WriteRaw SDL_PenProximityEvent where
   writeRaw =
     \ptr0 ->
       \s1 ->
         case s1 of
-          SDL_PenProximityEvent type'2 reserved3 timestamp4 windowID5 which6 pen_state7 ->
-            HasCField.writeRaw (BG.Proxy @"type'") ptr0 type'2
-              >> HasCField.writeRaw (BG.Proxy @"reserved") ptr0 reserved3
-              >> HasCField.writeRaw (BG.Proxy @"timestamp") ptr0 timestamp4
-              >> HasCField.writeRaw (BG.Proxy @"windowID") ptr0 windowID5
-              >> HasCField.writeRaw (BG.Proxy @"which") ptr0 which6
-              >> HasCField.writeRaw (BG.Proxy @"pen_state") ptr0 pen_state7
+          SDL_PenProximityEvent
+            type'2
+            reserved3
+            timestamp4
+            windowID5
+            which6
+            pen_state7
+            device_type8 ->
+              HasCField.writeRaw (BG.Proxy @"type'") ptr0 type'2
+                >> HasCField.writeRaw (BG.Proxy @"reserved") ptr0 reserved3
+                >> HasCField.writeRaw (BG.Proxy @"timestamp") ptr0 timestamp4
+                >> HasCField.writeRaw (BG.Proxy @"windowID") ptr0 windowID5
+                >> HasCField.writeRaw (BG.Proxy @"which") ptr0 which6
+                >> HasCField.writeRaw (BG.Proxy @"pen_state") ptr0 pen_state7
+                >> HasCField.writeRaw (BG.Proxy @"device_type") ptr0 device_type8
 
 deriving via Marshal.EquivStorable SDL_PenProximityEvent instance BG.Storable SDL_PenProximityEvent
 
@@ -10832,6 +10845,7 @@ instance
             , windowID = BG.getField @"windowID" x0
             , which = BG.getField @"which" x0
             , pen_state = BG.getField @"pen_state" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"type'" x0
       )
@@ -10864,6 +10878,7 @@ instance
             , windowID = BG.getField @"windowID" x0
             , which = BG.getField @"which" x0
             , pen_state = BG.getField @"pen_state" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"reserved" x0
       )
@@ -10898,6 +10913,7 @@ instance
             , windowID = BG.getField @"windowID" x0
             , which = BG.getField @"which" x0
             , pen_state = BG.getField @"pen_state" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"timestamp" x0
       )
@@ -10932,6 +10948,7 @@ instance
             , timestamp = BG.getField @"timestamp" x0
             , which = BG.getField @"which" x0
             , pen_state = BG.getField @"pen_state" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"windowID" x0
       )
@@ -10966,6 +10983,7 @@ instance
             , timestamp = BG.getField @"timestamp" x0
             , windowID = BG.getField @"windowID" x0
             , pen_state = BG.getField @"pen_state" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"which" x0
       )
@@ -11000,6 +11018,7 @@ instance
             , timestamp = BG.getField @"timestamp" x0
             , windowID = BG.getField @"windowID" x0
             , which = BG.getField @"which" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"pen_state" x0
       )
@@ -11017,44 +11036,84 @@ instance HasCField.HasCField SDL_PenProximityEvent "pen_state" where
 
   offset# = \_ -> \_ -> 24
 
+-- | the device type of the pen, if known (added in 3.4.18).
+--
+--     [C declaration]: @device_type@, defined at @SDL3\/SDL_events.h 834:23@
+instance
+  (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType)
+  => BG.CompatHasField.HasField "device_type" SDL_PenProximityEvent ty
+  where
+  hasField =
+    \x0 ->
+      ( \y1 ->
+          SDL_PenProximityEvent
+            { device_type = y1
+            , type' = BG.getField @"type'" x0
+            , reserved = BG.getField @"reserved" x0
+            , timestamp = BG.getField @"timestamp" x0
+            , windowID = BG.getField @"windowID" x0
+            , which = BG.getField @"which" x0
+            , pen_state = BG.getField @"pen_state" x0
+            }
+      , BG.getField @"device_type" x0
+      )
+
+instance
+  (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType)
+  => BG.HasField "device_type" (BG.Ptr SDL_PenProximityEvent) (BG.Ptr ty)
+  where
+  getField =
+    HasCField.fromPtr (BG.Proxy @"device_type")
+
+instance HasCField.HasCField SDL_PenProximityEvent "device_type" where
+  type
+    CFieldType SDL_PenProximityEvent "device_type" =
+      SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType
+
+  offset# = \_ -> \_ -> 28
+
 -- | Pressure-sensitive pen motion event structure (event.pmotion.*)
 --
 --     Depending on the hardware, you may get motion events when the pen is not touching a tablet, for tracking a pen even when it isn\'t drawing. You should listen for SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP events, or check @pen_state & SDL_PEN_INPUT_DOWN@ to decide if a pen is \"drawing\" when dealing with pen motion.
 --
 --     @since 3.2.0
 --
---     [C declaration]: @struct SDL_PenMotionEvent@, defined at @SDL3\/SDL_events.h 847:16@
+--     [C declaration]: @struct SDL_PenMotionEvent@, defined at @SDL3\/SDL_events.h 848:16@
 data SDL_PenMotionEvent = SDL_PenMotionEvent
   { type' :: SDL_EventType
   -- ^ SDL_EVENT_PEN_MOTION
   --
-  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 849:19@
+  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 850:19@
   , reserved :: SDL3.Sys.Bindgen.Stdinc.Uint32
-  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 850:12@
+  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 851:12@
   , timestamp :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^ In nanoseconds, populated using SDL_GetTicksNS()
   --
-  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 851:12@
+  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 852:12@
   , windowID :: SDL3.Sys.Bindgen.Video.SDL_WindowID
   -- ^ The window with pen focus, if any
   --
-  --          [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 852:18@
+  --          [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 853:18@
   , which :: SDL3.Sys.Bindgen.Pen.SDL_PenID
   -- ^ The pen instance id
   --
-  --          [C declaration]: @which@, defined at @SDL3\/SDL_events.h 853:15@
+  --          [C declaration]: @which@, defined at @SDL3\/SDL_events.h 854:15@
   , pen_state :: SDL3.Sys.Bindgen.Pen.SDL_PenInputFlags
   -- ^ Complete pen input state at time of event
   --
-  --          [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 854:23@
+  --          [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 855:23@
   , x :: BG.CFloat
   -- ^ X coordinate, relative to window
   --
-  --          [C declaration]: @x@, defined at @SDL3\/SDL_events.h 855:11@
+  --          [C declaration]: @x@, defined at @SDL3\/SDL_events.h 856:11@
   , y :: BG.CFloat
   -- ^ Y coordinate, relative to window
   --
-  --          [C declaration]: @y@, defined at @SDL3\/SDL_events.h 856:11@
+  --          [C declaration]: @y@, defined at @SDL3\/SDL_events.h 857:11@
+  , device_type :: SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType
+  -- ^ the device type of the pen, if known (added in 3.4.18).
+  --
+  --          [C declaration]: @device_type@, defined at @SDL3\/SDL_events.h 858:23@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -11075,6 +11134,7 @@ instance Marshal.ReadRaw SDL_PenMotionEvent where
         <*> HasCField.readRaw (BG.Proxy @"pen_state") ptr0
         <*> HasCField.readRaw (BG.Proxy @"x") ptr0
         <*> HasCField.readRaw (BG.Proxy @"y") ptr0
+        <*> HasCField.readRaw (BG.Proxy @"device_type") ptr0
 
 instance Marshal.WriteRaw SDL_PenMotionEvent where
   writeRaw =
@@ -11089,7 +11149,8 @@ instance Marshal.WriteRaw SDL_PenMotionEvent where
             which6
             pen_state7
             x8
-            y9 ->
+            y9
+            device_type10 ->
               HasCField.writeRaw (BG.Proxy @"type'") ptr0 type'2
                 >> HasCField.writeRaw (BG.Proxy @"reserved") ptr0 reserved3
                 >> HasCField.writeRaw (BG.Proxy @"timestamp") ptr0 timestamp4
@@ -11098,6 +11159,7 @@ instance Marshal.WriteRaw SDL_PenMotionEvent where
                 >> HasCField.writeRaw (BG.Proxy @"pen_state") ptr0 pen_state7
                 >> HasCField.writeRaw (BG.Proxy @"x") ptr0 x8
                 >> HasCField.writeRaw (BG.Proxy @"y") ptr0 y9
+                >> HasCField.writeRaw (BG.Proxy @"device_type") ptr0 device_type10
 
 deriving via Marshal.EquivStorable SDL_PenMotionEvent instance BG.Storable SDL_PenMotionEvent
 
@@ -11108,7 +11170,7 @@ deriving via
 
 -- | SDL_EVENT_PEN_MOTION
 --
---     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 849:19@
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 850:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_PenMotionEvent ty
@@ -11125,6 +11187,7 @@ instance
             , pen_state = BG.getField @"pen_state" x0
             , x = BG.getField @"x" x0
             , y = BG.getField @"y" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"type'" x0
       )
@@ -11142,7 +11205,7 @@ instance HasCField.HasCField SDL_PenMotionEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 850:12@
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 851:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_PenMotionEvent ty
@@ -11159,6 +11222,7 @@ instance
             , pen_state = BG.getField @"pen_state" x0
             , x = BG.getField @"x" x0
             , y = BG.getField @"y" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"reserved" x0
       )
@@ -11178,7 +11242,7 @@ instance HasCField.HasCField SDL_PenMotionEvent "reserved" where
 
 -- | In nanoseconds, populated using SDL_GetTicksNS()
 --
---     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 851:12@
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 852:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_PenMotionEvent ty
@@ -11195,6 +11259,7 @@ instance
             , pen_state = BG.getField @"pen_state" x0
             , x = BG.getField @"x" x0
             , y = BG.getField @"y" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"timestamp" x0
       )
@@ -11214,7 +11279,7 @@ instance HasCField.HasCField SDL_PenMotionEvent "timestamp" where
 
 -- | The window with pen focus, if any
 --
---     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 852:18@
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 853:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_PenMotionEvent ty
@@ -11231,6 +11296,7 @@ instance
             , pen_state = BG.getField @"pen_state" x0
             , x = BG.getField @"x" x0
             , y = BG.getField @"y" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"windowID" x0
       )
@@ -11250,7 +11316,7 @@ instance HasCField.HasCField SDL_PenMotionEvent "windowID" where
 
 -- | The pen instance id
 --
---     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 853:15@
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 854:15@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenID)
   => BG.CompatHasField.HasField "which" SDL_PenMotionEvent ty
@@ -11267,6 +11333,7 @@ instance
             , pen_state = BG.getField @"pen_state" x0
             , x = BG.getField @"x" x0
             , y = BG.getField @"y" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"which" x0
       )
@@ -11286,7 +11353,7 @@ instance HasCField.HasCField SDL_PenMotionEvent "which" where
 
 -- | Complete pen input state at time of event
 --
---     [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 854:23@
+--     [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 855:23@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenInputFlags)
   => BG.CompatHasField.HasField "pen_state" SDL_PenMotionEvent ty
@@ -11303,6 +11370,7 @@ instance
             , which = BG.getField @"which" x0
             , x = BG.getField @"x" x0
             , y = BG.getField @"y" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"pen_state" x0
       )
@@ -11322,7 +11390,7 @@ instance HasCField.HasCField SDL_PenMotionEvent "pen_state" where
 
 -- | X coordinate, relative to window
 --
---     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 855:11@
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 856:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_PenMotionEvent ty
@@ -11339,6 +11407,7 @@ instance
             , which = BG.getField @"which" x0
             , pen_state = BG.getField @"pen_state" x0
             , y = BG.getField @"y" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"x" x0
       )
@@ -11356,7 +11425,7 @@ instance HasCField.HasCField SDL_PenMotionEvent "x" where
 
 -- | Y coordinate, relative to window
 --
---     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 856:11@
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 857:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_PenMotionEvent ty
@@ -11373,6 +11442,7 @@ instance
             , which = BG.getField @"which" x0
             , pen_state = BG.getField @"pen_state" x0
             , x = BG.getField @"x" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"y" x0
       )
@@ -11388,57 +11458,99 @@ instance HasCField.HasCField SDL_PenMotionEvent "y" where
 
   offset# = \_ -> \_ -> 32
 
+-- | the device type of the pen, if known (added in 3.4.18).
+--
+--     [C declaration]: @device_type@, defined at @SDL3\/SDL_events.h 858:23@
+instance
+  (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType)
+  => BG.CompatHasField.HasField "device_type" SDL_PenMotionEvent ty
+  where
+  hasField =
+    \x0 ->
+      ( \y1 ->
+          SDL_PenMotionEvent
+            { device_type = y1
+            , type' = BG.getField @"type'" x0
+            , reserved = BG.getField @"reserved" x0
+            , timestamp = BG.getField @"timestamp" x0
+            , windowID = BG.getField @"windowID" x0
+            , which = BG.getField @"which" x0
+            , pen_state = BG.getField @"pen_state" x0
+            , x = BG.getField @"x" x0
+            , y = BG.getField @"y" x0
+            }
+      , BG.getField @"device_type" x0
+      )
+
+instance
+  (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType)
+  => BG.HasField "device_type" (BG.Ptr SDL_PenMotionEvent) (BG.Ptr ty)
+  where
+  getField =
+    HasCField.fromPtr (BG.Proxy @"device_type")
+
+instance HasCField.HasCField SDL_PenMotionEvent "device_type" where
+  type
+    CFieldType SDL_PenMotionEvent "device_type" =
+      SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType
+
+  offset# = \_ -> \_ -> 36
+
 -- | Pressure-sensitive pen touched event structure (event.ptouch.*)
 --
 --     These events come when a pen touches a surface (a tablet, etc), or lifts off from one.
 --
 --     @since 3.2.0
 --
---     [C declaration]: @struct SDL_PenTouchEvent@, defined at @SDL3\/SDL_events.h 867:16@
+--     [C declaration]: @struct SDL_PenTouchEvent@, defined at @SDL3\/SDL_events.h 869:16@
 data SDL_PenTouchEvent = SDL_PenTouchEvent
   { type' :: SDL_EventType
   -- ^ SDL_EVENT_PEN_DOWN or SDL_EVENT_PEN_UP
   --
-  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 869:19@
+  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 871:19@
   , reserved :: SDL3.Sys.Bindgen.Stdinc.Uint32
-  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 870:12@
+  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 872:12@
   , timestamp :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^ In nanoseconds, populated using SDL_GetTicksNS()
   --
-  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 871:12@
+  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 873:12@
   , windowID :: SDL3.Sys.Bindgen.Video.SDL_WindowID
   -- ^ The window with pen focus, if any
   --
-  --          [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 872:18@
+  --          [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 874:18@
   , which :: SDL3.Sys.Bindgen.Pen.SDL_PenID
   -- ^ The pen instance id
   --
-  --          [C declaration]: @which@, defined at @SDL3\/SDL_events.h 873:15@
+  --          [C declaration]: @which@, defined at @SDL3\/SDL_events.h 875:15@
   , pen_state :: SDL3.Sys.Bindgen.Pen.SDL_PenInputFlags
   -- ^ Complete pen input state at time of event
   --
-  --          [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 874:23@
+  --          [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 876:23@
   , x :: BG.CFloat
   -- ^ X coordinate, relative to window
   --
-  --          [C declaration]: @x@, defined at @SDL3\/SDL_events.h 875:11@
+  --          [C declaration]: @x@, defined at @SDL3\/SDL_events.h 877:11@
   , y :: BG.CFloat
   -- ^ Y coordinate, relative to window
   --
-  --          [C declaration]: @y@, defined at @SDL3\/SDL_events.h 876:11@
+  --          [C declaration]: @y@, defined at @SDL3\/SDL_events.h 878:11@
   , eraser :: BG.CBool
   -- ^ true if eraser end is used (not all pens support this).
   --
-  --          [C declaration]: @eraser@, defined at @SDL3\/SDL_events.h 877:10@
+  --          [C declaration]: @eraser@, defined at @SDL3\/SDL_events.h 879:10@
   , down :: BG.CBool
   -- ^ true if the pen is touching or false if the pen is lifted off
   --
-  --          [C declaration]: @down@, defined at @SDL3\/SDL_events.h 878:10@
+  --          [C declaration]: @down@, defined at @SDL3\/SDL_events.h 880:10@
+  , device_type :: SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType
+  -- ^ the device type of the pen, if known (added in 3.4.18).
+  --
+  --          [C declaration]: @device_type@, defined at @SDL3\/SDL_events.h 881:23@
   }
   deriving stock (BG.Generic, Eq, Show)
 
 instance Marshal.StaticSize SDL_PenTouchEvent where
-  staticSizeOf = \_ -> (40 :: Int)
+  staticSizeOf = \_ -> (48 :: Int)
 
   staticAlignment = \_ -> (8 :: Int)
 
@@ -11456,6 +11568,7 @@ instance Marshal.ReadRaw SDL_PenTouchEvent where
         <*> HasCField.readRaw (BG.Proxy @"y") ptr0
         <*> HasCField.readRaw (BG.Proxy @"eraser") ptr0
         <*> HasCField.readRaw (BG.Proxy @"down") ptr0
+        <*> HasCField.readRaw (BG.Proxy @"device_type") ptr0
 
 instance Marshal.WriteRaw SDL_PenTouchEvent where
   writeRaw =
@@ -11472,7 +11585,8 @@ instance Marshal.WriteRaw SDL_PenTouchEvent where
             x8
             y9
             eraser10
-            down11 ->
+            down11
+            device_type12 ->
               HasCField.writeRaw (BG.Proxy @"type'") ptr0 type'2
                 >> HasCField.writeRaw (BG.Proxy @"reserved") ptr0 reserved3
                 >> HasCField.writeRaw (BG.Proxy @"timestamp") ptr0 timestamp4
@@ -11483,6 +11597,7 @@ instance Marshal.WriteRaw SDL_PenTouchEvent where
                 >> HasCField.writeRaw (BG.Proxy @"y") ptr0 y9
                 >> HasCField.writeRaw (BG.Proxy @"eraser") ptr0 eraser10
                 >> HasCField.writeRaw (BG.Proxy @"down") ptr0 down11
+                >> HasCField.writeRaw (BG.Proxy @"device_type") ptr0 device_type12
 
 deriving via Marshal.EquivStorable SDL_PenTouchEvent instance BG.Storable SDL_PenTouchEvent
 
@@ -11490,7 +11605,7 @@ deriving via Struct.IsStructViaReadRaw SDL_PenTouchEvent instance Struct.IsStruc
 
 -- | SDL_EVENT_PEN_DOWN or SDL_EVENT_PEN_UP
 --
---     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 869:19@
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 871:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_PenTouchEvent ty
@@ -11509,6 +11624,7 @@ instance
             , y = BG.getField @"y" x0
             , eraser = BG.getField @"eraser" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"type'" x0
       )
@@ -11526,7 +11642,7 @@ instance HasCField.HasCField SDL_PenTouchEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 870:12@
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 872:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_PenTouchEvent ty
@@ -11545,6 +11661,7 @@ instance
             , y = BG.getField @"y" x0
             , eraser = BG.getField @"eraser" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"reserved" x0
       )
@@ -11564,7 +11681,7 @@ instance HasCField.HasCField SDL_PenTouchEvent "reserved" where
 
 -- | In nanoseconds, populated using SDL_GetTicksNS()
 --
---     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 871:12@
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 873:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_PenTouchEvent ty
@@ -11583,6 +11700,7 @@ instance
             , y = BG.getField @"y" x0
             , eraser = BG.getField @"eraser" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"timestamp" x0
       )
@@ -11602,7 +11720,7 @@ instance HasCField.HasCField SDL_PenTouchEvent "timestamp" where
 
 -- | The window with pen focus, if any
 --
---     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 872:18@
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 874:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_PenTouchEvent ty
@@ -11621,6 +11739,7 @@ instance
             , y = BG.getField @"y" x0
             , eraser = BG.getField @"eraser" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"windowID" x0
       )
@@ -11640,7 +11759,7 @@ instance HasCField.HasCField SDL_PenTouchEvent "windowID" where
 
 -- | The pen instance id
 --
---     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 873:15@
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 875:15@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenID)
   => BG.CompatHasField.HasField "which" SDL_PenTouchEvent ty
@@ -11659,6 +11778,7 @@ instance
             , y = BG.getField @"y" x0
             , eraser = BG.getField @"eraser" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"which" x0
       )
@@ -11678,7 +11798,7 @@ instance HasCField.HasCField SDL_PenTouchEvent "which" where
 
 -- | Complete pen input state at time of event
 --
---     [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 874:23@
+--     [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 876:23@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenInputFlags)
   => BG.CompatHasField.HasField "pen_state" SDL_PenTouchEvent ty
@@ -11697,6 +11817,7 @@ instance
             , y = BG.getField @"y" x0
             , eraser = BG.getField @"eraser" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"pen_state" x0
       )
@@ -11716,7 +11837,7 @@ instance HasCField.HasCField SDL_PenTouchEvent "pen_state" where
 
 -- | X coordinate, relative to window
 --
---     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 875:11@
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 877:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_PenTouchEvent ty
@@ -11735,6 +11856,7 @@ instance
             , y = BG.getField @"y" x0
             , eraser = BG.getField @"eraser" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"x" x0
       )
@@ -11752,7 +11874,7 @@ instance HasCField.HasCField SDL_PenTouchEvent "x" where
 
 -- | Y coordinate, relative to window
 --
---     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 876:11@
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 878:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_PenTouchEvent ty
@@ -11771,6 +11893,7 @@ instance
             , x = BG.getField @"x" x0
             , eraser = BG.getField @"eraser" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"y" x0
       )
@@ -11788,7 +11911,7 @@ instance HasCField.HasCField SDL_PenTouchEvent "y" where
 
 -- | true if eraser end is used (not all pens support this).
 --
---     [C declaration]: @eraser@, defined at @SDL3\/SDL_events.h 877:10@
+--     [C declaration]: @eraser@, defined at @SDL3\/SDL_events.h 879:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "eraser" SDL_PenTouchEvent ty
@@ -11807,6 +11930,7 @@ instance
             , x = BG.getField @"x" x0
             , y = BG.getField @"y" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"eraser" x0
       )
@@ -11824,7 +11948,7 @@ instance HasCField.HasCField SDL_PenTouchEvent "eraser" where
 
 -- | true if the pen is touching or false if the pen is lifted off
 --
---     [C declaration]: @down@, defined at @SDL3\/SDL_events.h 878:10@
+--     [C declaration]: @down@, defined at @SDL3\/SDL_events.h 880:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "down" SDL_PenTouchEvent ty
@@ -11843,6 +11967,7 @@ instance
             , x = BG.getField @"x" x0
             , y = BG.getField @"y" x0
             , eraser = BG.getField @"eraser" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"down" x0
       )
@@ -11858,57 +11983,101 @@ instance HasCField.HasCField SDL_PenTouchEvent "down" where
 
   offset# = \_ -> \_ -> 37
 
+-- | the device type of the pen, if known (added in 3.4.18).
+--
+--     [C declaration]: @device_type@, defined at @SDL3\/SDL_events.h 881:23@
+instance
+  (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType)
+  => BG.CompatHasField.HasField "device_type" SDL_PenTouchEvent ty
+  where
+  hasField =
+    \x0 ->
+      ( \y1 ->
+          SDL_PenTouchEvent
+            { device_type = y1
+            , type' = BG.getField @"type'" x0
+            , reserved = BG.getField @"reserved" x0
+            , timestamp = BG.getField @"timestamp" x0
+            , windowID = BG.getField @"windowID" x0
+            , which = BG.getField @"which" x0
+            , pen_state = BG.getField @"pen_state" x0
+            , x = BG.getField @"x" x0
+            , y = BG.getField @"y" x0
+            , eraser = BG.getField @"eraser" x0
+            , down = BG.getField @"down" x0
+            }
+      , BG.getField @"device_type" x0
+      )
+
+instance
+  (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType)
+  => BG.HasField "device_type" (BG.Ptr SDL_PenTouchEvent) (BG.Ptr ty)
+  where
+  getField =
+    HasCField.fromPtr (BG.Proxy @"device_type")
+
+instance HasCField.HasCField SDL_PenTouchEvent "device_type" where
+  type
+    CFieldType SDL_PenTouchEvent "device_type" =
+      SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType
+
+  offset# = \_ -> \_ -> 40
+
 -- | Pressure-sensitive pen button event structure (event.pbutton.*)
 --
 --     This is for buttons on the pen itself that the user might click. The pen itself pressing down to draw triggers a SDL_EVENT_PEN_DOWN event instead.
 --
 --     @since 3.2.0
 --
---     [C declaration]: @struct SDL_PenButtonEvent@, defined at @SDL3\/SDL_events.h 889:16@
+--     [C declaration]: @struct SDL_PenButtonEvent@, defined at @SDL3\/SDL_events.h 892:16@
 data SDL_PenButtonEvent = SDL_PenButtonEvent
   { type' :: SDL_EventType
   -- ^ SDL_EVENT_PEN_BUTTON_DOWN or SDL_EVENT_PEN_BUTTON_UP
   --
-  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 891:19@
+  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 894:19@
   , reserved :: SDL3.Sys.Bindgen.Stdinc.Uint32
-  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 892:12@
+  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 895:12@
   , timestamp :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^ In nanoseconds, populated using SDL_GetTicksNS()
   --
-  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 893:12@
+  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 896:12@
   , windowID :: SDL3.Sys.Bindgen.Video.SDL_WindowID
   -- ^ The window with mouse focus, if any
   --
-  --          [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 894:18@
+  --          [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 897:18@
   , which :: SDL3.Sys.Bindgen.Pen.SDL_PenID
   -- ^ The pen instance id
   --
-  --          [C declaration]: @which@, defined at @SDL3\/SDL_events.h 895:15@
+  --          [C declaration]: @which@, defined at @SDL3\/SDL_events.h 898:15@
   , pen_state :: SDL3.Sys.Bindgen.Pen.SDL_PenInputFlags
   -- ^ Complete pen input state at time of event
   --
-  --          [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 896:23@
+  --          [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 899:23@
   , x :: BG.CFloat
   -- ^ X coordinate, relative to window
   --
-  --          [C declaration]: @x@, defined at @SDL3\/SDL_events.h 897:11@
+  --          [C declaration]: @x@, defined at @SDL3\/SDL_events.h 900:11@
   , y :: BG.CFloat
   -- ^ Y coordinate, relative to window
   --
-  --          [C declaration]: @y@, defined at @SDL3\/SDL_events.h 898:11@
+  --          [C declaration]: @y@, defined at @SDL3\/SDL_events.h 901:11@
   , button :: SDL3.Sys.Bindgen.Stdinc.Uint8
   -- ^ The pen button index (first button is 1).
   --
-  --          [C declaration]: @button@, defined at @SDL3\/SDL_events.h 899:11@
+  --          [C declaration]: @button@, defined at @SDL3\/SDL_events.h 902:11@
   , down :: BG.CBool
   -- ^ true if the button is pressed
   --
-  --          [C declaration]: @down@, defined at @SDL3\/SDL_events.h 900:10@
+  --          [C declaration]: @down@, defined at @SDL3\/SDL_events.h 903:10@
+  , device_type :: SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType
+  -- ^ the device type of the pen, if known (added in 3.4.18).
+  --
+  --          [C declaration]: @device_type@, defined at @SDL3\/SDL_events.h 904:23@
   }
   deriving stock (BG.Generic, Eq, Show)
 
 instance Marshal.StaticSize SDL_PenButtonEvent where
-  staticSizeOf = \_ -> (40 :: Int)
+  staticSizeOf = \_ -> (48 :: Int)
 
   staticAlignment = \_ -> (8 :: Int)
 
@@ -11926,6 +12095,7 @@ instance Marshal.ReadRaw SDL_PenButtonEvent where
         <*> HasCField.readRaw (BG.Proxy @"y") ptr0
         <*> HasCField.readRaw (BG.Proxy @"button") ptr0
         <*> HasCField.readRaw (BG.Proxy @"down") ptr0
+        <*> HasCField.readRaw (BG.Proxy @"device_type") ptr0
 
 instance Marshal.WriteRaw SDL_PenButtonEvent where
   writeRaw =
@@ -11942,7 +12112,8 @@ instance Marshal.WriteRaw SDL_PenButtonEvent where
             x8
             y9
             button10
-            down11 ->
+            down11
+            device_type12 ->
               HasCField.writeRaw (BG.Proxy @"type'") ptr0 type'2
                 >> HasCField.writeRaw (BG.Proxy @"reserved") ptr0 reserved3
                 >> HasCField.writeRaw (BG.Proxy @"timestamp") ptr0 timestamp4
@@ -11953,6 +12124,7 @@ instance Marshal.WriteRaw SDL_PenButtonEvent where
                 >> HasCField.writeRaw (BG.Proxy @"y") ptr0 y9
                 >> HasCField.writeRaw (BG.Proxy @"button") ptr0 button10
                 >> HasCField.writeRaw (BG.Proxy @"down") ptr0 down11
+                >> HasCField.writeRaw (BG.Proxy @"device_type") ptr0 device_type12
 
 deriving via Marshal.EquivStorable SDL_PenButtonEvent instance BG.Storable SDL_PenButtonEvent
 
@@ -11963,7 +12135,7 @@ deriving via
 
 -- | SDL_EVENT_PEN_BUTTON_DOWN or SDL_EVENT_PEN_BUTTON_UP
 --
---     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 891:19@
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 894:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_PenButtonEvent ty
@@ -11982,6 +12154,7 @@ instance
             , y = BG.getField @"y" x0
             , button = BG.getField @"button" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"type'" x0
       )
@@ -11999,7 +12172,7 @@ instance HasCField.HasCField SDL_PenButtonEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 892:12@
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 895:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_PenButtonEvent ty
@@ -12018,6 +12191,7 @@ instance
             , y = BG.getField @"y" x0
             , button = BG.getField @"button" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"reserved" x0
       )
@@ -12037,7 +12211,7 @@ instance HasCField.HasCField SDL_PenButtonEvent "reserved" where
 
 -- | In nanoseconds, populated using SDL_GetTicksNS()
 --
---     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 893:12@
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 896:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_PenButtonEvent ty
@@ -12056,6 +12230,7 @@ instance
             , y = BG.getField @"y" x0
             , button = BG.getField @"button" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"timestamp" x0
       )
@@ -12075,7 +12250,7 @@ instance HasCField.HasCField SDL_PenButtonEvent "timestamp" where
 
 -- | The window with mouse focus, if any
 --
---     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 894:18@
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 897:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_PenButtonEvent ty
@@ -12094,6 +12269,7 @@ instance
             , y = BG.getField @"y" x0
             , button = BG.getField @"button" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"windowID" x0
       )
@@ -12113,7 +12289,7 @@ instance HasCField.HasCField SDL_PenButtonEvent "windowID" where
 
 -- | The pen instance id
 --
---     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 895:15@
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 898:15@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenID)
   => BG.CompatHasField.HasField "which" SDL_PenButtonEvent ty
@@ -12132,6 +12308,7 @@ instance
             , y = BG.getField @"y" x0
             , button = BG.getField @"button" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"which" x0
       )
@@ -12151,7 +12328,7 @@ instance HasCField.HasCField SDL_PenButtonEvent "which" where
 
 -- | Complete pen input state at time of event
 --
---     [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 896:23@
+--     [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 899:23@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenInputFlags)
   => BG.CompatHasField.HasField "pen_state" SDL_PenButtonEvent ty
@@ -12170,6 +12347,7 @@ instance
             , y = BG.getField @"y" x0
             , button = BG.getField @"button" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"pen_state" x0
       )
@@ -12189,7 +12367,7 @@ instance HasCField.HasCField SDL_PenButtonEvent "pen_state" where
 
 -- | X coordinate, relative to window
 --
---     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 897:11@
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 900:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_PenButtonEvent ty
@@ -12208,6 +12386,7 @@ instance
             , y = BG.getField @"y" x0
             , button = BG.getField @"button" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"x" x0
       )
@@ -12225,7 +12404,7 @@ instance HasCField.HasCField SDL_PenButtonEvent "x" where
 
 -- | Y coordinate, relative to window
 --
---     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 898:11@
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 901:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_PenButtonEvent ty
@@ -12244,6 +12423,7 @@ instance
             , x = BG.getField @"x" x0
             , button = BG.getField @"button" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"y" x0
       )
@@ -12261,7 +12441,7 @@ instance HasCField.HasCField SDL_PenButtonEvent "y" where
 
 -- | The pen button index (first button is 1).
 --
---     [C declaration]: @button@, defined at @SDL3\/SDL_events.h 899:11@
+--     [C declaration]: @button@, defined at @SDL3\/SDL_events.h 902:11@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "button" SDL_PenButtonEvent ty
@@ -12280,6 +12460,7 @@ instance
             , x = BG.getField @"x" x0
             , y = BG.getField @"y" x0
             , down = BG.getField @"down" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"button" x0
       )
@@ -12299,7 +12480,7 @@ instance HasCField.HasCField SDL_PenButtonEvent "button" where
 
 -- | true if the button is pressed
 --
---     [C declaration]: @down@, defined at @SDL3\/SDL_events.h 900:10@
+--     [C declaration]: @down@, defined at @SDL3\/SDL_events.h 903:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "down" SDL_PenButtonEvent ty
@@ -12318,6 +12499,7 @@ instance
             , x = BG.getField @"x" x0
             , y = BG.getField @"y" x0
             , button = BG.getField @"button" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"down" x0
       )
@@ -12333,52 +12515,96 @@ instance HasCField.HasCField SDL_PenButtonEvent "down" where
 
   offset# = \_ -> \_ -> 37
 
+-- | the device type of the pen, if known (added in 3.4.18).
+--
+--     [C declaration]: @device_type@, defined at @SDL3\/SDL_events.h 904:23@
+instance
+  (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType)
+  => BG.CompatHasField.HasField "device_type" SDL_PenButtonEvent ty
+  where
+  hasField =
+    \x0 ->
+      ( \y1 ->
+          SDL_PenButtonEvent
+            { device_type = y1
+            , type' = BG.getField @"type'" x0
+            , reserved = BG.getField @"reserved" x0
+            , timestamp = BG.getField @"timestamp" x0
+            , windowID = BG.getField @"windowID" x0
+            , which = BG.getField @"which" x0
+            , pen_state = BG.getField @"pen_state" x0
+            , x = BG.getField @"x" x0
+            , y = BG.getField @"y" x0
+            , button = BG.getField @"button" x0
+            , down = BG.getField @"down" x0
+            }
+      , BG.getField @"device_type" x0
+      )
+
+instance
+  (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType)
+  => BG.HasField "device_type" (BG.Ptr SDL_PenButtonEvent) (BG.Ptr ty)
+  where
+  getField =
+    HasCField.fromPtr (BG.Proxy @"device_type")
+
+instance HasCField.HasCField SDL_PenButtonEvent "device_type" where
+  type
+    CFieldType SDL_PenButtonEvent "device_type" =
+      SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType
+
+  offset# = \_ -> \_ -> 40
+
 -- | Pressure-sensitive pen pressure \/ angle event structure (event.paxis.*)
 --
 --     You might get some of these events even if the pen isn\'t touching the tablet.
 --
 --     @since 3.2.0
 --
---     [C declaration]: @struct SDL_PenAxisEvent@, defined at @SDL3\/SDL_events.h 911:16@
+--     [C declaration]: @struct SDL_PenAxisEvent@, defined at @SDL3\/SDL_events.h 915:16@
 data SDL_PenAxisEvent = SDL_PenAxisEvent
   { type' :: SDL_EventType
   -- ^ SDL_EVENT_PEN_AXIS
   --
-  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 913:19@
+  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 917:19@
   , reserved :: SDL3.Sys.Bindgen.Stdinc.Uint32
-  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 914:12@
+  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 918:12@
   , timestamp :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^ In nanoseconds, populated using SDL_GetTicksNS()
   --
-  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 915:12@
+  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 919:12@
   , windowID :: SDL3.Sys.Bindgen.Video.SDL_WindowID
   -- ^ The window with pen focus, if any
   --
-  --          [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 916:18@
+  --          [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 920:18@
   , which :: SDL3.Sys.Bindgen.Pen.SDL_PenID
   -- ^ The pen instance id
   --
-  --          [C declaration]: @which@, defined at @SDL3\/SDL_events.h 917:15@
+  --          [C declaration]: @which@, defined at @SDL3\/SDL_events.h 921:15@
   , pen_state :: SDL3.Sys.Bindgen.Pen.SDL_PenInputFlags
   -- ^ Complete pen input state at time of event
   --
-  --          [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 918:23@
+  --          [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 922:23@
   , x :: BG.CFloat
   -- ^ X coordinate, relative to window
   --
-  --          [C declaration]: @x@, defined at @SDL3\/SDL_events.h 919:11@
+  --          [C declaration]: @x@, defined at @SDL3\/SDL_events.h 923:11@
   , y :: BG.CFloat
   -- ^ Y coordinate, relative to window
   --
-  --          [C declaration]: @y@, defined at @SDL3\/SDL_events.h 920:11@
+  --          [C declaration]: @y@, defined at @SDL3\/SDL_events.h 924:11@
   , axis :: SDL3.Sys.Bindgen.Pen.SDL_PenAxis
   -- ^ Axis that has changed
   --
-  --          [C declaration]: @axis@, defined at @SDL3\/SDL_events.h 921:17@
+  --          [C declaration]: @axis@, defined at @SDL3\/SDL_events.h 925:17@
   , value :: BG.CFloat
   -- ^ New value of axis
   --
-  --          [C declaration]: @value@, defined at @SDL3\/SDL_events.h 922:11@
+  --          [C declaration]: @value@, defined at @SDL3\/SDL_events.h 926:11@
+  , device_type :: SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType
+  -- ^ the device type of the pen, if known (added in 3.4.18).
+  --
+  --          [C declaration]: @device_type@, defined at @SDL3\/SDL_events.h 927:23@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -12401,6 +12627,7 @@ instance Marshal.ReadRaw SDL_PenAxisEvent where
         <*> HasCField.readRaw (BG.Proxy @"y") ptr0
         <*> HasCField.readRaw (BG.Proxy @"axis") ptr0
         <*> HasCField.readRaw (BG.Proxy @"value") ptr0
+        <*> HasCField.readRaw (BG.Proxy @"device_type") ptr0
 
 instance Marshal.WriteRaw SDL_PenAxisEvent where
   writeRaw =
@@ -12417,7 +12644,8 @@ instance Marshal.WriteRaw SDL_PenAxisEvent where
             x8
             y9
             axis10
-            value11 ->
+            value11
+            device_type12 ->
               HasCField.writeRaw (BG.Proxy @"type'") ptr0 type'2
                 >> HasCField.writeRaw (BG.Proxy @"reserved") ptr0 reserved3
                 >> HasCField.writeRaw (BG.Proxy @"timestamp") ptr0 timestamp4
@@ -12428,6 +12656,7 @@ instance Marshal.WriteRaw SDL_PenAxisEvent where
                 >> HasCField.writeRaw (BG.Proxy @"y") ptr0 y9
                 >> HasCField.writeRaw (BG.Proxy @"axis") ptr0 axis10
                 >> HasCField.writeRaw (BG.Proxy @"value") ptr0 value11
+                >> HasCField.writeRaw (BG.Proxy @"device_type") ptr0 device_type12
 
 deriving via Marshal.EquivStorable SDL_PenAxisEvent instance BG.Storable SDL_PenAxisEvent
 
@@ -12435,7 +12664,7 @@ deriving via Struct.IsStructViaReadRaw SDL_PenAxisEvent instance Struct.IsStruct
 
 -- | SDL_EVENT_PEN_AXIS
 --
---     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 913:19@
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 917:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_PenAxisEvent ty
@@ -12454,6 +12683,7 @@ instance
             , y = BG.getField @"y" x0
             , axis = BG.getField @"axis" x0
             , value = BG.getField @"value" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"type'" x0
       )
@@ -12471,7 +12701,7 @@ instance HasCField.HasCField SDL_PenAxisEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 914:12@
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 918:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_PenAxisEvent ty
@@ -12490,6 +12720,7 @@ instance
             , y = BG.getField @"y" x0
             , axis = BG.getField @"axis" x0
             , value = BG.getField @"value" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"reserved" x0
       )
@@ -12509,7 +12740,7 @@ instance HasCField.HasCField SDL_PenAxisEvent "reserved" where
 
 -- | In nanoseconds, populated using SDL_GetTicksNS()
 --
---     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 915:12@
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 919:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_PenAxisEvent ty
@@ -12528,6 +12759,7 @@ instance
             , y = BG.getField @"y" x0
             , axis = BG.getField @"axis" x0
             , value = BG.getField @"value" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"timestamp" x0
       )
@@ -12547,7 +12779,7 @@ instance HasCField.HasCField SDL_PenAxisEvent "timestamp" where
 
 -- | The window with pen focus, if any
 --
---     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 916:18@
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 920:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_PenAxisEvent ty
@@ -12566,6 +12798,7 @@ instance
             , y = BG.getField @"y" x0
             , axis = BG.getField @"axis" x0
             , value = BG.getField @"value" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"windowID" x0
       )
@@ -12585,7 +12818,7 @@ instance HasCField.HasCField SDL_PenAxisEvent "windowID" where
 
 -- | The pen instance id
 --
---     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 917:15@
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 921:15@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenID)
   => BG.CompatHasField.HasField "which" SDL_PenAxisEvent ty
@@ -12604,6 +12837,7 @@ instance
             , y = BG.getField @"y" x0
             , axis = BG.getField @"axis" x0
             , value = BG.getField @"value" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"which" x0
       )
@@ -12623,7 +12857,7 @@ instance HasCField.HasCField SDL_PenAxisEvent "which" where
 
 -- | Complete pen input state at time of event
 --
---     [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 918:23@
+--     [C declaration]: @pen_state@, defined at @SDL3\/SDL_events.h 922:23@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenInputFlags)
   => BG.CompatHasField.HasField "pen_state" SDL_PenAxisEvent ty
@@ -12642,6 +12876,7 @@ instance
             , y = BG.getField @"y" x0
             , axis = BG.getField @"axis" x0
             , value = BG.getField @"value" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"pen_state" x0
       )
@@ -12661,7 +12896,7 @@ instance HasCField.HasCField SDL_PenAxisEvent "pen_state" where
 
 -- | X coordinate, relative to window
 --
---     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 919:11@
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 923:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_PenAxisEvent ty
@@ -12680,6 +12915,7 @@ instance
             , y = BG.getField @"y" x0
             , axis = BG.getField @"axis" x0
             , value = BG.getField @"value" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"x" x0
       )
@@ -12697,7 +12933,7 @@ instance HasCField.HasCField SDL_PenAxisEvent "x" where
 
 -- | Y coordinate, relative to window
 --
---     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 920:11@
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 924:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_PenAxisEvent ty
@@ -12716,6 +12952,7 @@ instance
             , x = BG.getField @"x" x0
             , axis = BG.getField @"axis" x0
             , value = BG.getField @"value" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"y" x0
       )
@@ -12733,7 +12970,7 @@ instance HasCField.HasCField SDL_PenAxisEvent "y" where
 
 -- | Axis that has changed
 --
---     [C declaration]: @axis@, defined at @SDL3\/SDL_events.h 921:17@
+--     [C declaration]: @axis@, defined at @SDL3\/SDL_events.h 925:17@
 instance
   (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenAxis)
   => BG.CompatHasField.HasField "axis" SDL_PenAxisEvent ty
@@ -12752,6 +12989,7 @@ instance
             , x = BG.getField @"x" x0
             , y = BG.getField @"y" x0
             , value = BG.getField @"value" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"axis" x0
       )
@@ -12771,7 +13009,7 @@ instance HasCField.HasCField SDL_PenAxisEvent "axis" where
 
 -- | New value of axis
 --
---     [C declaration]: @value@, defined at @SDL3\/SDL_events.h 922:11@
+--     [C declaration]: @value@, defined at @SDL3\/SDL_events.h 926:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "value" SDL_PenAxisEvent ty
@@ -12790,6 +13028,7 @@ instance
             , x = BG.getField @"x" x0
             , y = BG.getField @"y" x0
             , axis = BG.getField @"axis" x0
+            , device_type = BG.getField @"device_type" x0
             }
       , BG.getField @"value" x0
       )
@@ -12805,42 +13044,82 @@ instance HasCField.HasCField SDL_PenAxisEvent "value" where
 
   offset# = \_ -> \_ -> 40
 
+-- | the device type of the pen, if known (added in 3.4.18).
+--
+--     [C declaration]: @device_type@, defined at @SDL3\/SDL_events.h 927:23@
+instance
+  (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType)
+  => BG.CompatHasField.HasField "device_type" SDL_PenAxisEvent ty
+  where
+  hasField =
+    \x0 ->
+      ( \y1 ->
+          SDL_PenAxisEvent
+            { device_type = y1
+            , type' = BG.getField @"type'" x0
+            , reserved = BG.getField @"reserved" x0
+            , timestamp = BG.getField @"timestamp" x0
+            , windowID = BG.getField @"windowID" x0
+            , which = BG.getField @"which" x0
+            , pen_state = BG.getField @"pen_state" x0
+            , x = BG.getField @"x" x0
+            , y = BG.getField @"y" x0
+            , axis = BG.getField @"axis" x0
+            , value = BG.getField @"value" x0
+            }
+      , BG.getField @"device_type" x0
+      )
+
+instance
+  (ty ~ SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType)
+  => BG.HasField "device_type" (BG.Ptr SDL_PenAxisEvent) (BG.Ptr ty)
+  where
+  getField =
+    HasCField.fromPtr (BG.Proxy @"device_type")
+
+instance HasCField.HasCField SDL_PenAxisEvent "device_type" where
+  type
+    CFieldType SDL_PenAxisEvent "device_type" =
+      SDL3.Sys.Bindgen.Pen.SDL_PenDeviceType
+
+  offset# = \_ -> \_ -> 44
+
 -- | An event used to drop text or request a file open by the system (event.drop.*)
 --
 --     @since 3.2.0
 --
---     [C declaration]: @struct SDL_DropEvent@, defined at @SDL3\/SDL_events.h 931:16@
+--     [C declaration]: @struct SDL_DropEvent@, defined at @SDL3\/SDL_events.h 936:16@
 data SDL_DropEvent = SDL_DropEvent
   { type' :: SDL_EventType
   -- ^ SDL_EVENT_DROP_BEGIN or SDL_EVENT_DROP_FILE or SDL_EVENT_DROP_TEXT or SDL_EVENT_DROP_COMPLETE or SDL_EVENT_DROP_POSITION
   --
-  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 933:19@
+  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 938:19@
   , reserved :: SDL3.Sys.Bindgen.Stdinc.Uint32
-  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 934:12@
+  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 939:12@
   , timestamp :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^ In nanoseconds, populated using SDL_GetTicksNS()
   --
-  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 935:12@
+  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 940:12@
   , windowID :: SDL3.Sys.Bindgen.Video.SDL_WindowID
   -- ^ The window that was dropped on, if any
   --
-  --          [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 936:18@
+  --          [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 941:18@
   , x :: BG.CFloat
   -- ^ X coordinate, relative to window (not on begin)
   --
-  --          [C declaration]: @x@, defined at @SDL3\/SDL_events.h 937:11@
+  --          [C declaration]: @x@, defined at @SDL3\/SDL_events.h 942:11@
   , y :: BG.CFloat
   -- ^ Y coordinate, relative to window (not on begin)
   --
-  --          [C declaration]: @y@, defined at @SDL3\/SDL_events.h 938:11@
+  --          [C declaration]: @y@, defined at @SDL3\/SDL_events.h 943:11@
   , source :: PtrConst.PtrConst BG.CChar
   -- ^ The source app that sent this drop event, or NULL if that isn\'t available
   --
-  --          [C declaration]: @source@, defined at @SDL3\/SDL_events.h 939:17@
+  --          [C declaration]: @source@, defined at @SDL3\/SDL_events.h 944:17@
   , data' :: PtrConst.PtrConst BG.CChar
   -- ^ The text for SDL_EVENT_DROP_TEXT and the file name for SDL_EVENT_DROP_FILE, NULL for other events
   --
-  --          [C declaration]: @data@, defined at @SDL3\/SDL_events.h 940:17@
+  --          [C declaration]: @data@, defined at @SDL3\/SDL_events.h 945:17@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -12883,7 +13162,7 @@ deriving via Struct.IsStructViaReadRaw SDL_DropEvent instance Struct.IsStruct SD
 
 -- | SDL_EVENT_DROP_BEGIN or SDL_EVENT_DROP_FILE or SDL_EVENT_DROP_TEXT or SDL_EVENT_DROP_COMPLETE or SDL_EVENT_DROP_POSITION
 --
---     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 933:19@
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 938:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_DropEvent ty
@@ -12915,7 +13194,7 @@ instance HasCField.HasCField SDL_DropEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 934:12@
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 939:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_DropEvent ty
@@ -12951,7 +13230,7 @@ instance HasCField.HasCField SDL_DropEvent "reserved" where
 
 -- | In nanoseconds, populated using SDL_GetTicksNS()
 --
---     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 935:12@
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 940:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_DropEvent ty
@@ -12987,7 +13266,7 @@ instance HasCField.HasCField SDL_DropEvent "timestamp" where
 
 -- | The window that was dropped on, if any
 --
---     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 936:18@
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 941:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_DropEvent ty
@@ -13023,7 +13302,7 @@ instance HasCField.HasCField SDL_DropEvent "windowID" where
 
 -- | X coordinate, relative to window (not on begin)
 --
---     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 937:11@
+--     [C declaration]: @x@, defined at @SDL3\/SDL_events.h 942:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "x" SDL_DropEvent ty
@@ -13057,7 +13336,7 @@ instance HasCField.HasCField SDL_DropEvent "x" where
 
 -- | Y coordinate, relative to window (not on begin)
 --
---     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 938:11@
+--     [C declaration]: @y@, defined at @SDL3\/SDL_events.h 943:11@
 instance
   (ty ~ BG.CFloat)
   => BG.CompatHasField.HasField "y" SDL_DropEvent ty
@@ -13091,7 +13370,7 @@ instance HasCField.HasCField SDL_DropEvent "y" where
 
 -- | The source app that sent this drop event, or NULL if that isn\'t available
 --
---     [C declaration]: @source@, defined at @SDL3\/SDL_events.h 939:17@
+--     [C declaration]: @source@, defined at @SDL3\/SDL_events.h 944:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "source" SDL_DropEvent ty
@@ -13127,7 +13406,7 @@ instance HasCField.HasCField SDL_DropEvent "source" where
 
 -- | The text for SDL_EVENT_DROP_TEXT and the file name for SDL_EVENT_DROP_FILE, NULL for other events
 --
---     [C declaration]: @data@, defined at @SDL3\/SDL_events.h 940:17@
+--     [C declaration]: @data@, defined at @SDL3\/SDL_events.h 945:17@
 instance
   (ty ~ PtrConst.PtrConst BG.CChar)
   => BG.CompatHasField.HasField "data'" SDL_DropEvent ty
@@ -13165,30 +13444,30 @@ instance HasCField.HasCField SDL_DropEvent "data'" where
 --
 --     @since 3.2.0
 --
---     [C declaration]: @struct SDL_ClipboardEvent@, defined at @SDL3\/SDL_events.h 949:16@
+--     [C declaration]: @struct SDL_ClipboardEvent@, defined at @SDL3\/SDL_events.h 954:16@
 data SDL_ClipboardEvent = SDL_ClipboardEvent
   { type' :: SDL_EventType
   -- ^ SDL_EVENT_CLIPBOARD_UPDATE
   --
-  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 951:19@
+  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 956:19@
   , reserved :: SDL3.Sys.Bindgen.Stdinc.Uint32
-  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 952:12@
+  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 957:12@
   , timestamp :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^ In nanoseconds, populated using SDL_GetTicksNS()
   --
-  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 953:12@
+  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 958:12@
   , owner :: BG.CBool
   -- ^ are we owning the clipboard (internal update)
   --
-  --          [C declaration]: @owner@, defined at @SDL3\/SDL_events.h 954:10@
+  --          [C declaration]: @owner@, defined at @SDL3\/SDL_events.h 959:10@
   , num_mime_types :: SDL3.Sys.Bindgen.Stdinc.Sint32
   -- ^ number of mime types
   --
-  --          [C declaration]: @num_mime_types@, defined at @SDL3\/SDL_events.h 955:12@
+  --          [C declaration]: @num_mime_types@, defined at @SDL3\/SDL_events.h 960:12@
   , mime_types :: BG.Ptr (PtrConst.PtrConst BG.CChar)
   -- ^ current mime types
   --
-  --          [C declaration]: @mime_types@, defined at @SDL3\/SDL_events.h 956:18@
+  --          [C declaration]: @mime_types@, defined at @SDL3\/SDL_events.h 961:18@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -13236,7 +13515,7 @@ deriving via
 
 -- | SDL_EVENT_CLIPBOARD_UPDATE
 --
---     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 951:19@
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 956:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_ClipboardEvent ty
@@ -13268,7 +13547,7 @@ instance HasCField.HasCField SDL_ClipboardEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 952:12@
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 957:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_ClipboardEvent ty
@@ -13302,7 +13581,7 @@ instance HasCField.HasCField SDL_ClipboardEvent "reserved" where
 
 -- | In nanoseconds, populated using SDL_GetTicksNS()
 --
---     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 953:12@
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 958:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_ClipboardEvent ty
@@ -13336,7 +13615,7 @@ instance HasCField.HasCField SDL_ClipboardEvent "timestamp" where
 
 -- | are we owning the clipboard (internal update)
 --
---     [C declaration]: @owner@, defined at @SDL3\/SDL_events.h 954:10@
+--     [C declaration]: @owner@, defined at @SDL3\/SDL_events.h 959:10@
 instance
   (ty ~ BG.CBool)
   => BG.CompatHasField.HasField "owner" SDL_ClipboardEvent ty
@@ -13368,7 +13647,7 @@ instance HasCField.HasCField SDL_ClipboardEvent "owner" where
 
 -- | number of mime types
 --
---     [C declaration]: @num_mime_types@, defined at @SDL3\/SDL_events.h 955:12@
+--     [C declaration]: @num_mime_types@, defined at @SDL3\/SDL_events.h 960:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "num_mime_types" SDL_ClipboardEvent ty
@@ -13403,7 +13682,7 @@ instance HasCField.HasCField SDL_ClipboardEvent "num_mime_types" where
 
 -- | current mime types
 --
---     [C declaration]: @mime_types@, defined at @SDL3\/SDL_events.h 956:18@
+--     [C declaration]: @mime_types@, defined at @SDL3\/SDL_events.h 961:18@
 instance
   (ty ~ BG.Ptr (PtrConst.PtrConst BG.CChar))
   => BG.CompatHasField.HasField "mime_types" SDL_ClipboardEvent ty
@@ -13439,30 +13718,30 @@ instance HasCField.HasCField SDL_ClipboardEvent "mime_types" where
 --
 --     @since 3.2.0
 --
---     [C declaration]: @struct SDL_SensorEvent@, defined at @SDL3\/SDL_events.h 964:16@
+--     [C declaration]: @struct SDL_SensorEvent@, defined at @SDL3\/SDL_events.h 969:16@
 data SDL_SensorEvent = SDL_SensorEvent
   { type' :: SDL_EventType
   -- ^ SDL_EVENT_SENSOR_UPDATE
   --
-  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 966:19@
+  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 971:19@
   , reserved :: SDL3.Sys.Bindgen.Stdinc.Uint32
-  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 967:12@
+  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 972:12@
   , timestamp :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^ In nanoseconds, populated using SDL_GetTicksNS()
   --
-  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 968:12@
+  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 973:12@
   , which :: SDL3.Sys.Bindgen.Sensor.SDL_SensorID
   -- ^ The instance ID of the sensor
   --
-  --          [C declaration]: @which@, defined at @SDL3\/SDL_events.h 969:18@
+  --          [C declaration]: @which@, defined at @SDL3\/SDL_events.h 974:18@
   , data' :: CA.ConstantArray 6 BG.CFloat
   -- ^ Up to 6 values from the sensor - additional values can be queried using SDL_GetSensorData()
   --
-  --          [C declaration]: @data@, defined at @SDL3\/SDL_events.h 970:11@
+  --          [C declaration]: @data@, defined at @SDL3\/SDL_events.h 975:11@
   , sensor_timestamp :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^ The timestamp of the sensor reading in nanoseconds, not necessarily synchronized with the system clock
   --
-  --          [C declaration]: @sensor_timestamp@, defined at @SDL3\/SDL_events.h 971:12@
+  --          [C declaration]: @sensor_timestamp@, defined at @SDL3\/SDL_events.h 976:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -13501,7 +13780,7 @@ deriving via Struct.IsStructViaReadRaw SDL_SensorEvent instance Struct.IsStruct 
 
 -- | SDL_EVENT_SENSOR_UPDATE
 --
---     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 966:19@
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 971:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_SensorEvent ty
@@ -13533,7 +13812,7 @@ instance HasCField.HasCField SDL_SensorEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 967:12@
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 972:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_SensorEvent ty
@@ -13567,7 +13846,7 @@ instance HasCField.HasCField SDL_SensorEvent "reserved" where
 
 -- | In nanoseconds, populated using SDL_GetTicksNS()
 --
---     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 968:12@
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 973:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_SensorEvent ty
@@ -13601,7 +13880,7 @@ instance HasCField.HasCField SDL_SensorEvent "timestamp" where
 
 -- | The instance ID of the sensor
 --
---     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 969:18@
+--     [C declaration]: @which@, defined at @SDL3\/SDL_events.h 974:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Sensor.SDL_SensorID)
   => BG.CompatHasField.HasField "which" SDL_SensorEvent ty
@@ -13635,7 +13914,7 @@ instance HasCField.HasCField SDL_SensorEvent "which" where
 
 -- | Up to 6 values from the sensor - additional values can be queried using SDL_GetSensorData()
 --
---     [C declaration]: @data@, defined at @SDL3\/SDL_events.h 970:11@
+--     [C declaration]: @data@, defined at @SDL3\/SDL_events.h 975:11@
 instance
   (ty ~ CA.ConstantArray 6 BG.CFloat)
   => BG.CompatHasField.HasField "data'" SDL_SensorEvent ty
@@ -13669,7 +13948,7 @@ instance HasCField.HasCField SDL_SensorEvent "data'" where
 
 -- | The timestamp of the sensor reading in nanoseconds, not necessarily synchronized with the system clock
 --
---     [C declaration]: @sensor_timestamp@, defined at @SDL3\/SDL_events.h 971:12@
+--     [C declaration]: @sensor_timestamp@, defined at @SDL3\/SDL_events.h 976:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "sensor_timestamp" SDL_SensorEvent ty
@@ -13706,18 +13985,18 @@ instance HasCField.HasCField SDL_SensorEvent "sensor_timestamp" where
 --
 --     @since 3.2.0
 --
---     [C declaration]: @struct SDL_QuitEvent@, defined at @SDL3\/SDL_events.h 979:16@
+--     [C declaration]: @struct SDL_QuitEvent@, defined at @SDL3\/SDL_events.h 984:16@
 data SDL_QuitEvent = SDL_QuitEvent
   { type' :: SDL_EventType
   -- ^ SDL_EVENT_QUIT
   --
-  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 981:19@
+  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 986:19@
   , reserved :: SDL3.Sys.Bindgen.Stdinc.Uint32
-  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 982:12@
+  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 987:12@
   , timestamp :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^ In nanoseconds, populated using SDL_GetTicksNS()
   --
-  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 983:12@
+  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 988:12@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -13750,7 +14029,7 @@ deriving via Struct.IsStructViaReadRaw SDL_QuitEvent instance Struct.IsStruct SD
 
 -- | SDL_EVENT_QUIT
 --
---     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 981:19@
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 986:19@
 instance
   (ty ~ SDL_EventType)
   => BG.CompatHasField.HasField "type'" SDL_QuitEvent ty
@@ -13777,7 +14056,7 @@ instance HasCField.HasCField SDL_QuitEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 982:12@
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 987:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_QuitEvent ty
@@ -13808,7 +14087,7 @@ instance HasCField.HasCField SDL_QuitEvent "reserved" where
 
 -- | In nanoseconds, populated using SDL_GetTicksNS()
 --
---     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 983:12@
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 988:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_QuitEvent ty
@@ -13843,34 +14122,34 @@ instance HasCField.HasCField SDL_QuitEvent "timestamp" where
 --
 --     @since 3.2.0
 --
---     [C declaration]: @struct SDL_UserEvent@, defined at @SDL3\/SDL_events.h 997:16@
+--     [C declaration]: @struct SDL_UserEvent@, defined at @SDL3\/SDL_events.h 1002:16@
 data SDL_UserEvent = SDL_UserEvent
   { type' :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^ SDL_EVENT_USER through SDL_EVENT_LAST, Uint32 because these are not in the 'SDL_EventType' enumeration
   --
-  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 999:12@
+  --          [C declaration]: @type@, defined at @SDL3\/SDL_events.h 1004:12@
   , reserved :: SDL3.Sys.Bindgen.Stdinc.Uint32
-  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 1000:12@
+  -- ^ [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 1005:12@
   , timestamp :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^ In nanoseconds, populated using SDL_GetTicksNS()
   --
-  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 1001:12@
+  --          [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 1006:12@
   , windowID :: SDL3.Sys.Bindgen.Video.SDL_WindowID
   -- ^ The associated window if any
   --
-  --          [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 1002:18@
+  --          [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 1007:18@
   , code :: SDL3.Sys.Bindgen.Stdinc.Sint32
   -- ^ User defined event code
   --
-  --          [C declaration]: @code@, defined at @SDL3\/SDL_events.h 1003:12@
+  --          [C declaration]: @code@, defined at @SDL3\/SDL_events.h 1008:12@
   , data1 :: BG.Ptr BG.Void
   -- ^ User defined data pointer
   --
-  --          [C declaration]: @data1@, defined at @SDL3\/SDL_events.h 1004:11@
+  --          [C declaration]: @data1@, defined at @SDL3\/SDL_events.h 1009:11@
   , data2 :: BG.Ptr BG.Void
   -- ^ User defined data pointer
   --
-  --          [C declaration]: @data2@, defined at @SDL3\/SDL_events.h 1005:11@
+  --          [C declaration]: @data2@, defined at @SDL3\/SDL_events.h 1010:11@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -13911,7 +14190,7 @@ deriving via Struct.IsStructViaReadRaw SDL_UserEvent instance Struct.IsStruct SD
 
 -- | SDL_EVENT_USER through SDL_EVENT_LAST, Uint32 because these are not in the 'SDL_EventType' enumeration
 --
---     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 999:12@
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 1004:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "type'" SDL_UserEvent ty
@@ -13944,7 +14223,7 @@ instance HasCField.HasCField SDL_UserEvent "type'" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 1000:12@
+-- | [C declaration]: @reserved@, defined at @SDL3\/SDL_events.h 1005:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "reserved" SDL_UserEvent ty
@@ -13979,7 +14258,7 @@ instance HasCField.HasCField SDL_UserEvent "reserved" where
 
 -- | In nanoseconds, populated using SDL_GetTicksNS()
 --
---     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 1001:12@
+--     [C declaration]: @timestamp@, defined at @SDL3\/SDL_events.h 1006:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint64)
   => BG.CompatHasField.HasField "timestamp" SDL_UserEvent ty
@@ -14014,7 +14293,7 @@ instance HasCField.HasCField SDL_UserEvent "timestamp" where
 
 -- | The associated window if any
 --
---     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 1002:18@
+--     [C declaration]: @windowID@, defined at @SDL3\/SDL_events.h 1007:18@
 instance
   (ty ~ SDL3.Sys.Bindgen.Video.SDL_WindowID)
   => BG.CompatHasField.HasField "windowID" SDL_UserEvent ty
@@ -14049,7 +14328,7 @@ instance HasCField.HasCField SDL_UserEvent "windowID" where
 
 -- | User defined event code
 --
---     [C declaration]: @code@, defined at @SDL3\/SDL_events.h 1003:12@
+--     [C declaration]: @code@, defined at @SDL3\/SDL_events.h 1008:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Sint32)
   => BG.CompatHasField.HasField "code" SDL_UserEvent ty
@@ -14084,7 +14363,7 @@ instance HasCField.HasCField SDL_UserEvent "code" where
 
 -- | User defined data pointer
 --
---     [C declaration]: @data1@, defined at @SDL3\/SDL_events.h 1004:11@
+--     [C declaration]: @data1@, defined at @SDL3\/SDL_events.h 1009:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "data1" SDL_UserEvent ty
@@ -14119,7 +14398,7 @@ instance HasCField.HasCField SDL_UserEvent "data1" where
 
 -- | User defined data pointer
 --
---     [C declaration]: @data2@, defined at @SDL3\/SDL_events.h 1005:11@
+--     [C declaration]: @data2@, defined at @SDL3\/SDL_events.h 1010:11@
 instance
   (ty ~ BG.Ptr BG.Void)
   => BG.CompatHasField.HasField "data2" SDL_UserEvent ty
@@ -14158,7 +14437,7 @@ instance HasCField.HasCField SDL_UserEvent "data2" where
 --
 --     @since 3.2.0
 --
---     [C declaration]: @union SDL_Event@, defined at @SDL3\/SDL_events.h 1017:15@
+--     [C declaration]: @union SDL_Event@, defined at @SDL3\/SDL_events.h 1022:15@
 newtype SDL_Event = SDL_Event
   { unwrap :: BG.ByteArray
   }
@@ -14176,7 +14455,7 @@ deriving via BG.SizedByteArray 128 8 instance Union.IsUnion SDL_Event
 
 -- | Event type, shared with all events, Uint32 to cover user events which are not in the 'SDL_EventType' enumeration
 --
---     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 1019:12@
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 1024:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.HasField "type'" SDL_Event ty
@@ -14185,7 +14464,7 @@ instance
 
 -- | Event type, shared with all events, Uint32 to cover user events which are not in the 'SDL_EventType' enumeration
 --
---     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 1019:12@
+--     [C declaration]: @type@, defined at @SDL3\/SDL_events.h 1024:12@
 instance
   (ty ~ SDL3.Sys.Bindgen.Stdinc.Uint32)
   => BG.CompatHasField.HasField "type'" SDL_Event ty
@@ -14212,13 +14491,13 @@ instance HasCField.HasCField SDL_Event "type'" where
 
 -- | Common event data
 --
---     [C declaration]: @common@, defined at @SDL3\/SDL_events.h 1020:21@
+--     [C declaration]: @common@, defined at @SDL3\/SDL_events.h 1025:21@
 instance (ty ~ SDL_CommonEvent) => BG.HasField "common" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Common event data
 --
---     [C declaration]: @common@, defined at @SDL3\/SDL_events.h 1020:21@
+--     [C declaration]: @common@, defined at @SDL3\/SDL_events.h 1025:21@
 instance
   (ty ~ SDL_CommonEvent)
   => BG.CompatHasField.HasField "common" SDL_Event ty
@@ -14243,13 +14522,13 @@ instance HasCField.HasCField SDL_Event "common" where
 
 -- | Display event data
 --
---     [C declaration]: @display@, defined at @SDL3\/SDL_events.h 1021:22@
+--     [C declaration]: @display@, defined at @SDL3\/SDL_events.h 1026:22@
 instance (ty ~ SDL_DisplayEvent) => BG.HasField "display" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Display event data
 --
---     [C declaration]: @display@, defined at @SDL3\/SDL_events.h 1021:22@
+--     [C declaration]: @display@, defined at @SDL3\/SDL_events.h 1026:22@
 instance
   (ty ~ SDL_DisplayEvent)
   => BG.CompatHasField.HasField "display" SDL_Event ty
@@ -14276,13 +14555,13 @@ instance HasCField.HasCField SDL_Event "display" where
 
 -- | Window event data
 --
---     [C declaration]: @window@, defined at @SDL3\/SDL_events.h 1022:21@
+--     [C declaration]: @window@, defined at @SDL3\/SDL_events.h 1027:21@
 instance (ty ~ SDL_WindowEvent) => BG.HasField "window" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Window event data
 --
---     [C declaration]: @window@, defined at @SDL3\/SDL_events.h 1022:21@
+--     [C declaration]: @window@, defined at @SDL3\/SDL_events.h 1027:21@
 instance
   (ty ~ SDL_WindowEvent)
   => BG.CompatHasField.HasField "window" SDL_Event ty
@@ -14307,7 +14586,7 @@ instance HasCField.HasCField SDL_Event "window" where
 
 -- | Keyboard device change event data
 --
---     [C declaration]: @kdevice@, defined at @SDL3\/SDL_events.h 1023:29@
+--     [C declaration]: @kdevice@, defined at @SDL3\/SDL_events.h 1028:29@
 instance
   (ty ~ SDL_KeyboardDeviceEvent)
   => BG.HasField "kdevice" SDL_Event ty
@@ -14316,7 +14595,7 @@ instance
 
 -- | Keyboard device change event data
 --
---     [C declaration]: @kdevice@, defined at @SDL3\/SDL_events.h 1023:29@
+--     [C declaration]: @kdevice@, defined at @SDL3\/SDL_events.h 1028:29@
 instance
   (ty ~ SDL_KeyboardDeviceEvent)
   => BG.CompatHasField.HasField "kdevice" SDL_Event ty
@@ -14343,13 +14622,13 @@ instance HasCField.HasCField SDL_Event "kdevice" where
 
 -- | Keyboard event data
 --
---     [C declaration]: @key@, defined at @SDL3\/SDL_events.h 1024:23@
+--     [C declaration]: @key@, defined at @SDL3\/SDL_events.h 1029:23@
 instance (ty ~ SDL_KeyboardEvent) => BG.HasField "key" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Keyboard event data
 --
---     [C declaration]: @key@, defined at @SDL3\/SDL_events.h 1024:23@
+--     [C declaration]: @key@, defined at @SDL3\/SDL_events.h 1029:23@
 instance
   (ty ~ SDL_KeyboardEvent)
   => BG.CompatHasField.HasField "key" SDL_Event ty
@@ -14374,13 +14653,13 @@ instance HasCField.HasCField SDL_Event "key" where
 
 -- | Text editing event data
 --
---     [C declaration]: @edit@, defined at @SDL3\/SDL_events.h 1025:26@
+--     [C declaration]: @edit@, defined at @SDL3\/SDL_events.h 1030:26@
 instance (ty ~ SDL_TextEditingEvent) => BG.HasField "edit" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Text editing event data
 --
---     [C declaration]: @edit@, defined at @SDL3\/SDL_events.h 1025:26@
+--     [C declaration]: @edit@, defined at @SDL3\/SDL_events.h 1030:26@
 instance
   (ty ~ SDL_TextEditingEvent)
   => BG.CompatHasField.HasField "edit" SDL_Event ty
@@ -14407,7 +14686,7 @@ instance HasCField.HasCField SDL_Event "edit" where
 
 -- | Text editing candidates event data
 --
---     [C declaration]: @edit_candidates@, defined at @SDL3\/SDL_events.h 1026:36@
+--     [C declaration]: @edit_candidates@, defined at @SDL3\/SDL_events.h 1031:36@
 instance
   (ty ~ SDL_TextEditingCandidatesEvent)
   => BG.HasField "edit_candidates" SDL_Event ty
@@ -14416,7 +14695,7 @@ instance
 
 -- | Text editing candidates event data
 --
---     [C declaration]: @edit_candidates@, defined at @SDL3\/SDL_events.h 1026:36@
+--     [C declaration]: @edit_candidates@, defined at @SDL3\/SDL_events.h 1031:36@
 instance
   (ty ~ SDL_TextEditingCandidatesEvent)
   => BG.CompatHasField.HasField "edit_candidates" SDL_Event ty
@@ -14444,13 +14723,13 @@ instance HasCField.HasCField SDL_Event "edit_candidates" where
 
 -- | Text input event data
 --
---     [C declaration]: @text@, defined at @SDL3\/SDL_events.h 1027:24@
+--     [C declaration]: @text@, defined at @SDL3\/SDL_events.h 1032:24@
 instance (ty ~ SDL_TextInputEvent) => BG.HasField "text" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Text input event data
 --
---     [C declaration]: @text@, defined at @SDL3\/SDL_events.h 1027:24@
+--     [C declaration]: @text@, defined at @SDL3\/SDL_events.h 1032:24@
 instance
   (ty ~ SDL_TextInputEvent)
   => BG.CompatHasField.HasField "text" SDL_Event ty
@@ -14475,13 +14754,13 @@ instance HasCField.HasCField SDL_Event "text" where
 
 -- | Mouse device change event data
 --
---     [C declaration]: @mdevice@, defined at @SDL3\/SDL_events.h 1028:26@
+--     [C declaration]: @mdevice@, defined at @SDL3\/SDL_events.h 1033:26@
 instance (ty ~ SDL_MouseDeviceEvent) => BG.HasField "mdevice" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Mouse device change event data
 --
---     [C declaration]: @mdevice@, defined at @SDL3\/SDL_events.h 1028:26@
+--     [C declaration]: @mdevice@, defined at @SDL3\/SDL_events.h 1033:26@
 instance
   (ty ~ SDL_MouseDeviceEvent)
   => BG.CompatHasField.HasField "mdevice" SDL_Event ty
@@ -14508,13 +14787,13 @@ instance HasCField.HasCField SDL_Event "mdevice" where
 
 -- | Mouse motion event data
 --
---     [C declaration]: @motion@, defined at @SDL3\/SDL_events.h 1029:26@
+--     [C declaration]: @motion@, defined at @SDL3\/SDL_events.h 1034:26@
 instance (ty ~ SDL_MouseMotionEvent) => BG.HasField "motion" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Mouse motion event data
 --
---     [C declaration]: @motion@, defined at @SDL3\/SDL_events.h 1029:26@
+--     [C declaration]: @motion@, defined at @SDL3\/SDL_events.h 1034:26@
 instance
   (ty ~ SDL_MouseMotionEvent)
   => BG.CompatHasField.HasField "motion" SDL_Event ty
@@ -14541,13 +14820,13 @@ instance HasCField.HasCField SDL_Event "motion" where
 
 -- | Mouse button event data
 --
---     [C declaration]: @button@, defined at @SDL3\/SDL_events.h 1030:26@
+--     [C declaration]: @button@, defined at @SDL3\/SDL_events.h 1035:26@
 instance (ty ~ SDL_MouseButtonEvent) => BG.HasField "button" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Mouse button event data
 --
---     [C declaration]: @button@, defined at @SDL3\/SDL_events.h 1030:26@
+--     [C declaration]: @button@, defined at @SDL3\/SDL_events.h 1035:26@
 instance
   (ty ~ SDL_MouseButtonEvent)
   => BG.CompatHasField.HasField "button" SDL_Event ty
@@ -14574,13 +14853,13 @@ instance HasCField.HasCField SDL_Event "button" where
 
 -- | Mouse wheel event data
 --
---     [C declaration]: @wheel@, defined at @SDL3\/SDL_events.h 1031:25@
+--     [C declaration]: @wheel@, defined at @SDL3\/SDL_events.h 1036:25@
 instance (ty ~ SDL_MouseWheelEvent) => BG.HasField "wheel" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Mouse wheel event data
 --
---     [C declaration]: @wheel@, defined at @SDL3\/SDL_events.h 1031:25@
+--     [C declaration]: @wheel@, defined at @SDL3\/SDL_events.h 1036:25@
 instance
   (ty ~ SDL_MouseWheelEvent)
   => BG.CompatHasField.HasField "wheel" SDL_Event ty
@@ -14607,13 +14886,13 @@ instance HasCField.HasCField SDL_Event "wheel" where
 
 -- | Joystick device change event data
 --
---     [C declaration]: @jdevice@, defined at @SDL3\/SDL_events.h 1032:24@
+--     [C declaration]: @jdevice@, defined at @SDL3\/SDL_events.h 1037:24@
 instance (ty ~ SDL_JoyDeviceEvent) => BG.HasField "jdevice" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Joystick device change event data
 --
---     [C declaration]: @jdevice@, defined at @SDL3\/SDL_events.h 1032:24@
+--     [C declaration]: @jdevice@, defined at @SDL3\/SDL_events.h 1037:24@
 instance
   (ty ~ SDL_JoyDeviceEvent)
   => BG.CompatHasField.HasField "jdevice" SDL_Event ty
@@ -14640,13 +14919,13 @@ instance HasCField.HasCField SDL_Event "jdevice" where
 
 -- | Joystick axis event data
 --
---     [C declaration]: @jaxis@, defined at @SDL3\/SDL_events.h 1033:22@
+--     [C declaration]: @jaxis@, defined at @SDL3\/SDL_events.h 1038:22@
 instance (ty ~ SDL_JoyAxisEvent) => BG.HasField "jaxis" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Joystick axis event data
 --
---     [C declaration]: @jaxis@, defined at @SDL3\/SDL_events.h 1033:22@
+--     [C declaration]: @jaxis@, defined at @SDL3\/SDL_events.h 1038:22@
 instance
   (ty ~ SDL_JoyAxisEvent)
   => BG.CompatHasField.HasField "jaxis" SDL_Event ty
@@ -14671,13 +14950,13 @@ instance HasCField.HasCField SDL_Event "jaxis" where
 
 -- | Joystick ball event data
 --
---     [C declaration]: @jball@, defined at @SDL3\/SDL_events.h 1034:22@
+--     [C declaration]: @jball@, defined at @SDL3\/SDL_events.h 1039:22@
 instance (ty ~ SDL_JoyBallEvent) => BG.HasField "jball" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Joystick ball event data
 --
---     [C declaration]: @jball@, defined at @SDL3\/SDL_events.h 1034:22@
+--     [C declaration]: @jball@, defined at @SDL3\/SDL_events.h 1039:22@
 instance
   (ty ~ SDL_JoyBallEvent)
   => BG.CompatHasField.HasField "jball" SDL_Event ty
@@ -14702,13 +14981,13 @@ instance HasCField.HasCField SDL_Event "jball" where
 
 -- | Joystick hat event data
 --
---     [C declaration]: @jhat@, defined at @SDL3\/SDL_events.h 1035:21@
+--     [C declaration]: @jhat@, defined at @SDL3\/SDL_events.h 1040:21@
 instance (ty ~ SDL_JoyHatEvent) => BG.HasField "jhat" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Joystick hat event data
 --
---     [C declaration]: @jhat@, defined at @SDL3\/SDL_events.h 1035:21@
+--     [C declaration]: @jhat@, defined at @SDL3\/SDL_events.h 1040:21@
 instance
   (ty ~ SDL_JoyHatEvent)
   => BG.CompatHasField.HasField "jhat" SDL_Event ty
@@ -14733,13 +15012,13 @@ instance HasCField.HasCField SDL_Event "jhat" where
 
 -- | Joystick button event data
 --
---     [C declaration]: @jbutton@, defined at @SDL3\/SDL_events.h 1036:24@
+--     [C declaration]: @jbutton@, defined at @SDL3\/SDL_events.h 1041:24@
 instance (ty ~ SDL_JoyButtonEvent) => BG.HasField "jbutton" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Joystick button event data
 --
---     [C declaration]: @jbutton@, defined at @SDL3\/SDL_events.h 1036:24@
+--     [C declaration]: @jbutton@, defined at @SDL3\/SDL_events.h 1041:24@
 instance
   (ty ~ SDL_JoyButtonEvent)
   => BG.CompatHasField.HasField "jbutton" SDL_Event ty
@@ -14766,13 +15045,13 @@ instance HasCField.HasCField SDL_Event "jbutton" where
 
 -- | Joystick battery event data
 --
---     [C declaration]: @jbattery@, defined at @SDL3\/SDL_events.h 1037:25@
+--     [C declaration]: @jbattery@, defined at @SDL3\/SDL_events.h 1042:25@
 instance (ty ~ SDL_JoyBatteryEvent) => BG.HasField "jbattery" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Joystick battery event data
 --
---     [C declaration]: @jbattery@, defined at @SDL3\/SDL_events.h 1037:25@
+--     [C declaration]: @jbattery@, defined at @SDL3\/SDL_events.h 1042:25@
 instance
   (ty ~ SDL_JoyBatteryEvent)
   => BG.CompatHasField.HasField "jbattery" SDL_Event ty
@@ -14799,7 +15078,7 @@ instance HasCField.HasCField SDL_Event "jbattery" where
 
 -- | Gamepad device event data
 --
---     [C declaration]: @gdevice@, defined at @SDL3\/SDL_events.h 1038:28@
+--     [C declaration]: @gdevice@, defined at @SDL3\/SDL_events.h 1043:28@
 instance
   (ty ~ SDL_GamepadDeviceEvent)
   => BG.HasField "gdevice" SDL_Event ty
@@ -14808,7 +15087,7 @@ instance
 
 -- | Gamepad device event data
 --
---     [C declaration]: @gdevice@, defined at @SDL3\/SDL_events.h 1038:28@
+--     [C declaration]: @gdevice@, defined at @SDL3\/SDL_events.h 1043:28@
 instance
   (ty ~ SDL_GamepadDeviceEvent)
   => BG.CompatHasField.HasField "gdevice" SDL_Event ty
@@ -14835,13 +15114,13 @@ instance HasCField.HasCField SDL_Event "gdevice" where
 
 -- | Gamepad axis event data
 --
---     [C declaration]: @gaxis@, defined at @SDL3\/SDL_events.h 1039:26@
+--     [C declaration]: @gaxis@, defined at @SDL3\/SDL_events.h 1044:26@
 instance (ty ~ SDL_GamepadAxisEvent) => BG.HasField "gaxis" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Gamepad axis event data
 --
---     [C declaration]: @gaxis@, defined at @SDL3\/SDL_events.h 1039:26@
+--     [C declaration]: @gaxis@, defined at @SDL3\/SDL_events.h 1044:26@
 instance
   (ty ~ SDL_GamepadAxisEvent)
   => BG.CompatHasField.HasField "gaxis" SDL_Event ty
@@ -14868,7 +15147,7 @@ instance HasCField.HasCField SDL_Event "gaxis" where
 
 -- | Gamepad button event data
 --
---     [C declaration]: @gbutton@, defined at @SDL3\/SDL_events.h 1040:28@
+--     [C declaration]: @gbutton@, defined at @SDL3\/SDL_events.h 1045:28@
 instance
   (ty ~ SDL_GamepadButtonEvent)
   => BG.HasField "gbutton" SDL_Event ty
@@ -14877,7 +15156,7 @@ instance
 
 -- | Gamepad button event data
 --
---     [C declaration]: @gbutton@, defined at @SDL3\/SDL_events.h 1040:28@
+--     [C declaration]: @gbutton@, defined at @SDL3\/SDL_events.h 1045:28@
 instance
   (ty ~ SDL_GamepadButtonEvent)
   => BG.CompatHasField.HasField "gbutton" SDL_Event ty
@@ -14904,7 +15183,7 @@ instance HasCField.HasCField SDL_Event "gbutton" where
 
 -- | Gamepad touchpad event data
 --
---     [C declaration]: @gtouchpad@, defined at @SDL3\/SDL_events.h 1041:30@
+--     [C declaration]: @gtouchpad@, defined at @SDL3\/SDL_events.h 1046:30@
 instance
   (ty ~ SDL_GamepadTouchpadEvent)
   => BG.HasField "gtouchpad" SDL_Event ty
@@ -14913,7 +15192,7 @@ instance
 
 -- | Gamepad touchpad event data
 --
---     [C declaration]: @gtouchpad@, defined at @SDL3\/SDL_events.h 1041:30@
+--     [C declaration]: @gtouchpad@, defined at @SDL3\/SDL_events.h 1046:30@
 instance
   (ty ~ SDL_GamepadTouchpadEvent)
   => BG.CompatHasField.HasField "gtouchpad" SDL_Event ty
@@ -14940,7 +15219,7 @@ instance HasCField.HasCField SDL_Event "gtouchpad" where
 
 -- | Gamepad sensor event data
 --
---     [C declaration]: @gsensor@, defined at @SDL3\/SDL_events.h 1042:28@
+--     [C declaration]: @gsensor@, defined at @SDL3\/SDL_events.h 1047:28@
 instance
   (ty ~ SDL_GamepadSensorEvent)
   => BG.HasField "gsensor" SDL_Event ty
@@ -14949,7 +15228,7 @@ instance
 
 -- | Gamepad sensor event data
 --
---     [C declaration]: @gsensor@, defined at @SDL3\/SDL_events.h 1042:28@
+--     [C declaration]: @gsensor@, defined at @SDL3\/SDL_events.h 1047:28@
 instance
   (ty ~ SDL_GamepadSensorEvent)
   => BG.CompatHasField.HasField "gsensor" SDL_Event ty
@@ -14976,13 +15255,13 @@ instance HasCField.HasCField SDL_Event "gsensor" where
 
 -- | Audio device event data
 --
---     [C declaration]: @adevice@, defined at @SDL3\/SDL_events.h 1043:26@
+--     [C declaration]: @adevice@, defined at @SDL3\/SDL_events.h 1048:26@
 instance (ty ~ SDL_AudioDeviceEvent) => BG.HasField "adevice" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Audio device event data
 --
---     [C declaration]: @adevice@, defined at @SDL3\/SDL_events.h 1043:26@
+--     [C declaration]: @adevice@, defined at @SDL3\/SDL_events.h 1048:26@
 instance
   (ty ~ SDL_AudioDeviceEvent)
   => BG.CompatHasField.HasField "adevice" SDL_Event ty
@@ -15009,7 +15288,7 @@ instance HasCField.HasCField SDL_Event "adevice" where
 
 -- | Camera device event data
 --
---     [C declaration]: @cdevice@, defined at @SDL3\/SDL_events.h 1044:27@
+--     [C declaration]: @cdevice@, defined at @SDL3\/SDL_events.h 1049:27@
 instance
   (ty ~ SDL_CameraDeviceEvent)
   => BG.HasField "cdevice" SDL_Event ty
@@ -15018,7 +15297,7 @@ instance
 
 -- | Camera device event data
 --
---     [C declaration]: @cdevice@, defined at @SDL3\/SDL_events.h 1044:27@
+--     [C declaration]: @cdevice@, defined at @SDL3\/SDL_events.h 1049:27@
 instance
   (ty ~ SDL_CameraDeviceEvent)
   => BG.CompatHasField.HasField "cdevice" SDL_Event ty
@@ -15045,13 +15324,13 @@ instance HasCField.HasCField SDL_Event "cdevice" where
 
 -- | Sensor event data
 --
---     [C declaration]: @sensor@, defined at @SDL3\/SDL_events.h 1045:21@
+--     [C declaration]: @sensor@, defined at @SDL3\/SDL_events.h 1050:21@
 instance (ty ~ SDL_SensorEvent) => BG.HasField "sensor" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Sensor event data
 --
---     [C declaration]: @sensor@, defined at @SDL3\/SDL_events.h 1045:21@
+--     [C declaration]: @sensor@, defined at @SDL3\/SDL_events.h 1050:21@
 instance
   (ty ~ SDL_SensorEvent)
   => BG.CompatHasField.HasField "sensor" SDL_Event ty
@@ -15076,13 +15355,13 @@ instance HasCField.HasCField SDL_Event "sensor" where
 
 -- | Quit request event data
 --
---     [C declaration]: @quit@, defined at @SDL3\/SDL_events.h 1046:19@
+--     [C declaration]: @quit@, defined at @SDL3\/SDL_events.h 1051:19@
 instance (ty ~ SDL_QuitEvent) => BG.HasField "quit" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Quit request event data
 --
---     [C declaration]: @quit@, defined at @SDL3\/SDL_events.h 1046:19@
+--     [C declaration]: @quit@, defined at @SDL3\/SDL_events.h 1051:19@
 instance
   (ty ~ SDL_QuitEvent)
   => BG.CompatHasField.HasField "quit" SDL_Event ty
@@ -15107,13 +15386,13 @@ instance HasCField.HasCField SDL_Event "quit" where
 
 -- | Custom event data
 --
---     [C declaration]: @user@, defined at @SDL3\/SDL_events.h 1047:19@
+--     [C declaration]: @user@, defined at @SDL3\/SDL_events.h 1052:19@
 instance (ty ~ SDL_UserEvent) => BG.HasField "user" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Custom event data
 --
---     [C declaration]: @user@, defined at @SDL3\/SDL_events.h 1047:19@
+--     [C declaration]: @user@, defined at @SDL3\/SDL_events.h 1052:19@
 instance
   (ty ~ SDL_UserEvent)
   => BG.CompatHasField.HasField "user" SDL_Event ty
@@ -15138,13 +15417,13 @@ instance HasCField.HasCField SDL_Event "user" where
 
 -- | Touch finger event data
 --
---     [C declaration]: @tfinger@, defined at @SDL3\/SDL_events.h 1048:26@
+--     [C declaration]: @tfinger@, defined at @SDL3\/SDL_events.h 1053:26@
 instance (ty ~ SDL_TouchFingerEvent) => BG.HasField "tfinger" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Touch finger event data
 --
---     [C declaration]: @tfinger@, defined at @SDL3\/SDL_events.h 1048:26@
+--     [C declaration]: @tfinger@, defined at @SDL3\/SDL_events.h 1053:26@
 instance
   (ty ~ SDL_TouchFingerEvent)
   => BG.CompatHasField.HasField "tfinger" SDL_Event ty
@@ -15171,13 +15450,13 @@ instance HasCField.HasCField SDL_Event "tfinger" where
 
 -- | Pinch event data
 --
---     [C declaration]: @pinch@, defined at @SDL3\/SDL_events.h 1049:26@
+--     [C declaration]: @pinch@, defined at @SDL3\/SDL_events.h 1054:26@
 instance (ty ~ SDL_PinchFingerEvent) => BG.HasField "pinch" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Pinch event data
 --
---     [C declaration]: @pinch@, defined at @SDL3\/SDL_events.h 1049:26@
+--     [C declaration]: @pinch@, defined at @SDL3\/SDL_events.h 1054:26@
 instance
   (ty ~ SDL_PinchFingerEvent)
   => BG.CompatHasField.HasField "pinch" SDL_Event ty
@@ -15204,7 +15483,7 @@ instance HasCField.HasCField SDL_Event "pinch" where
 
 -- | Pen proximity event data
 --
---     [C declaration]: @pproximity@, defined at @SDL3\/SDL_events.h 1050:27@
+--     [C declaration]: @pproximity@, defined at @SDL3\/SDL_events.h 1055:27@
 instance
   (ty ~ SDL_PenProximityEvent)
   => BG.HasField "pproximity" SDL_Event ty
@@ -15213,7 +15492,7 @@ instance
 
 -- | Pen proximity event data
 --
---     [C declaration]: @pproximity@, defined at @SDL3\/SDL_events.h 1050:27@
+--     [C declaration]: @pproximity@, defined at @SDL3\/SDL_events.h 1055:27@
 instance
   (ty ~ SDL_PenProximityEvent)
   => BG.CompatHasField.HasField "pproximity" SDL_Event ty
@@ -15240,13 +15519,13 @@ instance HasCField.HasCField SDL_Event "pproximity" where
 
 -- | Pen tip touching event data
 --
---     [C declaration]: @ptouch@, defined at @SDL3\/SDL_events.h 1051:23@
+--     [C declaration]: @ptouch@, defined at @SDL3\/SDL_events.h 1056:23@
 instance (ty ~ SDL_PenTouchEvent) => BG.HasField "ptouch" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Pen tip touching event data
 --
---     [C declaration]: @ptouch@, defined at @SDL3\/SDL_events.h 1051:23@
+--     [C declaration]: @ptouch@, defined at @SDL3\/SDL_events.h 1056:23@
 instance
   (ty ~ SDL_PenTouchEvent)
   => BG.CompatHasField.HasField "ptouch" SDL_Event ty
@@ -15273,13 +15552,13 @@ instance HasCField.HasCField SDL_Event "ptouch" where
 
 -- | Pen motion event data
 --
---     [C declaration]: @pmotion@, defined at @SDL3\/SDL_events.h 1052:24@
+--     [C declaration]: @pmotion@, defined at @SDL3\/SDL_events.h 1057:24@
 instance (ty ~ SDL_PenMotionEvent) => BG.HasField "pmotion" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Pen motion event data
 --
---     [C declaration]: @pmotion@, defined at @SDL3\/SDL_events.h 1052:24@
+--     [C declaration]: @pmotion@, defined at @SDL3\/SDL_events.h 1057:24@
 instance
   (ty ~ SDL_PenMotionEvent)
   => BG.CompatHasField.HasField "pmotion" SDL_Event ty
@@ -15306,13 +15585,13 @@ instance HasCField.HasCField SDL_Event "pmotion" where
 
 -- | Pen button event data
 --
---     [C declaration]: @pbutton@, defined at @SDL3\/SDL_events.h 1053:24@
+--     [C declaration]: @pbutton@, defined at @SDL3\/SDL_events.h 1058:24@
 instance (ty ~ SDL_PenButtonEvent) => BG.HasField "pbutton" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Pen button event data
 --
---     [C declaration]: @pbutton@, defined at @SDL3\/SDL_events.h 1053:24@
+--     [C declaration]: @pbutton@, defined at @SDL3\/SDL_events.h 1058:24@
 instance
   (ty ~ SDL_PenButtonEvent)
   => BG.CompatHasField.HasField "pbutton" SDL_Event ty
@@ -15339,13 +15618,13 @@ instance HasCField.HasCField SDL_Event "pbutton" where
 
 -- | Pen axis event data
 --
---     [C declaration]: @paxis@, defined at @SDL3\/SDL_events.h 1054:22@
+--     [C declaration]: @paxis@, defined at @SDL3\/SDL_events.h 1059:22@
 instance (ty ~ SDL_PenAxisEvent) => BG.HasField "paxis" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Pen axis event data
 --
---     [C declaration]: @paxis@, defined at @SDL3\/SDL_events.h 1054:22@
+--     [C declaration]: @paxis@, defined at @SDL3\/SDL_events.h 1059:22@
 instance
   (ty ~ SDL_PenAxisEvent)
   => BG.CompatHasField.HasField "paxis" SDL_Event ty
@@ -15370,13 +15649,13 @@ instance HasCField.HasCField SDL_Event "paxis" where
 
 -- | Render event data
 --
---     [C declaration]: @render@, defined at @SDL3\/SDL_events.h 1055:21@
+--     [C declaration]: @render@, defined at @SDL3\/SDL_events.h 1060:21@
 instance (ty ~ SDL_RenderEvent) => BG.HasField "render" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Render event data
 --
---     [C declaration]: @render@, defined at @SDL3\/SDL_events.h 1055:21@
+--     [C declaration]: @render@, defined at @SDL3\/SDL_events.h 1060:21@
 instance
   (ty ~ SDL_RenderEvent)
   => BG.CompatHasField.HasField "render" SDL_Event ty
@@ -15401,13 +15680,13 @@ instance HasCField.HasCField SDL_Event "render" where
 
 -- | Drag and drop event data
 --
---     [C declaration]: @drop@, defined at @SDL3\/SDL_events.h 1056:19@
+--     [C declaration]: @drop@, defined at @SDL3\/SDL_events.h 1061:19@
 instance (ty ~ SDL_DropEvent) => BG.HasField "drop" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Drag and drop event data
 --
---     [C declaration]: @drop@, defined at @SDL3\/SDL_events.h 1056:19@
+--     [C declaration]: @drop@, defined at @SDL3\/SDL_events.h 1061:19@
 instance
   (ty ~ SDL_DropEvent)
   => BG.CompatHasField.HasField "drop" SDL_Event ty
@@ -15432,13 +15711,13 @@ instance HasCField.HasCField SDL_Event "drop" where
 
 -- | Clipboard event data
 --
---     [C declaration]: @clipboard@, defined at @SDL3\/SDL_events.h 1057:24@
+--     [C declaration]: @clipboard@, defined at @SDL3\/SDL_events.h 1062:24@
 instance (ty ~ SDL_ClipboardEvent) => BG.HasField "clipboard" SDL_Event ty where
   getField = BG.getUnionPayload
 
 -- | Clipboard event data
 --
---     [C declaration]: @clipboard@, defined at @SDL3\/SDL_events.h 1057:24@
+--     [C declaration]: @clipboard@, defined at @SDL3\/SDL_events.h 1062:24@
 instance
   (ty ~ SDL_ClipboardEvent)
   => BG.CompatHasField.HasField "clipboard" SDL_Event ty
@@ -15463,14 +15742,14 @@ instance HasCField.HasCField SDL_Event "clipboard" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @padding@, defined at @SDL3\/SDL_events.h 1072:11@
+-- | [C declaration]: @padding@, defined at @SDL3\/SDL_events.h 1077:11@
 instance
   (ty ~ CA.ConstantArray 128 SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.HasField "padding" SDL_Event ty
   where
   getField = BG.getUnionPayload
 
--- | [C declaration]: @padding@, defined at @SDL3\/SDL_events.h 1072:11@
+-- | [C declaration]: @padding@, defined at @SDL3\/SDL_events.h 1077:11@
 instance
   (ty ~ CA.ConstantArray 128 SDL3.Sys.Bindgen.Stdinc.Uint8)
   => BG.CompatHasField.HasField "padding" SDL_Event ty
@@ -15499,7 +15778,7 @@ instance HasCField.HasCField SDL_Event "padding" where
 --
 --     @since 3.2.0
 --
---     [C declaration]: @enum SDL_EventAction@, defined at @SDL3\/SDL_events.h 1110:14@
+--     [C declaration]: @enum SDL_EventAction@, defined at @SDL3\/SDL_events.h 1115:14@
 newtype SDL_EventAction = SDL_EventAction
   { unwrap :: BG.CUInt
   }
@@ -15593,25 +15872,25 @@ instance HasCField.HasCField SDL_EventAction "unwrap" where
 
 -- | Add events to the back of the queue.
 --
---     [C declaration]: @SDL_ADDEVENT@, defined at @SDL3\/SDL_events.h 1112:5@
+--     [C declaration]: @SDL_ADDEVENT@, defined at @SDL3\/SDL_events.h 1117:5@
 pattern SDL_ADDEVENT :: SDL_EventAction
 pattern SDL_ADDEVENT = SDL_EventAction 0
 
 -- | Check but don\'t remove events from the queue front.
 --
---     [C declaration]: @SDL_PEEKEVENT@, defined at @SDL3\/SDL_events.h 1113:5@
+--     [C declaration]: @SDL_PEEKEVENT@, defined at @SDL3\/SDL_events.h 1118:5@
 pattern SDL_PEEKEVENT :: SDL_EventAction
 pattern SDL_PEEKEVENT = SDL_EventAction 1
 
 -- | Retrieve\/remove events from the front of the queue.
 --
---     [C declaration]: @SDL_GETEVENT@, defined at @SDL3\/SDL_events.h 1114:5@
+--     [C declaration]: @SDL_GETEVENT@, defined at @SDL3\/SDL_events.h 1119:5@
 pattern SDL_GETEVENT :: SDL_EventAction
 pattern SDL_GETEVENT = SDL_EventAction 2
 
 -- | Auxiliary type used by 'SDL_EventFilter'
 --
---     [C declaration]: @SDL_EventFilter@, defined at @SDL3\/SDL_events.h 1414:24@
+--     [C declaration]: @SDL_EventFilter@, defined at @SDL3\/SDL_events.h 1419:24@
 newtype SDL_EventFilter_Aux = SDL_EventFilter_Aux
   { unwrap :: BG.Ptr BG.Void -> BG.Ptr SDL_Event -> IO BG.CBool
   }
@@ -15704,7 +15983,7 @@ instance HasCField.HasCField SDL_EventFilter_Aux "unwrap" where
 --
 --     [See also]: 'sDL_SetEventFilter', 'sDL_AddEventWatch'
 --
---     [C declaration]: @SDL_EventFilter@, defined at @SDL3\/SDL_events.h 1414:24@
+--     [C declaration]: @SDL_EventFilter@, defined at @SDL3\/SDL_events.h 1419:24@
 newtype SDL_EventFilter = SDL_EventFilter
   { unwrap :: BG.FunPtr SDL_EventFilter_Aux
   }

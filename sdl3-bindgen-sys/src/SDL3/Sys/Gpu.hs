@@ -3399,6 +3399,8 @@ bindGPUIndexBufferSafe = Safe.sDL_BindGPUIndexBuffer
 --
 --     The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
 --
+--     The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.
+--
 --     Be sure your shader is set up according to the requirements documented in @'createGPUShader'@.
 --
 --     @since 3.2.0
@@ -3414,7 +3416,7 @@ bindGPUIndexBufferSafe = Safe.sDL_BindGPUIndexBuffer
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUVertexSamplers@, defined at @SDL3\/SDL_gpu.h 3408:34@
+--     [C declaration]: @SDL_BindGPUVertexSamplers@, defined at @SDL3\/SDL_gpu.h 3411:34@
 bindGPUVertexSamplers
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3444,6 +3446,8 @@ bindGPUVertexSamplers =
 --
 --     The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
 --
+--     The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.
+--
 --     Be sure your shader is set up according to the requirements documented in @'createGPUShader'@.
 --
 --     @since 3.2.0
@@ -3459,7 +3463,7 @@ bindGPUVertexSamplers =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUVertexSamplers@, defined at @SDL3\/SDL_gpu.h 3408:34@
+--     [C declaration]: @SDL_BindGPUVertexSamplers@, defined at @SDL3\/SDL_gpu.h 3411:34@
 bindGPUVertexSamplersSafe
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3489,6 +3493,8 @@ bindGPUVertexSamplersSafe =
 --
 --     These textures must have been created with SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
 --
+--     The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)
+--
 --     Be sure your shader is set up according to the requirements documented in @'createGPUShader'@.
 --
 --     @since 3.2.0
@@ -3504,7 +3510,7 @@ bindGPUVertexSamplersSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUVertexStorageTextures@, defined at @SDL3\/SDL_gpu.h 3432:34@
+--     [C declaration]: @SDL_BindGPUVertexStorageTextures@, defined at @SDL3\/SDL_gpu.h 3438:34@
 bindGPUVertexStorageTextures
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3534,6 +3540,8 @@ bindGPUVertexStorageTextures =
 --
 --     These textures must have been created with SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
 --
+--     The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)
+--
 --     Be sure your shader is set up according to the requirements documented in @'createGPUShader'@.
 --
 --     @since 3.2.0
@@ -3549,7 +3557,7 @@ bindGPUVertexStorageTextures =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUVertexStorageTextures@, defined at @SDL3\/SDL_gpu.h 3432:34@
+--     [C declaration]: @SDL_BindGPUVertexStorageTextures@, defined at @SDL3\/SDL_gpu.h 3438:34@
 bindGPUVertexStorageTexturesSafe
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3594,7 +3602,7 @@ bindGPUVertexStorageTexturesSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUVertexStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3456:34@
+--     [C declaration]: @SDL_BindGPUVertexStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3462:34@
 bindGPUVertexStorageBuffers
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3639,7 +3647,7 @@ bindGPUVertexStorageBuffers =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUVertexStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3456:34@
+--     [C declaration]: @SDL_BindGPUVertexStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3462:34@
 bindGPUVertexStorageBuffersSafe
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3669,6 +3677,8 @@ bindGPUVertexStorageBuffersSafe =
 --
 --     The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
 --
+--     The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.
+--
 --     Be sure your shader is set up according to the requirements documented in @'createGPUShader'@.
 --
 --     @since 3.2.0
@@ -3684,7 +3694,7 @@ bindGPUVertexStorageBuffersSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUFragmentSamplers@, defined at @SDL3\/SDL_gpu.h 3481:34@
+--     [C declaration]: @SDL_BindGPUFragmentSamplers@, defined at @SDL3\/SDL_gpu.h 3490:34@
 bindGPUFragmentSamplers
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3714,6 +3724,8 @@ bindGPUFragmentSamplers =
 --
 --     The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
 --
+--     The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.
+--
 --     Be sure your shader is set up according to the requirements documented in @'createGPUShader'@.
 --
 --     @since 3.2.0
@@ -3729,7 +3741,7 @@ bindGPUFragmentSamplers =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUFragmentSamplers@, defined at @SDL3\/SDL_gpu.h 3481:34@
+--     [C declaration]: @SDL_BindGPUFragmentSamplers@, defined at @SDL3\/SDL_gpu.h 3490:34@
 bindGPUFragmentSamplersSafe
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3759,6 +3771,8 @@ bindGPUFragmentSamplersSafe =
 --
 --     These textures must have been created with SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
 --
+--     The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)
+--
 --     Be sure your shader is set up according to the requirements documented in @'createGPUShader'@.
 --
 --     @since 3.2.0
@@ -3774,7 +3788,7 @@ bindGPUFragmentSamplersSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUFragmentStorageTextures@, defined at @SDL3\/SDL_gpu.h 3505:34@
+--     [C declaration]: @SDL_BindGPUFragmentStorageTextures@, defined at @SDL3\/SDL_gpu.h 3517:34@
 bindGPUFragmentStorageTextures
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3804,6 +3818,8 @@ bindGPUFragmentStorageTextures =
 --
 --     These textures must have been created with SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
 --
+--     The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)
+--
 --     Be sure your shader is set up according to the requirements documented in @'createGPUShader'@.
 --
 --     @since 3.2.0
@@ -3819,7 +3835,7 @@ bindGPUFragmentStorageTextures =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUFragmentStorageTextures@, defined at @SDL3\/SDL_gpu.h 3505:34@
+--     [C declaration]: @SDL_BindGPUFragmentStorageTextures@, defined at @SDL3\/SDL_gpu.h 3517:34@
 bindGPUFragmentStorageTexturesSafe
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3864,7 +3880,7 @@ bindGPUFragmentStorageTexturesSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUFragmentStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3529:34@
+--     [C declaration]: @SDL_BindGPUFragmentStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3541:34@
 bindGPUFragmentStorageBuffers
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3909,7 +3925,7 @@ bindGPUFragmentStorageBuffers =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUFragmentStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3529:34@
+--     [C declaration]: @SDL_BindGPUFragmentStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3541:34@
 bindGPUFragmentStorageBuffersSafe
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -3952,7 +3968,7 @@ bindGPUFragmentStorageBuffersSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_DrawGPUIndexedPrimitives@, defined at @SDL3\/SDL_gpu.h 3560:34@
+--     [C declaration]: @SDL_DrawGPUIndexedPrimitives@, defined at @SDL3\/SDL_gpu.h 3572:34@
 drawGPUIndexedPrimitives
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -4011,7 +4027,7 @@ drawGPUIndexedPrimitives =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_DrawGPUIndexedPrimitives@, defined at @SDL3\/SDL_gpu.h 3560:34@
+--     [C declaration]: @SDL_DrawGPUIndexedPrimitives@, defined at @SDL3\/SDL_gpu.h 3572:34@
 drawGPUIndexedPrimitivesSafe
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -4070,7 +4086,7 @@ drawGPUIndexedPrimitivesSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_DrawGPUPrimitives@, defined at @SDL3\/SDL_gpu.h 3588:34@
+--     [C declaration]: @SDL_DrawGPUPrimitives@, defined at @SDL3\/SDL_gpu.h 3600:34@
 drawGPUPrimitives
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -4123,7 +4139,7 @@ drawGPUPrimitives =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_DrawGPUPrimitives@, defined at @SDL3\/SDL_gpu.h 3588:34@
+--     [C declaration]: @SDL_DrawGPUPrimitives@, defined at @SDL3\/SDL_gpu.h 3600:34@
 drawGPUPrimitivesSafe
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -4174,7 +4190,7 @@ drawGPUPrimitivesSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_DrawGPUPrimitivesIndirect@, defined at @SDL3\/SDL_gpu.h 3611:34@
+--     [C declaration]: @SDL_DrawGPUPrimitivesIndirect@, defined at @SDL3\/SDL_gpu.h 3623:34@
 drawGPUPrimitivesIndirect
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -4215,7 +4231,7 @@ drawGPUPrimitivesIndirect =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_DrawGPUPrimitivesIndirect@, defined at @SDL3\/SDL_gpu.h 3611:34@
+--     [C declaration]: @SDL_DrawGPUPrimitivesIndirect@, defined at @SDL3\/SDL_gpu.h 3623:34@
 drawGPUPrimitivesIndirectSafe
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -4256,7 +4272,7 @@ drawGPUPrimitivesIndirectSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_DrawGPUIndexedPrimitivesIndirect@, defined at @SDL3\/SDL_gpu.h 3633:34@
+--     [C declaration]: @SDL_DrawGPUIndexedPrimitivesIndirect@, defined at @SDL3\/SDL_gpu.h 3645:34@
 drawGPUIndexedPrimitivesIndirect
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -4297,7 +4313,7 @@ drawGPUIndexedPrimitivesIndirect =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_DrawGPUIndexedPrimitivesIndirect@, defined at @SDL3\/SDL_gpu.h 3633:34@
+--     [C declaration]: @SDL_DrawGPUIndexedPrimitivesIndirect@, defined at @SDL3\/SDL_gpu.h 3645:34@
 drawGPUIndexedPrimitivesIndirectSafe
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -4335,7 +4351,7 @@ drawGPUIndexedPrimitivesIndirectSafe =
 --                   The safe flavor is 'endGPURenderPassSafe'
 --                   .
 --
---     [C declaration]: @SDL_EndGPURenderPass@, defined at @SDL3\/SDL_gpu.h 3649:34@
+--     [C declaration]: @SDL_EndGPURenderPass@, defined at @SDL3\/SDL_gpu.h 3661:34@
 endGPURenderPass
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -4356,7 +4372,7 @@ endGPURenderPass = Unsafe.sDL_EndGPURenderPass
 --                   The unsafe flavor is 'endGPURenderPass'
 --                   .
 --
---     [C declaration]: @SDL_EndGPURenderPass@, defined at @SDL3\/SDL_gpu.h 3649:34@
+--     [C declaration]: @SDL_EndGPURenderPass@, defined at @SDL3\/SDL_gpu.h 3661:34@
 endGPURenderPassSafe
   :: BG.Ptr SDL_GPURenderPass
   -- ^
@@ -4386,7 +4402,7 @@ endGPURenderPassSafe = Safe.sDL_EndGPURenderPass
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BeginGPUComputePass@, defined at @SDL3\/SDL_gpu.h 3691:50@
+--     [C declaration]: @SDL_BeginGPUComputePass@, defined at @SDL3\/SDL_gpu.h 3703:50@
 beginGPUComputePass
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -4438,7 +4454,7 @@ beginGPUComputePass =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BeginGPUComputePass@, defined at @SDL3\/SDL_gpu.h 3691:50@
+--     [C declaration]: @SDL_BeginGPUComputePass@, defined at @SDL3\/SDL_gpu.h 3703:50@
 beginGPUComputePassSafe
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -4479,7 +4495,7 @@ beginGPUComputePassSafe =
 --                   The safe flavor is 'bindGPUComputePipelineSafe'
 --                   .
 --
---     [C declaration]: @SDL_BindGPUComputePipeline@, defined at @SDL3\/SDL_gpu.h 3706:34@
+--     [C declaration]: @SDL_BindGPUComputePipeline@, defined at @SDL3\/SDL_gpu.h 3718:34@
 bindGPUComputePipeline
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -4503,7 +4519,7 @@ bindGPUComputePipeline =
 --                   The unsafe flavor is 'bindGPUComputePipeline'
 --                   .
 --
---     [C declaration]: @SDL_BindGPUComputePipeline@, defined at @SDL3\/SDL_gpu.h 3706:34@
+--     [C declaration]: @SDL_BindGPUComputePipeline@, defined at @SDL3\/SDL_gpu.h 3718:34@
 bindGPUComputePipelineSafe
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -4521,6 +4537,8 @@ bindGPUComputePipelineSafe =
 --
 --     The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
 --
+--     The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.
+--
 --     Be sure your shader is set up according to the requirements documented in @'createGPUComputePipeline'@.
 --
 --     @since 3.2.0
@@ -4536,7 +4554,7 @@ bindGPUComputePipelineSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUComputeSamplers@, defined at @SDL3\/SDL_gpu.h 3729:34@
+--     [C declaration]: @SDL_BindGPUComputeSamplers@, defined at @SDL3\/SDL_gpu.h 3744:34@
 bindGPUComputeSamplers
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -4566,6 +4584,8 @@ bindGPUComputeSamplers =
 --
 --     The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
 --
+--     The textures being bound must have a matching type declared in the shader (2D, 3D, etc.). Multisample textures are not allowed.
+--
 --     Be sure your shader is set up according to the requirements documented in @'createGPUComputePipeline'@.
 --
 --     @since 3.2.0
@@ -4581,7 +4601,7 @@ bindGPUComputeSamplers =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUComputeSamplers@, defined at @SDL3\/SDL_gpu.h 3729:34@
+--     [C declaration]: @SDL_BindGPUComputeSamplers@, defined at @SDL3\/SDL_gpu.h 3744:34@
 bindGPUComputeSamplersSafe
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -4611,6 +4631,8 @@ bindGPUComputeSamplersSafe =
 --
 --     These textures must have been created with SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
 --
+--     The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)
+--
 --     Be sure your shader is set up according to the requirements documented in @'createGPUComputePipeline'@.
 --
 --     @since 3.2.0
@@ -4626,7 +4648,7 @@ bindGPUComputeSamplersSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUComputeStorageTextures@, defined at @SDL3\/SDL_gpu.h 3753:34@
+--     [C declaration]: @SDL_BindGPUComputeStorageTextures@, defined at @SDL3\/SDL_gpu.h 3771:34@
 bindGPUComputeStorageTextures
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -4656,6 +4678,8 @@ bindGPUComputeStorageTextures =
 --
 --     These textures must have been created with SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
 --
+--     The textures being bound must have a matching type declared in the shader (2D, 3D, 2DMS, etc.)
+--
 --     Be sure your shader is set up according to the requirements documented in @'createGPUComputePipeline'@.
 --
 --     @since 3.2.0
@@ -4671,7 +4695,7 @@ bindGPUComputeStorageTextures =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUComputeStorageTextures@, defined at @SDL3\/SDL_gpu.h 3753:34@
+--     [C declaration]: @SDL_BindGPUComputeStorageTextures@, defined at @SDL3\/SDL_gpu.h 3771:34@
 bindGPUComputeStorageTexturesSafe
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -4716,7 +4740,7 @@ bindGPUComputeStorageTexturesSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUComputeStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3777:34@
+--     [C declaration]: @SDL_BindGPUComputeStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3795:34@
 bindGPUComputeStorageBuffers
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -4761,7 +4785,7 @@ bindGPUComputeStorageBuffers =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_BindGPUComputeStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3777:34@
+--     [C declaration]: @SDL_BindGPUComputeStorageBuffers@, defined at @SDL3\/SDL_gpu.h 3795:34@
 bindGPUComputeStorageBuffersSafe
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -4804,7 +4828,7 @@ bindGPUComputeStorageBuffersSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_DispatchGPUCompute@, defined at @SDL3\/SDL_gpu.h 3803:34@
+--     [C declaration]: @SDL_DispatchGPUCompute@, defined at @SDL3\/SDL_gpu.h 3821:34@
 dispatchGPUCompute
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -4847,7 +4871,7 @@ dispatchGPUCompute =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_DispatchGPUCompute@, defined at @SDL3\/SDL_gpu.h 3803:34@
+--     [C declaration]: @SDL_DispatchGPUCompute@, defined at @SDL3\/SDL_gpu.h 3821:34@
 dispatchGPUComputeSafe
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -4890,7 +4914,7 @@ dispatchGPUComputeSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_DispatchGPUComputeIndirect@, defined at @SDL3\/SDL_gpu.h 3827:34@
+--     [C declaration]: @SDL_DispatchGPUComputeIndirect@, defined at @SDL3\/SDL_gpu.h 3845:34@
 dispatchGPUComputeIndirect
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -4928,7 +4952,7 @@ dispatchGPUComputeIndirect =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_DispatchGPUComputeIndirect@, defined at @SDL3\/SDL_gpu.h 3827:34@
+--     [C declaration]: @SDL_DispatchGPUComputeIndirect@, defined at @SDL3\/SDL_gpu.h 3845:34@
 dispatchGPUComputeIndirectSafe
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -4961,7 +4985,7 @@ dispatchGPUComputeIndirectSafe =
 --                   The safe flavor is 'endGPUComputePassSafe'
 --                   .
 --
---     [C declaration]: @SDL_EndGPUComputePass@, defined at @SDL3\/SDL_gpu.h 3842:34@
+--     [C declaration]: @SDL_EndGPUComputePass@, defined at @SDL3\/SDL_gpu.h 3860:34@
 endGPUComputePass
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -4982,7 +5006,7 @@ endGPUComputePass = Unsafe.sDL_EndGPUComputePass
 --                   The unsafe flavor is 'endGPUComputePass'
 --                   .
 --
---     [C declaration]: @SDL_EndGPUComputePass@, defined at @SDL3\/SDL_gpu.h 3842:34@
+--     [C declaration]: @SDL_EndGPUComputePass@, defined at @SDL3\/SDL_gpu.h 3860:34@
 endGPUComputePassSafe
   :: BG.Ptr SDL_GPUComputePass
   -- ^
@@ -5008,7 +5032,7 @@ endGPUComputePassSafe = Safe.sDL_EndGPUComputePass
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_MapGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 3862:36@
+--     [C declaration]: @SDL_MapGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 3880:36@
 mapGPUTransferBuffer
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -5046,7 +5070,7 @@ mapGPUTransferBuffer =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_MapGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 3862:36@
+--     [C declaration]: @SDL_MapGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 3880:36@
 mapGPUTransferBufferSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -5077,7 +5101,7 @@ mapGPUTransferBufferSafe =
 --                   The safe flavor is 'unmapGPUTransferBufferSafe'
 --                   .
 --
---     [C declaration]: @SDL_UnmapGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 3875:34@
+--     [C declaration]: @SDL_UnmapGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 3893:34@
 unmapGPUTransferBuffer
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -5101,7 +5125,7 @@ unmapGPUTransferBuffer =
 --                   The unsafe flavor is 'unmapGPUTransferBuffer'
 --                   .
 --
---     [C declaration]: @SDL_UnmapGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 3875:34@
+--     [C declaration]: @SDL_UnmapGPUTransferBuffer@, defined at @SDL3\/SDL_gpu.h 3893:34@
 unmapGPUTransferBufferSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -5131,7 +5155,7 @@ unmapGPUTransferBufferSafe =
 --                   The safe flavor is 'beginGPUCopyPassSafe'
 --                   .
 --
---     [C declaration]: @SDL_BeginGPUCopyPass@, defined at @SDL3\/SDL_gpu.h 3895:47@
+--     [C declaration]: @SDL_BeginGPUCopyPass@, defined at @SDL3\/SDL_gpu.h 3913:47@
 beginGPUCopyPass
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -5156,7 +5180,7 @@ beginGPUCopyPass = Unsafe.sDL_BeginGPUCopyPass
 --                   The unsafe flavor is 'beginGPUCopyPass'
 --                   .
 --
---     [C declaration]: @SDL_BeginGPUCopyPass@, defined at @SDL3\/SDL_gpu.h 3895:47@
+--     [C declaration]: @SDL_BeginGPUCopyPass@, defined at @SDL3\/SDL_gpu.h 3913:47@
 beginGPUCopyPassSafe
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -5182,7 +5206,7 @@ beginGPUCopyPassSafe = Safe.sDL_BeginGPUCopyPass
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_UploadToGPUTexture@, defined at @SDL3\/SDL_gpu.h 3915:34@
+--     [C declaration]: @SDL_UploadToGPUTexture@, defined at @SDL3\/SDL_gpu.h 3933:34@
 uploadToGPUTexture
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -5225,7 +5249,7 @@ uploadToGPUTexture =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_UploadToGPUTexture@, defined at @SDL3\/SDL_gpu.h 3915:34@
+--     [C declaration]: @SDL_UploadToGPUTexture@, defined at @SDL3\/SDL_gpu.h 3933:34@
 uploadToGPUTextureSafe
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -5266,7 +5290,7 @@ uploadToGPUTextureSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_UploadToGPUBuffer@, defined at @SDL3\/SDL_gpu.h 3935:34@
+--     [C declaration]: @SDL_UploadToGPUBuffer@, defined at @SDL3\/SDL_gpu.h 3953:34@
 uploadToGPUBuffer
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -5307,7 +5331,7 @@ uploadToGPUBuffer =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_UploadToGPUBuffer@, defined at @SDL3\/SDL_gpu.h 3935:34@
+--     [C declaration]: @SDL_UploadToGPUBuffer@, defined at @SDL3\/SDL_gpu.h 3953:34@
 uploadToGPUBufferSafe
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -5350,7 +5374,7 @@ uploadToGPUBufferSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CopyGPUTextureToTexture@, defined at @SDL3\/SDL_gpu.h 3962:34@
+--     [C declaration]: @SDL_CopyGPUTextureToTexture@, defined at @SDL3\/SDL_gpu.h 3980:34@
 copyGPUTextureToTexture
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -5415,7 +5439,7 @@ copyGPUTextureToTexture =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CopyGPUTextureToTexture@, defined at @SDL3\/SDL_gpu.h 3962:34@
+--     [C declaration]: @SDL_CopyGPUTextureToTexture@, defined at @SDL3\/SDL_gpu.h 3980:34@
 copyGPUTextureToTextureSafe
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -5478,7 +5502,7 @@ copyGPUTextureToTextureSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CopyGPUBufferToBuffer@, defined at @SDL3\/SDL_gpu.h 3986:34@
+--     [C declaration]: @SDL_CopyGPUBufferToBuffer@, defined at @SDL3\/SDL_gpu.h 4004:34@
 copyGPUBufferToBuffer
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -5524,7 +5548,7 @@ copyGPUBufferToBuffer =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CopyGPUBufferToBuffer@, defined at @SDL3\/SDL_gpu.h 3986:34@
+--     [C declaration]: @SDL_CopyGPUBufferToBuffer@, defined at @SDL3\/SDL_gpu.h 4004:34@
 copyGPUBufferToBufferSafe
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -5567,7 +5591,7 @@ copyGPUBufferToBufferSafe =
 --                   The safe flavor is 'downloadFromGPUTextureSafe'
 --                   .
 --
---     [C declaration]: @SDL_DownloadFromGPUTexture@, defined at @SDL3\/SDL_gpu.h 4006:34@
+--     [C declaration]: @SDL_DownloadFromGPUTexture@, defined at @SDL3\/SDL_gpu.h 4024:34@
 downloadFromGPUTexture
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -5597,7 +5621,7 @@ downloadFromGPUTexture =
 --                   The unsafe flavor is 'downloadFromGPUTexture'
 --                   .
 --
---     [C declaration]: @SDL_DownloadFromGPUTexture@, defined at @SDL3\/SDL_gpu.h 4006:34@
+--     [C declaration]: @SDL_DownloadFromGPUTexture@, defined at @SDL3\/SDL_gpu.h 4024:34@
 downloadFromGPUTextureSafe
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -5627,7 +5651,7 @@ downloadFromGPUTextureSafe =
 --                   The safe flavor is 'downloadFromGPUBufferSafe'
 --                   .
 --
---     [C declaration]: @SDL_DownloadFromGPUBuffer@, defined at @SDL3\/SDL_gpu.h 4023:34@
+--     [C declaration]: @SDL_DownloadFromGPUBuffer@, defined at @SDL3\/SDL_gpu.h 4041:34@
 downloadFromGPUBuffer
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -5657,7 +5681,7 @@ downloadFromGPUBuffer =
 --                   The unsafe flavor is 'downloadFromGPUBuffer'
 --                   .
 --
---     [C declaration]: @SDL_DownloadFromGPUBuffer@, defined at @SDL3\/SDL_gpu.h 4023:34@
+--     [C declaration]: @SDL_DownloadFromGPUBuffer@, defined at @SDL3\/SDL_gpu.h 4041:34@
 downloadFromGPUBufferSafe
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -5685,7 +5709,7 @@ downloadFromGPUBufferSafe =
 --                   The safe flavor is 'endGPUCopyPassSafe'
 --                   .
 --
---     [C declaration]: @SDL_EndGPUCopyPass@, defined at @SDL3\/SDL_gpu.h 4035:34@
+--     [C declaration]: @SDL_EndGPUCopyPass@, defined at @SDL3\/SDL_gpu.h 4053:34@
 endGPUCopyPass
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -5704,7 +5728,7 @@ endGPUCopyPass = Unsafe.sDL_EndGPUCopyPass
 --                   The unsafe flavor is 'endGPUCopyPass'
 --                   .
 --
---     [C declaration]: @SDL_EndGPUCopyPass@, defined at @SDL3\/SDL_gpu.h 4035:34@
+--     [C declaration]: @SDL_EndGPUCopyPass@, defined at @SDL3\/SDL_gpu.h 4053:34@
 endGPUCopyPassSafe
   :: BG.Ptr SDL_GPUCopyPass
   -- ^
@@ -5725,7 +5749,7 @@ endGPUCopyPassSafe = Safe.sDL_EndGPUCopyPass
 --                   The safe flavor is 'generateMipmapsForGPUTextureSafe'
 --                   .
 --
---     [C declaration]: @SDL_GenerateMipmapsForGPUTexture@, defined at @SDL3\/SDL_gpu.h 4048:34@
+--     [C declaration]: @SDL_GenerateMipmapsForGPUTexture@, defined at @SDL3\/SDL_gpu.h 4066:34@
 generateMipmapsForGPUTexture
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -5751,7 +5775,7 @@ generateMipmapsForGPUTexture =
 --                   The unsafe flavor is 'generateMipmapsForGPUTexture'
 --                   .
 --
---     [C declaration]: @SDL_GenerateMipmapsForGPUTexture@, defined at @SDL3\/SDL_gpu.h 4048:34@
+--     [C declaration]: @SDL_GenerateMipmapsForGPUTexture@, defined at @SDL3\/SDL_gpu.h 4066:34@
 generateMipmapsForGPUTextureSafe
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -5777,7 +5801,7 @@ generateMipmapsForGPUTextureSafe =
 --                   The safe flavor is 'blitGPUTextureSafe'
 --                   .
 --
---     [C declaration]: @SDL_BlitGPUTexture@, defined at @SDL3\/SDL_gpu.h 4062:34@
+--     [C declaration]: @SDL_BlitGPUTexture@, defined at @SDL3\/SDL_gpu.h 4080:34@
 blitGPUTexture
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -5802,7 +5826,7 @@ blitGPUTexture = Unsafe.sDL_BlitGPUTexture
 --                   The unsafe flavor is 'blitGPUTexture'
 --                   .
 --
---     [C declaration]: @SDL_BlitGPUTexture@, defined at @SDL3\/SDL_gpu.h 4062:34@
+--     [C declaration]: @SDL_BlitGPUTexture@, defined at @SDL3\/SDL_gpu.h 4080:34@
 blitGPUTextureSafe
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -5834,7 +5858,7 @@ blitGPUTextureSafe = Safe.sDL_BlitGPUTexture
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WindowSupportsGPUSwapchainComposition@, defined at @SDL3\/SDL_gpu.h 4082:34@
+--     [C declaration]: @SDL_WindowSupportsGPUSwapchainComposition@, defined at @SDL3\/SDL_gpu.h 4100:34@
 windowSupportsGPUSwapchainComposition
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -5874,7 +5898,7 @@ windowSupportsGPUSwapchainComposition =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WindowSupportsGPUSwapchainComposition@, defined at @SDL3\/SDL_gpu.h 4082:34@
+--     [C declaration]: @SDL_WindowSupportsGPUSwapchainComposition@, defined at @SDL3\/SDL_gpu.h 4100:34@
 windowSupportsGPUSwapchainCompositionSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -5914,7 +5938,7 @@ windowSupportsGPUSwapchainCompositionSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WindowSupportsGPUPresentMode@, defined at @SDL3\/SDL_gpu.h 4101:34@
+--     [C declaration]: @SDL_WindowSupportsGPUPresentMode@, defined at @SDL3\/SDL_gpu.h 4119:34@
 windowSupportsGPUPresentMode
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -5954,7 +5978,7 @@ windowSupportsGPUPresentMode =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WindowSupportsGPUPresentMode@, defined at @SDL3\/SDL_gpu.h 4101:34@
+--     [C declaration]: @SDL_WindowSupportsGPUPresentMode@, defined at @SDL3\/SDL_gpu.h 4119:34@
 windowSupportsGPUPresentModeSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -5998,7 +6022,7 @@ windowSupportsGPUPresentModeSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ClaimWindowForGPUDevice@, defined at @SDL3\/SDL_gpu.h 4133:34@
+--     [C declaration]: @SDL_ClaimWindowForGPUDevice@, defined at @SDL3\/SDL_gpu.h 4151:34@
 claimWindowForGPUDevice
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6037,7 +6061,7 @@ claimWindowForGPUDevice =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ClaimWindowForGPUDevice@, defined at @SDL3\/SDL_gpu.h 4133:34@
+--     [C declaration]: @SDL_ClaimWindowForGPUDevice@, defined at @SDL3\/SDL_gpu.h 4151:34@
 claimWindowForGPUDeviceSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6065,7 +6089,7 @@ claimWindowForGPUDeviceSafe =
 --                   The safe flavor is 'releaseWindowFromGPUDeviceSafe'
 --                   .
 --
---     [C declaration]: @SDL_ReleaseWindowFromGPUDevice@, defined at @SDL3\/SDL_gpu.h 4147:34@
+--     [C declaration]: @SDL_ReleaseWindowFromGPUDevice@, defined at @SDL3\/SDL_gpu.h 4165:34@
 releaseWindowFromGPUDevice
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6091,7 +6115,7 @@ releaseWindowFromGPUDevice =
 --                   The unsafe flavor is 'releaseWindowFromGPUDevice'
 --                   .
 --
---     [C declaration]: @SDL_ReleaseWindowFromGPUDevice@, defined at @SDL3\/SDL_gpu.h 4147:34@
+--     [C declaration]: @SDL_ReleaseWindowFromGPUDevice@, defined at @SDL3\/SDL_gpu.h 4165:34@
 releaseWindowFromGPUDeviceSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6126,7 +6150,7 @@ releaseWindowFromGPUDeviceSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGPUSwapchainParameters@, defined at @SDL3\/SDL_gpu.h 4174:34@
+--     [C declaration]: @SDL_SetGPUSwapchainParameters@, defined at @SDL3\/SDL_gpu.h 4192:34@
 setGPUSwapchainParameters
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6173,7 +6197,7 @@ setGPUSwapchainParameters =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGPUSwapchainParameters@, defined at @SDL3\/SDL_gpu.h 4174:34@
+--     [C declaration]: @SDL_SetGPUSwapchainParameters@, defined at @SDL3\/SDL_gpu.h 4192:34@
 setGPUSwapchainParametersSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6222,7 +6246,7 @@ setGPUSwapchainParametersSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGPUAllowedFramesInFlight@, defined at @SDL3\/SDL_gpu.h 4205:34@
+--     [C declaration]: @SDL_SetGPUAllowedFramesInFlight@, defined at @SDL3\/SDL_gpu.h 4223:34@
 setGPUAllowedFramesInFlight
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6261,7 +6285,7 @@ setGPUAllowedFramesInFlight =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGPUAllowedFramesInFlight@, defined at @SDL3\/SDL_gpu.h 4205:34@
+--     [C declaration]: @SDL_SetGPUAllowedFramesInFlight@, defined at @SDL3\/SDL_gpu.h 4223:34@
 setGPUAllowedFramesInFlightSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6291,7 +6315,7 @@ setGPUAllowedFramesInFlightSafe =
 --                   The safe flavor is 'getGPUSwapchainTextureFormatSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGPUSwapchainTextureFormat@, defined at @SDL3\/SDL_gpu.h 4220:50@
+--     [C declaration]: @SDL_GetGPUSwapchainTextureFormat@, defined at @SDL3\/SDL_gpu.h 4238:50@
 getGPUSwapchainTextureFormat
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6319,7 +6343,7 @@ getGPUSwapchainTextureFormat =
 --                   The unsafe flavor is 'getGPUSwapchainTextureFormat'
 --                   .
 --
---     [C declaration]: @SDL_GetGPUSwapchainTextureFormat@, defined at @SDL3\/SDL_gpu.h 4220:50@
+--     [C declaration]: @SDL_GetGPUSwapchainTextureFormat@, defined at @SDL3\/SDL_gpu.h 4238:50@
 getGPUSwapchainTextureFormatSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6360,7 +6384,7 @@ getGPUSwapchainTextureFormatSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AcquireGPUSwapchainTexture@, defined at @SDL3\/SDL_gpu.h 4272:34@
+--     [C declaration]: @SDL_AcquireGPUSwapchainTexture@, defined at @SDL3\/SDL_gpu.h 4290:34@
 acquireGPUSwapchainTexture
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -6418,7 +6442,7 @@ acquireGPUSwapchainTexture =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AcquireGPUSwapchainTexture@, defined at @SDL3\/SDL_gpu.h 4272:34@
+--     [C declaration]: @SDL_AcquireGPUSwapchainTexture@, defined at @SDL3\/SDL_gpu.h 4290:34@
 acquireGPUSwapchainTextureSafe
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -6468,7 +6492,7 @@ acquireGPUSwapchainTextureSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitForGPUSwapchain@, defined at @SDL3\/SDL_gpu.h 4296:34@
+--     [C declaration]: @SDL_WaitForGPUSwapchain@, defined at @SDL3\/SDL_gpu.h 4314:34@
 waitForGPUSwapchain
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6503,7 +6527,7 @@ waitForGPUSwapchain =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitForGPUSwapchain@, defined at @SDL3\/SDL_gpu.h 4296:34@
+--     [C declaration]: @SDL_WaitForGPUSwapchain@, defined at @SDL3\/SDL_gpu.h 4314:34@
 waitForGPUSwapchainSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6546,7 +6570,7 @@ waitForGPUSwapchainSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitAndAcquireGPUSwapchainTexture@, defined at @SDL3\/SDL_gpu.h 4342:34@
+--     [C declaration]: @SDL_WaitAndAcquireGPUSwapchainTexture@, defined at @SDL3\/SDL_gpu.h 4360:34@
 waitAndAcquireGPUSwapchainTexture
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -6604,7 +6628,7 @@ waitAndAcquireGPUSwapchainTexture =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitAndAcquireGPUSwapchainTexture@, defined at @SDL3\/SDL_gpu.h 4342:34@
+--     [C declaration]: @SDL_WaitAndAcquireGPUSwapchainTexture@, defined at @SDL3\/SDL_gpu.h 4360:34@
 waitAndAcquireGPUSwapchainTextureSafe
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -6658,7 +6682,7 @@ waitAndAcquireGPUSwapchainTextureSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SubmitGPUCommandBuffer@, defined at @SDL3\/SDL_gpu.h 4370:34@
+--     [C declaration]: @SDL_SubmitGPUCommandBuffer@, defined at @SDL3\/SDL_gpu.h 4388:34@
 submitGPUCommandBuffer
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -6692,7 +6716,7 @@ submitGPUCommandBuffer =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SubmitGPUCommandBuffer@, defined at @SDL3\/SDL_gpu.h 4370:34@
+--     [C declaration]: @SDL_SubmitGPUCommandBuffer@, defined at @SDL3\/SDL_gpu.h 4388:34@
 submitGPUCommandBufferSafe
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -6723,7 +6747,7 @@ submitGPUCommandBufferSafe =
 --                   The safe flavor is 'submitGPUCommandBufferAndAcquireFenceSafe'
 --                   .
 --
---     [C declaration]: @SDL_SubmitGPUCommandBufferAndAcquireFence@, defined at @SDL3\/SDL_gpu.h 4397:44@
+--     [C declaration]: @SDL_SubmitGPUCommandBufferAndAcquireFence@, defined at @SDL3\/SDL_gpu.h 4415:44@
 submitGPUCommandBufferAndAcquireFence
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -6753,7 +6777,7 @@ submitGPUCommandBufferAndAcquireFence =
 --                   The unsafe flavor is 'submitGPUCommandBufferAndAcquireFence'
 --                   .
 --
---     [C declaration]: @SDL_SubmitGPUCommandBufferAndAcquireFence@, defined at @SDL3\/SDL_gpu.h 4397:44@
+--     [C declaration]: @SDL_SubmitGPUCommandBufferAndAcquireFence@, defined at @SDL3\/SDL_gpu.h 4415:44@
 submitGPUCommandBufferAndAcquireFenceSafe
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -6788,7 +6812,7 @@ submitGPUCommandBufferAndAcquireFenceSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CancelGPUCommandBuffer@, defined at @SDL3\/SDL_gpu.h 4422:34@
+--     [C declaration]: @SDL_CancelGPUCommandBuffer@, defined at @SDL3\/SDL_gpu.h 4440:34@
 cancelGPUCommandBuffer
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -6824,7 +6848,7 @@ cancelGPUCommandBuffer =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CancelGPUCommandBuffer@, defined at @SDL3\/SDL_gpu.h 4422:34@
+--     [C declaration]: @SDL_CancelGPUCommandBuffer@, defined at @SDL3\/SDL_gpu.h 4440:34@
 cancelGPUCommandBufferSafe
   :: BG.Ptr SDL_GPUCommandBuffer
   -- ^
@@ -6852,7 +6876,7 @@ cancelGPUCommandBufferSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitForGPUIdle@, defined at @SDL3\/SDL_gpu.h 4436:34@
+--     [C declaration]: @SDL_WaitForGPUIdle@, defined at @SDL3\/SDL_gpu.h 4454:34@
 waitForGPUIdle
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6880,7 +6904,7 @@ waitForGPUIdle =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitForGPUIdle@, defined at @SDL3\/SDL_gpu.h 4436:34@
+--     [C declaration]: @SDL_WaitForGPUIdle@, defined at @SDL3\/SDL_gpu.h 4454:34@
 waitForGPUIdleSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6908,7 +6932,7 @@ waitForGPUIdleSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitForGPUFences@, defined at @SDL3\/SDL_gpu.h 4455:34@
+--     [C declaration]: @SDL_WaitForGPUFences@, defined at @SDL3\/SDL_gpu.h 4473:34@
 waitForGPUFences
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6951,7 +6975,7 @@ waitForGPUFences =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_WaitForGPUFences@, defined at @SDL3\/SDL_gpu.h 4455:34@
+--     [C declaration]: @SDL_WaitForGPUFences@, defined at @SDL3\/SDL_gpu.h 4473:34@
 waitForGPUFencesSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -6994,7 +7018,7 @@ waitForGPUFencesSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_QueryGPUFence@, defined at @SDL3\/SDL_gpu.h 4472:34@
+--     [C declaration]: @SDL_QueryGPUFence@, defined at @SDL3\/SDL_gpu.h 4490:34@
 queryGPUFence
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -7027,7 +7051,7 @@ queryGPUFence =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_QueryGPUFence@, defined at @SDL3\/SDL_gpu.h 4472:34@
+--     [C declaration]: @SDL_QueryGPUFence@, defined at @SDL3\/SDL_gpu.h 4490:34@
 queryGPUFenceSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -7057,7 +7081,7 @@ queryGPUFenceSafe =
 --                   The safe flavor is 'releaseGPUFenceSafe'
 --                   .
 --
---     [C declaration]: @SDL_ReleaseGPUFence@, defined at @SDL3\/SDL_gpu.h 4488:34@
+--     [C declaration]: @SDL_ReleaseGPUFence@, defined at @SDL3\/SDL_gpu.h 4506:34@
 releaseGPUFence
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -7084,7 +7108,7 @@ releaseGPUFence = Unsafe.sDL_ReleaseGPUFence
 --                   The unsafe flavor is 'releaseGPUFence'
 --                   .
 --
---     [C declaration]: @SDL_ReleaseGPUFence@, defined at @SDL3\/SDL_gpu.h 4488:34@
+--     [C declaration]: @SDL_ReleaseGPUFence@, defined at @SDL3\/SDL_gpu.h 4506:34@
 releaseGPUFenceSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -7114,7 +7138,7 @@ releaseGPUFenceSafe = Safe.sDL_ReleaseGPUFence
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GPUTextureFormatTexelBlockSize@, defined at @SDL3\/SDL_gpu.h 4504:36@
+--     [C declaration]: @SDL_GPUTextureFormatTexelBlockSize@, defined at @SDL3\/SDL_gpu.h 4522:36@
 gpuTextureFormatTexelBlockSize
   :: SDL_GPUTextureFormat
   -- ^
@@ -7142,7 +7166,7 @@ gpuTextureFormatTexelBlockSize =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GPUTextureFormatTexelBlockSize@, defined at @SDL3\/SDL_gpu.h 4504:36@
+--     [C declaration]: @SDL_GPUTextureFormatTexelBlockSize@, defined at @SDL3\/SDL_gpu.h 4522:36@
 gpuTextureFormatTexelBlockSizeSafe
   :: SDL_GPUTextureFormat
   -- ^
@@ -7168,7 +7192,7 @@ gpuTextureFormatTexelBlockSizeSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GPUTextureSupportsFormat@, defined at @SDL3\/SDL_gpu.h 4519:34@
+--     [C declaration]: @SDL_GPUTextureSupportsFormat@, defined at @SDL3\/SDL_gpu.h 4537:34@
 gpuTextureSupportsFormat
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -7209,7 +7233,7 @@ gpuTextureSupportsFormat =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GPUTextureSupportsFormat@, defined at @SDL3\/SDL_gpu.h 4519:34@
+--     [C declaration]: @SDL_GPUTextureSupportsFormat@, defined at @SDL3\/SDL_gpu.h 4537:34@
 gpuTextureSupportsFormatSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -7250,7 +7274,7 @@ gpuTextureSupportsFormatSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GPUTextureSupportsSampleCount@, defined at @SDL3\/SDL_gpu.h 4535:34@
+--     [C declaration]: @SDL_GPUTextureSupportsSampleCount@, defined at @SDL3\/SDL_gpu.h 4553:34@
 gpuTextureSupportsSampleCount
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -7286,7 +7310,7 @@ gpuTextureSupportsSampleCount =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GPUTextureSupportsSampleCount@, defined at @SDL3\/SDL_gpu.h 4535:34@
+--     [C declaration]: @SDL_GPUTextureSupportsSampleCount@, defined at @SDL3\/SDL_gpu.h 4553:34@
 gpuTextureSupportsSampleCountSafe
   :: BG.Ptr SDL_GPUDevice
   -- ^
@@ -7322,7 +7346,7 @@ gpuTextureSupportsSampleCountSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CalculateGPUTextureFormatSize@, defined at @SDL3\/SDL_gpu.h 4551:36@
+--     [C declaration]: @SDL_CalculateGPUTextureFormatSize@, defined at @SDL3\/SDL_gpu.h 4569:36@
 calculateGPUTextureFormatSize
   :: SDL_GPUTextureFormat
   -- ^
@@ -7370,7 +7394,7 @@ calculateGPUTextureFormatSize =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_CalculateGPUTextureFormatSize@, defined at @SDL3\/SDL_gpu.h 4551:36@
+--     [C declaration]: @SDL_CalculateGPUTextureFormatSize@, defined at @SDL3\/SDL_gpu.h 4569:36@
 calculateGPUTextureFormatSizeSafe
   :: SDL_GPUTextureFormat
   -- ^
@@ -7415,7 +7439,7 @@ calculateGPUTextureFormatSizeSafe =
 --                   The safe flavor is 'getPixelFormatFromGPUTextureFormatSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetPixelFormatFromGPUTextureFormat@, defined at @SDL3\/SDL_gpu.h 4566:45@
+--     [C declaration]: @SDL_GetPixelFormatFromGPUTextureFormat@, defined at @SDL3\/SDL_gpu.h 4584:45@
 getPixelFormatFromGPUTextureFormat
   :: SDL_GPUTextureFormat
   -- ^
@@ -7437,7 +7461,7 @@ getPixelFormatFromGPUTextureFormat =
 --                   The unsafe flavor is 'getPixelFormatFromGPUTextureFormat'
 --                   .
 --
---     [C declaration]: @SDL_GetPixelFormatFromGPUTextureFormat@, defined at @SDL3\/SDL_gpu.h 4566:45@
+--     [C declaration]: @SDL_GetPixelFormatFromGPUTextureFormat@, defined at @SDL3\/SDL_gpu.h 4584:45@
 getPixelFormatFromGPUTextureFormatSafe
   :: SDL_GPUTextureFormat
   -- ^
@@ -7459,7 +7483,7 @@ getPixelFormatFromGPUTextureFormatSafe =
 --                   The safe flavor is 'getGPUTextureFormatFromPixelFormatSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGPUTextureFormatFromPixelFormat@, defined at @SDL3\/SDL_gpu.h 4578:50@
+--     [C declaration]: @SDL_GetGPUTextureFormatFromPixelFormat@, defined at @SDL3\/SDL_gpu.h 4596:50@
 getGPUTextureFormatFromPixelFormat
   :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
   -- ^
@@ -7481,7 +7505,7 @@ getGPUTextureFormatFromPixelFormat =
 --                   The unsafe flavor is 'getGPUTextureFormatFromPixelFormat'
 --                   .
 --
---     [C declaration]: @SDL_GetGPUTextureFormatFromPixelFormat@, defined at @SDL3\/SDL_gpu.h 4578:50@
+--     [C declaration]: @SDL_GetGPUTextureFormatFromPixelFormat@, defined at @SDL3\/SDL_gpu.h 4596:50@
 getGPUTextureFormatFromPixelFormatSafe
   :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
   -- ^

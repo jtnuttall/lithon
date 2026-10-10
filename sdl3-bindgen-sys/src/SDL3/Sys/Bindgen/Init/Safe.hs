@@ -453,7 +453,7 @@ hs_bindgen_85f726d170efe2ac =
 --
 --     These are the supported properties:
 --
---     * @'sDL_PROP_APP_METADATA_NAME_STRING'@: The human-readable name of the application, like \"My Game 2: Bad Guy\'s Revenge!\". This will show up anywhere the OS shows the name of the application separately from window titles, such as volume control applets, etc. This defaults to \"SDL Application\".
+--     * @'sDL_PROP_APP_METADATA_NAME_STRING'@: The human-readable name of the application, like \"My Game 2: Bad Guy\'s Revenge!\". This will show up anywhere the OS shows the name of the application separately from window titles, such as volume control applets, etc. If not provided by the app, SDL will attempt to pick a reasonable default (the app\'s binary\'s name if the platform can provide it, or \"SDL Application\" if all else fails).
 --
 --     * @'sDL_PROP_APP_METADATA_VERSION_STRING'@: The version of the app that is running; there are no rules on format, so \"1.0.3beta2\" and \"April 22nd, 2024\" and a git hash are all valid options. This has no default.
 --
@@ -475,7 +475,7 @@ hs_bindgen_85f726d170efe2ac =
 --
 --     [See also]: 'sDL_GetAppMetadataProperty', 'sDL_SetAppMetadata'
 --
---     [C declaration]: @SDL_SetAppMetadataProperty@, defined at @SDL3\/SDL_init.h 468:34@
+--     [C declaration]: @SDL_SetAppMetadataProperty@, defined at @SDL3\/SDL_init.h 469:34@
 sDL_SetAppMetadataProperty
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -515,7 +515,7 @@ hs_bindgen_0affadab10f86eb8 =
 --
 --     [See also]: 'sDL_SetAppMetadata', 'sDL_SetAppMetadataProperty'
 --
---     [C declaration]: @SDL_GetAppMetadataProperty@, defined at @SDL3\/SDL_init.h 499:42@
+--     [C declaration]: @SDL_GetAppMetadataProperty@, defined at @SDL3\/SDL_init.h 500:42@
 sDL_GetAppMetadataProperty
   :: PtrConst.PtrConst BG.CChar
   -- ^

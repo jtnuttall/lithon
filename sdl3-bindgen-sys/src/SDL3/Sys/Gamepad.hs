@@ -235,7 +235,7 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 346:33@
+--     [C declaration]: @SDL_AddGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 347:33@
 addGamepadMapping
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -283,7 +283,7 @@ addGamepadMapping =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 346:33@
+--     [C declaration]: @SDL_AddGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 347:33@
 addGamepadMappingSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -323,7 +323,7 @@ addGamepadMappingSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddGamepadMappingsFromIO@, defined at @SDL3\/SDL_gamepad.h 386:33@
+--     [C declaration]: @SDL_AddGamepadMappingsFromIO@, defined at @SDL3\/SDL_gamepad.h 387:33@
 addGamepadMappingsFromIO
   :: BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream
   -- ^
@@ -368,7 +368,7 @@ addGamepadMappingsFromIO =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddGamepadMappingsFromIO@, defined at @SDL3\/SDL_gamepad.h 386:33@
+--     [C declaration]: @SDL_AddGamepadMappingsFromIO@, defined at @SDL3\/SDL_gamepad.h 387:33@
 addGamepadMappingsFromIOSafe
   :: BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream
   -- ^
@@ -411,7 +411,7 @@ addGamepadMappingsFromIOSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddGamepadMappingsFromFile@, defined at @SDL3\/SDL_gamepad.h 420:33@
+--     [C declaration]: @SDL_AddGamepadMappingsFromFile@, defined at @SDL3\/SDL_gamepad.h 421:33@
 addGamepadMappingsFromFile
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -449,7 +449,7 @@ addGamepadMappingsFromFile =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_AddGamepadMappingsFromFile@, defined at @SDL3\/SDL_gamepad.h 420:33@
+--     [C declaration]: @SDL_AddGamepadMappingsFromFile@, defined at @SDL3\/SDL_gamepad.h 421:33@
 addGamepadMappingsFromFileSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -479,7 +479,7 @@ addGamepadMappingsFromFileSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ReloadGamepadMappings@, defined at @SDL3\/SDL_gamepad.h 434:34@
+--     [C declaration]: @SDL_ReloadGamepadMappings@, defined at @SDL3\/SDL_gamepad.h 435:34@
 reloadGamepadMappings :: IO Bool
 reloadGamepadMappings =
   fmap CBool.toBool Unsafe.sDL_ReloadGamepadMappings
@@ -503,7 +503,7 @@ reloadGamepadMappings =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ReloadGamepadMappings@, defined at @SDL3\/SDL_gamepad.h 434:34@
+--     [C declaration]: @SDL_ReloadGamepadMappings@, defined at @SDL3\/SDL_gamepad.h 435:34@
 reloadGamepadMappingsSafe :: IO Bool
 reloadGamepadMappingsSafe =
   fmap CBool.toBool Safe.sDL_ReloadGamepadMappings
@@ -522,7 +522,7 @@ reloadGamepadMappingsSafe =
 --                   The safe flavor is 'getGamepadMappingsSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadMappings@, defined at @SDL3\/SDL_gamepad.h 450:37@
+--     [C declaration]: @SDL_GetGamepadMappings@, defined at @SDL3\/SDL_gamepad.h 451:37@
 getGamepadMappings
   :: BG.Ptr BG.CInt
   -- ^
@@ -545,7 +545,7 @@ getGamepadMappings = Unsafe.sDL_GetGamepadMappings
 --                   The unsafe flavor is 'getGamepadMappings'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadMappings@, defined at @SDL3\/SDL_gamepad.h 450:37@
+--     [C declaration]: @SDL_GetGamepadMappings@, defined at @SDL3\/SDL_gamepad.h 451:37@
 getGamepadMappingsSafe
   :: BG.Ptr BG.CInt
   -- ^
@@ -570,7 +570,7 @@ getGamepadMappingsSafe = Safe.sDL_GetGamepadMappings
 --                   The safe flavor is 'getGamepadMappingForGUIDSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadMappingForGUID@, defined at @SDL3\/SDL_gamepad.h 467:36@
+--     [C declaration]: @SDL_GetGamepadMappingForGUID@, defined at @SDL3\/SDL_gamepad.h 468:36@
 getGamepadMappingForGUID
   :: SDL3.Sys.Bindgen.Guid.SDL_GUID
   -- ^
@@ -596,7 +596,7 @@ getGamepadMappingForGUID =
 --                   The unsafe flavor is 'getGamepadMappingForGUID'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadMappingForGUID@, defined at @SDL3\/SDL_gamepad.h 467:36@
+--     [C declaration]: @SDL_GetGamepadMappingForGUID@, defined at @SDL3\/SDL_gamepad.h 468:36@
 getGamepadMappingForGUIDSafe
   :: SDL3.Sys.Bindgen.Guid.SDL_GUID
   -- ^
@@ -624,7 +624,7 @@ getGamepadMappingForGUIDSafe =
 --                   The safe flavor is 'getGamepadMappingSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 488:36@
+--     [C declaration]: @SDL_GetGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 489:36@
 getGamepadMapping
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -651,7 +651,7 @@ getGamepadMapping = Unsafe.sDL_GetGamepadMapping
 --                   The unsafe flavor is 'getGamepadMapping'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 488:36@
+--     [C declaration]: @SDL_GetGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 489:36@
 getGamepadMappingSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -681,7 +681,7 @@ getGamepadMappingSafe = Safe.sDL_GetGamepadMapping
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 508:34@
+--     [C declaration]: @SDL_SetGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 509:34@
 setGamepadMapping
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -718,7 +718,7 @@ setGamepadMapping =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 508:34@
+--     [C declaration]: @SDL_SetGamepadMapping@, defined at @SDL3\/SDL_gamepad.h 509:34@
 setGamepadMappingSafe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -753,7 +753,7 @@ setGamepadMappingSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_HasGamepad@, defined at @SDL3\/SDL_gamepad.h 521:34@
+--     [C declaration]: @SDL_HasGamepad@, defined at @SDL3\/SDL_gamepad.h 522:34@
 hasGamepad :: IO Bool
 hasGamepad = fmap CBool.toBool Unsafe.sDL_HasGamepad
 
@@ -776,7 +776,7 @@ hasGamepad = fmap CBool.toBool Unsafe.sDL_HasGamepad
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_HasGamepad@, defined at @SDL3\/SDL_gamepad.h 521:34@
+--     [C declaration]: @SDL_HasGamepad@, defined at @SDL3\/SDL_gamepad.h 522:34@
 hasGamepadSafe :: IO Bool
 hasGamepadSafe =
   fmap CBool.toBool Safe.sDL_HasGamepad
@@ -797,7 +797,7 @@ hasGamepadSafe =
 --                   The safe flavor is 'getGamepadsSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepads@, defined at @SDL3\/SDL_gamepad.h 539:46@
+--     [C declaration]: @SDL_GetGamepads@, defined at @SDL3\/SDL_gamepad.h 540:46@
 getGamepads
   :: BG.Ptr BG.CInt
   -- ^
@@ -822,7 +822,7 @@ getGamepads = Unsafe.sDL_GetGamepads
 --                   The unsafe flavor is 'getGamepads'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepads@, defined at @SDL3\/SDL_gamepad.h 539:46@
+--     [C declaration]: @SDL_GetGamepads@, defined at @SDL3\/SDL_gamepad.h 540:46@
 getGamepadsSafe
   :: BG.Ptr BG.CInt
   -- ^
@@ -850,7 +850,7 @@ getGamepadsSafe = Safe.sDL_GetGamepads
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_IsGamepad@, defined at @SDL3\/SDL_gamepad.h 555:34@
+--     [C declaration]: @SDL_IsGamepad@, defined at @SDL3\/SDL_gamepad.h 556:34@
 isGamepad
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -879,7 +879,7 @@ isGamepad =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_IsGamepad@, defined at @SDL3\/SDL_gamepad.h 555:34@
+--     [C declaration]: @SDL_IsGamepad@, defined at @SDL3\/SDL_gamepad.h 556:34@
 isGamepadSafe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -907,7 +907,7 @@ isGamepadSafe =
 --                   The safe flavor is 'getGamepadNameForIDSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadNameForID@, defined at @SDL3\/SDL_gamepad.h 573:42@
+--     [C declaration]: @SDL_GetGamepadNameForID@, defined at @SDL3\/SDL_gamepad.h 574:42@
 getGamepadNameForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -934,7 +934,7 @@ getGamepadNameForID = Unsafe.sDL_GetGamepadNameForID
 --                   The unsafe flavor is 'getGamepadNameForID'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadNameForID@, defined at @SDL3\/SDL_gamepad.h 573:42@
+--     [C declaration]: @SDL_GetGamepadNameForID@, defined at @SDL3\/SDL_gamepad.h 574:42@
 getGamepadNameForIDSafe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -962,7 +962,7 @@ getGamepadNameForIDSafe =
 --                   The safe flavor is 'getGamepadPathForIDSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadPathForID@, defined at @SDL3\/SDL_gamepad.h 591:42@
+--     [C declaration]: @SDL_GetGamepadPathForID@, defined at @SDL3\/SDL_gamepad.h 592:42@
 getGamepadPathForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -989,7 +989,7 @@ getGamepadPathForID = Unsafe.sDL_GetGamepadPathForID
 --                   The unsafe flavor is 'getGamepadPathForID'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadPathForID@, defined at @SDL3\/SDL_gamepad.h 591:42@
+--     [C declaration]: @SDL_GetGamepadPathForID@, defined at @SDL3\/SDL_gamepad.h 592:42@
 getGamepadPathForIDSafe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1020,7 +1020,7 @@ getGamepadPathForIDSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadPlayerIndexForID@, defined at @SDL3\/SDL_gamepad.h 608:33@
+--     [C declaration]: @SDL_GetGamepadPlayerIndexForID@, defined at @SDL3\/SDL_gamepad.h 609:33@
 getGamepadPlayerIndexForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1052,7 +1052,7 @@ getGamepadPlayerIndexForID =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadPlayerIndexForID@, defined at @SDL3\/SDL_gamepad.h 608:33@
+--     [C declaration]: @SDL_GetGamepadPlayerIndexForID@, defined at @SDL3\/SDL_gamepad.h 609:33@
 getGamepadPlayerIndexForIDSafe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1081,7 +1081,7 @@ getGamepadPlayerIndexForIDSafe =
 --                   The safe flavor is 'getGamepadGUIDForIDSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadGUIDForID@, defined at @SDL3\/SDL_gamepad.h 626:38@
+--     [C declaration]: @SDL_GetGamepadGUIDForID@, defined at @SDL3\/SDL_gamepad.h 627:38@
 getGamepadGUIDForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1108,7 +1108,7 @@ getGamepadGUIDForID = Unsafe.sDL_GetGamepadGUIDForID
 --                   The unsafe flavor is 'getGamepadGUIDForID'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadGUIDForID@, defined at @SDL3\/SDL_gamepad.h 626:38@
+--     [C declaration]: @SDL_GetGamepadGUIDForID@, defined at @SDL3\/SDL_gamepad.h 627:38@
 getGamepadGUIDForIDSafe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1139,7 +1139,7 @@ getGamepadGUIDForIDSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadVendorForID@, defined at @SDL3\/SDL_gamepad.h 645:36@
+--     [C declaration]: @SDL_GetGamepadVendorForID@, defined at @SDL3\/SDL_gamepad.h 646:36@
 getGamepadVendorForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1171,7 +1171,7 @@ getGamepadVendorForID =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadVendorForID@, defined at @SDL3\/SDL_gamepad.h 645:36@
+--     [C declaration]: @SDL_GetGamepadVendorForID@, defined at @SDL3\/SDL_gamepad.h 646:36@
 getGamepadVendorForIDSafe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1203,7 +1203,7 @@ getGamepadVendorForIDSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadProductForID@, defined at @SDL3\/SDL_gamepad.h 664:36@
+--     [C declaration]: @SDL_GetGamepadProductForID@, defined at @SDL3\/SDL_gamepad.h 665:36@
 getGamepadProductForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1235,7 +1235,7 @@ getGamepadProductForID =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadProductForID@, defined at @SDL3\/SDL_gamepad.h 664:36@
+--     [C declaration]: @SDL_GetGamepadProductForID@, defined at @SDL3\/SDL_gamepad.h 665:36@
 getGamepadProductForIDSafe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1267,7 +1267,7 @@ getGamepadProductForIDSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadProductVersionForID@, defined at @SDL3\/SDL_gamepad.h 683:36@
+--     [C declaration]: @SDL_GetGamepadProductVersionForID@, defined at @SDL3\/SDL_gamepad.h 684:36@
 getGamepadProductVersionForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1299,7 +1299,7 @@ getGamepadProductVersionForID =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadProductVersionForID@, defined at @SDL3\/SDL_gamepad.h 683:36@
+--     [C declaration]: @SDL_GetGamepadProductVersionForID@, defined at @SDL3\/SDL_gamepad.h 684:36@
 getGamepadProductVersionForIDSafe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1328,7 +1328,7 @@ getGamepadProductVersionForIDSafe =
 --                   The safe flavor is 'getGamepadTypeForIDSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadTypeForID@, defined at @SDL3\/SDL_gamepad.h 701:45@
+--     [C declaration]: @SDL_GetGamepadTypeForID@, defined at @SDL3\/SDL_gamepad.h 702:45@
 getGamepadTypeForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1355,7 +1355,7 @@ getGamepadTypeForID = Unsafe.sDL_GetGamepadTypeForID
 --                   The unsafe flavor is 'getGamepadTypeForID'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadTypeForID@, defined at @SDL3\/SDL_gamepad.h 701:45@
+--     [C declaration]: @SDL_GetGamepadTypeForID@, defined at @SDL3\/SDL_gamepad.h 702:45@
 getGamepadTypeForIDSafe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1383,7 +1383,7 @@ getGamepadTypeForIDSafe =
 --                   The safe flavor is 'getRealGamepadTypeForIDSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetRealGamepadTypeForID@, defined at @SDL3\/SDL_gamepad.h 719:45@
+--     [C declaration]: @SDL_GetRealGamepadTypeForID@, defined at @SDL3\/SDL_gamepad.h 720:45@
 getRealGamepadTypeForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1411,7 +1411,7 @@ getRealGamepadTypeForID =
 --                   The unsafe flavor is 'getRealGamepadTypeForID'
 --                   .
 --
---     [C declaration]: @SDL_GetRealGamepadTypeForID@, defined at @SDL3\/SDL_gamepad.h 719:45@
+--     [C declaration]: @SDL_GetRealGamepadTypeForID@, defined at @SDL3\/SDL_gamepad.h 720:45@
 getRealGamepadTypeForIDSafe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1439,7 +1439,7 @@ getRealGamepadTypeForIDSafe =
 --                   The safe flavor is 'getGamepadMappingForIDSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadMappingForID@, defined at @SDL3\/SDL_gamepad.h 737:36@
+--     [C declaration]: @SDL_GetGamepadMappingForID@, defined at @SDL3\/SDL_gamepad.h 738:36@
 getGamepadMappingForID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1467,7 +1467,7 @@ getGamepadMappingForID =
 --                   The unsafe flavor is 'getGamepadMappingForID'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadMappingForID@, defined at @SDL3\/SDL_gamepad.h 737:36@
+--     [C declaration]: @SDL_GetGamepadMappingForID@, defined at @SDL3\/SDL_gamepad.h 738:36@
 getGamepadMappingForIDSafe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1493,7 +1493,7 @@ getGamepadMappingForIDSafe =
 --                   The safe flavor is 'openGamepadSafe'
 --                   .
 --
---     [C declaration]: @SDL_OpenGamepad@, defined at @SDL3\/SDL_gamepad.h 753:43@
+--     [C declaration]: @SDL_OpenGamepad@, defined at @SDL3\/SDL_gamepad.h 754:43@
 openGamepad
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1518,7 +1518,7 @@ openGamepad = Unsafe.sDL_OpenGamepad
 --                   The unsafe flavor is 'openGamepad'
 --                   .
 --
---     [C declaration]: @SDL_OpenGamepad@, defined at @SDL3\/SDL_gamepad.h 753:43@
+--     [C declaration]: @SDL_OpenGamepad@, defined at @SDL3\/SDL_gamepad.h 754:43@
 openGamepadSafe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1541,7 +1541,7 @@ openGamepadSafe = Safe.sDL_OpenGamepad
 --                   The safe flavor is 'getGamepadFromIDSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadFromID@, defined at @SDL3\/SDL_gamepad.h 767:43@
+--     [C declaration]: @SDL_GetGamepadFromID@, defined at @SDL3\/SDL_gamepad.h 768:43@
 getGamepadFromID
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1564,7 +1564,7 @@ getGamepadFromID = Unsafe.sDL_GetGamepadFromID
 --                   The unsafe flavor is 'getGamepadFromID'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadFromID@, defined at @SDL3\/SDL_gamepad.h 767:43@
+--     [C declaration]: @SDL_GetGamepadFromID@, defined at @SDL3\/SDL_gamepad.h 768:43@
 getGamepadFromIDSafe
   :: SDL3.Sys.Bindgen.Joystick.SDL_JoystickID
   -- ^
@@ -1592,7 +1592,7 @@ getGamepadFromIDSafe = Safe.sDL_GetGamepadFromID
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadFromPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 782:43@
+--     [C declaration]: @SDL_GetGamepadFromPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 783:43@
 getGamepadFromPlayerIndex
   :: BG.Int32
   -- ^
@@ -1622,7 +1622,7 @@ getGamepadFromPlayerIndex =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadFromPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 782:43@
+--     [C declaration]: @SDL_GetGamepadFromPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 783:43@
 getGamepadFromPlayerIndexSafe
   :: BG.Int32
   -- ^
@@ -1661,7 +1661,7 @@ getGamepadFromPlayerIndexSafe =
 --                   The safe flavor is 'getGamepadPropertiesSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadProperties@, defined at @SDL3\/SDL_gamepad.h 811:46@
+--     [C declaration]: @SDL_GetGamepadProperties@, defined at @SDL3\/SDL_gamepad.h 812:46@
 getGamepadProperties
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1699,7 +1699,7 @@ getGamepadProperties =
 --                   The unsafe flavor is 'getGamepadProperties'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadProperties@, defined at @SDL3\/SDL_gamepad.h 811:46@
+--     [C declaration]: @SDL_GetGamepadProperties@, defined at @SDL3\/SDL_gamepad.h 812:46@
 getGamepadPropertiesSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1723,7 +1723,7 @@ getGamepadPropertiesSafe =
 --                   The safe flavor is 'getGamepadIDSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadID@, defined at @SDL3\/SDL_gamepad.h 831:44@
+--     [C declaration]: @SDL_GetGamepadID@, defined at @SDL3\/SDL_gamepad.h 832:44@
 getGamepadID
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1746,7 +1746,7 @@ getGamepadID = Unsafe.sDL_GetGamepadID
 --                   The unsafe flavor is 'getGamepadID'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadID@, defined at @SDL3\/SDL_gamepad.h 831:44@
+--     [C declaration]: @SDL_GetGamepadID@, defined at @SDL3\/SDL_gamepad.h 832:44@
 getGamepadIDSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1771,7 +1771,7 @@ getGamepadIDSafe = Safe.sDL_GetGamepadID
 --                   The safe flavor is 'getGamepadNameSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadName@, defined at @SDL3\/SDL_gamepad.h 847:42@
+--     [C declaration]: @SDL_GetGamepadName@, defined at @SDL3\/SDL_gamepad.h 848:42@
 getGamepadName
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1796,7 +1796,7 @@ getGamepadName = Unsafe.sDL_GetGamepadName
 --                   The unsafe flavor is 'getGamepadName'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadName@, defined at @SDL3\/SDL_gamepad.h 847:42@
+--     [C declaration]: @SDL_GetGamepadName@, defined at @SDL3\/SDL_gamepad.h 848:42@
 getGamepadNameSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1821,7 +1821,7 @@ getGamepadNameSafe = Safe.sDL_GetGamepadName
 --                   The safe flavor is 'getGamepadPathSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadPath@, defined at @SDL3\/SDL_gamepad.h 863:42@
+--     [C declaration]: @SDL_GetGamepadPath@, defined at @SDL3\/SDL_gamepad.h 864:42@
 getGamepadPath
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1846,7 +1846,7 @@ getGamepadPath = Unsafe.sDL_GetGamepadPath
 --                   The unsafe flavor is 'getGamepadPath'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadPath@, defined at @SDL3\/SDL_gamepad.h 863:42@
+--     [C declaration]: @SDL_GetGamepadPath@, defined at @SDL3\/SDL_gamepad.h 864:42@
 getGamepadPathSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1871,7 +1871,7 @@ getGamepadPathSafe = Safe.sDL_GetGamepadPath
 --                   The safe flavor is 'getGamepadTypeSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadType@, defined at @SDL3\/SDL_gamepad.h 878:45@
+--     [C declaration]: @SDL_GetGamepadType@, defined at @SDL3\/SDL_gamepad.h 879:45@
 getGamepadType
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1896,7 +1896,7 @@ getGamepadType = Unsafe.sDL_GetGamepadType
 --                   The unsafe flavor is 'getGamepadType'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadType@, defined at @SDL3\/SDL_gamepad.h 878:45@
+--     [C declaration]: @SDL_GetGamepadType@, defined at @SDL3\/SDL_gamepad.h 879:45@
 getGamepadTypeSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1921,7 +1921,7 @@ getGamepadTypeSafe = Safe.sDL_GetGamepadType
 --                   The safe flavor is 'getRealGamepadTypeSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetRealGamepadType@, defined at @SDL3\/SDL_gamepad.h 893:45@
+--     [C declaration]: @SDL_GetRealGamepadType@, defined at @SDL3\/SDL_gamepad.h 894:45@
 getRealGamepadType
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1946,7 +1946,7 @@ getRealGamepadType = Unsafe.sDL_GetRealGamepadType
 --                   The unsafe flavor is 'getRealGamepadType'
 --                   .
 --
---     [C declaration]: @SDL_GetRealGamepadType@, defined at @SDL3\/SDL_gamepad.h 893:45@
+--     [C declaration]: @SDL_GetRealGamepadType@, defined at @SDL3\/SDL_gamepad.h 894:45@
 getRealGamepadTypeSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -1976,7 +1976,7 @@ getRealGamepadTypeSafe = Safe.sDL_GetRealGamepadType
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 909:33@
+--     [C declaration]: @SDL_GetGamepadPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 910:33@
 getGamepadPlayerIndex
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2008,7 +2008,7 @@ getGamepadPlayerIndex =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 909:33@
+--     [C declaration]: @SDL_GetGamepadPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 910:33@
 getGamepadPlayerIndexSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2038,7 +2038,7 @@ getGamepadPlayerIndexSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGamepadPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 926:34@
+--     [C declaration]: @SDL_SetGamepadPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 927:34@
 setGamepadPlayerIndex
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2073,7 +2073,7 @@ setGamepadPlayerIndex =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGamepadPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 926:34@
+--     [C declaration]: @SDL_SetGamepadPlayerIndex@, defined at @SDL3\/SDL_gamepad.h 927:34@
 setGamepadPlayerIndexSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2110,7 +2110,7 @@ setGamepadPlayerIndexSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadVendor@, defined at @SDL3\/SDL_gamepad.h 942:36@
+--     [C declaration]: @SDL_GetGamepadVendor@, defined at @SDL3\/SDL_gamepad.h 943:36@
 getGamepadVendor
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2142,7 +2142,7 @@ getGamepadVendor =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadVendor@, defined at @SDL3\/SDL_gamepad.h 942:36@
+--     [C declaration]: @SDL_GetGamepadVendor@, defined at @SDL3\/SDL_gamepad.h 943:36@
 getGamepadVendorSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2174,7 +2174,7 @@ getGamepadVendorSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadProduct@, defined at @SDL3\/SDL_gamepad.h 958:36@
+--     [C declaration]: @SDL_GetGamepadProduct@, defined at @SDL3\/SDL_gamepad.h 959:36@
 getGamepadProduct
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2206,7 +2206,7 @@ getGamepadProduct =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadProduct@, defined at @SDL3\/SDL_gamepad.h 958:36@
+--     [C declaration]: @SDL_GetGamepadProduct@, defined at @SDL3\/SDL_gamepad.h 959:36@
 getGamepadProductSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2238,7 +2238,7 @@ getGamepadProductSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadProductVersion@, defined at @SDL3\/SDL_gamepad.h 974:36@
+--     [C declaration]: @SDL_GetGamepadProductVersion@, defined at @SDL3\/SDL_gamepad.h 975:36@
 getGamepadProductVersion
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2270,7 +2270,7 @@ getGamepadProductVersion =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadProductVersion@, defined at @SDL3\/SDL_gamepad.h 974:36@
+--     [C declaration]: @SDL_GetGamepadProductVersion@, defined at @SDL3\/SDL_gamepad.h 975:36@
 getGamepadProductVersionSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2300,7 +2300,7 @@ getGamepadProductVersionSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadFirmwareVersion@, defined at @SDL3\/SDL_gamepad.h 988:36@
+--     [C declaration]: @SDL_GetGamepadFirmwareVersion@, defined at @SDL3\/SDL_gamepad.h 989:36@
 getGamepadFirmwareVersion
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2330,7 +2330,7 @@ getGamepadFirmwareVersion =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadFirmwareVersion@, defined at @SDL3\/SDL_gamepad.h 988:36@
+--     [C declaration]: @SDL_GetGamepadFirmwareVersion@, defined at @SDL3\/SDL_gamepad.h 989:36@
 getGamepadFirmwareVersionSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2357,7 +2357,7 @@ getGamepadFirmwareVersionSafe =
 --                   The safe flavor is 'getGamepadSerialSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadSerial@, defined at @SDL3\/SDL_gamepad.h 1002:42@
+--     [C declaration]: @SDL_GetGamepadSerial@, defined at @SDL3\/SDL_gamepad.h 1003:42@
 getGamepadSerial
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2382,7 +2382,7 @@ getGamepadSerial = Unsafe.sDL_GetGamepadSerial
 --                   The unsafe flavor is 'getGamepadSerial'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadSerial@, defined at @SDL3\/SDL_gamepad.h 1002:42@
+--     [C declaration]: @SDL_GetGamepadSerial@, defined at @SDL3\/SDL_gamepad.h 1003:42@
 getGamepadSerialSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2410,7 +2410,7 @@ getGamepadSerialSafe = Safe.sDL_GetGamepadSerial
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadSteamHandle@, defined at @SDL3\/SDL_gamepad.h 1017:36@
+--     [C declaration]: @SDL_GetGamepadSteamHandle@, defined at @SDL3\/SDL_gamepad.h 1018:36@
 getGamepadSteamHandle
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2440,7 +2440,7 @@ getGamepadSteamHandle =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadSteamHandle@, defined at @SDL3\/SDL_gamepad.h 1017:36@
+--     [C declaration]: @SDL_GetGamepadSteamHandle@, defined at @SDL3\/SDL_gamepad.h 1018:36@
 getGamepadSteamHandleSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2465,7 +2465,7 @@ getGamepadSteamHandleSafe =
 --                   The safe flavor is 'getGamepadConnectionStateSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadConnectionState@, defined at @SDL3\/SDL_gamepad.h 1031:57@
+--     [C declaration]: @SDL_GetGamepadConnectionState@, defined at @SDL3\/SDL_gamepad.h 1032:57@
 getGamepadConnectionState
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2489,7 +2489,7 @@ getGamepadConnectionState =
 --                   The unsafe flavor is 'getGamepadConnectionState'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadConnectionState@, defined at @SDL3\/SDL_gamepad.h 1031:57@
+--     [C declaration]: @SDL_GetGamepadConnectionState@, defined at @SDL3\/SDL_gamepad.h 1032:57@
 getGamepadConnectionStateSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2515,7 +2515,7 @@ getGamepadConnectionStateSafe =
 --                   The safe flavor is 'getGamepadPowerInfoSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadPowerInfo@, defined at @SDL3\/SDL_gamepad.h 1053:44@
+--     [C declaration]: @SDL_GetGamepadPowerInfo@, defined at @SDL3\/SDL_gamepad.h 1054:44@
 getGamepadPowerInfo
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2544,7 +2544,7 @@ getGamepadPowerInfo = Unsafe.sDL_GetGamepadPowerInfo
 --                   The unsafe flavor is 'getGamepadPowerInfo'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadPowerInfo@, defined at @SDL3\/SDL_gamepad.h 1053:44@
+--     [C declaration]: @SDL_GetGamepadPowerInfo@, defined at @SDL3\/SDL_gamepad.h 1054:44@
 getGamepadPowerInfoSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2575,7 +2575,7 @@ getGamepadPowerInfoSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GamepadConnected@, defined at @SDL3\/SDL_gamepad.h 1067:34@
+--     [C declaration]: @SDL_GamepadConnected@, defined at @SDL3\/SDL_gamepad.h 1068:34@
 gamepadConnected
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2603,7 +2603,7 @@ gamepadConnected =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GamepadConnected@, defined at @SDL3\/SDL_gamepad.h 1067:34@
+--     [C declaration]: @SDL_GamepadConnected@, defined at @SDL3\/SDL_gamepad.h 1068:34@
 gamepadConnectedSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2632,7 +2632,7 @@ gamepadConnectedSafe =
 --                   The safe flavor is 'getGamepadJoystickSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadJoystick@, defined at @SDL3\/SDL_gamepad.h 1089:44@
+--     [C declaration]: @SDL_GetGamepadJoystick@, defined at @SDL3\/SDL_gamepad.h 1090:44@
 getGamepadJoystick
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2659,7 +2659,7 @@ getGamepadJoystick = Unsafe.sDL_GetGamepadJoystick
 --                   The unsafe flavor is 'getGamepadJoystick'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadJoystick@, defined at @SDL3\/SDL_gamepad.h 1089:44@
+--     [C declaration]: @SDL_GetGamepadJoystick@, defined at @SDL3\/SDL_gamepad.h 1090:44@
 getGamepadJoystickSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2687,7 +2687,7 @@ getGamepadJoystickSafe = Safe.sDL_GetGamepadJoystick
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGamepadEventsEnabled@, defined at @SDL3\/SDL_gamepad.h 1106:34@
+--     [C declaration]: @SDL_SetGamepadEventsEnabled@, defined at @SDL3\/SDL_gamepad.h 1107:34@
 setGamepadEventsEnabled
   :: Bool
   -- ^
@@ -2717,7 +2717,7 @@ setGamepadEventsEnabled =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGamepadEventsEnabled@, defined at @SDL3\/SDL_gamepad.h 1106:34@
+--     [C declaration]: @SDL_SetGamepadEventsEnabled@, defined at @SDL3\/SDL_gamepad.h 1107:34@
 setGamepadEventsEnabledSafe
   :: Bool
   -- ^
@@ -2749,7 +2749,7 @@ setGamepadEventsEnabledSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GamepadEventsEnabled@, defined at @SDL3\/SDL_gamepad.h 1122:34@
+--     [C declaration]: @SDL_GamepadEventsEnabled@, defined at @SDL3\/SDL_gamepad.h 1123:34@
 gamepadEventsEnabled :: IO Bool
 gamepadEventsEnabled =
   fmap CBool.toBool Unsafe.sDL_GamepadEventsEnabled
@@ -2775,7 +2775,7 @@ gamepadEventsEnabled =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GamepadEventsEnabled@, defined at @SDL3\/SDL_gamepad.h 1122:34@
+--     [C declaration]: @SDL_GamepadEventsEnabled@, defined at @SDL3\/SDL_gamepad.h 1123:34@
 gamepadEventsEnabledSafe :: IO Bool
 gamepadEventsEnabledSafe =
   fmap CBool.toBool Safe.sDL_GamepadEventsEnabled
@@ -2794,7 +2794,7 @@ gamepadEventsEnabledSafe =
 --                   The safe flavor is 'getGamepadBindingsSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadBindings@, defined at @SDL3\/SDL_gamepad.h 1138:51@
+--     [C declaration]: @SDL_GetGamepadBindings@, defined at @SDL3\/SDL_gamepad.h 1139:51@
 getGamepadBindings
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2821,7 +2821,7 @@ getGamepadBindings = Unsafe.sDL_GetGamepadBindings
 --                   The unsafe flavor is 'getGamepadBindings'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadBindings@, defined at @SDL3\/SDL_gamepad.h 1138:51@
+--     [C declaration]: @SDL_GetGamepadBindings@, defined at @SDL3\/SDL_gamepad.h 1139:51@
 getGamepadBindingsSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -2848,7 +2848,7 @@ getGamepadBindingsSafe = Safe.sDL_GetGamepadBindings
 --                   The safe flavor is 'updateGamepadsSafe'
 --                   : routes through joystick update; virtual-device callbacks run synchronously.
 --
---     [C declaration]: @SDL_UpdateGamepads@, defined at @SDL3\/SDL_gamepad.h 1151:34@
+--     [C declaration]: @SDL_UpdateGamepads@, defined at @SDL3\/SDL_gamepad.h 1152:34@
 updateGamepads :: IO ()
 updateGamepads = Unsafe.sDL_UpdateGamepads
 
@@ -2866,7 +2866,7 @@ updateGamepads = Unsafe.sDL_UpdateGamepads
 --                   The unsafe flavor is 'updateGamepads'
 --                   : routes through joystick update; virtual-device callbacks run synchronously.
 --
---     [C declaration]: @SDL_UpdateGamepads@, defined at @SDL3\/SDL_gamepad.h 1151:34@
+--     [C declaration]: @SDL_UpdateGamepads@, defined at @SDL3\/SDL_gamepad.h 1152:34@
 updateGamepadsSafe :: IO ()
 updateGamepadsSafe = Safe.sDL_UpdateGamepads
 
@@ -2888,7 +2888,7 @@ updateGamepadsSafe = Safe.sDL_UpdateGamepads
 --                   The safe flavor is 'getGamepadTypeFromStringSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadTypeFromString@, defined at @SDL3\/SDL_gamepad.h 1171:45@
+--     [C declaration]: @SDL_GetGamepadTypeFromString@, defined at @SDL3\/SDL_gamepad.h 1172:45@
 getGamepadTypeFromString
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -2916,7 +2916,7 @@ getGamepadTypeFromString =
 --                   The unsafe flavor is 'getGamepadTypeFromString'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadTypeFromString@, defined at @SDL3\/SDL_gamepad.h 1171:45@
+--     [C declaration]: @SDL_GetGamepadTypeFromString@, defined at @SDL3\/SDL_gamepad.h 1172:45@
 getGamepadTypeFromStringSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -2942,7 +2942,7 @@ getGamepadTypeFromStringSafe =
 --                   The safe flavor is 'getGamepadStringForTypeSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadStringForType@, defined at @SDL3\/SDL_gamepad.h 1187:42@
+--     [C declaration]: @SDL_GetGamepadStringForType@, defined at @SDL3\/SDL_gamepad.h 1188:42@
 getGamepadStringForType
   :: SDL_GamepadType
   -- ^
@@ -2968,7 +2968,7 @@ getGamepadStringForType =
 --                   The unsafe flavor is 'getGamepadStringForType'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadStringForType@, defined at @SDL3\/SDL_gamepad.h 1187:42@
+--     [C declaration]: @SDL_GetGamepadStringForType@, defined at @SDL3\/SDL_gamepad.h 1188:42@
 getGamepadStringForTypeSafe
   :: SDL_GamepadType
   -- ^
@@ -2998,7 +2998,7 @@ getGamepadStringForTypeSafe =
 --                   The safe flavor is 'getGamepadAxisFromStringSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadAxisFromString@, defined at @SDL3\/SDL_gamepad.h 1211:45@
+--     [C declaration]: @SDL_GetGamepadAxisFromString@, defined at @SDL3\/SDL_gamepad.h 1212:45@
 getGamepadAxisFromString
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3028,7 +3028,7 @@ getGamepadAxisFromString =
 --                   The unsafe flavor is 'getGamepadAxisFromString'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadAxisFromString@, defined at @SDL3\/SDL_gamepad.h 1211:45@
+--     [C declaration]: @SDL_GetGamepadAxisFromString@, defined at @SDL3\/SDL_gamepad.h 1212:45@
 getGamepadAxisFromStringSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3054,7 +3054,7 @@ getGamepadAxisFromStringSafe =
 --                   The safe flavor is 'getGamepadStringForAxisSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadStringForAxis@, defined at @SDL3\/SDL_gamepad.h 1227:42@
+--     [C declaration]: @SDL_GetGamepadStringForAxis@, defined at @SDL3\/SDL_gamepad.h 1228:42@
 getGamepadStringForAxis
   :: SDL_GamepadAxis
   -- ^
@@ -3080,7 +3080,7 @@ getGamepadStringForAxis =
 --                   The unsafe flavor is 'getGamepadStringForAxis'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadStringForAxis@, defined at @SDL3\/SDL_gamepad.h 1227:42@
+--     [C declaration]: @SDL_GetGamepadStringForAxis@, defined at @SDL3\/SDL_gamepad.h 1228:42@
 getGamepadStringForAxisSafe
   :: SDL_GamepadAxis
   -- ^
@@ -3111,7 +3111,7 @@ getGamepadStringForAxisSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GamepadHasAxis@, defined at @SDL3\/SDL_gamepad.h 1246:34@
+--     [C declaration]: @SDL_GamepadHasAxis@, defined at @SDL3\/SDL_gamepad.h 1247:34@
 gamepadHasAxis
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3148,7 +3148,7 @@ gamepadHasAxis =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GamepadHasAxis@, defined at @SDL3\/SDL_gamepad.h 1246:34@
+--     [C declaration]: @SDL_GamepadHasAxis@, defined at @SDL3\/SDL_gamepad.h 1247:34@
 gamepadHasAxisSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3191,7 +3191,7 @@ gamepadHasAxisSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadAxis@, defined at @SDL3\/SDL_gamepad.h 1274:36@
+--     [C declaration]: @SDL_GetGamepadAxis@, defined at @SDL3\/SDL_gamepad.h 1275:36@
 getGamepadAxis
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3234,7 +3234,7 @@ getGamepadAxis =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadAxis@, defined at @SDL3\/SDL_gamepad.h 1274:36@
+--     [C declaration]: @SDL_GetGamepadAxis@, defined at @SDL3\/SDL_gamepad.h 1275:36@
 getGamepadAxisSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3268,7 +3268,7 @@ getGamepadAxisSafe =
 --                   The safe flavor is 'getGamepadButtonFromStringSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadButtonFromString@, defined at @SDL3\/SDL_gamepad.h 1294:47@
+--     [C declaration]: @SDL_GetGamepadButtonFromString@, defined at @SDL3\/SDL_gamepad.h 1295:47@
 getGamepadButtonFromString
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3296,7 +3296,7 @@ getGamepadButtonFromString =
 --                   The unsafe flavor is 'getGamepadButtonFromString'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadButtonFromString@, defined at @SDL3\/SDL_gamepad.h 1294:47@
+--     [C declaration]: @SDL_GetGamepadButtonFromString@, defined at @SDL3\/SDL_gamepad.h 1295:47@
 getGamepadButtonFromStringSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
@@ -3322,7 +3322,7 @@ getGamepadButtonFromStringSafe =
 --                   The safe flavor is 'getGamepadStringForButtonSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadStringForButton@, defined at @SDL3\/SDL_gamepad.h 1310:42@
+--     [C declaration]: @SDL_GetGamepadStringForButton@, defined at @SDL3\/SDL_gamepad.h 1311:42@
 getGamepadStringForButton
   :: SDL_GamepadButton
   -- ^
@@ -3348,7 +3348,7 @@ getGamepadStringForButton =
 --                   The unsafe flavor is 'getGamepadStringForButton'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadStringForButton@, defined at @SDL3\/SDL_gamepad.h 1310:42@
+--     [C declaration]: @SDL_GetGamepadStringForButton@, defined at @SDL3\/SDL_gamepad.h 1311:42@
 getGamepadStringForButtonSafe
   :: SDL_GamepadButton
   -- ^
@@ -3379,7 +3379,7 @@ getGamepadStringForButtonSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GamepadHasButton@, defined at @SDL3\/SDL_gamepad.h 1328:34@
+--     [C declaration]: @SDL_GamepadHasButton@, defined at @SDL3\/SDL_gamepad.h 1329:34@
 gamepadHasButton
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3416,7 +3416,7 @@ gamepadHasButton =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GamepadHasButton@, defined at @SDL3\/SDL_gamepad.h 1328:34@
+--     [C declaration]: @SDL_GamepadHasButton@, defined at @SDL3\/SDL_gamepad.h 1329:34@
 gamepadHasButtonSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3451,7 +3451,7 @@ gamepadHasButtonSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadButton@, defined at @SDL3\/SDL_gamepad.h 1344:34@
+--     [C declaration]: @SDL_GetGamepadButton@, defined at @SDL3\/SDL_gamepad.h 1345:34@
 getGamepadButton
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3486,7 +3486,7 @@ getGamepadButton =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadButton@, defined at @SDL3\/SDL_gamepad.h 1344:34@
+--     [C declaration]: @SDL_GetGamepadButton@, defined at @SDL3\/SDL_gamepad.h 1345:34@
 getGamepadButtonSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3518,7 +3518,7 @@ getGamepadButtonSafe =
 --                   The safe flavor is 'getGamepadButtonLabelForTypeSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadButtonLabelForType@, defined at @SDL3\/SDL_gamepad.h 1359:52@
+--     [C declaration]: @SDL_GetGamepadButtonLabelForType@, defined at @SDL3\/SDL_gamepad.h 1360:52@
 getGamepadButtonLabelForType
   :: SDL_GamepadType
   -- ^
@@ -3548,7 +3548,7 @@ getGamepadButtonLabelForType =
 --                   The unsafe flavor is 'getGamepadButtonLabelForType'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadButtonLabelForType@, defined at @SDL3\/SDL_gamepad.h 1359:52@
+--     [C declaration]: @SDL_GetGamepadButtonLabelForType@, defined at @SDL3\/SDL_gamepad.h 1360:52@
 getGamepadButtonLabelForTypeSafe
   :: SDL_GamepadType
   -- ^
@@ -3578,7 +3578,7 @@ getGamepadButtonLabelForTypeSafe =
 --                   The safe flavor is 'getGamepadButtonLabelSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadButtonLabel@, defined at @SDL3\/SDL_gamepad.h 1374:52@
+--     [C declaration]: @SDL_GetGamepadButtonLabel@, defined at @SDL3\/SDL_gamepad.h 1375:52@
 getGamepadButtonLabel
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3608,7 +3608,7 @@ getGamepadButtonLabel =
 --                   The unsafe flavor is 'getGamepadButtonLabel'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadButtonLabel@, defined at @SDL3\/SDL_gamepad.h 1374:52@
+--     [C declaration]: @SDL_GetGamepadButtonLabel@, defined at @SDL3\/SDL_gamepad.h 1375:52@
 getGamepadButtonLabelSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3641,7 +3641,7 @@ getGamepadButtonLabelSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetNumGamepadTouchpads@, defined at @SDL3\/SDL_gamepad.h 1388:33@
+--     [C declaration]: @SDL_GetNumGamepadTouchpads@, defined at @SDL3\/SDL_gamepad.h 1389:33@
 getNumGamepadTouchpads
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3671,7 +3671,7 @@ getNumGamepadTouchpads =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetNumGamepadTouchpads@, defined at @SDL3\/SDL_gamepad.h 1388:33@
+--     [C declaration]: @SDL_GetNumGamepadTouchpads@, defined at @SDL3\/SDL_gamepad.h 1389:33@
 getNumGamepadTouchpadsSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3701,7 +3701,7 @@ getNumGamepadTouchpadsSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetNumGamepadTouchpadFingers@, defined at @SDL3\/SDL_gamepad.h 1405:33@
+--     [C declaration]: @SDL_GetNumGamepadTouchpadFingers@, defined at @SDL3\/SDL_gamepad.h 1406:33@
 getNumGamepadTouchpadFingers
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3736,7 +3736,7 @@ getNumGamepadTouchpadFingers =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetNumGamepadTouchpadFingers@, defined at @SDL3\/SDL_gamepad.h 1405:33@
+--     [C declaration]: @SDL_GetNumGamepadTouchpadFingers@, defined at @SDL3\/SDL_gamepad.h 1406:33@
 getNumGamepadTouchpadFingersSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3771,7 +3771,7 @@ getNumGamepadTouchpadFingersSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadTouchpadFinger@, defined at @SDL3\/SDL_gamepad.h 1429:34@
+--     [C declaration]: @SDL_GetGamepadTouchpadFinger@, defined at @SDL3\/SDL_gamepad.h 1430:34@
 getGamepadTouchpadFinger
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3833,7 +3833,7 @@ getGamepadTouchpadFinger =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadTouchpadFinger@, defined at @SDL3\/SDL_gamepad.h 1429:34@
+--     [C declaration]: @SDL_GetGamepadTouchpadFinger@, defined at @SDL3\/SDL_gamepad.h 1430:34@
 getGamepadTouchpadFingerSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3895,7 +3895,7 @@ getGamepadTouchpadFingerSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GamepadHasSensor@, defined at @SDL3\/SDL_gamepad.h 1446:34@
+--     [C declaration]: @SDL_GamepadHasSensor@, defined at @SDL3\/SDL_gamepad.h 1447:34@
 gamepadHasSensor
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3930,7 +3930,7 @@ gamepadHasSensor =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GamepadHasSensor@, defined at @SDL3\/SDL_gamepad.h 1446:34@
+--     [C declaration]: @SDL_GamepadHasSensor@, defined at @SDL3\/SDL_gamepad.h 1447:34@
 gamepadHasSensorSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -3965,7 +3965,7 @@ gamepadHasSensorSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGamepadSensorEnabled@, defined at @SDL3\/SDL_gamepad.h 1464:34@
+--     [C declaration]: @SDL_SetGamepadSensorEnabled@, defined at @SDL3\/SDL_gamepad.h 1465:34@
 setGamepadSensorEnabled
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4005,7 +4005,7 @@ setGamepadSensorEnabled =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGamepadSensorEnabled@, defined at @SDL3\/SDL_gamepad.h 1464:34@
+--     [C declaration]: @SDL_SetGamepadSensorEnabled@, defined at @SDL3\/SDL_gamepad.h 1465:34@
 setGamepadSensorEnabledSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4045,7 +4045,7 @@ setGamepadSensorEnabledSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GamepadSensorEnabled@, defined at @SDL3\/SDL_gamepad.h 1479:34@
+--     [C declaration]: @SDL_GamepadSensorEnabled@, defined at @SDL3\/SDL_gamepad.h 1480:34@
 gamepadSensorEnabled
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4080,7 +4080,7 @@ gamepadSensorEnabled =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GamepadSensorEnabled@, defined at @SDL3\/SDL_gamepad.h 1479:34@
+--     [C declaration]: @SDL_GamepadSensorEnabled@, defined at @SDL3\/SDL_gamepad.h 1480:34@
 gamepadSensorEnabledSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4113,7 +4113,7 @@ gamepadSensorEnabledSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadSensorDataRate@, defined at @SDL3\/SDL_gamepad.h 1492:35@
+--     [C declaration]: @SDL_GetGamepadSensorDataRate@, defined at @SDL3\/SDL_gamepad.h 1493:35@
 getGamepadSensorDataRate
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4146,7 +4146,7 @@ getGamepadSensorDataRate =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadSensorDataRate@, defined at @SDL3\/SDL_gamepad.h 1492:35@
+--     [C declaration]: @SDL_GetGamepadSensorDataRate@, defined at @SDL3\/SDL_gamepad.h 1493:35@
 getGamepadSensorDataRateSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4181,7 +4181,7 @@ getGamepadSensorDataRateSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadSensorData@, defined at @SDL3\/SDL_gamepad.h 1511:34@
+--     [C declaration]: @SDL_GetGamepadSensorData@, defined at @SDL3\/SDL_gamepad.h 1512:34@
 getGamepadSensorData
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4226,7 +4226,7 @@ getGamepadSensorData =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_GetGamepadSensorData@, defined at @SDL3\/SDL_gamepad.h 1511:34@
+--     [C declaration]: @SDL_GetGamepadSensorData@, defined at @SDL3\/SDL_gamepad.h 1512:34@
 getGamepadSensorDataSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4273,7 +4273,7 @@ getGamepadSensorDataSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RumbleGamepad@, defined at @SDL3\/SDL_gamepad.h 1535:34@
+--     [C declaration]: @SDL_RumbleGamepad@, defined at @SDL3\/SDL_gamepad.h 1536:34@
 rumbleGamepad
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4322,7 +4322,7 @@ rumbleGamepad =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RumbleGamepad@, defined at @SDL3\/SDL_gamepad.h 1535:34@
+--     [C declaration]: @SDL_RumbleGamepad@, defined at @SDL3\/SDL_gamepad.h 1536:34@
 rumbleGamepadSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4375,7 +4375,7 @@ rumbleGamepadSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RumbleGamepadTriggers@, defined at @SDL3\/SDL_gamepad.h 1565:34@
+--     [C declaration]: @SDL_RumbleGamepadTriggers@, defined at @SDL3\/SDL_gamepad.h 1566:34@
 rumbleGamepadTriggers
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4428,7 +4428,7 @@ rumbleGamepadTriggers =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_RumbleGamepadTriggers@, defined at @SDL3\/SDL_gamepad.h 1565:34@
+--     [C declaration]: @SDL_RumbleGamepadTriggers@, defined at @SDL3\/SDL_gamepad.h 1566:34@
 rumbleGamepadTriggersSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4477,7 +4477,7 @@ rumbleGamepadTriggersSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGamepadLED@, defined at @SDL3\/SDL_gamepad.h 1587:34@
+--     [C declaration]: @SDL_SetGamepadLED@, defined at @SDL3\/SDL_gamepad.h 1588:34@
 setGamepadLED
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4526,7 +4526,7 @@ setGamepadLED =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SetGamepadLED@, defined at @SDL3\/SDL_gamepad.h 1587:34@
+--     [C declaration]: @SDL_SetGamepadLED@, defined at @SDL3\/SDL_gamepad.h 1588:34@
 setGamepadLEDSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4571,7 +4571,7 @@ setGamepadLEDSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SendGamepadEffect@, defined at @SDL3\/SDL_gamepad.h 1602:34@
+--     [C declaration]: @SDL_SendGamepadEffect@, defined at @SDL3\/SDL_gamepad.h 1603:34@
 sendGamepadEffect
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4609,7 +4609,7 @@ sendGamepadEffect =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_SendGamepadEffect@, defined at @SDL3\/SDL_gamepad.h 1602:34@
+--     [C declaration]: @SDL_SendGamepadEffect@, defined at @SDL3\/SDL_gamepad.h 1603:34@
 sendGamepadEffectSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4644,7 +4644,7 @@ sendGamepadEffectSafe =
 --                   The safe flavor is 'closeGamepadSafe'
 --                   .
 --
---     [C declaration]: @SDL_CloseGamepad@, defined at @SDL3\/SDL_gamepad.h 1616:34@
+--     [C declaration]: @SDL_CloseGamepad@, defined at @SDL3\/SDL_gamepad.h 1617:34@
 closeGamepad
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4667,7 +4667,7 @@ closeGamepad = Unsafe.sDL_CloseGamepad
 --                   The unsafe flavor is 'closeGamepad'
 --                   .
 --
---     [C declaration]: @SDL_CloseGamepad@, defined at @SDL3\/SDL_gamepad.h 1616:34@
+--     [C declaration]: @SDL_CloseGamepad@, defined at @SDL3\/SDL_gamepad.h 1617:34@
 closeGamepadSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4692,7 +4692,7 @@ closeGamepadSafe = Safe.sDL_CloseGamepad
 --                   The safe flavor is 'getGamepadAppleSFSymbolsNameForButtonSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadAppleSFSymbolsNameForButton@, defined at @SDL3\/SDL_gamepad.h 1632:42@
+--     [C declaration]: @SDL_GetGamepadAppleSFSymbolsNameForButton@, defined at @SDL3\/SDL_gamepad.h 1633:42@
 getGamepadAppleSFSymbolsNameForButton
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4722,7 +4722,7 @@ getGamepadAppleSFSymbolsNameForButton =
 --                   The unsafe flavor is 'getGamepadAppleSFSymbolsNameForButton'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadAppleSFSymbolsNameForButton@, defined at @SDL3\/SDL_gamepad.h 1632:42@
+--     [C declaration]: @SDL_GetGamepadAppleSFSymbolsNameForButton@, defined at @SDL3\/SDL_gamepad.h 1633:42@
 getGamepadAppleSFSymbolsNameForButtonSafe
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4752,7 +4752,7 @@ getGamepadAppleSFSymbolsNameForButtonSafe =
 --                   The safe flavor is 'getGamepadAppleSFSymbolsNameForAxisSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadAppleSFSymbolsNameForAxis@, defined at @SDL3\/SDL_gamepad.h 1647:42@
+--     [C declaration]: @SDL_GetGamepadAppleSFSymbolsNameForAxis@, defined at @SDL3\/SDL_gamepad.h 1648:42@
 getGamepadAppleSFSymbolsNameForAxis
   :: BG.Ptr SDL_Gamepad
   -- ^
@@ -4782,7 +4782,7 @@ getGamepadAppleSFSymbolsNameForAxis =
 --                   The unsafe flavor is 'getGamepadAppleSFSymbolsNameForAxis'
 --                   .
 --
---     [C declaration]: @SDL_GetGamepadAppleSFSymbolsNameForAxis@, defined at @SDL3\/SDL_gamepad.h 1647:42@
+--     [C declaration]: @SDL_GetGamepadAppleSFSymbolsNameForAxis@, defined at @SDL3\/SDL_gamepad.h 1648:42@
 getGamepadAppleSFSymbolsNameForAxisSafe
   :: BG.Ptr SDL_Gamepad
   -- ^

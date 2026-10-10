@@ -967,7 +967,7 @@ instance HasCField.HasCField SDL_MainThreadCallback "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @macro SDL_PROP_APP_METADATA_NAME_STRING@, literal @\"SDL.app.metadata.name\"@, defined at @SDL3\/SDL_init.h 470:9@
+-- | [C declaration]: @macro SDL_PROP_APP_METADATA_NAME_STRING@, literal @\"SDL.app.metadata.name\"@, defined at @SDL3\/SDL_init.h 471:9@
 sDL_PROP_APP_METADATA_NAME_STRING :: BG.ByteString
 sDL_PROP_APP_METADATA_NAME_STRING =
   BG.pack
@@ -994,7 +994,7 @@ sDL_PROP_APP_METADATA_NAME_STRING =
     , 0x65
     ]
 
--- | [C declaration]: @macro SDL_PROP_APP_METADATA_VERSION_STRING@, literal @\"SDL.app.metadata.version\"@, defined at @SDL3\/SDL_init.h 471:9@
+-- | [C declaration]: @macro SDL_PROP_APP_METADATA_VERSION_STRING@, literal @\"SDL.app.metadata.version\"@, defined at @SDL3\/SDL_init.h 472:9@
 sDL_PROP_APP_METADATA_VERSION_STRING :: BG.ByteString
 sDL_PROP_APP_METADATA_VERSION_STRING =
   BG.pack
@@ -1024,7 +1024,7 @@ sDL_PROP_APP_METADATA_VERSION_STRING =
     , 0x6E
     ]
 
--- | [C declaration]: @macro SDL_PROP_APP_METADATA_IDENTIFIER_STRING@, literal @\"SDL.app.metadata.identifier\"@, defined at @SDL3\/SDL_init.h 472:9@
+-- | [C declaration]: @macro SDL_PROP_APP_METADATA_IDENTIFIER_STRING@, literal @\"SDL.app.metadata.identifier\"@, defined at @SDL3\/SDL_init.h 473:9@
 sDL_PROP_APP_METADATA_IDENTIFIER_STRING :: BG.ByteString
 sDL_PROP_APP_METADATA_IDENTIFIER_STRING =
   BG.pack
@@ -1057,7 +1057,7 @@ sDL_PROP_APP_METADATA_IDENTIFIER_STRING =
     , 0x72
     ]
 
--- | [C declaration]: @macro SDL_PROP_APP_METADATA_CREATOR_STRING@, literal @\"SDL.app.metadata.creator\"@, defined at @SDL3\/SDL_init.h 473:9@
+-- | [C declaration]: @macro SDL_PROP_APP_METADATA_CREATOR_STRING@, literal @\"SDL.app.metadata.creator\"@, defined at @SDL3\/SDL_init.h 474:9@
 sDL_PROP_APP_METADATA_CREATOR_STRING :: BG.ByteString
 sDL_PROP_APP_METADATA_CREATOR_STRING =
   BG.pack
@@ -1087,7 +1087,7 @@ sDL_PROP_APP_METADATA_CREATOR_STRING =
     , 0x72
     ]
 
--- | [C declaration]: @macro SDL_PROP_APP_METADATA_COPYRIGHT_STRING@, literal @\"SDL.app.metadata.copyright\"@, defined at @SDL3\/SDL_init.h 474:9@
+-- | [C declaration]: @macro SDL_PROP_APP_METADATA_COPYRIGHT_STRING@, literal @\"SDL.app.metadata.copyright\"@, defined at @SDL3\/SDL_init.h 475:9@
 sDL_PROP_APP_METADATA_COPYRIGHT_STRING :: BG.ByteString
 sDL_PROP_APP_METADATA_COPYRIGHT_STRING =
   BG.pack
@@ -1119,7 +1119,7 @@ sDL_PROP_APP_METADATA_COPYRIGHT_STRING =
     , 0x74
     ]
 
--- | [C declaration]: @macro SDL_PROP_APP_METADATA_URL_STRING@, literal @\"SDL.app.metadata.url\"@, defined at @SDL3\/SDL_init.h 475:9@
+-- | [C declaration]: @macro SDL_PROP_APP_METADATA_URL_STRING@, literal @\"SDL.app.metadata.url\"@, defined at @SDL3\/SDL_init.h 476:9@
 sDL_PROP_APP_METADATA_URL_STRING :: BG.ByteString
 sDL_PROP_APP_METADATA_URL_STRING =
   BG.pack
@@ -1145,7 +1145,7 @@ sDL_PROP_APP_METADATA_URL_STRING =
     , 0x6C
     ]
 
--- | [C declaration]: @macro SDL_PROP_APP_METADATA_TYPE_STRING@, literal @\"SDL.app.metadata.type\"@, defined at @SDL3\/SDL_init.h 476:9@
+-- | [C declaration]: @macro SDL_PROP_APP_METADATA_TYPE_STRING@, literal @\"SDL.app.metadata.type\"@, defined at @SDL3\/SDL_init.h 477:9@
 sDL_PROP_APP_METADATA_TYPE_STRING :: BG.ByteString
 sDL_PROP_APP_METADATA_TYPE_STRING =
   BG.pack
