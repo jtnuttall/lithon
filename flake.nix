@@ -4,7 +4,7 @@
   inputs = {
     haskellNix.url = "github:input-output-hk/haskell.nix";
     nixpkgs.follows = "haskellNix/nixpkgs-unstable";
-    nixpkgs-sdl3.url = "github:NixOS/nixpkgs/26afbda9e6ffd7d1d91812d0688d734d3ab32b22"; # 3.4.16
+    nixpkgs-sdl3.url = "github:NixOS/nixpkgs/0904b979e7edf21009502d84aefe16fa731d4384"; # 3.4.18
 
     flake-utils.url = "github:numtide/flake-utils";
   };
@@ -26,15 +26,9 @@
           overlays = [
             haskellNix.overlay
             (final: prev: {
-              # Built against another nixpkgs, so no binary cache has it and
-              # CI builds it from source. Its test suite has an intermittent
-              # timeout (testrwlock, libsdl-org/SDL#15346) that nixpkgs
-              # patches around but CI still hits, and it tests SDL, not
-              # this repo.
-              sdl3 =
-                (prev.callPackage "${nixpkgs-sdl3}/pkgs/by-name/sd/sdl3/package.nix" {}).overrideAttrs {
-                  doCheck = false;
-                };
+              sdl3 = (prev.callPackage "${nixpkgs-sdl3}/pkgs/by-name/sd/sdl3/package.nix" {}).overrideAttrs {
+                doCheck = false;
+              };
             })
             (final: prev: {
               haskell-nix =
@@ -44,9 +38,7 @@
                     (prev.haskell-nix.extraPkgconfigMappings or {})
                     // {
                       "sdl3" = ["sdl3"];
-                      # haskell.nix maps `mpv` to the wrapped player (mpv
-                      # plus yt-dlp and its lua env); the bindings need only
-                      # the library.
+                      # haskell.nix maps `mpv` to the wrapped player.
                       "mpv" = ["libmpv"];
                     };
                 };
@@ -69,16 +61,12 @@
         };
 
         project = with pkgs; let
-          # hs-bindgen supports LLVM/Clang 16 through 22
           llvmPkgs = llvmPackages_22;
           hsBindgenHook = callPackage ./nix/hs-bindgen/hs-bindgen-hook.nix {
             llvmPackages = llvmPkgs;
           };
-          # libclang-bindings' configure honors LLVM_PATH (checked before
-          # llvm-config) and expects $LLVM_PATH/{lib,include}. nixpkgs splits
-          # libclang.so (lib output) from the clang-c headers (dev output),
-          # and llvm-config only reports LLVM's own dirs, so join the two
-          # outputs into the expected layout.
+          # libclang-bindings' configure honors LLVM_PATH  and expects
+          # $LLVM_PATH/{lib,include}.
           libclangPrefix = symlinkJoin {
             name = "libclang-prefix";
             paths = [
@@ -86,10 +74,6 @@
               (lib.getDev llvmPkgs.libclang)
             ];
           };
-          # One include and library hook per bound C library: hs-bindgen and
-          # the C compiler see each library's headers (the dev output's
-          # include/, not the lib output's), and the loader finds each
-          # shared library.
           libHook = libs: ''
             BINDGEN_EXTRA_CLANG_ARGS="${lib.concatMapStringsSep " " (p: "-isystem ${lib.getDev p}/include") libs} ''${BINDGEN_EXTRA_CLANG_ARGS:-}"
             export BINDGEN_EXTRA_CLANG_ARGS
@@ -144,12 +128,6 @@
                 haskellPackages.cabal-fmt
                 zlib
                 hsBindgenHook
-                # vendored hs-bindgen (lithon-hs-bindgen/vendor/): clang for
-                # builtin-include discovery at generation time, llvm-config as
-                # configure fallback, doxygen for doc-comment extraction.
-                # NB: upstream pins doxygen 1.15.0 because its XML output
-                # varies across versions — revisit once generated output is
-                # goldened (nix/hs-bindgen-dev.nix in the submodule).
                 llvmPkgs.clang
                 llvmPkgs.llvm
                 doxygen
@@ -199,8 +177,7 @@
                 diffutils
                 dyff
                 xq
-                # pyparsing: Vulkan-Docs' genvk.py generates the exactly-pinned
-                # vulkan_core.h for lithon-codegen's ABI static-assert gate
+                # pyparsing for Vulkan-Docs' genvk.py
                 (python314.withPackages (ps: [ps.pyparsing]))
                 dasel
                 xmlstarlet
@@ -230,6 +207,8 @@
             "sdl3-bindgen-sys-docs" = project.hsPkgs.sdl3-bindgen-sys.components.library.doc;
             "mpv-bindgen-sys-docs" = project.hsPkgs.mpv-bindgen-sys.components.library.doc;
           };
+
+          formatter = pkgs.alejandra;
 
           devShells =
             flake.devShells
