@@ -17,7 +17,7 @@ packages:
   lithon-hs-bindgen/vendor/c-expr/c-expr-dsl
   lithon-hs-bindgen/vendor/doxygen-parser
 
-index-state: 2026-09-12T22:51:09Z
+index-state: 2026-10-09T23:25:56Z
 write-ghc-environment-files: always
 
 -- Vendored packages build as libraries (plus hs-bindgen-cli) only
