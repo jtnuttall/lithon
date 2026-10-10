@@ -224,3 +224,15 @@ unit_versionPartsAreDigits = do
 
 structX :: LBS.ByteString -> LBS.ByteString
 structX entry = "{\"structs\": {\"X\": " <> entry <> "}}"
+
+-- | A constant introduced in one release and renumbered in a later one
+-- has an entry in both sections; the assert needs the later gate.
+unit_constantGatesMergeByMax :: IO ()
+unit_constantGatesMergeByMax = do
+  reg <-
+    either (assertFailure . toString) pure
+      $ decodeVersionsRegistry
+        3
+        "{\"enum-constants\": {\"X\": {\"since\": \"3.4.0\"}, \"Z\": {\"since\": \"3.2.4\"}},\
+        \ \"value-gates\": {\"X\": {\"since\": \"3.2.4\"}, \"Y\": {\"since\": \"3.2.8\"}}}"
+  (abiOverrides reg).constants @?= Map.fromList [("X", v3 3 4 0), ("Y", v3 3 2 8), ("Z", v3 3 2 4)]

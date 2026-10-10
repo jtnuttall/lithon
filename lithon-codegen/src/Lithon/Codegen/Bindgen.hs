@@ -55,7 +55,7 @@ import Lithon.Effect.Log
 import Lithon.Effect.Temporary
 import Lithon.HsBindgen qualified as HB (InvocationReport (..))
 import Lithon.Prelude
-import Options.Applicative hiding (ParseError, asum)
+import Options.Applicative hiding (ParseError, Success, asum)
 import System.FilePath ((</>))
 
 import Lithon.Codegen.Backend.Emit (
@@ -70,14 +70,24 @@ import Lithon.Codegen.Backend.Emit (
  )
 import Lithon.Codegen.Backend.Package.Emit (
   PackageOut (..),
-  ProjectRoot,
+  ProjectRoot (..),
   assumeYesP,
   emitHaskellPackage,
   guardCtx,
   packageOutP,
  )
-import Lithon.Codegen.Bindgen.Abi (AbiMacroConst (..))
-import Lithon.Codegen.Bindgen.Abi.Validate (AbiProblem, LibraryRef (..), validateAbi)
+import Lithon.Codegen.Bindgen.Abi (AbiDecl, AbiMacroConst (..))
+import Lithon.Codegen.Bindgen.Abi.Previous (
+  PreviousRender (..),
+  abiAssertionsFile,
+  parsePreviousRender,
+ )
+import Lithon.Codegen.Bindgen.Abi.Validate (
+  AbiProblem,
+  LibraryRef (..),
+  validateAbi,
+  validateEnumHistory,
+ )
 import Lithon.Codegen.Bindgen.Alias (
   AliasModule (..),
   CFunction (..),
@@ -160,6 +170,7 @@ import Lithon.Codegen.Bindgen.Unbound (
   validateConstantDispositions,
   validateShimDispositions,
  )
+import Lithon.Codegen.Bindgen.Version (parseVersionLoose)
 import Lithon.Codegen.Bindgen.Versions (
   Versioned (..),
   VersionsRegistry (..),
@@ -186,6 +197,9 @@ data BindgenError
   | PackagingFailed BindgenPackagingError
   | -- | The availability annotations to record the fixes in, and the problems.
     AbiValidationFailed FilePath (Errors AbiProblem)
+  | -- | The previous ABI render the enum-history check reads, and why it
+    -- could not.
+    PreviousRenderUnreadable FilePath Text
   | -- | The availability annotations, and the decls whose @stub-return@ no
     -- gated stub returns (and why).
     StubReturnUnused FilePath [(Text, UnusedStubReturn)]
@@ -237,6 +251,12 @@ instance Display BindgenError where
         <> from registry
         <> " and rerun:\n\n"
         <> intercalateTB "\n\n" (map displayBuilder (toList errs))
+    PreviousRenderUnreadable path why ->
+      "the previous ABI render "
+        <> from path
+        <> " could not be read for the enum-history check: "
+        <> from why
+        <> ". It is generated output: restore it from Git, or delete it to regenerate without the check."
     StubReturnUnused registry unused ->
       "unused stub-return in "
         <> from registry
@@ -339,7 +359,7 @@ runBindgen target root cmd = runRethrow @BindgenResolutionError (ResolutionFaile
       CmdSpec opts -> do
         registry <- loadVersionsRegistry target
         results <- runChain target registry
-        validateChain target registry results
+        validateChain target registry (previousRenderInTree target <$> root) results
         (_, ledger) <- triageUnbound target results
         syncArtifacts (guardCtx root opts.assumeYes) opts.emitEffect results ledger
       CmdGenerate opts -> do
@@ -348,7 +368,7 @@ runBindgen target root cmd = runRethrow @BindgenResolutionError (ResolutionFaile
         authoredHeaders <- loadAuthoredHeaders target env
         registry <- loadVersionsRegistry target
         results <- runChain target registry
-        validateChain target registry results
+        validateChain target registry (Just (opts.out.outDir </> abiAssertionsFile)) results
         (unbound, ledger) <- triageUnbound target results
         -- Only generate plans the constants (they need the probe), so only
         -- it checks the ledger's constant dispositions; before any write.
@@ -383,9 +403,14 @@ runBindgen target root cmd = runRethrow @BindgenResolutionError (ResolutionFaile
 -- checked so one run reports them all, and it runs before 'syncArtifacts' so
 -- a failing regeneration leaves the committed spec artifacts untouched.
 validateChain
-  :: (BindgenGen :> es, Error BindgenError :> es)
-  => BindgenTarget -> VersionsRegistry -> [HeaderResult BindgenPayload] -> Eff es ()
-validateChain target registry results = do
+  :: (BindgenGen :> es, Error BindgenError :> es, FileSystem :> es, Log :> es)
+  => BindgenTarget
+  -> VersionsRegistry
+  -> Maybe FilePath
+  -- ^ Where the previous render would be, for the enum-history check.
+  -> [HeaderResult BindgenPayload]
+  -> Eff es ()
+validateChain target registry previousRender results = do
   env <- getBindgenEnv
   let library =
         LibraryRef
@@ -393,13 +418,58 @@ validateChain target registry results = do
           , version = env.libraryVersion
           , registry = registryDisplayPath target (registryFile VersionsJson)
           }
+      abi = concatMap (.payload.abi) results
+  history <- enumHistory target previousRender env.libraryVersion library abi
   liftEither
     . first (AbiValidationFailed library.registry)
     . validationToEither
-    $ validateAbi target.versioning.baseline library (concatMap (.payload.abi) results)
+    $ validateAbi target.versioning.baseline library abi
+    *> history
   case unusedStubReturns registry (concatMap (.payload.gated) results) of
     [] -> pass
     unused -> throwError (StubReturnUnused library.registry unused)
+
+-- | Where @spec@, which has no @--out@, looks for the previous render:
+-- the target's package tree under the project root.
+previousRenderInTree :: BindgenTarget -> ProjectRoot -> FilePath
+previousRenderInTree target (ProjectRoot projectRoot) =
+  projectRoot </> toString target.packageName </> abiAssertionsFile
+
+-- | The enum-history check ('validateEnumHistory') against the previous
+-- render at the candidate path. No candidate, or no file there, skips
+-- the check (logged); a file that does not read back as a render fails
+-- the run, so the check cannot lapse silently.
+enumHistory
+  :: (Error BindgenError :> es, FileSystem :> es, Log :> es)
+  => BindgenTarget
+  -> Maybe FilePath
+  -> Text
+  -> LibraryRef
+  -> [AbiDecl]
+  -> Eff es (Validation (Errors AbiProblem) ())
+enumHistory target candidate libraryVersion library abi = case candidate of
+  Nothing -> skipped "no package tree to look in"
+  Just path ->
+    doesFileExist path >>= \case
+      False -> skipped ("no " <> toText path)
+      True -> do
+        contents <- decodeUtf8 <$> EBS.readFile path
+        previous <-
+          liftEither
+            . first (PreviousRenderUnreadable path)
+            $ parsePreviousRender target.versionLabel path contents
+        current <-
+          liftEither
+            . first (PreviousRenderUnreadable path . ("this render's library version: " <>) . toText)
+            $ parseVersionLoose libraryVersion
+        logInfo
+          $ "enum-history check against the previous render"
+          :# ["path" .= path, "previous" .= previous.versionText, "current" .= libraryVersion]
+        pure (validateEnumHistory target.versioning current library previous abi)
+ where
+  skipped why = do
+    logInfo $ "enum-history check skipped" :# ["why" .= (why :: Text)]
+    pure (Success ())
 
 -- | Triage the chain's skips against @unbound.json@ and render the ledger
 -- (@unbound.md@), returning the registry too. Run before anything is

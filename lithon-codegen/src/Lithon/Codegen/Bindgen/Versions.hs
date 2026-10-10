@@ -156,7 +156,9 @@ abiOverrides :: VersionsRegistry -> AbiOverrides
 abiOverrides reg =
   AbiOverrides
     { decls = (.since) <$> reg.decls
-    , constants = ((.since) <$> reg.enumConstants) <> ((.since) <$> reg.valueGates)
+    , -- A constant's introduction and a later renumbering may both be
+      -- recorded; the assert needs the later gate.
+      constants = Map.unionWith max ((.since) <$> reg.enumConstants) ((.since) <$> reg.valueGates)
     , macros = (.since) <$> reg.macroConstants
     , structs =
         reg.structs <&> \e ->

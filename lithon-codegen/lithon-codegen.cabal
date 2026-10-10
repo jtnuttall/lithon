@@ -73,6 +73,7 @@ library
       Lithon.Codegen.Backend.Package.Emit
       Lithon.Codegen.Bindgen
       Lithon.Codegen.Bindgen.Abi
+      Lithon.Codegen.Bindgen.Abi.Previous
       Lithon.Codegen.Bindgen.Abi.Validate
       Lithon.Codegen.Bindgen.Alias
       Lithon.Codegen.Bindgen.Alias.Config
