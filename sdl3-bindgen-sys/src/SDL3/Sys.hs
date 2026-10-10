@@ -52,9 +52,9 @@
 --   and named like what they wrap (@SDL_LogMessage@ -> @logMessage@,
 --   @SDL_MUSTLOCK@ -> @mustLock@). The variadic functions' shims take
 --   their message verbatim, never as a printf-style format string.
---   @SDL_Log@ is @logApplication@: @log@ is the math function.
+--   @log@ is @SDL_Log@'s shim; the math clones are raw-only.
 --
--- * Some aliases (@free@, @abs@, @init@, …) collide with the "Prelude";
+-- * Some aliases (@init@, @log@, @readIO@) collide with the "Prelude";
 --   import this module qualified or curate your import list.
 --
 -- == Families
@@ -106,7 +106,7 @@
 -- * "SDL3.Sys.Runtime" — Bridge vocabulary: C99 bool and C enum conversions, curated from the runtime.
 -- * "SDL3.Sys.Scancode" — Defines keyboard scancodes.
 -- * "SDL3.Sys.Sensor" — SDL sensor management.
--- * "SDL3.Sys.Stdinc" — SDL's C-library replacements: memory, strings, math, and conversions.
+-- * "SDL3.Sys.Stdinc" — SDL's C-library replacements: memory, strings, math, and conversions; this module aliases the allocator and SDL's own API.
 -- * "SDL3.Sys.Storage" — The storage API is a high-level API designed to abstract away the portability issues that come up when using something lower-level (in SDL's case, this sits on top of the [Filesystem](https://wiki.libsdl.org/SDL3/CategoryFilesystem) and [IOStream](https://wiki.libsdl.org/SDL3/CategoryIOStream) subsystems).
 -- * "SDL3.Sys.Surface" — SDL surfaces are buffers of pixels in system RAM.
 -- * "SDL3.Sys.System" — Platform-specific SDL API functions.

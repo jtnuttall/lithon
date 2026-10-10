@@ -1,11 +1,11 @@
 {
   "files": {
-    "CHANGELOG.md": "rhv3:7afb28e977e3485f",
+    "CHANGELOG.md": "rhv3:a0bdd1090a4c88e5",
     "LICENSE": "rhv3:e95315cef45a1f9f",
     "LICENSE_SDL": "rhv3:3505fb0514288c9e",
     "LICENSE_c-expr-runtime": "rhv3:5134b2c7a1f80df7",
     "LICENSE_hs-bindgen-runtime": "rhv3:5134b2c7a1f80df7",
-    "README.md": "rhv3:294011fc8c9eb274",
+    "README.md": "rhv3:257f08f07644fa87",
     "cbits/abi_assertions.c": "rhv3:5254f4625bfc968c",
     "include/sdl3-bindgen-sys/SDL_atomic_shims.h": "rhv3:7f2cc60430994643",
     "include/sdl3-bindgen-sys/SDL_audio_shims.h": "rhv3:1c2e730edb2c307c",
@@ -62,7 +62,7 @@
     "runtime/HsBindgen/Runtime/Support/TH/Types.hs": "rhv3:2d5d6477e4821e8d",
     "runtime/HsBindgen/Runtime/Union.hs": "rhv3:118de4d31f67426b",
     "sdl3-bindgen-sys.cabal": "rhv3:25196c1a0feac3cc",
-    "src/SDL3/Sys.hs": "rhv3:17dfe8a6f93d8949",
+    "src/SDL3/Sys.hs": "rhv3:8428ea42e4540dbf",
     "src/SDL3/Sys/Assert.hs": "rhv3:f458dc4e194c1edc",
     "src/SDL3/Sys/Asyncio.hs": "rhv3:24aa3fe9428975be",
     "src/SDL3/Sys/Atomic.hs": "rhv3:44388574e757cb4c",
@@ -359,7 +359,7 @@
     "src/SDL3/Sys/Keycode.hs": "rhv3:c074814596b0c5aa",
     "src/SDL3/Sys/Loadso.hs": "rhv3:a5899472145b5221",
     "src/SDL3/Sys/Locale.hs": "rhv3:5c6e0123aba8ee0a",
-    "src/SDL3/Sys/Log.hs": "rhv3:8f52d3f7e4fc7f0d",
+    "src/SDL3/Sys/Log.hs": "rhv3:2c207fa90d020d28",
     "src/SDL3/Sys/Main.hs": "rhv3:33995057260286bf",
     "src/SDL3/Sys/Messagebox.hs": "rhv3:14628305c9109a96",
     "src/SDL3/Sys/Metal.hs": "rhv3:97d9e7ce5f001c80",
@@ -378,7 +378,7 @@
     "src/SDL3/Sys/Runtime.hs": "rhv3:b282d382dc001680",
     "src/SDL3/Sys/Scancode.hs": "rhv3:0a46a968fe4748fb",
     "src/SDL3/Sys/Sensor.hs": "rhv3:09d99e57ebebe0b8",
-    "src/SDL3/Sys/Stdinc.hs": "rhv3:5465c2c07582ab96",
+    "src/SDL3/Sys/Stdinc.hs": "rhv3:bc83953b9a62e1c8",
     "src/SDL3/Sys/Storage.hs": "rhv3:f41f467dacd81484",
     "src/SDL3/Sys/Surface.hs": "rhv3:1e462f25f3dac281",
     "src/SDL3/Sys/System.hs": "rhv3:149cac8d386d6813",
@@ -393,7 +393,13 @@
   },
   "generatorVersion": "0.1.1.0",
   "meta": {
-    "aliasConfig": "rhv3:06889c0deb964b41",
+    "aliasAllow": {
+      "SDL_stdinc.h": {
+        "allowed": 22,
+        "bound": 153
+      }
+    },
+    "aliasConfig": "rhv3:e5d174f769a2d48b",
     "aliasNaming": "camel-segments",
     "constants": 174,
     "constantsConfig": "rhv3:9a3a2ab9539fafa5",

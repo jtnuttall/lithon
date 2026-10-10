@@ -2,11 +2,15 @@
 
 ## Unreleased
 
+Breaking (PVP major; release as 0.0.1.0): `SDL3.Sys.Stdinc` drops the 151
+function aliases released in 0.0.0.3 (the libc clones; the raw bindings are
+unchanged), and `log` is now `SDL_Log`'s shim, not the math function.
+
 ### Added
 
-- `memcpy`, `memmove`, `memset` and their `Safe` variants in
-  `SDL3.Sys.Stdinc` (raw: `sDL_memcpy` and friends in
-  `SDL3.Sys.Bindgen.Stdinc.*`). `SDL_stdinc.h` `#define`s `SDL_memcpy` as
+- `sDL_memcpy`, `sDL_memmove` and `sDL_memset` in
+  `SDL3.Sys.Bindgen.Stdinc.*` (raw-only, like the rest of the C library
+  clones: see Changed). `SDL_stdinc.h` `#define`s `SDL_memcpy` as
   libc's `memcpy` (likewise the other two) unless `SDL_SLOW_MEMCPY` is set,
   and hs-bindgen drops a function that a same-name macro shadows. The
   generator now sets `SDL_SLOW_MEMCPY`, `SDL_SLOW_MEMMOVE` and
@@ -31,7 +35,7 @@
   the header they extend under a new `C shims` section and named like what
   they wrap. See the README's `C shims` section.
   - Variadic functions, taking the message verbatim, never as a format
-    string: `logApplication` (`SDL_Log`), `logTrace`, `logVerbose`,
+    string: `log` (`SDL_Log`), `logTrace`, `logVerbose`,
     `logDebug`, `logInfo`, `logWarn`, `logError`, `logCritical`,
     `logMessage` in `SDL3.Sys.Log`; `setError` in `SDL3.Sys.Error`;
     `ioPrintf` in `SDL3.Sys.Iostream`.
@@ -53,6 +57,18 @@
 
 ### Changed
 
+- `SDL3.Sys.Stdinc` aliases 22 functions of `SDL_stdinc.h`: SDL's own API
+  there (environments, memory-function hooks, UTF-8 stepping) and the
+  allocator family (`malloc`, `calloc`, `realloc`, `free`, `alignedAlloc`,
+  `alignedFree`, `strdup`, `strndup`). Its other 131 functions, the C
+  library clones (`strlen`, `abs`, `qsort`, `rand`, `crc32`, `iconv`, ...),
+  are raw-only: the aliases 0.0.0.3 had for 128 of them are gone, and the
+  `memcpy` family is new and raw-only. Their raw imports stay in
+  `SDL3.Sys.Bindgen.Stdinc.*` (`sDL_strlen`). Its types and typed constants
+  are unchanged.
+- `log` is `SDL_Log`'s C shim. It was the math `SDL_log`, now raw-only
+  (`sDL_log`).
+- README: `SDL3.Sys.Stdinc`'s allowlist.
 - README: the `C shims` section, and the variadic functions and
   function-like macros it binds are no longer listed as unbound.
 - README: "What is not bound" is shorter: it points at the hs-bindgen
@@ -74,9 +90,10 @@
   `Support.HasFFIType`. They were private (no facade), so no consumer could
   import them.
 - `template-haskell >= 2.19` for the vendored runtime.
-- Exported names, signatures and export lists of all pre-existing modules are
-  unchanged, apart from the additions above and names added to the runtime
-  facades; the raw foreign imports changed only internally.
+- `SDL3.Sys.Stdinc` and `log` break, as above. Every other pre-existing
+  module keeps its exported names, signatures and export list, apart from
+  the additions above and names added to the runtime facades; the raw
+  foreign imports changed only internally.
 
 ## 0.0.0.3 - 2026-09-13
 

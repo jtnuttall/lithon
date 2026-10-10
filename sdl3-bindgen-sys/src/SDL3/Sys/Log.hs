@@ -61,8 +61,8 @@ module SDL3.Sys.Log (
   SDL3.Sys.Log.setLogOutputFunctionSafe,
 
   -- * C shims
-  SDL3.Sys.Log.logApplication,
-  SDL3.Sys.Log.logApplicationSafe,
+  SDL3.Sys.Log.log,
+  SDL3.Sys.Log.logSafe,
   SDL3.Sys.Log.logTrace,
   SDL3.Sys.Log.logTraceSafe,
   SDL3.Sys.Log.logVerbose,
@@ -551,17 +551,17 @@ setLogOutputFunctionSafe =
 --     === __@sdl3-bindgen-sys@ notes__
 --
 --     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_Log@.
---                   The safe flavor is 'logApplicationSafe'
+--                   The safe flavor is 'logSafe'
 --                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
 --
 --     [C declaration]: @lithon_SDL_Log@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 39:24@
-logApplication
+log
   :: PtrConst.PtrConst BG.CChar
   -- ^
   --
   --           [@message@]: the message to log, in UTF-8.
   -> IO ()
-logApplication = Unsafe.lithon_SDL_Log
+log = Unsafe.lithon_SDL_Log
 
 -- | Log a message with SDL_LOG_CATEGORY_APPLICATION and SDL_LOG_PRIORITY_INFO.
 --
@@ -576,17 +576,17 @@ logApplication = Unsafe.lithon_SDL_Log
 --     === __@sdl3-bindgen-sys@ notes__
 --
 --     [FFI safety]: __Safe__ foreign import of @lithon_SDL_Log@.
---                   The unsafe flavor is 'logApplication'
+--                   The unsafe flavor is 'log'
 --                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
 --
 --     [C declaration]: @lithon_SDL_Log@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 39:24@
-logApplicationSafe
+logSafe
   :: PtrConst.PtrConst BG.CChar
   -- ^
   --
   --           [@message@]: the message to log, in UTF-8.
   -> IO ()
-logApplicationSafe = Safe.lithon_SDL_Log
+logSafe = Safe.lithon_SDL_Log
 
 -- | Log a message with SDL_LOG_PRIORITY_TRACE.
 --
