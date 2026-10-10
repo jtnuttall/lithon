@@ -12,6 +12,11 @@ on:
   push:
     branches: [main, dev, next]
 
+# One run per PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   SDL_VERSION: "3.4.12"
   GHC_VERSION: "9.12.4"
@@ -266,6 +271,16 @@ jobs:
       - uses: actions/checkout@v4
       - name: Fetch submodules
         run: git submodule update --init --recursive --filter=tree:0
+      - name: Restore dist-newstyle
+        id: dist-newstyle
+        uses: actions/cache/restore@v6
+        with:
+          path: |
+            dist-newstyle
+            rapidhash/dist-newstyle
+          key: dist-newstyle-${{ hashFiles('flake.lock', 'cabal.project') }}-${{ github.sha }}
+          restore-keys: |
+            dist-newstyle-${{ hashFiles('flake.lock', 'cabal.project') }}-
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: |
@@ -275,3 +290,11 @@ jobs:
         run: nix develop '.?submodules=1#ci' --command cabal update
       - name: check.sh
         run: nix develop '.?submodules=1#ci' --command ./scripts/check.sh
+      - name: Save dist-newstyle
+        if: always() && steps.dist-newstyle.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: |
+            dist-newstyle
+            rapidhash/dist-newstyle
+          key: ${{ steps.dist-newstyle.outputs.cache-primary-key }}
