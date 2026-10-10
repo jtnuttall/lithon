@@ -19,7 +19,11 @@ module Lithon.Vk.Core10.Enums.PipelineStageFlagBits (
 ) where
 
 import Data.Word (Word32)
-import Lithon.Core.Flags (BitPos (..), Flags (..), FlagsWire)
+import Lithon.Core.Flags (
+  BitPos (..),
+  Flags (..),
+  FlagsWire,
+ )
 
 -- | Registry: <https://registry.khronos.org/vulkan/specs/latest/man/html/VkPipelineStageFlagBits.html VkPipelineStageFlagBits>
 -- Available: VK_VERSION_1_0

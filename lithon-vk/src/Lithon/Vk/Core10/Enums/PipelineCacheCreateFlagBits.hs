@@ -18,7 +18,11 @@ module Lithon.Vk.Core10.Enums.PipelineCacheCreateFlagBits (
 ) where
 
 import Data.Word (Word32)
-import Lithon.Core.Flags (BitPos (..), Flags (..), FlagsWire)
+import Lithon.Core.Flags (
+  BitPos (..),
+  Flags (..),
+  FlagsWire,
+ )
 
 -- | Registry: <https://registry.khronos.org/vulkan/specs/latest/man/html/VkPipelineCacheCreateFlagBits.html VkPipelineCacheCreateFlagBits>
 -- Available: VK_EXT_pipeline_creation_cache_control,VK_KHR_maintenance8,VK_VERSION_1_0

@@ -39,12 +39,22 @@ module Lithon.Vk.Extensions.KHR_display (
 ) where
 
 import Control.Exception (bracket)
-import Control.Monad (forM_, unless, when)
-import Control.Monad.IO.Class (MonadIO, liftIO)
+import Control.Monad (
+  forM_,
+  unless,
+  when,
+ )
+import Control.Monad.IO.Class (
+  MonadIO,
+  liftIO,
+ )
 import Control.Monad.IO.Unlift (MonadUnliftIO, withRunInIO)
 import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
-import Data.Int (Int32, Int64)
+import Data.Int (
+  Int32,
+  Int64,
+ )
 import Data.Kind (Type)
 import Data.Primitive.Types (Prim)
 import Data.Vector qualified as V
@@ -52,13 +62,52 @@ import Data.Vector.Generic qualified as VG
 import Data.Vector.Generic.Mutable qualified as VGM
 import Data.Vector.Primitive qualified as P
 import Data.Vector.Unboxed qualified as VU
-import Data.Word (Word16, Word32, Word64, Word8)
-import Foreign.C.Types (CSize (..))
-import Foreign.Ptr (FunPtr, Ptr, castPtr, nullFunPtr, nullPtr, plusPtr)
-import Foreign.Storable (Storable (..), peekByteOff, peekElemOff, pokeByteOff)
-import Lithon.Core.Alloc (arenaBytes, newBytes, newCString, newCStrings, runAlloc, withArena)
-import Lithon.Core.BaseTypes (Bool32 (..), toBool, pattern FALSE, pattern TRUE)
-import Lithon.Core.CStruct (CStruct (..), Chainable (..), FromCStruct (..), Nil (..), new, newVector, peekElems)
+import Data.Word (
+  Word16,
+  Word32,
+  Word64,
+  Word8,
+ )
+import Foreign.C.Types (
+  CSize (..),
+ )
+import Foreign.Ptr (
+  FunPtr,
+  Ptr,
+  castPtr,
+  nullFunPtr,
+  nullPtr,
+  plusPtr,
+ )
+import Foreign.Storable (
+  Storable (..),
+  peekByteOff,
+  peekElemOff,
+  pokeByteOff,
+ )
+import Lithon.Core.Alloc (
+  arenaBytes,
+  newBytes,
+  newCString,
+  newCStrings,
+  runAlloc,
+  withArena,
+ )
+import Lithon.Core.BaseTypes (
+  Bool32 (..),
+  toBool,
+  pattern FALSE,
+  pattern TRUE,
+ )
+import Lithon.Core.CStruct (
+  CStruct (..),
+  Chainable (..),
+  FromCStruct (..),
+  Nil (..),
+  new,
+  newVector,
+  peekElems,
+ )
 import Lithon.Core.Chain (
   AllExtends,
   Chain,
@@ -70,7 +119,11 @@ import Lithon.Core.Chain (
   withSomeStruct,
   pattern (:&),
  )
-import Lithon.Core.Flags (BitPos (..), Flags (..), FlagsWire)
+import Lithon.Core.Flags (
+  BitPos (..),
+  Flags (..),
+  FlagsWire,
+ )
 import Lithon.Core.Loader (checkCommandPtr)
 import Lithon.Core.Open (HasWire (..), Open (..), openFromWire, openToWire, unsafeFromWire)
 import Lithon.Core.Unbox (UnboxViaPrim (..))

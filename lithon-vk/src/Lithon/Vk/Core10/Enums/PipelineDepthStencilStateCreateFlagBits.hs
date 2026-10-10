@@ -18,7 +18,11 @@ module Lithon.Vk.Core10.Enums.PipelineDepthStencilStateCreateFlagBits (
 ) where
 
 import Data.Word (Word32)
-import Lithon.Core.Flags (BitPos (..), Flags, FlagsWire)
+import Lithon.Core.Flags (
+  BitPos (..),
+  Flags,
+  FlagsWire,
+ )
 
 -- | Registry: <https://registry.khronos.org/vulkan/specs/latest/man/html/VkPipelineDepthStencilStateCreateFlagBits.html VkPipelineDepthStencilStateCreateFlagBits>
 -- Available: VK_EXT_rasterization_order_attachment_access,VK_VERSION_1_0
@@ -30,6 +34,7 @@ type instance FlagsWire PipelineDepthStencilStateCreateFlagBits = Word32
 instance BitPos PipelineDepthStencilStateCreateFlagBits where
   bitOf = \case {}
   allBits =
-    []
+    [
+    ]
 
 type PipelineDepthStencilStateCreateFlags = Flags PipelineDepthStencilStateCreateFlagBits

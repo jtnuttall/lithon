@@ -18,7 +18,11 @@ module Lithon.Vk.Core13.Enums.RenderingFlagBits (
 ) where
 
 import Data.Word (Word32)
-import Lithon.Core.Flags (BitPos (..), Flags (..), FlagsWire)
+import Lithon.Core.Flags (
+  BitPos (..),
+  Flags (..),
+  FlagsWire,
+ )
 
 -- | Registry: <https://registry.khronos.org/vulkan/specs/latest/man/html/VkRenderingFlagBits.html VkRenderingFlagBits>
 -- Available: VK_VERSION_1_3

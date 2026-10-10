@@ -35,13 +35,31 @@ import Data.Vector.Generic qualified as VG
 import Data.Vector.Generic.Mutable qualified as VGM
 import Data.Vector.Primitive qualified as P
 import Data.Vector.Unboxed qualified as VU
-import Data.Word (Word16, Word32, Word64, Word8)
+import Data.Word (
+  Word16,
+  Word32,
+  Word64,
+  Word8,
+ )
 import Foreign.C.Types (CSize (..))
 import Foreign.Ptr (FunPtr, Ptr, castPtr, nullPtr, plusPtr)
-import Foreign.Storable (Storable, peekByteOff, peekElemOff, pokeByteOff)
+import Foreign.Storable (
+  Storable,
+  peekByteOff,
+  peekElemOff,
+  pokeByteOff,
+ )
 import Lithon.Core.Alloc (arenaBytes, newBytes, newCString, newCStrings, runAlloc, withArena)
 import Lithon.Core.BaseTypes (Bool32 (..), toBool, pattern FALSE, pattern TRUE)
-import Lithon.Core.CStruct (CStruct (..), Chainable (..), FromCStruct (..), Nil (..), new, newVector, peekElems)
+import Lithon.Core.CStruct (
+  CStruct (..),
+  Chainable (..),
+  FromCStruct (..),
+  Nil (..),
+  new,
+  newVector,
+  peekElems,
+ )
 import Lithon.Core.Chain (
   AllExtends,
   Chain,

@@ -34,22 +34,75 @@ module Lithon.Vk.Extensions.KHR_performance_query (
   releaseProfilingLockKHR,
 ) where
 
-import Control.Monad (forM_, unless, when)
-import Control.Monad.IO.Class (MonadIO, liftIO)
+import Control.Monad (
+  forM_,
+  unless,
+  when,
+ )
+import Control.Monad.IO.Class (
+  MonadIO,
+  liftIO,
+ )
 import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
-import Data.Int (Int32, Int64)
+import Data.Int (
+  Int32,
+  Int64,
+ )
 import Data.Kind (Type)
 import Data.Vector qualified as V
 import Data.Vector.Storable.Sized qualified as VSS
-import Data.Word (Word16, Word32, Word64, Word8)
-import Foreign.C.Types (CSize (..))
+import Data.Word (
+  Word16,
+  Word32,
+  Word64,
+  Word8,
+ )
+import Foreign.C.Types (
+  CSize (..),
+ )
 import Foreign.Marshal.Utils (fillBytes)
-import Foreign.Ptr (FunPtr, Ptr, castPtr, nullFunPtr, nullPtr, plusPtr)
-import Foreign.Storable (Storable (..), peekByteOff, peekElemOff, pokeByteOff)
-import Lithon.Core.Alloc (arenaBytes, newBytes, newCString, newCStrings, runAlloc, withArena)
-import Lithon.Core.BaseTypes (Bool32 (..), toBool, pattern FALSE, pattern TRUE)
-import Lithon.Core.CStruct (CStruct (..), Chainable (..), FromCStruct (..), Nil (..), new, newVector, peekElems, peekFixedBytes, peekFixedString, pokeFixedBytes, pokeFixedString)
+import Foreign.Ptr (
+  FunPtr,
+  Ptr,
+  castPtr,
+  nullFunPtr,
+  nullPtr,
+  plusPtr,
+ )
+import Foreign.Storable (
+  Storable (..),
+  peekByteOff,
+  peekElemOff,
+  pokeByteOff,
+ )
+import Lithon.Core.Alloc (
+  arenaBytes,
+  newBytes,
+  newCString,
+  newCStrings,
+  runAlloc,
+  withArena,
+ )
+import Lithon.Core.BaseTypes (
+  Bool32 (..),
+  toBool,
+  pattern FALSE,
+  pattern TRUE,
+ )
+import Lithon.Core.CStruct (
+  CStruct (..),
+  Chainable (..),
+  FromCStruct (..),
+  Nil (..),
+  new,
+  newVector,
+  peekElems,
+  peekFixedBytes,
+  peekFixedString,
+  pokeFixedBytes,
+  pokeFixedString,
+ )
 import Lithon.Core.Chain (
   AllExtends,
   Chain,
@@ -61,9 +114,19 @@ import Lithon.Core.Chain (
   withSomeStruct,
   pattern (:&),
  )
-import Lithon.Core.Flags (BitPos (..), Flags (..), FlagsWire)
+import Lithon.Core.Flags (
+  BitPos (..),
+  Flags (..),
+  FlagsWire,
+ )
 import Lithon.Core.Loader (checkCommandPtr)
-import Lithon.Core.Open (HasWire (..), Open (..), openFromWire, openToWire, unsafeFromWire)
+import Lithon.Core.Open (
+  HasWire (..),
+  Open (..),
+  openFromWire,
+  openToWire,
+  unsafeFromWire,
+ )
 
 import Lithon.Vk.Core10.Handles
 import Lithon.Vk.Dispatch
@@ -79,7 +142,8 @@ type instance FlagsWire AcquireProfilingLockFlagBitsKHR = Word32
 instance BitPos AcquireProfilingLockFlagBitsKHR where
   bitOf = \case {}
   allBits =
-    []
+    [
+    ]
 
 -- | Registry: <https://registry.khronos.org/vulkan/specs/latest/man/html/VkPerformanceCounterDescriptionFlagBitsKHR.html VkPerformanceCounterDescriptionFlagBitsKHR>
 -- Available: VK_KHR_performance_query

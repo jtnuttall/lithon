@@ -24,7 +24,11 @@ import Control.Monad.IO.Class (liftIO)
 import Data.Int (Int32)
 import Data.Word (Word32)
 import Foreign.Storable (Storable (..))
-import Lithon.Core.CStruct (CStruct (..), FromCStruct (..), Nil (..))
+import Lithon.Core.CStruct (
+  CStruct (..),
+  FromCStruct (..),
+  Nil (..),
+ )
 
 -- | Registry: <https://registry.khronos.org/vulkan/specs/latest/man/html/VkExtent2D.html VkExtent2D>
 -- Available: VK_VERSION_1_0
