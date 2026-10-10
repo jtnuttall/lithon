@@ -91,6 +91,9 @@ import SDL3.Sys.Bindgen.Surface
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_surface.h>"
          , "SDL_Surface *hs_bindgen_f5d9dffb67ed3a02 ("
          , "  signed int arg1,"

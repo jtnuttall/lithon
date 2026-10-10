@@ -2,8 +2,78 @@
 
 ## Unreleased
 
+Breaking (PVP major; release as 0.0.1.0): `SDL3.Sys.Stdinc` drops the 151
+function aliases released in 0.0.0.3 (the libc clones; the raw bindings are
+unchanged), and `log` is now `SDL_Log`'s shim, not the math function.
+
+### Added
+
+- `sDL_memcpy`, `sDL_memmove` and `sDL_memset` in
+  `SDL3.Sys.Bindgen.Stdinc.*` (raw-only, like the rest of the C library
+  clones: see Changed). `SDL_stdinc.h` `#define`s `SDL_memcpy` as
+  libc's `memcpy` (likewise the other two) unless `SDL_SLOW_MEMCPY` is set,
+  and hs-bindgen drops a function that a same-name macro shadows. The
+  generator now sets `SDL_SLOW_MEMCPY`, `SDL_SLOW_MEMMOVE` and
+  `SDL_SLOW_MEMSET`, so the declarations stay and bind to SDL's own
+  functions.
+- Typed constants for 29 macros hs-bindgen cannot translate, each typed at
+  its C type (its newtype, or `Word64` for `size_t`) and exported from the
+  curated module of that type:
+  - `SDL3.Sys.Stdinc`: the sixteen `SDL_MAX_*` and `SDL_MIN_*` limits of
+    `Sint8` through `Uint64` (`SDL_MIN_SINT8`, `SDL_MAX_UINT64`, ...),
+    `SDL_MAX_TIME` and `SDL_MIN_TIME` (`SDL_Time`), and `SDL_SIZE_MAX`,
+    `SDL_ICONV_ERROR`, `SDL_ICONV_E2BIG`, `SDL_ICONV_EILSEQ` and
+    `SDL_ICONV_EINVAL`, which are `Word64` (the `size_t` constants).
+  - `SDL3.Sys.Audio`: `SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK` and
+    `SDL_AUDIO_DEVICE_DEFAULT_RECORDING`.
+  - `SDL3.Sys.Mouse`: `SDL_TOUCH_MOUSEID` and `SDL_PEN_MOUSEID`.
+  - `SDL3.Sys.Touch`: `SDL_MOUSE_TOUCHID` and `SDL_PEN_TOUCHID`.
+- ABI assertions for the 29 constants.
+- C shims: 57 fixed-arity C functions over what the FFI cannot call, in
+  `include/sdl3-bindgen-sys/SDL_*_shims.h` (one header per SDL header,
+  raw bindings in `SDL3.Sys.Bindgen.*Shims`), exported from the module of
+  the header they extend under a new `C shims` section and named like what
+  they wrap. See the README's `C shims` section.
+  - Variadic functions, taking the message verbatim, never as a format
+    string: `log` (`SDL_Log`), `logTrace`, `logVerbose`,
+    `logDebug`, `logInfo`, `logWarn`, `logError`, `logCritical`,
+    `logMessage` in `SDL3.Sys.Log`; `setError` in `SDL3.Sys.Error`;
+    `ioPrintf` in `SDL3.Sys.Iostream`.
+  - Function-like macros: `unsupported`, `invalidParamError`
+    (`SDL3.Sys.Error`); `fourCC` (`SDL3.Sys.Stdinc`); `secondsToNs`,
+    `msToNs`, `usToNs` (`SDL3.Sys.Timer`); `swap16`, `swap32`, `swap64` and
+    the `LE`/`BE` swaps of 16, 32 and 64 bits and of floats
+    (`SDL3.Sys.Endian`); `createThread`, `createThreadWithProperties`
+    (`SDL3.Sys.Thread`), which pass the C runtime's thread entry and exit
+    functions on Windows like SDL's macros do; `mustLock`
+    (`SDL3.Sys.Surface`); `atomicIncRef`, `atomicDecRef`
+    (`SDL3.Sys.Atomic`); `audioFrameSize`, `defineAudioFormat`
+    (`SDL3.Sys.Audio`); and in `SDL3.Sys.Pixels`, `definePixelFourCC`,
+    `bitsPerPixel`, `bytesPerPixel`, the seven `isPixelFormat*` predicates,
+    `defineColorspace`, the six `colorspace*` accessors and the five
+    `isColorspace*` predicates.
+- The package ships the shims' headers (`extra-source-files`) and compiles
+  its wrapper C with `include-dirs: include`.
+
 ### Changed
 
+- `SDL3.Sys.Stdinc` aliases 22 functions of `SDL_stdinc.h`: SDL's own API
+  there (environments, memory-function hooks, UTF-8 stepping) and the
+  allocator family (`malloc`, `calloc`, `realloc`, `free`, `alignedAlloc`,
+  `alignedFree`, `strdup`, `strndup`). Its other 131 functions, the C
+  library clones (`strlen`, `abs`, `qsort`, `rand`, `crc32`, `iconv`, ...),
+  are raw-only: the aliases 0.0.0.3 had for 128 of them are gone, and the
+  `memcpy` family is new and raw-only. Their raw imports stay in
+  `SDL3.Sys.Bindgen.Stdinc.*` (`sDL_strlen`). Its types and typed constants
+  are unchanged.
+- `log` is `SDL_Log`'s C shim. It was the math `SDL_log`, now raw-only
+  (`sDL_log`).
+- README: `SDL3.Sys.Stdinc`'s allowlist.
+- README: the `C shims` section, and the variadic functions and
+  function-like macros it binds are no longer listed as unbound.
+- README: "What is not bound" is shorter: it points at the hs-bindgen
+  team's survey of SDL's macros, says what differs here, lists the rest in
+  one paragraph, and links the skip ledger.
 - Regenerated with hs-bindgen 1.0.0.0.
 - Raw modules (`SDL3.Sys.Bindgen.*`): each foreign import sits behind a
   wrapper that converts argument by argument through `HasFFIType` and keeps
@@ -20,9 +90,10 @@
   `Support.HasFFIType`. They were private (no facade), so no consumer could
   import them.
 - `template-haskell >= 2.19` for the vendored runtime.
-- Exported names, signatures and export lists of all pre-existing modules are
-  unchanged, apart from names added to the runtime facades; the raw foreign
-  imports changed only internally.
+- `SDL3.Sys.Stdinc` and `log` break, as above. Every other pre-existing
+  module keeps its exported names, signatures and export list, apart from
+  the additions above and names added to the runtime facades; the raw
+  foreign imports changed only internally.
 
 ## 0.0.0.3 - 2026-09-13
 

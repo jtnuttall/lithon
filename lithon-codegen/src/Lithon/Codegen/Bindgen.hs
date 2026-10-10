@@ -13,13 +13,18 @@
 -- binding specifications into @lithon-codegen\/data\/\<key\>\/spec\/@. Each
 -- header's invocation consumes the specs of the headers it includes, so the
 -- committed specs are both the reviewable record of the generated type
--- surface and the chaining medium between invocations.
+-- surface and the chaining medium between invocations. Beside them it
+-- writes @unbound.md@, the skip ledger: every declaration hs-bindgen left
+-- unbound, triaged by @unbound.json@ ("Lithon.Codegen.Bindgen.Unbound").
 --
 -- @generate@ does the same, then plans the curated alias layer and emits
 -- the package.
 --
--- Curation inputs live beside the specs: @overrides.yaml@ (the prescriptive
--- hs-bindgen spec), @aliases.json@, @constants.json@, and @versions.json@.
+-- Curation inputs live beside the specs: @overrides\/@ (the prescriptive
+-- hs-bindgen specs, one file per header), @aliases.json@, @constants.json@,
+-- @unbound.json@, and @versions.json@; so do the C headers lithon authors
+-- for the target, in @include\/@, which the chain binds like the library's
+-- own ('Lithon.Codegen.Bindgen.Target.AuthoredHeaders').
 module Lithon.Codegen.Bindgen (
   BindgenError (..),
   BindgenCmd (..),
@@ -36,6 +41,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Conduit.Process.Typed (ProcessConfig)
 import Data.Hash.RapidHash
 import Data.Map.Strict qualified as Map
+import Data.Set qualified as Set
 import Data.Text.IO qualified as TIO
 import Effectful (Eff, IOE, (:>))
 import Effectful.Concurrent.Async (Concurrent)
@@ -47,6 +53,7 @@ import Lithon.Effect.Error
 import Lithon.Effect.FileSystem
 import Lithon.Effect.Log
 import Lithon.Effect.Temporary
+import Lithon.HsBindgen qualified as HB (InvocationReport (..))
 import Lithon.Prelude
 import Options.Applicative hiding (ParseError, asum)
 import System.FilePath ((</>))
@@ -73,6 +80,7 @@ import Lithon.Codegen.Bindgen.Abi (AbiMacroConst (..))
 import Lithon.Codegen.Bindgen.Abi.Validate (AbiProblem, LibraryRef (..), validateAbi)
 import Lithon.Codegen.Bindgen.Alias (
   AliasModule (..),
+  CFunction (..),
   FamilyDecls (..),
   aliasRewriteMap,
   functionCensus,
@@ -82,6 +90,8 @@ import Lithon.Codegen.Bindgen.Alias (
   renderUmbrella,
  )
 import Lithon.Codegen.Bindgen.Alias.Config (
+  AliasConfig (..),
+  AllowEntry (..),
   ValidatedAliasConfig (..),
   decodeAliasConfig,
   namingRuleText,
@@ -91,10 +101,11 @@ import Lithon.Codegen.Bindgen.Alias.Constants (
   ConstantError,
   ConstantGroupPlan (..),
   ConstantMember (..),
-  ConstantsConfig (..),
   FamilyConstants (..),
+  ProbeResult,
+  constantProbeInputs,
   decodeConstantsConfig,
-  enumerateMembers,
+  emptyProbe,
   parseProbeOutput,
   planConstants,
   renderProbeSource,
@@ -121,6 +132,8 @@ import Lithon.Codegen.Bindgen.Env (
   Registry (..),
   driverOpts,
   getBindgenEnv,
+  headerSourcePath,
+  loadAuthoredHeaders,
   loadStatics,
   registryFile,
   runBindgenGen,
@@ -128,12 +141,24 @@ import Lithon.Codegen.Bindgen.Env (
 import Lithon.Codegen.Bindgen.Package (BindgenPackagingError, assembleBindgenPackage)
 import Lithon.Codegen.Bindgen.Payload (BindgenPayload (..), distillPayload)
 import Lithon.Codegen.Bindgen.Target (
+  AuthoredHeaders (..),
   BindgenTarget (..),
   VersionScheme (..),
   headerPlan,
-  includeArg,
+  isAuthored,
   registryDisplayPath,
   validateTarget,
+ )
+import Lithon.Codegen.Bindgen.Unbound (
+  LedgerSource (..),
+  UnboundConfig,
+  UnboundError,
+  decodeUnboundConfig,
+  renderUnbound,
+  unboundDoc,
+  untriagedSnippets,
+  validateConstantDispositions,
+  validateShimDispositions,
  )
 import Lithon.Codegen.Bindgen.Versions (
   Versioned (..),
@@ -164,6 +189,9 @@ data BindgenError
   | -- | The availability annotations, and the decls whose @stub-return@ no
     -- gated stub returns (and why).
     StubReturnUnused FilePath [(Text, UnusedStubReturn)]
+  | -- | The skip ledger's registry, and where it disagrees with the chain's
+    -- skips (or, for a @constant@ disposition, with @constants.json@).
+    UnboundFailed FilePath (Errors UnboundError)
   deriving stock (Show)
 
 instance From (Errors AliasError) BindgenError where
@@ -214,6 +242,20 @@ instance Display BindgenError where
         <> from registry
         <> " (no gated stub returns it); nothing was written:"
         <> foldMap (\(name, why) -> "\n  - " <> from name <> ": " <> unusedStubReturn why) unused
+    UnboundFailed registry errs ->
+      "the skip ledger disagrees with "
+        <> from registry
+        <> "; nothing was written. Every name hs-bindgen skips needs exactly one disposition"
+        <> " (shim, constant, wontfix, or upstream), every listed name must still be skipped,"
+        <> " an authored C header must bind every name listed as shim, and constants.json must"
+        <> " bind every name listed as constant:"
+        <> displayBuilder errs
+        <> case untriagedSnippets (toList errs) of
+          [] -> mempty
+          snippets ->
+            "\n\nThe untriaged names, one group per reason; paste each into \"groups\", then choose"
+              <> " its disposition and write its note:\n\n"
+              <> foldMap from snippets
    where
     unusedStubReturn = \case
       NotGated ->
@@ -298,29 +340,47 @@ runBindgen target root cmd = runRethrow @BindgenResolutionError (ResolutionFaile
         registry <- loadVersionsRegistry target
         results <- runChain target registry
         validateChain target registry results
-        syncSpecs (guardCtx root opts.assumeYes) opts.emitEffect results
+        (_, ledger) <- triageUnbound target results
+        syncArtifacts (guardCtx root opts.assumeYes) opts.emitEffect results ledger
       CmdGenerate opts -> do
         -- Before the chain: a missing README should not cost a full run.
         statics <- loadStatics target env
+        authoredHeaders <- loadAuthoredHeaders target env
         registry <- loadVersionsRegistry target
         results <- runChain target registry
         validateChain target registry results
-        -- Specs and package come from the same chain run, so they can never
-        -- skew; both emits respect --check.
-        syncSpecs (guardCtx root opts.out.assumeYes) opts.out.emitEffect results
+        (unbound, ledger) <- triageUnbound target results
+        -- Only generate plans the constants (they need the probe), so only
+        -- it checks the ledger's constant dispositions; before any write.
+        constants@(constantPlans, _) <- planConstantGroups target (map (.payload.facts) results)
+        liftEither
+          . first (UnboundFailed (registryDisplayPath target (registryFile UnboundJson)))
+          $ validateConstantDispositions
+            unbound
+            (Set.fromList [m.cName | p <- constantPlans, m <- p.members])
+        -- Specs, ledger, and package come from the same chain run, so they
+        -- can never skew; both emits respect --check.
+        syncArtifacts (guardCtx root opts.out.assumeYes) opts.out.emitEffect results ledger
         (aliasFiles, macroConsts, aliasMeta) <-
-          planAliases target registry results
+          planAliases target registry results constants
         tree <-
           liftEither
             . first PackagingFailed
-            $ assembleBindgenPackage target statics env.libraryVersion aliasFiles macroConsts results
+            $ assembleBindgenPackage
+              target
+              statics
+              authoredHeaders
+              env.libraryVersion
+              aliasFiles
+              macroConsts
+              results
         manifestMeta <- chainMeta results
         runErrorFrom @EmitError @BindgenError
           $ emitHaskellPackage root opts.out (manifestMeta <> aliasMeta) tree
 
 -- | Refuse to write (or @--check@) a layout whose growth story is
 -- incomplete, or a @stub-return@ annotation no gate uses: every struct is
--- checked so one run reports them all, and it runs before 'syncSpecs' so
+-- checked so one run reports them all, and it runs before 'syncArtifacts' so
 -- a failing regeneration leaves the committed spec artifacts untouched.
 validateChain
   :: (BindgenGen :> es, Error BindgenError :> es)
@@ -341,7 +401,52 @@ validateChain target registry results = do
     [] -> pass
     unused -> throwError (StubReturnUnused library.registry unused)
 
--- | Load, validate, plan, and render the target's curated layer.
+-- | Triage the chain's skips against @unbound.json@ and render the ledger
+-- (@unbound.md@), returning the registry too. Run before anything is
+-- written, by both commands: a skip without a disposition, a disposition
+-- for a name that is bound now, or a @shim@ disposition no authored C
+-- function binds fails the run, and both commands emit the ledger (an
+-- artifact one of them did not emit, the other would prune).
+triageUnbound
+  :: (BindgenGen :> es, Error BindgenError :> es, FileSystem :> es)
+  => BindgenTarget -> [HeaderResult BindgenPayload] -> Eff es (UnboundConfig, Text)
+triageUnbound target results = do
+  env <- getBindgenEnv
+  bytes <- LBS.fromStrict <$> EBS.readFile env.paths.unbound
+  config <-
+    liftEither
+      . first (RegistryDecodeFailed UnboundJson env.paths.unbound)
+      $ decodeUnboundConfig bytes
+  let source =
+        LedgerSource
+          { key = target.key
+          , library = target.versionLabel <> " " <> env.libraryVersion
+          }
+  doc <-
+    liftEither
+      . first (UnboundFailed registryPath)
+      $ unboundDoc source (headerPlan target) config results
+  -- Known from the chain alone (unlike the constant dispositions), so both
+  -- commands check it.
+  liftEither
+    . first (UnboundFailed registryPath)
+    $ validateShimDispositions
+      ((.namePrefix) <$> target.authored)
+      config
+      ( Set.fromList
+          [ fn.cName
+          | r <- results
+          , isAuthored target r.unit.headerName
+          , fn <- r.payload.facts.functions
+          ]
+      )
+  pure (config, renderUnbound doc)
+ where
+  registryPath = registryDisplayPath target (registryFile UnboundJson)
+
+-- | Load, validate, plan, and render the target's curated layer, with the
+-- typed constants 'planConstantGroups' planned (and the registry bytes
+-- they came from).
 --
 -- Both registries are required: every callback-taking function must be
 -- classified (@aliases.json@) and the typed-constant groups are the
@@ -350,18 +455,17 @@ validateChain target registry results = do
 -- run.
 planAliases
   :: ( HasCallStack
-     , IOE :> es
      , Log :> es
      , BindgenGen :> es
-     , Driver :> es
      , Error BindgenError :> es
      , FileSystem :> es
      )
   => BindgenTarget
   -> VersionsRegistry
   -> [HeaderResult BindgenPayload]
+  -> ([ConstantGroupPlan], LByteString)
   -> Eff es ([(Text, Text)], [AbiMacroConst], Map Text Aeson.Value)
-planAliases target registry headerResults = do
+planAliases target registry headerResults (constantPlans, constantsBytes) = do
   env <- getBindgenEnv
   let families = map (.payload.facts) headerResults
 
@@ -373,9 +477,8 @@ planAliases target registry headerResults = do
   validated <-
     liftEither
       . first from
-      $ validateAliasConfig (functionCensus families) config
+      $ validateAliasConfig target.functionPrefix (functionCensus families) config
 
-  (constantPlans, constantsBytes) <- planConstantGroups target families
   let plansByFamily =
         Map.fromListWith
           (flip (<>))
@@ -393,7 +496,7 @@ planAliases target registry headerResults = do
         ]
 
   aliasModules <- liftEither . first from $ planAliasLayer target validated plansByFamily families
-  let rewriteMap = aliasRewriteMap aliasModules
+  let rewriteMap = aliasRewriteMap target families aliasModules
       rendered =
         map (renderAliasModule target rewriteMap) aliasModules
           <> [renderRuntimeModule target, renderUmbrella target aliasModules]
@@ -412,12 +515,21 @@ planAliases target registry headerResults = do
         , ("constantsConfig", Aeson.toJSON (rapidhash (LBS.toStrict constantsBytes)))
         , ("constants", Aeson.toJSON (length macroConsts))
         ]
+        -- Per allowlisted header, so a manifest diff on a library bump
+        -- shows the curated and bound counts (validated equal to the census).
+        <> Map.fromList
+          [ ("aliasAllow", Aeson.toJSON (Map.map allowStats config.allow))
+          | not (Map.null config.allow)
+          ]
     )
+ where
+  allowStats :: AllowEntry -> Map Text Int
+  allowStats entry = Map.fromList [("allowed", length entry.names), ("bound", entry.bound)]
 
 -- |
 -- Load constants.json, enumerate memberships against the resolved
--- headers, evaluate every value and group sizeof in a probe TU compiled
--- against those same headers, and validate the lot.
+-- headers, evaluate every value and group sizeof and signedness in a
+-- probe TU compiled against those same headers, and validate the lot.
 planConstantGroups
   :: (IOE :> es, BindgenGen :> es, Driver :> es, Error BindgenError :> es, FileSystem :> es)
   => BindgenTarget -> [FamilyDecls] -> Eff es ([ConstantGroupPlan], LByteString)
@@ -431,7 +543,7 @@ planConstantGroups target families = do
       $ decodeConstantsConfig constantsBytes
 
   familyConstants <- forM families \fd -> do
-    source <- decodeUtf8 <$> EBS.readFile (env.includeDir </> includeArg target fd.headerName)
+    source <- decodeUtf8 <$> EBS.readFile (headerSourcePath target env fd.headerName)
     pure
       FamilyConstants
         { familyBase = fd.familyBase
@@ -441,29 +553,20 @@ planConstantGroups target families = do
         , takenNames = fd.takenNames
         }
 
-  -- Successful enumerations feed the probe; rule failures resurface
+  -- Successful resolutions feed the probe; rule failures resurface
   -- identically (same pure inputs) from 'planConstants' below.
-  let probeInputs =
-        [ (typeName, names)
-        | (typeName, cgroup) <- Map.toAscList constantsConfig.groups
-        , fc : _ <-
-            [[f | f <- familyConstants, Map.member typeName f.newtypeConstrs]]
-        , Right names <-
-            [validationToEither (enumerateMembers typeName cgroup fc.headerMacros)]
-        ]
-
-  (sizeofs, values) <- probeConstants target probeInputs
+  probe <- probeConstants target (constantProbeInputs constantsConfig familyConstants)
   plans <-
     liftEither
       . first from
-      $ planConstants constantsConfig familyConstants sizeofs values
+      $ planConstants constantsConfig familyConstants probe
   pure (plans, constantsBytes)
 
 probeConstants
   :: (IOE :> es, BindgenGen :> es, Driver :> es, Error BindgenError :> es)
-  => BindgenTarget -> [(Text, [Text])] -> Eff es (Map Text Int, Map Text Integer)
+  => BindgenTarget -> [(Text, [Text])] -> Eff es ProbeResult
 probeConstants target probeInputs
-  | null probeInputs = pure (mempty, mempty)
+  | null probeInputs = pure emptyProbe
   | otherwise = do
       SystemTempDir scratch <- getScratchDirectory
 
@@ -529,6 +632,7 @@ runChain target registry = runErrorFrom do
     $ "chain complete"
     :# [ "headers" .= length results
        , "modules" .= sum [length r.modules | r <- results]
+       , "skipped" .= sum [length r.report.skips | r <- results]
        ]
   pure results
 
@@ -543,9 +647,9 @@ bindgenVisitor target registry =
     , finalize = distillPayload target registry
     }
 
--- | Sync the freshly generated specs (and the manifest recording them)
--- into the artifact directory.
-syncSpecs
+-- | Sync the freshly generated specs and the skip ledger (and the manifest
+-- recording them) into the artifact directory.
+syncArtifacts
   :: ( HasCallStack
      , IOE :> es
      , Log :> es
@@ -556,8 +660,8 @@ syncSpecs
      , Console :> es
      , Driver :> es
      )
-  => GuardCtx -> EmitEffect -> [HeaderResult BindgenPayload] -> Eff es ()
-syncSpecs ctx effect results = do
+  => GuardCtx -> EmitEffect -> [HeaderResult BindgenPayload] -> Text -> Eff es ()
+syncArtifacts ctx effect results ledger = do
   env <- getBindgenEnv
   SystemTempDir scratch <- getScratchDirectory
   specMap <-
@@ -573,7 +677,7 @@ syncSpecs ctx effect results = do
         , guard = Guarded ctx
         , ..
         }
-      specMap
+      (Map.insert "unbound.md" ledger specMap)
 
 -- | What every target's manifests record about the chain run.
 chainMeta :: (BindgenGen :> es) => [HeaderResult BindgenPayload] -> Eff es (Map Text Aeson.Value)

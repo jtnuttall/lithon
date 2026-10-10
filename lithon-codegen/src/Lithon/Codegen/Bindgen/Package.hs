@@ -80,11 +80,15 @@ instance Display BindgenPackagingError where
 
 -- |
 -- Build the target's 'PackageSpec' — generated Bindgen modules, the
--- rendered curated alias layer, runtime copies, hs-bindgen facades, and
--- metadata — and assemble it through the shared backend.
+-- rendered curated alias layer, runtime copies, hs-bindgen facades, the
+-- authored C headers, and metadata — and assemble it through the shared
+-- backend.
 assembleBindgenPackage
   :: BindgenTarget
   -> PackageStatics
+  -> [(FilePath, Text)]
+  -- ^ The authored C headers, by package path (@include\/\<root\>\/\<file\>@):
+  -- shipped verbatim for the wrapper C to include.
   -> Text
   -- ^ The library version the layouts were distilled from.
   -> [(Text, Text)]
@@ -92,7 +96,7 @@ assembleBindgenPackage
   -- ^ Probed typed-constant values (curated layer), re-asserted in the TU.
   -> [HeaderResult BindgenPayload]
   -> Either BindgenPackagingError FileTree
-assembleBindgenPackage target statics libraryVersion aliasModules macroConsts results = do
+assembleBindgenPackage target statics authoredHeaders libraryVersion aliasModules macroConsts results = do
   generated <- for (concatMap (.modules) results) \m -> do
     meta <- metaFor "generated modules" (HB.moduleNameSegments m)
     pure (meta, m.hsModule.text)
@@ -132,7 +136,7 @@ assembleBindgenPackage target statics libraryVersion aliasModules macroConsts re
                  ]
         , srcDir = "src"
         , modules = generated <> aliases <> facades
-        , extraFiles = [("cbits/abi_assertions.c", abiAssertions)]
+        , extraFiles = ("cbits/abi_assertions.c", abiAssertions) : authoredHeaders
         , extraTrees =
             [ FileTree.prependPath hsbindgenRuntimeOut $ FileTree.fromUniqueListBS hsBindgenRuntimeTree
             , FileTree.prependPath cexprRuntimeOut $ FileTree.fromUniqueListBS cexprRuntimeCoreTree

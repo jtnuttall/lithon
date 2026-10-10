@@ -10,7 +10,9 @@
 -- camel-segments minting, see-also rewriting to alias names, the flavor
 -- provenance paragraphs, and the module\/umbrella shapes.
 module Bindgen.AliasRenderTest (
+  unit_nativeGroupImportsTheSupportAlias,
   unit_toyCensusDetectsCallbacks,
+  unit_allowlistedFamilyRendersOnlyAllowed,
   test_aliasRenderGolden,
 ) where
 
@@ -24,10 +26,11 @@ import Lithon.Prelude
 import System.FilePath ((</>))
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Golden (goldenVsStringDiff)
-import Test.Tasty.HUnit (assertFailure, (@?=))
+import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
 import Bindgen.Support.Toy (ToyEnv (..), ToyHeader (..), renderedPairs, toyArtefacts, toyEnv)
 import Lithon.Codegen.Bindgen.Alias (
+  AliasModule (..),
   FamilyDecls (..),
   aliasRewriteMap,
   distillFamily,
@@ -38,6 +41,7 @@ import Lithon.Codegen.Bindgen.Alias (
  )
 import Lithon.Codegen.Bindgen.Alias.Config (
   AliasConfig (..),
+  AllowEntry (..),
   FunctionEntry (..),
   NamingRule (..),
   validateAliasConfig,
@@ -54,19 +58,119 @@ import Lithon.Codegen.Bindgen.Alias.Names (Safety (..))
 import Lithon.Codegen.Bindgen.Target qualified as Target
 import Lithon.Codegen.Bindgen.Target.Sdl3 (sdl3)
 
+-- | A native constant group's signatures say @BG.Word64@, so the module
+-- imports the support alias even with no binding of its own to bring it in.
+unit_nativeGroupImportsTheSupportAlias :: IO ()
+unit_nativeGroupImportsTheSupportAlias = do
+  let supportImport = "import qualified HsBindgen.Runtime.Support as BG"
+      constantsOf target =
+        [ Constants.ConstantGroupPlan
+            { typeName = "size_t"
+            , target
+            , familyBase = "SDL3.Sys.Bindgen.Toy"
+            , headerName = "SDL_toy.h"
+            , combine = ValueSpace
+            , widthBits = 64
+            , members =
+                [ Constants.ConstantMember
+                    { cName = "SDL_TOYSIZE_ERROR"
+                    , value = 18446744073709551615
+                    , declaredIn = "SDL_toy.h"
+                    }
+                ]
+            }
+        ]
+      rendered target =
+        snd
+          $ renderAliasModule
+            sdl3
+            mempty
+            AliasModule
+              { moduleName = "SDL3.Sys.Toy"
+              , familyBase = "SDL3.Sys.Bindgen.Toy"
+              , headerName = "SDL_toy.h"
+              , baseModule = Nothing
+              , moduleDoc = Nothing
+              , constants = constantsOf target
+              , bindings = []
+              , allowlisted = False
+              }
+      native = rendered (Constants.NativeTarget Target.NativeWord64)
+      newtyped = rendered (Constants.NewtypeTarget "SDL_ToySize")
+  assertBool "native group: BG import present" (supportImport `T.isInfixOf` native)
+  assertBool
+    "native group: signature uses BG"
+    ("pattern SDL_TOYSIZE_ERROR :: BG.Word64" `T.isInfixOf` native)
+  assertBool "newtype group: no BG import" (not (supportImport `T.isInfixOf` newtyped))
+
 unit_toyCensusDetectsCallbacks :: IO ()
 unit_toyCensusDetectsCallbacks = do
   (facts, _baseModule) <- toyFamily
   functionCensus [facts]
-    @?= Map.fromList
-      [ ("SDL_CreateToyThing", False)
-      , ("SDL_ToyIsOk", False) -- scalar-bridge pin (bool/float/double)
-      , ("SDL_ToyCount", False) -- scalar-bridge pin (int result, width typedef + size_t args)
-      , ("SDL_GetToyId", False) -- negative control: semantic typedef stays raw
-      , ("SDL_ToyEnumerate", True) -- direct callback param
-      , ("SDL_SetToyCallback", True) -- direct callback param
-      , ("SDL_GetToyCallback", False) -- pointer-to-callback out-param
-      ]
+    @?= Map.singleton
+      "SDL_toy.h"
+      ( Map.fromList
+          [ ("SDL_CreateToyThing", False)
+          , ("SDL_ToyIsOk", False) -- scalar-bridge pin (bool/float/double)
+          , ("SDL_ToyCount", False) -- scalar-bridge pin (int result, width typedef + size_t args)
+          , ("SDL_GetToyId", False) -- negative control: semantic typedef stays raw
+          , ("SDL_ToyEnumerate", True) -- direct callback param
+          , ("SDL_SetToyCallback", True) -- direct callback param
+          , ("SDL_GetToyCallback", False) -- pointer-to-callback out-param
+          ]
+      )
+
+-- | An allowlisted family exports only its allowed aliases (header order;
+-- the callback functions it leaves out need no classification), says so
+-- in its conventions, and links the mention of a left-out function
+-- (@\\sa SDL_GetToyCallback@) to its raw import, not to an alias that
+-- does not exist (the safe import for a callback taker).
+unit_allowlistedFamilyRendersOnlyAllowed :: IO ()
+unit_allowlistedFamilyRendersOnlyAllowed = do
+  (facts, _baseModule) <- toyFamily
+  let config =
+        AliasConfig
+          { naming = CamelSegments
+          , functions =
+              Map.fromList [("SDL_SetToyCallback", FunctionEntry Both (Just "registration only"))]
+          , renames = mempty
+          , skip = mempty
+          , allow =
+              Map.fromList
+                [("SDL_toy.h", AllowEntry{bound = 7, names = ["SDL_SetToyCallback", "SDL_ToyIsOk"]})]
+          }
+  validated <-
+    either (assertFailure . toString . display) pure
+      $ validateAliasConfig sdl3.functionPrefix (functionCensus [facts]) config
+  aliasModules <-
+    either (assertFailure . toString . display) pure
+      $ planAliasLayer sdl3 validated mempty [facts]
+  rendered <- case aliasModules of
+    [m] -> pure (snd (renderAliasModule sdl3 (aliasRewriteMap sdl3 [facts] aliasModules) m))
+    _unexpected -> assertFailure "expected exactly one alias module"
+  [ name
+    | line <- T.lines rendered
+    , Just name <- [T.stripPrefix "SDL3.Sys.Toy." =<< T.stripPrefix "    , " line]
+    ]
+    @?= ["toyIsOk", "toyIsOkSafe", "setToyCallback", "setToyCallbackSafe"]
+  for_
+    [ "This module aliases only the functions of @SDL_toy.h@ that the registry allowlists."
+    , "\"SDL3.Sys.Bindgen.Toy.Unsafe\" and \"SDL3.Sys.Bindgen.Toy.Safe\" export them."
+    , "'SDL3.Sys.Bindgen.Toy.Unsafe.sDL_GetToyCallback'"
+    ]
+    \needle ->
+      assertBool
+        ("missing " <> show needle <> " in:\n" <> toString rendered)
+        (needle `T.isInfixOf` rendered)
+  -- A left-out callback taker links to its safe import (the safe-only
+  -- rule's default); the others to the unsafe one.
+  let links = aliasRewriteMap sdl3 [facts] aliasModules
+  Map.lookup "SDL_ToyEnumerate" links @?= Just ("SDL3.Sys.Bindgen.Toy.Safe", "sDL_ToyEnumerate")
+  Map.lookup "sDL_GetToyCallback" links
+    @?= Just ("SDL3.Sys.Bindgen.Toy.Unsafe", "sDL_GetToyCallback")
+  assertBool
+    "no link to an alias that does not exist"
+    (not ("'getToyCallback'" `T.isInfixOf` rendered))
 
 test_aliasRenderGolden :: TestTree
 test_aliasRenderGolden =
@@ -112,12 +216,13 @@ test_aliasRenderGolden =
                   ]
             , renames = mempty
             , skip = mempty
+            , allow = mempty
             }
     validated <-
       either (assertFailure . toString . display) pure
-        $ validateAliasConfig census config
+        $ validateAliasConfig sdl3.functionPrefix census config
     -- The constants pipeline, minus the probe: membership from the toy
-    -- header's scanned macros, values/sizeofs supplied directly (what the
+    -- header's scanned macros, values/sizeofs/signedness supplied directly (what the
     -- probe TU would have printed).
     let constantsConfig =
           ConstantsConfig
@@ -134,6 +239,7 @@ test_aliasRenderGolden =
                           -- failure mode the probe otherwise hard-fails on.
                           exclude = ["SDL_TOY_LIMIT", "SDL_TOY_H"]
                         , members = Nothing
+                        , native = Nothing
                         }
                     )
                   ,
@@ -144,6 +250,45 @@ test_aliasRenderGolden =
                         , suffix = Nothing
                         , exclude = []
                         , members = Just ["SDL_TOY_LIMIT"]
+                        , native = Nothing
+                        }
+                    )
+                  , -- A signed type: the macros cast to it, and the minimum is
+                    -- negative (the probe's image is its 64-bit two's complement).
+                    -- hs-bindgen leaves both casts out of the raw layer.
+
+                    ( "SDL_ToyOffset"
+                    , ConstantGroup
+                        { combine = ValueSpace
+                        , prefix = Nothing
+                        , suffix = Nothing
+                        , exclude = []
+                        , members = Just ["SDL_TOYOFFSET_MAX", "SDL_TOYOFFSET_MIN"]
+                        , native = Nothing
+                        }
+                    )
+                  , -- A constant declared in another header than its type.
+
+                    ( "SDL_ToyId"
+                    , ConstantGroup
+                        { combine = ValueSpace
+                        , prefix = Nothing
+                        , suffix = Nothing
+                        , exclude = []
+                        , members = Just ["SDL_TOY2_ID_NONE"]
+                        , native = Nothing
+                        }
+                    )
+                  , -- A C type with no newtype: plain scalar patterns.
+
+                    ( "size_t"
+                    , ConstantGroup
+                        { combine = ValueSpace
+                        , prefix = Nothing
+                        , suffix = Nothing
+                        , exclude = []
+                        , members = Just ["SDL_TOYSIZE_ERROR"]
+                        , native = Just Target.NativeWord64
                         }
                     )
                   ]
@@ -156,21 +301,54 @@ test_aliasRenderGolden =
             , newtypeConstrs = facts.newtypeConstrs
             , takenNames = facts.takenNames
             }
+        -- A synthetic second header of the chain: only its macro matters.
+        toy2Constants =
+          Constants.FamilyConstants
+            { familyBase = "SDL3.Sys.Bindgen.Toy2"
+            , headerName = "SDL_toy2.h"
+            , headerMacros = ["SDL_TOY2_ID_NONE"]
+            , newtypeConstrs = mempty
+            , takenNames = mempty
+            }
+        probe =
+          Constants.ProbeResult
+            { sizeofs =
+                Map.fromList
+                  [ ("SDL_ToyFlags", 4)
+                  , ("SDL_ToyMode", 1)
+                  , ("SDL_ToyOffset", 2)
+                  , ("SDL_ToyId", 4)
+                  , ("size_t", 8)
+                  ]
+            , signedness =
+                Map.fromList
+                  [ ("SDL_ToyFlags", False)
+                  , ("SDL_ToyMode", False)
+                  , ("SDL_ToyOffset", True)
+                  , ("SDL_ToyId", False)
+                  , ("size_t", False)
+                  ]
+            , values =
+                Map.fromList
+                  [ ("SDL_TOY_A", 1)
+                  , ("SDL_TOY_B", 2)
+                  , ("SDL_TOY_AB", 3)
+                  , ("SDL_TOY_LIMIT", 7)
+                  , ("SDL_TOYOFFSET_MAX", 32767)
+                  , ("SDL_TOYOFFSET_MIN", 2 ^ (64 :: Int) - 32768)
+                  , ("SDL_TOY2_ID_NONE", 4294967295)
+                  , ("SDL_TOYSIZE_ERROR", 2 ^ (64 :: Int) - 1)
+                  ]
+            }
     constantPlans <-
       either (assertFailure . toString . display) pure
-        $ planConstants
-          constantsConfig
-          [familyConstants]
-          (Map.fromList [("SDL_ToyFlags", 4), ("SDL_ToyMode", 1)])
-          ( Map.fromList
-              [("SDL_TOY_A", 1), ("SDL_TOY_B", 2), ("SDL_TOY_AB", 3), ("SDL_TOY_LIMIT", 7)]
-          )
+        $ planConstants constantsConfig [familyConstants, toy2Constants] probe
     let plansByFamily =
           Map.fromListWith (flip (<>)) [(p.familyBase, [p]) | p <- constantPlans]
     aliasModules <-
       either (assertFailure . toString . display) pure
         $ planAliasLayer sdl3 validated plansByFamily [facts]
-    let rewriteMap = aliasRewriteMap aliasModules
+    let rewriteMap = aliasRewriteMap sdl3 [facts] aliasModules
         modules = map (renderAliasModule sdl3 rewriteMap) aliasModules
         umbrella = renderUmbrella sdl3 aliasModules
     case modules of
@@ -337,6 +515,17 @@ toyHeader =
     , " * Fetch the registered callback through an out-param."
     , " */"
     , "void SDL_GetToyCallback(SDL_ToyCallback *callback);"
+    , ""
+    , "/**"
+    , " * A signed toy offset (mirrors Sint16: constants cast to the type)."
+    , " */"
+    , "typedef int16_t SDL_ToyOffset;"
+    , ""
+    , -- Named so the SDL_TOY_ prefix rule (SDL_ToyFlags) does not sweep them.
+      "#define SDL_TOYOFFSET_MAX ((SDL_ToyOffset)0x7FFF)"
+    , "#define SDL_TOYOFFSET_MIN ((SDL_ToyOffset)(~0x7FFF))"
+    , ""
+    , "#define SDL_TOYSIZE_ERROR (size_t)-1"
     , ""
     , "#endif"
     ]

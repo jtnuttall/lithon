@@ -1,0 +1,19 @@
+{
+  "groups": [
+    {
+      "disposition": "wontfix",
+      "note": "The header's own export attribute and C++ type helper; they annotate declarations and have no value.",
+      "names": [
+        "macro MPV_EXPORT",
+        "macro MPV_DECLTYPE"
+      ]
+    },
+    {
+      "disposition": "wontfix",
+      "note": "A backwards-compatibility alias of an enum constant, which hs-bindgen does not resolve; use MPV_RENDER_PARAM_DRM_DRAW_SURFACE_SIZE.",
+      "names": [
+        "macro MPV_RENDER_PARAM_DRM_OSD_SIZE"
+      ]
+    }
+  ]
+}

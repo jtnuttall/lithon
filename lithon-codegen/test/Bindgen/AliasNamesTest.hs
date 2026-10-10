@@ -4,7 +4,9 @@
 -- camelCase-segments normalization over every corpus shape, the
 -- exceptionless flavor surface, and the loud-failure paths (invalid
 -- identifiers, collisions — including the @Safe@-suffix trap — and rename
--- resolution).
+-- resolution), and the target's base-name rule for authored functions
+-- (C shims are named like what they wrap, so they can collide with the
+-- library's own functions).
 module Bindgen.AliasNamesTest (
   unit_normalizeCorpusShapes,
   unit_normalizeMpvShapes,
@@ -13,12 +15,14 @@ module Bindgen.AliasNamesTest (
   unit_collisionsAccumulate,
   unit_safeSuffixTrapCollides,
   unit_renamesOverrideAndResolve,
+  unit_authoredNamesMint,
 ) where
 
 import Data.Map.Strict qualified as Map
 import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertFailure, (@?=))
 
+import Lithon.Codegen.Bindgen.Alias (aliasBaseName)
 import Lithon.Codegen.Bindgen.Alias.Names (
   AliasError (..),
   MintedAlias (..),
@@ -27,6 +31,9 @@ import Lithon.Codegen.Bindgen.Alias.Names (
   normalizeFunctionName,
   validVarId,
  )
+import Lithon.Codegen.Bindgen.Target (BindgenTarget (..))
+import Lithon.Codegen.Bindgen.Target qualified as Target
+import Lithon.Codegen.Bindgen.Target.Sdl3 (sdl3)
 
 -- | Every naming shape the SDL 3.4.2 corpus exercises, pinned to the exact
 -- expected spelling (cross-validated against the full 1,232-function
@@ -81,7 +88,7 @@ unit_flavorSurface = do
     either (assertFailureText . display) pure
       . validationToEither
       $ mintAliasNames
-        sdlPrefix
+        (normalizeFunctionName sdlPrefix)
         mempty
         [ ("SDL_CreateWindow", UnsafeOnly)
         , ("SDL_WaitEvent", Both)
@@ -100,7 +107,7 @@ unit_invalidNamesError = do
   validVarId "" @?= Just "empty after prefix strip"
   assertBool "valid name passes" (isNothing (validVarId "createWindow"))
   -- A C name normalizing to a keyword is a hard error naming the culprit.
-  let errs = failures (mintAliasNames sdlPrefix mempty [("SDL_case", UnsafeOnly)])
+  let errs = failures (mintAliasNames (normalizeFunctionName sdlPrefix) mempty [("SDL_case", UnsafeOnly)])
   errs @?= [AliasNameInvalid{cName = "SDL_case", minted = "case", reason = "Haskell keyword"}]
 
 unit_collisionsAccumulate :: IO ()
@@ -109,7 +116,7 @@ unit_collisionsAccumulate = do
   let errs =
         failures
           $ mintAliasNames
-            sdlPrefix
+            (normalizeFunctionName sdlPrefix)
             mempty
             [ ("SDL_rand_bits", UnsafeOnly)
             , ("SDL_RandBits", UnsafeOnly) -- synthetic doppelgänger
@@ -130,7 +137,7 @@ unit_safeSuffixTrapCollides = do
   let errs =
         failures
           $ mintAliasNames
-            sdlPrefix
+            (normalizeFunctionName sdlPrefix)
             mempty
             [ ("SDL_getenv", Both)
             , ("SDL_getenv_safe", UnsafeOnly)
@@ -150,7 +157,7 @@ unit_renamesOverrideAndResolve = do
     either (assertFailureText . display) pure
       . validationToEither
       $ mintAliasNames
-        sdlPrefix
+        (normalizeFunctionName sdlPrefix)
         (Map.fromList [("SDL_getenv", "getEnvironment")])
         [ ("SDL_getenv", Both)
         , ("SDL_getenv_safe", UnsafeOnly)
@@ -165,7 +172,7 @@ unit_renamesOverrideAndResolve = do
   let errs =
         failures
           $ mintAliasNames
-            sdlPrefix
+            (normalizeFunctionName sdlPrefix)
             (Map.fromList [("SDL_getenv", "Class")])
             [("SDL_getenv", UnsafeOnly)]
   errs
@@ -175,6 +182,53 @@ unit_renamesOverrideAndResolve = do
             , reason = "does not start with a lowercase letter"
             }
         ]
+
+-- | An authored function mints from the name it wraps: the name prefix
+-- goes, then the camel-segments rule applies. @lithon_SDL_Log@ wraps
+-- @SDL_Log@ and mints @log@, free since @SDL_stdinc.h@'s allowlist leaves
+-- the math @SDL_log@ raw-only. A shim whose name an aliased function
+-- already mints collides loudly, and a rename resolves it.
+unit_authoredNamesMint :: IO ()
+unit_authoredNamesMint = do
+  let rule = aliasBaseName withShims
+  rule "lithon_SDL_LogMessage" @?= "logMessage"
+  rule "lithon_SDL_Swap16LE" @?= "swap16LE"
+  rule "lithon_SDL_FOURCC" @?= "fourcc"
+  rule "SDL_CreateWindow" @?= "createWindow"
+  -- A library function is never stripped, and a target without authored
+  -- headers strips nothing.
+  aliasBaseName sdl3{authored = Nothing} "lithon_SDL_Log" @?= "lithonSDLLog"
+  logMinted <-
+    either (assertFailureText . display) pure
+      . validationToEither
+      $ mintAliasNames rule mempty [("lithon_SDL_Log", Both)]
+  Map.lookup "lithon_SDL_Log" logMinted
+    @?= Just MintedAlias{unsafeName = Just "log", safeName = Just "logSafe"}
+  -- The collision machinery, on a toy pair: a library SDL_toy and a shim
+  -- over a (hypothetical) SDL_Toy both mint toy.
+  failures (mintAliasNames rule mempty [("SDL_toy", UnsafeOnly), ("lithon_SDL_Toy", Both)])
+    @?= [AliasNameCollision{minted = "toy", cNames = ["SDL_toy", "lithon_SDL_Toy"]}]
+  minted <-
+    either (assertFailureText . display) pure
+      . validationToEither
+      $ mintAliasNames
+        rule
+        (Map.fromList [("lithon_SDL_Toy", "toyShim")])
+        [("SDL_toy", UnsafeOnly), ("lithon_SDL_Toy", Both)]
+  Map.lookup "lithon_SDL_Toy" minted
+    @?= Just MintedAlias{unsafeName = Just "toyShim", safeName = Just "toyShimSafe"}
+  Map.lookup "SDL_toy" minted @?= Just MintedAlias{unsafeName = Just "toy", safeName = Nothing}
+ where
+  withShims =
+    sdl3
+      { authored =
+          Just
+            Target.AuthoredHeaders
+              { Target.includeRoot = "sdl3-bindgen-sys"
+              , Target.namePrefix = "lithon_"
+              , Target.headers = []
+              }
+      }
 
 -- | The SDL prefix the corpus shapes strip.
 sdlPrefix :: Text

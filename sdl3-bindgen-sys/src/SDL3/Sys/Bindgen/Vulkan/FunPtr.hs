@@ -27,6 +27,9 @@ import SDL3.Sys.Bindgen.Vulkan
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_vulkan.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Vulkan_get_SDL_Vulkan_LoadLibrary */"
          , "__attribute__ ((const))"

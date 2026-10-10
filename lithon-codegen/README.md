@@ -154,6 +154,11 @@ A target binds one C library through hs-bindgen. There are two: `sdl3` and
 - `aliases.json` and `constants.json` plan the curated layer
   (`<namespace>.*`, e.g. `SDL3.Sys.*`) over the raw one
   (`<namespace>.Bindgen.*`).
+- Every declaration hs-bindgen skips needs a disposition in `unbound.json`.
+  The skip ledger, `unbound.md`, lists them all, with hs-bindgen's reasons.
+- What the FFI cannot call (variadic functions, function-like macros) can
+  get a C shim: a function in a C header the target authors, bound like the
+  library's own. See [Authored headers](#authored-headers-c-shims).
 - Anything newer than the floor, the oldest supported release, gets a version
   gate. Availability comes from the library's docs and the availability
   annotations; the annotations win.
@@ -166,23 +171,227 @@ A target binds one C library through hs-bindgen. There are two: `sdl3` and
 
 Every target uses the same layout in `lithon-codegen/data/<key>/`:
 
-| Path                    | Written by    | Holds                                                                        |
-| ----------------------- | ------------- | ---------------------------------------------------------------------------- |
-| `aliases.json`          | You           | The naming rule and each function's FFI flavor, with rationales.             |
-| `constants.json`        | You           | Typed-constant groups: which macros belong to which newtype.                 |
-| `versions.json`         | You           | The availability annotations. See [`versions.json`](#versionsjson).          |
-| `overrides.yaml`        | You, optional | hs-bindgen's prescriptive binding spec: renames, representations, omissions. |
-| `static/`               | You           | The statics, copied to the package root.                                     |
-| `spec/`                 | Generator     | The spec artifacts: one binding spec per header, committed for review.       |
-| `.lithon-manifest.json` | Generator     | Digests of the spec artifacts.                                               |
+| Path                    | Written by    | Holds                                                                                         |
+| ----------------------- | ------------- | --------------------------------------------------------------------------------------------- |
+| `aliases.json`          | You           | The naming rule, FFI flavors, and allowlists. See [`aliases.json`](#aliasesjson).             |
+| `constants.json`        | You           | Typed-constant groups: which macros are constants of which type.                              |
+| `versions.json`         | You           | The availability annotations. See [`versions.json`](#versionsjson).                           |
+| `unbound.json`          | You           | Each skipped declaration's disposition. See [`unbound.json`](#unboundjson).                   |
+| `overrides/`            | You, optional | hs-bindgen's prescriptive binding specs, one per header: renames, representations, omissions. |
+| `include/<root>/`       | You, optional | The target's authored C headers. See [Authored headers](#authored-headers-c-shims).           |
+| `static/`               | You           | The statics, copied to the package root.                                                      |
+| `spec/`                 | Generator     | The spec artifacts: one binding spec per header, committed for review.                        |
+| `unbound.md`            | Generator     | The skip ledger: every declaration hs-bindgen skips, by disposition.                          |
+| `.lithon-manifest.json` | Generator     | Digests of the spec artifacts and the skip ledger.                                            |
 
-The generator enforces three rules:
+The generator enforces six rules:
 
-- `aliases.json` must classify every callback-taking function as `both` or
-  `safe-only`. Other functions default to `both`.
+- `aliases.json` must classify every aliased callback-taking function as
+  `both` or `safe-only`. Other functions default to `both`. See
+  [`aliases.json`](#aliasesjson).
 - `constants.json` needs `groups`, even when empty: `{"groups": {}}`.
+- `unbound.json` gives every declaration hs-bindgen skips exactly one
+  disposition, and names nothing it binds. See [`unbound.json`](#unboundjson).
 - `static/` needs `package.yaml`, `README.md`, and `CHANGELOG.md`. Any other
   file is a license and must be named `LICENSE_<name>`.
+- `overrides/` holds `<header stem>.yaml` files and nothing else, each named
+  like the spec artifact of the header it applies to: `overrides/SDL_main.yaml`
+  pairs with `spec/SDL_main.yaml`, reaches that header's hs-bindgen run
+  alone, and holds only that header's entries. A file that pairs with no
+  bound header is an error, and so is a single-file `overrides.yaml`. So is
+  an entry hs-bindgen rejects, such as one its header's run does not use.
+- `include/` holds exactly the headers the target's `authored` field lists,
+  in its root directory, and nothing else. A target that authors none has no
+  `include/`.
+
+#### `aliases.json`
+
+The curated layer's decisions, by C name:
+
+```json
+{
+  "naming": "camel-segments",
+  "functions": {
+    "SDL_AddHintCallback": {
+      "safety": "safe-only",
+      "rationale": "invokes the callback once immediately with the current hint value"
+    }
+  },
+  "renames": { "lithon_SDL_BITSPERPIXEL": "bitsPerPixel" },
+  "skip": [],
+  "allow": {
+    "SDL_stdinc.h": { "bound": 153, "names": ["SDL_malloc", "SDL_free"] }
+  }
+}
+```
+
+| Field       | Meaning                                                                                        |
+| ----------- | ---------------------------------------------------------------------------------------------- |
+| `naming`    | Required. The alias naming rule: `camel-segments`.                                             |
+| `functions` | A function's flavors: `both` (the default), `safe-only`, or `unsafe-only`, with a `rationale`. |
+| `renames`   | A function's alias, where the naming rule's collides or reads badly.                           |
+| `skip`      | Functions the curated layer leaves out.                                                        |
+| `allow`     | Per header (basename), the only functions its curated module aliases (`names`), and `bound`.   |
+
+- `safe-only` and `unsafe-only` need a `rationale`. So does `both` on a
+  function without a callback, since that is the default.
+- A header in `allow` aliases its listed functions and nothing else. Its
+  other functions stay raw-only, in the raw family's `.Unsafe` and `.Safe`
+  modules, and the curated module's haddock says so. A header not in
+  `allow` aliases every function. `sdl3` lists `SDL_stdinc.h`: SDL's own API
+  there and the allocator family, not the C library clones.
+- `bound` is how many functions the header bound when its list was curated.
+  When the header's count changes, generation fails until you review the
+  list and set `bound` to the new count. The error names the unlisted
+  functions in the library's own style (the function prefix, then an
+  uppercase letter: SDL's convention, so the ones to review) and counts the
+  libc-style rest. The package manifest records each list's `allowed` and
+  `bound` counts (`aliasAllow`).
+- An allowed function must be bound, declared in that header, listed once,
+  and not skipped. A `functions`, `renames`, or `skip` entry for a function
+  an allowlist leaves out is an error, since nothing aliases it. So is an
+  allowlist for a header the target does not bind.
+- Curating is not skipping: the raw layer binds every function either way,
+  and `unbound.json` never lists one.
+- A doc mention of a bound function without an alias links to its raw
+  import.
+
+#### `unbound.json`
+
+hs-bindgen skips what it cannot translate: variadic functions, unsupported
+types, most function-like macros, same-name conflicts, and everything that
+depends on those. It reports most macro failures below its default
+verbosity; the generator collects them all anyway. `unbound.json` triages
+each one:
+
+```json
+{
+  "groups": [
+    {
+      "disposition": "upstream",
+      "note": "hs-bindgen drops both halves of a function and macro name clash.",
+      "issue": "https://github.com/well-typed/hs-bindgen/issues/2097",
+      "names": [
+        "SDL_size_add_check_overflow",
+        "macro SDL_size_add_check_overflow"
+      ]
+    }
+  ]
+}
+```
+
+| Disposition | Means                                          |
+| ----------- | ---------------------------------------------- |
+| `shim`      | A lithon-authored C shim binds it instead.     |
+| `constant`  | `constants.json` binds it as a typed constant. |
+| `wontfix`   | It stays unbound on purpose.                   |
+| `upstream`  | It waits on an hs-bindgen fix.                 |
+
+- Names are spelled as hs-bindgen spells them: `SDL_Log`, `struct SDL_Foo`,
+  `macro SDL_FOURCC`.
+- Every group needs a one-line `note` saying why. `issue` is optional.
+- A skipped name without a disposition is an error, and so is a listed name
+  that is no longer skipped. A name listed twice and a group without names
+  are errors too.
+- `generate` also checks every `constant` name against `constants.json`: a
+  name no group binds is an error. `constants.json` may bind more, such as
+  macros hs-bindgen binds itself (`SDL_INIT_*`).
+- `spec` and `generate` check every `shim` name against the authored
+  headers: the function named the target's name prefix and the name's C
+  identifier must be bound (`macro SDL_FOURCC` needs `lithon_SDL_FOURCC`). A
+  shim may also wrap a name hs-bindgen binds (`SDL_Swap16LE`).
+- To start one, write `{"groups": []}` and run `spec`. The error lists every
+  skip, then prints one group per reason to paste in.
+- The generator writes the joined result to `unbound.md`: one section per
+  group, the dependencies outside the bound headers that block skips, what
+  the overrides omit, and the headers the target excludes.
+
+#### Authored headers (C shims)
+
+Haskell's FFI cannot call a variadic function, and a function-like macro
+has no symbol. A target can author C headers of fixed-arity functions over
+them, which the chain binds like the library's own. The target lists them:
+
+```haskell
+authored =
+  Just
+    AuthoredHeaders
+      { includeRoot = "sdl3-bindgen-sys"
+      , namePrefix = "lithon_"
+      , headers =
+          [AuthoredHeader{file = "SDL_log_shims.h", extends = Just "SDL_log.h"}]
+      }
+```
+
+- The headers live in `data/<key>/include/<includeRoot>/`. The package ships
+  them verbatim in `include/<includeRoot>/`; its `static/package.yaml` lists
+  them in `extra-source-files` and sets `include-dirs: include` for the
+  wrapper C. Generation refuses a `package.yaml` without either: without the
+  first, `cabal sdist` drops the headers silently.
+- Each header is one more unit of the chain. It includes the library header
+  it builds on, so the include graph orders it after that header, and its
+  run reads that header's spec. Its raw family is named by the target's
+  mangle (`SDL_log_shims.h` is `SDL3.Sys.Bindgen.LogShims`). The ABI
+  assertion unit and the constants probe never include it.
+- Each function is `namePrefix` and the exact name it wraps:
+  `lithon_SDL_LogMessage`. Its alias drops the prefix and follows the
+  naming rule (`logMessage`). `aliases.json` classifies and renames it like
+  any function, by its C name. A collision with an aliased function needs a
+  rename (`lithon_SDL_Log` mints `log`, which is free only because
+  `SDL_stdinc.h`'s allowlist leaves the math `SDL_log` raw-only), and
+  SCREAMING macros read better with one (`lithon_SDL_MS_TO_NS` would mint
+  `msTONS`; it is `msToNs`).
+- With `extends`, the functions join the curated module of that header,
+  under a `C shims` export section. Without it, the header gets a module of
+  its own. The library's own mentions of a wrapped name (`SDL_CreateThread()`)
+  link to the shim.
+- A header declares functions only: no types, no macros but its include
+  guard. Write them `static` and inline (SDL's `static SDL_INLINE`). Copy the
+  wrapped API's `\since`; anything newer than the floor guards its
+  definition with the target's version macro, since a gate only guards the
+  wrapper's call.
+- Doc comments are doxygen, like the library's: a plain `/*` banner, so it
+  does not attach to the first function, and never a literal `%s`: doxygen
+  drops a `%` before a word.
+- A header that declares types, a function not named
+  `namePrefix<functionPrefix>…`, and an `extends` no bound header matches are
+  errors.
+
+#### `constants.json`
+
+The typed constants of the curated layer: which `#define`s are constants of
+which C type. SDL ties a macro to its type by naming convention only, so the
+grouping is a judgment kept here. The values never are: `generate` compiles
+and runs a probe against the same headers for each group's `sizeof` and
+signedness and for each member's value, and the assertion TU re-checks every
+baked value on the consumer's platform.
+
+`{"groups": {"<type>": {…}}}`, keyed by the C type name.
+
+| Field     | Meaning                                                                                   |
+| --------- | ----------------------------------------------------------------------------------------- |
+| `combine` | Required. `bitmask` (members OR-combine) or `value` (a plain value space).                |
+| `prefix`  | The members are the type's header's object-like macros that start with this.              |
+| `suffix`  | Also require this suffix. Needs `prefix`.                                                 |
+| `exclude` | Macros the `prefix` rule must not sweep in. Needs `prefix`.                               |
+| `members` | An explicit list, for prefixes that collide or macros declared outside the type's header. |
+| `native`  | `Word8` … `Int64`: the scalar for a C type with no newtype (`size_t`). Needs `members`.   |
+
+- A group has exactly one of `prefix` or `members`.
+- A constant lives with its type. A newtype group is hosted in the family that
+  declares the newtype. `members` may name the macros of any bound header
+  (`SDL_TOUCH_MOUSEID` is declared in `SDL_touch.h` but is an `SDL_MouseID`,
+  so it lives in `SDL3.Sys.Mouse`), and its haddock says where the macro came
+  from. `prefix` only scans the type's own header.
+- A `native` group has no newtype to follow. Its host is the family declaring
+  its members, which must all come from one header. The patterns are plain
+  scalars (`pattern SDL_SIZE_MAX :: BG.Word64`), and the scalar must agree with
+  the probed width and signedness.
+- Negative constants need a signed type (`SDL_MIN_SINT8`, `SDL_MIN_TIME`);
+  `bitmask` needs an unsigned one. A value that does not fit its type is an
+  error.
+- A macro belongs to at most one group, and a pattern may not reuse a name any
+  family already exports.
 
 #### `versions.json`
 
@@ -210,10 +419,10 @@ headers carry their own (SDL's `\since`); the whole set where they don't
 
 Every target has two commands. `<key>` is `sdl3` or `mpv`.
 
-| Command                         | What it does                                                     |
-| ------------------------------- | ---------------------------------------------------------------- |
-| `lithon-codegen <key> spec`     | Runs the header chain and syncs the spec artifacts into `spec/`. |
-| `lithon-codegen <key> generate` | Does the same, then emits the package.                           |
+| Command                         | What it does                                              |
+| ------------------------------- | --------------------------------------------------------- |
+| `lithon-codegen <key> spec`     | Runs the header chain and syncs `spec/` and `unbound.md`. |
+| `lithon-codegen <key> generate` | Does the same, then emits the package.                    |
 
 | Flag        | Commands           | Effect                                                       |
 | ----------- | ------------------ | ------------------------------------------------------------ |
@@ -221,8 +430,8 @@ Every target has two commands. `<key>` is `sdl3` or `mpv`.
 | `--yes`     | `spec`, `generate` | Skip the output-directory confirmation.                      |
 | `--out DIR` | `generate`         | Write the package to `DIR`. The default is the package name. |
 
-Both commands check the annotations before writing. A failure writes nothing
-and names the fix.
+Both commands check the annotations and the skip ledger before writing. A
+failure writes nothing and names the fix.
 
 <details>
 <summary><code>--help</code> output: <code>sdl3</code> and its subcommands</summary>
@@ -316,8 +525,9 @@ Available options:
 ### Add a library
 
 1. Create `lithon-codegen/data/<key>/` with `static/`. Seed `aliases.json`,
-   `constants.json`, and `versions.json` with `{"naming": "camel-segments"}`,
-   `{"groups": {}}`, and `{}`.
+   `constants.json`, `unbound.json`, and `versions.json` with
+   `{"naming": "camel-segments"}`, `{"groups": {}}`, `{"groups": []}`, and
+   `{}`.
 2. In `lithon-codegen/src/Lithon/Codegen/Bindgen/`, copy `Target/Mpv.hs` to
    `Target/<Name>.hs`. Fill every field:
    - names: `key`, `packageName`, `displayName`, `versionLabel`,
@@ -325,6 +535,8 @@ Available options:
    - headers: `pkgConfig`, `headers`, `parse`
    - versions: `versioning`, `gateStubs`
    - output: `shims`, `widthTypedefs`, `docs`, `prose`
+   - C shims: `authored` (`Nothing`, or see
+     [Authored headers](#authored-headers-c-shims))
 3. Run `hpack lithon-codegen` to add the module to the `.cabal` file.
 4. Register the value in `bindgenTargets` (`Lithon.Codegen.Bindgen.Targets`)
    for the `<key>` command and tests.
@@ -358,6 +570,14 @@ with a stable ABI. Its annotations cover SDL's doc errors and gaps:
   signatures use but 3.2 headers lack.
 
 Below its gate, a wrapper reports the failure through `SDL_SetError`.
+
+Its C shims, in `data/sdl3/include/sdl3-bindgen-sys/`, cover SDL's
+variadic logging, error, and stream-printing functions and 46 function-like
+macros: 57 functions in 11 headers, one per SDL header they extend.
+
+Its `aliases.json` allowlists 22 functions of `SDL_stdinc.h`: SDL's own API
+there (environments, memory-function hooks, UTF-8 stepping) and the
+allocator family. The other 131 are raw-only.
 
 ### mpv
 

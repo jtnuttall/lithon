@@ -3,27 +3,6 @@ version:
   binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Mutex
 ctypes:
-  - omit:
-      headers: SDL3/SDL_mutex.h
-      cname: SDL_wcstol
-  - omit:
-      headers: SDL3/SDL_mutex.h
-      cname: SDL_ltoa
-  - omit:
-      headers: SDL3/SDL_mutex.h
-      cname: SDL_ultoa
-  - omit:
-      headers: SDL3/SDL_mutex.h
-      cname: SDL_strtol
-  - omit:
-      headers: SDL3/SDL_mutex.h
-      cname: SDL_strtoul
-  - omit:
-      headers: SDL3/SDL_mutex.h
-      cname: SDL_lround
-  - omit:
-      headers: SDL3/SDL_mutex.h
-      cname: SDL_lroundf
   - headers: SDL3/SDL_mutex.h
     cname: struct SDL_Mutex
     hsname: SDL_Mutex

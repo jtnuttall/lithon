@@ -31,12 +31,26 @@ extra-source-files:
     data/vulkan/static/README.md
     data/mpv/aliases.json
     data/mpv/constants.json
+    data/mpv/unbound.json
     data/mpv/versions.json
     data/sdl3/aliases.json
     data/sdl3/constants.json
+    data/sdl3/unbound.json
     data/sdl3/versions.json
-    data/mpv/overrides.yaml
-    data/sdl3/overrides.yaml
+    data/mpv/overrides/client.yaml
+    data/sdl3/overrides/SDL_main.yaml
+    data/sdl3/overrides/SDL_stdinc.yaml
+    data/sdl3/include/sdl3-bindgen-sys/SDL_atomic_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_audio_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_endian_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_error_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_iostream_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_log_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_pixels_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_stdinc_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_surface_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_thread_shims.h
+    data/sdl3/include/sdl3-bindgen-sys/SDL_timer_shims.h
 extra-doc-files:
     README.md
     CHANGELOG.md
@@ -72,6 +86,7 @@ library
       Lithon.Codegen.Bindgen.Target.Mpv
       Lithon.Codegen.Bindgen.Target.Sdl3
       Lithon.Codegen.Bindgen.Targets
+      Lithon.Codegen.Bindgen.Unbound
       Lithon.Codegen.Bindgen.Version
       Lithon.Codegen.Bindgen.Version.Doc
       Lithon.Codegen.Bindgen.Versions
@@ -358,14 +373,19 @@ test-suite lithon-codegen-test
       Bindgen.AliasConfigTest
       Bindgen.AliasNamesTest
       Bindgen.AliasRenderTest
+      Bindgen.AuthoredTest
       Bindgen.CensusTest
+      Bindgen.ConstantsTest
       Bindgen.DriverTest
       Bindgen.GateTest
+      Bindgen.OverridesTest
       Bindgen.PlatformShimTest
+      Bindgen.SkipsTest
       Bindgen.StaticsTest
       Bindgen.Support.Targets
       Bindgen.Support.Toy
       Bindgen.TargetsTest
+      Bindgen.UnboundTest
       Bindgen.VersionsTest
       Vulkan.Curate.ClosureTest
       Vulkan.CurateTest

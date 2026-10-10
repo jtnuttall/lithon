@@ -30,6 +30,9 @@ import SDL3.Sys.Bindgen.Properties qualified
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_process.h>"
          , "SDL_Process *hs_bindgen_e9112645fd8bb3e7 ("
          , "  char const *const *arg1,"

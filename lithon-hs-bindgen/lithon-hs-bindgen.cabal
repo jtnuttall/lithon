@@ -41,8 +41,10 @@ library
       Lithon.HsBindgen.Invoke
       Lithon.HsBindgen.Runtime
       Lithon.HsBindgen.SHs
+      Lithon.HsBindgen.Skip
       Lithon.HsBindgen.Transform
   other-modules:
+      Lithon.HsBindgen.Invoke.Trace
       Paths_lithon_hs_bindgen
   autogen-modules:
       Paths_lithon_hs_bindgen
@@ -54,8 +56,10 @@ library
       RecordWildCards
   ghc-options: -Wmissing-deriving-strategies -Wmissing-export-lists -Wredundant-constraints -Wall
   build-depends:
-      base <4.22.0.0
+      ansi-terminal
+    , base <4.22.0.0
     , bytestring
+    , containers
     , data-default
     , debruijn
     , doxygen-parser

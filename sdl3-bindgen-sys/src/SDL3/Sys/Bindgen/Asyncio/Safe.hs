@@ -31,6 +31,9 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_asyncio.h>"
          , "SDL_AsyncIO *hs_bindgen_31ab6fd411d04f78 ("
          , "  char const *arg1,"

@@ -28,6 +28,9 @@
 #include <stddef.h>
 
 #define SDL_MAIN_HANDLED
+#define SDL_SLOW_MEMCPY
+#define SDL_SLOW_MEMMOVE
+#define SDL_SLOW_MEMSET
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_vulkan.h>
 #include <SDL3/SDL_main.h>
@@ -2563,6 +2566,10 @@ _Static_assert(_Alignof(enum SDL_TimeFormat) == 4, "enum SDL_TimeFormat: baked a
 _Static_assert((SDL_TIME_FORMAT_24HR) == (0), "SDL_TIME_FORMAT_24HR: baked value 0 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_TIME_FORMAT_12HR) == (1), "SDL_TIME_FORMAT_12HR: baked value 1 differs from your SDL3 headers" LITHON_ABI_HELP);
 
+/* ---- SDL_audio.h (typed constants) ---- */
+_Static_assert((SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK) == (4294967295ull), "SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK: baked value 4294967295 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_AUDIO_DEVICE_DEFAULT_RECORDING) == (4294967294ull), "SDL_AUDIO_DEVICE_DEFAULT_RECORDING: baked value 4294967294 differs from your SDL3 headers" LITHON_ABI_HELP);
+
 /* ---- SDL_blendmode.h (typed constants) ---- */
 _Static_assert((SDL_BLENDMODE_NONE) == (0ull), "SDL_BLENDMODE_NONE: baked value 0 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_BLENDMODE_BLEND) == (1ull), "SDL_BLENDMODE_BLEND: baked value 1 differs from your SDL3 headers" LITHON_ABI_HELP);
@@ -2682,6 +2689,8 @@ _Static_assert((SDL_BUTTON_MMASK) == (2ull), "SDL_BUTTON_MMASK: baked value 2 di
 _Static_assert((SDL_BUTTON_RMASK) == (4ull), "SDL_BUTTON_RMASK: baked value 4 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_BUTTON_X1MASK) == (8ull), "SDL_BUTTON_X1MASK: baked value 8 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_BUTTON_X2MASK) == (16ull), "SDL_BUTTON_X2MASK: baked value 16 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_TOUCH_MOUSEID) == (4294967295ull), "SDL_TOUCH_MOUSEID: baked value 4294967295 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_PEN_MOUSEID) == (4294967294ull), "SDL_PEN_MOUSEID: baked value 4294967294 differs from your SDL3 headers" LITHON_ABI_HELP);
 
 /* ---- SDL_pen.h (typed constants) ---- */
 _Static_assert((SDL_PEN_INPUT_DOWN) == (1ull), "SDL_PEN_INPUT_DOWN: baked value 1 differs from your SDL3 headers" LITHON_ABI_HELP);
@@ -2700,6 +2709,14 @@ _Static_assert((SDL_SURFACE_PREALLOCATED) == (1ull), "SDL_SURFACE_PREALLOCATED: 
 _Static_assert((SDL_SURFACE_LOCK_NEEDED) == (2ull), "SDL_SURFACE_LOCK_NEEDED: baked value 2 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_SURFACE_LOCKED) == (4ull), "SDL_SURFACE_LOCKED: baked value 4 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_SURFACE_SIMD_ALIGNED) == (8ull), "SDL_SURFACE_SIMD_ALIGNED: baked value 8 differs from your SDL3 headers" LITHON_ABI_HELP);
+
+/* ---- SDL_stdinc.h (typed constants) ---- */
+_Static_assert((SDL_MAX_TIME) == (9223372036854775807ull), "SDL_MAX_TIME: baked value 9223372036854775807 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MIN_TIME) == (9223372036854775808ull), "SDL_MIN_TIME: baked value -9223372036854775808 differs from your SDL3 headers" LITHON_ABI_HELP);
+
+/* ---- SDL_touch.h (typed constants) ---- */
+_Static_assert((SDL_MOUSE_TOUCHID) == (18446744073709551615ull), "SDL_MOUSE_TOUCHID: baked value 18446744073709551615 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_PEN_TOUCHID) == (18446744073709551614ull), "SDL_PEN_TOUCHID: baked value 18446744073709551614 differs from your SDL3 headers" LITHON_ABI_HELP);
 
 /* ---- SDL_tray.h (typed constants) ---- */
 _Static_assert((SDL_TRAYENTRY_BUTTON) == (1ull), "SDL_TRAYENTRY_BUTTON: baked value 1 differs from your SDL3 headers" LITHON_ABI_HELP);
@@ -2737,3 +2754,26 @@ _Static_assert((SDL_WINDOW_VULKAN) == (268435456ull), "SDL_WINDOW_VULKAN: baked 
 _Static_assert((SDL_WINDOW_METAL) == (536870912ull), "SDL_WINDOW_METAL: baked value 536870912 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_WINDOW_TRANSPARENT) == (1073741824ull), "SDL_WINDOW_TRANSPARENT: baked value 1073741824 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_WINDOW_NOT_FOCUSABLE) == (2147483648ull), "SDL_WINDOW_NOT_FOCUSABLE: baked value 2147483648 differs from your SDL3 headers" LITHON_ABI_HELP);
+
+/* ---- SDL_stdinc.h (typed constants) ---- */
+_Static_assert((SDL_MAX_SINT16) == (32767ull), "SDL_MAX_SINT16: baked value 32767 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MIN_SINT16) == (18446744073709518848ull), "SDL_MIN_SINT16: baked value -32768 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MAX_SINT32) == (2147483647ull), "SDL_MAX_SINT32: baked value 2147483647 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MIN_SINT32) == (18446744071562067968ull), "SDL_MIN_SINT32: baked value -2147483648 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MAX_SINT64) == (9223372036854775807ull), "SDL_MAX_SINT64: baked value 9223372036854775807 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MIN_SINT64) == (9223372036854775808ull), "SDL_MIN_SINT64: baked value -9223372036854775808 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MAX_SINT8) == (127ull), "SDL_MAX_SINT8: baked value 127 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MIN_SINT8) == (18446744073709551488ull), "SDL_MIN_SINT8: baked value -128 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MAX_UINT16) == (65535ull), "SDL_MAX_UINT16: baked value 65535 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MIN_UINT16) == (0ull), "SDL_MIN_UINT16: baked value 0 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MAX_UINT32) == (4294967295ull), "SDL_MAX_UINT32: baked value 4294967295 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MIN_UINT32) == (0ull), "SDL_MIN_UINT32: baked value 0 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MAX_UINT64) == (18446744073709551615ull), "SDL_MAX_UINT64: baked value 18446744073709551615 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MIN_UINT64) == (0ull), "SDL_MIN_UINT64: baked value 0 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MAX_UINT8) == (255ull), "SDL_MAX_UINT8: baked value 255 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_MIN_UINT8) == (0ull), "SDL_MIN_UINT8: baked value 0 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_SIZE_MAX) == (18446744073709551615ull), "SDL_SIZE_MAX: baked value 18446744073709551615 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_ICONV_ERROR) == (18446744073709551615ull), "SDL_ICONV_ERROR: baked value 18446744073709551615 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_ICONV_E2BIG) == (18446744073709551614ull), "SDL_ICONV_E2BIG: baked value 18446744073709551614 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_ICONV_EILSEQ) == (18446744073709551613ull), "SDL_ICONV_EILSEQ: baked value 18446744073709551613 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_ICONV_EINVAL) == (18446744073709551612ull), "SDL_ICONV_EINVAL: baked value 18446744073709551612 differs from your SDL3 headers" LITHON_ABI_HELP);

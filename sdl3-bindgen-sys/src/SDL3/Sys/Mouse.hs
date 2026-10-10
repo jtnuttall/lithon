@@ -33,6 +33,8 @@ module SDL3.Sys.Mouse (
   pattern SDL3.Sys.Mouse.SDL_BUTTON_RMASK,
   pattern SDL3.Sys.Mouse.SDL_BUTTON_X1MASK,
   pattern SDL3.Sys.Mouse.SDL_BUTTON_X2MASK,
+  pattern SDL3.Sys.Mouse.SDL_TOUCH_MOUSEID,
+  pattern SDL3.Sys.Mouse.SDL_PEN_MOUSEID,
 
   -- * Function aliases
   SDL3.Sys.Mouse.hasMouse,
@@ -1732,3 +1734,11 @@ pattern SDL_BUTTON_X1MASK = SDL_MouseButtonFlags 0x00000008
 -- | Typed constant for macro @SDL_BUTTON_X2MASK@. Combine with @.|.@ from "Data.Bits".
 pattern SDL_BUTTON_X2MASK :: SDL_MouseButtonFlags
 pattern SDL_BUTTON_X2MASK = SDL_MouseButtonFlags 0x00000010
+
+-- | Typed constant for macro @SDL_TOUCH_MOUSEID@ (declared in @SDL_touch.h@).
+pattern SDL_TOUCH_MOUSEID :: SDL_MouseID
+pattern SDL_TOUCH_MOUSEID = SDL_MouseID 4294967295
+
+-- | Typed constant for macro @SDL_PEN_MOUSEID@ (declared in @SDL_pen.h@).
+pattern SDL_PEN_MOUSEID :: SDL_MouseID
+pattern SDL_PEN_MOUSEID = SDL_MouseID 4294967294

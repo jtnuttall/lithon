@@ -30,6 +30,9 @@ import SDL3.Sys.Bindgen.Clipboard
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_clipboard.h>"
          , "_Bool hs_bindgen_b1150c42ea076e8c ("
          , "  char const *arg1"

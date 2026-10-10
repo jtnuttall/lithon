@@ -14,9 +14,9 @@ this package aims to support.
 This library aims to be:
 
 - **Complete by construction:** Generated from all 58 headers of the
-  SDL 3.4 API (291 modules), so a gap is either a code generation
-  bug or a [deliberate omission](#what-is-not-bound) rather than a
-  binding waiting to be hand-written.
+  SDL 3.4 API (328 modules, 33 of them the C shims'), so a gap is either a
+  code generation bug or a [deliberate omission](#what-is-not-bound) rather
+  than a binding waiting to be hand-written.
 - **Curated:** The `SDL3.Sys.*` layer wraps `hs-bindgen`'s output
   with best-effort Haskell casing, native scalar types, and FFI safety
   decisions and recommendations.
@@ -152,6 +152,19 @@ For most uses, you will `import SDL3.Sys qualified as SDL3`.
 The raw hs-bindgen output lives underneath as `SDL3.Sys.Bindgen.*`, if
 you need to drop down to C types.
 
+`SDL3.Sys.Stdinc` is the one curated module that leaves functions out.
+It aliases SDL's own API in `SDL_stdinc.h` (environments, memory-function
+hooks, UTF-8 stepping) and the allocator family (`malloc`, `free`,
+`strdup`, ...), for memory SDL frees or hands you to free. The rest of
+the header is a C library for C programs: strings, character classes,
+math, sorting, random numbers, checksums, `iconv`, and `memcpy`,
+`memmove` and `memset`. Haskell has its own, so those are raw-only:
+`SDL3.Sys.Bindgen.Stdinc.Unsafe.sDL_strlen` and friends. The module's
+typed constants all stay, `SDL_ICONV_ERROR` and the other `iconv`
+results included. The registry records the header's function count, so
+an SDL release that adds functions fails generation until the list is
+reviewed.
+
 ### Safe and unsafe FFI
 
 Most functions come in both FFI flavors: `createWindow` is an `unsafe`
@@ -178,11 +191,78 @@ registry maintained alongside the generator.
 Similar to the `vulkan` library, every group member is a pattern synonym
 typed at its newtype, e.g. `SDL_INIT_VIDEO :: SDL_InitFlags`.
 
+A constant lives with its type, wherever SDL declares the macro:
+`SDL_TOUCH_MOUSEID` is an `SDL_MouseID`, so it is in `SDL3.Sys.Mouse`,
+not with `SDL_touch.h`'s other names. This includes macros hs-bindgen
+cannot translate (casts to typedef names, token pasting, or libc
+macros), which exist only here: the limits (`SDL_MIN_SINT8`,
+`SDL_MAX_TIME`, ...), the default audio devices, and the mouse and
+touch ids. The `size_t` constants (`SDL_SIZE_MAX`, `SDL_ICONV_ERROR`,
+...) are `Word64`.
+
 You can combine bitmask groups with `.|.` from `Data.Bits`:
 
 ```haskell
 SDL3.init (SDL3.SDL_INIT_VIDEO .|. SDL3.SDL_INIT_AUDIO)
 ```
+
+### C shims
+
+Haskell's FFI cannot call a variadic C function, and a function-like
+macro has no symbol to call at all. For the useful ones, this package
+ships small C functions of its own, in
+`include/sdl3-bindgen-sys/SDL_*_shims.h`, which are bound like any SDL
+header. Each module exports its shims in a **C shims** section, named
+like what they wrap: `SDL_LogMessage` is `logMessage`, and `SDL_MUSTLOCK`
+is `mustLock`.
+
+- **Messages are verbatim.** The logging, error, and stream-printing
+  shims take a finished string, never a printf-style format string:
+  format in Haskell, and a `%` needs no escaping. After `setError` with
+  `100% done`, `getError` returns `100% done`.
+- **Call `createThread`, not `createThreadRuntime`.** Like SDL's
+  `SDL_CreateThread` macro, the shim passes the C runtime's thread entry
+  and exit functions on Windows (`_beginthreadex` and `_endthreadex`;
+  `NULL` elsewhere).
+- **Cost:** each shim is a `static inline` C function, so the compiler
+  folds it into the wrapper the foreign import calls: one FFI call, like
+  any binding. That is still a call, and an `IO` action, for what C
+  computes inline (`bitsPerPixel`, `fourCC`, the byte swaps); hoist it out
+  of hot loops.
+- **Byte order:** use the `swap16LE` … `swapFloatBE` shims, not the raw
+  layer's `sDL_Swap16LE` … `sDL_SwapFloatLE`, which hs-bindgen translated
+  on the little-endian generation host as the identity.
+- The raw imports are `lithon_SDL_*` in `SDL3.Sys.Bindgen.*Shims`
+  (`SDL3.Sys.Bindgen.LogShims.Unsafe.lithon_SDL_LogMessage`).
+
+The shims, by module:
+
+- `SDL3.Sys.Atomic`: `SDL_AtomicIncRef` → `atomicIncRef`,
+  `SDL_AtomicDecRef` → `atomicDecRef`
+- `SDL3.Sys.Audio`: `SDL_AUDIO_FRAMESIZE` → `audioFrameSize` (takes a
+  pointer to the spec), `SDL_DEFINE_AUDIO_FORMAT` → `defineAudioFormat`
+- `SDL3.Sys.Endian`: `SDL_Swap16`, `SDL_Swap32`, `SDL_Swap64` → `swap16`,
+  `swap32`, `swap64`; `SDL_Swap16LE` … `SDL_SwapFloatBE` → `swap16LE` …
+  `swapFloatBE`
+- `SDL3.Sys.Error`: `SDL_SetError` → `setError`, `SDL_Unsupported` →
+  `unsupported`, `SDL_InvalidParamError` → `invalidParamError`
+- `SDL3.Sys.Iostream`: `SDL_IOprintf` → `ioPrintf`
+- `SDL3.Sys.Log`: `SDL_Log` → `log`, `SDL_LogTrace` … `SDL_LogCritical`
+  → `logTrace` … `logCritical`, `SDL_LogMessage` → `logMessage`
+- `SDL3.Sys.Pixels`: `SDL_DEFINE_PIXELFOURCC` → `definePixelFourCC`,
+  `SDL_BITSPERPIXEL` → `bitsPerPixel`, `SDL_BYTESPERPIXEL` →
+  `bytesPerPixel`, `SDL_ISPIXELFORMAT_INDEXED` … `SDL_ISPIXELFORMAT_FOURCC`
+  → `isPixelFormatIndexed` … `isPixelFormatFourCC`,
+  `SDL_DEFINE_COLORSPACE` → `defineColorspace`, `SDL_COLORSPACETYPE` …
+  `SDL_COLORSPACEMATRIX` → `colorspaceType` … `colorspaceMatrix`,
+  `SDL_ISCOLORSPACE_MATRIX_BT601` … `SDL_ISCOLORSPACE_FULL_RANGE` →
+  `isColorspaceMatrixBT601` … `isColorspaceFullRange`
+- `SDL3.Sys.Stdinc`: `SDL_FOURCC` → `fourCC`
+- `SDL3.Sys.Surface`: `SDL_MUSTLOCK` → `mustLock`
+- `SDL3.Sys.Thread`: `SDL_CreateThread` → `createThread`,
+  `SDL_CreateThreadWithProperties` → `createThreadWithProperties`
+- `SDL3.Sys.Timer`: `SDL_SECONDS_TO_NS` → `secondsToNs`, `SDL_MS_TO_NS` →
+  `msToNs`, `SDL_US_TO_NS` → `usToNs`
 
 ### Conversion to and from C types
 
@@ -217,37 +297,43 @@ rejected by the ABI assertions — 64-bit layouts are baked in.
 
 ## What is not bound
 
-Known gaps, so you can discover them here instead of mid-build:
+The hs-bindgen team's
+[survey of SDL's macros](https://github.com/dschrempf/hs-bindgen-sdl-survey)
+is the reference for what hs-bindgen can and cannot translate: measured
+against hs-bindgen `cf56afb3` and SDL 3.4.0-1231, it binds 1099 of SDL's
+1980 macros, 31 of the 160 function-like ones. This package is generated
+with hs-bindgen 1.0.0.0 against SDL 3.4.16, and the raw layer binds the
+same 31. What differs here:
 
-- **Variadic functions**: Haskell's FFI cannot express C varargs, so
-  hs-bindgen has nothing to bind them to; the `SDL_Log` family,
-  `SDL_SetError`, and `SDL_RenderDebugTextFormat` are currently
-  unbound. In a future version, these will be bound via a fixed-arity
-  C shim.
-- **Most function-like macros**: a macro has no linkable symbol, but
-  hs-bindgen does not need one: it parses and typechecks macro bodies
-  and translates them to Haskell functions on a best-effort basis. From
-  the SDL 3.4.2 headers, 31 function-like macros translate and ship in
-  the raw layer (e.g. `sDL_AUDIO_BITSIZE`, `sDL_VERSION_ATLEAST`,
-  `sDL_DEFINE_PIXELFORMAT`, `sDL_WINDOWPOS_CENTERED_DISPLAY` in
-  `SDL3.Sys.Bindgen.*`). Two caveats: the curated `SDL3.Sys.*` layer
-  does not alias them yet, and pending
-  [hs-bindgen#2184](https://github.com/well-typed/hs-bindgen/issues/2184)
-  they accept only the underlying C integer types, not SDL's newtypes
-  such as `SDL_AudioFormat` (unwrap first). The hs-bindgen
-  team's
-  [survey of SDL's macros](https://github.com/dschrempf/hs-bindgen-sdl-survey)
-  counts 108 user-facing function-like macros, so most remain unbound
-  for now: upstream is extending coverage, and a `capi` import or a C
-  shim can reach the rest. Macro _constants_ are bound; see
-  [Typed constants](#typed-constants).
-- The seven `long`-typed `SDL_stdinc.h` libc clones (`strtol`/`ltoa`
-  families, `lround`/`lroundf`): their FFI types cannot be correct on
-  both LP64 and LLP64, so they are omitted.
-- Three Windows-only interop functions (`SDL_SetWindowsMessageHook`,
-  `SDL_GetDirect3D9AdapterIndex`, `SDL_GetDXGIOutputInfo`) — niche;
-  native window handles are reached through the bound
-  `SDL_GetWindowProperties` keys instead.
+- Integer macro constants spelled with casts to typedef names,
+  `SDL_UINT64_C`, or `SIZE_MAX`, which hs-bindgen cannot translate, reach
+  you as [typed constants](#typed-constants).
+- The variadic `SDL_Log` family, `SDL_SetError` and `SDL_IOprintf`, and
+  the most useful function-like macros (`SDL_MUSTLOCK`, the byte swaps,
+  the pixel-format and colorspace macros, `SDL_CreateThread`, ...) are
+  bound through [C shims](#c-shims).
+- `SDL_memcpy`, `SDL_memmove` and `SDL_memset` are bound: the generator
+  sets `SDL_SLOW_MEMCPY` and friends so SDL's macros do not shadow them.
+
+Still unbound: `SDL_RenderDebugTextFormat` (format in Haskell and use
+`renderDebugText`); the printf/scanf clones and every `va_list` function;
+the `SDL_assert` family and the other statement macros;
+`SDL_size_mul_check_overflow` and `SDL_size_add_check_overflow`
+([hs-bindgen#2097](https://github.com/well-typed/hs-bindgen/issues/2097);
+the `_builtin` twins are bound); `SDL_BYTEORDER` and `SDL_FLOATWORDORDER`
+(use `GHC.ByteOrder.targetByteOrder`); the `SDL_PROP_GAMEPAD_CAP_*`
+aliases (use the joystick keys); the seven `long`-typed `SDL_stdinc.h`
+libc clones (their FFI types cannot be right on both LP64 and LLP64);
+three Windows-only interop functions (`SDL_SetWindowsMessageHook`,
+`SDL_GetDirect3D9AdapterIndex`, `SDL_GetDXGIOutputInfo`). The
+function-like macros hs-bindgen does bind accept only C integer types,
+not SDL's newtypes, pending
+[hs-bindgen#2184](https://github.com/well-typed/hs-bindgen/issues/2184)
+(unwrap first).
+
+Everything hs-bindgen skips on the generation host is in the
+[skip ledger](https://github.com/jtnuttall/lithon/blob/main/lithon-codegen/data/sdl3/unbound.md),
+with a disposition for each.
 
 ## Versioning
 

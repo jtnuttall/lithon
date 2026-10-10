@@ -285,6 +285,10 @@ in.
   constant, which hs-bindgen does not bind. Use
   `MPV_RENDER_PARAM_DRM_DRAW_SURFACE_SIZE`, the value it names.
 
+The complete list, checked at every generation, is the
+[skip ledger](https://github.com/jtnuttall/lithon/blob/main/lithon-codegen/data/mpv/unbound.md):
+every declaration hs-bindgen skips, why, and what lithon does about it.
+
 Deprecated declarations are bound, not omitted: `MPV_ENABLE_DEPRECATED`
 keeps its default, so `MPV_EVENT_IDLE`, `MPV_EVENT_TICK`, and
 `mpv_get_wakeup_pipe` are present.

@@ -53,3 +53,5 @@ _Static_assert((TOY_FLAG_A) == (1ull), "TOY_FLAG_A: baked value 1 differs from y
 #if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 1)
 _Static_assert((TOY_FLAG_B) == (2ull), "TOY_FLAG_B: baked value 2 differs from your libtoy headers" LITHON_ABI_HELP);
 #endif
+_Static_assert((TOY_MIN_S8) == (18446744073709551488ull), "TOY_MIN_S8: baked value -128 differs from your libtoy headers" LITHON_ABI_HELP);
+_Static_assert((TOY_MIN_I64) == (9223372036854775808ull), "TOY_MIN_I64: baked value -9223372036854775808 differs from your libtoy headers" LITHON_ABI_HELP);

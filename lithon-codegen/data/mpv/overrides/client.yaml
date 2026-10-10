@@ -1,4 +1,5 @@
-# Curated prescriptive binding specification for mpv-bindgen-sys.
+# Curated prescriptive binding specification for mpv/client.h, in
+# mpv-bindgen-sys.
 #
 # Entries here override how hs-bindgen translates the types it generates.
 #
@@ -6,8 +7,11 @@
 # enums as open or closed, pick instances, omit something entirely, and
 # so forth.
 #
-# The generated per-header specs live in spec/ and are machine-owned
-# and refreshed by `lithon-codegen mpv spec`.
+# The file is named like the header's spec artifact (spec/client.yaml),
+# and the driver hands it to that header's hs-bindgen run alone, so it
+# holds entries for that header's declarations only. The generated
+# per-header specs live in spec/ and are machine-owned and refreshed by
+# `lithon-codegen mpv spec`.
 version:
   hs_bindgen: 0.1.0
   binding_specification: "1.0"

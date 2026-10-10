@@ -67,6 +67,9 @@ import SDL3.Sys.Bindgen.Stdinc qualified
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_iostream.h>"
          , "SDL_IOStream *hs_bindgen_8b8c09f1f05c3c68 ("
          , "  char const *arg1,"
