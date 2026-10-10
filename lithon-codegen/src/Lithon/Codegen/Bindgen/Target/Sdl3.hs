@@ -19,7 +19,7 @@ import Data.Text qualified as T
 import Lithon.HsBindgen qualified as HB
 import Lithon.HsBindgen.HsDoc qualified as HsDoc
 import Lithon.Prelude
-import System.FilePath ((<.>))
+import System.FilePath (dropExtension, (<.>))
 
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Bindgen.Driver (HeaderUnit (..), Passes (..))
@@ -62,7 +62,19 @@ sdl3 =
             -- the includes and hs-bindgen renders the root directives, in
             -- order, at the top of every wrapper translation unit. Harmless
             -- where @SDL_main.h@ leaves @main@ alone.
-            defines = [CDefine{name = "SDL_MAIN_HANDLED", value = Nothing}]
+            defines =
+              [ CDefine{name = "SDL_MAIN_HANDLED", value = Nothing}
+              , -- @SDL_stdinc.h@ otherwise @#define@s @SDL_memcpy memcpy@
+                -- (likewise memmove, memset) to take advantage of the
+                -- compiler's own copy, and hs-bindgen drops a function
+                -- shadowed by a same-name macro: neither would bind. The
+                -- defines land in the wrapper C prologue, the ABI
+                -- translation unit and the constants probe, where they only
+                -- make SDL's inline helpers call SDL's own functions.
+                CDefine{name = "SDL_SLOW_MEMCPY", value = Nothing}
+              , CDefine{name = "SDL_SLOW_MEMMOVE", value = Nothing}
+              , CDefine{name = "SDL_SLOW_MEMSET", value = Nothing}
+              ]
           , -- SDL's Doxyfile defines \threadsafety; without the alias doxygen
             -- passes the command through as literal text and every function doc
             -- leaks "\threadsafety ..." verbatim. \par routes it through the
@@ -116,12 +128,40 @@ sdl3 =
     , prose =
         Prose
           { familyOneLiners
-          , familyExtras = [("Events", readingEvents)]
+          , familyExtras = [("Events", readingEvents), ("Stdinc", stdincAllowlist)]
           , umbrellaDoc
           , runtimeDoc
           , abiBanner
           }
+    , -- The C shims: fixed-arity functions over SDL's variadic functions
+      -- and the function-like macros hs-bindgen cannot translate, one header
+      -- per SDL header they extend (@SDL_log.h@ -> @SDL_log_shims.h@, raw
+      -- family @SDL3.Sys.Bindgen.LogShims@, exported from @SDL3.Sys.Log@).
+      -- Each function is @lithon_@ and the SDL name it wraps.
+      authored =
+        Just
+          AuthoredHeaders
+            { includeRoot = "sdl3-bindgen-sys"
+            , namePrefix = "lithon_"
+            , headers =
+                map
+                  shimsFor
+                  [ "SDL_atomic.h"
+                  , "SDL_audio.h"
+                  , "SDL_endian.h"
+                  , "SDL_error.h"
+                  , "SDL_iostream.h"
+                  , "SDL_log.h"
+                  , "SDL_pixels.h"
+                  , "SDL_stdinc.h"
+                  , "SDL_surface.h"
+                  , "SDL_thread.h"
+                  , "SDL_timer.h"
+                  ]
+            }
     }
+ where
+  shimsFor host = AuthoredHeader{file = dropExtension host <> "_shims.h", extends = Just host}
 
 -- | SDL versions are MAJOR.MINOR.PATCH, in the annotations and in the docs.
 sdlArity :: Int
@@ -239,7 +279,10 @@ familyOneLiners =
     , "Thread synchronization primitives: mutexes, semaphores, condition variables, and read/write locks."
     )
   , ("PlatformDefines", "Platform-detection defines, baked at generation time.")
-  , ("Stdinc", "SDL's C-library replacements: memory, strings, math, and conversions.")
+  ,
+    ( "Stdinc"
+    , "SDL's C-library replacements: memory, strings, math, and conversions; this module aliases the allocator and SDL's own API."
+    )
   , ("System", "Platform-specific SDL API functions.")
   , ("Vulkan", "Functions for creating Vulkan surfaces on SDL windows.")
   ]
@@ -265,6 +308,36 @@ readingEvents =
             , HsDoc.TextContent "and the"
             , HsDoc.Monospace [HsDoc.TextContent "SDL_EVENT_*"]
             , HsDoc.TextContent "patterns live in this module."
+            ]
+        ]
+    }
+
+-- | Why the Stdinc family aliases an allowlist (@aliases.json@ @allow@),
+-- at the point of need.
+stdincAllowlist :: HsDoc.Comment
+stdincAllowlist =
+  mempty
+    { HsDoc.children =
+        [ HsDoc.Header HsDoc.Level3 [HsDoc.TextContent "Allowlist"]
+        , HsDoc.Paragraph
+            [ HsDoc.TextContent
+                "The aliases are SDL's own API in this header (environments, the \
+                \memory-function hooks and allocation count, UTF-8 stepping) and the \
+                \allocator family, since memory SDL frees, or hands you to free, must \
+                \come from SDL's allocator:"
+            , HsDoc.Identifier "malloc"
+            , HsDoc.TextContent ","
+            , HsDoc.Identifier "free"
+            , HsDoc.TextContent ","
+            , HsDoc.Identifier "strdup"
+            , HsDoc.TextContent
+                ", and their kin. The rest of the header serves C programs without \
+                \a portable C library: strings, character classes, math, sorting, \
+                \random numbers, checksums,"
+            , HsDoc.Monospace [HsDoc.TextContent "iconv"]
+            , HsDoc.TextContent ","
+            , HsDoc.Monospace [HsDoc.TextContent "memcpy"]
+            , HsDoc.TextContent ". Haskell has its own, so they stay raw-only."
             ]
         ]
     }
@@ -355,7 +428,16 @@ umbrellaDoc familyIndex =
   -- * This layer additionally provides typed pattern synonyms for
   --   the macro constant groups in SDL headers.
   --
-  -- * Some aliases (@free@, @abs@, @init@, …) collide with the "Prelude";
+  -- * What the FFI cannot call — SDL's variadic functions and the
+  --   function-like macros hs-bindgen cannot translate — is reached through
+  --   C shims: fixed-arity functions this package defines in C, exported
+  --   from the module of the header they extend, in its C shims section,
+  --   and named like what they wrap (@SDL_LogMessage@ -> @logMessage@,
+  --   @SDL_MUSTLOCK@ -> @mustLock@). The variadic functions' shims take
+  --   their message verbatim, never as a printf-style format string.
+  --   @log@ is @SDL_Log@'s shim; the math clones are raw-only.
+  --
+  -- * Some aliases (@init@, @log@, @readIO@) collide with the "Prelude";
   --   import this module qualified or curate your import list.
   --
   -- == Families

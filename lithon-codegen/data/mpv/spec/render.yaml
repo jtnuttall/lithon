@@ -3,9 +3,6 @@ version:
   binding_specification: "1.0"
 hsmodule: Mpv.Sys.Bindgen.Render
 ctypes:
-  - omit:
-      headers: mpv/render.h
-      cname: mpv_client_api_version
   - headers: mpv/render.h
     cname: struct mpv_render_context
     hsname: Mpv_render_context

@@ -29,6 +29,9 @@ import SDL3.Sys.Bindgen.Time
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_time.h>"
          , "_Bool hs_bindgen_3432fa094bde3d31 ("
          , "  SDL_DateFormat *arg1,"

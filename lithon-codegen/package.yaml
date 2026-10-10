@@ -13,7 +13,8 @@ description: Lithon's code generation tool. Lithon aims to be a performant, mode
 extra-source-files:
   - data/*/static/*
   - data/*/*.json
-  - data/*/overrides.yaml
+  - data/*/overrides/*.yaml
+  - data/*/include/*/*.h
 
 extra-doc-files:
   - README.md

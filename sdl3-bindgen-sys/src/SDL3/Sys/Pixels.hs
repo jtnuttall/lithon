@@ -42,6 +42,8 @@
 --
 --     Unsuffixed aliases are __unsafe__ foreign imports; aliases suffixed @Safe@ are safe. Functions whose callbacks fire during the call export only the Safe alias (the genuine unsafe import stays reachable under @SDL3.Sys.Bindgen.Pixels.Unsafe@); functions curated unsafe-only export only the unsuffixed one. Each alias\'s documentation records its flavor and rationale.
 --
+--     The C shims are functions this package defines in C over what the FFI cannot call directly (variadic functions, function-like macros), each named after what it wraps; the same flavor rules apply. Their raw imports live under "SDL3.Sys.Bindgen.PixelsShims".
+--
 --     Full conventions: "SDL3.Sys".
 module SDL3.Sys.Pixels (
   module SDL3.Sys.Bindgen.Pixels,
@@ -69,6 +71,30 @@ module SDL3.Sys.Pixels (
   SDL3.Sys.Pixels.getRGBSafe,
   SDL3.Sys.Pixels.getRGBA,
   SDL3.Sys.Pixels.getRGBASafe,
+
+  -- * C shims
+  SDL3.Sys.Pixels.definePixelFourCC,
+  SDL3.Sys.Pixels.bitsPerPixel,
+  SDL3.Sys.Pixels.bytesPerPixel,
+  SDL3.Sys.Pixels.isPixelFormatIndexed,
+  SDL3.Sys.Pixels.isPixelFormatPacked,
+  SDL3.Sys.Pixels.isPixelFormatArray,
+  SDL3.Sys.Pixels.isPixelFormat10Bit,
+  SDL3.Sys.Pixels.isPixelFormatFloat,
+  SDL3.Sys.Pixels.isPixelFormatAlpha,
+  SDL3.Sys.Pixels.isPixelFormatFourCC,
+  SDL3.Sys.Pixels.defineColorspace,
+  SDL3.Sys.Pixels.colorspaceType,
+  SDL3.Sys.Pixels.colorspaceRange,
+  SDL3.Sys.Pixels.colorspaceChroma,
+  SDL3.Sys.Pixels.colorspacePrimaries,
+  SDL3.Sys.Pixels.colorspaceTransfer,
+  SDL3.Sys.Pixels.colorspaceMatrix,
+  SDL3.Sys.Pixels.isColorspaceMatrixBT601,
+  SDL3.Sys.Pixels.isColorspaceMatrixBT709,
+  SDL3.Sys.Pixels.isColorspaceMatrixBT2020NCL,
+  SDL3.Sys.Pixels.isColorspaceLimitedRange,
+  SDL3.Sys.Pixels.isColorspaceFullRange,
 )
 where
 
@@ -80,8 +106,10 @@ import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import SDL3.Sys.Bindgen.Pixels
+import SDL3.Sys.Bindgen.Pixels qualified
 import SDL3.Sys.Bindgen.Pixels.Safe qualified as Safe
 import SDL3.Sys.Bindgen.Pixels.Unsafe qualified as Unsafe
+import SDL3.Sys.Bindgen.PixelsShims.Unsafe qualified as Unsafe
 import SDL3.Sys.Bindgen.Stdinc qualified
 
 -- | Get the human readable name of a pixel format.
@@ -1097,3 +1125,676 @@ getRGBASafe =
             \x55 ->
               \x66 ->
                 Safe.sDL_GetRGBA (Coerce.coerce x00) x11 x22 x33 x44 x55 x66
+
+-- | Define a custom FourCC pixel format.
+--
+--     The SDL_DEFINE_PIXELFOURCC macro as a function. SDL_PIXELFORMAT_YV12, for example, is the code of the characters Y, V, 1, 2.
+--
+--     [Returns]: a format value in the style of SDL_PixelFormat.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'SDL3.Sys.Stdinc.fourCC'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_DEFINE_PIXELFOURCC@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_DEFINE_PIXELFOURCC@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 42:35@
+definePixelFourCC
+  :: BG.Word8
+  -- ^
+  --
+  --           [@a@]: the first character of the FourCC code.
+  -> BG.Word8
+  -- ^
+  --
+  --           [@b@]: the second character of the FourCC code.
+  -> BG.Word8
+  -- ^
+  --
+  --           [@c@]: the third character of the FourCC code.
+  -> BG.Word8
+  -- ^
+  --
+  --           [@d@]: the fourth character of the FourCC code.
+  -> IO SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
+definePixelFourCC =
+  \x00 ->
+    \x11 ->
+      \x22 ->
+        \x33 ->
+          Unsafe.lithon_SDL_DEFINE_PIXELFOURCC
+            (Coerce.coerce x00)
+            (Coerce.coerce x11)
+            (Coerce.coerce x22)
+            (Coerce.coerce x33)
+
+-- | Determine an SDL_PixelFormat\'s bits per pixel.
+--
+--     The SDL_BITSPERPIXEL macro as a function. FourCC formats report zero here, as it rarely makes sense to measure them per-pixel.
+--
+--     [Returns]: the bits-per-pixel of @format@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'bytesPerPixel'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_BITSPERPIXEL@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_BITSPERPIXEL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 62:23@
+bitsPerPixel
+  :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
+  -- ^
+  --
+  --           [@format@]: an SDL_PixelFormat to check.
+  -> IO BG.Int32
+bitsPerPixel =
+  \x00 ->
+    fmap Coerce.coerce (Unsafe.lithon_SDL_BITSPERPIXEL x00)
+
+-- | Determine an SDL_PixelFormat\'s bytes per pixel.
+--
+--     The SDL_BYTESPERPIXEL macro as a function. FourCC formats do their best here, but many of them don\'t have a meaningful measurement of bytes per pixel.
+--
+--     [Returns]: the bytes-per-pixel of @format@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'bitsPerPixel'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_BYTESPERPIXEL@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_BYTESPERPIXEL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 83:23@
+bytesPerPixel
+  :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
+  -- ^
+  --
+  --           [@format@]: an SDL_PixelFormat to check.
+  -> IO BG.Int32
+bytesPerPixel =
+  \x00 ->
+    fmap Coerce.coerce (Unsafe.lithon_SDL_BYTESPERPIXEL x00)
+
+-- | Determine if an SDL_PixelFormat is an indexed format.
+--
+--     The SDL_ISPIXELFORMAT_INDEXED macro as a function.
+--
+--     [Returns]: true if the format is indexed, false otherwise.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_ISPIXELFORMAT_INDEXED@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_INDEXED@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 100:24@
+isPixelFormatIndexed
+  :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
+  -- ^
+  --
+  --           [@format@]: an SDL_PixelFormat to check.
+  -> IO Bool
+isPixelFormatIndexed =
+  \x00 ->
+    fmap CBool.toBool (Unsafe.lithon_SDL_ISPIXELFORMAT_INDEXED x00)
+
+-- | Determine if an SDL_PixelFormat is a packed format.
+--
+--     The SDL_ISPIXELFORMAT_PACKED macro as a function.
+--
+--     [Returns]: true if the format is packed, false otherwise.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_ISPIXELFORMAT_PACKED@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_PACKED@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 117:24@
+isPixelFormatPacked
+  :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
+  -- ^
+  --
+  --           [@format@]: an SDL_PixelFormat to check.
+  -> IO Bool
+isPixelFormatPacked =
+  \x00 ->
+    fmap CBool.toBool (Unsafe.lithon_SDL_ISPIXELFORMAT_PACKED x00)
+
+-- | Determine if an SDL_PixelFormat is an array format.
+--
+--     The SDL_ISPIXELFORMAT_ARRAY macro as a function.
+--
+--     [Returns]: true if the format is an array, false otherwise.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_ISPIXELFORMAT_ARRAY@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_ARRAY@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 134:24@
+isPixelFormatArray
+  :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
+  -- ^
+  --
+  --           [@format@]: an SDL_PixelFormat to check.
+  -> IO Bool
+isPixelFormatArray =
+  \x00 ->
+    fmap CBool.toBool (Unsafe.lithon_SDL_ISPIXELFORMAT_ARRAY x00)
+
+-- | Determine if an SDL_PixelFormat is a 10-bit format.
+--
+--     The SDL_ISPIXELFORMAT_10BIT macro as a function.
+--
+--     [Returns]: true if the format is 10-bit, false otherwise.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_ISPIXELFORMAT_10BIT@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_10BIT@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 151:24@
+isPixelFormat10Bit
+  :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
+  -- ^
+  --
+  --           [@format@]: an SDL_PixelFormat to check.
+  -> IO Bool
+isPixelFormat10Bit =
+  \x00 ->
+    fmap CBool.toBool (Unsafe.lithon_SDL_ISPIXELFORMAT_10BIT x00)
+
+-- | Determine if an SDL_PixelFormat is a floating point format.
+--
+--     The SDL_ISPIXELFORMAT_FLOAT macro as a function.
+--
+--     [Returns]: true if the format is a floating point, false otherwise.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_ISPIXELFORMAT_FLOAT@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_FLOAT@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 168:24@
+isPixelFormatFloat
+  :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
+  -- ^
+  --
+  --           [@format@]: an SDL_PixelFormat to check.
+  -> IO Bool
+isPixelFormatFloat =
+  \x00 ->
+    fmap CBool.toBool (Unsafe.lithon_SDL_ISPIXELFORMAT_FLOAT x00)
+
+-- | Determine if an SDL_PixelFormat has an alpha channel.
+--
+--     The SDL_ISPIXELFORMAT_ALPHA macro as a function.
+--
+--     [Returns]: true if the format has alpha, false otherwise.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_ISPIXELFORMAT_ALPHA@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_ALPHA@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 185:24@
+isPixelFormatAlpha
+  :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
+  -- ^
+  --
+  --           [@format@]: an SDL_PixelFormat to check.
+  -> IO Bool
+isPixelFormatAlpha =
+  \x00 ->
+    fmap CBool.toBool (Unsafe.lithon_SDL_ISPIXELFORMAT_ALPHA x00)
+
+-- | Determine if an SDL_PixelFormat is a \"FourCC\" format.
+--
+--     The SDL_ISPIXELFORMAT_FOURCC macro as a function. This covers custom and other unusual formats.
+--
+--     [Returns]: true if the format is a FourCC format, false otherwise.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_ISPIXELFORMAT_FOURCC@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_FOURCC@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 202:24@
+isPixelFormatFourCC
+  :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
+  -- ^
+  --
+  --           [@format@]: an SDL_PixelFormat to check.
+  -> IO Bool
+isPixelFormatFourCC =
+  \x00 ->
+    fmap CBool.toBool (Unsafe.lithon_SDL_ISPIXELFORMAT_FOURCC x00)
+
+-- | Define a custom colorspace.
+--
+--     The SDL_DEFINE_COLORSPACE macro as a function.
+--
+--     [Returns]: a format value in the style of SDL_Colorspace.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_DEFINE_COLORSPACE@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [C declaration]: @lithon_SDL_DEFINE_COLORSPACE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 224:34@
+defineColorspace
+  :: SDL3.Sys.Bindgen.Pixels.SDL_ColorType
+  -- ^
+  --
+  --           [@type@]: the type of the new format.
+  -> SDL3.Sys.Bindgen.Pixels.SDL_ColorRange
+  -- ^
+  --
+  --           [@range@]: the range of the new format.
+  -> SDL3.Sys.Bindgen.Pixels.SDL_ColorPrimaries
+  -- ^
+  --
+  --           [@primaries@]: the primaries of the new format.
+  -> SDL3.Sys.Bindgen.Pixels.SDL_TransferCharacteristics
+  -- ^
+  --
+  --           [@transfer@]: the transfer characteristics of the new format.
+  -> SDL3.Sys.Bindgen.Pixels.SDL_MatrixCoefficients
+  -- ^
+  --
+  --           [@matrix@]: the matrix coefficients of the new format.
+  -> SDL3.Sys.Bindgen.Pixels.SDL_ChromaLocation
+  -- ^
+  --
+  --           [@chroma@]: the chroma sample location of the new format.
+  -> IO SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
+defineColorspace =
+  Unsafe.lithon_SDL_DEFINE_COLORSPACE
+
+-- | Retrieve the type of an SDL_Colorspace.
+--
+--     The SDL_COLORSPACETYPE macro as a function.
+--
+--     [Returns]: the SDL_ColorType of @cspace@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_COLORSPACETYPE@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [C declaration]: @lithon_SDL_COLORSPACETYPE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 241:33@
+colorspaceType
+  :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
+  -- ^
+  --
+  --           [@cspace@]: an SDL_Colorspace to check.
+  -> IO SDL3.Sys.Bindgen.Pixels.SDL_ColorType
+colorspaceType = Unsafe.lithon_SDL_COLORSPACETYPE
+
+-- | Retrieve the range of an SDL_Colorspace.
+--
+--     The SDL_COLORSPACERANGE macro as a function.
+--
+--     [Returns]: the SDL_ColorRange of @cspace@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_COLORSPACERANGE@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [C declaration]: @lithon_SDL_COLORSPACERANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 258:34@
+colorspaceRange
+  :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
+  -- ^
+  --
+  --           [@cspace@]: an SDL_Colorspace to check.
+  -> IO SDL3.Sys.Bindgen.Pixels.SDL_ColorRange
+colorspaceRange = Unsafe.lithon_SDL_COLORSPACERANGE
+
+-- | Retrieve the chroma sample location of an SDL_Colorspace.
+--
+--     The SDL_COLORSPACECHROMA macro as a function.
+--
+--     [Returns]: the SDL_ChromaLocation of @cspace@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_COLORSPACECHROMA@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [C declaration]: @lithon_SDL_COLORSPACECHROMA@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 275:38@
+colorspaceChroma
+  :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
+  -- ^
+  --
+  --           [@cspace@]: an SDL_Colorspace to check.
+  -> IO SDL3.Sys.Bindgen.Pixels.SDL_ChromaLocation
+colorspaceChroma = Unsafe.lithon_SDL_COLORSPACECHROMA
+
+-- | Retrieve the primaries of an SDL_Colorspace.
+--
+--     The SDL_COLORSPACEPRIMARIES macro as a function.
+--
+--     [Returns]: the SDL_ColorPrimaries of @cspace@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_COLORSPACEPRIMARIES@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [C declaration]: @lithon_SDL_COLORSPACEPRIMARIES@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 292:38@
+colorspacePrimaries
+  :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
+  -- ^
+  --
+  --           [@cspace@]: an SDL_Colorspace to check.
+  -> IO SDL3.Sys.Bindgen.Pixels.SDL_ColorPrimaries
+colorspacePrimaries =
+  Unsafe.lithon_SDL_COLORSPACEPRIMARIES
+
+-- | Retrieve the transfer characteristics of an SDL_Colorspace.
+--
+--     The SDL_COLORSPACETRANSFER macro as a function.
+--
+--     [Returns]: the SDL_TransferCharacteristics of @cspace@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_COLORSPACETRANSFER@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [C declaration]: @lithon_SDL_COLORSPACETRANSFER@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 309:47@
+colorspaceTransfer
+  :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
+  -- ^
+  --
+  --           [@cspace@]: an SDL_Colorspace to check.
+  -> IO SDL3.Sys.Bindgen.Pixels.SDL_TransferCharacteristics
+colorspaceTransfer =
+  Unsafe.lithon_SDL_COLORSPACETRANSFER
+
+-- | Retrieve the matrix coefficients of an SDL_Colorspace.
+--
+--     The SDL_COLORSPACEMATRIX macro as a function.
+--
+--     [Returns]: the SDL_MatrixCoefficients of @cspace@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_COLORSPACEMATRIX@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [C declaration]: @lithon_SDL_COLORSPACEMATRIX@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 326:42@
+colorspaceMatrix
+  :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
+  -- ^
+  --
+  --           [@cspace@]: an SDL_Colorspace to check.
+  -> IO SDL3.Sys.Bindgen.Pixels.SDL_MatrixCoefficients
+colorspaceMatrix = Unsafe.lithon_SDL_COLORSPACEMATRIX
+
+-- | Determine if an SDL_Colorspace uses BT601 (or BT470BG) matrix coefficients.
+--
+--     The SDL_ISCOLORSPACE_MATRIX_BT601 macro as a function.
+--
+--     [Returns]: true if BT601 or BT470BG, false otherwise.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_ISCOLORSPACE_MATRIX_BT601@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT601@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 343:24@
+isColorspaceMatrixBT601
+  :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
+  -- ^
+  --
+  --           [@cspace@]: an SDL_Colorspace to check.
+  -> IO Bool
+isColorspaceMatrixBT601 =
+  \x00 ->
+    fmap CBool.toBool (Unsafe.lithon_SDL_ISCOLORSPACE_MATRIX_BT601 x00)
+
+-- | Determine if an SDL_Colorspace uses BT709 matrix coefficients.
+--
+--     The SDL_ISCOLORSPACE_MATRIX_BT709 macro as a function.
+--
+--     [Returns]: true if BT709, false otherwise.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_ISCOLORSPACE_MATRIX_BT709@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT709@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 360:24@
+isColorspaceMatrixBT709
+  :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
+  -- ^
+  --
+  --           [@cspace@]: an SDL_Colorspace to check.
+  -> IO Bool
+isColorspaceMatrixBT709 =
+  \x00 ->
+    fmap CBool.toBool (Unsafe.lithon_SDL_ISCOLORSPACE_MATRIX_BT709 x00)
+
+-- | Determine if an SDL_Colorspace uses BT2020_NCL matrix coefficients.
+--
+--     The SDL_ISCOLORSPACE_MATRIX_BT2020_NCL macro as a function.
+--
+--     [Returns]: true if BT2020_NCL, false otherwise.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 377:24@
+isColorspaceMatrixBT2020NCL
+  :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
+  -- ^
+  --
+  --           [@cspace@]: an SDL_Colorspace to check.
+  -> IO Bool
+isColorspaceMatrixBT2020NCL =
+  \x00 ->
+    fmap CBool.toBool (Unsafe.lithon_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL x00)
+
+-- | Determine if an SDL_Colorspace has a limited range.
+--
+--     The SDL_ISCOLORSPACE_LIMITED_RANGE macro as a function.
+--
+--     [Returns]: true if limited range, false otherwise.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_ISCOLORSPACE_LIMITED_RANGE@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_LIMITED_RANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 394:24@
+isColorspaceLimitedRange
+  :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
+  -- ^
+  --
+  --           [@cspace@]: an SDL_Colorspace to check.
+  -> IO Bool
+isColorspaceLimitedRange =
+  \x00 ->
+    fmap CBool.toBool (Unsafe.lithon_SDL_ISCOLORSPACE_LIMITED_RANGE x00)
+
+-- | Determine if an SDL_Colorspace has a full range.
+--
+--     The SDL_ISCOLORSPACE_FULL_RANGE macro as a function.
+--
+--     [Returns]: true if full range, false otherwise.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_ISCOLORSPACE_FULL_RANGE@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_FULL_RANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 411:24@
+isColorspaceFullRange
+  :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
+  -- ^
+  --
+  --           [@cspace@]: an SDL_Colorspace to check.
+  -> IO Bool
+isColorspaceFullRange =
+  \x00 ->
+    fmap CBool.toBool (Unsafe.lithon_SDL_ISCOLORSPACE_FULL_RANGE x00)

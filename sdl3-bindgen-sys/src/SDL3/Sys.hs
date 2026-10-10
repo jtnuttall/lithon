@@ -45,7 +45,16 @@
 -- * This layer additionally provides typed pattern synonyms for
 --   the macro constant groups in SDL headers.
 --
--- * Some aliases (@free@, @abs@, @init@, …) collide with the "Prelude";
+-- * What the FFI cannot call — SDL's variadic functions and the
+--   function-like macros hs-bindgen cannot translate — is reached through
+--   C shims: fixed-arity functions this package defines in C, exported
+--   from the module of the header they extend, in its C shims section,
+--   and named like what they wrap (@SDL_LogMessage@ -> @logMessage@,
+--   @SDL_MUSTLOCK@ -> @mustLock@). The variadic functions' shims take
+--   their message verbatim, never as a printf-style format string.
+--   @log@ is @SDL_Log@'s shim; the math clones are raw-only.
+--
+-- * Some aliases (@init@, @log@, @readIO@) collide with the "Prelude";
 --   import this module qualified or curate your import list.
 --
 -- == Families
@@ -97,7 +106,7 @@
 -- * "SDL3.Sys.Runtime" — Bridge vocabulary: C99 bool and C enum conversions, curated from the runtime.
 -- * "SDL3.Sys.Scancode" — Defines keyboard scancodes.
 -- * "SDL3.Sys.Sensor" — SDL sensor management.
--- * "SDL3.Sys.Stdinc" — SDL's C-library replacements: memory, strings, math, and conversions.
+-- * "SDL3.Sys.Stdinc" — SDL's C-library replacements: memory, strings, math, and conversions; this module aliases the allocator and SDL's own API.
 -- * "SDL3.Sys.Storage" — The storage API is a high-level API designed to abstract away the portability issues that come up when using something lower-level (in SDL's case, this sits on top of the [Filesystem](https://wiki.libsdl.org/SDL3/CategoryFilesystem) and [IOStream](https://wiki.libsdl.org/SDL3/CategoryIOStream) subsystems).
 -- * "SDL3.Sys.Surface" — SDL surfaces are buffers of pixels in system RAM.
 -- * "SDL3.Sys.System" — Platform-specific SDL API functions.

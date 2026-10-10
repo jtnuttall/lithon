@@ -36,6 +36,9 @@ import SDL3.Sys.Bindgen.Rect
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_rect.h>"
          , "void hs_bindgen_8e106b8f8a5cc9ba ("
          , "  SDL_Rect const *arg1,"

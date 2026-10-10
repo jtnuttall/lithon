@@ -17,7 +17,11 @@ module SDL3.Sys.Toy
     , pattern SDL3.Sys.Toy.SDL_TOY_A
     , pattern SDL3.Sys.Toy.SDL_TOY_B
     , pattern SDL3.Sys.Toy.SDL_TOY_AB
+    , pattern SDL3.Sys.Toy.SDL_TOY2_ID_NONE
     , pattern SDL3.Sys.Toy.SDL_TOY_LIMIT
+    , pattern SDL3.Sys.Toy.SDL_TOYOFFSET_MAX
+    , pattern SDL3.Sys.Toy.SDL_TOYOFFSET_MIN
+    , pattern SDL3.Sys.Toy.SDL_TOYSIZE_ERROR
       -- * Function aliases
     , SDL3.Sys.Toy.createToyThing
     , SDL3.Sys.Toy.toyIsOk
@@ -385,7 +389,29 @@ pattern SDL_TOY_B = SDL_ToyFlags 0x00000002
 pattern SDL_TOY_AB :: SDL_ToyFlags
 pattern SDL_TOY_AB = SDL_ToyFlags 0x00000003
 
+{-| Typed constant for macro @SDL_TOY2_ID_NONE@ (declared in @SDL_toy2.h@).
+-}
+pattern SDL_TOY2_ID_NONE :: SDL_ToyId
+pattern SDL_TOY2_ID_NONE = SDL_ToyId 4294967295
+
 {-| Typed constant for macro @SDL_TOY_LIMIT@.
 -}
 pattern SDL_TOY_LIMIT :: SDL_ToyMode
 pattern SDL_TOY_LIMIT = SDL_ToyMode 7
+
+{-| Typed constant for macro @SDL_TOYOFFSET_MAX@.
+-}
+pattern SDL_TOYOFFSET_MAX :: SDL_ToyOffset
+pattern SDL_TOYOFFSET_MAX = SDL_ToyOffset 32767
+
+{-| Typed constant for macro @SDL_TOYOFFSET_MIN@.
+-}
+pattern SDL_TOYOFFSET_MIN :: SDL_ToyOffset
+pattern SDL_TOYOFFSET_MIN <- SDL_ToyOffset (-32768)
+  where
+    SDL_TOYOFFSET_MIN = SDL_ToyOffset (-32768)
+
+{-| Typed constant for macro @SDL_TOYSIZE_ERROR@ (C type @size_t@).
+-}
+pattern SDL_TOYSIZE_ERROR :: BG.Word64
+pattern SDL_TOYSIZE_ERROR = 18446744073709551615

@@ -48,6 +48,9 @@ module SDL3.Sys.Bindgen.Stdinc.FunPtr (
   SDL3.Sys.Bindgen.Stdinc.FunPtr.sDL_crc16,
   SDL3.Sys.Bindgen.Stdinc.FunPtr.sDL_crc32,
   SDL3.Sys.Bindgen.Stdinc.FunPtr.sDL_murmur3_32,
+  SDL3.Sys.Bindgen.Stdinc.FunPtr.sDL_memcpy,
+  SDL3.Sys.Bindgen.Stdinc.FunPtr.sDL_memmove,
+  SDL3.Sys.Bindgen.Stdinc.FunPtr.sDL_memset,
   SDL3.Sys.Bindgen.Stdinc.FunPtr.sDL_memset4,
   SDL3.Sys.Bindgen.Stdinc.FunPtr.sDL_memcmp,
   SDL3.Sys.Bindgen.Stdinc.FunPtr.sDL_wcslen,
@@ -169,6 +172,9 @@ import SDL3.Sys.Bindgen.Stdinc
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_stdinc.h>"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_get_SDL_malloc */"
          , "__attribute__ ((const))"
@@ -550,6 +556,36 @@ $( HsBindgen.Runtime.Support.CAPI.addCSource
          , ")"
          , "{"
          , "  return &SDL_murmur3_32;"
+         , "}"
+         , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_get_SDL_memcpy */"
+         , "__attribute__ ((const))"
+         , "void *(*hs_bindgen_d6f4de330020d4d9 (void)) ("
+         , "  void *arg1,"
+         , "  void const *arg2,"
+         , "  size_t arg3"
+         , ")"
+         , "{"
+         , "  return &SDL_memcpy;"
+         , "}"
+         , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_get_SDL_memmove */"
+         , "__attribute__ ((const))"
+         , "void *(*hs_bindgen_44856f6360083eb1 (void)) ("
+         , "  void *arg1,"
+         , "  void const *arg2,"
+         , "  size_t arg3"
+         , ")"
+         , "{"
+         , "  return &SDL_memmove;"
+         , "}"
+         , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_get_SDL_memset */"
+         , "__attribute__ ((const))"
+         , "void *(*hs_bindgen_c1ce0cb00fc3994b (void)) ("
+         , "  void *arg1,"
+         , "  signed int arg2,"
+         , "  size_t arg3"
+         , ")"
+         , "{"
+         , "  return &SDL_memset;"
          , "}"
          , "/* sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_get_SDL_memset4 */"
          , "__attribute__ ((const))"
@@ -3106,6 +3142,125 @@ sDL_murmur3_32
   :: BG.FunPtr (PtrConst.PtrConst BG.Void -> HsBindgen.Runtime.LibC.CSize -> Uint32 -> IO Uint32)
 sDL_murmur3_32 =
   BG.unsafePerformIO hs_bindgen_fe133a77578cb1aa
+
+-- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_get_SDL_memcpy@
+foreign import ccall unsafe "hs_bindgen_d6f4de330020d4d9"
+  hs_bindgen_d6f4de330020d4d9_base
+    :: IO (BG.FunPtr BG.Void)
+
+-- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_get_SDL_memcpy@
+hs_bindgen_d6f4de330020d4d9
+  :: IO
+       ( BG.FunPtr
+           (BG.Ptr BG.Void -> PtrConst.PtrConst BG.Void -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
+       )
+hs_bindgen_d6f4de330020d4d9 =
+  fmap BG.fromFFIType hs_bindgen_d6f4de330020d4d9_base
+
+{-# NOINLINE sDL_memcpy #-}
+
+-- | Copy non-overlapping memory.
+--
+--     The memory regions must not overlap. If they do, use @SDL_memmove()@ instead.
+--
+--     [@dst@]: The destination memory region. Must not be NULL, and must not overlap with @src@.
+--
+--     [@src@]: The source memory region. Must not be NULL, and must not overlap with @dst@.
+--
+--     [@len@]: The length in bytes of both @dst@ and @src@.
+--
+--     [Returns]: @dst@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'sDL_memmove'
+--
+--     [C declaration]: @SDL_memcpy@, defined at @SDL3\/SDL_stdinc.h 2505:36@
+sDL_memcpy
+  :: BG.FunPtr
+       (BG.Ptr BG.Void -> PtrConst.PtrConst BG.Void -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
+sDL_memcpy =
+  BG.unsafePerformIO hs_bindgen_d6f4de330020d4d9
+
+-- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_get_SDL_memmove@
+foreign import ccall unsafe "hs_bindgen_44856f6360083eb1"
+  hs_bindgen_44856f6360083eb1_base
+    :: IO (BG.FunPtr BG.Void)
+
+-- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_get_SDL_memmove@
+hs_bindgen_44856f6360083eb1
+  :: IO
+       ( BG.FunPtr
+           (BG.Ptr BG.Void -> PtrConst.PtrConst BG.Void -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
+       )
+hs_bindgen_44856f6360083eb1 =
+  fmap BG.fromFFIType hs_bindgen_44856f6360083eb1_base
+
+{-# NOINLINE sDL_memmove #-}
+
+-- | Copy memory ranges that might overlap.
+--
+--     It is okay for the memory regions to overlap. If you are confident that the regions never overlap, using @SDL_memcpy()@ may improve performance.
+--
+--     [@dst@]: The destination memory region. Must not be NULL.
+--
+--     [@src@]: The source memory region. Must not be NULL.
+--
+--     [@len@]: The length in bytes of both @dst@ and @src@.
+--
+--     [Returns]: @dst@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'sDL_memcpy'
+--
+--     [C declaration]: @SDL_memmove@, defined at @SDL3\/SDL_stdinc.h 2561:36@
+sDL_memmove
+  :: BG.FunPtr
+       (BG.Ptr BG.Void -> PtrConst.PtrConst BG.Void -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
+sDL_memmove =
+  BG.unsafePerformIO hs_bindgen_44856f6360083eb1
+
+-- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_get_SDL_memset@
+foreign import ccall unsafe "hs_bindgen_c1ce0cb00fc3994b"
+  hs_bindgen_c1ce0cb00fc3994b_base
+    :: IO (BG.FunPtr BG.Void)
+
+-- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_get_SDL_memset@
+hs_bindgen_c1ce0cb00fc3994b
+  :: IO (BG.FunPtr (BG.Ptr BG.Void -> BG.CInt -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void)))
+hs_bindgen_c1ce0cb00fc3994b =
+  fmap BG.fromFFIType hs_bindgen_c1ce0cb00fc3994b_base
+
+{-# NOINLINE sDL_memset #-}
+
+-- | Initialize all bytes of buffer of memory to a specific value.
+--
+--     This function will set @len@ bytes, pointed to by @dst@, to the value specified in @c@.
+--
+--     Despite @c@ being an @int@ instead of a @char@, this only operates on bytes; @c@ must be a value between 0 and 255, inclusive.
+--
+--     [@dst@]: the destination memory region. Must not be NULL.
+--
+--     [@c@]: the byte value to set.
+--
+--     [@len@]: the length, in bytes, to set in @dst@.
+--
+--     [Returns]: @dst@.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [C declaration]: @SDL_memset@, defined at @SDL3\/SDL_stdinc.h 2589:36@
+sDL_memset
+  :: BG.FunPtr (BG.Ptr BG.Void -> BG.CInt -> HsBindgen.Runtime.LibC.CSize -> IO (BG.Ptr BG.Void))
+sDL_memset =
+  BG.unsafePerformIO hs_bindgen_c1ce0cb00fc3994b
 
 -- __unique:__ @sdl3bindgensys_SDL3.Sys.Bindgen.Stdinc_get_SDL_memset4@
 foreign import ccall unsafe "hs_bindgen_45d6fa96a2a35062"

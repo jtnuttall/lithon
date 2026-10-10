@@ -3,9 +3,6 @@ version:
   binding_specification: "1.0"
 hsmodule: Mpv.Sys.Bindgen.StreamCb
 ctypes:
-  - omit:
-      headers: mpv/stream_cb.h
-      cname: mpv_client_api_version
   - headers: mpv/stream_cb.h
     cname: mpv_stream_cb_read_fn
     hsname: Mpv_stream_cb_read_fn

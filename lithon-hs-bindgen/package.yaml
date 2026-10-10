@@ -41,7 +41,9 @@ dependencies:
   - hs-bindgen
   - libclang-bindings >= 0.2 && < 0.3
   - lithon-prelude
+  - ansi-terminal
   - bytestring
+  - containers
   - debruijn
   - data-default
   - file-embed
@@ -53,3 +55,7 @@ dependencies:
 
 library:
   source-dirs: src
+  other-modules:
+    - Lithon.HsBindgen.Invoke.Trace
+  generated-other-modules:
+    - Paths_lithon_hs_bindgen

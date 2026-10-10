@@ -5,7 +5,7 @@
     "LICENSE_c-expr-runtime": "rhv3:5134b2c7a1f80df7",
     "LICENSE_hs-bindgen-runtime": "rhv3:5134b2c7a1f80df7",
     "LICENSE_libmpv": "rhv3:1ef9ef6af4f95f82",
-    "README.md": "rhv3:b7254bcecd4fafa0",
+    "README.md": "rhv3:7ddd9fd554e308fd",
     "cbits/abi_assertions.c": "rhv3:416e82744b1f1e04",
     "mpv-bindgen-sys.cabal": "rhv3:4fb971e8d90a7eef",
     "package.yaml": "rhv3:61b1f146aef68527",

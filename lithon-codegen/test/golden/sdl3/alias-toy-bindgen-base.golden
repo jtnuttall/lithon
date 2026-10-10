@@ -32,6 +32,7 @@ module SDL3.Sys.Bindgen.Toy
     , SDL3.Sys.Bindgen.Toy.SDL_ToyCallback(..)
     , SDL3.Sys.Bindgen.Toy.Uint32(..)
     , SDL3.Sys.Bindgen.Toy.SDL_ToyId(..)
+    , SDL3.Sys.Bindgen.Toy.SDL_ToyOffset(..)
     )
   where
 
@@ -415,5 +416,53 @@ instance ( ty ~ Uint32
 instance HasCField.HasCField SDL_ToyId "unwrapSDL_ToyId" where
 
   type CFieldType SDL_ToyId "unwrapSDL_ToyId" = Uint32
+
+  offset# = \_ -> \_ -> 0
+
+{-| A signed toy offset (mirrors Sint16: constants cast to the type).
+
+    [C declaration]: @SDL_ToyOffset@, defined at @SDL_toy.h 122:17@
+-}
+newtype SDL_ToyOffset = SDL_ToyOffset
+  { unwrapSDL_ToyOffset :: HsBindgen.Runtime.LibC.Int16
+  }
+  deriving stock (Eq, BG.Generic, Ord, Read, Show)
+  deriving newtype
+    ( BG.Bitfield
+    , BG.Bits
+    , Bounded
+    , Enum
+    , BG.FiniteBits
+    , BG.HasFFIType
+    , Integral
+    , BG.Ix
+    , Num
+    , BG.Prim
+    , Marshal.ReadRaw
+    , Real
+    , Marshal.StaticSize
+    , BG.Storable
+    , Marshal.WriteRaw
+    )
+
+instance ( ty ~ HsBindgen.Runtime.LibC.Int16
+         ) => BG.CompatHasField.HasField "unwrapSDL_ToyOffset" SDL_ToyOffset ty where
+
+  hasField =
+    \x0 ->
+      ( \y1 -> SDL_ToyOffset {unwrapSDL_ToyOffset = y1}
+      , BG.getField @"unwrapSDL_ToyOffset" x0
+      )
+
+instance ( ty ~ HsBindgen.Runtime.LibC.Int16
+         ) => BG.HasField "unwrapSDL_ToyOffset" (BG.Ptr SDL_ToyOffset) (BG.Ptr ty) where
+
+  getField =
+    HasCField.fromPtr (BG.Proxy @"unwrapSDL_ToyOffset")
+
+instance HasCField.HasCField SDL_ToyOffset "unwrapSDL_ToyOffset" where
+
+  type CFieldType SDL_ToyOffset "unwrapSDL_ToyOffset" =
+    HsBindgen.Runtime.LibC.Int16
 
   offset# = \_ -> \_ -> 0

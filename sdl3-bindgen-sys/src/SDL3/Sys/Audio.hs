@@ -1,3 +1,4 @@
+{-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
 -- | Audio functionality for the SDL library.
@@ -78,9 +79,15 @@
 --
 --     Unsuffixed aliases are __unsafe__ foreign imports; aliases suffixed @Safe@ are safe. Functions whose callbacks fire during the call export only the Safe alias (the genuine unsafe import stays reachable under @SDL3.Sys.Bindgen.Audio.Unsafe@); functions curated unsafe-only export only the unsuffixed one. Each alias\'s documentation records its flavor and rationale.
 --
+--     The C shims are functions this package defines in C over what the FFI cannot call directly (variadic functions, function-like macros), each named after what it wraps; the same flavor rules apply. Their raw imports live under "SDL3.Sys.Bindgen.AudioShims".
+--
 --     Full conventions: "SDL3.Sys".
 module SDL3.Sys.Audio (
   module SDL3.Sys.Bindgen.Audio,
+
+  -- * Typed constants
+  pattern SDL3.Sys.Audio.SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK,
+  pattern SDL3.Sys.Audio.SDL_AUDIO_DEVICE_DEFAULT_RECORDING,
 
   -- * Function aliases
   SDL3.Sys.Audio.getNumAudioDrivers,
@@ -199,6 +206,10 @@ module SDL3.Sys.Audio (
   SDL3.Sys.Audio.getAudioFormatNameSafe,
   SDL3.Sys.Audio.getSilenceValueForFormat,
   SDL3.Sys.Audio.getSilenceValueForFormatSafe,
+
+  -- * C shims
+  SDL3.Sys.Audio.audioFrameSize,
+  SDL3.Sys.Audio.defineAudioFormat,
 )
 where
 
@@ -210,8 +221,10 @@ import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import SDL3.Sys.Bindgen.Audio
+import SDL3.Sys.Bindgen.Audio qualified
 import SDL3.Sys.Bindgen.Audio.Safe qualified as Safe
 import SDL3.Sys.Bindgen.Audio.Unsafe qualified as Unsafe
+import SDL3.Sys.Bindgen.AudioShims.Unsafe qualified as Unsafe
 import SDL3.Sys.Bindgen.Iostream qualified
 import SDL3.Sys.Bindgen.Properties qualified
 import SDL3.Sys.Bindgen.Stdinc qualified
@@ -4793,3 +4806,90 @@ getSilenceValueForFormatSafe
 getSilenceValueForFormatSafe =
   \x00 ->
     fmap Coerce.coerce (Safe.sDL_GetSilenceValueForFormat x00)
+
+-- | Calculate the size of each audio frame (in bytes) from an SDL_AudioSpec.
+--
+--     The SDL_AUDIO_FRAMESIZE macro as a function. This reports on the size of an audio sample frame: stereo Sint16 data (2 channels of 2 bytes each) would be 4 bytes per frame, for example.
+--
+--     [Returns]: the number of bytes used per sample frame.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_AUDIO_FRAMESIZE@.
+--                   The safe import is not exported
+--                   : pure arithmetic on a caller-supplied struct; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_AUDIO_FRAMESIZE@, defined at @sdl3-bindgen-sys\/SDL_audio_shims.h 38:23@
+audioFrameSize
+  :: PtrConst.PtrConst SDL3.Sys.Bindgen.Audio.SDL_AudioSpec
+  -- ^
+  --
+  --           [@spec@]: the SDL_AudioSpec to query.
+  -> IO BG.Int32
+audioFrameSize =
+  \x00 ->
+    fmap Coerce.coerce (Unsafe.lithon_SDL_AUDIO_FRAMESIZE x00)
+
+-- | Define an SDL_AudioFormat value.
+--
+--     The SDL_DEFINE_AUDIO_FORMAT macro as a function. SDL does not support custom audio formats, so this is not of much use externally, but it can be illustrative as to what the various bits of an SDL_AudioFormat mean. For example, SDL_AUDIO_S32LE is signed, littleendian, integer, 32 bits.
+--
+--     [Returns]: a format value in the style of SDL_AudioFormat.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_DEFINE_AUDIO_FORMAT@.
+--                   The safe import is not exported
+--                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_DEFINE_AUDIO_FORMAT@, defined at @sdl3-bindgen-sys\/SDL_audio_shims.h 61:35@
+defineAudioFormat
+  :: Bool
+  -- ^
+  --
+  --           [@is_signed@]: true for signed data, false for unsigned data.
+  -> Bool
+  -- ^
+  --
+  --           [@is_bigendian@]: true for bigendian data, false for littleendian data.
+  -> Bool
+  -- ^
+  --
+  --           [@is_float@]: true for floating point data, false for integer data.
+  -> BG.Word8
+  -- ^
+  --
+  --           [@bits@]: number of bits per sample.
+  -> IO SDL3.Sys.Bindgen.Audio.SDL_AudioFormat
+defineAudioFormat =
+  \x00 ->
+    \x11 ->
+      \x22 ->
+        \x33 ->
+          Unsafe.lithon_SDL_DEFINE_AUDIO_FORMAT
+            (CBool.fromBool x00)
+            (CBool.fromBool x11)
+            (CBool.fromBool x22)
+            (Coerce.coerce x33)
+
+-- | Typed constant for macro @SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK@.
+pattern SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK :: SDL_AudioDeviceID
+pattern SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK = SDL_AudioDeviceID 4294967295
+
+-- | Typed constant for macro @SDL_AUDIO_DEVICE_DEFAULT_RECORDING@.
+pattern SDL_AUDIO_DEVICE_DEFAULT_RECORDING :: SDL_AudioDeviceID
+pattern SDL_AUDIO_DEVICE_DEFAULT_RECORDING = SDL_AudioDeviceID 4294967294

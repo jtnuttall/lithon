@@ -479,7 +479,13 @@ withToy2Abi k = do
               , headerName = "toy_abi.h"
               , since = (.since) <$> Map.lookup name registry.macroConstants
               }
-          | (name, value) <- [("TOY_FLAG_A", 1), ("TOY_FLAG_B", 2)]
+          | (name, value) <-
+              [ ("TOY_FLAG_A", 1)
+              , ("TOY_FLAG_B", 2)
+              , -- Negative constants: the assertion compares modulo 2^64.
+                ("TOY_MIN_S8", -128)
+              , ("TOY_MIN_I64", -9223372036854775808)
+              ]
           ]
     tu <-
       either (assertFailure . toString) pure
@@ -557,6 +563,8 @@ toy2AbiHeaders =
             , "#if TOY_API_VERSION >= TOY_MAKE_VERSION(2, 1)"
             , "#define TOY_FLAG_B 2"
             , "#endif"
+            , "#define TOY_MIN_S8 ((signed char)(~0x7F))"
+            , "#define TOY_MIN_I64 (~0x7FFFFFFFFFFFFFFFLL)"
             , ""
             , "#endif"
             ]

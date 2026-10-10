@@ -36,6 +36,8 @@
 --
 --     Unsuffixed aliases are __unsafe__ foreign imports; aliases suffixed @Safe@ are safe. Functions whose callbacks fire during the call export only the Safe alias (the genuine unsafe import stays reachable under @SDL3.Sys.Bindgen.Log.Unsafe@); functions curated unsafe-only export only the unsuffixed one. Each alias\'s documentation records its flavor and rationale.
 --
+--     The C shims are functions this package defines in C over what the FFI cannot call directly (variadic functions, function-like macros), each named after what it wraps; the same flavor rules apply. Their raw imports live under "SDL3.Sys.Bindgen.LogShims".
+--
 --     Full conventions: "SDL3.Sys".
 module SDL3.Sys.Log (
   module SDL3.Sys.Bindgen.Log,
@@ -57,6 +59,26 @@ module SDL3.Sys.Log (
   SDL3.Sys.Log.getLogOutputFunctionSafe,
   SDL3.Sys.Log.setLogOutputFunction,
   SDL3.Sys.Log.setLogOutputFunctionSafe,
+
+  -- * C shims
+  SDL3.Sys.Log.log,
+  SDL3.Sys.Log.logSafe,
+  SDL3.Sys.Log.logTrace,
+  SDL3.Sys.Log.logTraceSafe,
+  SDL3.Sys.Log.logVerbose,
+  SDL3.Sys.Log.logVerboseSafe,
+  SDL3.Sys.Log.logDebug,
+  SDL3.Sys.Log.logDebugSafe,
+  SDL3.Sys.Log.logInfo,
+  SDL3.Sys.Log.logInfoSafe,
+  SDL3.Sys.Log.logWarn,
+  SDL3.Sys.Log.logWarnSafe,
+  SDL3.Sys.Log.logError,
+  SDL3.Sys.Log.logErrorSafe,
+  SDL3.Sys.Log.logCritical,
+  SDL3.Sys.Log.logCriticalSafe,
+  SDL3.Sys.Log.logMessage,
+  SDL3.Sys.Log.logMessageSafe,
 )
 where
 
@@ -68,8 +90,11 @@ import HsBindgen.Runtime.LibC qualified
 import HsBindgen.Runtime.PtrConst qualified as PtrConst
 import HsBindgen.Runtime.Support qualified as BG
 import SDL3.Sys.Bindgen.Log
+import SDL3.Sys.Bindgen.Log qualified
 import SDL3.Sys.Bindgen.Log.Safe qualified as Safe
 import SDL3.Sys.Bindgen.Log.Unsafe qualified as Unsafe
+import SDL3.Sys.Bindgen.LogShims.Safe qualified as Safe
+import SDL3.Sys.Bindgen.LogShims.Unsafe qualified as Unsafe
 
 -- | Set the priority of all log categories.
 --
@@ -512,3 +537,623 @@ setLogOutputFunctionSafe
   -> IO ()
 setLogOutputFunctionSafe =
   Safe.sDL_SetLogOutputFunction
+
+-- | Log a message with SDL_LOG_CATEGORY_APPLICATION and SDL_LOG_PRIORITY_INFO.
+--
+--     A fixed-arity shim over the variadic SDL_Log: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_Log@.
+--                   The safe flavor is 'logSafe'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [C declaration]: @lithon_SDL_Log@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 39:24@
+log
+  :: PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+log = Unsafe.lithon_SDL_Log
+
+-- | Log a message with SDL_LOG_CATEGORY_APPLICATION and SDL_LOG_PRIORITY_INFO.
+--
+--     A fixed-arity shim over the variadic SDL_Log: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @lithon_SDL_Log@.
+--                   The unsafe flavor is 'log'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [C declaration]: @lithon_SDL_Log@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 39:24@
+logSafe
+  :: PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logSafe = Safe.lithon_SDL_Log
+
+-- | Log a message with SDL_LOG_PRIORITY_TRACE.
+--
+--     A fixed-arity shim over the variadic SDL_LogTrace: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_LogTrace@.
+--                   The safe flavor is 'logTraceSafe'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogTrace@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 60:24@
+logTrace
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logTrace =
+  \x00 ->
+    \x11 ->
+      Unsafe.lithon_SDL_LogTrace (Coerce.coerce x00) x11
+
+-- | Log a message with SDL_LOG_PRIORITY_TRACE.
+--
+--     A fixed-arity shim over the variadic SDL_LogTrace: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @lithon_SDL_LogTrace@.
+--                   The unsafe flavor is 'logTrace'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogTrace@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 60:24@
+logTraceSafe
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logTraceSafe =
+  \x00 ->
+    \x11 ->
+      Safe.lithon_SDL_LogTrace (Coerce.coerce x00) x11
+
+-- | Log a message with SDL_LOG_PRIORITY_VERBOSE.
+--
+--     A fixed-arity shim over the variadic SDL_LogVerbose: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_LogVerbose@.
+--                   The safe flavor is 'logVerboseSafe'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogVerbose@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 81:24@
+logVerbose
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logVerbose =
+  \x00 ->
+    \x11 ->
+      Unsafe.lithon_SDL_LogVerbose (Coerce.coerce x00) x11
+
+-- | Log a message with SDL_LOG_PRIORITY_VERBOSE.
+--
+--     A fixed-arity shim over the variadic SDL_LogVerbose: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @lithon_SDL_LogVerbose@.
+--                   The unsafe flavor is 'logVerbose'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogVerbose@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 81:24@
+logVerboseSafe
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logVerboseSafe =
+  \x00 ->
+    \x11 ->
+      Safe.lithon_SDL_LogVerbose (Coerce.coerce x00) x11
+
+-- | Log a message with SDL_LOG_PRIORITY_DEBUG.
+--
+--     A fixed-arity shim over the variadic SDL_LogDebug: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_LogDebug@.
+--                   The safe flavor is 'logDebugSafe'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogDebug@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 102:24@
+logDebug
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logDebug =
+  \x00 ->
+    \x11 ->
+      Unsafe.lithon_SDL_LogDebug (Coerce.coerce x00) x11
+
+-- | Log a message with SDL_LOG_PRIORITY_DEBUG.
+--
+--     A fixed-arity shim over the variadic SDL_LogDebug: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @lithon_SDL_LogDebug@.
+--                   The unsafe flavor is 'logDebug'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogDebug@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 102:24@
+logDebugSafe
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logDebugSafe =
+  \x00 ->
+    \x11 ->
+      Safe.lithon_SDL_LogDebug (Coerce.coerce x00) x11
+
+-- | Log a message with SDL_LOG_PRIORITY_INFO.
+--
+--     A fixed-arity shim over the variadic SDL_LogInfo: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_LogInfo@.
+--                   The safe flavor is 'logInfoSafe'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogInfo@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 123:24@
+logInfo
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logInfo =
+  \x00 ->
+    \x11 ->
+      Unsafe.lithon_SDL_LogInfo (Coerce.coerce x00) x11
+
+-- | Log a message with SDL_LOG_PRIORITY_INFO.
+--
+--     A fixed-arity shim over the variadic SDL_LogInfo: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @lithon_SDL_LogInfo@.
+--                   The unsafe flavor is 'logInfo'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogInfo@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 123:24@
+logInfoSafe
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logInfoSafe =
+  \x00 ->
+    \x11 ->
+      Safe.lithon_SDL_LogInfo (Coerce.coerce x00) x11
+
+-- | Log a message with SDL_LOG_PRIORITY_WARN.
+--
+--     A fixed-arity shim over the variadic SDL_LogWarn: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_LogWarn@.
+--                   The safe flavor is 'logWarnSafe'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogWarn@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 144:24@
+logWarn
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logWarn =
+  \x00 ->
+    \x11 ->
+      Unsafe.lithon_SDL_LogWarn (Coerce.coerce x00) x11
+
+-- | Log a message with SDL_LOG_PRIORITY_WARN.
+--
+--     A fixed-arity shim over the variadic SDL_LogWarn: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @lithon_SDL_LogWarn@.
+--                   The unsafe flavor is 'logWarn'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogWarn@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 144:24@
+logWarnSafe
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logWarnSafe =
+  \x00 ->
+    \x11 ->
+      Safe.lithon_SDL_LogWarn (Coerce.coerce x00) x11
+
+-- | Log a message with SDL_LOG_PRIORITY_ERROR.
+--
+--     A fixed-arity shim over the variadic SDL_LogError: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_LogError@.
+--                   The safe flavor is 'logErrorSafe'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogError@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 165:24@
+logError
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logError =
+  \x00 ->
+    \x11 ->
+      Unsafe.lithon_SDL_LogError (Coerce.coerce x00) x11
+
+-- | Log a message with SDL_LOG_PRIORITY_ERROR.
+--
+--     A fixed-arity shim over the variadic SDL_LogError: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @lithon_SDL_LogError@.
+--                   The unsafe flavor is 'logError'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogError@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 165:24@
+logErrorSafe
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logErrorSafe =
+  \x00 ->
+    \x11 ->
+      Safe.lithon_SDL_LogError (Coerce.coerce x00) x11
+
+-- | Log a message with SDL_LOG_PRIORITY_CRITICAL.
+--
+--     A fixed-arity shim over the variadic SDL_LogCritical: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_LogCritical@.
+--                   The safe flavor is 'logCriticalSafe'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogCritical@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 186:24@
+logCritical
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logCritical =
+  \x00 ->
+    \x11 ->
+      Unsafe.lithon_SDL_LogCritical (Coerce.coerce x00) x11
+
+-- | Log a message with SDL_LOG_PRIORITY_CRITICAL.
+--
+--     A fixed-arity shim over the variadic SDL_LogCritical: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'logMessage'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @lithon_SDL_LogCritical@.
+--                   The unsafe flavor is 'logCritical'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogCritical@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 186:24@
+logCriticalSafe
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logCriticalSafe =
+  \x00 ->
+    \x11 ->
+      Safe.lithon_SDL_LogCritical (Coerce.coerce x00) x11
+
+-- | Log a message with the specified category and priority.
+--
+--     A fixed-arity shim over the variadic SDL_LogMessage: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'setLogOutputFunction', 'setLogPriority'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_LogMessage@.
+--                   The safe flavor is 'logMessageSafe'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogMessage@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 209:24@
+logMessage
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> SDL3.Sys.Bindgen.Log.SDL_LogPriority
+  -- ^
+  --
+  --           [@priority@]: the priority of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logMessage =
+  \x00 ->
+    \x11 ->
+      \x22 ->
+        Unsafe.lithon_SDL_LogMessage (Coerce.coerce x00) x11 x22
+
+-- | Log a message with the specified category and priority.
+--
+--     A fixed-arity shim over the variadic SDL_LogMessage: @message@ is logged verbatim. It is never parsed as a printf-style format string, so a percent sign in it needs no escaping.
+--
+--     [Thread safety]: It is safe to call this function from any thread.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'setLogOutputFunction', 'setLogPriority'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Safe__ foreign import of @lithon_SDL_LogMessage@.
+--                   The unsafe flavor is 'logMessage'
+--                   : invokes the log output function synchronously, which may be implemented in Haskell (SDL_SetLogOutputFunction).
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_LogMessage@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 209:24@
+logMessageSafe
+  :: BG.Int32
+  -- ^
+  --
+  --           [@category@]: the category of the message.
+  -> SDL3.Sys.Bindgen.Log.SDL_LogPriority
+  -- ^
+  --
+  --           [@priority@]: the priority of the message.
+  -> PtrConst.PtrConst BG.CChar
+  -- ^
+  --
+  --           [@message@]: the message to log, in UTF-8.
+  -> IO ()
+logMessageSafe =
+  \x00 ->
+    \x11 ->
+      \x22 ->
+        Safe.lithon_SDL_LogMessage (Coerce.coerce x00) x11 x22

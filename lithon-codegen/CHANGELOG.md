@@ -38,9 +38,139 @@
   function, is an error.
 - Runtime facades (`<namespace>.Bindgen.Runtime.*`) for the four modules
   hs-bindgen-runtime 1.0 adds: `HasFFIType`, `Macro`, `Overloading`, `Struct`.
+- The skip ledger: `data/<key>/unbound.json` (a required registry) gives
+  every declaration hs-bindgen skips a disposition (`shim`, `constant`,
+  `wontfix`, or `upstream`, with a note and an optional issue), and `spec` and
+  `generate` write the joined ledger to the machine-owned
+  `data/<key>/unbound.md` (`Lithon.Codegen.Bindgen.Unbound`). A skip without
+  a disposition, or a disposition for a name that is no longer skipped, fails
+  the run before anything is written (`UnboundFailed`), and the error prints
+  a group per reason to paste. The skips come from the seam's report, so the
+  macro failures hs-bindgen logs at `Info` are on the ledger too.
+- A prescriptive override hs-bindgen rejects in its header's run (an entry
+  that applies to nothing, a module mismatch, an enum spec for a type that
+  is not an enum, or an opaque request for a kind that cannot be opaque)
+  fails the header (`OverrideRejected`).
+- The driver logs each header's skip count (`header bound`) and the chain's
+  total (`chain complete`).
+- Tests: `Bindgen.SkipsTest` (the seam's capture under `Quiet`, attribution
+  to units, and the `unbound-toy` golden, which also pins that no absolute
+  path reaches the ledger), `Bindgen.UnboundTest` (the registry codec and
+  triage), and `DriverTest.unit_unusedOverrideFails`.
+- `constants.json`: constants of signed types (a negative value such as
+  `SDL_MIN_SINT8` is read back from the probe's 64-bit image and checked
+  against the type's range), constants declared in another header than
+  their type (`members` may name the macros of any bound header; the
+  pattern is hosted with the type and its haddock says where the macro
+  came from), and `native` groups for a C type with no newtype (`size_t`:
+  plain `BG.Word64` patterns). The probe also prints each type's
+  signedness. A `bitmask` group on a signed type, a `native` group with
+  `prefix` or with members from two headers, and a `native` that disagrees
+  with the probed width or signedness are errors. A negative constant is an
+  explicitly bidirectional pattern: the implicit form makes GHC warn
+  (`-Woverflowed-literals`) at the type's minimum.
+- Tests: `Bindgen.ConstantsTest`; the toy goldens `alias-toy-module`,
+  `alias-toy-bindgen-base` and `abi-toy2-assertions` pin a signed, a
+  cross-header and a `native` group, and negative assertions.
+- `generate` checks every `constant` disposition against the planned
+  constants: a name no `constants.json` group binds fails the run before
+  anything is written (`UnboundConstantMissing`, through `UnboundFailed`).
+  `constants.json` may bind more, such as macros hs-bindgen binds itself.
+  Tested in `Bindgen.UnboundTest`.
+- The ledger files a conflict under the unit whose run reports it even
+  when the conflict's smallest location is another header's (a function
+  clashing with a same-name macro of a header it includes): both halves,
+  at the line in the unit's header, since the locations do not say which
+  is whose, so the other header's half appears there even when its own
+  header's unit binds it. Such a conflict used to vanish from the ledger.
+  `SkipsTest.unit_crossHeaderConflictAttributed`.
+- Authored C headers: a target may list headers lithon writes for it
+  (`BindgenTarget.authored`: an include root, a function name prefix, and
+  the headers, each optionally extending a library header). They live in
+  `data/<key>/include/<root>/`, are bound as units of the header chain like
+  the library's own (the preflight includes them, so the include graph
+  orders each after the library header it includes and its run reads that
+  header's spec), and ship verbatim in the package's `include/<root>/`.
+  The ABI assertion unit and the constants probe keep to the library's
+  headers. `include/` must hold exactly the listed headers, and must not
+  exist for a target that authors none (`AuthoredMissing`,
+  `AuthoredUnexpected`); the static `package.yaml` must ship them (an
+  `extra-source-files` glob matching each, or `cabal sdist` drops them) and
+  reach them (`include` among the library's `include-dirs`), or
+  `loadStatics` refuses it (`StaticUnwired`); `validateTarget` checks the
+  root, the prefix, the file names, and what each header extends, and
+  `validateTargets` refuses an authored root another target claims. Tests:
+  `Bindgen.AuthoredTest`, `StaticsTest.unit_staticsRejectUnwiredAuthoredHeaders`,
+  `TargetsTest` (malformed `authored` fields, `unit_headerPlanProjectsAuthored`).
+- The curated layer merges an authored header's functions into the module
+  of the library header it extends (one without `extends` gets a module of
+  its own), after the module's own functions, under a `C shims` export
+  section; a module without shims renders as before. Each alias binding
+  records its raw family (`AliasBinding.familyBase`), so a module imports
+  both families' flavor modules. Aliases mint from the name a function
+  wraps (`aliasBaseName`: the target's name prefix stripped, then the
+  camel-segments rule; `mintAliasNames` takes the base-name rule), and the
+  documentation links the library's mentions of a wrapped name
+  (`SDL_CreateThread()`) to its shim (`aliasRewriteMap` takes the target;
+  a bound function of that name wins), except in the shim's own docs. A
+  module with shims gains a conventions paragraph. An authored header whose
+  host is not bound, that declares types, or whose functions are not named
+  `<name prefix><function prefix>…` is an `AliasFamilyInvalid`. Tests:
+  `AuthoredTest` (the `alias-toy-shims-module` golden, the rejections),
+  `AliasNamesTest.unit_authoredNamesMint`.
+- `spec` and `generate` check every `shim` disposition against the
+  authored headers: the function named the target's name prefix and the
+  listed name's C identifier must be bound (`macro SDL_FOURCC` needs
+  `lithon_SDL_FOURCC`), or the run fails before anything is written
+  (`UnboundShimMissing`, through `UnboundFailed`). A shim may also wrap a
+  name hs-bindgen binds. Tested in `Bindgen.UnboundTest`.
+- The sdl3 target's C shims: 57 functions in 11 authored headers,
+  `data/sdl3/include/sdl3-bindgen-sys/SDL_<x>_shims.h`, over SDL's variadic
+  logging, error and stream-printing functions and 46 function-like macros,
+  each named `lithon_` and the SDL name it wraps. `aliases.json` classifies
+  them (the log and stream shims `both`, as they may call Haskell
+  functions; the thread shims `both`, like `SDL_CreateThreadRuntime`, as
+  the entry function runs on the new thread; the atomics `both` by default,
+  unlisted like `SDL_AddAtomicInt`; the error shims and the pure ones
+  `unsafe-only`) and renames 30. The umbrella's conventions describe them.
+  `AuthoredTest` checks that the committed set loads and compiles
+  (`-Wall -Wextra -Werror`) against the SDL `pkg-config` resolves.
+- `aliases.json`: `allow`, per header (basename), the only functions its
+  curated module aliases (`names`) and the header's function count when
+  the list was curated (`bound`); the header's other functions stay
+  raw-only, and the module's haddock says so. A header not listed aliases
+  every function. A census count other than `bound` fails generation
+  (`AliasAllowlistStale`) until the list is reviewed: the error names the
+  unlisted functions in the library's own style (uppercase after the
+  function prefix) and counts the libc-style rest. The package manifest
+  records each list's counts (`aliasAllow`).
+  An allowed function must be bound, declared in that header, listed once,
+  and not skipped; a `functions`, `renames`, or `skip` entry for a function
+  an allowlist leaves out is dead configuration and an error, and so is an
+  allowlist for a header the target does not bind (`AliasUnknownHeader`).
+  Curating is not skipping: the raw layer and the skip ledger are
+  unaffected. `validateAliasConfig` takes the target's function prefix and
+  the census by header (`functionCensus` returns header -> function -> takes
+  a callback).
+  Tested in `AliasConfigTest`,
+  `AliasRenderTest.unit_allowlistedFamilyRendersOnlyAllowed`, and
+  `CensusTest.test_allowBoundMatchesCensus` (each committed `bound` against
+  the committed raw family); the census goldens record
+  `allow=<headers>/<names>`.
+- A doc mention of a bound function without an alias (skipped, or left out
+  by an allowlist) links to its raw import (unsafe, or safe for a function
+  that takes a callback) instead of an alias that does not exist
+  (`aliasRewriteMap` takes the families).
 
 ### Changed
 
+- sdl3: `aliases.json` allowlists 22 of the 153 functions `SDL_stdinc.h`
+  binds: SDL's own API there (environments, memory-function hooks, UTF-8
+  stepping) and the allocator family (`malloc`, `free`, `strdup`, ...). The
+  other 131 (the C library clones, random numbers, checksums) are raw-only,
+  and their 105 classifications are gone. With the math `SDL_log` raw-only,
+  `lithon_SDL_Log` mints `log`, and its `logApplication` rename is gone. The
+  umbrella's conventions say so.
 - The SDL3 layer is a generic bindgen-sys pipeline (`Lithon.Codegen.Bindgen.*`)
   driven by a plain `BindgenTarget` record: a target is one module, one
   `data/<key>/` directory, and an entry in `Lithon.Codegen.Bindgen.Targets`.
@@ -67,6 +197,31 @@
 - The include graph's paths are canonical real paths, not source paths.
 - lithon-codegen no longer depends on doxygen-parser directly; doxygen
   sections are read through `Lithon.HsBindgen.C`.
+- The prescriptive binding spec is one file per header,
+  `data/<key>/overrides/<header stem>.yaml`, named like the header's spec
+  artifact and passed to that header's hs-bindgen run alone; the preflight
+  gets none. The single `overrides.yaml` is an error (`OverridesLegacy`), as
+  is anything but `.yaml` files in `overrides/` (`OverrideUnexpected`), and a
+  file that pairs with no bound header (`OrphanOverrides`). This retires the
+  78 `Binding specification for type not used` warnings the other headers'
+  runs raised for an entry whose declaration they did not reach, and the omit
+  entries copied into the specs of those that did reach it. `sdl3` and `mpv`
+  are migrated (`overrides/SDL_main.yaml`, `overrides/SDL_stdinc.yaml`,
+  `overrides/client.yaml`); the generated packages are unchanged.
+- The sdl3 target defines `SDL_SLOW_MEMCPY`, `SDL_SLOW_MEMMOVE` and
+  `SDL_SLOW_MEMSET` (after `SDL_MAIN_HANDLED`). `SDL_stdinc.h` otherwise
+  `#define`s `SDL_memcpy memcpy` (and the other two), and hs-bindgen drops a
+  function that a same-name macro shadows, so `memcpy`, `memmove` and
+  `memset` bind now. They reach the wrapper C, the ABI assertion unit and
+  the constants probe, where they only make SDL's inline helpers call SDL's
+  own functions. hs-bindgen's conflict warnings fall from 10 to 4; the
+  remaining four are `SDL_size_mul_check_overflow` and
+  `SDL_size_add_check_overflow` and their macros, on the ledger as
+  `upstream`.
+- The typed-constant ABI assertion compares `(NAME) == (<value mod 2^64>ull)`:
+  the usual arithmetic conversions take the C operand to `unsigned long long`
+  modulo 2^64 as well, so a negative constant compares exactly at every width.
+  Existing assertions are unchanged.
 
 ## 0.1.1.0 - 2026-07-30
 

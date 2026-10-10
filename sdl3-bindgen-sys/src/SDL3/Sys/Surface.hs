@@ -15,6 +15,8 @@
 --
 --     Unsuffixed aliases are __unsafe__ foreign imports; aliases suffixed @Safe@ are safe. Functions whose callbacks fire during the call export only the Safe alias (the genuine unsafe import stays reachable under @SDL3.Sys.Bindgen.Surface.Unsafe@); functions curated unsafe-only export only the unsuffixed one. Each alias\'s documentation records its flavor and rationale.
 --
+--     The C shims are functions this package defines in C over what the FFI cannot call directly (variadic functions, function-like macros), each named after what it wraps; the same flavor rules apply. Their raw imports live under "SDL3.Sys.Bindgen.SurfaceShims".
+--
 --     Full conventions: "SDL3.Sys".
 module SDL3.Sys.Surface (
   module SDL3.Sys.Bindgen.Surface,
@@ -156,6 +158,9 @@ module SDL3.Sys.Surface (
   SDL3.Sys.Surface.writeSurfacePixelSafe,
   SDL3.Sys.Surface.writeSurfacePixelFloat,
   SDL3.Sys.Surface.writeSurfacePixelFloatSafe,
+
+  -- * C shims
+  SDL3.Sys.Surface.mustLock,
 )
 where
 
@@ -173,8 +178,10 @@ import SDL3.Sys.Bindgen.Properties qualified
 import SDL3.Sys.Bindgen.Rect qualified
 import SDL3.Sys.Bindgen.Stdinc qualified
 import SDL3.Sys.Bindgen.Surface
+import SDL3.Sys.Bindgen.Surface qualified
 import SDL3.Sys.Bindgen.Surface.Safe qualified as Safe
 import SDL3.Sys.Bindgen.Surface.Unsafe qualified as Unsafe
+import SDL3.Sys.Bindgen.SurfaceShims.Unsafe qualified as Unsafe
 
 -- | Allocate a new surface with a specific pixel format.
 --
@@ -1090,7 +1097,7 @@ removeSurfaceAlternateImagesSafe =
 --
 --     @since 3.2.0
 --
---     [See also]: @SDL_MUSTLOCK@, 'unlockSurface'
+--     [See also]: @'mustLock'@, 'unlockSurface'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -1124,7 +1131,7 @@ lockSurface =
 --
 --     @since 3.2.0
 --
---     [See also]: @SDL_MUSTLOCK@, 'unlockSurface'
+--     [See also]: @'mustLock'@, 'unlockSurface'
 --
 --     === __@sdl3-bindgen-sys@ notes__
 --
@@ -5986,6 +5993,36 @@ writeSurfacePixelFloatSafe =
                       (Coerce.coerce x55)
                       (Coerce.coerce x66)
                   )
+
+-- | Determine whether a surface needs to be locked before its pixels are accessed.
+--
+--     The SDL_MUSTLOCK macro as a function.
+--
+--     [Returns]: true if the surface must be locked with 'lockSurface' before its pixels are read or written, false otherwise.
+--
+--     @since 3.2.0
+--
+--     [See also]: 'lockSurface', 'unlockSurface'
+--
+--     === __@sdl3-bindgen-sys@ notes__
+--
+--     [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_MUSTLOCK@.
+--                   The safe import is not exported
+--                   : reads one field of the caller\'s surface; cannot block, lock, or call back.
+--
+--     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
+--                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
+--
+--     [C declaration]: @lithon_SDL_MUSTLOCK@, defined at @sdl3-bindgen-sys\/SDL_surface_shims.h 39:24@
+mustLock
+  :: BG.Ptr SDL3.Sys.Bindgen.Surface.SDL_Surface
+  -- ^
+  --
+  --           [@surface@]: the SDL_Surface to check.
+  -> IO Bool
+mustLock =
+  \x00 ->
+    fmap CBool.toBool (Unsafe.lithon_SDL_MUSTLOCK x00)
 
 -- | Typed constant for macro @SDL_SURFACE_PREALLOCATED@. Combine with @.|.@ from "Data.Bits".
 pattern SDL_SURFACE_PREALLOCATED :: SDL_SurfaceFlags

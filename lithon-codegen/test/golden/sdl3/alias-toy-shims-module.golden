@@ -1,0 +1,161 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
+{-| Toy overview prose. A count of toys.
+
+    == FFI conventions
+
+    Unsuffixed aliases are __unsafe__ foreign imports; aliases suffixed @Safe@ are safe. Functions whose callbacks fire during the call export only the Safe alias (the genuine unsafe import stays reachable under @SDL3.Sys.Bindgen.Toy.Unsafe@); functions curated unsafe-only export only the unsuffixed one. Each alias\'s documentation records its flavor and rationale.
+
+    The C shims are functions this package defines in C over what the FFI cannot call directly (variadic functions, function-like macros), each named after what it wraps; the same flavor rules apply. Their raw imports live under "SDL3.Sys.Bindgen.ToyShims".
+
+    Full conventions: "SDL3.Sys".
+
+-}
+
+module SDL3.Sys.Toy
+    ( module SDL3.Sys.Bindgen.Toy
+      -- * Function aliases
+    , SDL3.Sys.Toy.toyOpen
+    , SDL3.Sys.Toy.toyOpenSafe
+      -- * C shims
+    , SDL3.Sys.Toy.toyLog
+    , SDL3.Sys.Toy.toyLogSafe
+    , SDL3.Sys.Toy.toySum2
+    )
+  where
+
+import qualified HsBindgen.Runtime.PtrConst as PtrConst
+import qualified HsBindgen.Runtime.Support as BG
+import qualified SDL3.Sys.Bindgen.Toy
+import qualified SDL3.Sys.Bindgen.Toy.Safe as Safe
+import qualified SDL3.Sys.Bindgen.Toy.Unsafe as Unsafe
+import qualified SDL3.Sys.Bindgen.ToyShims.Safe as Safe
+import qualified SDL3.Sys.Bindgen.ToyShims.Unsafe as Unsafe
+import Prelude (IO)
+import SDL3.Sys.Bindgen.Toy
+
+{-| Open the toy box.
+
+    Report problems with @'toyLog'@; add counts with 'toySum2'.
+
+    [Returns]: the number of toys.
+
+    @since 3.2.0
+
+    [See also]: @'toyLog'@
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Unsafe__ foreign import of @SDL_ToyOpen@.
+                  The safe flavor is 'toyOpenSafe'
+                  .
+
+    [C declaration]: @SDL_ToyOpen@, defined at @SDL3\/SDL_toy.h 43:14@
+-}
+toyOpen :: IO SDL_ToyCount
+toyOpen = Unsafe.sDL_ToyOpen
+
+{-| Open the toy box.
+
+    Report problems with @'toyLog'@; add counts with 'toySum2'.
+
+    [Returns]: the number of toys.
+
+    @since 3.2.0
+
+    [See also]: @'toyLog'@
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Safe__ foreign import of @SDL_ToyOpen@.
+                  The unsafe flavor is 'toyOpen'
+                  .
+
+    [C declaration]: @SDL_ToyOpen@, defined at @SDL3\/SDL_toy.h 43:14@
+-}
+toyOpenSafe :: IO SDL_ToyCount
+toyOpenSafe = Safe.sDL_ToyOpen
+
+{-| Log a toy message.
+
+    A fixed-arity shim over the variadic SDL_ToyLog: @message@ is logged verbatim.
+
+    @since 3.2.0
+
+    [See also]: 'toyOpen'
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_ToyLog@.
+                  The safe flavor is 'toyLogSafe'
+                  : the toy log may call back.
+
+    [C declaration]: @lithon_SDL_ToyLog@, defined at @sdl3-bindgen-sys\/SDL_toy_shims.h 21:20@
+-}
+toyLog ::
+     PtrConst.PtrConst BG.CChar
+     {- ^
+
+          [@message@]: the message to log.
+
+     -}
+  -> IO ()
+toyLog = Unsafe.lithon_SDL_ToyLog
+
+{-| Log a toy message.
+
+    A fixed-arity shim over the variadic SDL_ToyLog: @message@ is logged verbatim.
+
+    @since 3.2.0
+
+    [See also]: 'toyOpen'
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Safe__ foreign import of @lithon_SDL_ToyLog@.
+                  The unsafe flavor is 'toyLog'
+                  : the toy log may call back.
+
+    [C declaration]: @lithon_SDL_ToyLog@, defined at @sdl3-bindgen-sys\/SDL_toy_shims.h 21:20@
+-}
+toyLogSafe ::
+     PtrConst.PtrConst BG.CChar
+     {- ^
+
+          [@message@]: the message to log.
+
+     -}
+  -> IO ()
+toyLogSafe = Safe.lithon_SDL_ToyLog
+
+{-| Add two toy counts.
+
+    The SDL_TOY_SUM2 macro as a function.
+
+    [Returns]: the sum.
+
+    @since 3.2.0
+
+    === __@sdl3-bindgen-sys@ notes__
+
+    [FFI safety]: __Unsafe__ foreign import of @lithon_SDL_TOY_SUM2@.
+                  The safe import is not exported
+                  : pure arithmetic.
+
+    [C declaration]: @lithon_SDL_TOY_SUM2@, defined at @sdl3-bindgen-sys\/SDL_toy_shims.h 34:28@
+-}
+toySum2 ::
+     SDL3.Sys.Bindgen.Toy.SDL_ToyCount
+     {- ^
+
+          [@a@]: the first count.
+
+     -}
+  -> SDL3.Sys.Bindgen.Toy.SDL_ToyCount
+     {- ^
+
+          [@b@]: the second count.
+
+     -}
+  -> IO SDL3.Sys.Bindgen.Toy.SDL_ToyCount
+toySum2 = Unsafe.lithon_SDL_TOY_SUM2

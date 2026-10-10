@@ -43,6 +43,9 @@ import SDL3.Sys.Bindgen.Tray
 $( HsBindgen.Runtime.Support.CAPI.addCSource
      ( HsBindgen.Runtime.Support.CAPI.unlines
          [ "#define SDL_MAIN_HANDLED"
+         , "#define SDL_SLOW_MEMCPY"
+         , "#define SDL_SLOW_MEMMOVE"
+         , "#define SDL_SLOW_MEMSET"
          , "#include <SDL3/SDL_tray.h>"
          , "SDL_Tray *hs_bindgen_883df5f31028a1a4 ("
          , "  SDL_Surface *arg1,"

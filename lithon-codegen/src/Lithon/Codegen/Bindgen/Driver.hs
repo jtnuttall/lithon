@@ -48,6 +48,8 @@ module Lithon.Codegen.Bindgen.Driver (
 ) where
 
 import Data.Aeson qualified as A
+import Data.Map.Strict qualified as Map
+import Data.Set qualified as Set
 import Data.Version (Version)
 import Effectful
 import Effectful.Dispatch.Static
@@ -64,6 +66,14 @@ import Lithon.Codegen.Backend.Hs.Module qualified as Module
 data DriverError
   = DuplicateModules (Set Module.Meta)
   | NoHeadersFound
+  | -- | Override files (by file name) that pair with no planned unit's spec
+    -- file: a typo, or the override of an excluded or removed header.
+    OrphanOverrides [FilePath]
+  | -- | hs-bindgen's complaints about a header's prescriptive spec (the
+    -- header, the override's file name, the complaints): an entry that
+    -- applies to nothing in its header's run is a typo, a declaration the
+    -- library removed, or another header's entry.
+    OverrideRejected FilePath FilePath [Text]
   | HsBindgenError Text HB.BindgenFailure
   | ModuleShimFailed FilePath HB.TransformError
   | FinalizeFailed FilePath Text
@@ -76,6 +86,20 @@ instance Display DriverError where
     DuplicateModules dupes ->
       "module name collisions:" <> intercalateTB "\n - " (map displayBuilder . toList $ dupes)
     NoHeadersFound -> "no headers found in the include graph"
+    OrphanOverrides files ->
+      "prescriptive overrides that pair with no bound header:"
+        <> foldMap (\file -> "\n - overrides/" <> from file) files
+        <> "\nan override file is named like its header's spec artifact (overrides/SDL_main.yaml"
+        <> " pairs with spec/SDL_main.yaml); check for a typo, or delete the file of an excluded"
+        <> " or removed header"
+    OverrideRejected header file problems ->
+      from header
+        <> ": hs-bindgen rejected entries of overrides/"
+        <> from file
+        <> ":"
+        <> foldMap (\problem -> "\n - " <> from problem) problems
+        <> "\nan override file holds only entries its own header's run uses; fix or delete each"
+        <> " one (a typo, a declaration the library removed, or another header's declaration)"
     HsBindgenError cxt err ->
       let errd = display err
        in from
@@ -135,7 +159,17 @@ data PackageInfo = PackageInfo
 -- 'HB.InvocationEnv' — one include plumbing, not two.
 data DriverOpts = DriverOpts
   { invocationEnv :: HB.InvocationEnv
-  , prescriptiveSpec :: Maybe FilePath
+  , prescriptiveSpecs :: Map FilePath FilePath
+  -- ^ The prescriptive binding specs, from a 'HeaderUnit' @specFile@ (the
+  -- file name) to the file's path. A unit's invocation receives its own
+  -- file alone and the preflight none, because hs-bindgen reports an entry
+  -- as unused in every translation unit that does not parse its
+  -- declaration. Each file holds the entries for its own header's
+  -- declarations, which loses nothing: later invocations meet those
+  -- declarations through the header's generated spec, whose @omit@ never
+  -- drops one (it stays an unselected non-root). That holds while program
+  -- slicing stays off ('Lithon.Codegen.Bindgen.Env.invocationEnv').
+  -- 'chainHeaders' refuses a file that pairs with no planned unit.
   , packageInfo :: PackageInfo
   }
 
@@ -158,19 +192,25 @@ runDriver opts eff =
 getScratchDirectory :: (Driver :> es) => Eff es SystemTempDir
 getScratchDirectory = (.scratchDir) <$> getStaticRep @Driver
 
--- | One seam invocation under the run's environment: base module, includes,
--- prior specs in, artefact ops out.
+-- | One seam invocation under the run's environment: the prescriptive
+-- spec (if any), base module, includes, prior specs in; artefact ops out,
+-- with the run's report of what it left unbound.
 invokeBindgen
   :: (IOE :> es, Driver :> es, Error DriverError :> es)
-  => [FilePath] -> Text -> [FilePath] -> HB.BindgenM a -> Eff es a
-invokeBindgen priorSpecs baseModule includes ops = do
+  => Maybe FilePath
+  -> [FilePath]
+  -> Text
+  -> [FilePath]
+  -> HB.BindgenM a
+  -> Eff es (a, HB.InvocationReport)
+invokeBindgen prescriptiveSpec priorSpecs baseModule includes ops = do
   rep <- getStaticRep @Driver
   let spec =
         HB.InvocationSpec
           { baseModule
           , includes
           , priorSpecs
-          , prescriptiveSpec = rep.opts.prescriptiveSpec
+          , prescriptiveSpec
           }
   res <- liftIO $ HB.runBindgen rep.opts.invocationEnv spec ops
   either (throwError . HsBindgenError baseModule) pure res
@@ -185,13 +225,15 @@ data HeaderPlan = HeaderPlan
   , projectHeader :: FilePath -> Maybe FilePath
   -- ^ Include-graph real path (canonical, symlink-resolved) -> in-scope
   -- basename ('Nothing' for libc, clang builtins, anything outside the
-  -- target's include root).
+  -- target's include roots: the library's and its authored headers').
   , includeArg :: FilePath -> FilePath
-  -- ^ Basename -> the hash-include argument, e.g. @SDL3\/SDL_video.h@.
+  -- ^ Basename -> the hash-include argument, e.g. @SDL3\/SDL_video.h@ or
+  -- @sdl3-bindgen-sys\/SDL_log_shims.h@.
   , excludedHeaders :: Set FilePath
   -- ^ Basenames bound never (internal, umbrella, GL glue).
   , mainIncludes :: [FilePath]
-  -- ^ The preflight include set: the umbrella plus any extras.
+  -- ^ The preflight include set: the umbrella plus any extras, and the
+  -- authored headers.
   , specFileName :: FilePath -> FilePath
   -- ^ Basename -> binding-spec artifact name.
   }
@@ -248,20 +290,26 @@ data Visitor r = Visitor
       -> Either Text r
   }
 
--- | One header's fold result: the rendered family every target needs, plus
--- the caller's payload.
+-- | One header's fold result: the rendered family every target needs, the
+-- invocation's report of what it left unbound, and the caller's payload.
 data HeaderResult r = HeaderResult
   { unit :: HeaderUnit
   , modules :: [HB.NameableModule HB.RenderedHsModule]
+  , report :: HB.InvocationReport
+  -- ^ Every selection root the run skipped, whatever the verbosity, and
+  -- the declarations its prescriptive spec omitted.
   , payload :: r
   }
 
 -- | One boot+frontend run over the plan's main includes, returning the
 -- include graph (dependency-ordered real paths: canonical, symlink-resolved)
--- that orders the real per-header chain.
+-- that orders the real per-header chain. It gets no prescriptive spec: it
+-- only reads the graph, and an entry would draw an unused-entry warning
+-- whenever the main includes do not reach its declaration.
 preflightGraph
   :: (IOE :> es, Driver :> es, Error DriverError :> es) => HeaderPlan -> Eff es [FilePath]
-preflightGraph plan = invokeBindgen [] "Preflight" plan.mainIncludes HB.sortedIncludeGraph
+preflightGraph plan =
+  fst <$> invokeBindgen Nothing [] "Preflight" plan.mainIncludes HB.sortedIncludeGraph
 
 -- | Project the include graph onto the bound header set, in dependency
 -- order, minting each unit's typed module name.
@@ -295,31 +343,53 @@ planHeaders plan graph = do
 
 -- | Fold the chain in dependency order: every invocation consumes the
 -- specs generated by its predecessors as external binding specifications
--- and writes its own into the scratch directory.
+-- and writes its own into the scratch directory, and applies the
+-- prescriptive spec whose file name is its 'specFile', if any. Before the
+-- first invocation, a prescriptive spec that pairs with none of the units is
+-- an 'OrphanOverrides' error: the unit is excluded, absent, or the file is
+-- misspelled.
 chainHeaders
   :: (IOE :> es, Log :> es, Driver :> es, Error DriverError :> es)
   => Visitor r -> [HeaderUnit] -> Eff es [HeaderResult r]
-chainHeaders visitor = go []
+chainHeaders visitor units = do
+  rep <- getStaticRep @Driver
+  let overrides = rep.opts.prescriptiveSpecs
+      planned = Set.fromList (map (.specFile) units)
+      orphans = filter (`Set.notMember` planned) (Map.keys overrides)
+  unless (null orphans) $ throwError (OrphanOverrides orphans)
+  go overrides [] units
  where
-  go _ [] = pure []
-  go priorSpecs (unit : rest) = do
+  go _ _ [] = pure []
+  go overrides priorSpecs (unit : rest) = do
     SystemTempDir specDir <- getScratchDirectory
-    logInfo $ "processing header" :# ["unit" .= unit]
-    res <- runHeader visitor priorSpecs unit
-    (res :) <$> go ((specDir </> unit.specFile) : priorSpecs) rest
+    let override = Map.lookup unit.specFile overrides
+    logInfo $ "processing header" :# ["unit" .= unit, "override" .= override]
+    res <- runHeader visitor priorSpecs override unit
+    logInfo
+      $ "header bound"
+      :# ["header" .= unit.headerName, "skipped" .= length res.report.skips]
+    (res :) <$> go overrides ((specDir </> unit.specFile) : priorSpecs) rest
 
 -- | One header through the fold: invoke (collecting the artefact bundle
--- and writing the binding spec), apply the visitor's stub edits at the AST
--- level, render with its text edits, finalize its payload.
+-- and writing the binding spec) under the header's prescriptive spec, apply
+-- the visitor's stub edits at the AST level, render with its text edits,
+-- finalize its payload.
+--
+-- A prescriptive spec hs-bindgen complains about fails the header
+-- ('OverrideRejected'). That is exact because each spec reaches its own
+-- header's run alone ('DriverOpts'): an entry its run does not use applies
+-- to nothing.
 runHeader
   :: (IOE :> es, Driver :> es, Error DriverError :> es)
-  => Visitor r -> [FilePath] -> HeaderUnit -> Eff es (HeaderResult r)
-runHeader visitor priorSpecs unit = do
+  => Visitor r -> [FilePath] -> Maybe FilePath -> HeaderUnit -> Eff es (HeaderResult r)
+runHeader visitor priorSpecs override unit = do
   SystemTempDir specDir <- getScratchDirectory
-  arts <-
-    invokeBindgen priorSpecs (Module.hsName unit.moduleName) [unit.include]
+  (arts, report) <-
+    invokeBindgen override priorSpecs (Module.hsName unit.moduleName) [unit.include]
       $ HB.collectArtefacts
       <* HB.writeSpec (specDir </> unit.specFile)
+  unless (null report.overrideProblems)
+    $ throwError (OverrideRejected unit.headerName unit.specFile report.overrideProblems)
   shimmed <-
     liftEither
       . first (ModuleShimFailed unit.headerName)
@@ -330,7 +400,7 @@ runHeader visitor priorSpecs unit = do
       $ HB.renderFamilyWith (visitor.passes.textEdits unit arts) shimmed
   payload <-
     liftEither . first (FinalizeFailed unit.headerName) $ visitor.finalize unit arts modules
-  pure HeaderResult{unit, modules, payload}
+  pure HeaderResult{unit, modules, report, payload}
 
 -- | preflight -> plan -> chain: the whole fold.
 runHeaderChain

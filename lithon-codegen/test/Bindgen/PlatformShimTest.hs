@@ -29,7 +29,7 @@ import Lithon.Prelude
 import Test.Tasty.HUnit (assertBool, assertEqual, assertFailure, (@?=))
 
 import Bindgen.Support.Toy (ToyEnv (..), ToyHeader (..), renderedPairs, runToy, toyEnv, wrapperC)
-import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), ParseEnv (..), defineMacro)
+import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), ParseEnv (..), defineLine, defineMacro)
 import Lithon.Codegen.Bindgen.Target.Sdl3 (sdl3, stubEditsFor)
 
 -- | Drive one toy header through the seam and hand back the translated
@@ -78,8 +78,8 @@ unit_linuxStubsRewriteTheFamily = do
 
 -- | The defines are the SDL3 target's own (@parse.defines@) and the include
 -- argument mirrors its @SDL3\/SDL_main.h@: @SDL_main.h@ tests
--- @SDL_MAIN_HANDLED@ with @#ifndef@, so the define has to come first in
--- the wrapper C, with no text edit to put it there.
+-- @SDL_MAIN_HANDLED@ with @#ifndef@, so the defines have to come first in
+-- the wrapper C, with no text edit to put them there.
 unit_rootDefinesPrecedeIncludes :: IO ()
 unit_rootDefinesPrecedeIncludes = do
   family <-
@@ -106,20 +106,22 @@ unit_rootDefinesPrecedeIncludes = do
     "the Unsafe module carries wrapper C"
     (any ((== "SDL3.Sys.Bindgen.ShimToy.Unsafe") . fst) withWrapperC)
   -- Every wrapper translation unit opens with the directives, in order,
-  -- each once.
+  -- each once: all of the target's defines (SDL_MAIN_HANDLED, then the
+  -- SDL_SLOW_MEM* trio that keeps SDL_stdinc.h from shadowing
+  -- memcpy/memmove/memset with macros), then the include.
+  let defineLines = map defineLine sdl3.parse.defines
+      includeLine = "#include <SDL3/SDL_main.h>"
+      prologue = defineLines <> [includeLine]
   for_ withWrapperC \(name, c) -> do
     assertEqual
-      (toString name <> ": wrapper C opens with the define, then the include")
-      ["#define SDL_MAIN_HANDLED", "#include <SDL3/SDL_main.h>"]
-      (take 2 c)
-    assertEqual
-      (toString name <> ": the define appears once")
-      1
-      (length (filter (== "#define SDL_MAIN_HANDLED") c))
-    assertEqual
-      (toString name <> ": the include appears once")
-      1
-      (length (filter (== "#include <SDL3/SDL_main.h>") c))
+      (toString name <> ": wrapper C opens with the defines, then the include")
+      prologue
+      (take (length prologue) c)
+    for_ prologue \line ->
+      assertEqual
+        (toString name <> ": " <> toString line <> " appears once")
+        1
+        (length (filter (== line) c))
 
 unit_shimDriftFails :: IO ()
 unit_shimDriftFails = do
