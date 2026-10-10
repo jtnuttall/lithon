@@ -50,6 +50,12 @@
     },
     "SDL_EVENT_PINCH_END": {
       "since": "3.4.0"
+    },
+    "SDL_GAMEPAD_TYPE_STEAM": {
+      "since": "3.4.18"
+    },
+    "SDL_SCANCODE_FRONT": {
+      "since": "3.4.18"
     }
   },
   "value-gates": {
@@ -58,8 +64,8 @@
       "note": "3.2: = SDL_COLORSPACE_JPEG; 3.4: = SDL_COLORSPACE_BT601_LIMITED. A real semantic change, also documented in the package README."
     },
     "SDL_GAMEPAD_TYPE_COUNT": {
-      "since": "3.4.0",
-      "note": "11 -> 12."
+      "since": "3.4.18",
+      "note": "11 -> 12 at 3.4.0, -> 13 at 3.4.18. Below the gate the value is not asserted."
     },
     "SDL_EVENT_DISPLAY_LAST": {
       "since": "3.4.0",

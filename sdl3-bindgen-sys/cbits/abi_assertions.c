@@ -719,8 +719,8 @@ _Static_assert((SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR) == (10), "SDL_GAME
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 _Static_assert((SDL_GAMEPAD_TYPE_GAMECUBE) == (11), "SDL_GAMEPAD_TYPE_GAMECUBE: baked value 11 differs from your SDL3 headers" LITHON_ABI_HELP);
 #endif
+#if SDL_VERSION_ATLEAST(3, 4, 18)
 _Static_assert((SDL_GAMEPAD_TYPE_STEAM) == (12), "SDL_GAMEPAD_TYPE_STEAM: baked value 12 differs from your SDL3 headers" LITHON_ABI_HELP);
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 _Static_assert((SDL_GAMEPAD_TYPE_COUNT) == (13), "SDL_GAMEPAD_TYPE_COUNT: baked value 13 differs from your SDL3 headers" LITHON_ABI_HELP);
 #endif
 _Static_assert(sizeof(enum SDL_GamepadButton) == 4, "enum SDL_GamepadButton: baked sizeof 4 differs from your SDL3 headers" LITHON_ABI_HELP);
@@ -949,7 +949,9 @@ _Static_assert((SDL_SCANCODE_OPER) == (161), "SDL_SCANCODE_OPER: baked value 161
 _Static_assert((SDL_SCANCODE_CLEARAGAIN) == (162), "SDL_SCANCODE_CLEARAGAIN: baked value 162 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_SCANCODE_CRSEL) == (163), "SDL_SCANCODE_CRSEL: baked value 163 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_SCANCODE_EXSEL) == (164), "SDL_SCANCODE_EXSEL: baked value 164 differs from your SDL3 headers" LITHON_ABI_HELP);
+#if SDL_VERSION_ATLEAST(3, 4, 18)
 _Static_assert((SDL_SCANCODE_FRONT) == (165), "SDL_SCANCODE_FRONT: baked value 165 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
 _Static_assert((SDL_SCANCODE_KP_00) == (176), "SDL_SCANCODE_KP_00: baked value 176 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_SCANCODE_KP_000) == (177), "SDL_SCANCODE_KP_000: baked value 177 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_SCANCODE_THOUSANDSSEPARATOR) == (178), "SDL_SCANCODE_THOUSANDSSEPARATOR: baked value 178 differs from your SDL3 headers" LITHON_ABI_HELP);
