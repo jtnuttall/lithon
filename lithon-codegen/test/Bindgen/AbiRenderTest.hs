@@ -21,6 +21,10 @@ module Bindgen.AbiRenderTest (
   test_abiRenderGolden,
   test_abiRenderToy2Golden,
   unit_abiToy2Compiles,
+  unit_previousRenderParsesGolden,
+  unit_previousRenderRoundTrip,
+  unit_previousRenderParsesToy2Golden,
+  unit_previousRenderLooseVersion,
   toyAbi,
   toyOverrides,
 ) where
@@ -57,10 +61,11 @@ import Lithon.Codegen.Bindgen.Abi (
   emptyAbiOverrides,
   renderAbiAssertions,
  )
+import Lithon.Codegen.Bindgen.Abi.Previous (PreviousRender (..), parsePreviousRender)
 import Lithon.Codegen.Bindgen.Abi.Validate (LibraryRef (..), validateAbi)
 import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), VersionScheme (..), includeArg)
 import Lithon.Codegen.Bindgen.Target.Sdl3 (sdl3)
-import Lithon.Codegen.Bindgen.Version (Version, mkVersion)
+import Lithon.Codegen.Bindgen.Version (Version, fitArity, mkVersion, parseVersionLoose)
 import Lithon.Codegen.Bindgen.Versions (
   Versioned (since),
   VersionsRegistry (macroConstants),
@@ -570,3 +575,80 @@ toy2AbiHeaders =
             ]
       }
   ]
+
+{-------------------------------------------------------------------------------
+  Reading a render back (the enum-history reference)
+-------------------------------------------------------------------------------}
+
+-- | The committed golden reads back: its generated-from version and every
+-- enum constant under its enum. The typed-constant section contributes
+-- nothing (its literals carry a suffix, and no enum sizeof precedes it).
+unit_previousRenderParsesGolden :: IO ()
+unit_previousRenderParsesGolden = do
+  contents <- TIO.readFile ("test/golden/sdl3" </> "abi-toy-assertions.golden")
+  prev <- either (assertFailure . toString) pure (parsePreviousRender "SDL" "golden" contents)
+  prev.versionText @?= "3.9.0"
+  prev.version @?= v3 3 9 0
+  prev.enums
+    @?= Map.fromList
+      [
+        ( "enum SDL_ToyStatus"
+        , Map.fromList [("SDL_TOY_INVALID", -1), ("SDL_TOY_OK", 0), ("SDL_TOY_BIG", 1073741824)]
+        )
+      ]
+
+-- | Render, then read back: the parser's two line shapes are the
+-- renderer's, gated constants included.
+unit_previousRenderRoundTrip :: IO ()
+unit_previousRenderRoundTrip = do
+  abi <- toyAbi toyOverrides
+  tu <-
+    either (assertFailure . toString) pure
+      $ renderAbiAssertions sdl3 "3.9.0" ["SDL_toy_abi.h"] abi []
+  prev <-
+    either (assertFailure . toString) pure (parsePreviousRender sdl3.versionLabel "rendered" tu)
+  prev.version @?= v3 3 9 0
+  prev.enums
+    @?= Map.fromList
+      [ (d.cTypeName, Map.fromList [(c.name, c.value) | c <- d.constants])
+      | d <- abi
+      , d.kind == AbiEnum
+      ]
+
+-- | A label with spaces, and a constant inside a version guard.
+unit_previousRenderParsesToy2Golden :: IO ()
+unit_previousRenderParsesToy2Golden = do
+  contents <- TIO.readFile ("test/golden/bindgen" </> "abi-toy2-assertions.golden")
+  prev <-
+    either (assertFailure . toString) pure (parsePreviousRender toy2.versionLabel "golden" contents)
+  prev.versionText @?= "2.2"
+  prev.version @?= mkVersion (2 :| [2])
+  prev.enums
+    @?= Map.fromList
+      [ ("enum toy_level", Map.fromList [("TOY_LEVEL_LOW", 0), ("TOY_LEVEL_HIGH", 1), ("TOY_LEVEL_MAX", 2)])
+      ]
+
+-- | pkg-config's spelling at the wrong arity, CRLF line endings, and the
+-- two ways a file fails to be a render.
+unit_previousRenderLooseVersion :: IO ()
+unit_previousRenderLooseVersion = do
+  let help =
+        "#define LITHON_ABI_HELP \". mpv-bindgen-sys was generated from libmpv client API 2.5.0; see the README\"\r\n"
+      body =
+        help
+          <> "_Static_assert(sizeof(enum mpv_event_id) == 4, \"\");\r\n"
+          <> "_Static_assert((MPV_EVENT_NONE) == (0), \"\");\r\n"
+          <> "_Static_assert((MPV_EVENT_SHUTDOWN) == (1), \"\");\r\n"
+  prev <-
+    either (assertFailure . toString) pure (parsePreviousRender "libmpv client API" "x" body)
+  prev.versionText @?= "2.5.0"
+  prev.version @?= mkVersion (2 :| [5, 0])
+  fitArity 2 prev.version @?= mkVersion (2 :| [5])
+  prev.enums
+    @?= Map.fromList
+      [("enum mpv_event_id", Map.fromList [("MPV_EVENT_NONE", 0), ("MPV_EVENT_SHUTDOWN", 1)])]
+  fitArity 3 (mkVersion (3 :| [4])) @?= v3 3 4 0
+  parseVersionLoose "3.4.18" @?= Right (v3 3 4 18)
+  assertBool "v-prefixed is not a version" (isLeft (parseVersionLoose "v3.4"))
+  assertBool "no HELP line" (isLeft (parsePreviousRender "SDL" "x" "int x;\n"))
+  assertBool "another target's label" (isLeft (parsePreviousRender "SDL" "x" help))

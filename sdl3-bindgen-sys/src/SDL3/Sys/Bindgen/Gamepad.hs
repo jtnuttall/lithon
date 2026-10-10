@@ -55,6 +55,7 @@ module SDL3.Sys.Bindgen.Gamepad (
   pattern SDL3.Sys.Bindgen.Gamepad.SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT,
   pattern SDL3.Sys.Bindgen.Gamepad.SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR,
   pattern SDL3.Sys.Bindgen.Gamepad.SDL_GAMEPAD_TYPE_GAMECUBE,
+  pattern SDL3.Sys.Bindgen.Gamepad.SDL_GAMEPAD_TYPE_STEAM,
   pattern SDL3.Sys.Bindgen.Gamepad.SDL_GAMEPAD_TYPE_COUNT,
   SDL3.Sys.Bindgen.Gamepad.SDL_GamepadButton (..),
   pattern SDL3.Sys.Bindgen.Gamepad.SDL_GAMEPAD_BUTTON_INVALID,
@@ -187,7 +188,8 @@ instance CEnum.CEnum SDL_GamepadType where
         , (9, BG.singleton "SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT")
         , (10, BG.singleton "SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR")
         , (11, BG.singleton "SDL_GAMEPAD_TYPE_GAMECUBE")
-        , (12, BG.singleton "SDL_GAMEPAD_TYPE_COUNT")
+        , (12, BG.singleton "SDL_GAMEPAD_TYPE_STEAM")
+        , (13, BG.singleton "SDL_GAMEPAD_TYPE_COUNT")
         ]
 
   showsUndeclared =
@@ -285,9 +287,13 @@ pattern SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR = SDL_GamepadType 10
 pattern SDL_GAMEPAD_TYPE_GAMECUBE :: SDL_GamepadType
 pattern SDL_GAMEPAD_TYPE_GAMECUBE = SDL_GamepadType 11
 
--- | [C declaration]: @SDL_GAMEPAD_TYPE_COUNT@, defined at @SDL3\/SDL_gamepad.h 125:5@
+-- | [C declaration]: @SDL_GAMEPAD_TYPE_STEAM@, defined at @SDL3\/SDL_gamepad.h 125:5@
+pattern SDL_GAMEPAD_TYPE_STEAM :: SDL_GamepadType
+pattern SDL_GAMEPAD_TYPE_STEAM = SDL_GamepadType 12
+
+-- | [C declaration]: @SDL_GAMEPAD_TYPE_COUNT@, defined at @SDL3\/SDL_gamepad.h 126:5@
 pattern SDL_GAMEPAD_TYPE_COUNT :: SDL_GamepadType
-pattern SDL_GAMEPAD_TYPE_COUNT = SDL_GamepadType 12
+pattern SDL_GAMEPAD_TYPE_COUNT = SDL_GamepadType 13
 
 -- | The list of buttons available on a gamepad
 --
@@ -301,7 +307,7 @@ pattern SDL_GAMEPAD_TYPE_COUNT = SDL_GamepadType 12
 --
 --     @since 3.2.0
 --
---     [C declaration]: @enum SDL_GamepadButton@, defined at @SDL3\/SDL_gamepad.h 152:14@
+--     [C declaration]: @enum SDL_GamepadButton@, defined at @SDL3\/SDL_gamepad.h 153:14@
 newtype SDL_GamepadButton = SDL_GamepadButton
   { unwrap :: BG.CInt
   }
@@ -418,145 +424,145 @@ instance HasCField.HasCField SDL_GamepadButton "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_INVALID@, defined at @SDL3\/SDL_gamepad.h 154:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_INVALID@, defined at @SDL3\/SDL_gamepad.h 155:5@
 pattern SDL_GAMEPAD_BUTTON_INVALID :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_INVALID = SDL_GamepadButton (-1)
 
 -- | Bottom face button (e.g. Xbox A button)
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_SOUTH@, defined at @SDL3\/SDL_gamepad.h 155:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_SOUTH@, defined at @SDL3\/SDL_gamepad.h 156:5@
 pattern SDL_GAMEPAD_BUTTON_SOUTH :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_SOUTH = SDL_GamepadButton 0
 
 -- | Right face button (e.g. Xbox B button)
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_EAST@, defined at @SDL3\/SDL_gamepad.h 156:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_EAST@, defined at @SDL3\/SDL_gamepad.h 157:5@
 pattern SDL_GAMEPAD_BUTTON_EAST :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_EAST = SDL_GamepadButton 1
 
 -- | Left face button (e.g. Xbox X button)
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_WEST@, defined at @SDL3\/SDL_gamepad.h 157:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_WEST@, defined at @SDL3\/SDL_gamepad.h 158:5@
 pattern SDL_GAMEPAD_BUTTON_WEST :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_WEST = SDL_GamepadButton 2
 
 -- | Top face button (e.g. Xbox Y button)
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_NORTH@, defined at @SDL3\/SDL_gamepad.h 158:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_NORTH@, defined at @SDL3\/SDL_gamepad.h 159:5@
 pattern SDL_GAMEPAD_BUTTON_NORTH :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_NORTH = SDL_GamepadButton 3
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_BACK@, defined at @SDL3\/SDL_gamepad.h 159:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_BACK@, defined at @SDL3\/SDL_gamepad.h 160:5@
 pattern SDL_GAMEPAD_BUTTON_BACK :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_BACK = SDL_GamepadButton 4
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_GUIDE@, defined at @SDL3\/SDL_gamepad.h 160:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_GUIDE@, defined at @SDL3\/SDL_gamepad.h 161:5@
 pattern SDL_GAMEPAD_BUTTON_GUIDE :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_GUIDE = SDL_GamepadButton 5
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_START@, defined at @SDL3\/SDL_gamepad.h 161:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_START@, defined at @SDL3\/SDL_gamepad.h 162:5@
 pattern SDL_GAMEPAD_BUTTON_START :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_START = SDL_GamepadButton 6
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_LEFT_STICK@, defined at @SDL3\/SDL_gamepad.h 162:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_LEFT_STICK@, defined at @SDL3\/SDL_gamepad.h 163:5@
 pattern SDL_GAMEPAD_BUTTON_LEFT_STICK :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_LEFT_STICK = SDL_GamepadButton 7
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_RIGHT_STICK@, defined at @SDL3\/SDL_gamepad.h 163:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_RIGHT_STICK@, defined at @SDL3\/SDL_gamepad.h 164:5@
 pattern SDL_GAMEPAD_BUTTON_RIGHT_STICK :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_RIGHT_STICK = SDL_GamepadButton 8
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_LEFT_SHOULDER@, defined at @SDL3\/SDL_gamepad.h 164:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_LEFT_SHOULDER@, defined at @SDL3\/SDL_gamepad.h 165:5@
 pattern SDL_GAMEPAD_BUTTON_LEFT_SHOULDER :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_LEFT_SHOULDER = SDL_GamepadButton 9
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER@, defined at @SDL3\/SDL_gamepad.h 165:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER@, defined at @SDL3\/SDL_gamepad.h 166:5@
 pattern SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER = SDL_GamepadButton 10
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_DPAD_UP@, defined at @SDL3\/SDL_gamepad.h 166:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_DPAD_UP@, defined at @SDL3\/SDL_gamepad.h 167:5@
 pattern SDL_GAMEPAD_BUTTON_DPAD_UP :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_DPAD_UP = SDL_GamepadButton 11
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_DPAD_DOWN@, defined at @SDL3\/SDL_gamepad.h 167:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_DPAD_DOWN@, defined at @SDL3\/SDL_gamepad.h 168:5@
 pattern SDL_GAMEPAD_BUTTON_DPAD_DOWN :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_DPAD_DOWN = SDL_GamepadButton 12
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_DPAD_LEFT@, defined at @SDL3\/SDL_gamepad.h 168:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_DPAD_LEFT@, defined at @SDL3\/SDL_gamepad.h 169:5@
 pattern SDL_GAMEPAD_BUTTON_DPAD_LEFT :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_DPAD_LEFT = SDL_GamepadButton 13
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_DPAD_RIGHT@, defined at @SDL3\/SDL_gamepad.h 169:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_DPAD_RIGHT@, defined at @SDL3\/SDL_gamepad.h 170:5@
 pattern SDL_GAMEPAD_BUTTON_DPAD_RIGHT :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_DPAD_RIGHT = SDL_GamepadButton 14
 
 -- | Additional button (e.g. Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Steam Controller QAM button, Amazon Luna microphone button, Google Stadia capture button)
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_MISC1@, defined at @SDL3\/SDL_gamepad.h 170:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_MISC1@, defined at @SDL3\/SDL_gamepad.h 171:5@
 pattern SDL_GAMEPAD_BUTTON_MISC1 :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_MISC1 = SDL_GamepadButton 15
 
 -- | Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1, DualSense Edge RB button, Right Joy-Con SR button, Steam Controller R4 button)
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1@, defined at @SDL3\/SDL_gamepad.h 171:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1@, defined at @SDL3\/SDL_gamepad.h 172:5@
 pattern SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1 :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1 = SDL_GamepadButton 16
 
 -- | Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3, DualSense Edge LB button, Left Joy-Con SL button, Steam Controller L4 button)
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_LEFT_PADDLE1@, defined at @SDL3\/SDL_gamepad.h 172:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_LEFT_PADDLE1@, defined at @SDL3\/SDL_gamepad.h 173:5@
 pattern SDL_GAMEPAD_BUTTON_LEFT_PADDLE1 :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_LEFT_PADDLE1 = SDL_GamepadButton 17
 
 -- | Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2, DualSense Edge right Fn button, Right Joy-Con SL button, Steam Controller R5 button)
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2@, defined at @SDL3\/SDL_gamepad.h 173:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2@, defined at @SDL3\/SDL_gamepad.h 174:5@
 pattern SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2 :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2 = SDL_GamepadButton 18
 
 -- | Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4, DualSense Edge left Fn button, Left Joy-Con SR button, Steam Controller L5 button)
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_LEFT_PADDLE2@, defined at @SDL3\/SDL_gamepad.h 174:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_LEFT_PADDLE2@, defined at @SDL3\/SDL_gamepad.h 175:5@
 pattern SDL_GAMEPAD_BUTTON_LEFT_PADDLE2 :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_LEFT_PADDLE2 = SDL_GamepadButton 19
 
 -- | PS4\/PS5 touchpad button
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_TOUCHPAD@, defined at @SDL3\/SDL_gamepad.h 175:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_TOUCHPAD@, defined at @SDL3\/SDL_gamepad.h 176:5@
 pattern SDL_GAMEPAD_BUTTON_TOUCHPAD :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_TOUCHPAD = SDL_GamepadButton 20
 
 -- | Additional button
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_MISC2@, defined at @SDL3\/SDL_gamepad.h 176:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_MISC2@, defined at @SDL3\/SDL_gamepad.h 177:5@
 pattern SDL_GAMEPAD_BUTTON_MISC2 :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_MISC2 = SDL_GamepadButton 21
 
 -- | Additional button (e.g. Nintendo GameCube left trigger click)
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_MISC3@, defined at @SDL3\/SDL_gamepad.h 177:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_MISC3@, defined at @SDL3\/SDL_gamepad.h 178:5@
 pattern SDL_GAMEPAD_BUTTON_MISC3 :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_MISC3 = SDL_GamepadButton 22
 
 -- | Additional button (e.g. Nintendo GameCube right trigger click)
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_MISC4@, defined at @SDL3\/SDL_gamepad.h 178:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_MISC4@, defined at @SDL3\/SDL_gamepad.h 179:5@
 pattern SDL_GAMEPAD_BUTTON_MISC4 :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_MISC4 = SDL_GamepadButton 23
 
 -- | Additional button
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_MISC5@, defined at @SDL3\/SDL_gamepad.h 179:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_MISC5@, defined at @SDL3\/SDL_gamepad.h 180:5@
 pattern SDL_GAMEPAD_BUTTON_MISC5 :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_MISC5 = SDL_GamepadButton 24
 
 -- | Additional button
 --
---     [C declaration]: @SDL_GAMEPAD_BUTTON_MISC6@, defined at @SDL3\/SDL_gamepad.h 180:5@
+--     [C declaration]: @SDL_GAMEPAD_BUTTON_MISC6@, defined at @SDL3\/SDL_gamepad.h 181:5@
 pattern SDL_GAMEPAD_BUTTON_MISC6 :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_MISC6 = SDL_GamepadButton 25
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_COUNT@, defined at @SDL3\/SDL_gamepad.h 181:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_COUNT@, defined at @SDL3\/SDL_gamepad.h 182:5@
 pattern SDL_GAMEPAD_BUTTON_COUNT :: SDL_GamepadButton
 pattern SDL_GAMEPAD_BUTTON_COUNT = SDL_GamepadButton 26
 
@@ -568,7 +574,7 @@ pattern SDL_GAMEPAD_BUTTON_COUNT = SDL_GamepadButton 26
 --
 --     @since 3.2.0
 --
---     [C declaration]: @enum SDL_GamepadButtonLabel@, defined at @SDL3\/SDL_gamepad.h 195:14@
+--     [C declaration]: @enum SDL_GamepadButtonLabel@, defined at @SDL3\/SDL_gamepad.h 196:14@
 newtype SDL_GamepadButtonLabel = SDL_GamepadButtonLabel
   { unwrap :: BG.CUInt
   }
@@ -671,39 +677,39 @@ instance HasCField.HasCField SDL_GamepadButtonLabel "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_UNKNOWN@, defined at @SDL3\/SDL_gamepad.h 197:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_UNKNOWN@, defined at @SDL3\/SDL_gamepad.h 198:5@
 pattern SDL_GAMEPAD_BUTTON_LABEL_UNKNOWN :: SDL_GamepadButtonLabel
 pattern SDL_GAMEPAD_BUTTON_LABEL_UNKNOWN = SDL_GamepadButtonLabel 0
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_A@, defined at @SDL3\/SDL_gamepad.h 198:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_A@, defined at @SDL3\/SDL_gamepad.h 199:5@
 pattern SDL_GAMEPAD_BUTTON_LABEL_A :: SDL_GamepadButtonLabel
 pattern SDL_GAMEPAD_BUTTON_LABEL_A = SDL_GamepadButtonLabel 1
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_B@, defined at @SDL3\/SDL_gamepad.h 199:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_B@, defined at @SDL3\/SDL_gamepad.h 200:5@
 pattern SDL_GAMEPAD_BUTTON_LABEL_B :: SDL_GamepadButtonLabel
 pattern SDL_GAMEPAD_BUTTON_LABEL_B = SDL_GamepadButtonLabel 2
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_X@, defined at @SDL3\/SDL_gamepad.h 200:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_X@, defined at @SDL3\/SDL_gamepad.h 201:5@
 pattern SDL_GAMEPAD_BUTTON_LABEL_X :: SDL_GamepadButtonLabel
 pattern SDL_GAMEPAD_BUTTON_LABEL_X = SDL_GamepadButtonLabel 3
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_Y@, defined at @SDL3\/SDL_gamepad.h 201:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_Y@, defined at @SDL3\/SDL_gamepad.h 202:5@
 pattern SDL_GAMEPAD_BUTTON_LABEL_Y :: SDL_GamepadButtonLabel
 pattern SDL_GAMEPAD_BUTTON_LABEL_Y = SDL_GamepadButtonLabel 4
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_CROSS@, defined at @SDL3\/SDL_gamepad.h 202:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_CROSS@, defined at @SDL3\/SDL_gamepad.h 203:5@
 pattern SDL_GAMEPAD_BUTTON_LABEL_CROSS :: SDL_GamepadButtonLabel
 pattern SDL_GAMEPAD_BUTTON_LABEL_CROSS = SDL_GamepadButtonLabel 5
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_CIRCLE@, defined at @SDL3\/SDL_gamepad.h 203:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_CIRCLE@, defined at @SDL3\/SDL_gamepad.h 204:5@
 pattern SDL_GAMEPAD_BUTTON_LABEL_CIRCLE :: SDL_GamepadButtonLabel
 pattern SDL_GAMEPAD_BUTTON_LABEL_CIRCLE = SDL_GamepadButtonLabel 6
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_SQUARE@, defined at @SDL3\/SDL_gamepad.h 204:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_SQUARE@, defined at @SDL3\/SDL_gamepad.h 205:5@
 pattern SDL_GAMEPAD_BUTTON_LABEL_SQUARE :: SDL_GamepadButtonLabel
 pattern SDL_GAMEPAD_BUTTON_LABEL_SQUARE = SDL_GamepadButtonLabel 7
 
--- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_TRIANGLE@, defined at @SDL3\/SDL_gamepad.h 205:5@
+-- | [C declaration]: @SDL_GAMEPAD_BUTTON_LABEL_TRIANGLE@, defined at @SDL3\/SDL_gamepad.h 206:5@
 pattern SDL_GAMEPAD_BUTTON_LABEL_TRIANGLE :: SDL_GamepadButtonLabel
 pattern SDL_GAMEPAD_BUTTON_LABEL_TRIANGLE = SDL_GamepadButtonLabel 8
 
@@ -715,7 +721,7 @@ pattern SDL_GAMEPAD_BUTTON_LABEL_TRIANGLE = SDL_GamepadButtonLabel 8
 --
 --     @since 3.2.0
 --
---     [C declaration]: @enum SDL_GamepadAxis@, defined at @SDL3\/SDL_gamepad.h 222:14@
+--     [C declaration]: @enum SDL_GamepadAxis@, defined at @SDL3\/SDL_gamepad.h 223:14@
 newtype SDL_GamepadAxis = SDL_GamepadAxis
   { unwrap :: BG.CInt
   }
@@ -812,35 +818,35 @@ instance HasCField.HasCField SDL_GamepadAxis "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_GAMEPAD_AXIS_INVALID@, defined at @SDL3\/SDL_gamepad.h 224:5@
+-- | [C declaration]: @SDL_GAMEPAD_AXIS_INVALID@, defined at @SDL3\/SDL_gamepad.h 225:5@
 pattern SDL_GAMEPAD_AXIS_INVALID :: SDL_GamepadAxis
 pattern SDL_GAMEPAD_AXIS_INVALID = SDL_GamepadAxis (-1)
 
--- | [C declaration]: @SDL_GAMEPAD_AXIS_LEFTX@, defined at @SDL3\/SDL_gamepad.h 225:5@
+-- | [C declaration]: @SDL_GAMEPAD_AXIS_LEFTX@, defined at @SDL3\/SDL_gamepad.h 226:5@
 pattern SDL_GAMEPAD_AXIS_LEFTX :: SDL_GamepadAxis
 pattern SDL_GAMEPAD_AXIS_LEFTX = SDL_GamepadAxis 0
 
--- | [C declaration]: @SDL_GAMEPAD_AXIS_LEFTY@, defined at @SDL3\/SDL_gamepad.h 226:5@
+-- | [C declaration]: @SDL_GAMEPAD_AXIS_LEFTY@, defined at @SDL3\/SDL_gamepad.h 227:5@
 pattern SDL_GAMEPAD_AXIS_LEFTY :: SDL_GamepadAxis
 pattern SDL_GAMEPAD_AXIS_LEFTY = SDL_GamepadAxis 1
 
--- | [C declaration]: @SDL_GAMEPAD_AXIS_RIGHTX@, defined at @SDL3\/SDL_gamepad.h 227:5@
+-- | [C declaration]: @SDL_GAMEPAD_AXIS_RIGHTX@, defined at @SDL3\/SDL_gamepad.h 228:5@
 pattern SDL_GAMEPAD_AXIS_RIGHTX :: SDL_GamepadAxis
 pattern SDL_GAMEPAD_AXIS_RIGHTX = SDL_GamepadAxis 2
 
--- | [C declaration]: @SDL_GAMEPAD_AXIS_RIGHTY@, defined at @SDL3\/SDL_gamepad.h 228:5@
+-- | [C declaration]: @SDL_GAMEPAD_AXIS_RIGHTY@, defined at @SDL3\/SDL_gamepad.h 229:5@
 pattern SDL_GAMEPAD_AXIS_RIGHTY :: SDL_GamepadAxis
 pattern SDL_GAMEPAD_AXIS_RIGHTY = SDL_GamepadAxis 3
 
--- | [C declaration]: @SDL_GAMEPAD_AXIS_LEFT_TRIGGER@, defined at @SDL3\/SDL_gamepad.h 229:5@
+-- | [C declaration]: @SDL_GAMEPAD_AXIS_LEFT_TRIGGER@, defined at @SDL3\/SDL_gamepad.h 230:5@
 pattern SDL_GAMEPAD_AXIS_LEFT_TRIGGER :: SDL_GamepadAxis
 pattern SDL_GAMEPAD_AXIS_LEFT_TRIGGER = SDL_GamepadAxis 4
 
--- | [C declaration]: @SDL_GAMEPAD_AXIS_RIGHT_TRIGGER@, defined at @SDL3\/SDL_gamepad.h 230:5@
+-- | [C declaration]: @SDL_GAMEPAD_AXIS_RIGHT_TRIGGER@, defined at @SDL3\/SDL_gamepad.h 231:5@
 pattern SDL_GAMEPAD_AXIS_RIGHT_TRIGGER :: SDL_GamepadAxis
 pattern SDL_GAMEPAD_AXIS_RIGHT_TRIGGER = SDL_GamepadAxis 5
 
--- | [C declaration]: @SDL_GAMEPAD_AXIS_COUNT@, defined at @SDL3\/SDL_gamepad.h 231:5@
+-- | [C declaration]: @SDL_GAMEPAD_AXIS_COUNT@, defined at @SDL3\/SDL_gamepad.h 232:5@
 pattern SDL_GAMEPAD_AXIS_COUNT :: SDL_GamepadAxis
 pattern SDL_GAMEPAD_AXIS_COUNT = SDL_GamepadAxis 6
 
@@ -850,7 +856,7 @@ pattern SDL_GAMEPAD_AXIS_COUNT = SDL_GamepadAxis 6
 --
 --     @since 3.2.0
 --
---     [C declaration]: @enum SDL_GamepadBindingType@, defined at @SDL3\/SDL_gamepad.h 244:14@
+--     [C declaration]: @enum SDL_GamepadBindingType@, defined at @SDL3\/SDL_gamepad.h 245:14@
 newtype SDL_GamepadBindingType = SDL_GamepadBindingType
   { unwrap :: BG.CUInt
   }
@@ -948,30 +954,30 @@ instance HasCField.HasCField SDL_GamepadBindingType "unwrap" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @SDL_GAMEPAD_BINDTYPE_NONE@, defined at @SDL3\/SDL_gamepad.h 246:5@
+-- | [C declaration]: @SDL_GAMEPAD_BINDTYPE_NONE@, defined at @SDL3\/SDL_gamepad.h 247:5@
 pattern SDL_GAMEPAD_BINDTYPE_NONE :: SDL_GamepadBindingType
 pattern SDL_GAMEPAD_BINDTYPE_NONE = SDL_GamepadBindingType 0
 
--- | [C declaration]: @SDL_GAMEPAD_BINDTYPE_BUTTON@, defined at @SDL3\/SDL_gamepad.h 247:5@
+-- | [C declaration]: @SDL_GAMEPAD_BINDTYPE_BUTTON@, defined at @SDL3\/SDL_gamepad.h 248:5@
 pattern SDL_GAMEPAD_BINDTYPE_BUTTON :: SDL_GamepadBindingType
 pattern SDL_GAMEPAD_BINDTYPE_BUTTON = SDL_GamepadBindingType 1
 
--- | [C declaration]: @SDL_GAMEPAD_BINDTYPE_AXIS@, defined at @SDL3\/SDL_gamepad.h 248:5@
+-- | [C declaration]: @SDL_GAMEPAD_BINDTYPE_AXIS@, defined at @SDL3\/SDL_gamepad.h 249:5@
 pattern SDL_GAMEPAD_BINDTYPE_AXIS :: SDL_GamepadBindingType
 pattern SDL_GAMEPAD_BINDTYPE_AXIS = SDL_GamepadBindingType 2
 
--- | [C declaration]: @SDL_GAMEPAD_BINDTYPE_HAT@, defined at @SDL3\/SDL_gamepad.h 249:5@
+-- | [C declaration]: @SDL_GAMEPAD_BINDTYPE_HAT@, defined at @SDL3\/SDL_gamepad.h 250:5@
 pattern SDL_GAMEPAD_BINDTYPE_HAT :: SDL_GamepadBindingType
 pattern SDL_GAMEPAD_BINDTYPE_HAT = SDL_GamepadBindingType 3
 
--- | [C declaration]: @struct \@SDL_GamepadBinding_input_axis@, defined at @SDL3\/SDL_gamepad.h 274:9@
+-- | [C declaration]: @struct \@SDL_GamepadBinding_input_axis@, defined at @SDL3\/SDL_gamepad.h 275:9@
 data SDL_GamepadBinding_input_axis = SDL_GamepadBinding_input_axis
   { axis :: BG.CInt
-  -- ^ [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 276:17@
+  -- ^ [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 277:17@
   , axis_min :: BG.CInt
-  -- ^ [C declaration]: @axis_min@, defined at @SDL3\/SDL_gamepad.h 277:17@
+  -- ^ [C declaration]: @axis_min@, defined at @SDL3\/SDL_gamepad.h 278:17@
   , axis_max :: BG.CInt
-  -- ^ [C declaration]: @axis_max@, defined at @SDL3\/SDL_gamepad.h 278:17@
+  -- ^ [C declaration]: @axis_max@, defined at @SDL3\/SDL_gamepad.h 279:17@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -1008,7 +1014,7 @@ deriving via
   instance
     Struct.IsStruct SDL_GamepadBinding_input_axis
 
--- | [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 276:17@
+-- | [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 277:17@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "axis" SDL_GamepadBinding_input_axis ty
@@ -1037,7 +1043,7 @@ instance HasCField.HasCField SDL_GamepadBinding_input_axis "axis" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @axis_min@, defined at @SDL3\/SDL_gamepad.h 277:17@
+-- | [C declaration]: @axis_min@, defined at @SDL3\/SDL_gamepad.h 278:17@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "axis_min" SDL_GamepadBinding_input_axis ty
@@ -1066,7 +1072,7 @@ instance HasCField.HasCField SDL_GamepadBinding_input_axis "axis_min" where
 
   offset# = \_ -> \_ -> 4
 
--- | [C declaration]: @axis_max@, defined at @SDL3\/SDL_gamepad.h 278:17@
+-- | [C declaration]: @axis_max@, defined at @SDL3\/SDL_gamepad.h 279:17@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "axis_max" SDL_GamepadBinding_input_axis ty
@@ -1095,12 +1101,12 @@ instance HasCField.HasCField SDL_GamepadBinding_input_axis "axis_max" where
 
   offset# = \_ -> \_ -> 8
 
--- | [C declaration]: @struct \@SDL_GamepadBinding_input_hat@, defined at @SDL3\/SDL_gamepad.h 281:9@
+-- | [C declaration]: @struct \@SDL_GamepadBinding_input_hat@, defined at @SDL3\/SDL_gamepad.h 282:9@
 data SDL_GamepadBinding_input_hat = SDL_GamepadBinding_input_hat
   { hat :: BG.CInt
-  -- ^ [C declaration]: @hat@, defined at @SDL3\/SDL_gamepad.h 283:17@
+  -- ^ [C declaration]: @hat@, defined at @SDL3\/SDL_gamepad.h 284:17@
   , hat_mask :: BG.CInt
-  -- ^ [C declaration]: @hat_mask@, defined at @SDL3\/SDL_gamepad.h 284:17@
+  -- ^ [C declaration]: @hat_mask@, defined at @SDL3\/SDL_gamepad.h 285:17@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -1135,7 +1141,7 @@ deriving via
   instance
     Struct.IsStruct SDL_GamepadBinding_input_hat
 
--- | [C declaration]: @hat@, defined at @SDL3\/SDL_gamepad.h 283:17@
+-- | [C declaration]: @hat@, defined at @SDL3\/SDL_gamepad.h 284:17@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "hat" SDL_GamepadBinding_input_hat ty
@@ -1160,7 +1166,7 @@ instance HasCField.HasCField SDL_GamepadBinding_input_hat "hat" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @hat_mask@, defined at @SDL3\/SDL_gamepad.h 284:17@
+-- | [C declaration]: @hat_mask@, defined at @SDL3\/SDL_gamepad.h 285:17@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "hat_mask" SDL_GamepadBinding_input_hat ty
@@ -1185,7 +1191,7 @@ instance HasCField.HasCField SDL_GamepadBinding_input_hat "hat_mask" where
 
   offset# = \_ -> \_ -> 4
 
--- | [C declaration]: @union \@SDL_GamepadBinding_input@, defined at @SDL3\/SDL_gamepad.h 270:5@
+-- | [C declaration]: @union \@SDL_GamepadBinding_input@, defined at @SDL3\/SDL_gamepad.h 271:5@
 newtype SDL_GamepadBinding_input = SDL_GamepadBinding_input
   { unwrap :: BG.ByteArray
   }
@@ -1204,14 +1210,14 @@ deriving via
 
 deriving via BG.SizedByteArray 12 4 instance Union.IsUnion SDL_GamepadBinding_input
 
--- | [C declaration]: @button@, defined at @SDL3\/SDL_gamepad.h 272:13@
+-- | [C declaration]: @button@, defined at @SDL3\/SDL_gamepad.h 273:13@
 instance
   (ty ~ BG.CInt)
   => BG.HasField "button" SDL_GamepadBinding_input ty
   where
   getField = BG.getUnionPayload
 
--- | [C declaration]: @button@, defined at @SDL3\/SDL_gamepad.h 272:13@
+-- | [C declaration]: @button@, defined at @SDL3\/SDL_gamepad.h 273:13@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "button" SDL_GamepadBinding_input ty
@@ -1236,14 +1242,14 @@ instance HasCField.HasCField SDL_GamepadBinding_input "button" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 279:11@
+-- | [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 280:11@
 instance
   (ty ~ SDL_GamepadBinding_input_axis)
   => BG.HasField "axis" SDL_GamepadBinding_input ty
   where
   getField = BG.getUnionPayload
 
--- | [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 279:11@
+-- | [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 280:11@
 instance
   (ty ~ SDL_GamepadBinding_input_axis)
   => BG.CompatHasField.HasField "axis" SDL_GamepadBinding_input ty
@@ -1268,14 +1274,14 @@ instance HasCField.HasCField SDL_GamepadBinding_input "axis" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @hat@, defined at @SDL3\/SDL_gamepad.h 285:11@
+-- | [C declaration]: @hat@, defined at @SDL3\/SDL_gamepad.h 286:11@
 instance
   (ty ~ SDL_GamepadBinding_input_hat)
   => BG.HasField "hat" SDL_GamepadBinding_input ty
   where
   getField = BG.getUnionPayload
 
--- | [C declaration]: @hat@, defined at @SDL3\/SDL_gamepad.h 285:11@
+-- | [C declaration]: @hat@, defined at @SDL3\/SDL_gamepad.h 286:11@
 instance
   (ty ~ SDL_GamepadBinding_input_hat)
   => BG.CompatHasField.HasField "hat" SDL_GamepadBinding_input ty
@@ -1300,14 +1306,14 @@ instance HasCField.HasCField SDL_GamepadBinding_input "hat" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @struct \@SDL_GamepadBinding_output_axis@, defined at @SDL3\/SDL_gamepad.h 294:9@
+-- | [C declaration]: @struct \@SDL_GamepadBinding_output_axis@, defined at @SDL3\/SDL_gamepad.h 295:9@
 data SDL_GamepadBinding_output_axis = SDL_GamepadBinding_output_axis
   { axis :: SDL_GamepadAxis
-  -- ^ [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 296:29@
+  -- ^ [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 297:29@
   , axis_min :: BG.CInt
-  -- ^ [C declaration]: @axis_min@, defined at @SDL3\/SDL_gamepad.h 297:17@
+  -- ^ [C declaration]: @axis_min@, defined at @SDL3\/SDL_gamepad.h 298:17@
   , axis_max :: BG.CInt
-  -- ^ [C declaration]: @axis_max@, defined at @SDL3\/SDL_gamepad.h 298:17@
+  -- ^ [C declaration]: @axis_max@, defined at @SDL3\/SDL_gamepad.h 299:17@
   }
   deriving stock (BG.Generic, Eq, Show)
 
@@ -1344,7 +1350,7 @@ deriving via
   instance
     Struct.IsStruct SDL_GamepadBinding_output_axis
 
--- | [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 296:29@
+-- | [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 297:29@
 instance
   (ty ~ SDL_GamepadAxis)
   => BG.CompatHasField.HasField "axis" SDL_GamepadBinding_output_axis ty
@@ -1373,7 +1379,7 @@ instance HasCField.HasCField SDL_GamepadBinding_output_axis "axis" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @axis_min@, defined at @SDL3\/SDL_gamepad.h 297:17@
+-- | [C declaration]: @axis_min@, defined at @SDL3\/SDL_gamepad.h 298:17@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "axis_min" SDL_GamepadBinding_output_axis ty
@@ -1402,7 +1408,7 @@ instance HasCField.HasCField SDL_GamepadBinding_output_axis "axis_min" where
 
   offset# = \_ -> \_ -> 4
 
--- | [C declaration]: @axis_max@, defined at @SDL3\/SDL_gamepad.h 298:17@
+-- | [C declaration]: @axis_max@, defined at @SDL3\/SDL_gamepad.h 299:17@
 instance
   (ty ~ BG.CInt)
   => BG.CompatHasField.HasField "axis_max" SDL_GamepadBinding_output_axis ty
@@ -1431,7 +1437,7 @@ instance HasCField.HasCField SDL_GamepadBinding_output_axis "axis_max" where
 
   offset# = \_ -> \_ -> 8
 
--- | [C declaration]: @union \@SDL_GamepadBinding_output@, defined at @SDL3\/SDL_gamepad.h 290:5@
+-- | [C declaration]: @union \@SDL_GamepadBinding_output@, defined at @SDL3\/SDL_gamepad.h 291:5@
 newtype SDL_GamepadBinding_output = SDL_GamepadBinding_output
   { unwrap :: BG.ByteArray
   }
@@ -1450,14 +1456,14 @@ deriving via
 
 deriving via BG.SizedByteArray 12 4 instance Union.IsUnion SDL_GamepadBinding_output
 
--- | [C declaration]: @button@, defined at @SDL3\/SDL_gamepad.h 292:27@
+-- | [C declaration]: @button@, defined at @SDL3\/SDL_gamepad.h 293:27@
 instance
   (ty ~ SDL_GamepadButton)
   => BG.HasField "button" SDL_GamepadBinding_output ty
   where
   getField = BG.getUnionPayload
 
--- | [C declaration]: @button@, defined at @SDL3\/SDL_gamepad.h 292:27@
+-- | [C declaration]: @button@, defined at @SDL3\/SDL_gamepad.h 293:27@
 instance
   (ty ~ SDL_GamepadButton)
   => BG.CompatHasField.HasField "button" SDL_GamepadBinding_output ty
@@ -1482,14 +1488,14 @@ instance HasCField.HasCField SDL_GamepadBinding_output "button" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 299:11@
+-- | [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 300:11@
 instance
   (ty ~ SDL_GamepadBinding_output_axis)
   => BG.HasField "axis" SDL_GamepadBinding_output ty
   where
   getField = BG.getUnionPayload
 
--- | [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 299:11@
+-- | [C declaration]: @axis@, defined at @SDL3\/SDL_gamepad.h 300:11@
 instance
   (ty ~ SDL_GamepadBinding_output_axis)
   => BG.CompatHasField.HasField "axis" SDL_GamepadBinding_output ty
@@ -1524,16 +1530,16 @@ instance HasCField.HasCField SDL_GamepadBinding_output "axis" where
 --
 --     [See also]: 'sDL_GetGamepadBindings'
 --
---     [C declaration]: @struct SDL_GamepadBinding@, defined at @SDL3\/SDL_gamepad.h 267:16@
+--     [C declaration]: @struct SDL_GamepadBinding@, defined at @SDL3\/SDL_gamepad.h 268:16@
 data SDL_GamepadBinding = SDL_GamepadBinding
   { input_type :: SDL_GamepadBindingType
-  -- ^ [C declaration]: @input_type@, defined at @SDL3\/SDL_gamepad.h 269:28@
+  -- ^ [C declaration]: @input_type@, defined at @SDL3\/SDL_gamepad.h 270:28@
   , input :: SDL_GamepadBinding_input
-  -- ^ [C declaration]: @input@, defined at @SDL3\/SDL_gamepad.h 287:7@
+  -- ^ [C declaration]: @input@, defined at @SDL3\/SDL_gamepad.h 288:7@
   , output_type :: SDL_GamepadBindingType
-  -- ^ [C declaration]: @output_type@, defined at @SDL3\/SDL_gamepad.h 289:28@
+  -- ^ [C declaration]: @output_type@, defined at @SDL3\/SDL_gamepad.h 290:28@
   , output :: SDL_GamepadBinding_output
-  -- ^ [C declaration]: @output@, defined at @SDL3\/SDL_gamepad.h 301:7@
+  -- ^ [C declaration]: @output@, defined at @SDL3\/SDL_gamepad.h 302:7@
   }
   deriving stock (BG.Generic)
 
@@ -1569,7 +1575,7 @@ deriving via
   instance
     Struct.IsStruct SDL_GamepadBinding
 
--- | [C declaration]: @input_type@, defined at @SDL3\/SDL_gamepad.h 269:28@
+-- | [C declaration]: @input_type@, defined at @SDL3\/SDL_gamepad.h 270:28@
 instance
   (ty ~ SDL_GamepadBindingType)
   => BG.CompatHasField.HasField "input_type" SDL_GamepadBinding ty
@@ -1599,7 +1605,7 @@ instance HasCField.HasCField SDL_GamepadBinding "input_type" where
 
   offset# = \_ -> \_ -> 0
 
--- | [C declaration]: @input@, defined at @SDL3\/SDL_gamepad.h 287:7@
+-- | [C declaration]: @input@, defined at @SDL3\/SDL_gamepad.h 288:7@
 instance
   (ty ~ SDL_GamepadBinding_input)
   => BG.CompatHasField.HasField "input" SDL_GamepadBinding ty
@@ -1629,7 +1635,7 @@ instance HasCField.HasCField SDL_GamepadBinding "input" where
 
   offset# = \_ -> \_ -> 4
 
--- | [C declaration]: @output_type@, defined at @SDL3\/SDL_gamepad.h 289:28@
+-- | [C declaration]: @output_type@, defined at @SDL3\/SDL_gamepad.h 290:28@
 instance
   (ty ~ SDL_GamepadBindingType)
   => BG.CompatHasField.HasField "output_type" SDL_GamepadBinding ty
@@ -1660,7 +1666,7 @@ instance HasCField.HasCField SDL_GamepadBinding "output_type" where
 
   offset# = \_ -> \_ -> 16
 
--- | [C declaration]: @output@, defined at @SDL3\/SDL_gamepad.h 301:7@
+-- | [C declaration]: @output@, defined at @SDL3\/SDL_gamepad.h 302:7@
 instance
   (ty ~ SDL_GamepadBinding_output)
   => BG.CompatHasField.HasField "output" SDL_GamepadBinding ty

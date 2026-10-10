@@ -25,7 +25,10 @@ import Control.Monad (unless)
 import Control.Monad.IO.Class (liftIO)
 import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
-import Data.Int (Int32, Int64)
+import Data.Int (
+  Int32,
+  Int64,
+ )
 import Data.Kind (Type)
 import Data.Primitive.Types (Prim)
 import Data.Vector qualified as V
@@ -34,14 +37,38 @@ import Data.Vector.Generic.Mutable qualified as VGM
 import Data.Vector.Primitive qualified as P
 import Data.Vector.Storable.Sized qualified as VSS
 import Data.Vector.Unboxed qualified as VU
-import Data.Word (Word32, Word64, Word8)
+import Data.Word (
+  Word32,
+  Word64,
+  Word8,
+ )
 import Foreign.C.Types (CSize)
 import Foreign.Marshal.Utils (fillBytes)
-import Foreign.Ptr (FunPtr, Ptr, castPtr, nullFunPtr, nullPtr, plusPtr)
-import Foreign.Storable (Storable, peekByteOff, peekElemOff, pokeByteOff)
+import Foreign.Ptr (
+  FunPtr,
+  Ptr,
+  castPtr,
+  nullFunPtr,
+  nullPtr,
+  plusPtr,
+ )
+import Foreign.Storable (
+  Storable,
+  peekByteOff,
+  peekElemOff,
+  pokeByteOff,
+ )
 import Lithon.Core.Alloc (arenaBytes, newBytes, newCString, newCStrings)
 import Lithon.Core.BaseTypes (Bool32, toBool, pattern FALSE, pattern TRUE)
-import Lithon.Core.CStruct (CStruct (..), Chainable (..), FromCStruct (..), Nil (..), new, newVector, peekElems)
+import Lithon.Core.CStruct (
+  CStruct (..),
+  Chainable (..),
+  FromCStruct (..),
+  Nil (..),
+  new,
+  newVector,
+  peekElems,
+ )
 import Lithon.Core.Chain (
   AllExtends,
   Chain,
@@ -54,7 +81,13 @@ import Lithon.Core.Chain (
   pattern (:&),
  )
 import Lithon.Core.Flags (Flags)
-import Lithon.Core.Open (HasWire (..), Open (..), openFromWire, openToWire, unsafeFromWire)
+import Lithon.Core.Open (
+  HasWire (..),
+  Open (..),
+  openFromWire,
+  openToWire,
+  unsafeFromWire,
+ )
 import Lithon.Core.Unbox (UnboxViaPrim (..))
 
 import Lithon.Vk.Core10.Enums.DescriptorType

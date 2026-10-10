@@ -32,6 +32,7 @@ import Lithon.Codegen.Backend.Package (PackageSpec (..), RootFiles (..))
 import Lithon.Codegen.Backend.Package qualified as Package
 import Lithon.Codegen.Backend.Package.Assemble (assemblePackage)
 import Lithon.Codegen.Bindgen.Abi (AbiMacroConst, renderAbiAssertions)
+import Lithon.Codegen.Bindgen.Abi.Previous (abiAssertionsFile)
 import Lithon.Codegen.Bindgen.Driver (HeaderResult (..))
 import Lithon.Codegen.Bindgen.Env (PackageStatics (..))
 import Lithon.Codegen.Bindgen.Payload (BindgenPayload (..))
@@ -136,7 +137,7 @@ assembleBindgenPackage target statics authoredHeaders libraryVersion aliasModule
                  ]
         , srcDir = "src"
         , modules = generated <> aliases <> facades
-        , extraFiles = ("cbits/abi_assertions.c", abiAssertions) : authoredHeaders
+        , extraFiles = (abiAssertionsFile, abiAssertions) : authoredHeaders
         , extraTrees =
             [ FileTree.prependPath hsbindgenRuntimeOut $ FileTree.fromUniqueListBS hsBindgenRuntimeTree
             , FileTree.prependPath cexprRuntimeOut $ FileTree.fromUniqueListBS cexprRuntimeCoreTree

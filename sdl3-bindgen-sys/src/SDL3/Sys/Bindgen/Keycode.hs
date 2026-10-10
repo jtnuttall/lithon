@@ -199,6 +199,7 @@ module SDL3.Sys.Bindgen.Keycode (
   SDL3.Sys.Bindgen.Keycode.sDLK_CLEARAGAIN,
   SDL3.Sys.Bindgen.Keycode.sDLK_CRSEL,
   SDL3.Sys.Bindgen.Keycode.sDLK_EXSEL,
+  SDL3.Sys.Bindgen.Keycode.sDLK_FRONT,
   SDL3.Sys.Bindgen.Keycode.sDLK_KP_00,
   SDL3.Sys.Bindgen.Keycode.sDLK_KP_000,
   SDL3.Sys.Bindgen.Keycode.sDLK_THOUSANDSSEPARATOR,
@@ -1353,573 +1354,579 @@ sDLK_CRSEL = (1073741987 :: BG.CUInt)
 sDLK_EXSEL :: BG.CUInt
 sDLK_EXSEL = (1073741988 :: BG.CUInt)
 
+-- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_FRONT)@
+--
+--     [C declaration]: @macro SDLK_FRONT@, defined at @SDL3\/SDL_keycode.h 225:9@
+sDLK_FRONT :: BG.CUInt
+sDLK_FRONT = (1073741989 :: BG.CUInt)
+
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_00)@
 --
---     [C declaration]: @macro SDLK_KP_00@, defined at @SDL3\/SDL_keycode.h 225:9@
+--     [C declaration]: @macro SDLK_KP_00@, defined at @SDL3\/SDL_keycode.h 226:9@
 sDLK_KP_00 :: BG.CUInt
 sDLK_KP_00 = (1073742000 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_000)@
 --
---     [C declaration]: @macro SDLK_KP_000@, defined at @SDL3\/SDL_keycode.h 226:9@
+--     [C declaration]: @macro SDLK_KP_000@, defined at @SDL3\/SDL_keycode.h 227:9@
 sDLK_KP_000 :: BG.CUInt
 sDLK_KP_000 = (1073742001 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_THOUSANDSSEPARATOR)@
 --
---     [C declaration]: @macro SDLK_THOUSANDSSEPARATOR@, defined at @SDL3\/SDL_keycode.h 227:9@
+--     [C declaration]: @macro SDLK_THOUSANDSSEPARATOR@, defined at @SDL3\/SDL_keycode.h 228:9@
 sDLK_THOUSANDSSEPARATOR :: BG.CUInt
 sDLK_THOUSANDSSEPARATOR = (1073742002 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_DECIMALSEPARATOR)@
 --
---     [C declaration]: @macro SDLK_DECIMALSEPARATOR@, defined at @SDL3\/SDL_keycode.h 228:9@
+--     [C declaration]: @macro SDLK_DECIMALSEPARATOR@, defined at @SDL3\/SDL_keycode.h 229:9@
 sDLK_DECIMALSEPARATOR :: BG.CUInt
 sDLK_DECIMALSEPARATOR = (1073742003 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CURRENCYUNIT)@
 --
---     [C declaration]: @macro SDLK_CURRENCYUNIT@, defined at @SDL3\/SDL_keycode.h 229:9@
+--     [C declaration]: @macro SDLK_CURRENCYUNIT@, defined at @SDL3\/SDL_keycode.h 230:9@
 sDLK_CURRENCYUNIT :: BG.CUInt
 sDLK_CURRENCYUNIT = (1073742004 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CURRENCYSUBUNIT)@
 --
---     [C declaration]: @macro SDLK_CURRENCYSUBUNIT@, defined at @SDL3\/SDL_keycode.h 230:9@
+--     [C declaration]: @macro SDLK_CURRENCYSUBUNIT@, defined at @SDL3\/SDL_keycode.h 231:9@
 sDLK_CURRENCYSUBUNIT :: BG.CUInt
 sDLK_CURRENCYSUBUNIT = (1073742005 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_LEFTPAREN)@
 --
---     [C declaration]: @macro SDLK_KP_LEFTPAREN@, defined at @SDL3\/SDL_keycode.h 231:9@
+--     [C declaration]: @macro SDLK_KP_LEFTPAREN@, defined at @SDL3\/SDL_keycode.h 232:9@
 sDLK_KP_LEFTPAREN :: BG.CUInt
 sDLK_KP_LEFTPAREN = (1073742006 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_RIGHTPAREN)@
 --
---     [C declaration]: @macro SDLK_KP_RIGHTPAREN@, defined at @SDL3\/SDL_keycode.h 232:9@
+--     [C declaration]: @macro SDLK_KP_RIGHTPAREN@, defined at @SDL3\/SDL_keycode.h 233:9@
 sDLK_KP_RIGHTPAREN :: BG.CUInt
 sDLK_KP_RIGHTPAREN = (1073742007 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_LEFTBRACE)@
 --
---     [C declaration]: @macro SDLK_KP_LEFTBRACE@, defined at @SDL3\/SDL_keycode.h 233:9@
+--     [C declaration]: @macro SDLK_KP_LEFTBRACE@, defined at @SDL3\/SDL_keycode.h 234:9@
 sDLK_KP_LEFTBRACE :: BG.CUInt
 sDLK_KP_LEFTBRACE = (1073742008 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_RIGHTBRACE)@
 --
---     [C declaration]: @macro SDLK_KP_RIGHTBRACE@, defined at @SDL3\/SDL_keycode.h 234:9@
+--     [C declaration]: @macro SDLK_KP_RIGHTBRACE@, defined at @SDL3\/SDL_keycode.h 235:9@
 sDLK_KP_RIGHTBRACE :: BG.CUInt
 sDLK_KP_RIGHTBRACE = (1073742009 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_TAB)@
 --
---     [C declaration]: @macro SDLK_KP_TAB@, defined at @SDL3\/SDL_keycode.h 235:9@
+--     [C declaration]: @macro SDLK_KP_TAB@, defined at @SDL3\/SDL_keycode.h 236:9@
 sDLK_KP_TAB :: BG.CUInt
 sDLK_KP_TAB = (1073742010 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_BACKSPACE)@
 --
---     [C declaration]: @macro SDLK_KP_BACKSPACE@, defined at @SDL3\/SDL_keycode.h 236:9@
+--     [C declaration]: @macro SDLK_KP_BACKSPACE@, defined at @SDL3\/SDL_keycode.h 237:9@
 sDLK_KP_BACKSPACE :: BG.CUInt
 sDLK_KP_BACKSPACE = (1073742011 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_A)@
 --
---     [C declaration]: @macro SDLK_KP_A@, defined at @SDL3\/SDL_keycode.h 237:9@
+--     [C declaration]: @macro SDLK_KP_A@, defined at @SDL3\/SDL_keycode.h 238:9@
 sDLK_KP_A :: BG.CUInt
 sDLK_KP_A = (1073742012 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_B)@
 --
---     [C declaration]: @macro SDLK_KP_B@, defined at @SDL3\/SDL_keycode.h 238:9@
+--     [C declaration]: @macro SDLK_KP_B@, defined at @SDL3\/SDL_keycode.h 239:9@
 sDLK_KP_B :: BG.CUInt
 sDLK_KP_B = (1073742013 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_C)@
 --
---     [C declaration]: @macro SDLK_KP_C@, defined at @SDL3\/SDL_keycode.h 239:9@
+--     [C declaration]: @macro SDLK_KP_C@, defined at @SDL3\/SDL_keycode.h 240:9@
 sDLK_KP_C :: BG.CUInt
 sDLK_KP_C = (1073742014 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_D)@
 --
---     [C declaration]: @macro SDLK_KP_D@, defined at @SDL3\/SDL_keycode.h 240:9@
+--     [C declaration]: @macro SDLK_KP_D@, defined at @SDL3\/SDL_keycode.h 241:9@
 sDLK_KP_D :: BG.CUInt
 sDLK_KP_D = (1073742015 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_E)@
 --
---     [C declaration]: @macro SDLK_KP_E@, defined at @SDL3\/SDL_keycode.h 241:9@
+--     [C declaration]: @macro SDLK_KP_E@, defined at @SDL3\/SDL_keycode.h 242:9@
 sDLK_KP_E :: BG.CUInt
 sDLK_KP_E = (1073742016 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_F)@
 --
---     [C declaration]: @macro SDLK_KP_F@, defined at @SDL3\/SDL_keycode.h 242:9@
+--     [C declaration]: @macro SDLK_KP_F@, defined at @SDL3\/SDL_keycode.h 243:9@
 sDLK_KP_F :: BG.CUInt
 sDLK_KP_F = (1073742017 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_XOR)@
 --
---     [C declaration]: @macro SDLK_KP_XOR@, defined at @SDL3\/SDL_keycode.h 243:9@
+--     [C declaration]: @macro SDLK_KP_XOR@, defined at @SDL3\/SDL_keycode.h 244:9@
 sDLK_KP_XOR :: BG.CUInt
 sDLK_KP_XOR = (1073742018 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_POWER)@
 --
---     [C declaration]: @macro SDLK_KP_POWER@, defined at @SDL3\/SDL_keycode.h 244:9@
+--     [C declaration]: @macro SDLK_KP_POWER@, defined at @SDL3\/SDL_keycode.h 245:9@
 sDLK_KP_POWER :: BG.CUInt
 sDLK_KP_POWER = (1073742019 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_PERCENT)@
 --
---     [C declaration]: @macro SDLK_KP_PERCENT@, defined at @SDL3\/SDL_keycode.h 245:9@
+--     [C declaration]: @macro SDLK_KP_PERCENT@, defined at @SDL3\/SDL_keycode.h 246:9@
 sDLK_KP_PERCENT :: BG.CUInt
 sDLK_KP_PERCENT = (1073742020 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_LESS)@
 --
---     [C declaration]: @macro SDLK_KP_LESS@, defined at @SDL3\/SDL_keycode.h 246:9@
+--     [C declaration]: @macro SDLK_KP_LESS@, defined at @SDL3\/SDL_keycode.h 247:9@
 sDLK_KP_LESS :: BG.CUInt
 sDLK_KP_LESS = (1073742021 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_GREATER)@
 --
---     [C declaration]: @macro SDLK_KP_GREATER@, defined at @SDL3\/SDL_keycode.h 247:9@
+--     [C declaration]: @macro SDLK_KP_GREATER@, defined at @SDL3\/SDL_keycode.h 248:9@
 sDLK_KP_GREATER :: BG.CUInt
 sDLK_KP_GREATER = (1073742022 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_AMPERSAND)@
 --
---     [C declaration]: @macro SDLK_KP_AMPERSAND@, defined at @SDL3\/SDL_keycode.h 248:9@
+--     [C declaration]: @macro SDLK_KP_AMPERSAND@, defined at @SDL3\/SDL_keycode.h 249:9@
 sDLK_KP_AMPERSAND :: BG.CUInt
 sDLK_KP_AMPERSAND = (1073742023 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_DBLAMPERSAND)@
 --
---     [C declaration]: @macro SDLK_KP_DBLAMPERSAND@, defined at @SDL3\/SDL_keycode.h 249:9@
+--     [C declaration]: @macro SDLK_KP_DBLAMPERSAND@, defined at @SDL3\/SDL_keycode.h 250:9@
 sDLK_KP_DBLAMPERSAND :: BG.CUInt
 sDLK_KP_DBLAMPERSAND = (1073742024 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_VERTICALBAR)@
 --
---     [C declaration]: @macro SDLK_KP_VERTICALBAR@, defined at @SDL3\/SDL_keycode.h 250:9@
+--     [C declaration]: @macro SDLK_KP_VERTICALBAR@, defined at @SDL3\/SDL_keycode.h 251:9@
 sDLK_KP_VERTICALBAR :: BG.CUInt
 sDLK_KP_VERTICALBAR = (1073742025 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_DBLVERTICALBAR)@
 --
---     [C declaration]: @macro SDLK_KP_DBLVERTICALBAR@, defined at @SDL3\/SDL_keycode.h 251:9@
+--     [C declaration]: @macro SDLK_KP_DBLVERTICALBAR@, defined at @SDL3\/SDL_keycode.h 252:9@
 sDLK_KP_DBLVERTICALBAR :: BG.CUInt
 sDLK_KP_DBLVERTICALBAR = (1073742026 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_COLON)@
 --
---     [C declaration]: @macro SDLK_KP_COLON@, defined at @SDL3\/SDL_keycode.h 252:9@
+--     [C declaration]: @macro SDLK_KP_COLON@, defined at @SDL3\/SDL_keycode.h 253:9@
 sDLK_KP_COLON :: BG.CUInt
 sDLK_KP_COLON = (1073742027 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_HASH)@
 --
---     [C declaration]: @macro SDLK_KP_HASH@, defined at @SDL3\/SDL_keycode.h 253:9@
+--     [C declaration]: @macro SDLK_KP_HASH@, defined at @SDL3\/SDL_keycode.h 254:9@
 sDLK_KP_HASH :: BG.CUInt
 sDLK_KP_HASH = (1073742028 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_SPACE)@
 --
---     [C declaration]: @macro SDLK_KP_SPACE@, defined at @SDL3\/SDL_keycode.h 254:9@
+--     [C declaration]: @macro SDLK_KP_SPACE@, defined at @SDL3\/SDL_keycode.h 255:9@
 sDLK_KP_SPACE :: BG.CUInt
 sDLK_KP_SPACE = (1073742029 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_AT)@
 --
---     [C declaration]: @macro SDLK_KP_AT@, defined at @SDL3\/SDL_keycode.h 255:9@
+--     [C declaration]: @macro SDLK_KP_AT@, defined at @SDL3\/SDL_keycode.h 256:9@
 sDLK_KP_AT :: BG.CUInt
 sDLK_KP_AT = (1073742030 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_EXCLAM)@
 --
---     [C declaration]: @macro SDLK_KP_EXCLAM@, defined at @SDL3\/SDL_keycode.h 256:9@
+--     [C declaration]: @macro SDLK_KP_EXCLAM@, defined at @SDL3\/SDL_keycode.h 257:9@
 sDLK_KP_EXCLAM :: BG.CUInt
 sDLK_KP_EXCLAM = (1073742031 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MEMSTORE)@
 --
---     [C declaration]: @macro SDLK_KP_MEMSTORE@, defined at @SDL3\/SDL_keycode.h 257:9@
+--     [C declaration]: @macro SDLK_KP_MEMSTORE@, defined at @SDL3\/SDL_keycode.h 258:9@
 sDLK_KP_MEMSTORE :: BG.CUInt
 sDLK_KP_MEMSTORE = (1073742032 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MEMRECALL)@
 --
---     [C declaration]: @macro SDLK_KP_MEMRECALL@, defined at @SDL3\/SDL_keycode.h 258:9@
+--     [C declaration]: @macro SDLK_KP_MEMRECALL@, defined at @SDL3\/SDL_keycode.h 259:9@
 sDLK_KP_MEMRECALL :: BG.CUInt
 sDLK_KP_MEMRECALL = (1073742033 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MEMCLEAR)@
 --
---     [C declaration]: @macro SDLK_KP_MEMCLEAR@, defined at @SDL3\/SDL_keycode.h 259:9@
+--     [C declaration]: @macro SDLK_KP_MEMCLEAR@, defined at @SDL3\/SDL_keycode.h 260:9@
 sDLK_KP_MEMCLEAR :: BG.CUInt
 sDLK_KP_MEMCLEAR = (1073742034 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MEMADD)@
 --
---     [C declaration]: @macro SDLK_KP_MEMADD@, defined at @SDL3\/SDL_keycode.h 260:9@
+--     [C declaration]: @macro SDLK_KP_MEMADD@, defined at @SDL3\/SDL_keycode.h 261:9@
 sDLK_KP_MEMADD :: BG.CUInt
 sDLK_KP_MEMADD = (1073742035 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MEMSUBTRACT)@
 --
---     [C declaration]: @macro SDLK_KP_MEMSUBTRACT@, defined at @SDL3\/SDL_keycode.h 261:9@
+--     [C declaration]: @macro SDLK_KP_MEMSUBTRACT@, defined at @SDL3\/SDL_keycode.h 262:9@
 sDLK_KP_MEMSUBTRACT :: BG.CUInt
 sDLK_KP_MEMSUBTRACT = (1073742036 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MEMMULTIPLY)@
 --
---     [C declaration]: @macro SDLK_KP_MEMMULTIPLY@, defined at @SDL3\/SDL_keycode.h 262:9@
+--     [C declaration]: @macro SDLK_KP_MEMMULTIPLY@, defined at @SDL3\/SDL_keycode.h 263:9@
 sDLK_KP_MEMMULTIPLY :: BG.CUInt
 sDLK_KP_MEMMULTIPLY = (1073742037 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MEMDIVIDE)@
 --
---     [C declaration]: @macro SDLK_KP_MEMDIVIDE@, defined at @SDL3\/SDL_keycode.h 263:9@
+--     [C declaration]: @macro SDLK_KP_MEMDIVIDE@, defined at @SDL3\/SDL_keycode.h 264:9@
 sDLK_KP_MEMDIVIDE :: BG.CUInt
 sDLK_KP_MEMDIVIDE = (1073742038 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_PLUSMINUS)@
 --
---     [C declaration]: @macro SDLK_KP_PLUSMINUS@, defined at @SDL3\/SDL_keycode.h 264:9@
+--     [C declaration]: @macro SDLK_KP_PLUSMINUS@, defined at @SDL3\/SDL_keycode.h 265:9@
 sDLK_KP_PLUSMINUS :: BG.CUInt
 sDLK_KP_PLUSMINUS = (1073742039 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_CLEAR)@
 --
---     [C declaration]: @macro SDLK_KP_CLEAR@, defined at @SDL3\/SDL_keycode.h 265:9@
+--     [C declaration]: @macro SDLK_KP_CLEAR@, defined at @SDL3\/SDL_keycode.h 266:9@
 sDLK_KP_CLEAR :: BG.CUInt
 sDLK_KP_CLEAR = (1073742040 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_CLEARENTRY)@
 --
---     [C declaration]: @macro SDLK_KP_CLEARENTRY@, defined at @SDL3\/SDL_keycode.h 266:9@
+--     [C declaration]: @macro SDLK_KP_CLEARENTRY@, defined at @SDL3\/SDL_keycode.h 267:9@
 sDLK_KP_CLEARENTRY :: BG.CUInt
 sDLK_KP_CLEARENTRY = (1073742041 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_BINARY)@
 --
---     [C declaration]: @macro SDLK_KP_BINARY@, defined at @SDL3\/SDL_keycode.h 267:9@
+--     [C declaration]: @macro SDLK_KP_BINARY@, defined at @SDL3\/SDL_keycode.h 268:9@
 sDLK_KP_BINARY :: BG.CUInt
 sDLK_KP_BINARY = (1073742042 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_OCTAL)@
 --
---     [C declaration]: @macro SDLK_KP_OCTAL@, defined at @SDL3\/SDL_keycode.h 268:9@
+--     [C declaration]: @macro SDLK_KP_OCTAL@, defined at @SDL3\/SDL_keycode.h 269:9@
 sDLK_KP_OCTAL :: BG.CUInt
 sDLK_KP_OCTAL = (1073742043 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_DECIMAL)@
 --
---     [C declaration]: @macro SDLK_KP_DECIMAL@, defined at @SDL3\/SDL_keycode.h 269:9@
+--     [C declaration]: @macro SDLK_KP_DECIMAL@, defined at @SDL3\/SDL_keycode.h 270:9@
 sDLK_KP_DECIMAL :: BG.CUInt
 sDLK_KP_DECIMAL = (1073742044 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_HEXADECIMAL)@
 --
---     [C declaration]: @macro SDLK_KP_HEXADECIMAL@, defined at @SDL3\/SDL_keycode.h 270:9@
+--     [C declaration]: @macro SDLK_KP_HEXADECIMAL@, defined at @SDL3\/SDL_keycode.h 271:9@
 sDLK_KP_HEXADECIMAL :: BG.CUInt
 sDLK_KP_HEXADECIMAL = (1073742045 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_LCTRL)@
 --
---     [C declaration]: @macro SDLK_LCTRL@, defined at @SDL3\/SDL_keycode.h 271:9@
+--     [C declaration]: @macro SDLK_LCTRL@, defined at @SDL3\/SDL_keycode.h 272:9@
 sDLK_LCTRL :: BG.CUInt
 sDLK_LCTRL = (1073742048 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_LSHIFT)@
 --
---     [C declaration]: @macro SDLK_LSHIFT@, defined at @SDL3\/SDL_keycode.h 272:9@
+--     [C declaration]: @macro SDLK_LSHIFT@, defined at @SDL3\/SDL_keycode.h 273:9@
 sDLK_LSHIFT :: BG.CUInt
 sDLK_LSHIFT = (1073742049 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_LALT)@
 --
---     [C declaration]: @macro SDLK_LALT@, defined at @SDL3\/SDL_keycode.h 273:9@
+--     [C declaration]: @macro SDLK_LALT@, defined at @SDL3\/SDL_keycode.h 274:9@
 sDLK_LALT :: BG.CUInt
 sDLK_LALT = (1073742050 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_LGUI)@
 --
---     [C declaration]: @macro SDLK_LGUI@, defined at @SDL3\/SDL_keycode.h 274:9@
+--     [C declaration]: @macro SDLK_LGUI@, defined at @SDL3\/SDL_keycode.h 275:9@
 sDLK_LGUI :: BG.CUInt
 sDLK_LGUI = (1073742051 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RCTRL)@
 --
---     [C declaration]: @macro SDLK_RCTRL@, defined at @SDL3\/SDL_keycode.h 275:9@
+--     [C declaration]: @macro SDLK_RCTRL@, defined at @SDL3\/SDL_keycode.h 276:9@
 sDLK_RCTRL :: BG.CUInt
 sDLK_RCTRL = (1073742052 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RSHIFT)@
 --
---     [C declaration]: @macro SDLK_RSHIFT@, defined at @SDL3\/SDL_keycode.h 276:9@
+--     [C declaration]: @macro SDLK_RSHIFT@, defined at @SDL3\/SDL_keycode.h 277:9@
 sDLK_RSHIFT :: BG.CUInt
 sDLK_RSHIFT = (1073742053 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RALT)@
 --
---     [C declaration]: @macro SDLK_RALT@, defined at @SDL3\/SDL_keycode.h 277:9@
+--     [C declaration]: @macro SDLK_RALT@, defined at @SDL3\/SDL_keycode.h 278:9@
 sDLK_RALT :: BG.CUInt
 sDLK_RALT = (1073742054 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RGUI)@
 --
---     [C declaration]: @macro SDLK_RGUI@, defined at @SDL3\/SDL_keycode.h 278:9@
+--     [C declaration]: @macro SDLK_RGUI@, defined at @SDL3\/SDL_keycode.h 279:9@
 sDLK_RGUI :: BG.CUInt
 sDLK_RGUI = (1073742055 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MODE)@
 --
---     [C declaration]: @macro SDLK_MODE@, defined at @SDL3\/SDL_keycode.h 279:9@
+--     [C declaration]: @macro SDLK_MODE@, defined at @SDL3\/SDL_keycode.h 280:9@
 sDLK_MODE :: BG.CUInt
 sDLK_MODE = (1073742081 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_SLEEP)@
 --
---     [C declaration]: @macro SDLK_SLEEP@, defined at @SDL3\/SDL_keycode.h 280:9@
+--     [C declaration]: @macro SDLK_SLEEP@, defined at @SDL3\/SDL_keycode.h 281:9@
 sDLK_SLEEP :: BG.CUInt
 sDLK_SLEEP = (1073742082 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_WAKE)@
 --
---     [C declaration]: @macro SDLK_WAKE@, defined at @SDL3\/SDL_keycode.h 281:9@
+--     [C declaration]: @macro SDLK_WAKE@, defined at @SDL3\/SDL_keycode.h 282:9@
 sDLK_WAKE :: BG.CUInt
 sDLK_WAKE = (1073742083 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CHANNEL_INCREMENT)@
 --
---     [C declaration]: @macro SDLK_CHANNEL_INCREMENT@, defined at @SDL3\/SDL_keycode.h 282:9@
+--     [C declaration]: @macro SDLK_CHANNEL_INCREMENT@, defined at @SDL3\/SDL_keycode.h 283:9@
 sDLK_CHANNEL_INCREMENT :: BG.CUInt
 sDLK_CHANNEL_INCREMENT = (1073742084 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CHANNEL_DECREMENT)@
 --
---     [C declaration]: @macro SDLK_CHANNEL_DECREMENT@, defined at @SDL3\/SDL_keycode.h 283:9@
+--     [C declaration]: @macro SDLK_CHANNEL_DECREMENT@, defined at @SDL3\/SDL_keycode.h 284:9@
 sDLK_CHANNEL_DECREMENT :: BG.CUInt
 sDLK_CHANNEL_DECREMENT = (1073742085 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MEDIA_PLAY)@
 --
---     [C declaration]: @macro SDLK_MEDIA_PLAY@, defined at @SDL3\/SDL_keycode.h 284:9@
+--     [C declaration]: @macro SDLK_MEDIA_PLAY@, defined at @SDL3\/SDL_keycode.h 285:9@
 sDLK_MEDIA_PLAY :: BG.CUInt
 sDLK_MEDIA_PLAY = (1073742086 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MEDIA_PAUSE)@
 --
---     [C declaration]: @macro SDLK_MEDIA_PAUSE@, defined at @SDL3\/SDL_keycode.h 285:9@
+--     [C declaration]: @macro SDLK_MEDIA_PAUSE@, defined at @SDL3\/SDL_keycode.h 286:9@
 sDLK_MEDIA_PAUSE :: BG.CUInt
 sDLK_MEDIA_PAUSE = (1073742087 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MEDIA_RECORD)@
 --
---     [C declaration]: @macro SDLK_MEDIA_RECORD@, defined at @SDL3\/SDL_keycode.h 286:9@
+--     [C declaration]: @macro SDLK_MEDIA_RECORD@, defined at @SDL3\/SDL_keycode.h 287:9@
 sDLK_MEDIA_RECORD :: BG.CUInt
 sDLK_MEDIA_RECORD = (1073742088 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MEDIA_FAST_FORWARD)@
 --
---     [C declaration]: @macro SDLK_MEDIA_FAST_FORWARD@, defined at @SDL3\/SDL_keycode.h 287:9@
+--     [C declaration]: @macro SDLK_MEDIA_FAST_FORWARD@, defined at @SDL3\/SDL_keycode.h 288:9@
 sDLK_MEDIA_FAST_FORWARD :: BG.CUInt
 sDLK_MEDIA_FAST_FORWARD = (1073742089 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MEDIA_REWIND)@
 --
---     [C declaration]: @macro SDLK_MEDIA_REWIND@, defined at @SDL3\/SDL_keycode.h 288:9@
+--     [C declaration]: @macro SDLK_MEDIA_REWIND@, defined at @SDL3\/SDL_keycode.h 289:9@
 sDLK_MEDIA_REWIND :: BG.CUInt
 sDLK_MEDIA_REWIND = (1073742090 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MEDIA_NEXT_TRACK)@
 --
---     [C declaration]: @macro SDLK_MEDIA_NEXT_TRACK@, defined at @SDL3\/SDL_keycode.h 289:9@
+--     [C declaration]: @macro SDLK_MEDIA_NEXT_TRACK@, defined at @SDL3\/SDL_keycode.h 290:9@
 sDLK_MEDIA_NEXT_TRACK :: BG.CUInt
 sDLK_MEDIA_NEXT_TRACK = (1073742091 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MEDIA_PREVIOUS_TRACK)@
 --
---     [C declaration]: @macro SDLK_MEDIA_PREVIOUS_TRACK@, defined at @SDL3\/SDL_keycode.h 290:9@
+--     [C declaration]: @macro SDLK_MEDIA_PREVIOUS_TRACK@, defined at @SDL3\/SDL_keycode.h 291:9@
 sDLK_MEDIA_PREVIOUS_TRACK :: BG.CUInt
 sDLK_MEDIA_PREVIOUS_TRACK = (1073742092 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MEDIA_STOP)@
 --
---     [C declaration]: @macro SDLK_MEDIA_STOP@, defined at @SDL3\/SDL_keycode.h 291:9@
+--     [C declaration]: @macro SDLK_MEDIA_STOP@, defined at @SDL3\/SDL_keycode.h 292:9@
 sDLK_MEDIA_STOP :: BG.CUInt
 sDLK_MEDIA_STOP = (1073742093 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MEDIA_EJECT)@
 --
---     [C declaration]: @macro SDLK_MEDIA_EJECT@, defined at @SDL3\/SDL_keycode.h 292:9@
+--     [C declaration]: @macro SDLK_MEDIA_EJECT@, defined at @SDL3\/SDL_keycode.h 293:9@
 sDLK_MEDIA_EJECT :: BG.CUInt
 sDLK_MEDIA_EJECT = (1073742094 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MEDIA_PLAY_PAUSE)@
 --
---     [C declaration]: @macro SDLK_MEDIA_PLAY_PAUSE@, defined at @SDL3\/SDL_keycode.h 293:9@
+--     [C declaration]: @macro SDLK_MEDIA_PLAY_PAUSE@, defined at @SDL3\/SDL_keycode.h 294:9@
 sDLK_MEDIA_PLAY_PAUSE :: BG.CUInt
 sDLK_MEDIA_PLAY_PAUSE = (1073742095 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MEDIA_SELECT)@
 --
---     [C declaration]: @macro SDLK_MEDIA_SELECT@, defined at @SDL3\/SDL_keycode.h 294:9@
+--     [C declaration]: @macro SDLK_MEDIA_SELECT@, defined at @SDL3\/SDL_keycode.h 295:9@
 sDLK_MEDIA_SELECT :: BG.CUInt
 sDLK_MEDIA_SELECT = (1073742096 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_NEW)@
 --
---     [C declaration]: @macro SDLK_AC_NEW@, defined at @SDL3\/SDL_keycode.h 295:9@
+--     [C declaration]: @macro SDLK_AC_NEW@, defined at @SDL3\/SDL_keycode.h 296:9@
 sDLK_AC_NEW :: BG.CUInt
 sDLK_AC_NEW = (1073742097 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_OPEN)@
 --
---     [C declaration]: @macro SDLK_AC_OPEN@, defined at @SDL3\/SDL_keycode.h 296:9@
+--     [C declaration]: @macro SDLK_AC_OPEN@, defined at @SDL3\/SDL_keycode.h 297:9@
 sDLK_AC_OPEN :: BG.CUInt
 sDLK_AC_OPEN = (1073742098 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_CLOSE)@
 --
---     [C declaration]: @macro SDLK_AC_CLOSE@, defined at @SDL3\/SDL_keycode.h 297:9@
+--     [C declaration]: @macro SDLK_AC_CLOSE@, defined at @SDL3\/SDL_keycode.h 298:9@
 sDLK_AC_CLOSE :: BG.CUInt
 sDLK_AC_CLOSE = (1073742099 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_EXIT)@
 --
---     [C declaration]: @macro SDLK_AC_EXIT@, defined at @SDL3\/SDL_keycode.h 298:9@
+--     [C declaration]: @macro SDLK_AC_EXIT@, defined at @SDL3\/SDL_keycode.h 299:9@
 sDLK_AC_EXIT :: BG.CUInt
 sDLK_AC_EXIT = (1073742100 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_SAVE)@
 --
---     [C declaration]: @macro SDLK_AC_SAVE@, defined at @SDL3\/SDL_keycode.h 299:9@
+--     [C declaration]: @macro SDLK_AC_SAVE@, defined at @SDL3\/SDL_keycode.h 300:9@
 sDLK_AC_SAVE :: BG.CUInt
 sDLK_AC_SAVE = (1073742101 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_PRINT)@
 --
---     [C declaration]: @macro SDLK_AC_PRINT@, defined at @SDL3\/SDL_keycode.h 300:9@
+--     [C declaration]: @macro SDLK_AC_PRINT@, defined at @SDL3\/SDL_keycode.h 301:9@
 sDLK_AC_PRINT :: BG.CUInt
 sDLK_AC_PRINT = (1073742102 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_PROPERTIES)@
 --
---     [C declaration]: @macro SDLK_AC_PROPERTIES@, defined at @SDL3\/SDL_keycode.h 301:9@
+--     [C declaration]: @macro SDLK_AC_PROPERTIES@, defined at @SDL3\/SDL_keycode.h 302:9@
 sDLK_AC_PROPERTIES :: BG.CUInt
 sDLK_AC_PROPERTIES = (1073742103 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_SEARCH)@
 --
---     [C declaration]: @macro SDLK_AC_SEARCH@, defined at @SDL3\/SDL_keycode.h 302:9@
+--     [C declaration]: @macro SDLK_AC_SEARCH@, defined at @SDL3\/SDL_keycode.h 303:9@
 sDLK_AC_SEARCH :: BG.CUInt
 sDLK_AC_SEARCH = (1073742104 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_HOME)@
 --
---     [C declaration]: @macro SDLK_AC_HOME@, defined at @SDL3\/SDL_keycode.h 303:9@
+--     [C declaration]: @macro SDLK_AC_HOME@, defined at @SDL3\/SDL_keycode.h 304:9@
 sDLK_AC_HOME :: BG.CUInt
 sDLK_AC_HOME = (1073742105 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_BACK)@
 --
---     [C declaration]: @macro SDLK_AC_BACK@, defined at @SDL3\/SDL_keycode.h 304:9@
+--     [C declaration]: @macro SDLK_AC_BACK@, defined at @SDL3\/SDL_keycode.h 305:9@
 sDLK_AC_BACK :: BG.CUInt
 sDLK_AC_BACK = (1073742106 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_FORWARD)@
 --
---     [C declaration]: @macro SDLK_AC_FORWARD@, defined at @SDL3\/SDL_keycode.h 305:9@
+--     [C declaration]: @macro SDLK_AC_FORWARD@, defined at @SDL3\/SDL_keycode.h 306:9@
 sDLK_AC_FORWARD :: BG.CUInt
 sDLK_AC_FORWARD = (1073742107 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_STOP)@
 --
---     [C declaration]: @macro SDLK_AC_STOP@, defined at @SDL3\/SDL_keycode.h 306:9@
+--     [C declaration]: @macro SDLK_AC_STOP@, defined at @SDL3\/SDL_keycode.h 307:9@
 sDLK_AC_STOP :: BG.CUInt
 sDLK_AC_STOP = (1073742108 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_REFRESH)@
 --
---     [C declaration]: @macro SDLK_AC_REFRESH@, defined at @SDL3\/SDL_keycode.h 307:9@
+--     [C declaration]: @macro SDLK_AC_REFRESH@, defined at @SDL3\/SDL_keycode.h 308:9@
 sDLK_AC_REFRESH :: BG.CUInt
 sDLK_AC_REFRESH = (1073742109 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_BOOKMARKS)@
 --
---     [C declaration]: @macro SDLK_AC_BOOKMARKS@, defined at @SDL3\/SDL_keycode.h 308:9@
+--     [C declaration]: @macro SDLK_AC_BOOKMARKS@, defined at @SDL3\/SDL_keycode.h 309:9@
 sDLK_AC_BOOKMARKS :: BG.CUInt
 sDLK_AC_BOOKMARKS = (1073742110 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_SOFTLEFT)@
 --
---     [C declaration]: @macro SDLK_SOFTLEFT@, defined at @SDL3\/SDL_keycode.h 309:9@
+--     [C declaration]: @macro SDLK_SOFTLEFT@, defined at @SDL3\/SDL_keycode.h 310:9@
 sDLK_SOFTLEFT :: BG.CUInt
 sDLK_SOFTLEFT = (1073742111 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_SOFTRIGHT)@
 --
---     [C declaration]: @macro SDLK_SOFTRIGHT@, defined at @SDL3\/SDL_keycode.h 310:9@
+--     [C declaration]: @macro SDLK_SOFTRIGHT@, defined at @SDL3\/SDL_keycode.h 311:9@
 sDLK_SOFTRIGHT :: BG.CUInt
 sDLK_SOFTRIGHT = (1073742112 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CALL)@
 --
---     [C declaration]: @macro SDLK_CALL@, defined at @SDL3\/SDL_keycode.h 311:9@
+--     [C declaration]: @macro SDLK_CALL@, defined at @SDL3\/SDL_keycode.h 312:9@
 sDLK_CALL :: BG.CUInt
 sDLK_CALL = (1073742113 :: BG.CUInt)
 
 -- | @SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_ENDCALL)@
 --
---     [C declaration]: @macro SDLK_ENDCALL@, defined at @SDL3\/SDL_keycode.h 312:9@
+--     [C declaration]: @macro SDLK_ENDCALL@, defined at @SDL3\/SDL_keycode.h 313:9@
 sDLK_ENDCALL :: BG.CUInt
 sDLK_ENDCALL = (1073742114 :: BG.CUInt)
 
 -- | Extended key Left Tab
 --
---     [C declaration]: @macro SDLK_LEFT_TAB@, defined at @SDL3\/SDL_keycode.h 313:9@
+--     [C declaration]: @macro SDLK_LEFT_TAB@, defined at @SDL3\/SDL_keycode.h 314:9@
 sDLK_LEFT_TAB :: BG.CUInt
 sDLK_LEFT_TAB = (536870913 :: BG.CUInt)
 
 -- | Extended key Level 5 Shift
 --
---     [C declaration]: @macro SDLK_LEVEL5_SHIFT@, defined at @SDL3\/SDL_keycode.h 314:9@
+--     [C declaration]: @macro SDLK_LEVEL5_SHIFT@, defined at @SDL3\/SDL_keycode.h 315:9@
 sDLK_LEVEL5_SHIFT :: BG.CUInt
 sDLK_LEVEL5_SHIFT = (536870914 :: BG.CUInt)
 
 -- | Extended key Multi-key Compose
 --
---     [C declaration]: @macro SDLK_MULTI_KEY_COMPOSE@, defined at @SDL3\/SDL_keycode.h 315:9@
+--     [C declaration]: @macro SDLK_MULTI_KEY_COMPOSE@, defined at @SDL3\/SDL_keycode.h 316:9@
 sDLK_MULTI_KEY_COMPOSE :: BG.CUInt
 sDLK_MULTI_KEY_COMPOSE = (536870915 :: BG.CUInt)
 
 -- | Extended key Left Meta
 --
---     [C declaration]: @macro SDLK_LMETA@, defined at @SDL3\/SDL_keycode.h 316:9@
+--     [C declaration]: @macro SDLK_LMETA@, defined at @SDL3\/SDL_keycode.h 317:9@
 sDLK_LMETA :: BG.CUInt
 sDLK_LMETA = (536870916 :: BG.CUInt)
 
 -- | Extended key Right Meta
 --
---     [C declaration]: @macro SDLK_RMETA@, defined at @SDL3\/SDL_keycode.h 317:9@
+--     [C declaration]: @macro SDLK_RMETA@, defined at @SDL3\/SDL_keycode.h 318:9@
 sDLK_RMETA :: BG.CUInt
 sDLK_RMETA = (536870917 :: BG.CUInt)
 
 -- | Extended key Left Hyper
 --
---     [C declaration]: @macro SDLK_LHYPER@, defined at @SDL3\/SDL_keycode.h 318:9@
+--     [C declaration]: @macro SDLK_LHYPER@, defined at @SDL3\/SDL_keycode.h 319:9@
 sDLK_LHYPER :: BG.CUInt
 sDLK_LHYPER = (536870918 :: BG.CUInt)
 
 -- | Extended key Right Hyper
 --
---     [C declaration]: @macro SDLK_RHYPER@, defined at @SDL3\/SDL_keycode.h 319:9@
+--     [C declaration]: @macro SDLK_RHYPER@, defined at @SDL3\/SDL_keycode.h 320:9@
 sDLK_RHYPER :: BG.CUInt
 sDLK_RHYPER = (536870919 :: BG.CUInt)
 
@@ -1927,7 +1934,7 @@ sDLK_RHYPER = (536870919 :: BG.CUInt)
 --
 --     @since 3.2.0
 --
---     [C declaration]: @SDL_Keymod@, defined at @SDL3\/SDL_keycode.h 326:16@
+--     [C declaration]: @SDL_Keymod@, defined at @SDL3\/SDL_keycode.h 327:16@
 newtype SDL_Keymod = SDL_Keymod
   { unwrap :: SDL3.Sys.Bindgen.Stdinc.Uint16
   }
@@ -1976,112 +1983,112 @@ instance HasCField.HasCField SDL_Keymod "unwrap" where
 
 -- | no modifier is applicable.
 --
---     [C declaration]: @macro SDL_KMOD_NONE@, defined at @SDL3\/SDL_keycode.h 328:9@
+--     [C declaration]: @macro SDL_KMOD_NONE@, defined at @SDL3\/SDL_keycode.h 329:9@
 sDL_KMOD_NONE :: BG.CUInt
 sDL_KMOD_NONE = (0 :: BG.CUInt)
 
 -- | the left Shift key is down.
 --
---     [C declaration]: @macro SDL_KMOD_LSHIFT@, defined at @SDL3\/SDL_keycode.h 329:9@
+--     [C declaration]: @macro SDL_KMOD_LSHIFT@, defined at @SDL3\/SDL_keycode.h 330:9@
 sDL_KMOD_LSHIFT :: BG.CUInt
 sDL_KMOD_LSHIFT = (1 :: BG.CUInt)
 
 -- | the right Shift key is down.
 --
---     [C declaration]: @macro SDL_KMOD_RSHIFT@, defined at @SDL3\/SDL_keycode.h 330:9@
+--     [C declaration]: @macro SDL_KMOD_RSHIFT@, defined at @SDL3\/SDL_keycode.h 331:9@
 sDL_KMOD_RSHIFT :: BG.CUInt
 sDL_KMOD_RSHIFT = (2 :: BG.CUInt)
 
 -- | the Level 5 Shift key is down.
 --
---     [C declaration]: @macro SDL_KMOD_LEVEL5@, defined at @SDL3\/SDL_keycode.h 331:9@
+--     [C declaration]: @macro SDL_KMOD_LEVEL5@, defined at @SDL3\/SDL_keycode.h 332:9@
 sDL_KMOD_LEVEL5 :: BG.CUInt
 sDL_KMOD_LEVEL5 = (4 :: BG.CUInt)
 
 -- | the left Ctrl (Control) key is down.
 --
---     [C declaration]: @macro SDL_KMOD_LCTRL@, defined at @SDL3\/SDL_keycode.h 332:9@
+--     [C declaration]: @macro SDL_KMOD_LCTRL@, defined at @SDL3\/SDL_keycode.h 333:9@
 sDL_KMOD_LCTRL :: BG.CUInt
 sDL_KMOD_LCTRL = (64 :: BG.CUInt)
 
 -- | the right Ctrl (Control) key is down.
 --
---     [C declaration]: @macro SDL_KMOD_RCTRL@, defined at @SDL3\/SDL_keycode.h 333:9@
+--     [C declaration]: @macro SDL_KMOD_RCTRL@, defined at @SDL3\/SDL_keycode.h 334:9@
 sDL_KMOD_RCTRL :: BG.CUInt
 sDL_KMOD_RCTRL = (128 :: BG.CUInt)
 
 -- | the left Alt key is down.
 --
---     [C declaration]: @macro SDL_KMOD_LALT@, defined at @SDL3\/SDL_keycode.h 334:9@
+--     [C declaration]: @macro SDL_KMOD_LALT@, defined at @SDL3\/SDL_keycode.h 335:9@
 sDL_KMOD_LALT :: BG.CUInt
 sDL_KMOD_LALT = (256 :: BG.CUInt)
 
 -- | the right Alt key is down.
 --
---     [C declaration]: @macro SDL_KMOD_RALT@, defined at @SDL3\/SDL_keycode.h 335:9@
+--     [C declaration]: @macro SDL_KMOD_RALT@, defined at @SDL3\/SDL_keycode.h 336:9@
 sDL_KMOD_RALT :: BG.CUInt
 sDL_KMOD_RALT = (512 :: BG.CUInt)
 
 -- | the left GUI key (often the Windows key) is down.
 --
---     [C declaration]: @macro SDL_KMOD_LGUI@, defined at @SDL3\/SDL_keycode.h 336:9@
+--     [C declaration]: @macro SDL_KMOD_LGUI@, defined at @SDL3\/SDL_keycode.h 337:9@
 sDL_KMOD_LGUI :: BG.CUInt
 sDL_KMOD_LGUI = (1024 :: BG.CUInt)
 
 -- | the right GUI key (often the Windows key) is down.
 --
---     [C declaration]: @macro SDL_KMOD_RGUI@, defined at @SDL3\/SDL_keycode.h 337:9@
+--     [C declaration]: @macro SDL_KMOD_RGUI@, defined at @SDL3\/SDL_keycode.h 338:9@
 sDL_KMOD_RGUI :: BG.CUInt
 sDL_KMOD_RGUI = (2048 :: BG.CUInt)
 
 -- | the Num Lock key (may be located on an extended keypad) is down.
 --
---     [C declaration]: @macro SDL_KMOD_NUM@, defined at @SDL3\/SDL_keycode.h 338:9@
+--     [C declaration]: @macro SDL_KMOD_NUM@, defined at @SDL3\/SDL_keycode.h 339:9@
 sDL_KMOD_NUM :: BG.CUInt
 sDL_KMOD_NUM = (4096 :: BG.CUInt)
 
 -- | the Caps Lock key is down.
 --
---     [C declaration]: @macro SDL_KMOD_CAPS@, defined at @SDL3\/SDL_keycode.h 339:9@
+--     [C declaration]: @macro SDL_KMOD_CAPS@, defined at @SDL3\/SDL_keycode.h 340:9@
 sDL_KMOD_CAPS :: BG.CUInt
 sDL_KMOD_CAPS = (8192 :: BG.CUInt)
 
 -- | the !AltGr key is down.
 --
---     [C declaration]: @macro SDL_KMOD_MODE@, defined at @SDL3\/SDL_keycode.h 340:9@
+--     [C declaration]: @macro SDL_KMOD_MODE@, defined at @SDL3\/SDL_keycode.h 341:9@
 sDL_KMOD_MODE :: BG.CUInt
 sDL_KMOD_MODE = (16384 :: BG.CUInt)
 
 -- | the Scroll Lock key is down.
 --
---     [C declaration]: @macro SDL_KMOD_SCROLL@, defined at @SDL3\/SDL_keycode.h 341:9@
+--     [C declaration]: @macro SDL_KMOD_SCROLL@, defined at @SDL3\/SDL_keycode.h 342:9@
 sDL_KMOD_SCROLL :: BG.CUInt
 sDL_KMOD_SCROLL = (32768 :: BG.CUInt)
 
 -- | Any Ctrl key is down.
 --
---     [C declaration]: @macro SDL_KMOD_CTRL@, defined at @SDL3\/SDL_keycode.h 342:9@
+--     [C declaration]: @macro SDL_KMOD_CTRL@, defined at @SDL3\/SDL_keycode.h 343:9@
 sDL_KMOD_CTRL :: BG.CUInt
 sDL_KMOD_CTRL =
   (C.Expr.HostPlatform..|.) sDL_KMOD_LCTRL sDL_KMOD_RCTRL
 
 -- | Any Shift key is down.
 --
---     [C declaration]: @macro SDL_KMOD_SHIFT@, defined at @SDL3\/SDL_keycode.h 343:9@
+--     [C declaration]: @macro SDL_KMOD_SHIFT@, defined at @SDL3\/SDL_keycode.h 344:9@
 sDL_KMOD_SHIFT :: BG.CUInt
 sDL_KMOD_SHIFT =
   (C.Expr.HostPlatform..|.) sDL_KMOD_LSHIFT sDL_KMOD_RSHIFT
 
 -- | Any Alt key is down.
 --
---     [C declaration]: @macro SDL_KMOD_ALT@, defined at @SDL3\/SDL_keycode.h 344:9@
+--     [C declaration]: @macro SDL_KMOD_ALT@, defined at @SDL3\/SDL_keycode.h 345:9@
 sDL_KMOD_ALT :: BG.CUInt
 sDL_KMOD_ALT =
   (C.Expr.HostPlatform..|.) sDL_KMOD_LALT sDL_KMOD_RALT
 
 -- | Any GUI key is down.
 --
---     [C declaration]: @macro SDL_KMOD_GUI@, defined at @SDL3\/SDL_keycode.h 345:9@
+--     [C declaration]: @macro SDL_KMOD_GUI@, defined at @SDL3\/SDL_keycode.h 346:9@
 sDL_KMOD_GUI :: BG.CUInt
 sDL_KMOD_GUI =
   (C.Expr.HostPlatform..|.) sDL_KMOD_LGUI sDL_KMOD_RGUI

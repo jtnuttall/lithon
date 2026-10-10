@@ -19,7 +19,11 @@ module Lithon.Vk.Core10.Enums.StencilFaceFlagBits (
 ) where
 
 import Data.Word (Word32)
-import Lithon.Core.Flags (BitPos (..), Flags (..), FlagsWire)
+import Lithon.Core.Flags (
+  BitPos (..),
+  Flags (..),
+  FlagsWire,
+ )
 
 -- | Registry: <https://registry.khronos.org/vulkan/specs/latest/man/html/VkStencilFaceFlagBits.html VkStencilFaceFlagBits>
 -- Available: VK_VERSION_1_0

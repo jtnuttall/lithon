@@ -19,18 +19,41 @@ module Lithon.Vk.Core10.ExtensionDiscoveryCommands (
 ) where
 
 import Control.Monad (forM_, unless, when)
-import Control.Monad.IO.Class (MonadIO, liftIO)
+import Control.Monad.IO.Class (
+  MonadIO,
+  liftIO,
+ )
 import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
 import Data.Int (Int32, Int64)
 import Data.Vector qualified as V
-import Data.Word (Word16, Word32, Word64, Word8)
+import Data.Word (
+  Word16,
+  Word32,
+  Word64,
+  Word8,
+ )
 import Foreign.C.Types (CSize (..))
 import Foreign.Ptr (FunPtr, Ptr, castPtr, nullPtr, plusPtr)
-import Foreign.Storable (Storable (..), peekByteOff, peekElemOff, pokeByteOff)
+import Foreign.Storable (
+  Storable (..),
+  peekByteOff,
+  peekElemOff,
+  pokeByteOff,
+ )
 import Lithon.Core.Alloc (arenaBytes, newBytes, newCString, newCStrings, runAlloc, withArena)
 import Lithon.Core.BaseTypes (Bool32 (..), toBool, pattern FALSE, pattern TRUE)
-import Lithon.Core.CStruct (CStruct (..), Chainable (..), FromCStruct (..), Nil (..), new, newVector, peekElems, peekFixedString, pokeFixedString)
+import Lithon.Core.CStruct (
+  CStruct (..),
+  Chainable (..),
+  FromCStruct (..),
+  Nil (..),
+  new,
+  newVector,
+  peekElems,
+  peekFixedString,
+  pokeFixedString,
+ )
 import Lithon.Core.Chain (
   AllExtends,
   Chain,

@@ -242,10 +242,8 @@ peekBitOffWidth ptrB off width bounds@(ptrL, ptrH)
   -- Read the bit-field using a single, aligned word
   readAligned
     :: (FiniteBits w, Integral w, Marshal.ReadRaw w)
-    => Ptr w
-    -- \^ Pointer to aligned word
-    -> Int
-    -- \^ Right offset (bits)
+    => Ptr w -- \^ Pointer to aligned word
+    -> Int -- \^ Right offset (bits)
     -> IO a
   readAligned ptr roff = do
     w <- Marshal.readRaw ptr
@@ -338,12 +336,9 @@ pokeBitOffWidth ptrB off width bounds@(ptrL, ptrH) x
   -- Write the bit-field using a single, aligned word
   writeAligned
     :: (FiniteBits w, Integral w, Marshal.ReadRaw w, Marshal.WriteRaw w)
-    => Ptr w
-    -- \^ Pointer to aligned word
-    -> Int
-    -- \^ Left offset (bits)
-    -> Int
-    -- \^ Right offset (bits)
+    => Ptr w -- \^ Pointer to aligned word
+    -> Int -- \^ Left offset (bits)
+    -> Int -- \^ Right offset (bits)
     -> IO ()
   writeAligned ptr loff roff
     | loff == 0 && roff == 0 =
@@ -522,8 +517,7 @@ getBitfieldLE off width = auxFirst
   -- \* Last byte:   @| loff? | numFieldBits |@
 
   auxFirst
-    :: [Word8]
-    -- \^ Bytes as read from memory
+    :: [Word8] -- \^ Bytes as read from memory
     -> Either String Word64
   auxFirst = \case
     -- First byte or single byte
@@ -535,14 +529,10 @@ getBitfieldLE off width = auxFirst
     [] -> Left "not enough bytes"
 
   auxNext
-    :: Word64
-    -- \^ Bit-field value accumulator
-    -> Int
-    -- \^ Number of bit-field bits in the accumulator
-    -> Int
-    -- \^ Remaining number of bits in the bit-field
-    -> [Word8]
-    -- \^ Remaining bytes as read from memory
+    :: Word64 -- \^ Bit-field value accumulator
+    -> Int -- \^ Number of bit-field bits in the accumulator
+    -> Int -- \^ Remaining number of bits in the bit-field
+    -> [Word8] -- \^ Remaining bytes as read from memory
     -> Either String Word64
   auxNext !acc numAccBits width' = \case
     (b : bs)
@@ -584,8 +574,7 @@ getBitfieldBE off width = auxFirst
   off8 = 8 - off
 
   auxFirst
-    :: [Word8]
-    -- \^ Bytes as read from memory
+    :: [Word8] -- \^ Bytes as read from memory
     -> Either String Word64
   auxFirst = \case
     (b : bs)
@@ -603,12 +592,9 @@ getBitfieldBE off width = auxFirst
     [] -> Left "not enough bytes"
 
   auxNext
-    :: Word64
-    -- \^ Bit-field value accumulator
-    -> Int
-    -- \^ Remaining number of bits in the bit-field
-    -> [Word8]
-    -- \^ Remaining bytes as read from memory
+    :: Word64 -- \^ Bit-field value accumulator
+    -> Int -- \^ Remaining number of bits in the bit-field
+    -> [Word8] -- \^ Remaining bytes as read from memory
     -> Either String Word64
   auxNext !acc width' = \case
     (b : bs)
@@ -660,8 +646,7 @@ putBitfieldLE
 putBitfieldLE off width l8 h8 = auxFirst
  where
   auxFirst
-    :: Word64
-    -- \^ Bit-field value
+    :: Word64 -- \^ Bit-field value
     -> [Word8]
   auxFirst x =
     -- Handle low offset of single/first byte
@@ -674,12 +659,9 @@ putBitfieldLE off width l8 h8 = auxFirst
      in auxNext acc (width + off - 8) (unsafeShiftR x numFieldBits)
 
   auxNext
-    :: NonEmpty Word8
-    -- \^ Accumulator (reverse order)
-    -> Int
-    -- \^ Remaining number of bits (may be negative)
-    -> Word64
-    -- \^ Remaining bit-field value
+    :: NonEmpty Word8 -- \^ Accumulator (reverse order)
+    -> Int -- \^ Remaining number of bits (may be negative)
+    -> Word64 -- \^ Remaining bit-field value
     -> [Word8]
   auxNext acc width' x
     -- Middle/last byte
@@ -713,8 +695,7 @@ putBitfieldBE
 putBitfieldBE off width l8 h8 = auxFirst
  where
   auxFirst
-    :: Word64
-    -- \^ Bit-field value
+    :: Word64 -- \^ Bit-field value
     -> [Word8]
   auxFirst x =
     -- Handle high offset of single/last byte
@@ -728,12 +709,9 @@ putBitfieldBE off width l8 h8 = auxFirst
      in auxNext acc (width + hoff - 8) (unsafeShiftR x numFieldBits)
 
   auxNext
-    :: NonEmpty Word8
-    -- \^ Accumulator
-    -> Int
-    -- \^ Remaining number of bits (may be negative)
-    -> Word64
-    -- \^ Remaining bit-field value
+    :: NonEmpty Word8 -- \^ Accumulator
+    -> Int -- \^ Remaining number of bits (may be negative)
+    -> Word64 -- \^ Remaining bit-field value
     -> [Word8]
   auxNext acc width' x
     -- Middle/first byte
@@ -741,8 +719,7 @@ putBitfieldBE off width l8 h8 = auxFirst
         let b = fromIntegral (x .&. 0xFF)
          in auxNext (NonEmpty.cons b acc) (width' - 8) (unsafeShiftR x 8)
     -- Handle low offset of single/first byte
-    | otherwise -- off == negate width'
-      =
+    | otherwise = -- off == negate width'
         let b' = NonEmpty.head acc
             b
               | off > 0 =

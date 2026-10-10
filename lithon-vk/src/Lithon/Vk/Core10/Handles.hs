@@ -56,7 +56,10 @@ import Foreign.Storable (Storable)
 import Lithon.Core.CStruct (Nil (..))
 import Lithon.Core.Unbox (UnboxViaPrim (..))
 
-import Lithon.Vk.Dispatch (DeviceCmds, InstanceCmds)
+import Lithon.Vk.Dispatch (
+  DeviceCmds,
+  InstanceCmds,
+ )
 
 -- | Registry: <https://registry.khronos.org/vulkan/specs/latest/man/html/VkBuffer.html VkBuffer>
 -- Available: VK_VERSION_1_0

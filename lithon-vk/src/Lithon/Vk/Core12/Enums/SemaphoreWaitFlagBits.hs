@@ -18,7 +18,11 @@ module Lithon.Vk.Core12.Enums.SemaphoreWaitFlagBits (
 ) where
 
 import Data.Word (Word32)
-import Lithon.Core.Flags (BitPos (..), Flags (..), FlagsWire)
+import Lithon.Core.Flags (
+  BitPos (..),
+  Flags (..),
+  FlagsWire,
+ )
 
 -- | Registry: <https://registry.khronos.org/vulkan/specs/latest/man/html/VkSemaphoreWaitFlagBits.html VkSemaphoreWaitFlagBits>
 -- Available: VK_VERSION_1_2

@@ -948,6 +948,7 @@ hstypes:
           - "y"
           - axis
           - value
+          - device_type
     instances:
       - Eq
       - Generic
@@ -976,6 +977,7 @@ hstypes:
           - "y"
           - button
           - down
+          - device_type
     instances:
       - Eq
       - Generic
@@ -1002,6 +1004,7 @@ hstypes:
           - pen_state
           - x
           - "y"
+          - device_type
     instances:
       - Eq
       - Generic
@@ -1026,6 +1029,7 @@ hstypes:
           - windowID
           - which
           - pen_state
+          - device_type
     instances:
       - Eq
       - Generic
@@ -1054,6 +1058,7 @@ hstypes:
           - "y"
           - eraser
           - down
+          - device_type
     instances:
       - Eq
       - Generic

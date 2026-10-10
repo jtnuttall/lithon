@@ -231,7 +231,10 @@ module Lithon.Vk.Constants (
 
 import Data.ByteString (ByteString)
 import Data.Int (Int64)
-import Data.Word (Word32, Word64)
+import Data.Word (
+  Word32,
+  Word64,
+ )
 
 pattern ATTACHMENT_UNUSED :: Word32
 pattern ATTACHMENT_UNUSED = 4294967295

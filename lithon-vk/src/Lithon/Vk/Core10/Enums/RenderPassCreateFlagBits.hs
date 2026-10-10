@@ -29,4 +29,5 @@ type instance FlagsWire RenderPassCreateFlagBits = Word32
 instance BitPos RenderPassCreateFlagBits where
   bitOf = \case {}
   allBits =
-    []
+    [
+    ]

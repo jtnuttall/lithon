@@ -414,6 +414,13 @@ headers carry their own (SDL's `\since`); the whole set where they don't
   over `arg1` … `argN`, default `0`. An unused `stub-return` is an error.
 - In `prologue-typedefs`, `shape` is `opaque-struct`, `void-ptr`, or the
   aliased C type.
+- A regeneration from a newer library version is checked against the previous
+  `cbits/abi_assertions.c` in the output directory (`spec` looks under the
+  project root): an enum constant that is new since that render needs an
+  `enum-constants` entry, and one whose value changed needs a `value-gates`
+  entry newer than that render, else nothing is written and the failure
+  prints the entry to paste. A missing file, the same version, or older
+  headers skip the check.
 
 ### Commands
 

@@ -18,7 +18,11 @@ module Lithon.Vk.Core10.Enums.PipelineColorBlendStateCreateFlagBits (
 ) where
 
 import Data.Word (Word32)
-import Lithon.Core.Flags (BitPos (..), Flags, FlagsWire)
+import Lithon.Core.Flags (
+  BitPos (..),
+  Flags,
+  FlagsWire,
+ )
 
 -- | Registry: <https://registry.khronos.org/vulkan/specs/latest/man/html/VkPipelineColorBlendStateCreateFlagBits.html VkPipelineColorBlendStateCreateFlagBits>
 -- Available: VK_EXT_rasterization_order_attachment_access,VK_VERSION_1_0
@@ -30,6 +34,7 @@ type instance FlagsWire PipelineColorBlendStateCreateFlagBits = Word32
 instance BitPos PipelineColorBlendStateCreateFlagBits where
   bitOf = \case {}
   allBits =
-    []
+    [
+    ]
 
 type PipelineColorBlendStateCreateFlags = Flags PipelineColorBlendStateCreateFlagBits

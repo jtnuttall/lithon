@@ -192,6 +192,7 @@ module SDL3.Sys.Bindgen.Scancode (
   pattern SDL3.Sys.Bindgen.Scancode.SDL_SCANCODE_CLEARAGAIN,
   pattern SDL3.Sys.Bindgen.Scancode.SDL_SCANCODE_CRSEL,
   pattern SDL3.Sys.Bindgen.Scancode.SDL_SCANCODE_EXSEL,
+  pattern SDL3.Sys.Bindgen.Scancode.SDL_SCANCODE_FRONT,
   pattern SDL3.Sys.Bindgen.Scancode.SDL_SCANCODE_KP_00,
   pattern SDL3.Sys.Bindgen.Scancode.SDL_SCANCODE_KP_000,
   pattern SDL3.Sys.Bindgen.Scancode.SDL_SCANCODE_THOUSANDSSEPARATOR,
@@ -492,6 +493,7 @@ instance CEnum.CEnum SDL_Scancode where
         , (162, BG.singleton "SDL_SCANCODE_CLEARAGAIN")
         , (163, BG.singleton "SDL_SCANCODE_CRSEL")
         , (164, BG.singleton "SDL_SCANCODE_EXSEL")
+        , (165, BG.singleton "SDL_SCANCODE_FRONT")
         , (176, BG.singleton "SDL_SCANCODE_KP_00")
         , (177, BG.singleton "SDL_SCANCODE_KP_000")
         , (178, BG.singleton "SDL_SCANCODE_THOUSANDSSEPARATOR")
@@ -1318,440 +1320,446 @@ pattern SDL_SCANCODE_CRSEL = SDL_Scancode 163
 pattern SDL_SCANCODE_EXSEL :: SDL_Scancode
 pattern SDL_SCANCODE_EXSEL = SDL_Scancode 164
 
--- | [C declaration]: @SDL_SCANCODE_KP_00@, defined at @SDL3\/SDL_scancode.h 290:5@
+-- | Front (Sun keyboards)
+--
+--     [C declaration]: @SDL_SCANCODE_FRONT@, defined at @SDL3\/SDL_scancode.h 289:5@
+pattern SDL_SCANCODE_FRONT :: SDL_Scancode
+pattern SDL_SCANCODE_FRONT = SDL_Scancode 165
+
+-- | [C declaration]: @SDL_SCANCODE_KP_00@, defined at @SDL3\/SDL_scancode.h 291:5@
 pattern SDL_SCANCODE_KP_00 :: SDL_Scancode
 pattern SDL_SCANCODE_KP_00 = SDL_Scancode 176
 
--- | [C declaration]: @SDL_SCANCODE_KP_000@, defined at @SDL3\/SDL_scancode.h 291:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_000@, defined at @SDL3\/SDL_scancode.h 292:5@
 pattern SDL_SCANCODE_KP_000 :: SDL_Scancode
 pattern SDL_SCANCODE_KP_000 = SDL_Scancode 177
 
--- | [C declaration]: @SDL_SCANCODE_THOUSANDSSEPARATOR@, defined at @SDL3\/SDL_scancode.h 292:5@
+-- | [C declaration]: @SDL_SCANCODE_THOUSANDSSEPARATOR@, defined at @SDL3\/SDL_scancode.h 293:5@
 pattern SDL_SCANCODE_THOUSANDSSEPARATOR :: SDL_Scancode
 pattern SDL_SCANCODE_THOUSANDSSEPARATOR = SDL_Scancode 178
 
--- | [C declaration]: @SDL_SCANCODE_DECIMALSEPARATOR@, defined at @SDL3\/SDL_scancode.h 293:5@
+-- | [C declaration]: @SDL_SCANCODE_DECIMALSEPARATOR@, defined at @SDL3\/SDL_scancode.h 294:5@
 pattern SDL_SCANCODE_DECIMALSEPARATOR :: SDL_Scancode
 pattern SDL_SCANCODE_DECIMALSEPARATOR = SDL_Scancode 179
 
--- | [C declaration]: @SDL_SCANCODE_CURRENCYUNIT@, defined at @SDL3\/SDL_scancode.h 294:5@
+-- | [C declaration]: @SDL_SCANCODE_CURRENCYUNIT@, defined at @SDL3\/SDL_scancode.h 295:5@
 pattern SDL_SCANCODE_CURRENCYUNIT :: SDL_Scancode
 pattern SDL_SCANCODE_CURRENCYUNIT = SDL_Scancode 180
 
--- | [C declaration]: @SDL_SCANCODE_CURRENCYSUBUNIT@, defined at @SDL3\/SDL_scancode.h 295:5@
+-- | [C declaration]: @SDL_SCANCODE_CURRENCYSUBUNIT@, defined at @SDL3\/SDL_scancode.h 296:5@
 pattern SDL_SCANCODE_CURRENCYSUBUNIT :: SDL_Scancode
 pattern SDL_SCANCODE_CURRENCYSUBUNIT = SDL_Scancode 181
 
--- | [C declaration]: @SDL_SCANCODE_KP_LEFTPAREN@, defined at @SDL3\/SDL_scancode.h 296:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_LEFTPAREN@, defined at @SDL3\/SDL_scancode.h 297:5@
 pattern SDL_SCANCODE_KP_LEFTPAREN :: SDL_Scancode
 pattern SDL_SCANCODE_KP_LEFTPAREN = SDL_Scancode 182
 
--- | [C declaration]: @SDL_SCANCODE_KP_RIGHTPAREN@, defined at @SDL3\/SDL_scancode.h 297:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_RIGHTPAREN@, defined at @SDL3\/SDL_scancode.h 298:5@
 pattern SDL_SCANCODE_KP_RIGHTPAREN :: SDL_Scancode
 pattern SDL_SCANCODE_KP_RIGHTPAREN = SDL_Scancode 183
 
--- | [C declaration]: @SDL_SCANCODE_KP_LEFTBRACE@, defined at @SDL3\/SDL_scancode.h 298:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_LEFTBRACE@, defined at @SDL3\/SDL_scancode.h 299:5@
 pattern SDL_SCANCODE_KP_LEFTBRACE :: SDL_Scancode
 pattern SDL_SCANCODE_KP_LEFTBRACE = SDL_Scancode 184
 
--- | [C declaration]: @SDL_SCANCODE_KP_RIGHTBRACE@, defined at @SDL3\/SDL_scancode.h 299:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_RIGHTBRACE@, defined at @SDL3\/SDL_scancode.h 300:5@
 pattern SDL_SCANCODE_KP_RIGHTBRACE :: SDL_Scancode
 pattern SDL_SCANCODE_KP_RIGHTBRACE = SDL_Scancode 185
 
--- | [C declaration]: @SDL_SCANCODE_KP_TAB@, defined at @SDL3\/SDL_scancode.h 300:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_TAB@, defined at @SDL3\/SDL_scancode.h 301:5@
 pattern SDL_SCANCODE_KP_TAB :: SDL_Scancode
 pattern SDL_SCANCODE_KP_TAB = SDL_Scancode 186
 
--- | [C declaration]: @SDL_SCANCODE_KP_BACKSPACE@, defined at @SDL3\/SDL_scancode.h 301:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_BACKSPACE@, defined at @SDL3\/SDL_scancode.h 302:5@
 pattern SDL_SCANCODE_KP_BACKSPACE :: SDL_Scancode
 pattern SDL_SCANCODE_KP_BACKSPACE = SDL_Scancode 187
 
--- | [C declaration]: @SDL_SCANCODE_KP_A@, defined at @SDL3\/SDL_scancode.h 302:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_A@, defined at @SDL3\/SDL_scancode.h 303:5@
 pattern SDL_SCANCODE_KP_A :: SDL_Scancode
 pattern SDL_SCANCODE_KP_A = SDL_Scancode 188
 
--- | [C declaration]: @SDL_SCANCODE_KP_B@, defined at @SDL3\/SDL_scancode.h 303:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_B@, defined at @SDL3\/SDL_scancode.h 304:5@
 pattern SDL_SCANCODE_KP_B :: SDL_Scancode
 pattern SDL_SCANCODE_KP_B = SDL_Scancode 189
 
--- | [C declaration]: @SDL_SCANCODE_KP_C@, defined at @SDL3\/SDL_scancode.h 304:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_C@, defined at @SDL3\/SDL_scancode.h 305:5@
 pattern SDL_SCANCODE_KP_C :: SDL_Scancode
 pattern SDL_SCANCODE_KP_C = SDL_Scancode 190
 
--- | [C declaration]: @SDL_SCANCODE_KP_D@, defined at @SDL3\/SDL_scancode.h 305:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_D@, defined at @SDL3\/SDL_scancode.h 306:5@
 pattern SDL_SCANCODE_KP_D :: SDL_Scancode
 pattern SDL_SCANCODE_KP_D = SDL_Scancode 191
 
--- | [C declaration]: @SDL_SCANCODE_KP_E@, defined at @SDL3\/SDL_scancode.h 306:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_E@, defined at @SDL3\/SDL_scancode.h 307:5@
 pattern SDL_SCANCODE_KP_E :: SDL_Scancode
 pattern SDL_SCANCODE_KP_E = SDL_Scancode 192
 
--- | [C declaration]: @SDL_SCANCODE_KP_F@, defined at @SDL3\/SDL_scancode.h 307:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_F@, defined at @SDL3\/SDL_scancode.h 308:5@
 pattern SDL_SCANCODE_KP_F :: SDL_Scancode
 pattern SDL_SCANCODE_KP_F = SDL_Scancode 193
 
--- | [C declaration]: @SDL_SCANCODE_KP_XOR@, defined at @SDL3\/SDL_scancode.h 308:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_XOR@, defined at @SDL3\/SDL_scancode.h 309:5@
 pattern SDL_SCANCODE_KP_XOR :: SDL_Scancode
 pattern SDL_SCANCODE_KP_XOR = SDL_Scancode 194
 
--- | [C declaration]: @SDL_SCANCODE_KP_POWER@, defined at @SDL3\/SDL_scancode.h 309:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_POWER@, defined at @SDL3\/SDL_scancode.h 310:5@
 pattern SDL_SCANCODE_KP_POWER :: SDL_Scancode
 pattern SDL_SCANCODE_KP_POWER = SDL_Scancode 195
 
--- | [C declaration]: @SDL_SCANCODE_KP_PERCENT@, defined at @SDL3\/SDL_scancode.h 310:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_PERCENT@, defined at @SDL3\/SDL_scancode.h 311:5@
 pattern SDL_SCANCODE_KP_PERCENT :: SDL_Scancode
 pattern SDL_SCANCODE_KP_PERCENT = SDL_Scancode 196
 
--- | [C declaration]: @SDL_SCANCODE_KP_LESS@, defined at @SDL3\/SDL_scancode.h 311:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_LESS@, defined at @SDL3\/SDL_scancode.h 312:5@
 pattern SDL_SCANCODE_KP_LESS :: SDL_Scancode
 pattern SDL_SCANCODE_KP_LESS = SDL_Scancode 197
 
--- | [C declaration]: @SDL_SCANCODE_KP_GREATER@, defined at @SDL3\/SDL_scancode.h 312:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_GREATER@, defined at @SDL3\/SDL_scancode.h 313:5@
 pattern SDL_SCANCODE_KP_GREATER :: SDL_Scancode
 pattern SDL_SCANCODE_KP_GREATER = SDL_Scancode 198
 
--- | [C declaration]: @SDL_SCANCODE_KP_AMPERSAND@, defined at @SDL3\/SDL_scancode.h 313:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_AMPERSAND@, defined at @SDL3\/SDL_scancode.h 314:5@
 pattern SDL_SCANCODE_KP_AMPERSAND :: SDL_Scancode
 pattern SDL_SCANCODE_KP_AMPERSAND = SDL_Scancode 199
 
--- | [C declaration]: @SDL_SCANCODE_KP_DBLAMPERSAND@, defined at @SDL3\/SDL_scancode.h 314:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_DBLAMPERSAND@, defined at @SDL3\/SDL_scancode.h 315:5@
 pattern SDL_SCANCODE_KP_DBLAMPERSAND :: SDL_Scancode
 pattern SDL_SCANCODE_KP_DBLAMPERSAND = SDL_Scancode 200
 
--- | [C declaration]: @SDL_SCANCODE_KP_VERTICALBAR@, defined at @SDL3\/SDL_scancode.h 315:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_VERTICALBAR@, defined at @SDL3\/SDL_scancode.h 316:5@
 pattern SDL_SCANCODE_KP_VERTICALBAR :: SDL_Scancode
 pattern SDL_SCANCODE_KP_VERTICALBAR = SDL_Scancode 201
 
--- | [C declaration]: @SDL_SCANCODE_KP_DBLVERTICALBAR@, defined at @SDL3\/SDL_scancode.h 316:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_DBLVERTICALBAR@, defined at @SDL3\/SDL_scancode.h 317:5@
 pattern SDL_SCANCODE_KP_DBLVERTICALBAR :: SDL_Scancode
 pattern SDL_SCANCODE_KP_DBLVERTICALBAR = SDL_Scancode 202
 
--- | [C declaration]: @SDL_SCANCODE_KP_COLON@, defined at @SDL3\/SDL_scancode.h 317:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_COLON@, defined at @SDL3\/SDL_scancode.h 318:5@
 pattern SDL_SCANCODE_KP_COLON :: SDL_Scancode
 pattern SDL_SCANCODE_KP_COLON = SDL_Scancode 203
 
--- | [C declaration]: @SDL_SCANCODE_KP_HASH@, defined at @SDL3\/SDL_scancode.h 318:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_HASH@, defined at @SDL3\/SDL_scancode.h 319:5@
 pattern SDL_SCANCODE_KP_HASH :: SDL_Scancode
 pattern SDL_SCANCODE_KP_HASH = SDL_Scancode 204
 
--- | [C declaration]: @SDL_SCANCODE_KP_SPACE@, defined at @SDL3\/SDL_scancode.h 319:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_SPACE@, defined at @SDL3\/SDL_scancode.h 320:5@
 pattern SDL_SCANCODE_KP_SPACE :: SDL_Scancode
 pattern SDL_SCANCODE_KP_SPACE = SDL_Scancode 205
 
--- | [C declaration]: @SDL_SCANCODE_KP_AT@, defined at @SDL3\/SDL_scancode.h 320:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_AT@, defined at @SDL3\/SDL_scancode.h 321:5@
 pattern SDL_SCANCODE_KP_AT :: SDL_Scancode
 pattern SDL_SCANCODE_KP_AT = SDL_Scancode 206
 
--- | [C declaration]: @SDL_SCANCODE_KP_EXCLAM@, defined at @SDL3\/SDL_scancode.h 321:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_EXCLAM@, defined at @SDL3\/SDL_scancode.h 322:5@
 pattern SDL_SCANCODE_KP_EXCLAM :: SDL_Scancode
 pattern SDL_SCANCODE_KP_EXCLAM = SDL_Scancode 207
 
--- | [C declaration]: @SDL_SCANCODE_KP_MEMSTORE@, defined at @SDL3\/SDL_scancode.h 322:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_MEMSTORE@, defined at @SDL3\/SDL_scancode.h 323:5@
 pattern SDL_SCANCODE_KP_MEMSTORE :: SDL_Scancode
 pattern SDL_SCANCODE_KP_MEMSTORE = SDL_Scancode 208
 
--- | [C declaration]: @SDL_SCANCODE_KP_MEMRECALL@, defined at @SDL3\/SDL_scancode.h 323:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_MEMRECALL@, defined at @SDL3\/SDL_scancode.h 324:5@
 pattern SDL_SCANCODE_KP_MEMRECALL :: SDL_Scancode
 pattern SDL_SCANCODE_KP_MEMRECALL = SDL_Scancode 209
 
--- | [C declaration]: @SDL_SCANCODE_KP_MEMCLEAR@, defined at @SDL3\/SDL_scancode.h 324:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_MEMCLEAR@, defined at @SDL3\/SDL_scancode.h 325:5@
 pattern SDL_SCANCODE_KP_MEMCLEAR :: SDL_Scancode
 pattern SDL_SCANCODE_KP_MEMCLEAR = SDL_Scancode 210
 
--- | [C declaration]: @SDL_SCANCODE_KP_MEMADD@, defined at @SDL3\/SDL_scancode.h 325:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_MEMADD@, defined at @SDL3\/SDL_scancode.h 326:5@
 pattern SDL_SCANCODE_KP_MEMADD :: SDL_Scancode
 pattern SDL_SCANCODE_KP_MEMADD = SDL_Scancode 211
 
--- | [C declaration]: @SDL_SCANCODE_KP_MEMSUBTRACT@, defined at @SDL3\/SDL_scancode.h 326:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_MEMSUBTRACT@, defined at @SDL3\/SDL_scancode.h 327:5@
 pattern SDL_SCANCODE_KP_MEMSUBTRACT :: SDL_Scancode
 pattern SDL_SCANCODE_KP_MEMSUBTRACT = SDL_Scancode 212
 
--- | [C declaration]: @SDL_SCANCODE_KP_MEMMULTIPLY@, defined at @SDL3\/SDL_scancode.h 327:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_MEMMULTIPLY@, defined at @SDL3\/SDL_scancode.h 328:5@
 pattern SDL_SCANCODE_KP_MEMMULTIPLY :: SDL_Scancode
 pattern SDL_SCANCODE_KP_MEMMULTIPLY = SDL_Scancode 213
 
--- | [C declaration]: @SDL_SCANCODE_KP_MEMDIVIDE@, defined at @SDL3\/SDL_scancode.h 328:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_MEMDIVIDE@, defined at @SDL3\/SDL_scancode.h 329:5@
 pattern SDL_SCANCODE_KP_MEMDIVIDE :: SDL_Scancode
 pattern SDL_SCANCODE_KP_MEMDIVIDE = SDL_Scancode 214
 
--- | [C declaration]: @SDL_SCANCODE_KP_PLUSMINUS@, defined at @SDL3\/SDL_scancode.h 329:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_PLUSMINUS@, defined at @SDL3\/SDL_scancode.h 330:5@
 pattern SDL_SCANCODE_KP_PLUSMINUS :: SDL_Scancode
 pattern SDL_SCANCODE_KP_PLUSMINUS = SDL_Scancode 215
 
--- | [C declaration]: @SDL_SCANCODE_KP_CLEAR@, defined at @SDL3\/SDL_scancode.h 330:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_CLEAR@, defined at @SDL3\/SDL_scancode.h 331:5@
 pattern SDL_SCANCODE_KP_CLEAR :: SDL_Scancode
 pattern SDL_SCANCODE_KP_CLEAR = SDL_Scancode 216
 
--- | [C declaration]: @SDL_SCANCODE_KP_CLEARENTRY@, defined at @SDL3\/SDL_scancode.h 331:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_CLEARENTRY@, defined at @SDL3\/SDL_scancode.h 332:5@
 pattern SDL_SCANCODE_KP_CLEARENTRY :: SDL_Scancode
 pattern SDL_SCANCODE_KP_CLEARENTRY = SDL_Scancode 217
 
--- | [C declaration]: @SDL_SCANCODE_KP_BINARY@, defined at @SDL3\/SDL_scancode.h 332:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_BINARY@, defined at @SDL3\/SDL_scancode.h 333:5@
 pattern SDL_SCANCODE_KP_BINARY :: SDL_Scancode
 pattern SDL_SCANCODE_KP_BINARY = SDL_Scancode 218
 
--- | [C declaration]: @SDL_SCANCODE_KP_OCTAL@, defined at @SDL3\/SDL_scancode.h 333:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_OCTAL@, defined at @SDL3\/SDL_scancode.h 334:5@
 pattern SDL_SCANCODE_KP_OCTAL :: SDL_Scancode
 pattern SDL_SCANCODE_KP_OCTAL = SDL_Scancode 219
 
--- | [C declaration]: @SDL_SCANCODE_KP_DECIMAL@, defined at @SDL3\/SDL_scancode.h 334:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_DECIMAL@, defined at @SDL3\/SDL_scancode.h 335:5@
 pattern SDL_SCANCODE_KP_DECIMAL :: SDL_Scancode
 pattern SDL_SCANCODE_KP_DECIMAL = SDL_Scancode 220
 
--- | [C declaration]: @SDL_SCANCODE_KP_HEXADECIMAL@, defined at @SDL3\/SDL_scancode.h 335:5@
+-- | [C declaration]: @SDL_SCANCODE_KP_HEXADECIMAL@, defined at @SDL3\/SDL_scancode.h 336:5@
 pattern SDL_SCANCODE_KP_HEXADECIMAL :: SDL_Scancode
 pattern SDL_SCANCODE_KP_HEXADECIMAL = SDL_Scancode 221
 
--- | [C declaration]: @SDL_SCANCODE_LCTRL@, defined at @SDL3\/SDL_scancode.h 337:5@
+-- | [C declaration]: @SDL_SCANCODE_LCTRL@, defined at @SDL3\/SDL_scancode.h 338:5@
 pattern SDL_SCANCODE_LCTRL :: SDL_Scancode
 pattern SDL_SCANCODE_LCTRL = SDL_Scancode 224
 
--- | [C declaration]: @SDL_SCANCODE_LSHIFT@, defined at @SDL3\/SDL_scancode.h 338:5@
+-- | [C declaration]: @SDL_SCANCODE_LSHIFT@, defined at @SDL3\/SDL_scancode.h 339:5@
 pattern SDL_SCANCODE_LSHIFT :: SDL_Scancode
 pattern SDL_SCANCODE_LSHIFT = SDL_Scancode 225
 
 -- | alt, option
 --
---     [C declaration]: @SDL_SCANCODE_LALT@, defined at @SDL3\/SDL_scancode.h 339:5@
+--     [C declaration]: @SDL_SCANCODE_LALT@, defined at @SDL3\/SDL_scancode.h 340:5@
 pattern SDL_SCANCODE_LALT :: SDL_Scancode
 pattern SDL_SCANCODE_LALT = SDL_Scancode 226
 
 -- | windows, command (apple), meta
 --
---     [C declaration]: @SDL_SCANCODE_LGUI@, defined at @SDL3\/SDL_scancode.h 340:5@
+--     [C declaration]: @SDL_SCANCODE_LGUI@, defined at @SDL3\/SDL_scancode.h 341:5@
 pattern SDL_SCANCODE_LGUI :: SDL_Scancode
 pattern SDL_SCANCODE_LGUI = SDL_Scancode 227
 
--- | [C declaration]: @SDL_SCANCODE_RCTRL@, defined at @SDL3\/SDL_scancode.h 341:5@
+-- | [C declaration]: @SDL_SCANCODE_RCTRL@, defined at @SDL3\/SDL_scancode.h 342:5@
 pattern SDL_SCANCODE_RCTRL :: SDL_Scancode
 pattern SDL_SCANCODE_RCTRL = SDL_Scancode 228
 
--- | [C declaration]: @SDL_SCANCODE_RSHIFT@, defined at @SDL3\/SDL_scancode.h 342:5@
+-- | [C declaration]: @SDL_SCANCODE_RSHIFT@, defined at @SDL3\/SDL_scancode.h 343:5@
 pattern SDL_SCANCODE_RSHIFT :: SDL_Scancode
 pattern SDL_SCANCODE_RSHIFT = SDL_Scancode 229
 
 -- | alt gr, option
 --
---     [C declaration]: @SDL_SCANCODE_RALT@, defined at @SDL3\/SDL_scancode.h 343:5@
+--     [C declaration]: @SDL_SCANCODE_RALT@, defined at @SDL3\/SDL_scancode.h 344:5@
 pattern SDL_SCANCODE_RALT :: SDL_Scancode
 pattern SDL_SCANCODE_RALT = SDL_Scancode 230
 
 -- | windows, command (apple), meta
 --
---     [C declaration]: @SDL_SCANCODE_RGUI@, defined at @SDL3\/SDL_scancode.h 344:5@
+--     [C declaration]: @SDL_SCANCODE_RGUI@, defined at @SDL3\/SDL_scancode.h 345:5@
 pattern SDL_SCANCODE_RGUI :: SDL_Scancode
 pattern SDL_SCANCODE_RGUI = SDL_Scancode 231
 
 -- | I\'m not sure if this is really not covered by any of the above, but since there\'s a special SDL_KMOD_MODE for it I\'m adding it here
 --
---     [C declaration]: @SDL_SCANCODE_MODE@, defined at @SDL3\/SDL_scancode.h 346:5@
+--     [C declaration]: @SDL_SCANCODE_MODE@, defined at @SDL3\/SDL_scancode.h 347:5@
 pattern SDL_SCANCODE_MODE :: SDL_Scancode
 pattern SDL_SCANCODE_MODE = SDL_Scancode 257
 
 -- | Sleep
 --
---     [C declaration]: @SDL_SCANCODE_SLEEP@, defined at @SDL3\/SDL_scancode.h 364:5@
+--     [C declaration]: @SDL_SCANCODE_SLEEP@, defined at @SDL3\/SDL_scancode.h 365:5@
 pattern SDL_SCANCODE_SLEEP :: SDL_Scancode
 pattern SDL_SCANCODE_SLEEP = SDL_Scancode 258
 
 -- | Wake
 --
---     [C declaration]: @SDL_SCANCODE_WAKE@, defined at @SDL3\/SDL_scancode.h 365:5@
+--     [C declaration]: @SDL_SCANCODE_WAKE@, defined at @SDL3\/SDL_scancode.h 366:5@
 pattern SDL_SCANCODE_WAKE :: SDL_Scancode
 pattern SDL_SCANCODE_WAKE = SDL_Scancode 259
 
 -- | Channel Increment
 --
---     [C declaration]: @SDL_SCANCODE_CHANNEL_INCREMENT@, defined at @SDL3\/SDL_scancode.h 367:5@
+--     [C declaration]: @SDL_SCANCODE_CHANNEL_INCREMENT@, defined at @SDL3\/SDL_scancode.h 368:5@
 pattern SDL_SCANCODE_CHANNEL_INCREMENT :: SDL_Scancode
 pattern SDL_SCANCODE_CHANNEL_INCREMENT = SDL_Scancode 260
 
 -- | Channel Decrement
 --
---     [C declaration]: @SDL_SCANCODE_CHANNEL_DECREMENT@, defined at @SDL3\/SDL_scancode.h 368:5@
+--     [C declaration]: @SDL_SCANCODE_CHANNEL_DECREMENT@, defined at @SDL3\/SDL_scancode.h 369:5@
 pattern SDL_SCANCODE_CHANNEL_DECREMENT :: SDL_Scancode
 pattern SDL_SCANCODE_CHANNEL_DECREMENT = SDL_Scancode 261
 
 -- | Play
 --
---     [C declaration]: @SDL_SCANCODE_MEDIA_PLAY@, defined at @SDL3\/SDL_scancode.h 370:5@
+--     [C declaration]: @SDL_SCANCODE_MEDIA_PLAY@, defined at @SDL3\/SDL_scancode.h 371:5@
 pattern SDL_SCANCODE_MEDIA_PLAY :: SDL_Scancode
 pattern SDL_SCANCODE_MEDIA_PLAY = SDL_Scancode 262
 
 -- | Pause
 --
---     [C declaration]: @SDL_SCANCODE_MEDIA_PAUSE@, defined at @SDL3\/SDL_scancode.h 371:5@
+--     [C declaration]: @SDL_SCANCODE_MEDIA_PAUSE@, defined at @SDL3\/SDL_scancode.h 372:5@
 pattern SDL_SCANCODE_MEDIA_PAUSE :: SDL_Scancode
 pattern SDL_SCANCODE_MEDIA_PAUSE = SDL_Scancode 263
 
 -- | Record
 --
---     [C declaration]: @SDL_SCANCODE_MEDIA_RECORD@, defined at @SDL3\/SDL_scancode.h 372:5@
+--     [C declaration]: @SDL_SCANCODE_MEDIA_RECORD@, defined at @SDL3\/SDL_scancode.h 373:5@
 pattern SDL_SCANCODE_MEDIA_RECORD :: SDL_Scancode
 pattern SDL_SCANCODE_MEDIA_RECORD = SDL_Scancode 264
 
 -- | Fast Forward
 --
---     [C declaration]: @SDL_SCANCODE_MEDIA_FAST_FORWARD@, defined at @SDL3\/SDL_scancode.h 373:5@
+--     [C declaration]: @SDL_SCANCODE_MEDIA_FAST_FORWARD@, defined at @SDL3\/SDL_scancode.h 374:5@
 pattern SDL_SCANCODE_MEDIA_FAST_FORWARD :: SDL_Scancode
 pattern SDL_SCANCODE_MEDIA_FAST_FORWARD = SDL_Scancode 265
 
 -- | Rewind
 --
---     [C declaration]: @SDL_SCANCODE_MEDIA_REWIND@, defined at @SDL3\/SDL_scancode.h 374:5@
+--     [C declaration]: @SDL_SCANCODE_MEDIA_REWIND@, defined at @SDL3\/SDL_scancode.h 375:5@
 pattern SDL_SCANCODE_MEDIA_REWIND :: SDL_Scancode
 pattern SDL_SCANCODE_MEDIA_REWIND = SDL_Scancode 266
 
 -- | Next Track
 --
---     [C declaration]: @SDL_SCANCODE_MEDIA_NEXT_TRACK@, defined at @SDL3\/SDL_scancode.h 375:5@
+--     [C declaration]: @SDL_SCANCODE_MEDIA_NEXT_TRACK@, defined at @SDL3\/SDL_scancode.h 376:5@
 pattern SDL_SCANCODE_MEDIA_NEXT_TRACK :: SDL_Scancode
 pattern SDL_SCANCODE_MEDIA_NEXT_TRACK = SDL_Scancode 267
 
 -- | Previous Track
 --
---     [C declaration]: @SDL_SCANCODE_MEDIA_PREVIOUS_TRACK@, defined at @SDL3\/SDL_scancode.h 376:5@
+--     [C declaration]: @SDL_SCANCODE_MEDIA_PREVIOUS_TRACK@, defined at @SDL3\/SDL_scancode.h 377:5@
 pattern SDL_SCANCODE_MEDIA_PREVIOUS_TRACK :: SDL_Scancode
 pattern SDL_SCANCODE_MEDIA_PREVIOUS_TRACK = SDL_Scancode 268
 
 -- | Stop
 --
---     [C declaration]: @SDL_SCANCODE_MEDIA_STOP@, defined at @SDL3\/SDL_scancode.h 377:5@
+--     [C declaration]: @SDL_SCANCODE_MEDIA_STOP@, defined at @SDL3\/SDL_scancode.h 378:5@
 pattern SDL_SCANCODE_MEDIA_STOP :: SDL_Scancode
 pattern SDL_SCANCODE_MEDIA_STOP = SDL_Scancode 269
 
 -- | Eject
 --
---     [C declaration]: @SDL_SCANCODE_MEDIA_EJECT@, defined at @SDL3\/SDL_scancode.h 378:5@
+--     [C declaration]: @SDL_SCANCODE_MEDIA_EJECT@, defined at @SDL3\/SDL_scancode.h 379:5@
 pattern SDL_SCANCODE_MEDIA_EJECT :: SDL_Scancode
 pattern SDL_SCANCODE_MEDIA_EJECT = SDL_Scancode 270
 
 -- | Play \/ Pause
 --
---     [C declaration]: @SDL_SCANCODE_MEDIA_PLAY_PAUSE@, defined at @SDL3\/SDL_scancode.h 379:5@
+--     [C declaration]: @SDL_SCANCODE_MEDIA_PLAY_PAUSE@, defined at @SDL3\/SDL_scancode.h 380:5@
 pattern SDL_SCANCODE_MEDIA_PLAY_PAUSE :: SDL_Scancode
 pattern SDL_SCANCODE_MEDIA_PLAY_PAUSE = SDL_Scancode 271
 
--- | [C declaration]: @SDL_SCANCODE_MEDIA_SELECT@, defined at @SDL3\/SDL_scancode.h 380:5@
+-- | [C declaration]: @SDL_SCANCODE_MEDIA_SELECT@, defined at @SDL3\/SDL_scancode.h 381:5@
 pattern SDL_SCANCODE_MEDIA_SELECT :: SDL_Scancode
 pattern SDL_SCANCODE_MEDIA_SELECT = SDL_Scancode 272
 
 -- | AC New
 --
---     [C declaration]: @SDL_SCANCODE_AC_NEW@, defined at @SDL3\/SDL_scancode.h 382:5@
+--     [C declaration]: @SDL_SCANCODE_AC_NEW@, defined at @SDL3\/SDL_scancode.h 383:5@
 pattern SDL_SCANCODE_AC_NEW :: SDL_Scancode
 pattern SDL_SCANCODE_AC_NEW = SDL_Scancode 273
 
 -- | AC Open
 --
---     [C declaration]: @SDL_SCANCODE_AC_OPEN@, defined at @SDL3\/SDL_scancode.h 383:5@
+--     [C declaration]: @SDL_SCANCODE_AC_OPEN@, defined at @SDL3\/SDL_scancode.h 384:5@
 pattern SDL_SCANCODE_AC_OPEN :: SDL_Scancode
 pattern SDL_SCANCODE_AC_OPEN = SDL_Scancode 274
 
 -- | AC Close
 --
---     [C declaration]: @SDL_SCANCODE_AC_CLOSE@, defined at @SDL3\/SDL_scancode.h 384:5@
+--     [C declaration]: @SDL_SCANCODE_AC_CLOSE@, defined at @SDL3\/SDL_scancode.h 385:5@
 pattern SDL_SCANCODE_AC_CLOSE :: SDL_Scancode
 pattern SDL_SCANCODE_AC_CLOSE = SDL_Scancode 275
 
 -- | AC Exit
 --
---     [C declaration]: @SDL_SCANCODE_AC_EXIT@, defined at @SDL3\/SDL_scancode.h 385:5@
+--     [C declaration]: @SDL_SCANCODE_AC_EXIT@, defined at @SDL3\/SDL_scancode.h 386:5@
 pattern SDL_SCANCODE_AC_EXIT :: SDL_Scancode
 pattern SDL_SCANCODE_AC_EXIT = SDL_Scancode 276
 
 -- | AC Save
 --
---     [C declaration]: @SDL_SCANCODE_AC_SAVE@, defined at @SDL3\/SDL_scancode.h 386:5@
+--     [C declaration]: @SDL_SCANCODE_AC_SAVE@, defined at @SDL3\/SDL_scancode.h 387:5@
 pattern SDL_SCANCODE_AC_SAVE :: SDL_Scancode
 pattern SDL_SCANCODE_AC_SAVE = SDL_Scancode 277
 
 -- | AC Print
 --
---     [C declaration]: @SDL_SCANCODE_AC_PRINT@, defined at @SDL3\/SDL_scancode.h 387:5@
+--     [C declaration]: @SDL_SCANCODE_AC_PRINT@, defined at @SDL3\/SDL_scancode.h 388:5@
 pattern SDL_SCANCODE_AC_PRINT :: SDL_Scancode
 pattern SDL_SCANCODE_AC_PRINT = SDL_Scancode 278
 
 -- | AC Properties
 --
---     [C declaration]: @SDL_SCANCODE_AC_PROPERTIES@, defined at @SDL3\/SDL_scancode.h 388:5@
+--     [C declaration]: @SDL_SCANCODE_AC_PROPERTIES@, defined at @SDL3\/SDL_scancode.h 389:5@
 pattern SDL_SCANCODE_AC_PROPERTIES :: SDL_Scancode
 pattern SDL_SCANCODE_AC_PROPERTIES = SDL_Scancode 279
 
 -- | AC Search
 --
---     [C declaration]: @SDL_SCANCODE_AC_SEARCH@, defined at @SDL3\/SDL_scancode.h 390:5@
+--     [C declaration]: @SDL_SCANCODE_AC_SEARCH@, defined at @SDL3\/SDL_scancode.h 391:5@
 pattern SDL_SCANCODE_AC_SEARCH :: SDL_Scancode
 pattern SDL_SCANCODE_AC_SEARCH = SDL_Scancode 280
 
 -- | AC Home
 --
---     [C declaration]: @SDL_SCANCODE_AC_HOME@, defined at @SDL3\/SDL_scancode.h 391:5@
+--     [C declaration]: @SDL_SCANCODE_AC_HOME@, defined at @SDL3\/SDL_scancode.h 392:5@
 pattern SDL_SCANCODE_AC_HOME :: SDL_Scancode
 pattern SDL_SCANCODE_AC_HOME = SDL_Scancode 281
 
 -- | AC Back
 --
---     [C declaration]: @SDL_SCANCODE_AC_BACK@, defined at @SDL3\/SDL_scancode.h 392:5@
+--     [C declaration]: @SDL_SCANCODE_AC_BACK@, defined at @SDL3\/SDL_scancode.h 393:5@
 pattern SDL_SCANCODE_AC_BACK :: SDL_Scancode
 pattern SDL_SCANCODE_AC_BACK = SDL_Scancode 282
 
 -- | AC Forward
 --
---     [C declaration]: @SDL_SCANCODE_AC_FORWARD@, defined at @SDL3\/SDL_scancode.h 393:5@
+--     [C declaration]: @SDL_SCANCODE_AC_FORWARD@, defined at @SDL3\/SDL_scancode.h 394:5@
 pattern SDL_SCANCODE_AC_FORWARD :: SDL_Scancode
 pattern SDL_SCANCODE_AC_FORWARD = SDL_Scancode 283
 
 -- | AC Stop
 --
---     [C declaration]: @SDL_SCANCODE_AC_STOP@, defined at @SDL3\/SDL_scancode.h 394:5@
+--     [C declaration]: @SDL_SCANCODE_AC_STOP@, defined at @SDL3\/SDL_scancode.h 395:5@
 pattern SDL_SCANCODE_AC_STOP :: SDL_Scancode
 pattern SDL_SCANCODE_AC_STOP = SDL_Scancode 284
 
 -- | AC Refresh
 --
---     [C declaration]: @SDL_SCANCODE_AC_REFRESH@, defined at @SDL3\/SDL_scancode.h 395:5@
+--     [C declaration]: @SDL_SCANCODE_AC_REFRESH@, defined at @SDL3\/SDL_scancode.h 396:5@
 pattern SDL_SCANCODE_AC_REFRESH :: SDL_Scancode
 pattern SDL_SCANCODE_AC_REFRESH = SDL_Scancode 285
 
 -- | AC Bookmarks
 --
---     [C declaration]: @SDL_SCANCODE_AC_BOOKMARKS@, defined at @SDL3\/SDL_scancode.h 396:5@
+--     [C declaration]: @SDL_SCANCODE_AC_BOOKMARKS@, defined at @SDL3\/SDL_scancode.h 397:5@
 pattern SDL_SCANCODE_AC_BOOKMARKS :: SDL_Scancode
 pattern SDL_SCANCODE_AC_BOOKMARKS = SDL_Scancode 286
 
 -- | Usually situated below the display on phones and used as a multi-function feature key for selecting a software defined function shown on the bottom left of the display.
 --
---     [C declaration]: @SDL_SCANCODE_SOFTLEFT@, defined at @SDL3\/SDL_scancode.h 408:5@
+--     [C declaration]: @SDL_SCANCODE_SOFTLEFT@, defined at @SDL3\/SDL_scancode.h 409:5@
 pattern SDL_SCANCODE_SOFTLEFT :: SDL_Scancode
 pattern SDL_SCANCODE_SOFTLEFT = SDL_Scancode 287
 
 -- | Usually situated below the display on phones and used as a multi-function feature key for selecting a software defined function shown on the bottom right of the display.
 --
---     [C declaration]: @SDL_SCANCODE_SOFTRIGHT@, defined at @SDL3\/SDL_scancode.h 412:5@
+--     [C declaration]: @SDL_SCANCODE_SOFTRIGHT@, defined at @SDL3\/SDL_scancode.h 413:5@
 pattern SDL_SCANCODE_SOFTRIGHT :: SDL_Scancode
 pattern SDL_SCANCODE_SOFTRIGHT = SDL_Scancode 288
 
 -- | Used for accepting phone calls.
 --
---     [C declaration]: @SDL_SCANCODE_CALL@, defined at @SDL3\/SDL_scancode.h 416:5@
+--     [C declaration]: @SDL_SCANCODE_CALL@, defined at @SDL3\/SDL_scancode.h 417:5@
 pattern SDL_SCANCODE_CALL :: SDL_Scancode
 pattern SDL_SCANCODE_CALL = SDL_Scancode 289
 
 -- | Used for rejecting phone calls.
 --
---     [C declaration]: @SDL_SCANCODE_ENDCALL@, defined at @SDL3\/SDL_scancode.h 417:5@
+--     [C declaration]: @SDL_SCANCODE_ENDCALL@, defined at @SDL3\/SDL_scancode.h 418:5@
 pattern SDL_SCANCODE_ENDCALL :: SDL_Scancode
 pattern SDL_SCANCODE_ENDCALL = SDL_Scancode 290
 
 -- | 400-500 reserved for dynamic keycodes
 --
---     [C declaration]: @SDL_SCANCODE_RESERVED@, defined at @SDL3\/SDL_scancode.h 423:5@
+--     [C declaration]: @SDL_SCANCODE_RESERVED@, defined at @SDL3\/SDL_scancode.h 424:5@
 pattern SDL_SCANCODE_RESERVED :: SDL_Scancode
 pattern SDL_SCANCODE_RESERVED = SDL_Scancode 400
 
 -- | not a key, just marks the number of scancodes for array bounds
 --
---     [C declaration]: @SDL_SCANCODE_COUNT@, defined at @SDL3\/SDL_scancode.h 425:5@
+--     [C declaration]: @SDL_SCANCODE_COUNT@, defined at @SDL3\/SDL_scancode.h 426:5@
 pattern SDL_SCANCODE_COUNT :: SDL_Scancode
 pattern SDL_SCANCODE_COUNT = SDL_Scancode 512

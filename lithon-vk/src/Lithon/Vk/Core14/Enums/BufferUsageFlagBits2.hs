@@ -18,7 +18,11 @@ module Lithon.Vk.Core14.Enums.BufferUsageFlagBits2 (
 ) where
 
 import Data.Word (Word64)
-import Lithon.Core.Flags (BitPos (..), Flags (..), FlagsWire)
+import Lithon.Core.Flags (
+  BitPos (..),
+  Flags (..),
+  FlagsWire,
+ )
 
 -- | Registry: <https://registry.khronos.org/vulkan/specs/latest/man/html/VkBufferUsageFlagBits2.html VkBufferUsageFlagBits2>
 -- Available: VK_VERSION_1_4

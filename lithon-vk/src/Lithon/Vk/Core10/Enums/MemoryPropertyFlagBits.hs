@@ -18,7 +18,11 @@ module Lithon.Vk.Core10.Enums.MemoryPropertyFlagBits (
 ) where
 
 import Data.Word (Word32)
-import Lithon.Core.Flags (BitPos (..), Flags (..), FlagsWire)
+import Lithon.Core.Flags (
+  BitPos (..),
+  Flags (..),
+  FlagsWire,
+ )
 
 -- | Registry: <https://registry.khronos.org/vulkan/specs/latest/man/html/VkMemoryPropertyFlagBits.html VkMemoryPropertyFlagBits>
 -- Available: VK_VERSION_1_0

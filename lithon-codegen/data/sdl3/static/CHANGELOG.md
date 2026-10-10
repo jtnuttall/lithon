@@ -54,6 +54,10 @@ unchanged), and `log` is now `SDL_Log`'s shim, not the math function.
     `isColorspace*` predicates.
 - The package ships the shims' headers (`extra-source-files`) and compiles
   its wrapper C with `include-dirs: include`.
+- Regenerated from SDL 3.4.18 (was 3.4.16): `SDL_GAMEPAD_TYPE_STEAM`,
+  `SDL_SCANCODE_FRONT` and `SDLK_FRONT`, and the pen events' `device_type`
+  (`SDL_PenProximityEvent`, `SDL_PenMotionEvent`, `SDL_PenAxisEvent`,
+  `SDL_PenTouchEvent`, `SDL_PenButtonEvent`).
 
 ### Changed
 
@@ -94,6 +98,10 @@ unchanged), and `log` is now `SDL_Log`'s shim, not the math function.
   module keeps its exported names, signatures and export list, apart from
   the additions above and names added to the runtime facades; the raw
   foreign imports changed only internally.
+- ABI check covers every SDL from 3.2.0 to 3.4.18: the constants 3.4.18
+  adds are asserted at 3.4.18 and above, and `SDL_GAMEPAD_TYPE_COUNT`
+  (12 -> 13 in 3.4.18) only there. Below 3.4.18, `device_type` reads bytes
+  SDL never wrote (see the README's semantic deltas).
 
 ## 0.0.0.3 - 2026-09-13
 

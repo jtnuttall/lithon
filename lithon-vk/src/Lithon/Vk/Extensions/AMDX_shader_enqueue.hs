@@ -20,7 +20,10 @@ import Control.Monad (unless)
 import Control.Monad.IO.Class (liftIO)
 import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
-import Data.Int (Int32, Int64)
+import Data.Int (
+  Int32,
+  Int64,
+ )
 import Data.Kind (Type)
 import Data.Vector qualified as V
 import Data.Word (Word32, Word64)

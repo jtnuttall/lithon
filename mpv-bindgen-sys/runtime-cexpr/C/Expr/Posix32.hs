@@ -10,10 +10,9 @@ module C.Expr.Posix32 (
   module C.Expr.Posix32,
 ) where
 
--- c-expr
-
 import C.Operator.Classes
 import C.Operator.GenInstances (cExprInstances)
+-- c-expr
 import C.Type (OS (..), Platform (..), WordWidth (..))
 
 --------------------------------------------------------------------------------

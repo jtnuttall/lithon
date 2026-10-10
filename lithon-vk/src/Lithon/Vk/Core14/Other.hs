@@ -21,16 +21,44 @@ import Control.Monad (unless)
 import Control.Monad.IO.Class (liftIO)
 import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
-import Data.Int (Int32, Int64)
+import Data.Int (
+  Int32,
+  Int64,
+ )
 import Data.Kind (Type)
 import Data.Vector qualified as V
-import Data.Word (Word32, Word64)
+import Data.Word (
+  Word32,
+  Word64,
+ )
 import Foreign.C.Types (CSize)
-import Foreign.Ptr (FunPtr, Ptr, castPtr, nullFunPtr, nullPtr, plusPtr)
+import Foreign.Ptr (
+  FunPtr,
+  Ptr,
+  castPtr,
+  nullFunPtr,
+  nullPtr,
+  plusPtr,
+ )
 import Foreign.Storable (peekByteOff, peekElemOff, pokeByteOff)
 import Lithon.Core.Alloc (arenaBytes, newBytes, newCString, newCStrings)
-import Lithon.Core.BaseTypes (Bool32, toBool, pattern FALSE, pattern TRUE)
-import Lithon.Core.CStruct (CStruct (..), Chainable (..), FromCStruct (..), Nil (..), new, newVector, peekElems, peekFixedBytes, pokeFixedBytes)
+import Lithon.Core.BaseTypes (
+  Bool32,
+  toBool,
+  pattern FALSE,
+  pattern TRUE,
+ )
+import Lithon.Core.CStruct (
+  CStruct (..),
+  Chainable (..),
+  FromCStruct (..),
+  Nil (..),
+  new,
+  newVector,
+  peekElems,
+  peekFixedBytes,
+  pokeFixedBytes,
+ )
 import Lithon.Core.Chain (
   AllExtends,
   Chain,
@@ -43,7 +71,13 @@ import Lithon.Core.Chain (
   pattern (:&),
  )
 import Lithon.Core.Flags (Flags)
-import Lithon.Core.Open (HasWire (..), Open (..), openFromWire, openToWire, unsafeFromWire)
+import Lithon.Core.Open (
+  HasWire (..),
+  Open (..),
+  openFromWire,
+  openToWire,
+  unsafeFromWire,
+ )
 
 import Lithon.Vk.Core10.Enums.ImageLayout
 import Lithon.Vk.Core14.Enums.PipelineRobustnessBufferBehavior

@@ -17,7 +17,7 @@
  * availability annotations (lithon-codegen data/sdl3/versions.json)
  * — on SDL's own version macros.
  */
-#define LITHON_ABI_HELP ". sdl3-bindgen-sys was generated from SDL 3.4.16; see the README section ABI verification. Please report this at https://github.com/jtnuttall/lithon/issues with your SDL version and platform, and if you are comfortable, open a PR updating the SDL version the bindings are generated from."
+#define LITHON_ABI_HELP ". sdl3-bindgen-sys was generated from SDL 3.4.18; see the README section ABI verification. Please report this at https://github.com/jtnuttall/lithon/issues with your SDL version and platform, and if you are comfortable, open a PR updating the SDL version the bindings are generated from."
 #ifdef LITHON_ABI_EXACT
 #define LITHON_ABI_PREFIX_OP ==
 #define LITHON_ABI_PREFIX_MSG "differs from your SDL3 headers (exact mode)"
@@ -718,7 +718,10 @@ _Static_assert((SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT) == (9), "SDL_GAME
 _Static_assert((SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR) == (10), "SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR: baked value 10 differs from your SDL3 headers" LITHON_ABI_HELP);
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 _Static_assert((SDL_GAMEPAD_TYPE_GAMECUBE) == (11), "SDL_GAMEPAD_TYPE_GAMECUBE: baked value 11 differs from your SDL3 headers" LITHON_ABI_HELP);
-_Static_assert((SDL_GAMEPAD_TYPE_COUNT) == (12), "SDL_GAMEPAD_TYPE_COUNT: baked value 12 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
+#if SDL_VERSION_ATLEAST(3, 4, 18)
+_Static_assert((SDL_GAMEPAD_TYPE_STEAM) == (12), "SDL_GAMEPAD_TYPE_STEAM: baked value 12 differs from your SDL3 headers" LITHON_ABI_HELP);
+_Static_assert((SDL_GAMEPAD_TYPE_COUNT) == (13), "SDL_GAMEPAD_TYPE_COUNT: baked value 13 differs from your SDL3 headers" LITHON_ABI_HELP);
 #endif
 _Static_assert(sizeof(enum SDL_GamepadButton) == 4, "enum SDL_GamepadButton: baked sizeof 4 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(_Alignof(enum SDL_GamepadButton) == 4, "enum SDL_GamepadButton: baked alignment 4 differs from your SDL3 headers" LITHON_ABI_HELP);
@@ -946,6 +949,9 @@ _Static_assert((SDL_SCANCODE_OPER) == (161), "SDL_SCANCODE_OPER: baked value 161
 _Static_assert((SDL_SCANCODE_CLEARAGAIN) == (162), "SDL_SCANCODE_CLEARAGAIN: baked value 162 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_SCANCODE_CRSEL) == (163), "SDL_SCANCODE_CRSEL: baked value 163 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_SCANCODE_EXSEL) == (164), "SDL_SCANCODE_EXSEL: baked value 164 differs from your SDL3 headers" LITHON_ABI_HELP);
+#if SDL_VERSION_ATLEAST(3, 4, 18)
+_Static_assert((SDL_SCANCODE_FRONT) == (165), "SDL_SCANCODE_FRONT: baked value 165 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
 _Static_assert((SDL_SCANCODE_KP_00) == (176), "SDL_SCANCODE_KP_00: baked value 176 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_SCANCODE_KP_000) == (177), "SDL_SCANCODE_KP_000: baked value 177 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert((SDL_SCANCODE_THOUSANDSSEPARATOR) == (178), "SDL_SCANCODE_THOUSANDSSEPARATOR: baked value 178 differs from your SDL3 headers" LITHON_ABI_HELP);
@@ -1546,6 +1552,9 @@ _Static_assert(offsetof(struct SDL_PenProximityEvent, which) == 20, "struct SDL_
 #if SDL_VERSION_ATLEAST(3, 4, 16)
 _Static_assert(offsetof(struct SDL_PenProximityEvent, pen_state) == 24, "struct SDL_PenProximityEvent.pen_state: baked offset 24 differs from your SDL3 headers" LITHON_ABI_HELP);
 #endif
+#if SDL_VERSION_ATLEAST(3, 4, 18)
+_Static_assert(offsetof(struct SDL_PenProximityEvent, device_type) == 28, "struct SDL_PenProximityEvent.device_type: baked offset 28 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
 _Static_assert(sizeof(struct SDL_PenMotionEvent) LITHON_ABI_PREFIX_OP 40, "struct SDL_PenMotionEvent: baked sizeof 40 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
 _Static_assert(_Alignof(struct SDL_PenMotionEvent) == 8, "struct SDL_PenMotionEvent: baked alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenMotionEvent, type) == 0, "struct SDL_PenMotionEvent.type: baked offset 0 differs from your SDL3 headers" LITHON_ABI_HELP);
@@ -1556,8 +1565,16 @@ _Static_assert(offsetof(struct SDL_PenMotionEvent, which) == 20, "struct SDL_Pen
 _Static_assert(offsetof(struct SDL_PenMotionEvent, pen_state) == 24, "struct SDL_PenMotionEvent.pen_state: baked offset 24 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenMotionEvent, x) == 28, "struct SDL_PenMotionEvent.x: baked offset 28 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenMotionEvent, y) == 32, "struct SDL_PenMotionEvent.y: baked offset 32 differs from your SDL3 headers" LITHON_ABI_HELP);
-_Static_assert(sizeof(struct SDL_PenTouchEvent) LITHON_ABI_PREFIX_OP 40, "struct SDL_PenTouchEvent: baked sizeof 40 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
+#if SDL_VERSION_ATLEAST(3, 4, 18)
+_Static_assert(offsetof(struct SDL_PenMotionEvent, device_type) == 36, "struct SDL_PenMotionEvent.device_type: baked offset 36 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
+#if SDL_VERSION_ATLEAST(3, 4, 18)
+_Static_assert(sizeof(struct SDL_PenTouchEvent) LITHON_ABI_PREFIX_OP 48, "struct SDL_PenTouchEvent: baked sizeof 48 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
 _Static_assert(_Alignof(struct SDL_PenTouchEvent) == 8, "struct SDL_PenTouchEvent: baked alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
+#else
+_Static_assert(sizeof(struct SDL_PenTouchEvent) LITHON_ABI_PREFIX_OP 40, "struct SDL_PenTouchEvent: pre-3.4.18 sizeof 40 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
+_Static_assert(_Alignof(struct SDL_PenTouchEvent) == 8, "struct SDL_PenTouchEvent: pre-3.4.18 alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
 _Static_assert(offsetof(struct SDL_PenTouchEvent, type) == 0, "struct SDL_PenTouchEvent.type: baked offset 0 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenTouchEvent, reserved) == 4, "struct SDL_PenTouchEvent.reserved: baked offset 4 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenTouchEvent, timestamp) == 8, "struct SDL_PenTouchEvent.timestamp: baked offset 8 differs from your SDL3 headers" LITHON_ABI_HELP);
@@ -1568,8 +1585,16 @@ _Static_assert(offsetof(struct SDL_PenTouchEvent, x) == 28, "struct SDL_PenTouch
 _Static_assert(offsetof(struct SDL_PenTouchEvent, y) == 32, "struct SDL_PenTouchEvent.y: baked offset 32 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenTouchEvent, eraser) == 36, "struct SDL_PenTouchEvent.eraser: baked offset 36 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenTouchEvent, down) == 37, "struct SDL_PenTouchEvent.down: baked offset 37 differs from your SDL3 headers" LITHON_ABI_HELP);
-_Static_assert(sizeof(struct SDL_PenButtonEvent) LITHON_ABI_PREFIX_OP 40, "struct SDL_PenButtonEvent: baked sizeof 40 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
+#if SDL_VERSION_ATLEAST(3, 4, 18)
+_Static_assert(offsetof(struct SDL_PenTouchEvent, device_type) == 40, "struct SDL_PenTouchEvent.device_type: baked offset 40 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
+#if SDL_VERSION_ATLEAST(3, 4, 18)
+_Static_assert(sizeof(struct SDL_PenButtonEvent) LITHON_ABI_PREFIX_OP 48, "struct SDL_PenButtonEvent: baked sizeof 48 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
 _Static_assert(_Alignof(struct SDL_PenButtonEvent) == 8, "struct SDL_PenButtonEvent: baked alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
+#else
+_Static_assert(sizeof(struct SDL_PenButtonEvent) LITHON_ABI_PREFIX_OP 40, "struct SDL_PenButtonEvent: pre-3.4.18 sizeof 40 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
+_Static_assert(_Alignof(struct SDL_PenButtonEvent) == 8, "struct SDL_PenButtonEvent: pre-3.4.18 alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
 _Static_assert(offsetof(struct SDL_PenButtonEvent, type) == 0, "struct SDL_PenButtonEvent.type: baked offset 0 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenButtonEvent, reserved) == 4, "struct SDL_PenButtonEvent.reserved: baked offset 4 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenButtonEvent, timestamp) == 8, "struct SDL_PenButtonEvent.timestamp: baked offset 8 differs from your SDL3 headers" LITHON_ABI_HELP);
@@ -1580,6 +1605,9 @@ _Static_assert(offsetof(struct SDL_PenButtonEvent, x) == 28, "struct SDL_PenButt
 _Static_assert(offsetof(struct SDL_PenButtonEvent, y) == 32, "struct SDL_PenButtonEvent.y: baked offset 32 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenButtonEvent, button) == 36, "struct SDL_PenButtonEvent.button: baked offset 36 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenButtonEvent, down) == 37, "struct SDL_PenButtonEvent.down: baked offset 37 differs from your SDL3 headers" LITHON_ABI_HELP);
+#if SDL_VERSION_ATLEAST(3, 4, 18)
+_Static_assert(offsetof(struct SDL_PenButtonEvent, device_type) == 40, "struct SDL_PenButtonEvent.device_type: baked offset 40 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
 _Static_assert(sizeof(struct SDL_PenAxisEvent) LITHON_ABI_PREFIX_OP 48, "struct SDL_PenAxisEvent: baked sizeof 48 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
 _Static_assert(_Alignof(struct SDL_PenAxisEvent) == 8, "struct SDL_PenAxisEvent: baked alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenAxisEvent, type) == 0, "struct SDL_PenAxisEvent.type: baked offset 0 differs from your SDL3 headers" LITHON_ABI_HELP);
@@ -1592,6 +1620,9 @@ _Static_assert(offsetof(struct SDL_PenAxisEvent, x) == 28, "struct SDL_PenAxisEv
 _Static_assert(offsetof(struct SDL_PenAxisEvent, y) == 32, "struct SDL_PenAxisEvent.y: baked offset 32 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenAxisEvent, axis) == 36, "struct SDL_PenAxisEvent.axis: baked offset 36 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_PenAxisEvent, value) == 40, "struct SDL_PenAxisEvent.value: baked offset 40 differs from your SDL3 headers" LITHON_ABI_HELP);
+#if SDL_VERSION_ATLEAST(3, 4, 18)
+_Static_assert(offsetof(struct SDL_PenAxisEvent, device_type) == 44, "struct SDL_PenAxisEvent.device_type: baked offset 44 differs from your SDL3 headers" LITHON_ABI_HELP);
+#endif
 _Static_assert(sizeof(struct SDL_DropEvent) LITHON_ABI_PREFIX_OP 48, "struct SDL_DropEvent: baked sizeof 48 " LITHON_ABI_PREFIX_MSG LITHON_ABI_HELP);
 _Static_assert(_Alignof(struct SDL_DropEvent) == 8, "struct SDL_DropEvent: baked alignment 8 differs from your SDL3 headers" LITHON_ABI_HELP);
 _Static_assert(offsetof(struct SDL_DropEvent, type) == 0, "struct SDL_DropEvent.type: baked offset 0 differs from your SDL3 headers" LITHON_ABI_HELP);

@@ -83,7 +83,7 @@ import SDL3.Sys.Bindgen.Assert.Unsafe qualified as Unsafe
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ReportAssertion@, defined at @SDL3\/SDL_assert.h 358:45@
+--     [C declaration]: @SDL_ReportAssertion@, defined at @SDL3\/SDL_assert.h 363:45@
 reportAssertion
   :: BG.Ptr SDL_AssertData
   -- ^
@@ -128,7 +128,7 @@ reportAssertion =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @SDL_ReportAssertion@, defined at @SDL3\/SDL_assert.h 358:45@
+--     [C declaration]: @SDL_ReportAssertion@, defined at @SDL3\/SDL_assert.h 363:45@
 reportAssertionSafe
   :: BG.Ptr SDL_AssertData
   -- ^
@@ -174,7 +174,7 @@ reportAssertionSafe =
 --                   The safe flavor is 'setAssertionHandlerSafe'
 --                   : registration; the handler fires from failed SDL assertions.
 --
---     [C declaration]: @SDL_SetAssertionHandler@, defined at @SDL3\/SDL_assert.h 599:34@
+--     [C declaration]: @SDL_SetAssertionHandler@, defined at @SDL3\/SDL_assert.h 604:34@
 setAssertionHandler
   :: SDL_AssertionHandler
   -- ^
@@ -207,7 +207,7 @@ setAssertionHandler = Unsafe.sDL_SetAssertionHandler
 --                   The unsafe flavor is 'setAssertionHandler'
 --                   : registration; the handler fires from failed SDL assertions.
 --
---     [C declaration]: @SDL_SetAssertionHandler@, defined at @SDL3\/SDL_assert.h 599:34@
+--     [C declaration]: @SDL_SetAssertionHandler@, defined at @SDL3\/SDL_assert.h 604:34@
 setAssertionHandlerSafe
   :: SDL_AssertionHandler
   -- ^
@@ -239,7 +239,7 @@ setAssertionHandlerSafe =
 --                   The safe flavor is 'getDefaultAssertionHandlerSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetDefaultAssertionHandler@, defined at @SDL3\/SDL_assert.h 620:50@
+--     [C declaration]: @SDL_GetDefaultAssertionHandler@, defined at @SDL3\/SDL_assert.h 625:50@
 getDefaultAssertionHandler :: IO SDL_AssertionHandler
 getDefaultAssertionHandler =
   Unsafe.sDL_GetDefaultAssertionHandler
@@ -262,7 +262,7 @@ getDefaultAssertionHandler =
 --                   The unsafe flavor is 'getDefaultAssertionHandler'
 --                   .
 --
---     [C declaration]: @SDL_GetDefaultAssertionHandler@, defined at @SDL3\/SDL_assert.h 620:50@
+--     [C declaration]: @SDL_GetDefaultAssertionHandler@, defined at @SDL3\/SDL_assert.h 625:50@
 getDefaultAssertionHandlerSafe :: IO SDL_AssertionHandler
 getDefaultAssertionHandlerSafe =
   Safe.sDL_GetDefaultAssertionHandler
@@ -287,7 +287,7 @@ getDefaultAssertionHandlerSafe =
 --                   The safe flavor is 'getAssertionHandlerSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetAssertionHandler@, defined at @SDL3\/SDL_assert.h 645:50@
+--     [C declaration]: @SDL_GetAssertionHandler@, defined at @SDL3\/SDL_assert.h 650:50@
 getAssertionHandler
   :: BG.Ptr (BG.Ptr BG.Void)
   -- ^
@@ -316,7 +316,7 @@ getAssertionHandler = Unsafe.sDL_GetAssertionHandler
 --                   The unsafe flavor is 'getAssertionHandler'
 --                   .
 --
---     [C declaration]: @SDL_GetAssertionHandler@, defined at @SDL3\/SDL_assert.h 645:50@
+--     [C declaration]: @SDL_GetAssertionHandler@, defined at @SDL3\/SDL_assert.h 650:50@
 getAssertionHandlerSafe
   :: BG.Ptr (BG.Ptr BG.Void)
   -- ^
@@ -357,7 +357,7 @@ getAssertionHandlerSafe =
 --                   The safe flavor is 'getAssertionReportSafe'
 --                   .
 --
---     [C declaration]: @SDL_GetAssertionReport@, defined at @SDL3\/SDL_assert.h 679:52@
+--     [C declaration]: @SDL_GetAssertionReport@, defined at @SDL3\/SDL_assert.h 684:52@
 getAssertionReport :: IO (PtrConst.PtrConst SDL_AssertData)
 getAssertionReport = Unsafe.sDL_GetAssertionReport
 
@@ -392,7 +392,7 @@ getAssertionReport = Unsafe.sDL_GetAssertionReport
 --                   The unsafe flavor is 'getAssertionReport'
 --                   .
 --
---     [C declaration]: @SDL_GetAssertionReport@, defined at @SDL3\/SDL_assert.h 679:52@
+--     [C declaration]: @SDL_GetAssertionReport@, defined at @SDL3\/SDL_assert.h 684:52@
 getAssertionReportSafe :: IO (PtrConst.PtrConst SDL_AssertData)
 getAssertionReportSafe = Safe.sDL_GetAssertionReport
 
@@ -412,7 +412,7 @@ getAssertionReportSafe = Safe.sDL_GetAssertionReport
 --                   The safe flavor is 'resetAssertionReportSafe'
 --                   .
 --
---     [C declaration]: @SDL_ResetAssertionReport@, defined at @SDL3\/SDL_assert.h 697:34@
+--     [C declaration]: @SDL_ResetAssertionReport@, defined at @SDL3\/SDL_assert.h 702:34@
 resetAssertionReport :: IO ()
 resetAssertionReport =
   Unsafe.sDL_ResetAssertionReport
@@ -433,7 +433,7 @@ resetAssertionReport =
 --                   The unsafe flavor is 'resetAssertionReport'
 --                   .
 --
---     [C declaration]: @SDL_ResetAssertionReport@, defined at @SDL3\/SDL_assert.h 697:34@
+--     [C declaration]: @SDL_ResetAssertionReport@, defined at @SDL3\/SDL_assert.h 702:34@
 resetAssertionReportSafe :: IO ()
 resetAssertionReportSafe =
   Safe.sDL_ResetAssertionReport
