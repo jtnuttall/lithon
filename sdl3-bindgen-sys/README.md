@@ -1,31 +1,45 @@
 # sdl3-bindgen-sys
 
 Fully automated, luxury low-level Haskell bindings to [SDL3](https://libsdl.org):
-the whole SDL 3.4 API, machine-generated from the headers using an
-ever-so-slightly hacked version of `hs-bindgen`.
+the whole SDL 3.4 API, machine-generated using `hs-bindgen`.
 
 This package gets you SDL3 in full — windowing, input, audio, and the
 newfangled [GPU API](https://wiki.libsdl.org/SDL3/CategoryGPU) — today,
 if you dare.
 
-CI runs against **64-bit Linux, macOS, and Windows**, which is what
+CI runs against **64-bit Linux, MacOS, and Windows**, which is what
 this package aims to support.
 
 This library aims to be:
 
 - **Complete by construction:** Generated from all 58 headers of the
-  SDL 3.4 API (328 modules, 33 of them the C shims'), so a gap is either a
-  code generation bug or a [deliberate omission](#what-is-not-bound) rather
-  than a binding waiting to be hand-written.
-- **Curated:** The `SDL3.Sys.*` layer wraps `hs-bindgen`'s output
-  with best-effort Haskell casing, native scalar types, and FFI safety
-  decisions and recommendations.
-- **First-class SDL docs:** Every binding carries SDL's header documentation,
-  and notes from the code generator's curation layer.
-- **ABI-verified:** A generated translation unit of C `_Static_assert`s
-  verifies the library's baked layouts against _your_ SDL at every
-  build. Divergence is a compile error naming the declaration, not
-  memory corruption. See [ABI verification](#abi-verification) for more.
+  SDL 3.4 API, so a gap is either a code generation bug or a
+  [deliberate omission](#unbound-sdl-functions-macros-and-types).
+- **Haskell-native:** `SDL3.Sys` wraps `hs-bindgen`'s output with best-effort
+  Haskell naming, native scalar types, and safety/usage notes.
+- **First-class SDL docs:** Every binding includes SDL's header documentation.
+- **ABI-verified:** A generated C file containing `_Static_assert`s verifies
+  the library's layouts against your SDL at compile-time.
+  See [ABI verification](#abi-verification) for more.
+
+The 0.0.x series is experimental: **pin to the minor
+(e.g., `>=0.0.1.0 && <0.0.2`)** and expect that the library will
+experience minor-version breaking changes until **0.1.0.0**.
+
+System requirements:
+
+- **SDL >= 3.2.0**
+- This version of the library was generated against **SDL 3.4.18**, so any
+  version **3.2.0-3.4.18** will link and run successfully.
+- The library includes `@since` annotations in Haddock. These are derived
+  from SDL3's own docs.
+  - If the runtime SDL is **below `@since`** for the function you are calling,
+    an error will be emitted via `SDL_GetError`.
+  - If the runtime SDL is **below `@since`** for a struct field in a union (e.g.,
+    an SDL event), your application will read bytes SDL doesn't write at that
+    location. This is memory-safe since the change stays within the union's size.
+  - At this time, it's up to you to handle this. There are a few routes I
+    am aware of. See [Handling runtime SDL deviation](#handling-runtime-sdl-deviation).
 
 ## Quick start
 
@@ -38,7 +52,7 @@ library.
 Common setups:
 
 - **Debian/Ubuntu**: `apt install libsdl3-dev`
-- **macOS**: `brew install sdl3`
+- **MacOS**: `brew install sdl3`
 - **Arch**: `pacman -S sdl3`
 - **Fedora**: `dnf install SDL3-devel`
 - **Windows**: WSL2 with the Linux instructions, or native MSYS2.
@@ -112,9 +126,10 @@ pacman -S mingw-w64-ucrt-x86_64-sdl3 mingw-w64-ucrt-x86_64-pkgconf
 1. Run the `pacman` commands above through `stack exec -- pacman ...` so
    that the packages are installed in `stack`'s MSYS2.
 2. Add `msys-environment: UCRT64` to your `stack.yaml`.
-3. Add `sdl3-bindgen-sys-0.0.0.3` to `extra-deps` in your `stack.yaml`. Running
+3. Add `sdl3-bindgen-sys-x.x.x.x` to `extra-deps` in your `stack.yaml`. Running
    `stack build` should print out a helpful, pasteable entry for
-   this purpose.
+   this purpose. (Replace `x.x.x.x` with the latest version on Hackage
+   or the version you need.)
 
 Your `stack.yaml` should look something like this:
 
@@ -123,7 +138,8 @@ snapshot: lts-24.51
 packages:
   - .
 extra-deps:
-  - sdl3-bindgen-sys-0.0.0.3 # hash may be here if you copy from stack build
+  # replace with version you need; hash may be here if you copy from stack build
+  - sdl3-bindgen-sys-x.x.x.x
 msys-environment: UCRT64 # important: build will not work without this
 ```
 
@@ -144,6 +160,108 @@ cabal build \
 Adjust the GHC path to match your install. This provides a simple way to build
 and run the examples.
 
+## Common issues and use-cases
+
+### Handling runtime SDL deviation
+
+At this time, you can do one of the following:
+
+- Statically link your application to SDL3 so that you ship exactly the version
+  needed. This should prevent these issues structurally.
+- For function calls that may not be in the runtime SDL version, check the SDL
+  error and respond accordingly.
+- For struct fields (in unions), check `SDL3.Sys.Version.getVersion` before deciding
+  whether the bytes you read have meaning.
+
+#### Differences on older SDLs
+
+##### Defaults
+
+- `SDL_COLORSPACE_YUV_DEFAULT` is `BT601_LIMITED` regardless of SDL version.
+  It was `JPEG` in SDL 3.2.
+
+##### Events
+
+The `SDL_Event` union has size 128. None of these exceed that size, so this
+read/write cycle should be memory-safe on older SDL versions, just meaningless.
+
+- Below SDL 3.2.12, the following don't exist:
+  - `SDL_MouseWheelEvent.integer_x`
+  - `SDL_MouseWheelEvent.integer_y`
+- Below SDL 3.4.16, the following don't exist:
+  - `SDL_PenProximityEvent.pen_state`
+- Below SDL 3.4.18, the following don't exist:
+  - `SDL_PenProximityEvent.device_type`
+  - `SDL_PenMotionEvent.device_type`
+  - `SDL_PenAxisEvent.device_type`
+  - `SDL_PenTouchEvent.device_type`
+  - `SDL_PenButtonEvent.device_type`
+
+### Platform support
+
+64-bit architecture only for now. Windows, MacOS, and Linux are all tested
+in CI. Linux is tested against the most recent ~3 GHC versions.
+
+32-bit support is planned, but the implementation is still undecided.
+Short-term, I may support local runs of `lithon-codegen` inside a container or VM
+for this purpose, but the tool will need a bit of alteration before that's possible.
+
+### ABI verification
+
+The cabal flag `abi-assertions` (default) turns on ABI verification,
+which guards against unexpected layout divergence between SDL3 header
+versions and varying operating systems.
+
+When ABI assertions are on, `cbits/abi_assertions.c` statically checks
+every layout the Haskell side expects against your SDL headers.
+
+### Common issues
+
+- **Blank screen or crash on MacOS** — SDL's Cocoa backend requires
+  video and event calls on the **process main thread**. Keep the SDL
+  loop on `main` (don't `forkIO` it); `runOnMainThreadSafe` is bound for
+  marshalling work onto it.
+- **`init` fails on Windows** — the bindings are generated with
+  `SDL_MAIN_HANDLED`: call `setMainReady` before `init`.
+- **`foo` or `fooSafe`?** — every function's haddock states its flavor
+  choice, and the rationale, under its **`sdl3-bindgen-sys` notes**
+  section.
+- **Branching on `SDL3.Sys.PlatformDefines`** — don't: its two
+  constants (`sDL_PLATFORM_LINUX`, `sDL_PLATFORM_UNIX`) are baked to
+  the generation host's value of `1` on every platform.
+- **`setLinuxThreadPriority(AndPolicy)` off-Linux** — both exist
+  everywhere but fail with an `SDL_GetError` message.
+
+### Unbound SDL functions, macros, and types
+
+The hs-bindgen team's
+[survey of SDL's macros](https://github.com/dschrempf/hs-bindgen-sdl-survey)
+provides a reference on what hs-bindgen couldn't translate at this library's
+release. The situation has changed somewhat with the release of `1.0.0.0`.
+I'll try to keep this section updated regarding the current situation.
+
+Still unbound:
+
+- `SDL_RenderDebugTextFormat` - format in Haskell instead.
+- printf/scanf clones.
+- Every `va_list` function.
+- All `SDL_assert` functions and the other statement macros.
+- `SDL_size_mul_check_overflow` and `SDL_size_add_check_overflow`
+  ([hs-bindgen#2097](https://github.com/well-typed/hs-bindgen/issues/2097)).
+- `SDL_BYTEORDER` and `SDL_FLOATWORDORDER` - use `GHC.ByteOrder.targetByteOrder`
+- `SDL_PROP_GAMEPAD_CAP_*` aliases - use the joystick keys
+- The `long`-typed `SDL_stdinc.h` libc clones - their FFI types cannot be right
+  on both LP64 and LLP64.
+- `SDL_SetWindowsMessageHook`, `SDL_GetDirect3D9AdapterIndex`, and
+  `SDL_GetDXGIOutputInfo`.
+- Function-like macros accept only C integer types, rather than newtypes
+  ([hs-bindgen#2184](https://github.com/well-typed/hs-bindgen/issues/2184)).
+  You'll have to unwrap the newtype manually.
+
+Everything hs-bindgen skips on the generation host should be recorded in the
+[skip ledger](https://github.com/jtnuttall/lithon/blob/main/lithon-codegen/data/sdl3/unbound.md),
+with a disposition for each.
+
 ## Library structure
 
 For most uses, you will `import SDL3.Sys qualified as SDL3`.
@@ -152,18 +270,10 @@ For most uses, you will `import SDL3.Sys qualified as SDL3`.
 The raw hs-bindgen output lives underneath as `SDL3.Sys.Bindgen.*`, if
 you need to drop down to C types.
 
-`SDL3.Sys.Stdinc` is the one curated module that leaves functions out.
-It aliases SDL's own API in `SDL_stdinc.h` (environments, memory-function
-hooks, UTF-8 stepping) and the allocator family (`malloc`, `free`,
-`strdup`, ...), for memory SDL frees or hands you to free. The rest of
-the header is a C library for C programs: strings, character classes,
-math, sorting, random numbers, checksums, `iconv`, and `memcpy`,
-`memmove` and `memset`. Haskell has its own, so those are raw-only:
-`SDL3.Sys.Bindgen.Stdinc.Unsafe.sDL_strlen` and friends. The module's
-typed constants all stay, `SDL_ICONV_ERROR` and the other `iconv`
-results included. The registry records the header's function count, so
-an SDL release that adds functions fails generation until the list is
-reviewed.
+`SDL3.Sys.Stdinc` leaves functions out by design. It selects a subset of
+SDL's API without including utilities meant generally for C programs.
+If you require these, you can access them through `SDL3.Sys.Bindgen.Stdinc.*`.
+If there are glaring omissions, please open an issue.
 
 ### Safe and unsafe FFI
 
@@ -191,14 +301,7 @@ registry maintained alongside the generator.
 Similar to the `vulkan` library, every group member is a pattern synonym
 typed at its newtype, e.g. `SDL_INIT_VIDEO :: SDL_InitFlags`.
 
-A constant lives with its type, wherever SDL declares the macro:
-`SDL_TOUCH_MOUSEID` is an `SDL_MouseID`, so it is in `SDL3.Sys.Mouse`,
-not with `SDL_touch.h`'s other names. This includes macros hs-bindgen
-cannot translate (casts to typedef names, token pasting, or libc
-macros), which exist only here: the limits (`SDL_MIN_SINT8`,
-`SDL_MAX_TIME`, ...), the default audio devices, and the mouse and
-touch ids. The `size_t` constants (`SDL_SIZE_MAX`, `SDL_ICONV_ERROR`,
-...) are `Word64`.
+Constants exist alongside their types.
 
 You can combine bitmask groups with `.|.` from `Data.Bits`:
 
@@ -208,61 +311,24 @@ SDL3.init (SDL3.SDL_INIT_VIDEO .|. SDL3.SDL_INIT_AUDIO)
 
 ### C shims
 
-Haskell's FFI cannot call a variadic C function, and a function-like
-macro has no symbol to call at all. For the useful ones, this package
-ships small C functions of its own, in
-`include/sdl3-bindgen-sys/SDL_*_shims.h`, which are bound like any SDL
-header. Each module exports its shims in a **C shims** section, named
-like what they wrap: `SDL_LogMessage` is `logMessage`, and `SDL_MUSTLOCK`
+The library provides a series of wrappers for variadic SDL functions
+and function-like macros.
+
+Each module exports its shims in a **C shims** section, named after what
+the function wraps: `SDL_LogMessage` is `logMessage`, and `SDL_MUSTLOCK`
 is `mustLock`.
 
-- **Messages are verbatim.** The logging, error, and stream-printing
-  shims take a finished string, never a printf-style format string:
-  format in Haskell, and a `%` needs no escaping. After `setError` with
-  `100% done`, `getError` returns `100% done`.
-- **Call `createThread`, not `createThreadRuntime`.** Like SDL's
-  `SDL_CreateThread` macro, the shim passes the C runtime's thread entry
-  and exit functions on Windows (`_beginthreadex` and `_endthreadex`;
-  `NULL` elsewhere).
-- **Cost:** each shim is a `static inline` C function, so the compiler
-  folds it into the wrapper the foreign import calls: one FFI call, like
-  any binding. That is still a call, and an `IO` action, for what C
-  computes inline (`bitsPerPixel`, `fourCC`, the byte swaps); hoist it out
-  of hot loops.
-- **Byte order:** use the `swap16LE` … `swapFloatBE` shims, not the raw
-  layer's `sDL_Swap16LE` … `sDL_SwapFloatLE`, which hs-bindgen translated
+Notes:
+
+- Messages are verbatim. `printf`-style format strings aren't supported.
+- Call `createThread`, not `createThreadRuntime`. The former handles
+  cross-platform threading appropriately.
+- Each shim is a `static inline` C function.
+- Byte order: use the `swap16LE` … `swapFloatBE` shims instead of the raw layer's
+  `sDL_Swap16LE` ... `sDL_SwapFloatLE`, which hs-bindgen translated
   on the little-endian generation host as the identity.
 - The raw imports are `lithon_SDL_*` in `SDL3.Sys.Bindgen.*Shims`
   (`SDL3.Sys.Bindgen.LogShims.Unsafe.lithon_SDL_LogMessage`).
-
-The shims, by module:
-
-- `SDL3.Sys.Atomic`: `SDL_AtomicIncRef` → `atomicIncRef`,
-  `SDL_AtomicDecRef` → `atomicDecRef`
-- `SDL3.Sys.Audio`: `SDL_AUDIO_FRAMESIZE` → `audioFrameSize` (takes a
-  pointer to the spec), `SDL_DEFINE_AUDIO_FORMAT` → `defineAudioFormat`
-- `SDL3.Sys.Endian`: `SDL_Swap16`, `SDL_Swap32`, `SDL_Swap64` → `swap16`,
-  `swap32`, `swap64`; `SDL_Swap16LE` … `SDL_SwapFloatBE` → `swap16LE` …
-  `swapFloatBE`
-- `SDL3.Sys.Error`: `SDL_SetError` → `setError`, `SDL_Unsupported` →
-  `unsupported`, `SDL_InvalidParamError` → `invalidParamError`
-- `SDL3.Sys.Iostream`: `SDL_IOprintf` → `ioPrintf`
-- `SDL3.Sys.Log`: `SDL_Log` → `log`, `SDL_LogTrace` … `SDL_LogCritical`
-  → `logTrace` … `logCritical`, `SDL_LogMessage` → `logMessage`
-- `SDL3.Sys.Pixels`: `SDL_DEFINE_PIXELFOURCC` → `definePixelFourCC`,
-  `SDL_BITSPERPIXEL` → `bitsPerPixel`, `SDL_BYTESPERPIXEL` →
-  `bytesPerPixel`, `SDL_ISPIXELFORMAT_INDEXED` … `SDL_ISPIXELFORMAT_FOURCC`
-  → `isPixelFormatIndexed` … `isPixelFormatFourCC`,
-  `SDL_DEFINE_COLORSPACE` → `defineColorspace`, `SDL_COLORSPACETYPE` …
-  `SDL_COLORSPACEMATRIX` → `colorspaceType` … `colorspaceMatrix`,
-  `SDL_ISCOLORSPACE_MATRIX_BT601` … `SDL_ISCOLORSPACE_FULL_RANGE` →
-  `isColorspaceMatrixBT601` … `isColorspaceFullRange`
-- `SDL3.Sys.Stdinc`: `SDL_FOURCC` → `fourCC`
-- `SDL3.Sys.Surface`: `SDL_MUSTLOCK` → `mustLock`
-- `SDL3.Sys.Thread`: `SDL_CreateThread` → `createThread`,
-  `SDL_CreateThreadWithProperties` → `createThreadWithProperties`
-- `SDL3.Sys.Timer`: `SDL_SECONDS_TO_NS` → `secondsToNs`, `SDL_MS_TO_NS` →
-  `msToNs`, `SDL_US_TO_NS` → `usToNs`
 
 ### Conversion to and from C types
 
@@ -270,108 +336,6 @@ The shims, by module:
 you'll actually reach for: `toBool`/`fromBool` for C-typed struct
 fields (e.g. a keyboard event's `repeat`), and the `CEnum` classes for
 moving between enum newtypes and their integral representations.
-
-## Platform support
-
-**64-bit platforms only.** Linux, macOS (aarch64, Homebrew `sdl3`), and
-Windows (MSYS2 UCRT64, including the LLP64 layouts) are all targets,
-and CI builds the released package on all three. 32-bit targets are
-rejected by the ABI assertions — 64-bit layouts are baked in.
-
-## Common issues
-
-- **Blank screen or crash on macOS** — SDL's Cocoa backend requires
-  video and event calls on the **process main thread**. Keep the SDL
-  loop on `main` (don't `forkIO` it); `runOnMainThreadSafe` is bound for
-  marshalling work onto it.
-- **`init` fails on Windows** — the bindings are generated with
-  `SDL_MAIN_HANDLED`: call `setMainReady` before `init`.
-- **`foo` or `fooSafe`?** — every function's haddock states its flavor
-  choice, and the rationale, under its **`sdl3-bindgen-sys` notes**
-  section.
-- **Branching on `SDL3.Sys.PlatformDefines`** — don't: its two
-  constants (`sDL_PLATFORM_LINUX`, `sDL_PLATFORM_UNIX`) are baked to
-  the generation host's value of `1` on every platform.
-- **`setLinuxThreadPriority(AndPolicy)` off-Linux** — both exist
-  everywhere but fail with an `SDL_GetError` message.
-
-## What is not bound
-
-The hs-bindgen team's
-[survey of SDL's macros](https://github.com/dschrempf/hs-bindgen-sdl-survey)
-is the reference for what hs-bindgen can and cannot translate: measured
-against hs-bindgen `cf56afb3` and SDL 3.4.0-1231, it binds 1099 of SDL's
-1980 macros, 31 of the 160 function-like ones. This package is generated
-with hs-bindgen 1.0.0.0 against SDL 3.4.18, and the raw layer binds the
-same 31. What differs here:
-
-- Integer macro constants spelled with casts to typedef names,
-  `SDL_UINT64_C`, or `SIZE_MAX`, which hs-bindgen cannot translate, reach
-  you as [typed constants](#typed-constants).
-- The variadic `SDL_Log` family, `SDL_SetError` and `SDL_IOprintf`, and
-  the most useful function-like macros (`SDL_MUSTLOCK`, the byte swaps,
-  the pixel-format and colorspace macros, `SDL_CreateThread`, ...) are
-  bound through [C shims](#c-shims).
-- `SDL_memcpy`, `SDL_memmove` and `SDL_memset` are bound: the generator
-  sets `SDL_SLOW_MEMCPY` and friends so SDL's macros do not shadow them.
-
-Still unbound: `SDL_RenderDebugTextFormat` (format in Haskell and use
-`renderDebugText`); the printf/scanf clones and every `va_list` function;
-the `SDL_assert` family and the other statement macros;
-`SDL_size_mul_check_overflow` and `SDL_size_add_check_overflow`
-([hs-bindgen#2097](https://github.com/well-typed/hs-bindgen/issues/2097);
-the `_builtin` twins are bound); `SDL_BYTEORDER` and `SDL_FLOATWORDORDER`
-(use `GHC.ByteOrder.targetByteOrder`); the `SDL_PROP_GAMEPAD_CAP_*`
-aliases (use the joystick keys); the seven `long`-typed `SDL_stdinc.h`
-libc clones (their FFI types cannot be right on both LP64 and LLP64);
-three Windows-only interop functions (`SDL_SetWindowsMessageHook`,
-`SDL_GetDirect3D9AdapterIndex`, `SDL_GetDXGIOutputInfo`). The
-function-like macros hs-bindgen does bind accept only C integer types,
-not SDL's newtypes, pending
-[hs-bindgen#2184](https://github.com/well-typed/hs-bindgen/issues/2184)
-(unwrap first).
-
-Everything hs-bindgen skips on the generation host is in the
-[skip ledger](https://github.com/jtnuttall/lithon/blob/main/lithon-codegen/data/sdl3/unbound.md),
-with a disposition for each.
-
-## Versioning
-
-The 0.0.x series is experimental: pin to the minor
-(e.g., `>=0.0.0.1 && <0.0.1`) and expect surface-shaping changes.
-
-SDL **>= 3.2.0** is required; the surface is generated from 3.4.18.
-Declarations newer than your SDL still compile and link — their wrapper
-C is gated on SDL's own version macros, so calling one on an older SDL
-fails at the call site via `SDL_GetError` (exactly like the Linux-only
-functions off Linux). The wrapper gates and the ABI assertion layer are
-driven by empirically verified availability annotations rather than
-SDL's (occasionally wrong) `\since` annotations; a handful of haddock
-`@since` lines therefore repeat an upstream floor that the annotations
-correct — where they disagree, the annotations win, and a gated call's
-`SDL_GetError` message states the true floor.
-
-Four semantic deltas to know when running against an older SDL:
-
-- `SDL_COLORSPACE_YUV_DEFAULT` is baked at its 3.4 value
-  (`BT601_LIMITED`); 3.2 defined it as `JPEG`.
-- Below SDL 3.2.12, `SDL_MouseWheelEvent.integer_x`/`integer_y` read
-  bytes SDL never wrote — memory-safe (`SDL_Event` is 128 bytes), but
-  meaningless.
-- Below SDL 3.4.16, `SDL_PenProximityEvent.pen_state` likewise reads
-  bytes SDL never wrote.
-- Below SDL 3.4.18, the pen events' `device_type` (`SDL_PenProximityEvent`,
-  `SDL_PenMotionEvent`, `SDL_PenAxisEvent`, `SDL_PenTouchEvent`,
-  `SDL_PenButtonEvent`) likewise reads bytes SDL never wrote.
-
-## ABI verification
-
-The cabal flag `abi-assertions` (default) turns on ABI verification,
-which guards against unexpected layout divergence between SDL3 header
-versions and varying operating systems.
-
-When ABI assertions are on, `cbits/abi_assertions.c` statically checks
-every layout the Haskell side expects against your SDL headers.
 
 ### Layouts
 
@@ -414,10 +378,9 @@ against headers that disagree with it.
 ## Provenance and licensing
 
 Generated by [hs-bindgen](https://github.com/well-typed/hs-bindgen)
-driven by the repository's `lithon-codegen`, from the SDL 3.4.18
-headers. The generated tree is never hand-edited, but bugs are mine, not
-SDL's or hs-bindgen's: report them at the
-[issue tracker](https://github.com/jtnuttall/lithon/issues).
+driven by the repository's `lithon-codegen`, from the SDL3 headers.
+Be keen on treating bugs as mine, not SDL's or hs-bindgen's, and report them to
+the project's [issue tracker](https://github.com/jtnuttall/lithon/issues).
 
 - `sdl3-bindgen-sys` is BSD-3-Clause (see `LICENSE`).
 - The SDL header documentation embedded in the haddocks is covered by SDL's
