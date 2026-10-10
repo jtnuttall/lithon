@@ -488,7 +488,7 @@ test_authoredMergeGolden =
     case modules of
       [m] -> do
         m.moduleName @?= "SDL3.Sys.Toy"
-        pure (snd (renderAliasModule sdl3Shims (aliasRewriteMap sdl3Shims modules) m))
+        pure (snd (renderAliasModule sdl3Shims (aliasRewriteMap sdl3Shims families modules) m))
       _other -> assertFailure ("expected the one merged module, got " <> show (map (.moduleName) modules))
 
 -- | An authored header that extends nothing gets a curated module of its
@@ -500,7 +500,7 @@ unit_standaloneAuthoredModule = do
   families <- sdlToyFamilies "lithon-authored-standalone" sdl3Standalone sdlToyShimsHeader
   modules <- plannedModules sdl3Standalone shimsConfig families
   map (.moduleName) modules @?= ["SDL3.Sys.Toy", "SDL3.Sys.ToyShims"]
-  let render = snd . renderAliasModule sdl3Standalone (aliasRewriteMap sdl3Standalone modules)
+  let render = snd . renderAliasModule sdl3Standalone (aliasRewriteMap sdl3Standalone families modules)
   case map render modules of
     [host, standalone] -> do
       exportSections host @?= ["Function aliases"]
@@ -530,7 +530,7 @@ unit_rewriteMapPrefersBound :: Assertion
 unit_rewriteMapPrefersBound = do
   families <- sdlToyFamilies "lithon-authored-rewrite" sdl3Shims overlappingShimsHeader
   modules <- plannedModules sdl3Shims overlappingConfig families
-  let links = aliasRewriteMap sdl3Shims modules
+  let links = aliasRewriteMap sdl3Shims families modules
   Map.lookup "SDL_ToyOpen" links @?= Just ("SDL3.Sys.Toy", "toyOpen")
   Map.lookup "sDL_ToyOpen" links @?= Just ("SDL3.Sys.Toy", "toyOpen")
   Map.lookup "lithon_SDL_ToyOpen" links @?= Just ("SDL3.Sys.Toy", "toyOpenShim")
@@ -560,6 +560,7 @@ unit_rewriteMapPrefersBound = do
             <> Map.fromList [("lithon_SDL_ToyOpen", FunctionEntry UnsafeOnly (Just "a toy"))]
       , renames = shimsConfig.renames <> Map.fromList [("lithon_SDL_ToyOpen", "toyOpenShim")]
       , skip = []
+      , allow = mempty
       }
 
 -- | 'sdl3Shims' with its authored header extending nothing.
@@ -605,6 +606,7 @@ shimsConfig =
           ]
     , renames = Map.fromList [("lithon_SDL_TOY_SUM2", "toySum2")]
     , skip = []
+    , allow = mempty
     }
 
 -- | Validate the registry against the families' census and plan the
@@ -613,7 +615,7 @@ plannedModules :: BindgenTarget -> AliasConfig -> [FamilyDecls] -> IO [AliasModu
 plannedModules target config families = do
   validated <-
     either (assertFailure . toString . display) pure
-      $ validateAliasConfig (functionCensus families) config
+      $ validateAliasConfig target.functionPrefix (functionCensus families) config
   either (assertFailure . toString . display) pure
     $ planAliasLayer target validated mempty families
 
@@ -654,6 +656,7 @@ rejected families needle =
       , rationales = mempty
       , renames = mempty
       , skipped = mempty
+      , allowlisted = mempty
       }
 
 hostFamily, shimsFamily :: FamilyDecls

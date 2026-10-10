@@ -4,7 +4,7 @@ headers (specs): 69
 modules: 328
 curated modules: 59
 wrapper-splice modules: 195
-registry: both=116 safe-only=18 unsafe-only=176 renames=31 skip=0
+registry: both=116 safe-only=14 unsafe-only=75 renames=30 skip=0 allow=1/22
 unbound: shim=53 constant=55 wontfix=95 upstream=11
 facades: SDL3.Sys.Bindgen.Runtime SDL3.Sys.Bindgen.Runtime.BitfieldPtr SDL3.Sys.Bindgen.Runtime.Block SDL3.Sys.Bindgen.Runtime.CBool SDL3.Sys.Bindgen.Runtime.CEnum SDL3.Sys.Bindgen.Runtime.CExpr SDL3.Sys.Bindgen.Runtime.ConstantArray SDL3.Sys.Bindgen.Runtime.FLAM SDL3.Sys.Bindgen.Runtime.HasCBitfield SDL3.Sys.Bindgen.Runtime.HasCField SDL3.Sys.Bindgen.Runtime.HasFFIType SDL3.Sys.Bindgen.Runtime.IncompleteArray SDL3.Sys.Bindgen.Runtime.IsArray SDL3.Sys.Bindgen.Runtime.Macro SDL3.Sys.Bindgen.Runtime.Marshal SDL3.Sys.Bindgen.Runtime.Overloading SDL3.Sys.Bindgen.Runtime.PtrConst SDL3.Sys.Bindgen.Runtime.Struct SDL3.Sys.Bindgen.Runtime.Union SDL3.Sys.Runtime
 per-header:

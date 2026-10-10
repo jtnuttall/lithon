@@ -90,6 +90,8 @@ import Lithon.Codegen.Bindgen.Alias (
   renderUmbrella,
  )
 import Lithon.Codegen.Bindgen.Alias.Config (
+  AliasConfig (..),
+  AllowEntry (..),
   ValidatedAliasConfig (..),
   decodeAliasConfig,
   namingRuleText,
@@ -475,7 +477,7 @@ planAliases target registry headerResults (constantPlans, constantsBytes) = do
   validated <-
     liftEither
       . first from
-      $ validateAliasConfig (functionCensus families) config
+      $ validateAliasConfig target.functionPrefix (functionCensus families) config
 
   let plansByFamily =
         Map.fromListWith
@@ -494,7 +496,7 @@ planAliases target registry headerResults (constantPlans, constantsBytes) = do
         ]
 
   aliasModules <- liftEither . first from $ planAliasLayer target validated plansByFamily families
-  let rewriteMap = aliasRewriteMap target aliasModules
+  let rewriteMap = aliasRewriteMap target families aliasModules
       rendered =
         map (renderAliasModule target rewriteMap) aliasModules
           <> [renderRuntimeModule target, renderUmbrella target aliasModules]
@@ -513,7 +515,16 @@ planAliases target registry headerResults (constantPlans, constantsBytes) = do
         , ("constantsConfig", Aeson.toJSON (rapidhash (LBS.toStrict constantsBytes)))
         , ("constants", Aeson.toJSON (length macroConsts))
         ]
+        -- Per allowlisted header, so a manifest diff on a library bump
+        -- shows the curated and bound counts (validated equal to the census).
+        <> Map.fromList
+          [ ("aliasAllow", Aeson.toJSON (Map.map allowStats config.allow))
+          | not (Map.null config.allow)
+          ]
     )
+ where
+  allowStats :: AllowEntry -> Map Text Int
+  allowStats entry = Map.fromList [("allowed", length entry.names), ("bound", entry.bound)]
 
 -- |
 -- Load constants.json, enumerate memberships against the resolved

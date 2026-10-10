@@ -185,8 +185,9 @@ unit_renamesOverrideAndResolve = do
 
 -- | An authored function mints from the name it wraps: the name prefix
 -- goes, then the camel-segments rule applies. @lithon_SDL_Log@ wraps
--- @SDL_Log@, whose alias @log@ is the math function @SDL_log@'s: the
--- collision is loud, and a rename resolves it.
+-- @SDL_Log@ and mints @log@, free since @SDL_stdinc.h@'s allowlist leaves
+-- the math @SDL_log@ raw-only. A shim whose name an aliased function
+-- already mints collides loudly, and a rename resolves it.
 unit_authoredNamesMint :: IO ()
 unit_authoredNamesMint = do
   let rule = aliasBaseName withShims
@@ -197,18 +198,26 @@ unit_authoredNamesMint = do
   -- A library function is never stripped, and a target without authored
   -- headers strips nothing.
   aliasBaseName sdl3{authored = Nothing} "lithon_SDL_Log" @?= "lithonSDLLog"
-  failures (mintAliasNames rule mempty [("SDL_log", UnsafeOnly), ("lithon_SDL_Log", Both)])
-    @?= [AliasNameCollision{minted = "log", cNames = ["SDL_log", "lithon_SDL_Log"]}]
+  logMinted <-
+    either (assertFailureText . display) pure
+      . validationToEither
+      $ mintAliasNames rule mempty [("lithon_SDL_Log", Both)]
+  Map.lookup "lithon_SDL_Log" logMinted
+    @?= Just MintedAlias{unsafeName = Just "log", safeName = Just "logSafe"}
+  -- The collision machinery, on a toy pair: a library SDL_toy and a shim
+  -- over a (hypothetical) SDL_Toy both mint toy.
+  failures (mintAliasNames rule mempty [("SDL_toy", UnsafeOnly), ("lithon_SDL_Toy", Both)])
+    @?= [AliasNameCollision{minted = "toy", cNames = ["SDL_toy", "lithon_SDL_Toy"]}]
   minted <-
     either (assertFailureText . display) pure
       . validationToEither
       $ mintAliasNames
         rule
-        (Map.fromList [("lithon_SDL_Log", "logApplication")])
-        [("SDL_log", UnsafeOnly), ("lithon_SDL_Log", Both)]
-  Map.lookup "lithon_SDL_Log" minted
-    @?= Just MintedAlias{unsafeName = Just "logApplication", safeName = Just "logApplicationSafe"}
-  Map.lookup "SDL_log" minted @?= Just MintedAlias{unsafeName = Just "log", safeName = Nothing}
+        (Map.fromList [("lithon_SDL_Toy", "toyShim")])
+        [("SDL_toy", UnsafeOnly), ("lithon_SDL_Toy", Both)]
+  Map.lookup "lithon_SDL_Toy" minted
+    @?= Just MintedAlias{unsafeName = Just "toyShim", safeName = Just "toyShimSafe"}
+  Map.lookup "SDL_toy" minted @?= Just MintedAlias{unsafeName = Just "toy", safeName = Nothing}
  where
   withShims =
     sdl3

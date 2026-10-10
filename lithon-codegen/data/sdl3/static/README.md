@@ -152,6 +152,19 @@ For most uses, you will `import SDL3.Sys qualified as SDL3`.
 The raw hs-bindgen output lives underneath as `SDL3.Sys.Bindgen.*`, if
 you need to drop down to C types.
 
+`SDL3.Sys.Stdinc` is the one curated module that leaves functions out.
+It aliases SDL's own API in `SDL_stdinc.h` (environments, memory-function
+hooks, UTF-8 stepping) and the allocator family (`malloc`, `free`,
+`strdup`, ...), for memory SDL frees or hands you to free. The rest of
+the header is a C library for C programs: strings, character classes,
+math, sorting, random numbers, checksums, `iconv`, and `memcpy`,
+`memmove` and `memset`. Haskell has its own, so those are raw-only:
+`SDL3.Sys.Bindgen.Stdinc.Unsafe.sDL_strlen` and friends. The module's
+typed constants all stay, `SDL_ICONV_ERROR` and the other `iconv`
+results included. The registry records the header's function count, so
+an SDL release that adds functions fails generation until the list is
+reviewed.
+
 ### Safe and unsafe FFI
 
 Most functions come in both FFI flavors: `createWindow` is an `unsafe`
@@ -234,9 +247,8 @@ The shims, by module:
 - `SDL3.Sys.Error`: `SDL_SetError` → `setError`, `SDL_Unsupported` →
   `unsupported`, `SDL_InvalidParamError` → `invalidParamError`
 - `SDL3.Sys.Iostream`: `SDL_IOprintf` → `ioPrintf`
-- `SDL3.Sys.Log`: `SDL_Log` → `logApplication` (`log` is the math
-  function), `SDL_LogTrace` … `SDL_LogCritical` → `logTrace` …
-  `logCritical`, `SDL_LogMessage` → `logMessage`
+- `SDL3.Sys.Log`: `SDL_Log` → `log`, `SDL_LogTrace` … `SDL_LogCritical`
+  → `logTrace` … `logCritical`, `SDL_LogMessage` → `logMessage`
 - `SDL3.Sys.Pixels`: `SDL_DEFINE_PIXELFOURCC` → `definePixelFourCC`,
   `SDL_BITSPERPIXEL` → `bitsPerPixel`, `SDL_BYTESPERPIXEL` →
   `bytesPerPixel`, `SDL_ISPIXELFORMAT_INDEXED` … `SDL_ISPIXELFORMAT_FOURCC`

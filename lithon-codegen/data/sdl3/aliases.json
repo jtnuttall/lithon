@@ -569,114 +569,6 @@
       "safety": "both",
       "rationale": "dispatches through the storage's SDL_StorageInterface, which may be implemented in Haskell"
     },
-    "SDL_abs": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_acos": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_acosf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_asin": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_asinf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_atan": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_atan2": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_atan2f": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_atanf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_atof": {
-      "safety": "unsafe-only",
-      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
-    },
-    "SDL_atoi": {
-      "safety": "unsafe-only",
-      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
-    },
-    "SDL_bsearch": {
-      "safety": "safe-only",
-      "rationale": "invokes the comparator synchronously"
-    },
-    "SDL_bsearch_r": {
-      "safety": "safe-only",
-      "rationale": "invokes the comparator synchronously"
-    },
-    "SDL_ceil": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_ceilf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_copysign": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_copysignf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_cos": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_cosf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_exp": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_expf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_fabs": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_fabsf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_floor": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_floorf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_fmod": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_fmodf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
     "SDL_hid_enumerate": {
       "safety": "both",
       "rationale": "USB round-trip; blocks on device enumeration"
@@ -708,318 +600,6 @@
     "SDL_hid_write": {
       "safety": "both",
       "rationale": "USB round-trip; blocks on the device"
-    },
-    "SDL_isalnum": {
-      "safety": "unsafe-only",
-      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
-    },
-    "SDL_isalpha": {
-      "safety": "unsafe-only",
-      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
-    },
-    "SDL_isblank": {
-      "safety": "unsafe-only",
-      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
-    },
-    "SDL_iscntrl": {
-      "safety": "unsafe-only",
-      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
-    },
-    "SDL_isdigit": {
-      "safety": "unsafe-only",
-      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
-    },
-    "SDL_isgraph": {
-      "safety": "unsafe-only",
-      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
-    },
-    "SDL_isinf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_isinff": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_islower": {
-      "safety": "unsafe-only",
-      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
-    },
-    "SDL_isnan": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_isnanf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_isprint": {
-      "safety": "unsafe-only",
-      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
-    },
-    "SDL_ispunct": {
-      "safety": "unsafe-only",
-      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
-    },
-    "SDL_isspace": {
-      "safety": "unsafe-only",
-      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
-    },
-    "SDL_isupper": {
-      "safety": "unsafe-only",
-      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
-    },
-    "SDL_isxdigit": {
-      "safety": "unsafe-only",
-      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
-    },
-    "SDL_itoa": {
-      "safety": "unsafe-only",
-      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
-    },
-    "SDL_lltoa": {
-      "safety": "unsafe-only",
-      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
-    },
-    "SDL_log": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_log10": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_log10f": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_logf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_modf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_modff": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_pow": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_powf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_qsort": {
-      "safety": "safe-only",
-      "rationale": "invokes the comparator synchronously"
-    },
-    "SDL_qsort_r": {
-      "safety": "safe-only",
-      "rationale": "invokes the comparator synchronously"
-    },
-    "SDL_round": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_roundf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_scalbn": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_scalbnf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_sin": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_sinf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_sqrt": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_sqrtf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_strcasecmp": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strcasestr": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strchr": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strcmp": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strlcat": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strlcpy": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strlen": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strlwr": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strncasecmp": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strncmp": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strnlen": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strnstr": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strpbrk": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strrchr": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strrev": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strstr": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strtod": {
-      "safety": "unsafe-only",
-      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
-    },
-    "SDL_strtok_r": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_strtoll": {
-      "safety": "unsafe-only",
-      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
-    },
-    "SDL_strtoull": {
-      "safety": "unsafe-only",
-      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
-    },
-    "SDL_strupr": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_tan": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_tanf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_tolower": {
-      "safety": "unsafe-only",
-      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
-    },
-    "SDL_toupper": {
-      "safety": "unsafe-only",
-      "rationale": "locale-independent ASCII character classification; cannot block, lock, or call back"
-    },
-    "SDL_trunc": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_truncf": {
-      "safety": "unsafe-only",
-      "rationale": "pure math on immediate values; cannot block, lock, or call back"
-    },
-    "SDL_uitoa": {
-      "safety": "unsafe-only",
-      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
-    },
-    "SDL_ulltoa": {
-      "safety": "unsafe-only",
-      "rationale": "pure numeric conversion over a short caller buffer; cannot block, lock, or call back"
-    },
-    "SDL_utf8strlcpy": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_utf8strlen": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_utf8strnlen": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_wcscasecmp": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_wcscmp": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_wcslcat": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_wcslcpy": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_wcslen": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_wcsncasecmp": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_wcsncmp": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_wcsnlen": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_wcsnstr": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
-    },
-    "SDL_wcsstr": {
-      "safety": "unsafe-only",
-      "rationale": "string computation over caller memory with no allocation; cannot block, lock, or call back"
     },
     "lithon_SDL_AUDIO_FRAMESIZE": {
       "safety": "unsafe-only",
@@ -1269,11 +849,39 @@
     "lithon_SDL_ISPIXELFORMAT_FOURCC": "isPixelFormatFourCC",
     "lithon_SDL_ISPIXELFORMAT_INDEXED": "isPixelFormatIndexed",
     "lithon_SDL_ISPIXELFORMAT_PACKED": "isPixelFormatPacked",
-    "lithon_SDL_Log": "logApplication",
     "lithon_SDL_MS_TO_NS": "msToNs",
     "lithon_SDL_MUSTLOCK": "mustLock",
     "lithon_SDL_SECONDS_TO_NS": "secondsToNs",
     "lithon_SDL_US_TO_NS": "usToNs"
   },
-  "skip": []
+  "skip": [],
+  "allow": {
+    "SDL_stdinc.h": {
+      "bound": 153,
+      "names": [
+        "SDL_malloc",
+        "SDL_calloc",
+        "SDL_realloc",
+        "SDL_free",
+        "SDL_aligned_alloc",
+        "SDL_aligned_free",
+        "SDL_strdup",
+        "SDL_strndup",
+        "SDL_GetEnvironment",
+        "SDL_CreateEnvironment",
+        "SDL_GetEnvironmentVariable",
+        "SDL_GetEnvironmentVariables",
+        "SDL_SetEnvironmentVariable",
+        "SDL_UnsetEnvironmentVariable",
+        "SDL_DestroyEnvironment",
+        "SDL_GetMemoryFunctions",
+        "SDL_GetOriginalMemoryFunctions",
+        "SDL_SetMemoryFunctions",
+        "SDL_GetNumAllocations",
+        "SDL_StepUTF8",
+        "SDL_StepBackUTF8",
+        "SDL_UCS4ToUTF8"
+      ]
+    }
+  }
 }

@@ -12,6 +12,7 @@
 module Bindgen.AliasRenderTest (
   unit_nativeGroupImportsTheSupportAlias,
   unit_toyCensusDetectsCallbacks,
+  unit_allowlistedFamilyRendersOnlyAllowed,
   test_aliasRenderGolden,
 ) where
 
@@ -40,6 +41,7 @@ import Lithon.Codegen.Bindgen.Alias (
  )
 import Lithon.Codegen.Bindgen.Alias.Config (
   AliasConfig (..),
+  AllowEntry (..),
   FunctionEntry (..),
   NamingRule (..),
   validateAliasConfig,
@@ -91,6 +93,7 @@ unit_nativeGroupImportsTheSupportAlias = do
               , moduleDoc = Nothing
               , constants = constantsOf target
               , bindings = []
+              , allowlisted = False
               }
       native = rendered (Constants.NativeTarget Target.NativeWord64)
       newtyped = rendered (Constants.NewtypeTarget "SDL_ToySize")
@@ -104,15 +107,70 @@ unit_toyCensusDetectsCallbacks :: IO ()
 unit_toyCensusDetectsCallbacks = do
   (facts, _baseModule) <- toyFamily
   functionCensus [facts]
-    @?= Map.fromList
-      [ ("SDL_CreateToyThing", False)
-      , ("SDL_ToyIsOk", False) -- scalar-bridge pin (bool/float/double)
-      , ("SDL_ToyCount", False) -- scalar-bridge pin (int result, width typedef + size_t args)
-      , ("SDL_GetToyId", False) -- negative control: semantic typedef stays raw
-      , ("SDL_ToyEnumerate", True) -- direct callback param
-      , ("SDL_SetToyCallback", True) -- direct callback param
-      , ("SDL_GetToyCallback", False) -- pointer-to-callback out-param
-      ]
+    @?= Map.singleton
+      "SDL_toy.h"
+      ( Map.fromList
+          [ ("SDL_CreateToyThing", False)
+          , ("SDL_ToyIsOk", False) -- scalar-bridge pin (bool/float/double)
+          , ("SDL_ToyCount", False) -- scalar-bridge pin (int result, width typedef + size_t args)
+          , ("SDL_GetToyId", False) -- negative control: semantic typedef stays raw
+          , ("SDL_ToyEnumerate", True) -- direct callback param
+          , ("SDL_SetToyCallback", True) -- direct callback param
+          , ("SDL_GetToyCallback", False) -- pointer-to-callback out-param
+          ]
+      )
+
+-- | An allowlisted family exports only its allowed aliases (header order;
+-- the callback functions it leaves out need no classification), says so
+-- in its conventions, and links the mention of a left-out function
+-- (@\\sa SDL_GetToyCallback@) to its raw import, not to an alias that
+-- does not exist (the safe import for a callback taker).
+unit_allowlistedFamilyRendersOnlyAllowed :: IO ()
+unit_allowlistedFamilyRendersOnlyAllowed = do
+  (facts, _baseModule) <- toyFamily
+  let config =
+        AliasConfig
+          { naming = CamelSegments
+          , functions =
+              Map.fromList [("SDL_SetToyCallback", FunctionEntry Both (Just "registration only"))]
+          , renames = mempty
+          , skip = mempty
+          , allow =
+              Map.fromList
+                [("SDL_toy.h", AllowEntry{bound = 7, names = ["SDL_SetToyCallback", "SDL_ToyIsOk"]})]
+          }
+  validated <-
+    either (assertFailure . toString . display) pure
+      $ validateAliasConfig sdl3.functionPrefix (functionCensus [facts]) config
+  aliasModules <-
+    either (assertFailure . toString . display) pure
+      $ planAliasLayer sdl3 validated mempty [facts]
+  rendered <- case aliasModules of
+    [m] -> pure (snd (renderAliasModule sdl3 (aliasRewriteMap sdl3 [facts] aliasModules) m))
+    _unexpected -> assertFailure "expected exactly one alias module"
+  [ name
+    | line <- T.lines rendered
+    , Just name <- [T.stripPrefix "SDL3.Sys.Toy." =<< T.stripPrefix "    , " line]
+    ]
+    @?= ["toyIsOk", "toyIsOkSafe", "setToyCallback", "setToyCallbackSafe"]
+  for_
+    [ "This module aliases only the functions of @SDL_toy.h@ that the registry allowlists."
+    , "\"SDL3.Sys.Bindgen.Toy.Unsafe\" and \"SDL3.Sys.Bindgen.Toy.Safe\" export them."
+    , "'SDL3.Sys.Bindgen.Toy.Unsafe.sDL_GetToyCallback'"
+    ]
+    \needle ->
+      assertBool
+        ("missing " <> show needle <> " in:\n" <> toString rendered)
+        (needle `T.isInfixOf` rendered)
+  -- A left-out callback taker links to its safe import (the safe-only
+  -- rule's default); the others to the unsafe one.
+  let links = aliasRewriteMap sdl3 [facts] aliasModules
+  Map.lookup "SDL_ToyEnumerate" links @?= Just ("SDL3.Sys.Bindgen.Toy.Safe", "sDL_ToyEnumerate")
+  Map.lookup "sDL_GetToyCallback" links
+    @?= Just ("SDL3.Sys.Bindgen.Toy.Unsafe", "sDL_GetToyCallback")
+  assertBool
+    "no link to an alias that does not exist"
+    (not ("'getToyCallback'" `T.isInfixOf` rendered))
 
 test_aliasRenderGolden :: TestTree
 test_aliasRenderGolden =
@@ -158,10 +216,11 @@ test_aliasRenderGolden =
                   ]
             , renames = mempty
             , skip = mempty
+            , allow = mempty
             }
     validated <-
       either (assertFailure . toString . display) pure
-        $ validateAliasConfig census config
+        $ validateAliasConfig sdl3.functionPrefix census config
     -- The constants pipeline, minus the probe: membership from the toy
     -- header's scanned macros, values/sizeofs/signedness supplied directly (what the
     -- probe TU would have printed).
@@ -289,7 +348,7 @@ test_aliasRenderGolden =
     aliasModules <-
       either (assertFailure . toString . display) pure
         $ planAliasLayer sdl3 validated plansByFamily [facts]
-    let rewriteMap = aliasRewriteMap sdl3 aliasModules
+    let rewriteMap = aliasRewriteMap sdl3 [facts] aliasModules
         modules = map (renderAliasModule sdl3 rewriteMap) aliasModules
         umbrella = renderUmbrella sdl3 aliasModules
     case modules of

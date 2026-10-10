@@ -128,7 +128,7 @@ sdl3 =
     , prose =
         Prose
           { familyOneLiners
-          , familyExtras = [("Events", readingEvents)]
+          , familyExtras = [("Events", readingEvents), ("Stdinc", stdincAllowlist)]
           , umbrellaDoc
           , runtimeDoc
           , abiBanner
@@ -279,7 +279,10 @@ familyOneLiners =
     , "Thread synchronization primitives: mutexes, semaphores, condition variables, and read/write locks."
     )
   , ("PlatformDefines", "Platform-detection defines, baked at generation time.")
-  , ("Stdinc", "SDL's C-library replacements: memory, strings, math, and conversions.")
+  ,
+    ( "Stdinc"
+    , "SDL's C-library replacements: memory, strings, math, and conversions; this module aliases the allocator and SDL's own API."
+    )
   , ("System", "Platform-specific SDL API functions.")
   , ("Vulkan", "Functions for creating Vulkan surfaces on SDL windows.")
   ]
@@ -305,6 +308,36 @@ readingEvents =
             , HsDoc.TextContent "and the"
             , HsDoc.Monospace [HsDoc.TextContent "SDL_EVENT_*"]
             , HsDoc.TextContent "patterns live in this module."
+            ]
+        ]
+    }
+
+-- | Why the Stdinc family aliases an allowlist (@aliases.json@ @allow@),
+-- at the point of need.
+stdincAllowlist :: HsDoc.Comment
+stdincAllowlist =
+  mempty
+    { HsDoc.children =
+        [ HsDoc.Header HsDoc.Level3 [HsDoc.TextContent "Allowlist"]
+        , HsDoc.Paragraph
+            [ HsDoc.TextContent
+                "The aliases are SDL's own API in this header (environments, the \
+                \memory-function hooks and allocation count, UTF-8 stepping) and the \
+                \allocator family, since memory SDL frees, or hands you to free, must \
+                \come from SDL's allocator:"
+            , HsDoc.Identifier "malloc"
+            , HsDoc.TextContent ","
+            , HsDoc.Identifier "free"
+            , HsDoc.TextContent ","
+            , HsDoc.Identifier "strdup"
+            , HsDoc.TextContent
+                ", and their kin. The rest of the header serves C programs without \
+                \a portable C library: strings, character classes, math, sorting, \
+                \random numbers, checksums,"
+            , HsDoc.Monospace [HsDoc.TextContent "iconv"]
+            , HsDoc.TextContent ","
+            , HsDoc.Monospace [HsDoc.TextContent "memcpy"]
+            , HsDoc.TextContent ". Haskell has its own, so they stay raw-only."
             ]
         ]
     }
@@ -402,9 +435,9 @@ umbrellaDoc familyIndex =
   --   and named like what they wrap (@SDL_LogMessage@ -> @logMessage@,
   --   @SDL_MUSTLOCK@ -> @mustLock@). The variadic functions' shims take
   --   their message verbatim, never as a printf-style format string.
-  --   @SDL_Log@ is @logApplication@: @log@ is the math function.
+  --   @log@ is @SDL_Log@'s shim; the math clones are raw-only.
   --
-  -- * Some aliases (@free@, @abs@, @init@, …) collide with the "Prelude";
+  -- * Some aliases (@init@, @log@, @readIO@) collide with the "Prelude";
   --   import this module qualified or curate your import list.
   --
   -- == Families

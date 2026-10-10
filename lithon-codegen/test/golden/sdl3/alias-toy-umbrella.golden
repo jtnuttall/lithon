@@ -52,9 +52,9 @@
 --   and named like what they wrap (@SDL_LogMessage@ -> @logMessage@,
 --   @SDL_MUSTLOCK@ -> @mustLock@). The variadic functions' shims take
 --   their message verbatim, never as a printf-style format string.
---   @SDL_Log@ is @logApplication@: @log@ is the math function.
+--   @log@ is @SDL_Log@'s shim; the math clones are raw-only.
 --
--- * Some aliases (@free@, @abs@, @init@, …) collide with the "Prelude";
+-- * Some aliases (@init@, @log@, @readIO@) collide with the "Prelude";
 --   import this module qualified or curate your import list.
 --
 -- == Families

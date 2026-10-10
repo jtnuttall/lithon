@@ -9,7 +9,7 @@
 -- the environment is scripts\/check.sh's @\<key\> generate --check@;
 -- THESE goldens (@test\/golden\/\<key\>\/census.golden@) are the
 -- reviewable record of each generated surface's shape.
-module Bindgen.CensusTest (test_census) where
+module Bindgen.CensusTest (test_census, test_allowBoundMatchesCensus) where
 
 import Data.Aeson qualified as Aeson
 import Data.ByteString qualified as BS
@@ -25,11 +25,17 @@ import System.Directory (listDirectory)
 import System.FilePath ((</>))
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Golden (goldenVsStringDiff)
+import Test.Tasty.HUnit (assertFailure, testCase, (@?=))
 
 import Lithon.Codegen.Backend.Emit (Manifest (..), manifestFileName)
 import Lithon.Codegen.Backend.Hs.Module qualified as Module
 import Lithon.Codegen.Bindgen.Alias (sysModuleName)
-import Lithon.Codegen.Bindgen.Alias.Config (AliasConfig (..), FunctionEntry (..), decodeAliasConfig)
+import Lithon.Codegen.Bindgen.Alias.Config (
+  AliasConfig (..),
+  AllowEntry (..),
+  FunctionEntry (..),
+  decodeAliasConfig,
+ )
 import Lithon.Codegen.Bindgen.Alias.Names (Safety (..))
 import Lithon.Codegen.Bindgen.Target (BindgenTarget (..), bindgenNamespaceText, moduleFor)
 import Lithon.Codegen.Bindgen.Targets (bindgenTargets)
@@ -139,6 +145,10 @@ census target =
             <> T.show (Map.size aliasesRegistry.renames)
             <> " skip="
             <> T.show (length aliasesRegistry.skip)
+            <> " allow="
+            <> T.show (Map.size aliasesRegistry.allow)
+            <> "/"
+            <> T.show (sum (map (length . (.names)) (Map.elems aliasesRegistry.allow)))
         , "unbound:"
             <> T.concat
               [ " " <> dispositionText d <> "=" <> T.show (Map.findWithDefault 0 d unboundTotals)
@@ -153,6 +163,37 @@ census target =
   -- minting ('moduleFor') — the census cannot drift from generation.
   runMangle :: FilePath -> Either Text Text
   runMangle = bimap display Module.hsName . moduleFor target
+
+-- | Each committed allowlist's @bound@ is its header's committed census:
+-- the functions its raw family's @.Unsafe@ module exports (one per bound
+-- function). Generation enforces the same equality against the live
+-- census; this pins the committed pair.
+test_allowBoundMatchesCensus :: TestTree
+test_allowBoundMatchesCensus =
+  testGroup "allow-bound" [testCase (toString target.key) (check target) | target <- bindgenTargets]
+ where
+  check target = do
+    registry <-
+      either (\e -> assertFailure ("aliases.json failed to decode: " <> show e)) pure
+        . decodeAliasConfig
+        =<< LBS.readFile (projectDir </> "data" </> toString target.key </> "aliases.json")
+    for_ (Map.toList registry.allow) \(header, entry) -> do
+      unsafeModule <-
+        either (assertFailure . toString . display) (pure . (<> ".Unsafe") . Module.hsName)
+          $ moduleFor target (toString header)
+      let unsafePath =
+            projectDir
+              </> ".."
+              </> toString target.packageName
+              </> "src"
+              </> toString (T.replace "." "/" unsafeModule <> ".hs")
+      exports <-
+        length
+          . filter (("  " <> unsafeModule <> ".") `T.isPrefixOf`)
+          . T.lines
+          . decodeUtf8
+          <$> BS.readFile unsafePath
+      (header, exports) @?= (header, entry.bound)
 
 -- | How many committed source modules embed C via the Template Haskell
 -- @addCSource@ splice.

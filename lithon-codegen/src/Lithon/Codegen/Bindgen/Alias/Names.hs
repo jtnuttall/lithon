@@ -96,6 +96,25 @@ data AliasError
       -- ^ Which part of the configuration named it (@forceSafe@, @renames@, …).
       , cName :: !Text
       }
+  | -- | An @aliases.json@ allowlist names a header the chain does not bind.
+    AliasUnknownHeader
+      { header :: !Text
+      }
+  | -- | An @aliases.json@ allowlist was curated against another census of
+    -- its header: the library added (or dropped) functions since.
+    AliasAllowlistStale
+      { header :: !Text
+      , recorded :: !Int
+      -- ^ The allowlist's @bound@.
+      , actual :: !Int
+      -- ^ How many functions the header binds now.
+      , functionPrefix :: !Text
+      , apiStyle :: ![Text]
+      -- ^ The unlisted functions named like the library's own API
+      -- (uppercase after the function prefix), sorted.
+      , libcStyle :: !Int
+      -- ^ How many unlisted functions are named like libc clones.
+      }
   | -- | A function takes a callback parameter but @aliases.json@ does not
     -- classify it; classification is deliberately explicit, never inferred.
     AliasUnclassifiedCallback
@@ -152,6 +171,22 @@ instance Display AliasError where
           <> " references unknown function '"
           <> cName
           <> "'"
+      AliasUnknownHeader{header} ->
+        "aliases.json `allow` names header '" <> header <> "', which is not a bound header"
+      AliasAllowlistStale{header, recorded, actual, functionPrefix, apiStyle, libcStyle} ->
+        header
+          <> " binds "
+          <> T.show actual
+          <> " functions, but its allowlist was curated against "
+          <> T.show recorded
+          <> "; review the list, then set \"bound\" to "
+          <> T.show actual
+          <> ". "
+          <> T.dropWhileEnd (== '_') functionPrefix
+          <> "-proper names not allowlisted: "
+          <> (if null apiStyle then "none" else T.intercalate ", " apiStyle)
+          <> "; libc-style names not allowlisted: "
+          <> T.show libcStyle
       AliasUnclassifiedCallback{cName} ->
         "'"
           <> cName

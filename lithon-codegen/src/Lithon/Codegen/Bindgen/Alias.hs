@@ -184,13 +184,14 @@ isCallbackArg arg = case C.getCanonicalType arg.typ.c of
   C.TypePointers 1 (C.TypeFun _ _) -> True
   _notACallback -> False
 
--- | The census the registry validates against: C name -> takes a callback.
-functionCensus :: [FamilyDecls] -> Map Text Bool
+-- | The census the registry validates against: header basename -> C name
+-- -> takes a callback.
+functionCensus :: [FamilyDecls] -> Map FilePath (Map Text Bool)
 functionCensus families =
-  Map.fromList
-    [ (fn.cName, fn.hasCallback)
+  Map.fromListWith
+    (<>)
+    [ (family.headerName, Map.fromList [(fn.cName, fn.hasCallback) | fn <- family.functions])
     | family <- families
-    , fn <- family.functions
     ]
 
 -- | One alias binding to emit.
@@ -222,6 +223,9 @@ data AliasModule = AliasModule
   , constants :: [ConstantGroupPlan]
   -- ^ The family's typed-constant groups, registry order.
   , bindings :: [AliasBinding]
+  , allowlisted :: Bool
+  -- ^ The registry allowlists the family's header: the module aliases
+  -- only the listed functions, and its documentation says so.
   }
 
 planAliasLayer
@@ -320,6 +324,7 @@ planAliasLayer target validated constantPlans families = validationToEither
         , moduleDoc = family.moduleDoc
         , constants = Map.findWithDefault [] family.familyBase constantPlans
         , bindings
+        , allowlisted = family.headerName `Set.member` validated.allowlisted
         }
 
   moduleNameV family = sysModuleNameV family (sysModuleName target family.familyBase)
@@ -361,7 +366,7 @@ planAliasLayer target validated constantPlans families = validationToEither
 
   bindingsOf minted family fn =
     case Map.lookup fn.cName validated.safeties of
-      Nothing -> Success [] -- skipped
+      Nothing -> Success [] -- skipped, or left out by its header's allowlist
       Just _safety ->
         case (Map.lookup fn.cName minted, Map.lookup fn.hsName family.funDecls) of
           (Just mintedAlias, Just funDecl) ->
@@ -405,11 +410,16 @@ aliasBaseName target cName =
 --
 -- An authored function is keyed by the name it wraps as well, so the
 -- library's own mentions of a variadic function or a macro
--- (@SDL_CreateThread()@, @SDL_SetError@) link to its C shim; a bound
+-- (@SDL_CreateThread()@, @SDL_SetError@) link to its C shim; an aliased
 -- function of that name wins.
-aliasRewriteMap :: BindgenTarget -> [AliasModule] -> Map Text (Text, Text)
-aliasRewriteMap target aliasModules =
-  Map.fromList bound `Map.union` Map.fromList wrapped
+--
+-- A bound function with no alias (skipped, or left out by its header's
+-- allowlist) maps to its raw import, so its mentions link there instead of
+-- naming an alias that does not exist: the unsafe one, or the safe one for
+-- a function that takes a callback (the safe-only rule's default).
+aliasRewriteMap :: BindgenTarget -> [FamilyDecls] -> [AliasModule] -> Map Text (Text, Text)
+aliasRewriteMap target families aliasModules =
+  Map.fromList bound `Map.union` Map.fromList wrapped `Map.union` Map.fromList raw
  where
   links = [(b, (m.moduleName, bindingPrimaryAlias b)) | m <- aliasModules, b <- m.bindings]
   -- Identifier nodes carry mangled names; bare-text mentions (doxygen
@@ -417,6 +427,13 @@ aliasRewriteMap target aliasModules =
   -- cross-family ones never became refs) carry C names. Key both.
   bound = [(key, link) | (b, link) <- links, key <- [b.bindgenName, b.cName]]
   wrapped = [(name, link) | (b, link) <- links, Just name <- [wrappedName target b.cName]]
+  raw =
+    [ (key, (family.familyBase <> flavorModule, fn.hsName))
+    | family <- families
+    , fn <- family.functions
+    , let flavorModule = if fn.hasCallback then ".Safe" else ".Unsafe"
+    , key <- [fn.hsName, fn.cName]
+    ]
 
 -- | The alias documentation links to for a binding's function: the
 -- unsuffixed one when exported, the @Safe@ one otherwise.
@@ -1318,6 +1335,7 @@ conventionsComment target aliasModule =
                 \rationale."
             ]
         ]
+          <> allowlistNote
           <> shimsNote
           <> [ HsDoc.Paragraph
                  [ HsDoc.TextContent "Full conventions:"
@@ -1327,6 +1345,23 @@ conventionsComment target aliasModule =
              ]
     }
  where
+  -- Only where the registry allowlists the module's header.
+  allowlistNote
+    | aliasModule.allowlisted =
+        [ HsDoc.Paragraph
+            [ HsDoc.TextContent "This module aliases only the functions of"
+            , HsDoc.Monospace [HsDoc.TextContent (toText aliasModule.headerName)]
+            , HsDoc.TextContent
+                "that the registry allowlists. The header's other functions are \
+                \raw-only:"
+            , HsDoc.Module (aliasModule.familyBase <> ".Unsafe")
+            , HsDoc.TextContent "and"
+            , HsDoc.Module (aliasModule.familyBase <> ".Safe")
+            , HsDoc.TextContent "export them."
+            ]
+        ]
+    | otherwise = []
+
   -- Only where the module exports C shims.
   shimsNote = case nubOrd [b.familyBase | b <- aliasModule.bindings, b.familyBase `Set.member` shimFamilies] of
     [] -> []

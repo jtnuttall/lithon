@@ -173,7 +173,7 @@ Every target uses the same layout in `lithon-codegen/data/<key>/`:
 
 | Path                    | Written by    | Holds                                                                                         |
 | ----------------------- | ------------- | --------------------------------------------------------------------------------------------- |
-| `aliases.json`          | You           | The naming rule and each function's FFI flavor, with rationales.                              |
+| `aliases.json`          | You           | The naming rule, FFI flavors, and allowlists. See [`aliases.json`](#aliasesjson).             |
 | `constants.json`        | You           | Typed-constant groups: which macros are constants of which type.                              |
 | `versions.json`         | You           | The availability annotations. See [`versions.json`](#versionsjson).                           |
 | `unbound.json`          | You           | Each skipped declaration's disposition. See [`unbound.json`](#unboundjson).                   |
@@ -186,8 +186,9 @@ Every target uses the same layout in `lithon-codegen/data/<key>/`:
 
 The generator enforces six rules:
 
-- `aliases.json` must classify every callback-taking function as `both` or
-  `safe-only`. Other functions default to `both`.
+- `aliases.json` must classify every aliased callback-taking function as
+  `both` or `safe-only`. Other functions default to `both`. See
+  [`aliases.json`](#aliasesjson).
 - `constants.json` needs `groups`, even when empty: `{"groups": {}}`.
 - `unbound.json` gives every declaration hs-bindgen skips exactly one
   disposition, and names nothing it binds. See [`unbound.json`](#unboundjson).
@@ -202,6 +203,58 @@ The generator enforces six rules:
 - `include/` holds exactly the headers the target's `authored` field lists,
   in its root directory, and nothing else. A target that authors none has no
   `include/`.
+
+#### `aliases.json`
+
+The curated layer's decisions, by C name:
+
+```json
+{
+  "naming": "camel-segments",
+  "functions": {
+    "SDL_AddHintCallback": {
+      "safety": "safe-only",
+      "rationale": "invokes the callback once immediately with the current hint value"
+    }
+  },
+  "renames": { "lithon_SDL_BITSPERPIXEL": "bitsPerPixel" },
+  "skip": [],
+  "allow": {
+    "SDL_stdinc.h": { "bound": 153, "names": ["SDL_malloc", "SDL_free"] }
+  }
+}
+```
+
+| Field       | Meaning                                                                                        |
+| ----------- | ---------------------------------------------------------------------------------------------- |
+| `naming`    | Required. The alias naming rule: `camel-segments`.                                             |
+| `functions` | A function's flavors: `both` (the default), `safe-only`, or `unsafe-only`, with a `rationale`. |
+| `renames`   | A function's alias, where the naming rule's collides or reads badly.                           |
+| `skip`      | Functions the curated layer leaves out.                                                        |
+| `allow`     | Per header (basename), the only functions its curated module aliases (`names`), and `bound`.   |
+
+- `safe-only` and `unsafe-only` need a `rationale`. So does `both` on a
+  function without a callback, since that is the default.
+- A header in `allow` aliases its listed functions and nothing else. Its
+  other functions stay raw-only, in the raw family's `.Unsafe` and `.Safe`
+  modules, and the curated module's haddock says so. A header not in
+  `allow` aliases every function. `sdl3` lists `SDL_stdinc.h`: SDL's own API
+  there and the allocator family, not the C library clones.
+- `bound` is how many functions the header bound when its list was curated.
+  When the header's count changes, generation fails until you review the
+  list and set `bound` to the new count. The error names the unlisted
+  functions in the library's own style (the function prefix, then an
+  uppercase letter: SDL's convention, so the ones to review) and counts the
+  libc-style rest. The package manifest records each list's `allowed` and
+  `bound` counts (`aliasAllow`).
+- An allowed function must be bound, declared in that header, listed once,
+  and not skipped. A `functions`, `renames`, or `skip` entry for a function
+  an allowlist leaves out is an error, since nothing aliases it. So is an
+  allowlist for a header the target does not bind.
+- Curating is not skipping: the raw layer binds every function either way,
+  and `unbound.json` never lists one.
+- A doc mention of a bound function without an alias links to its raw
+  import.
 
 #### `unbound.json`
 
@@ -283,10 +336,11 @@ authored =
 - Each function is `namePrefix` and the exact name it wraps:
   `lithon_SDL_LogMessage`. Its alias drops the prefix and follows the
   naming rule (`logMessage`). `aliases.json` classifies and renames it like
-  any function, by its C name. A collision needs a rename (`lithon_SDL_Log`
-  is `logApplication`, since `log` is `SDL_log`'s), and SCREAMING macros
-  read better with one (`lithon_SDL_MS_TO_NS` would mint `msTONS`; it is
-  `msToNs`).
+  any function, by its C name. A collision with an aliased function needs a
+  rename (`lithon_SDL_Log` mints `log`, which is free only because
+  `SDL_stdinc.h`'s allowlist leaves the math `SDL_log` raw-only), and
+  SCREAMING macros read better with one (`lithon_SDL_MS_TO_NS` would mint
+  `msTONS`; it is `msToNs`).
 - With `extends`, the functions join the curated module of that header,
   under a `C shims` export section. Without it, the header gets a module of
   its own. The library's own mentions of a wrapped name (`SDL_CreateThread()`)
@@ -520,6 +574,10 @@ Below its gate, a wrapper reports the failure through `SDL_SetError`.
 Its C shims, in `data/sdl3/include/sdl3-bindgen-sys/`, cover SDL's
 variadic logging, error, and stream-printing functions and 46 function-like
 macros: 57 functions in 11 headers, one per SDL header they extend.
+
+Its `aliases.json` allowlists 22 functions of `SDL_stdinc.h`: SDL's own API
+there (environments, memory-function hooks, UTF-8 stepping) and the
+allocator family. The other 131 are raw-only.
 
 ### mpv
 

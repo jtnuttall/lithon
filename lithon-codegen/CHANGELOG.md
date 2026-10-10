@@ -132,13 +132,45 @@
   functions; the thread shims `both`, like `SDL_CreateThreadRuntime`, as
   the entry function runs on the new thread; the atomics `both` by default,
   unlisted like `SDL_AddAtomicInt`; the error shims and the pure ones
-  `unsafe-only`) and renames 31 (`lithon_SDL_Log` is `logApplication`:
-  `log` is `SDL_log`'s). The umbrella's conventions describe them.
+  `unsafe-only`) and renames 30. The umbrella's conventions describe them.
   `AuthoredTest` checks that the committed set loads and compiles
   (`-Wall -Wextra -Werror`) against the SDL `pkg-config` resolves.
+- `aliases.json`: `allow`, per header (basename), the only functions its
+  curated module aliases (`names`) and the header's function count when
+  the list was curated (`bound`); the header's other functions stay
+  raw-only, and the module's haddock says so. A header not listed aliases
+  every function. A census count other than `bound` fails generation
+  (`AliasAllowlistStale`) until the list is reviewed: the error names the
+  unlisted functions in the library's own style (uppercase after the
+  function prefix) and counts the libc-style rest. The package manifest
+  records each list's counts (`aliasAllow`).
+  An allowed function must be bound, declared in that header, listed once,
+  and not skipped; a `functions`, `renames`, or `skip` entry for a function
+  an allowlist leaves out is dead configuration and an error, and so is an
+  allowlist for a header the target does not bind (`AliasUnknownHeader`).
+  Curating is not skipping: the raw layer and the skip ledger are
+  unaffected. `validateAliasConfig` takes the target's function prefix and
+  the census by header (`functionCensus` returns header -> function -> takes
+  a callback).
+  Tested in `AliasConfigTest`,
+  `AliasRenderTest.unit_allowlistedFamilyRendersOnlyAllowed`, and
+  `CensusTest.test_allowBoundMatchesCensus` (each committed `bound` against
+  the committed raw family); the census goldens record
+  `allow=<headers>/<names>`.
+- A doc mention of a bound function without an alias (skipped, or left out
+  by an allowlist) links to its raw import (unsafe, or safe for a function
+  that takes a callback) instead of an alias that does not exist
+  (`aliasRewriteMap` takes the families).
 
 ### Changed
 
+- sdl3: `aliases.json` allowlists 22 of the 153 functions `SDL_stdinc.h`
+  binds: SDL's own API there (environments, memory-function hooks, UTF-8
+  stepping) and the allocator family (`malloc`, `free`, `strdup`, ...). The
+  other 131 (the C library clones, random numbers, checksums) are raw-only,
+  and their 105 classifications are gone. With the math `SDL_log` raw-only,
+  `lithon_SDL_Log` mints `log`, and its `logApplication` rename is gone. The
+  umbrella's conventions say so.
 - The SDL3 layer is a generic bindgen-sys pipeline (`Lithon.Codegen.Bindgen.*`)
   driven by a plain `BindgenTarget` record: a target is one module, one
   `data/<key>/` directory, and an entry in `Lithon.Codegen.Bindgen.Targets`.
