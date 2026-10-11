@@ -1,6 +1,6 @@
 {
   "files": {
-    "CHANGELOG.md": "rhv3:b6ccf63c80acc73c",
+    "CHANGELOG.md": "rhv3:845f5fae777d5525",
     "LICENSE": "rhv3:e95315cef45a1f9f",
     "LICENSE_SDL": "rhv3:3505fb0514288c9e",
     "LICENSE_c-expr-runtime": "rhv3:5134b2c7a1f80df7",
@@ -18,7 +18,7 @@
     "include/sdl3-bindgen-sys/SDL_surface_shims.h": "rhv3:d63b73cf94e5ec24",
     "include/sdl3-bindgen-sys/SDL_thread_shims.h": "rhv3:69ed7f7057637db3",
     "include/sdl3-bindgen-sys/SDL_timer_shims.h": "rhv3:0646a4c3bf7ee0ca",
-    "package.yaml": "rhv3:4dd5048517b12cbc",
+    "package.yaml": "rhv3:cf40ef51bbd62bec",
     "runtime-cexpr/C/Expr/HostPlatform.hs": "rhv3:e094390014d60e82",
     "runtime-cexpr/C/Expr/Posix32.hs": "rhv3:75d4000c507199f5",
     "runtime-cexpr/C/Expr/Posix64.hs": "rhv3:769966f7e93223d6",
@@ -61,7 +61,7 @@
     "runtime/HsBindgen/Runtime/Support/TH/Instances.hs": "rhv3:bdb93093d5c9d558",
     "runtime/HsBindgen/Runtime/Support/TH/Types.hs": "rhv3:2d5d6477e4821e8d",
     "runtime/HsBindgen/Runtime/Union.hs": "rhv3:118de4d31f67426b",
-    "sdl3-bindgen-sys.cabal": "rhv3:25196c1a0feac3cc",
+    "sdl3-bindgen-sys.cabal": "rhv3:cb742a6bce58811e",
     "src/SDL3/Sys.hs": "rhv3:8428ea42e4540dbf",
     "src/SDL3/Sys/Assert.hs": "rhv3:781f64ba34e44320",
     "src/SDL3/Sys/Asyncio.hs": "rhv3:24aa3fe9428975be",

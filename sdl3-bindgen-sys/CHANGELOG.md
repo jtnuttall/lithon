@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## 0.0.1.0
+## 0.0.1.0 2026-10-10
 
 Breaking: `SDL3.Sys.Stdinc` drops 151 function aliases released in 0.0.0.3.
 All of these clone `libc` functions only. If you need them, the raw bindings are
