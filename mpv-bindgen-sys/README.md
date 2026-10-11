@@ -1,52 +1,30 @@
 # mpv-bindgen-sys
 
-Fully automated, luxury low-level Haskell bindings to
-[libmpv](https://mpv.io), the library behind the mpv media player: the
-whole client API, machine-generated from its headers using an
-ever-so-slightly hacked version of `hs-bindgen`.
+Low-level, machine-generated Haskell bindings to [libmpv](https://mpv.io), the
+library behind the mpv media player.
 
-This package gets you libmpv in full — playback driven through options,
-commands, properties, and events; the render API for drawing video into
-your own OpenGL context or a memory buffer; and custom stream protocols
-backed by your own callbacks.
+libmpv makes it relatively easy to add video playback support to your
+application without implementing it from scratch.
 
-This package aims to support **64-bit Linux, macOS, and Windows**.
-
-This library aims to be:
-
-- **Complete by construction:** Generated from all four libmpv client API
-  headers (`client.h`, `render.h`, `render_gl.h`, `stream_cb.h`), so a
-  gap is either a code generation bug or a
-  [deliberate omission](#what-is-not-bound) rather than a binding waiting
-  to be hand-written.
-- **Curated:** The `Mpv.Sys.*` layer wraps `hs-bindgen`'s output with
-  best-effort Haskell casing, native scalar types, and FFI safety
-  decisions and recommendations.
-- **First-class mpv docs:** Every binding carries libmpv's header
-  documentation, and notes from the code generator's curation layer.
-- **ABI-verified:** A generated translation unit of C `_Static_assert`s
-  verifies the library's baked layouts against _your_ libmpv at every
-  build. Divergence is a compile error naming the declaration, not
-  memory corruption. See [ABI verification](#abi-verification) for more.
+This package aims to support **64-bit Linux, MacOS, and Windows**.
 
 Most of what you do with libmpv goes through options, commands, and
 properties, which the [mpv manual](https://mpv.io/manual/stable/)
-documents rather than the headers.
+documents.
 
 ## Quick start
 
 ### Install build requirements
 
-Install libmpv development files for client API **>= 2.0** (mpv 0.35 or
-newer) where `pkg-config` can find them as `mpv`. The development
-headers must be present, not just the shared library.
-`pkg-config --modversion mpv` prints the client API version (e.g.
-`2.5.0`), not the mpv release.
+Install libmpv development files for **client API >= 2.0** (i.e., mpv 0.35 or
+newer). `pkg-config --modversion mpv` prints the client API version.
+
+The development headers must be present.
 
 Common setups:
 
 - **Debian/Ubuntu**: `apt install libmpv-dev`
-- **macOS**: `brew install mpv`
+- **MacOS**: `brew install mpv`
 - **Arch**: `pacman -S mpv`
 - **Fedora**: `dnf install mpv-devel`
 - **Windows**: WSL2 with the Linux instructions, or native MSYS2.
@@ -93,10 +71,9 @@ main = do
     fail (what <> ": " <> msg)
 ```
 
-This plays `video.mkv` with the video output disabled (audio still
-plays) until the file ends. `initialize`, `waitEvent`, and
-`terminateDestroy` can block for a long time, so the example uses their
-`Safe` flavor; see [Safe and unsafe FFI](#safe-and-unsafe-ffi).
+This plays `video.mkv` with the video output disabled until the file ends.
+`initialize`, `waitEvent`, and `terminateDestroy` can block for a long time,
+so the example uses the `Safe` binding. See [Safe and unsafe FFI](#safe-and-unsafe-ffi).
 
 For a fuller example, see `mpv-headless` in
 [`lithon-examples`](https://github.com/jtnuttall/lithon/tree/main/lithon-examples).
@@ -133,7 +110,7 @@ pacman -S mingw-w64-ucrt-x86_64-mpv mingw-w64-ucrt-x86_64-pkgconf
 1. Run the `pacman` commands above through `stack exec -- pacman ...` so
    that the packages are installed in `stack`'s MSYS2.
 2. Add `msys-environment: UCRT64` to your `stack.yaml`.
-3. Add `mpv-bindgen-sys-0.0.0.1` to `extra-deps` in your `stack.yaml`. Running
+3. Add `mpv-bindgen-sys-x.x.x.x` to `extra-deps` in your `stack.yaml`. Running
    `stack build` should print out a helpful, pasteable entry for
    this purpose.
 
@@ -144,7 +121,7 @@ snapshot: lts-24.51
 packages:
   - .
 extra-deps:
-  - mpv-bindgen-sys-0.0.0.1 # hash may be here if you copy from stack build
+  - mpv-bindgen-sys-x.x.x.x # hash may be here if you copy from stack build
 msys-environment: UCRT64 # important: build will not work without this
 ```
 
@@ -166,21 +143,10 @@ when running the program, so Windows finds the libmpv DLL.
 
 ## Library structure
 
-For most uses, you will `import Mpv.Sys qualified as Mpv`. `Mpv.Sys`
-re-exports one module per libmpv header:
+For most uses, you will `import Mpv.Sys qualified as Mpv`.
 
-| Module             | Header        | Contents                                                         |
-| ------------------ | ------------- | ---------------------------------------------------------------- |
-| `Mpv.Sys.Client`   | `client.h`    | Core client API: handles, options, commands, properties, events. |
-| `Mpv.Sys.Render`   | `render.h`    | Render API: drive video output from your own rendering loop.     |
-| `Mpv.Sys.RenderGl` | `render_gl.h` | OpenGL backend parameters for the render API.                    |
-| `Mpv.Sys.StreamCb` | `stream_cb.h` | Custom stream protocols via user callbacks.                      |
-
-The raw hs-bindgen output lives underneath as `Mpv.Sys.Bindgen.*`, if
-you need to drop down to C types: each family (`Mpv.Sys.Bindgen.Client`
-and so on) carries the types and constants, with the foreign imports in
-its `.Safe` and `.Unsafe` modules and each function's address in
-`.FunPtr`.
+The raw hs-bindgen output exists in `Mpv.Sys.Bindgen.*`, if you need to drop
+down to C types.
 
 ### Safe and unsafe FFI
 
@@ -196,125 +162,41 @@ General rules for safe vs. unsafe FFI:
   calls block the current GHC thread (capability) and the garbage
   collector, but their overhead is very low compared to `safe` calls.
 
-libmpv makes the first rule bite more often than most C libraries. It
-runs your callbacks (the wakeup callback, the render update callback,
-custom stream callbacks) on its own threads, and sometimes on yours:
-`client.h` warns that the wakeup callback can be called from a thread
-while an mpv API function is running. **If any callback you hand to mpv
-is a Haskell function, use the `Safe` aliases for everything except the
-unsafe-only functions below.**
+With libmpv, the first rule will apply more often than not. It runs your
+callbacks on its own threads, and sometimes on your own. If any callback
+you give mpv is a Haskell function, you'll need the `Safe` variants for
+nearly everything.
 
-The curated registry settles the rest:
-
-- **Safe only, because a callback fires during the call:**
-  `setWakeupCallbackSafe` and `renderContextSetUpdateCallbackSafe`
-  invoke the new callback once immediately, and
-  `renderContextCreateSafe` calls the `get_proc_address` you pass in
-  `mpv_opengl_init_params`. That last one is curated by hand: the
-  callback travels inside the `mpv_render_param` array, where the
-  generator's callback census cannot see it.
-- **Both flavors, but use the Safe one:** `waitEventSafe` (up to its
-  timeout; forever when negative), `waitAsyncRequestsSafe`,
-  `initializeSafe`, `destroySafe`, and `terminateDestroySafe` can block
-  for a long time (an `unsafe` call would stall the garbage collector
-  program-wide meanwhile).
-- **Unsafe only:** `clientId`, `clientName`, `errorString`, `eventName`,
-  `eventToNode`, `free`, `freeNodeContents`, `getTimeNs`, and `getTimeUs`
-  cannot block or call back.
-- Every other function exports both. Many of them wait for the playback
-  core, which `client.h` says "can take an unbounded time", and several
-  run the wakeup callback synchronously.
-
-For the safe-only functions, the genuine unsafe import stays reachable
-under the family's `Mpv.Sys.Bindgen.*.Unsafe` module, if you know better.
-
-### Conversion to and from C types
-
-`Mpv.Sys` re-exports `Mpv.Sys.Runtime`, the conversion vocabulary you'll
-actually reach for: the `CEnum` classes for moving between enum newtypes
-(`Mpv_event_id`, `Mpv_format`, …) and their integral representations.
-
-C scalars in parameters and results arrive as their native Haskell
-twins (`int` as `Int32`, `double` as `Double`); struct fields and
-pointees keep their C types.
+Notable exceptions: `clientId`, `clientName`, `errorString`, `eventName`,
+`eventToNode`, `free`, `freeNodeContents`, `getTimeNs`, and `getTimeUs`,
+none of which can block or call back.
 
 ## Platform support
 
-**64-bit platforms only.** Linux, macOS (Homebrew `mpv`), and Windows
+**64-bit platforms only.** Linux, MacOS (Homebrew `mpv`), and Windows
 (MSYS2 UCRT64, including the LLP64 layouts) are all targets. 32-bit
-targets are rejected by the ABI assertions — 64-bit layouts are baked
-in.
+targets are rejected at compile time.
 
 ## Common issues
 
-- **`create` returns `nullPtr`** — libmpv refuses to start unless the
+- **`create` returns `nullPtr`**: libmpv refuses to start unless the
   `LC_NUMERIC` locale category is `"C"` (see "Basic environment
   requirements" in `client.h`). If your program or a GUI toolkit calls
   `setlocale(LC_ALL, "")`, reset `LC_NUMERIC` to `"C"` before `create`.
-- **`foo` or `fooSafe`?** — every function's haddock states its flavor
-  choice, and the rationale, under its **`mpv-bindgen-sys` notes**
-  section. If you registered a Haskell callback, read
-  [Safe and unsafe FFI](#safe-and-unsafe-ffi) first.
-- **Calling mpv from a callback** — don't. The headers forbid calling
+- **Don't call mpv from a callback**: the headers forbid calling
   the API from the wakeup and update callbacks, and a stream callback
-  that does can deadlock. Have the callback signal a thread (e.g. with
-  `tryPutMVar`) that does the work.
-- **The render API and OpenGL** — with the OpenGL backend, the
-  `renderContext*` calls need your OpenGL context current on the calling
-  OS thread (`render.h`). Make those calls from a bound thread (`main`,
-  or one started with `forkOS`): an unbound Haskell thread can move
-  between OS threads from one call to the next.
-- **`free` is ambiguous** — `mpv_free` is bound as `free`, which clashes
-  with `Foreign.Marshal.Alloc.free`. Import `Mpv.Sys` qualified.
+  that does can deadlock. Have the callback signal a different thread.
+- **OpenGL**: `renderContext*` calls need your OpenGL context current
+  on the calling OS thread. Make those calls from a **bound thread** (`main`,
+  or a thread started with `forkOS`).
 
 ## What is not bound
 
-- **`mpv_client_api_version`**: it returns `unsigned long`, whose width
-  differs between LP64 and LLP64, and hs-bindgen bakes the raw foreign
-  imports' FFI types from the generation host. That is the reason
-  `sdl3-bindgen-sys` omits SDL's seven `long`-typed functions, too. The
-  `MPV_CLIENT_API_VERSION` constant remains, but it holds the version
-  these bindings were generated from (2.5), baked at generation time, not
-  the version of the libmpv you link. For the running player, read the
-  `mpv-version` property.
-- **The `MPV_CPLUGIN_DYNAMIC_SYM` symbol table**: with that macro
-  defined, the headers turn every `mpv_*` function into a `pfn_mpv_*`
-  function pointer for C plugins loaded into the mpv player. These
-  bindings are generated without it and bind the functions directly.
-- **`MPV_RENDER_PARAM_DRM_OSD_SIZE`**: a `#define` alias of an enum
-  constant, which hs-bindgen does not bind. Use
+- **`mpv_client_api_version`**: it returns `unsigned long`, whose width cannot
+  be right on both LP64 and LLP64.
+- **The `MPV_CPLUGIN_DYNAMIC_SYM` symbol table**.
+- **`MPV_RENDER_PARAM_DRM_OSD_SIZE`**: use
   `MPV_RENDER_PARAM_DRM_DRAW_SURFACE_SIZE`, the value it names.
-
-The complete list, checked at every generation, is the
-[skip ledger](https://github.com/jtnuttall/lithon/blob/main/lithon-codegen/data/mpv/unbound.md):
-every declaration hs-bindgen skips, why, and what lithon does about it.
-
-Deprecated declarations are bound, not omitted: `MPV_ENABLE_DEPRECATED`
-keeps its default, so `MPV_EVENT_IDLE`, `MPV_EVENT_TICK`, and
-`mpv_get_wakeup_pipe` are present.
-
-## libmpv versions
-
-libmpv client API **>= 2.0** (mpv 0.35) is required; the surface is
-generated from client API 2.5 (mpv 0.41.0).
-
-Two functions are newer than that floor. They still compile and link
-against an older libmpv: their wrapper C is gated on
-`MPV_CLIENT_API_VERSION`, and below the gate:
-
-- `delProperty` (`mpv_del_property`, client API 2.1 / mpv 0.36) returns
-  `MPV_ERROR_UNSUPPORTED` without calling libmpv.
-- `getTimeNs` (`mpv_get_time_ns`, client API 2.2 / mpv 0.37) returns
-  `mpv_get_time_us` times 1000: the same clock, at microsecond
-  resolution.
-
-Below the gate, their raw `Mpv.Sys.Bindgen.Client.FunPtr` addresses are
-`nullFunPtr`.
-
-No struct layout or enum value changed between client API 2.0 and 2.5,
-so the ABI assertions check the same layouts on every supported libmpv.
-`MPV_RENDER_PARAM_AMBIENT_LIGHT`, deprecated in 2.5, is still defined
-and still bound.
 
 ## Versioning
 
@@ -352,31 +234,20 @@ Building with `-f-abi-assertions` turns off the check, not the
 mismatch: the bindings would then read and write the baked layout
 against headers that disagree with it.
 
-## Known documentation issues
+## Known documentation warts for `0.0.0.1`
 
 - libmpv documents some struct members and enum constants with a comment
   _after_ the declaration (`char *string; /** valid if … */` in
   `mpv_node`, the `///` level names in `mpv_log_level`). In the
-  generated haddocks those comments attach to the _following_ member;
-  read them against the header.
-- The raw layer keeps hs-bindgen's default type names, the C spelling
-  capitalized: `Mpv_node`, `Mpv_event_id`, `Mpv_render_param`.
-- `enum mpv_render_update_flag` is bound under its typedef name,
-  `Mpv_render_context_flag`; `mpv_node`'s anonymous union is
-  `Mpv_node_u`; `struct _drmModeAtomicReq` is the opaque
-  `C_DrmModeAtomicReq`.
-- Each header's opening overview comment lands in its first
-  declaration's haddock (`client.h` → `mPV_MAKE_VERSION`, `render.h` →
-  `Mpv_render_context`, `render_gl.h` → `Mpv_opengl_init_params`,
-  `stream_cb.h` → `Mpv_stream_cb_read_fn`).
+  generated haddocks those comments attach to the _following_ member.
+- Each header's opening overview comment appears in its first
+  declaration's haddock.
 
 ## Provenance and licensing
 
-Generated by [hs-bindgen](https://github.com/well-typed/hs-bindgen)
-driven by the repository's `lithon-codegen`, from the libmpv client API
-2.5 headers (mpv 0.41.0). The generated tree is never hand-edited, but
-bugs are mine, not mpv's or hs-bindgen's: report them at the
-[issue tracker](https://github.com/jtnuttall/lithon/issues).
+Generated by [hs-bindgen](https://github.com/well-typed/hs-bindgen) from the
+libmpv client API 2.5 headers (mpv 0.41.0). Treat bugs as mine, not mpv's or
+hs-bindgen's, and report them at my [issue tracker](https://github.com/jtnuttall/lithon/issues).
 
 - `mpv-bindgen-sys` is BSD-3-Clause (see `LICENSE`).
 - The libmpv client API headers, and the header documentation embedded
@@ -386,16 +257,15 @@ bugs are mine, not mpv's or hs-bindgen's: report them at the
 
 ### libmpv's license applies to your program
 
-The ISC license covers the headers, not libmpv. libmpv is GPLv2 or later
-by default, and LGPLv2.1 or later only when mpv is built with
-`-Dgpl=false` (see mpv's
-[`Copyright`](https://github.com/mpv-player/mpv/blob/master/Copyright)
-file). A program that links libmpv is subject to libmpv's license,
-whatever the license of these bindings.
+The dev headers are ISC, but libmpv itself is **GPLv2 or later by default**
+and **LGPLv2.1 or later** only when built with `-Dgpl=false`.
+
+A program that bundles or statically links libmpv is subject to libmpv's license
+regardless of the licensing of these bindings.
 
 In practice, shipping a Haskell program built on this package means
-shipping libmpv with it, statically linked or bundled, so plan for the
-GPL's obligations (or use an LGPL build of libmpv, linked dynamically).
+shipping alongside it, statically linked or bundled, so plan for the
+GPL obligations.
 
 This package only declares the `pkg-config` dependency; how libmpv is
 linked is up to your build. For a static link, use the flags
