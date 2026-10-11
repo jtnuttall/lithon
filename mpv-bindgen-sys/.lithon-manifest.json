@@ -1,11 +1,11 @@
 {
   "files": {
-    "CHANGELOG.md": "rhv3:3b4d677d9a14ec1f",
+    "CHANGELOG.md": "rhv3:afa049ac6ed31262",
     "LICENSE": "rhv3:e95315cef45a1f9f",
     "LICENSE_c-expr-runtime": "rhv3:5134b2c7a1f80df7",
     "LICENSE_hs-bindgen-runtime": "rhv3:5134b2c7a1f80df7",
     "LICENSE_libmpv": "rhv3:1ef9ef6af4f95f82",
-    "README.md": "rhv3:7ddd9fd554e308fd",
+    "README.md": "rhv3:3f44606d9f0adab7",
     "cbits/abi_assertions.c": "rhv3:416e82744b1f1e04",
     "mpv-bindgen-sys.cabal": "rhv3:4fb971e8d90a7eef",
     "package.yaml": "rhv3:61b1f146aef68527",
