@@ -46,7 +46,7 @@ echo "== tests =="
 # rapidhash:rapidhash-test only: the doctest suite runs via its dedicated
 # script below, which also rebuilds the standalone rapidhash/dist-newstyle
 # that doctest-parallel's walk-up discovery would otherwise load stale.
-cabal test lithon-codegen lithon-core lithon-examples rapidhash:rapidhash-test
+cabal test lithon-codegen lithon-core lithon-examples rapidhash:rapidhash-test rapidhash-aeson
 
 echo "== rapidhash pin (C reference vs committed vectors) =="
 ./scripts/rapidhash-pin.sh
@@ -59,6 +59,7 @@ cabal haddock lithon-vk
 cabal haddock sdl3-bindgen-sys
 cabal haddock mpv-bindgen-sys
 cabal haddock rapidhash
+cabal haddock rapidhash-aeson
 
 echo "== triangle-offscreen (lavapipe) =="
 out=$(cd "$(mktemp -d)" && cabal --project-dir="$OLDPWD" run -v0 lithon-examples:triangle-offscreen 2>&1) || {

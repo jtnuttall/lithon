@@ -1,18 +1,16 @@
-{-# LANGUAGE CPP #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
--- | Orphan aeson instances for 'Data.Hash.RapidHash.Types.RapidHash' and
--- 'Data.Hash.RapidHash.Types.RapidHashMicro', encoding to and from the tagged
--- hex form (e.g. @"rhv3:0123456789abcdef"@, @"rhmv3:0123456789abcdef"@).
+-- | Orphan aeson instances for 'RapidHash' and 'RapidHashMicro', encoding to
+-- and from the tagged hex form the rest of rapidhash uses
+-- (e.g. @"rhv3:0123456789abcdef"@, @"rhmv3:0123456789abcdef"@).
 --
--- Opt-in with the @aeson@ flag; without it this module is empty and the
--- instances do not exist.
+-- The module exports nothing; import it for its instances:
+--
+-- > import Data.Hash.RapidHash.Aeson ()
 module Data.Hash.RapidHash.Aeson () where
 
-#ifdef WANT_AESON
 import Data.Aeson qualified as A
 import Data.Aeson.Types qualified as A
-
 import Data.Hash.RapidHash.Types
 
 instance A.ToJSON RapidHash where
@@ -54,4 +52,3 @@ instance A.ToJSONKey RapidHashMicro where
 instance A.FromJSONKey RapidHashMicro where
   fromJSONKey = A.FromJSONKeyTextParser \t -> either fail pure (parseRapidHashMicroText t)
   {-# INLINEABLE fromJSONKey #-}
-#endif

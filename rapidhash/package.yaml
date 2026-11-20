@@ -1,5 +1,5 @@
 name: rapidhash
-version: 0.2.0.0
+version: 0.3.0.0
 github: "jtnuttall/lithon/rapidhash"
 license: BSD-3-Clause
 author: "Jeremy Nuttall"
@@ -86,11 +86,6 @@ library:
         - -O2
       cc-options:
         - -O3
-    - condition: flag(aeson)
-      dependencies:
-        - aeson >=2.2 && <2.4
-      cpp-options:
-        - -DWANT_AESON
 
 tests:
   rapidhash-test:
@@ -154,10 +149,6 @@ flags:
       Since the library is tiny, this shouldn't be too much trouble, but you can disable
       this flag if it's slowing your builds too much.
     default: true
-    manual: true
-  aeson:
-    description: Include ToJSON/FromJSON and ToJSONKey/FromJSONKey instances.
-    default: false
     manual: true
   llvm-bench:
     description: |

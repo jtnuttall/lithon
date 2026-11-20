@@ -201,10 +201,16 @@ jobs:
           cabal haddock
           cabal check
 
-      - name: Aeson-flag compile matrix
+      - name: Build, test, haddock rapidhash-aeson from its sdist against the rapidhash sdist
         run: |
-          cd "$RUNNER_TEMP"/sdist/rapidhash-*/
-          cabal build --flags="+aeson"
+          (cd rapidhash-aeson && cabal sdist --ignore-project -o "$RUNNER_TEMP/sdist")
+          cd "$RUNNER_TEMP/sdist"
+          tar -xzf rapidhash-aeson-*.tar.gz
+          printf 'packages: %s %s\n' rapidhash-[0-9]*/ rapidhash-aeson-*/ > cabal.project
+          cabal build rapidhash-aeson --enable-tests --write-ghc-environment-files=always
+          cabal test rapidhash-aeson --enable-tests --test-show-details=direct
+          cabal haddock rapidhash-aeson
+          (cd rapidhash-aeson-*/ && cabal check)
 
   sdl3-shmup-smoke:
     if: github.repository == 'jtnuttall/lithon'

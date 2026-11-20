@@ -40,6 +40,7 @@ import Data.Aeson qualified as Aeson
 import Data.ByteString.Lazy qualified as LBS
 import Data.Conduit.Process.Typed (ProcessConfig)
 import Data.Hash.RapidHash
+import Data.Hash.RapidHash.Aeson ()
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 import Data.Text.IO qualified as TIO

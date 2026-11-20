@@ -7,6 +7,7 @@ packages:
   lithon-prelude
   mpv-bindgen-sys
   rapidhash
+  rapidhash-aeson
   sdl3-bindgen-sys
   typed-product-builder
 
@@ -38,11 +39,6 @@ package c-expr-dsl
 
 package doxygen-parser
   tests: False
-
--- Exercise rapidhash's optional aeson instances in the repo build/test/CI.
--- The published flag stays default-off; consumers opt in themselves.
-package rapidhash
-  flags: +aeson
 
 -- hs-bindgen pins aeson <2.3.
 -- Scoped until the bound is widened on the vendor branch.

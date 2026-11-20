@@ -11,6 +11,7 @@ module Lithon.Codegen.Vulkan.Registry.Summary (
 import Data.Aeson (ToJSON)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Hash.RapidHash
+import Data.Hash.RapidHash.Aeson ()
 import Data.Map.Strict qualified as Map
 import Data.Vector qualified as V
 import Lithon.Prelude
