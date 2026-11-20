@@ -67,7 +67,7 @@ Common setups:
 {-# LANGUAGE GHC2021 #-}
 {-# LANGUAGE BlockArguments #-}
 
-import Control.Monad (unless)
+import Control.Monad (replicateM_, unless)
 import Foreign.C.ConstPtr (ConstPtr (..))
 import Foreign.C.String (peekCString, withCString)
 import SDL3.Sys qualified as SDL3
@@ -80,7 +80,11 @@ main = do
     fail ("SDL_Init: " <> err)
   window <- withCString "hello" \title ->
     SDL3.createWindow (ConstPtr title) 640 480 0
-  SDL3.delaySafe 2000
+  -- Some platforms (notably macOS) don't show the window until events are
+  -- pumped, so pump while we wait rather than sleeping once.
+  replicateM_ 200 do
+    SDL3.pumpEvents
+    SDL3.delaySafe 10
   SDL3.destroyWindow window
   SDL3.quit
 ```
