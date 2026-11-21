@@ -133,10 +133,10 @@
                 doxygen
               ];
               buildInputs = [
-                # clang / C/C++ stuff
-                bear
+                # general gfx
+                mesa # lavapipe ICD for offscreen triangle
 
-                # vulkan dependencies
+                # vulkan
                 glslang
                 spirv-tools
                 vulkan-headers
@@ -144,13 +144,10 @@
                 vulkan-tools
                 vulkan-tools-lunarg
                 vulkan-validation-layers
-                mesa # lavapipe ICD for offscreen triangle
 
-                # SDL3 bindings
+                # SDL
                 sdl3
-
-                # windowed demo (triangle-sdl, cabal flag `sdl`)
-                SDL2
+                SDL2 # windowed demo (triangle-sdl, cabal flag `sdl`)
 
                 # libmpv bindings (mpv-bindgen-sys, the mpv-headless example)
                 libmpv
@@ -163,14 +160,22 @@
                 libxrandr
                 wayland
 
+                # clang / C/C++
+                bear
+
+                # Linting/formatting/quality
+                dprint # REMOVE
+                lychee
+                oxfmt
+                shellcheck
+                typos
+
                 # workflow dependencies
                 ast-grep
-                dprint
                 git
                 gawk
                 fd
                 tree-sitter
-                shellcheck
                 bat
                 coreutils
                 jq
@@ -234,9 +239,12 @@
   nixConfig = {
     extra-substituters = [
       "https://cache.zw3rk.com"
+      "https://cache.iog.io"
     ];
     extra-trusted-public-keys = [
       "loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk="
+      "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
     ];
+    allow-import-from-derivation = true;
   };
 }
