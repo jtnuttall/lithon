@@ -57,8 +57,8 @@
           ];
         };
 
-        treefmtEval = treefmt-nix.lib.evalModules pkgs ./nix/treefmt.nix;
-        treefmtWrapper = treefmtEval.${pkgs.system}.config.build.wrapper;
+        treefmtEval = treefmt-nix.lib.evalModule pkgs ./nix/treefmt.nix;
+        treefmtWrapper = treefmtEval.config.build.wrapper;
 
         project = with pkgs; let
           llvmPkgs = llvmPackages_22;
@@ -213,7 +213,7 @@
 
           formatter = treefmtWrapper;
           checks = {
-            formatting = treefmtEval.${pkgs.system}.config.build.check self;
+            formatting = treefmtEval.config.build.check self;
           };
 
           devShells =
