@@ -47,9 +47,10 @@ here.
 These packages follow the [PVP](https://pvp.haskell.org/) and are stable;
 pin to the major (e.g., `^>= 0.1`).
 
-| Package                   | Description                                                                                                 |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| [`rapidhash`](rapidhash/) | Zero-copy bindings to [rapidhash v3](https://github.com/Nicoshev/rapidhash), a very fast, high-quality hash |
+| Package                               | Description                                                                                                 |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| [`rapidhash`](rapidhash/)             | Zero-copy bindings to [rapidhash v3](https://github.com/Nicoshev/rapidhash), a very fast, high-quality hash |
+| [`rapidhash-aeson`](rapidhash-aeson/) | aeson instances for `rapidhash` digests                                                                     |
 
 ### Published, experimental
 

@@ -1,5 +1,3 @@
-{-# LANGUAGE CPP #-}
-
 -- |
 -- [rapidhash](https://github.com/Nicoshev/rapidhash) is a very fast, high-quality,
 -- non-cryptographic and platform-independent hash.
@@ -13,9 +11,8 @@
 --
 -- This module can be imported unqualified.
 --
--- 'Data.Aeson.ToJSON'\/'Data.Aeson.FromJSON' and
--- 'Data.Aeson.ToJSONKey'\/'Data.Aeson.FromJSONKey' are provided behind the
--- @aeson@ Cabal flag.
+-- @ToJSON@\/@FromJSON@ and @ToJSONKey@\/@FromJSONKey@ instances are provided by
+-- the companion package @rapidhash-aeson@ (import @Data.Hash.RapidHash.Aeson ()@).
 --
 -- === __Security and HashDoS__
 --
@@ -132,8 +129,3 @@ import Data.Hash.RapidHash.Types (
   showRapidHashMicroText,
   showRapidHashText,
  )
-
-#ifdef WANT_AESON
--- Orphans only
-import Data.Hash.RapidHash.Aeson ()
-#endif

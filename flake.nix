@@ -204,6 +204,7 @@
             default = flake.packages."lithon-codegen:exe:lithon-codegen";
             tests = flake.packages."lithon-codegen:test:lithon-codegen-test";
             "rapidhash-docs" = project.hsPkgs.rapidhash.components.library.doc;
+            "rapidhash-aeson-docs" = project.hsPkgs.rapidhash-aeson.components.library.doc;
             "sdl3-bindgen-sys-docs" = project.hsPkgs.sdl3-bindgen-sys.components.library.doc;
             "mpv-bindgen-sys-docs" = project.hsPkgs.mpv-bindgen-sys.components.library.doc;
           };

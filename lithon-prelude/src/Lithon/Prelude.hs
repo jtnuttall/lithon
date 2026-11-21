@@ -108,6 +108,7 @@ import Data.Function (applyWhen)
 import Data.Functor.Contravariant (Contravariant (..))
 import Data.Generics.Labels ()
 import Data.Generics.Product (HasField' (..), HasType (..), getTyped)
+import Data.Hash.RapidHash.Aeson ()
 import Data.List qualified as L
 import Data.Profunctor (Profunctor (..), Star (..), Strong (..))
 import Data.Profunctor.Strong (strong)

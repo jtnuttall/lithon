@@ -83,24 +83,8 @@ your needs, rewrap the underlying `Word64` however you like.
 
 ### Aeson
 
-Efficient `Aeson.ToJSON`/`FromJSON` and `Aeson.ToJSONKey`/`FromJSONKey`
-instances are provided behind flag `aeson`; map keys use the same tagged
-hex form as values. To use these, add:
-
-cabal.project:
-
-```cabal
-package rapidhash
-  flags: +aeson
-```
-
-stack.yaml:
-
-```yaml
-flags:
-  rapidhash:
-    aeson: true
-```
+`ToJSON`/`FromJSON` and `ToJSONKey`/`FromJSONKey` instances are provided by
+[`rapidhash-aeson`](https://hackage.haskell.org/package/rapidhash-aeson).
 
 ## Supported input types
 

@@ -1,0 +1,63 @@
+name: rapidhash-aeson
+version: 0.1.0.0
+github: "jtnuttall/lithon/rapidhash-aeson"
+license: BSD-3-Clause
+author: "Jeremy Nuttall"
+maintainer: "jeremy@jeremy-nuttall.com"
+copyright: "(c) 2026 Jeremy Nuttall"
+category: Data
+tested-with:
+  - GHC == 9.8.4
+  - GHC == 9.10.3
+  - GHC == 9.12.4
+
+synopsis: aeson instances for rapidhash digests
+description: |
+  `ToJSON`/`FromJSON` and `ToJSONKey`/`FromJSONKey` instances for rapidhash
+  digests, following rapidhash's tagged textual form.
+
+license-file: LICENSE
+
+extra-doc-files:
+  - README.md
+  - CHANGELOG.md
+
+language: GHC2021
+
+default-extensions:
+  - BlockArguments
+  - DerivingStrategies
+  - LambdaCase
+
+ghc-options:
+  - -Wmissing-deriving-strategies
+  - -Wmissing-export-lists
+  - -Wredundant-constraints
+  - -Wall
+
+dependencies:
+  - base >=4.19 && <4.22
+  - aeson >=2.2 && <2.4
+  - rapidhash ^>=0.3
+
+library:
+  source-dirs: src
+
+tests:
+  rapidhash-aeson-test:
+    main: Driver.hs
+    source-dirs: test
+    ghc-options:
+      - -Wno-missing-export-lists
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - rapidhash-aeson
+      - containers
+      - hedgehog ^>=1.7
+      - tasty ^>=1.5
+      - tasty-hedgehog ^>=1.4
+      - tasty-hunit ^>=0.10
+    build-tools:
+      - tasty-discover:tasty-discover ^>=5.2

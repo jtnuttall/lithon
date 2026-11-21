@@ -1,5 +1,5 @@
 name: rapidhash
-version: 0.2.0.0
+version: 0.3.0.0
 github: "jtnuttall/lithon/rapidhash"
 license: BSD-3-Clause
 author: "Jeremy Nuttall"
@@ -17,17 +17,8 @@ description: |
   non-cryptographic hash. The upstream single-header C implementation is
   vendored and ships with this package, so there is no system dependency.
 
-  The rapidhash algorithm itself is platform-independent. This package's
-  byte-oriented instances (Text, ByteString, ShortByteString, ByteArray)
-  produce stable, portable digests you can persist and compare across
-  machines; the element-typed Vector and PrimArray instances hash raw memory
-  as a fast path for large in-memory working sets and are not portable across
-  word width or endianness.
-
-  This is not a cryptographically secure hash. Use something else if you need cryptographic
-  security.
-
-  For more information, see the upstream repository: https://github.com/Nicoshev/rapidhash
+  This is not a cryptographically secure hash. Use something else if you need
+  cryptographic security.
 
 license-file:
   - LICENSE
@@ -86,11 +77,6 @@ library:
         - -O2
       cc-options:
         - -O3
-    - condition: flag(aeson)
-      dependencies:
-        - aeson >=2.2 && <2.4
-      cpp-options:
-        - -DWANT_AESON
 
 tests:
   rapidhash-test:
@@ -154,10 +140,6 @@ flags:
       Since the library is tiny, this shouldn't be too much trouble, but you can disable
       this flag if it's slowing your builds too much.
     default: true
-    manual: true
-  aeson:
-    description: Include ToJSON/FromJSON and ToJSONKey/FromJSONKey instances.
-    default: false
     manual: true
   llvm-bench:
     description: |

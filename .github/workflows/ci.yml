@@ -36,7 +36,7 @@ jobs:
             ghc: 9.10.3
           - os: ubuntu-latest
             ghc: 9.12.4
-          - os: macos-14
+          - os: macos-latest
             ghc: 9.12.4
           - os: windows-latest
             ghc: 9.12.4
@@ -92,7 +92,7 @@ jobs:
             ghc: 9.12.4
           - os: ubuntu-24.04
             ghc: 9.14.1
-          - os: macos-14
+          - os: macos-latest
             ghc: 9.12.4
           - os: windows-latest
             ghc: 9.12.4
@@ -201,14 +201,21 @@ jobs:
           cabal haddock
           cabal check
 
-      - name: Aeson-flag compile matrix
+      - name: Build, test, haddock rapidhash-aeson from its sdist against the rapidhash sdist
         run: |
-          cd "$RUNNER_TEMP"/sdist/rapidhash-*/
-          cabal build --flags="+aeson"
+          (cd rapidhash-aeson && cabal sdist --ignore-project -o "$RUNNER_TEMP/sdist")
+          cd "$RUNNER_TEMP/sdist"
+          tar -xzf rapidhash-aeson-*.tar.gz
+          printf 'packages: %s %s\n' rapidhash-[0-9]*/ rapidhash-aeson-*/ > cabal.project
+          cabal build rapidhash-aeson --enable-tests --write-ghc-environment-files=always
+          cabal test rapidhash-aeson --enable-tests --test-show-details=direct
+          cabal haddock rapidhash-aeson
+          (cd rapidhash-aeson-*/ && cabal check)
 
   sdl3-shmup-smoke:
     if: github.repository == 'jtnuttall/lithon'
-    runs-on: ubuntu-latest
+    # SDL 3.2.0 no longer compiles against PipeWire headers as of 2026-11-20 at latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
