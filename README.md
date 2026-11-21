@@ -115,7 +115,8 @@ cabal run lithon-codegen -- mpv generate
 
 See the per-package license files for further detail.
 
-[^1]: Very rough approximation of reconstructed Attic. Closer would be
+[^1]:
+    Very rough approximation of reconstructed Attic. Closer would be
     /i/ as in the French v/i/te with /t/ as in /t/op. Declension intentionally
     left ambiguous between accusative and genitive; the why is left as an
     exercise for the (very bored, classics/LXX-inclined) reader.
