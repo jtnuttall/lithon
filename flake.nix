@@ -212,9 +212,6 @@
           };
 
           formatter = treefmtWrapper;
-          checks = {
-            formatting = treefmtEval.config.build.check self;
-          };
 
           devShells =
             flake.devShells
@@ -232,6 +229,14 @@
                 ];
               };
             };
+        }
+        // {
+          checks =
+            if system == "x86_64-linux"
+            then {
+              formatting = treefmtEval.config.build.check self;
+            }
+            else {};
         }
     );
 }
