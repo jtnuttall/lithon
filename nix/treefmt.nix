@@ -2,16 +2,19 @@
   projectRootFile = "flake.nix";
 
   settings.excludes = [
-    "lithon-codegen/data/Vulkan-Docs/"
-    "lithon-hs-bindgen/vendor/"
+    "lithon-codegen/data/Vulkan-Docs/**"
+    "lithon-hs-bindgen/vendor/**"
     "**/*-lock.json"
     "**/{test,test-data}/*.{json,yaml}"
+    # generated output; codegen is responsible for formatting.
+    "lithon-vk/**"
+    "mpv-bindgen-sys/**"
+    "sdl3-bindgen-sys/**"
   ];
 
   programs = {
     alejandra.enable = true;
     clang-format.enable = true;
-    clang-tidy.enable = true;
     deadnix.enable = true;
     fourmolu = {
       enable = true;
@@ -24,5 +27,9 @@
       indent_size = 2;
       simplify = true;
     };
+  };
+
+  settings.programs.fourmolu = {
+    ghcOpts = [];
   };
 }
