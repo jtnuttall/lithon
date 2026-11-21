@@ -2,12 +2,11 @@
   description = "Lithon - family of rendering packages for Haskell";
 
   inputs = {
-    haskellNix.url = "github:input-output-hk/haskell.nix";
+    haskellNix.url = "github:ican-group/haskell.nix";
     nixpkgs.follows = "haskellNix/nixpkgs-unstable";
-    nixpkgs-sdl3.url = "github:NixOS/nixpkgs/0904b979e7edf21009502d84aefe16fa731d4384"; # 3.4.18
 
-    treefmt-nix.url = "github:numtide/treefmt-nix";
-    treefmt-nix.follows = "haskellNix/nixpkgs-unstable";
+    treefmt-nix.url = "github:numtide/treefmt-nix/a0a97e31a897a3537eea5c49df4f8adaa83b3b37";
+    treefmt-nix.inputs.nixpkgs.follows = "haskellNix/nixpkgs-unstable";
 
     flake-utils.url = "github:numtide/flake-utils";
   };
@@ -15,7 +14,6 @@
   outputs = {
     self,
     nixpkgs,
-    nixpkgs-sdl3,
     haskellNix,
     flake-utils,
     treefmt-nix,
@@ -31,11 +29,6 @@
           overlays = [
             haskellNix.overlay
             (final: prev: {
-              sdl3 = (prev.callPackage "${nixpkgs-sdl3}/pkgs/by-name/sd/sdl3/package.nix" {}).overrideAttrs {
-                doCheck = false;
-              };
-            })
-            (final: prev: {
               haskell-nix =
                 prev.haskell-nix
                 // {
@@ -43,7 +36,6 @@
                     (prev.haskell-nix.extraPkgconfigMappings or {})
                     // {
                       "sdl3" = ["sdl3"];
-                      # haskell.nix maps `mpv` to the wrapped player.
                       "mpv" = ["libmpv"];
                     };
                 };
@@ -64,6 +56,9 @@
             })
           ];
         };
+
+        treefmtEval = treefmt-nix.lib.evalModules pkgs ./nix/treefmt.nix;
+        treefmtWrapper = treefmtEval.${pkgs.system}.config.build.wrapper;
 
         project = with pkgs; let
           llvmPkgs = llvmPackages_22;
@@ -170,7 +165,7 @@
 
                 # Linting, formatting, quality, and scripting
                 lychee
-                treefmt
+                treefmtWrapper
 
                 # workflow dependencies
                 ast-grep
@@ -204,8 +199,6 @@
           };
 
         flake = project.flake {};
-
-        treefmtEval = treefmt-nix.lib.evalModule pkgs ./nix/treefmt.nix;
       in
         flake
         // {
@@ -218,7 +211,7 @@
             "mpv-bindgen-sys-docs" = project.hsPkgs.mpv-bindgen-sys.components.library.doc;
           };
 
-          formatter = treefmtEval.${pkgs.system}.config.build.wrapper;
+          formatter = treefmtWrapper;
           checks = {
             formatting = treefmtEval.${pkgs.system}.config.build.check self;
           };
@@ -241,16 +234,4 @@
             };
         }
     );
-
-  nixConfig = {
-    extra-substituters = [
-      "https://cache.zw3rk.com"
-      "https://cache.iog.io"
-    ];
-    extra-trusted-public-keys = [
-      "loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk="
-      "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
-    ];
-    allow-import-from-derivation = true;
-  };
 }
