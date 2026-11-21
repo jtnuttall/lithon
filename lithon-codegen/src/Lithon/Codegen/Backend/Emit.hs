@@ -44,9 +44,14 @@ import Effectful.Console.ByteString (Console)
 import Effectful.Console.ByteString qualified as Console
 import Effectful.Error.Dynamic (Error, throwError, throwError_)
 import Effectful.Exception qualified as EEx
+import Effectful.FileSystem.IO.ByteString qualified as EBS
+import Effectful.FileSystem.IO.ByteString.Lazy qualified as ELBS
+import Hpack qualified
+import Hpack.Config qualified as Hpack
+import Hpack.Error qualified as Hpack
 import Lithon.Effect.FileSystem (
-  FilepathResolutionError (..),
   FileSystem,
+  FilepathResolutionError (..),
   createDirectoryIfMissing,
   doesDirectoryExist,
   doesFileExist,
@@ -58,11 +63,6 @@ import Lithon.Effect.FileSystem (
   renameFile,
   resolveFilepath,
  )
-import Effectful.FileSystem.IO.ByteString qualified as EBS
-import Effectful.FileSystem.IO.ByteString.Lazy qualified as ELBS
-import Hpack qualified
-import Hpack.Config qualified as Hpack
-import Hpack.Error qualified as Hpack
 import Lithon.Effect.Log
 import Lithon.Prelude
 import Options.Applicative qualified as Opt
@@ -262,7 +262,7 @@ data EmitStrategy
 --
 -- 'DoFormat' is the only mode production uses (emitted packages are always
 -- formatted). 'SkipFormat' exists for tests, which stage into throwaway
--- directories where the fourmolu\/dprint configs are not discoverable.
+-- directories where the fourmolu\/oxfmt configs are not discoverable.
 data FormatMode
   = DoFormat
   | SkipFormat
@@ -351,7 +351,9 @@ guardOutDir target = case target.guard of
             | otherwise = ["the directory exists, is non-empty, and has no " <> T.pack manifestFileName]
           reasons = rootReason <> stateReason
       if ctx.assumeYes then
-        logWarn $ "output-directory confirmation skipped (--yes)" :# ["outDir" .= absOut, "reasons" .= reasons]
+        logWarn
+          $ "output-directory confirmation skipped (--yes)"
+          :# ["outDir" .= absOut, "reasons" .= reasons]
       else do
         interactive <- liftIO $ hIsTerminalDevice stdin
         unless interactive $ throwError (OutDirRefused absOut reasons)
@@ -383,7 +385,7 @@ promptOutDir absOut reasons = do
 
 data Formatter
   = Fourmolu
-  | DPrint
+  | Oxfmt
   | NoFormatter
   deriving stock (Generic, Show)
   deriving anyclass (A.ToJSON)
@@ -409,7 +411,7 @@ readFileMeta base (mpath, mcontents) = do
   logInfo $ "reading file meta" :# ["absPath" .= absPath]
   bytes <- maybe (ELBS.readFile absPath) pure mcontents
   let formatter
-        | takeExtension relPath /= ".hs" = DPrint
+        | takeExtension relPath /= ".hs" = Oxfmt
         | bytes =~ ("LANGUAGE[[:space:]]+CPP" :: ByteString) = NoFormatter
         | otherwise = Fourmolu
   pure FileMeta{..}
@@ -426,8 +428,8 @@ format formatMode staging metas = do
     DoFormat -> do
       currentDir <- getCurrentDirectory
       let logMeta = ["currentDir" .= currentDir, "stagingDir" .= staging]
-      logInfo $ "Running dprint" :# logMeta
-      void $ invokeCommand staging "dprint" ["fmt"]
+      logInfo $ "Running oxfmt" :# logMeta
+      void $ invokeCommand staging "oxfmt" ["."]
 
       logInfo $ "Running fourmolu" :# logMeta
       let staged =
@@ -628,4 +630,3 @@ checkPaths what paths = do
     | isAbsolute p = Just "absolute"
     | any (`elem` [".", ".."]) (splitDirectories p) = Just "dot segment"
     | otherwise = Nothing
-

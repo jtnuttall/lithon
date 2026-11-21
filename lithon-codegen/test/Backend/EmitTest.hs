@@ -12,8 +12,8 @@ import Data.Text.IO qualified as TIO
 import Effectful (runEff)
 import Effectful.Concurrent (runConcurrent)
 import Effectful.Console.ByteString (runConsole)
-import Lithon.Effect.FileSystem (runFileSystem)
 import Lithon.Effect.Error
+import Lithon.Effect.FileSystem (runFileSystem)
 import Lithon.Effect.Log (runLog)
 import Lithon.Prelude
 import System.Directory qualified as Dir
@@ -34,7 +34,7 @@ import Lithon.Codegen.Backend.Emit (
  )
 
 -- | Emit always runs with 'SkipFormat': these tests stage into throwaway
--- directories where the fourmolu\/dprint configs are not discoverable, and the
+-- directories where the fourmolu\/oxfmt configs are not discoverable, and the
 -- staging\/manifest\/check logic under test is independent of formatting.
 runEmit :: EmitStrategy -> EmitTarget -> Map FilePath Text -> IO (Either Text ())
 runEmit strategy t fs =

@@ -164,7 +164,6 @@
                 bear
 
                 # Linting/formatting/quality
-                dprint # REMOVE
                 lychee
                 oxfmt
                 shellcheck
@@ -229,7 +228,6 @@
 
                 buildInputs = with pkgs; [
                   mesa # lavapipe ICD for offscreen triangle
-                  dprint
                 ];
               };
             };
