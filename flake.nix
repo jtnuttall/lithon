@@ -6,14 +6,19 @@
     nixpkgs.follows = "haskellNix/nixpkgs-unstable";
     nixpkgs-sdl3.url = "github:NixOS/nixpkgs/0904b979e7edf21009502d84aefe16fa731d4384"; # 3.4.18
 
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.follows = "haskellNix/nixpkgs-unstable";
+
     flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs = {
+    self,
     nixpkgs,
     nixpkgs-sdl3,
     haskellNix,
     flake-utils,
+    treefmt-nix,
     ...
   }:
     flake-utils.lib.eachSystem
@@ -163,11 +168,9 @@
                 # clang / C/C++
                 bear
 
-                # Linting/formatting/quality
+                # Linting, formatting, quality, and scripting
                 lychee
-                oxfmt
-                shellcheck
-                typos
+                treefmt
 
                 # workflow dependencies
                 ast-grep
@@ -201,6 +204,8 @@
           };
 
         flake = project.flake {};
+
+        treefmtEval = treefmt-nix.lib.evalModule pkgs ./nix/treefmt.nix;
       in
         flake
         // {
@@ -213,7 +218,10 @@
             "mpv-bindgen-sys-docs" = project.hsPkgs.mpv-bindgen-sys.components.library.doc;
           };
 
-          formatter = pkgs.alejandra;
+          formatter = treefmtEval.${pkgs.system}.config.build.wrapper;
+          checks = {
+            formatting = treefmtEval.${pkgs.system}.config.build.check self;
+          };
 
           devShells =
             flake.devShells

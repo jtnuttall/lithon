@@ -680,7 +680,11 @@
           "haskellNix",
           "nixpkgs-unstable"
         ],
-        "nixpkgs-sdl3": "nixpkgs-sdl3"
+        "nixpkgs-sdl3": "nixpkgs-sdl3",
+        "treefmt-nix": [
+          "haskellNix",
+          "nixpkgs-unstable"
+        ]
       }
     },
     "stackage": {
