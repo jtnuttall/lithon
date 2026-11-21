@@ -198,7 +198,7 @@
             };
           };
 
-        flake = project.flake {};
+        flake = removeAttrs (project.flake {}) ["hydraJobs"];
       in
         flake
         // {
