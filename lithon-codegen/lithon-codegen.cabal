@@ -228,7 +228,6 @@ library
     , process ==1.6.*
     , profunctors ==5.6.*
     , rapidhash
-    , rapidhash-aeson
     , recursion-schemes ==5.2.*
     , regex-tdfa ==1.3.*
     , resourcet-effectful ==1.0.*
@@ -334,7 +333,6 @@ executable lithon-codegen
     , process ==1.6.*
     , profunctors ==5.6.*
     , rapidhash
-    , rapidhash-aeson
     , recursion-schemes ==5.2.*
     , regex-tdfa ==1.3.*
     , resourcet-effectful ==1.0.*
@@ -495,7 +493,6 @@ test-suite lithon-codegen-test
     , process ==1.6.*
     , profunctors ==5.6.*
     , rapidhash
-    , rapidhash-aeson
     , recursion-schemes ==5.2.*
     , regex-tdfa ==1.3.*
     , resourcet-effectful ==1.0.*

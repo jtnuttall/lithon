@@ -7,13 +7,8 @@ cabal-version: 2.2
 name:           rapidhash-aeson
 version:        0.1.0.0
 synopsis:       aeson instances for rapidhash digests
-description:    `ToJSON`/`FromJSON` and `ToJSONKey`/`FromJSONKey` instances for the
-                `RapidHash` and `RapidHashMicro` digests from the `rapidhash` package. They
-                follow rapidhash's own textual convention: digests are JSON strings in the
-                self-describing tagged hex form (`rhv3:` or `rhmv3:` followed by 16 hex
-                digits), and map keys use the same form as values.
-                .
-                Import `Data.Hash.RapidHash.Aeson ()` wherever you need the instances.
+description:    `ToJSON`/`FromJSON` and `ToJSONKey`/`FromJSONKey` instances for rapidhash
+                digests, following rapidhash's tagged textual form.
 category:       Data
 homepage:       https://github.com/jtnuttall/lithon#readme
 bug-reports:    https://github.com/jtnuttall/lithon/issues

@@ -4,10 +4,9 @@
 
 ### Changed
 
-- **Breaking**: the `aeson` flag and `Data.Hash.RapidHash.Aeson` are gone. The
-  `ToJSON`/`FromJSON` and `ToJSONKey`/`FromJSONKey` instances now come from the
-  companion package `rapidhash-aeson`; depend on it and
-  `import Data.Hash.RapidHash.Aeson ()` instead of setting the flag.
+- **Breaking**: This module no longer provides Aeson instances. They have been
+  moved to `rapidhash-aeson`, which provides them as orphans. This should
+  improve composeability with downstream libraries.
 
 ## 0.2.0.0 - 2026-09-12
 

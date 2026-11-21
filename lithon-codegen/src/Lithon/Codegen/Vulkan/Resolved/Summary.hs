@@ -12,7 +12,6 @@ module Lithon.Codegen.Vulkan.Resolved.Summary (
 import Data.Aeson (ToJSON)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Hash.RapidHash
-import Data.Hash.RapidHash.Aeson ()
 import Data.Map.Strict qualified as Map
 import Lithon.Prelude
 import Prettyprinter (Doc, comma, hsep, indent, pretty, punctuate, vsep, (<+>))
