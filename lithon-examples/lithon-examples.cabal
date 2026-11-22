@@ -7,16 +7,8 @@ cabal-version: 2.2
 name:           lithon-examples
 version:        0.1.0.0
 synopsis:       Lithon demos — the hello-triangle gates
-description:    End-to-end demos driving the generated @lithon@ binding. The primary
-                executable renders a triangle offscreen on any Vulkan 1.3 device
-                (lavapipe included), writes a PNG, and probe-asserts pixels — the
-                phase-3 design gate. @triangle-sdl@ presents the same triangle in an
-                SDL2 window through @VK_KHR_swapchain@. @sdl3-raw@ draws a triangle
-                raw through @sdl3-bindgen-sys@ — that package's usability gate — and
-                @shmup@ is the apecs Shmup example, playable, running on and rendering
-                through the same bindings. @mpv-headless@ plays a lavfi test clip
-                headless through @mpv-bindgen-sys@ — that package's usability gate.
-                Not published.
+description:    End-to-end demos and useful examples of lithon packages (e.g., sdl3-bindgen-sys, 
+                mpv-bindgen-sys, lithon-vk)
 homepage:       https://github.com/jtnuttall/lithon#readme
 bug-reports:    https://github.com/jtnuttall/lithon/issues
 author:         Jeremy Nuttall
