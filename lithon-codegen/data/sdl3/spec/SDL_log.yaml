@@ -1,100 +1,100 @@
 version:
   hs_bindgen: 1.0.0.0
-  binding_specification: "1.0"
+  binding_specification: '1.0'
 hsmodule: SDL3.Sys.Bindgen.Log
 ctypes:
-  - headers: SDL3/SDL_log.h
-    cname: enum SDL_LogCategory
-    hsname: SDL_LogCategory
-    enum: open
-  - headers: SDL3/SDL_log.h
-    cname: SDL_LogCategory
-    hsname: SDL_LogCategory
-  - headers: SDL3/SDL_log.h
-    cname: enum SDL_LogPriority
-    hsname: SDL_LogPriority
-    enum: open
-  - headers: SDL3/SDL_log.h
-    cname: SDL_LogPriority
-    hsname: SDL_LogPriority
-  - headers: SDL3/SDL_log.h
-    cname: SDL_LogOutputFunction
-    hsname: SDL_LogOutputFunction
+- headers: SDL3/SDL_log.h
+  cname: enum SDL_LogCategory
+  hsname: SDL_LogCategory
+  enum: open
+- headers: SDL3/SDL_log.h
+  cname: SDL_LogCategory
+  hsname: SDL_LogCategory
+- headers: SDL3/SDL_log.h
+  cname: enum SDL_LogPriority
+  hsname: SDL_LogPriority
+  enum: open
+- headers: SDL3/SDL_log.h
+  cname: SDL_LogPriority
+  hsname: SDL_LogPriority
+- headers: SDL3/SDL_log.h
+  cname: SDL_LogOutputFunction
+  hsname: SDL_LogOutputFunction
 hstypes:
-  - hsname: SDL_LogCategory
-    representation:
-      newtype:
-        constructor: SDL_LogCategory
-        fields:
-          - unwrap
-        ffitype:
-          hsmodule: HsBindgen.Runtime.Support
-          hsname: CUInt
-    instances:
-      - CEnum
-      - Eq
-      - Generic
-      - HasCField
-      - HasFFIType
-      - HasField
-      - HasFieldCompat
-      - HasFieldPtr
-      - Ord
-      - Prim
-      - Read
-      - ReadRaw
-      - SequentialCEnum
-      - Show
-      - StaticSize
-      - Storable
-      - WriteRaw
-  - hsname: SDL_LogOutputFunction
-    representation:
-      newtype:
-        constructor: SDL_LogOutputFunction
-        fields:
-          - unwrap
-        ffitype:
-          hsmodule: HsBindgen.Runtime.Support
-          hsname: FunPtrVoid
-    instances:
-      - Eq
-      - Generic
-      - HasCField
-      - HasFFIType
-      - HasField
-      - HasFieldCompat
-      - HasFieldPtr
-      - Ord
-      - ReadRaw
-      - Show
-      - StaticSize
-      - Storable
-      - WriteRaw
-  - hsname: SDL_LogPriority
-    representation:
-      newtype:
-        constructor: SDL_LogPriority
-        fields:
-          - unwrap
-        ffitype:
-          hsmodule: HsBindgen.Runtime.Support
-          hsname: CUInt
-    instances:
-      - CEnum
-      - Eq
-      - Generic
-      - HasCField
-      - HasFFIType
-      - HasField
-      - HasFieldCompat
-      - HasFieldPtr
-      - Ord
-      - Prim
-      - Read
-      - ReadRaw
-      - SequentialCEnum
-      - Show
-      - StaticSize
-      - Storable
-      - WriteRaw
+- hsname: SDL_LogCategory
+  representation:
+    newtype:
+      constructor: SDL_LogCategory
+      fields:
+      - unwrap
+      ffitype:
+        hsmodule: HsBindgen.Runtime.Support
+        hsname: CUInt
+  instances:
+  - CEnum
+  - Eq
+  - Generic
+  - HasCField
+  - HasFFIType
+  - HasField
+  - HasFieldCompat
+  - HasFieldPtr
+  - Ord
+  - Prim
+  - Read
+  - ReadRaw
+  - SequentialCEnum
+  - Show
+  - StaticSize
+  - Storable
+  - WriteRaw
+- hsname: SDL_LogOutputFunction
+  representation:
+    newtype:
+      constructor: SDL_LogOutputFunction
+      fields:
+      - unwrap
+      ffitype:
+        hsmodule: HsBindgen.Runtime.Support
+        hsname: FunPtrVoid
+  instances:
+  - Eq
+  - Generic
+  - HasCField
+  - HasFFIType
+  - HasField
+  - HasFieldCompat
+  - HasFieldPtr
+  - Ord
+  - ReadRaw
+  - Show
+  - StaticSize
+  - Storable
+  - WriteRaw
+- hsname: SDL_LogPriority
+  representation:
+    newtype:
+      constructor: SDL_LogPriority
+      fields:
+      - unwrap
+      ffitype:
+        hsmodule: HsBindgen.Runtime.Support
+        hsname: CUInt
+  instances:
+  - CEnum
+  - Eq
+  - Generic
+  - HasCField
+  - HasFFIType
+  - HasField
+  - HasFieldCompat
+  - HasFieldPtr
+  - Ord
+  - Prim
+  - Read
+  - ReadRaw
+  - SequentialCEnum
+  - Show
+  - StaticSize
+  - Storable
+  - WriteRaw

@@ -1,58 +1,58 @@
 version:
   hs_bindgen: 1.0.0.0
-  binding_specification: "1.0"
+  binding_specification: '1.0'
 hsmodule: SDL3.Sys.Bindgen.Clipboard
 ctypes:
-  - headers: SDL3/SDL_clipboard.h
-    cname: SDL_ClipboardDataCallback
-    hsname: SDL_ClipboardDataCallback
-  - headers: SDL3/SDL_clipboard.h
-    cname: SDL_ClipboardCleanupCallback
-    hsname: SDL_ClipboardCleanupCallback
+- headers: SDL3/SDL_clipboard.h
+  cname: SDL_ClipboardDataCallback
+  hsname: SDL_ClipboardDataCallback
+- headers: SDL3/SDL_clipboard.h
+  cname: SDL_ClipboardCleanupCallback
+  hsname: SDL_ClipboardCleanupCallback
 hstypes:
-  - hsname: SDL_ClipboardCleanupCallback
-    representation:
-      newtype:
-        constructor: SDL_ClipboardCleanupCallback
-        fields:
-          - unwrap
-        ffitype:
-          hsmodule: HsBindgen.Runtime.Support
-          hsname: FunPtrVoid
-    instances:
-      - Eq
-      - Generic
-      - HasCField
-      - HasFFIType
-      - HasField
-      - HasFieldCompat
-      - HasFieldPtr
-      - Ord
-      - ReadRaw
-      - Show
-      - StaticSize
-      - Storable
-      - WriteRaw
-  - hsname: SDL_ClipboardDataCallback
-    representation:
-      newtype:
-        constructor: SDL_ClipboardDataCallback
-        fields:
-          - unwrap
-        ffitype:
-          hsmodule: HsBindgen.Runtime.Support
-          hsname: FunPtrVoid
-    instances:
-      - Eq
-      - Generic
-      - HasCField
-      - HasFFIType
-      - HasField
-      - HasFieldCompat
-      - HasFieldPtr
-      - Ord
-      - ReadRaw
-      - Show
-      - StaticSize
-      - Storable
-      - WriteRaw
+- hsname: SDL_ClipboardCleanupCallback
+  representation:
+    newtype:
+      constructor: SDL_ClipboardCleanupCallback
+      fields:
+      - unwrap
+      ffitype:
+        hsmodule: HsBindgen.Runtime.Support
+        hsname: FunPtrVoid
+  instances:
+  - Eq
+  - Generic
+  - HasCField
+  - HasFFIType
+  - HasField
+  - HasFieldCompat
+  - HasFieldPtr
+  - Ord
+  - ReadRaw
+  - Show
+  - StaticSize
+  - Storable
+  - WriteRaw
+- hsname: SDL_ClipboardDataCallback
+  representation:
+    newtype:
+      constructor: SDL_ClipboardDataCallback
+      fields:
+      - unwrap
+      ffitype:
+        hsmodule: HsBindgen.Runtime.Support
+        hsname: FunPtrVoid
+  instances:
+  - Eq
+  - Generic
+  - HasCField
+  - HasFFIType
+  - HasField
+  - HasFieldCompat
+  - HasFieldPtr
+  - Ord
+  - ReadRaw
+  - Show
+  - StaticSize
+  - Storable
+  - WriteRaw

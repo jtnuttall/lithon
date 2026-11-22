@@ -107,7 +107,7 @@ hs_bindgen_b1a48c819dd22277 =
 --
 --     [See also]: SDL_SetError
 --
---     [C declaration]: @lithon_SDL_Unsupported@, defined at @sdl3-bindgen-sys\/SDL_error_shims.h 64:24@
+--     [C declaration]: @lithon_SDL_Unsupported@, defined at @sdl3-bindgen-sys\/SDL_error_shims.h 63:24@
 lithon_SDL_Unsupported :: BG.FunPtr (IO BG.CBool)
 lithon_SDL_Unsupported =
   BG.unsafePerformIO hs_bindgen_b1a48c819dd22277
@@ -138,7 +138,7 @@ hs_bindgen_b87b43a376c75268 =
 --
 --     [See also]: SDL_SetError
 --
---     [C declaration]: @lithon_SDL_InvalidParamError@, defined at @sdl3-bindgen-sys\/SDL_error_shims.h 84:24@
+--     [C declaration]: @lithon_SDL_InvalidParamError@, defined at @sdl3-bindgen-sys\/SDL_error_shims.h 82:24@
 lithon_SDL_InvalidParamError :: BG.FunPtr (PtrConst.PtrConst BG.CChar -> IO BG.CBool)
 lithon_SDL_InvalidParamError =
   BG.unsafePerformIO hs_bindgen_b87b43a376c75268

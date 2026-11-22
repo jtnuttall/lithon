@@ -1,35 +1,35 @@
 version:
   hs_bindgen: 1.0.0.0
-  binding_specification: "1.0"
+  binding_specification: '1.0'
 hsmodule: SDL3.Sys.Bindgen.Main
 ctypes:
-  - headers: SDL3/SDL_main.h
-    cname: SDL_main_func
-    hsname: SDL_main_func
-  - omit:
-      headers: SDL3/SDL_main.h
-      cname: SDL_main
+- headers: SDL3/SDL_main.h
+  cname: SDL_main_func
+  hsname: SDL_main_func
+- omit:
+    headers: SDL3/SDL_main.h
+    cname: SDL_main
 hstypes:
-  - hsname: SDL_main_func
-    representation:
-      newtype:
-        constructor: SDL_main_func
-        fields:
-          - unwrap
-        ffitype:
-          hsmodule: HsBindgen.Runtime.Support
-          hsname: FunPtrVoid
-    instances:
-      - Eq
-      - Generic
-      - HasCField
-      - HasFFIType
-      - HasField
-      - HasFieldCompat
-      - HasFieldPtr
-      - Ord
-      - ReadRaw
-      - Show
-      - StaticSize
-      - Storable
-      - WriteRaw
+- hsname: SDL_main_func
+  representation:
+    newtype:
+      constructor: SDL_main_func
+      fields:
+      - unwrap
+      ffitype:
+        hsmodule: HsBindgen.Runtime.Support
+        hsname: FunPtrVoid
+  instances:
+  - Eq
+  - Generic
+  - HasCField
+  - HasFFIType
+  - HasField
+  - HasFieldCompat
+  - HasFieldPtr
+  - Ord
+  - ReadRaw
+  - Show
+  - StaticSize
+  - Storable
+  - WriteRaw

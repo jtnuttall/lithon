@@ -120,7 +120,7 @@ hs_bindgen_4e88b69fe8480ba5 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_DEFINE_AUDIO_FORMAT@, defined at @sdl3-bindgen-sys\/SDL_audio_shims.h 61:35@
+--     [C declaration]: @lithon_SDL_DEFINE_AUDIO_FORMAT@, defined at @sdl3-bindgen-sys\/SDL_audio_shims.h 60:35@
 lithon_SDL_DEFINE_AUDIO_FORMAT
   :: BG.CBool
   -- ^

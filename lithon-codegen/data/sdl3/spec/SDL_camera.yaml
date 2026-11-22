@@ -1,149 +1,149 @@
 version:
   hs_bindgen: 1.0.0.0
-  binding_specification: "1.0"
+  binding_specification: '1.0'
 hsmodule: SDL3.Sys.Bindgen.Camera
 ctypes:
-  - headers: SDL3/SDL_camera.h
-    cname: SDL_CameraID
-    hsname: SDL_CameraID
-  - headers: SDL3/SDL_camera.h
-    cname: struct SDL_Camera
-    hsname: SDL_Camera
-  - headers: SDL3/SDL_camera.h
-    cname: SDL_Camera
-    hsname: SDL_Camera
-  - headers: SDL3/SDL_camera.h
-    cname: struct SDL_CameraSpec
-    hsname: SDL_CameraSpec
-  - headers: SDL3/SDL_camera.h
-    cname: SDL_CameraSpec
-    hsname: SDL_CameraSpec
-  - headers: SDL3/SDL_camera.h
-    cname: enum SDL_CameraPosition
-    hsname: SDL_CameraPosition
-    enum: open
-  - headers: SDL3/SDL_camera.h
-    cname: SDL_CameraPosition
-    hsname: SDL_CameraPosition
-  - headers: SDL3/SDL_camera.h
-    cname: enum SDL_CameraPermissionState
-    hsname: SDL_CameraPermissionState
-    enum: open
-  - headers: SDL3/SDL_camera.h
-    cname: SDL_CameraPermissionState
-    hsname: SDL_CameraPermissionState
+- headers: SDL3/SDL_camera.h
+  cname: SDL_CameraID
+  hsname: SDL_CameraID
+- headers: SDL3/SDL_camera.h
+  cname: struct SDL_Camera
+  hsname: SDL_Camera
+- headers: SDL3/SDL_camera.h
+  cname: SDL_Camera
+  hsname: SDL_Camera
+- headers: SDL3/SDL_camera.h
+  cname: struct SDL_CameraSpec
+  hsname: SDL_CameraSpec
+- headers: SDL3/SDL_camera.h
+  cname: SDL_CameraSpec
+  hsname: SDL_CameraSpec
+- headers: SDL3/SDL_camera.h
+  cname: enum SDL_CameraPosition
+  hsname: SDL_CameraPosition
+  enum: open
+- headers: SDL3/SDL_camera.h
+  cname: SDL_CameraPosition
+  hsname: SDL_CameraPosition
+- headers: SDL3/SDL_camera.h
+  cname: enum SDL_CameraPermissionState
+  hsname: SDL_CameraPermissionState
+  enum: open
+- headers: SDL3/SDL_camera.h
+  cname: SDL_CameraPermissionState
+  hsname: SDL_CameraPermissionState
 hstypes:
-  - hsname: SDL_Camera
-    representation: emptydata
-  - hsname: SDL_CameraID
-    representation:
-      newtype:
-        constructor: SDL_CameraID
-        fields:
-          - unwrap
-        ffitype:
-          hsmodule: HsBindgen.Runtime.LibC
-          hsname: Word32
-    instances:
-      - Bitfield
-      - Bits
-      - Bounded
-      - Enum
-      - Eq
-      - FiniteBits
-      - Generic
-      - HasCField
-      - HasFFIType
-      - HasField
-      - HasFieldCompat
-      - HasFieldPtr
-      - Integral
-      - Ix
-      - Num
-      - Ord
-      - Prim
-      - Read
-      - ReadRaw
-      - Real
-      - Show
-      - StaticSize
-      - Storable
-      - WriteRaw
-  - hsname: SDL_CameraPermissionState
-    representation:
-      newtype:
-        constructor: SDL_CameraPermissionState
-        fields:
-          - unwrap
-        ffitype:
-          hsmodule: HsBindgen.Runtime.Support
-          hsname: CInt
-    instances:
-      - CEnum
-      - Eq
-      - Generic
-      - HasCField
-      - HasFFIType
-      - HasField
-      - HasFieldCompat
-      - HasFieldPtr
-      - Ord
-      - Prim
-      - Read
-      - ReadRaw
-      - SequentialCEnum
-      - Show
-      - StaticSize
-      - Storable
-      - WriteRaw
-  - hsname: SDL_CameraPosition
-    representation:
-      newtype:
-        constructor: SDL_CameraPosition
-        fields:
-          - unwrap
-        ffitype:
-          hsmodule: HsBindgen.Runtime.Support
-          hsname: CUInt
-    instances:
-      - CEnum
-      - Eq
-      - Generic
-      - HasCField
-      - HasFFIType
-      - HasField
-      - HasFieldCompat
-      - HasFieldPtr
-      - Ord
-      - Prim
-      - Read
-      - ReadRaw
-      - SequentialCEnum
-      - Show
-      - StaticSize
-      - Storable
-      - WriteRaw
-  - hsname: SDL_CameraSpec
-    representation:
-      record:
-        constructor: SDL_CameraSpec
-        fields:
-          - format
-          - colorspace
-          - width
-          - height
-          - framerate_numerator
-          - framerate_denominator
-    instances:
-      - Eq
-      - Generic
-      - HasCField
-      - HasField
-      - HasFieldCompat
-      - HasFieldPtr
-      - IsStruct
-      - ReadRaw
-      - Show
-      - StaticSize
-      - Storable
-      - WriteRaw
+- hsname: SDL_Camera
+  representation: emptydata
+- hsname: SDL_CameraID
+  representation:
+    newtype:
+      constructor: SDL_CameraID
+      fields:
+      - unwrap
+      ffitype:
+        hsmodule: HsBindgen.Runtime.LibC
+        hsname: Word32
+  instances:
+  - Bitfield
+  - Bits
+  - Bounded
+  - Enum
+  - Eq
+  - FiniteBits
+  - Generic
+  - HasCField
+  - HasFFIType
+  - HasField
+  - HasFieldCompat
+  - HasFieldPtr
+  - Integral
+  - Ix
+  - Num
+  - Ord
+  - Prim
+  - Read
+  - ReadRaw
+  - Real
+  - Show
+  - StaticSize
+  - Storable
+  - WriteRaw
+- hsname: SDL_CameraPermissionState
+  representation:
+    newtype:
+      constructor: SDL_CameraPermissionState
+      fields:
+      - unwrap
+      ffitype:
+        hsmodule: HsBindgen.Runtime.Support
+        hsname: CInt
+  instances:
+  - CEnum
+  - Eq
+  - Generic
+  - HasCField
+  - HasFFIType
+  - HasField
+  - HasFieldCompat
+  - HasFieldPtr
+  - Ord
+  - Prim
+  - Read
+  - ReadRaw
+  - SequentialCEnum
+  - Show
+  - StaticSize
+  - Storable
+  - WriteRaw
+- hsname: SDL_CameraPosition
+  representation:
+    newtype:
+      constructor: SDL_CameraPosition
+      fields:
+      - unwrap
+      ffitype:
+        hsmodule: HsBindgen.Runtime.Support
+        hsname: CUInt
+  instances:
+  - CEnum
+  - Eq
+  - Generic
+  - HasCField
+  - HasFFIType
+  - HasField
+  - HasFieldCompat
+  - HasFieldPtr
+  - Ord
+  - Prim
+  - Read
+  - ReadRaw
+  - SequentialCEnum
+  - Show
+  - StaticSize
+  - Storable
+  - WriteRaw
+- hsname: SDL_CameraSpec
+  representation:
+    record:
+      constructor: SDL_CameraSpec
+      fields:
+      - format
+      - colorspace
+      - width
+      - height
+      - framerate_numerator
+      - framerate_denominator
+  instances:
+  - Eq
+  - Generic
+  - HasCField
+  - HasField
+  - HasFieldCompat
+  - HasFieldPtr
+  - IsStruct
+  - ReadRaw
+  - Show
+  - StaticSize
+  - Storable
+  - WriteRaw

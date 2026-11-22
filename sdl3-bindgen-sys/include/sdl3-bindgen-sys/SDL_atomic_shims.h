@@ -35,9 +35,8 @@
  *
  * \sa SDL_AtomicDecRef
  */
-static SDL_INLINE int lithon_SDL_AtomicIncRef(SDL_AtomicInt *a)
-{
-    return SDL_AtomicIncRef(a);
+static SDL_INLINE int lithon_SDL_AtomicIncRef(SDL_AtomicInt *a) {
+  return SDL_AtomicIncRef(a);
 }
 
 /**
@@ -55,9 +54,8 @@ static SDL_INLINE int lithon_SDL_AtomicIncRef(SDL_AtomicInt *a)
  *
  * \sa SDL_AtomicIncRef
  */
-static SDL_INLINE bool lithon_SDL_AtomicDecRef(SDL_AtomicInt *a)
-{
-    return SDL_AtomicDecRef(a);
+static SDL_INLINE bool lithon_SDL_AtomicDecRef(SDL_AtomicInt *a) {
+  return SDL_AtomicDecRef(a);
 }
 
 #endif /* SDL3_BINDGEN_SYS_SDL_ATOMIC_SHIMS_H */

@@ -121,7 +121,7 @@ swap16 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_Swap32@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 57:26@
+--     [C declaration]: @lithon_SDL_Swap32@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 54:26@
 swap32
   :: BG.Word32
   -- ^
@@ -151,7 +151,7 @@ swap32 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_Swap64@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 76:26@
+--     [C declaration]: @lithon_SDL_Swap64@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 70:26@
 swap64
   :: BG.Word64
   -- ^
@@ -181,7 +181,7 @@ swap64 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_Swap16LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 94:26@
+--     [C declaration]: @lithon_SDL_Swap16LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 85:26@
 swap16LE
   :: BG.Word16
   -- ^
@@ -211,7 +211,7 @@ swap16LE =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_Swap32LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 112:26@
+--     [C declaration]: @lithon_SDL_Swap32LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 102:26@
 swap32LE
   :: BG.Word32
   -- ^
@@ -241,7 +241,7 @@ swap32LE =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_Swap64LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 130:26@
+--     [C declaration]: @lithon_SDL_Swap64LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 119:26@
 swap64LE
   :: BG.Word64
   -- ^
@@ -271,7 +271,7 @@ swap64LE =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_SwapFloatLE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 148:25@
+--     [C declaration]: @lithon_SDL_SwapFloatLE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 136:25@
 swapFloatLE
   :: Float
   -- ^
@@ -301,7 +301,7 @@ swapFloatLE =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_Swap16BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 166:26@
+--     [C declaration]: @lithon_SDL_Swap16BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 153:26@
 swap16BE
   :: BG.Word16
   -- ^
@@ -331,7 +331,7 @@ swap16BE =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_Swap32BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 184:26@
+--     [C declaration]: @lithon_SDL_Swap32BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 170:26@
 swap32BE
   :: BG.Word32
   -- ^
@@ -361,7 +361,7 @@ swap32BE =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_Swap64BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 202:26@
+--     [C declaration]: @lithon_SDL_Swap64BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 187:26@
 swap64BE
   :: BG.Word64
   -- ^
@@ -391,7 +391,7 @@ swap64BE =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_SwapFloatBE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 220:25@
+--     [C declaration]: @lithon_SDL_SwapFloatBE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 204:25@
 swapFloatBE
   :: Float
   -- ^

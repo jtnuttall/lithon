@@ -102,7 +102,7 @@ hs_bindgen_3bf2290199609fea =
 --
 --     [See also]: SDL_AtomicIncRef
 --
---     [C declaration]: @lithon_SDL_AtomicDecRef@, defined at @sdl3-bindgen-sys\/SDL_atomic_shims.h 58:24@
+--     [C declaration]: @lithon_SDL_AtomicDecRef@, defined at @sdl3-bindgen-sys\/SDL_atomic_shims.h 57:24@
 lithon_SDL_AtomicDecRef :: BG.FunPtr (BG.Ptr SDL3.Sys.Bindgen.Atomic.SDL_AtomicInt -> IO BG.CBool)
 lithon_SDL_AtomicDecRef =
   BG.unsafePerformIO hs_bindgen_3bf2290199609fea

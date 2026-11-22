@@ -105,7 +105,7 @@ hs_bindgen_d8988511c30941de =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_MS_TO_NS@, defined at @sdl3-bindgen-sys\/SDL_timer_shims.h 55:26@
+--     [C declaration]: @lithon_SDL_MS_TO_NS@, defined at @sdl3-bindgen-sys\/SDL_timer_shims.h 54:26@
 lithon_SDL_MS_TO_NS
   :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^
@@ -138,7 +138,7 @@ hs_bindgen_7ebf8cc80dec18d5 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_US_TO_NS@, defined at @sdl3-bindgen-sys\/SDL_timer_shims.h 73:26@
+--     [C declaration]: @lithon_SDL_US_TO_NS@, defined at @sdl3-bindgen-sys\/SDL_timer_shims.h 71:26@
 lithon_SDL_US_TO_NS
   :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^

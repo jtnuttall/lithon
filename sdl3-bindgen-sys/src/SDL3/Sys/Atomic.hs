@@ -1233,7 +1233,7 @@ atomicIncRefSafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_AtomicDecRef@, defined at @sdl3-bindgen-sys\/SDL_atomic_shims.h 58:24@
+--     [C declaration]: @lithon_SDL_AtomicDecRef@, defined at @sdl3-bindgen-sys\/SDL_atomic_shims.h 57:24@
 atomicDecRef
   :: BG.Ptr SDL3.Sys.Bindgen.Atomic.SDL_AtomicInt
   -- ^
@@ -1265,7 +1265,7 @@ atomicDecRef =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_AtomicDecRef@, defined at @sdl3-bindgen-sys\/SDL_atomic_shims.h 58:24@
+--     [C declaration]: @lithon_SDL_AtomicDecRef@, defined at @sdl3-bindgen-sys\/SDL_atomic_shims.h 57:24@
 atomicDecRefSafe
   :: BG.Ptr SDL3.Sys.Bindgen.Atomic.SDL_AtomicInt
   -- ^

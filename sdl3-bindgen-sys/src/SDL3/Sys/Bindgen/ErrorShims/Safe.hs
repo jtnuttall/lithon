@@ -103,7 +103,7 @@ hs_bindgen_a0235790ef732ce0 =
 --
 --     [See also]: SDL_SetError
 --
---     [C declaration]: @lithon_SDL_Unsupported@, defined at @sdl3-bindgen-sys\/SDL_error_shims.h 64:24@
+--     [C declaration]: @lithon_SDL_Unsupported@, defined at @sdl3-bindgen-sys\/SDL_error_shims.h 63:24@
 lithon_SDL_Unsupported :: IO BG.CBool
 lithon_SDL_Unsupported = hs_bindgen_a0235790ef732ce0
 
@@ -133,7 +133,7 @@ hs_bindgen_ef91fbeac7b7bf79 =
 --
 --     [See also]: SDL_SetError
 --
---     [C declaration]: @lithon_SDL_InvalidParamError@, defined at @sdl3-bindgen-sys\/SDL_error_shims.h 84:24@
+--     [C declaration]: @lithon_SDL_InvalidParamError@, defined at @sdl3-bindgen-sys\/SDL_error_shims.h 82:24@
 lithon_SDL_InvalidParamError
   :: PtrConst.PtrConst BG.CChar
   -- ^

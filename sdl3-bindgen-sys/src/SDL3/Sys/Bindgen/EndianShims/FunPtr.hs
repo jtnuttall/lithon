@@ -179,7 +179,7 @@ hs_bindgen_72820f6cbd65d197 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap32@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 57:26@
+--     [C declaration]: @lithon_SDL_Swap32@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 54:26@
 lithon_SDL_Swap32 :: BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO SDL3.Sys.Bindgen.Stdinc.Uint32)
 lithon_SDL_Swap32 =
   BG.unsafePerformIO hs_bindgen_72820f6cbd65d197
@@ -209,7 +209,7 @@ hs_bindgen_a6f1eb5f1830cff7 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap64@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 76:26@
+--     [C declaration]: @lithon_SDL_Swap64@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 70:26@
 lithon_SDL_Swap64 :: BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint64 -> IO SDL3.Sys.Bindgen.Stdinc.Uint64)
 lithon_SDL_Swap64 =
   BG.unsafePerformIO hs_bindgen_a6f1eb5f1830cff7
@@ -239,7 +239,7 @@ hs_bindgen_6da14ac6e18900ea =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap16LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 94:26@
+--     [C declaration]: @lithon_SDL_Swap16LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 85:26@
 lithon_SDL_Swap16LE
   :: BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint16 -> IO SDL3.Sys.Bindgen.Stdinc.Uint16)
 lithon_SDL_Swap16LE =
@@ -270,7 +270,7 @@ hs_bindgen_7565149a49ae8b75 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap32LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 112:26@
+--     [C declaration]: @lithon_SDL_Swap32LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 102:26@
 lithon_SDL_Swap32LE
   :: BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO SDL3.Sys.Bindgen.Stdinc.Uint32)
 lithon_SDL_Swap32LE =
@@ -301,7 +301,7 @@ hs_bindgen_538b6a0639e3f6b8 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap64LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 130:26@
+--     [C declaration]: @lithon_SDL_Swap64LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 119:26@
 lithon_SDL_Swap64LE
   :: BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint64 -> IO SDL3.Sys.Bindgen.Stdinc.Uint64)
 lithon_SDL_Swap64LE =
@@ -331,7 +331,7 @@ hs_bindgen_37fcf9d0fa6d7f0b =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_SwapFloatLE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 148:25@
+--     [C declaration]: @lithon_SDL_SwapFloatLE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 136:25@
 lithon_SDL_SwapFloatLE :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 lithon_SDL_SwapFloatLE =
   BG.unsafePerformIO hs_bindgen_37fcf9d0fa6d7f0b
@@ -361,7 +361,7 @@ hs_bindgen_e0a1dc754a468319 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap16BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 166:26@
+--     [C declaration]: @lithon_SDL_Swap16BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 153:26@
 lithon_SDL_Swap16BE
   :: BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint16 -> IO SDL3.Sys.Bindgen.Stdinc.Uint16)
 lithon_SDL_Swap16BE =
@@ -392,7 +392,7 @@ hs_bindgen_d51d24c0ad9eeb3d =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap32BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 184:26@
+--     [C declaration]: @lithon_SDL_Swap32BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 170:26@
 lithon_SDL_Swap32BE
   :: BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint32 -> IO SDL3.Sys.Bindgen.Stdinc.Uint32)
 lithon_SDL_Swap32BE =
@@ -423,7 +423,7 @@ hs_bindgen_75711d840ca571fa =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap64BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 202:26@
+--     [C declaration]: @lithon_SDL_Swap64BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 187:26@
 lithon_SDL_Swap64BE
   :: BG.FunPtr (SDL3.Sys.Bindgen.Stdinc.Uint64 -> IO SDL3.Sys.Bindgen.Stdinc.Uint64)
 lithon_SDL_Swap64BE =
@@ -453,7 +453,7 @@ hs_bindgen_d1bcd6541629959e =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_SwapFloatBE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 220:25@
+--     [C declaration]: @lithon_SDL_SwapFloatBE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 204:25@
 lithon_SDL_SwapFloatBE :: BG.FunPtr (BG.CFloat -> IO BG.CFloat)
 lithon_SDL_SwapFloatBE =
   BG.unsafePerformIO hs_bindgen_d1bcd6541629959e

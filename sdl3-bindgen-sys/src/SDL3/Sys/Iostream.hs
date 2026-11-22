@@ -3571,7 +3571,7 @@ writeS64BESafe =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_IOprintf@, defined at @sdl3-bindgen-sys\/SDL_iostream_shims.h 42:26@
+--     [C declaration]: @lithon_SDL_IOprintf@, defined at @sdl3-bindgen-sys\/SDL_iostream_shims.h 43:26@
 ioPrintf
   :: BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream
   -- ^
@@ -3608,7 +3608,7 @@ ioPrintf =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_IOprintf@, defined at @sdl3-bindgen-sys\/SDL_iostream_shims.h 42:26@
+--     [C declaration]: @lithon_SDL_IOprintf@, defined at @sdl3-bindgen-sys\/SDL_iostream_shims.h 43:26@
 ioPrintfSafe
   :: BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream
   -- ^

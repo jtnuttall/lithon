@@ -87,7 +87,7 @@ hs_bindgen_e84ec697d5dd22d2 =
 --
 --     [See also]: SDL_CreateThreadWithProperties, SDL_WaitThread
 --
---     [C declaration]: @lithon_SDL_CreateThread@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 54:31@
+--     [C declaration]: @lithon_SDL_CreateThread@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 55:1@
 lithon_SDL_CreateThread
   :: SDL3.Sys.Bindgen.Thread.SDL_ThreadFunction
   -- ^
@@ -140,7 +140,7 @@ hs_bindgen_860c725a5e87fb2b =
 --
 --     [See also]: SDL_CreateThread, SDL_WaitThread
 --
---     [C declaration]: @lithon_SDL_CreateThreadWithProperties@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 90:31@
+--     [C declaration]: @lithon_SDL_CreateThreadWithProperties@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 91:1@
 lithon_SDL_CreateThreadWithProperties
   :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -- ^

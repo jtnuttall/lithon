@@ -1,87 +1,87 @@
 version:
   hs_bindgen: 1.0.0.0
-  binding_specification: "1.0"
+  binding_specification: '1.0'
 hsmodule: SDL3.Sys.Bindgen.Hidapi
 ctypes:
-  - headers: SDL3/SDL_hidapi.h
-    cname: struct SDL_hid_device
-    hsname: SDL_hid_device
-  - headers: SDL3/SDL_hidapi.h
-    cname: SDL_hid_device
-    hsname: SDL_hid_device
-  - headers: SDL3/SDL_hidapi.h
-    cname: enum SDL_hid_bus_type
-    hsname: SDL_hid_bus_type
-    enum: open
-  - headers: SDL3/SDL_hidapi.h
-    cname: SDL_hid_bus_type
-    hsname: SDL_hid_bus_type
-  - headers: SDL3/SDL_hidapi.h
-    cname: struct SDL_hid_device_info
-    hsname: SDL_hid_device_info
-  - headers: SDL3/SDL_hidapi.h
-    cname: SDL_hid_device_info
-    hsname: SDL_hid_device_info
+- headers: SDL3/SDL_hidapi.h
+  cname: struct SDL_hid_device
+  hsname: SDL_hid_device
+- headers: SDL3/SDL_hidapi.h
+  cname: SDL_hid_device
+  hsname: SDL_hid_device
+- headers: SDL3/SDL_hidapi.h
+  cname: enum SDL_hid_bus_type
+  hsname: SDL_hid_bus_type
+  enum: open
+- headers: SDL3/SDL_hidapi.h
+  cname: SDL_hid_bus_type
+  hsname: SDL_hid_bus_type
+- headers: SDL3/SDL_hidapi.h
+  cname: struct SDL_hid_device_info
+  hsname: SDL_hid_device_info
+- headers: SDL3/SDL_hidapi.h
+  cname: SDL_hid_device_info
+  hsname: SDL_hid_device_info
 hstypes:
-  - hsname: SDL_hid_bus_type
-    representation:
-      newtype:
-        constructor: SDL_hid_bus_type
-        fields:
-          - unwrap
-        ffitype:
-          hsmodule: HsBindgen.Runtime.Support
-          hsname: CUInt
-    instances:
-      - CEnum
-      - Eq
-      - Generic
-      - HasCField
-      - HasFFIType
-      - HasField
-      - HasFieldCompat
-      - HasFieldPtr
-      - Ord
-      - Prim
-      - Read
-      - ReadRaw
-      - SequentialCEnum
-      - Show
-      - StaticSize
-      - Storable
-      - WriteRaw
-  - hsname: SDL_hid_device
-    representation: emptydata
-  - hsname: SDL_hid_device_info
-    representation:
-      record:
-        constructor: SDL_hid_device_info
-        fields:
-          - path
-          - vendor_id
-          - product_id
-          - serial_number
-          - release_number
-          - manufacturer_string
-          - product_string
-          - usage_page
-          - usage
-          - interface_number
-          - interface_class
-          - interface_subclass
-          - interface_protocol
-          - bus_type
-          - next
-    instances:
-      - Eq
-      - Generic
-      - HasCField
-      - HasField
-      - HasFieldCompat
-      - HasFieldPtr
-      - IsStruct
-      - ReadRaw
-      - Show
-      - StaticSize
-      - Storable
-      - WriteRaw
+- hsname: SDL_hid_bus_type
+  representation:
+    newtype:
+      constructor: SDL_hid_bus_type
+      fields:
+      - unwrap
+      ffitype:
+        hsmodule: HsBindgen.Runtime.Support
+        hsname: CUInt
+  instances:
+  - CEnum
+  - Eq
+  - Generic
+  - HasCField
+  - HasFFIType
+  - HasField
+  - HasFieldCompat
+  - HasFieldPtr
+  - Ord
+  - Prim
+  - Read
+  - ReadRaw
+  - SequentialCEnum
+  - Show
+  - StaticSize
+  - Storable
+  - WriteRaw
+- hsname: SDL_hid_device
+  representation: emptydata
+- hsname: SDL_hid_device_info
+  representation:
+    record:
+      constructor: SDL_hid_device_info
+      fields:
+      - path
+      - vendor_id
+      - product_id
+      - serial_number
+      - release_number
+      - manufacturer_string
+      - product_string
+      - usage_page
+      - usage
+      - interface_number
+      - interface_class
+      - interface_subclass
+      - interface_protocol
+      - bus_type
+      - next
+  instances:
+  - Eq
+  - Generic
+  - HasCField
+  - HasField
+  - HasFieldCompat
+  - HasFieldPtr
+  - IsStruct
+  - ReadRaw
+  - Show
+  - StaticSize
+  - Storable
+  - WriteRaw

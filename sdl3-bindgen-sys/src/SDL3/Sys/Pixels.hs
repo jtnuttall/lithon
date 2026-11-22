@@ -1198,7 +1198,7 @@ definePixelFourCC =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_BITSPERPIXEL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 62:23@
+--     [C declaration]: @lithon_SDL_BITSPERPIXEL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 64:23@
 bitsPerPixel
   :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
   -- ^
@@ -1230,7 +1230,7 @@ bitsPerPixel =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_BYTESPERPIXEL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 83:23@
+--     [C declaration]: @lithon_SDL_BYTESPERPIXEL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 84:23@
 bytesPerPixel
   :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
   -- ^
@@ -1260,7 +1260,7 @@ bytesPerPixel =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_ISPIXELFORMAT_INDEXED@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 100:24@
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_INDEXED@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 101:1@
 isPixelFormatIndexed
   :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
   -- ^
@@ -1320,7 +1320,7 @@ isPixelFormatPacked =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_ISPIXELFORMAT_ARRAY@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 134:24@
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_ARRAY@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 133:24@
 isPixelFormatArray
   :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
   -- ^
@@ -1350,7 +1350,7 @@ isPixelFormatArray =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_ISPIXELFORMAT_10BIT@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 151:24@
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_10BIT@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 149:24@
 isPixelFormat10Bit
   :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
   -- ^
@@ -1380,7 +1380,7 @@ isPixelFormat10Bit =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_ISPIXELFORMAT_FLOAT@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 168:24@
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_FLOAT@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 165:24@
 isPixelFormatFloat
   :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
   -- ^
@@ -1410,7 +1410,7 @@ isPixelFormatFloat =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_ISPIXELFORMAT_ALPHA@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 185:24@
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_ALPHA@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 181:24@
 isPixelFormatAlpha
   :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
   -- ^
@@ -1440,7 +1440,7 @@ isPixelFormatAlpha =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_ISPIXELFORMAT_FOURCC@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 202:24@
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_FOURCC@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 198:24@
 isPixelFormatFourCC
   :: SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat
   -- ^
@@ -1467,7 +1467,7 @@ isPixelFormatFourCC =
 --                   The safe import is not exported
 --                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
 --
---     [C declaration]: @lithon_SDL_DEFINE_COLORSPACE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 224:34@
+--     [C declaration]: @lithon_SDL_DEFINE_COLORSPACE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 219:34@
 defineColorspace
   :: SDL3.Sys.Bindgen.Pixels.SDL_ColorType
   -- ^
@@ -1513,7 +1513,7 @@ defineColorspace =
 --                   The safe import is not exported
 --                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
 --
---     [C declaration]: @lithon_SDL_COLORSPACETYPE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 241:33@
+--     [C declaration]: @lithon_SDL_COLORSPACETYPE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 240:1@
 colorspaceType
   :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
   -- ^
@@ -1538,7 +1538,7 @@ colorspaceType = Unsafe.lithon_SDL_COLORSPACETYPE
 --                   The safe import is not exported
 --                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
 --
---     [C declaration]: @lithon_SDL_COLORSPACERANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 258:34@
+--     [C declaration]: @lithon_SDL_COLORSPACERANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 257:1@
 colorspaceRange
   :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
   -- ^
@@ -1563,7 +1563,7 @@ colorspaceRange = Unsafe.lithon_SDL_COLORSPACERANGE
 --                   The safe import is not exported
 --                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
 --
---     [C declaration]: @lithon_SDL_COLORSPACECHROMA@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 275:38@
+--     [C declaration]: @lithon_SDL_COLORSPACECHROMA@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 274:1@
 colorspaceChroma
   :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
   -- ^
@@ -1588,7 +1588,7 @@ colorspaceChroma = Unsafe.lithon_SDL_COLORSPACECHROMA
 --                   The safe import is not exported
 --                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
 --
---     [C declaration]: @lithon_SDL_COLORSPACEPRIMARIES@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 292:38@
+--     [C declaration]: @lithon_SDL_COLORSPACEPRIMARIES@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 291:1@
 colorspacePrimaries
   :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
   -- ^
@@ -1614,7 +1614,7 @@ colorspacePrimaries =
 --                   The safe import is not exported
 --                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
 --
---     [C declaration]: @lithon_SDL_COLORSPACETRANSFER@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 309:47@
+--     [C declaration]: @lithon_SDL_COLORSPACETRANSFER@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 308:1@
 colorspaceTransfer
   :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
   -- ^
@@ -1640,7 +1640,7 @@ colorspaceTransfer =
 --                   The safe import is not exported
 --                   : pure bit manipulation on immediate values; cannot block, lock, or call back.
 --
---     [C declaration]: @lithon_SDL_COLORSPACEMATRIX@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 326:42@
+--     [C declaration]: @lithon_SDL_COLORSPACEMATRIX@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 325:1@
 colorspaceMatrix
   :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
   -- ^
@@ -1668,7 +1668,7 @@ colorspaceMatrix = Unsafe.lithon_SDL_COLORSPACEMATRIX
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT601@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 343:24@
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT601@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 342:1@
 isColorspaceMatrixBT601
   :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
   -- ^
@@ -1698,7 +1698,7 @@ isColorspaceMatrixBT601 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT709@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 360:24@
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT709@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 359:1@
 isColorspaceMatrixBT709
   :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
   -- ^
@@ -1728,7 +1728,7 @@ isColorspaceMatrixBT709 =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 377:24@
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 376:1@
 isColorspaceMatrixBT2020NCL
   :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
   -- ^
@@ -1758,7 +1758,7 @@ isColorspaceMatrixBT2020NCL =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_ISCOLORSPACE_LIMITED_RANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 394:24@
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_LIMITED_RANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 393:1@
 isColorspaceLimitedRange
   :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
   -- ^
@@ -1788,7 +1788,7 @@ isColorspaceLimitedRange =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_ISCOLORSPACE_FULL_RANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 411:24@
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_FULL_RANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 410:1@
 isColorspaceFullRange
   :: SDL3.Sys.Bindgen.Pixels.SDL_Colorspace
   -- ^

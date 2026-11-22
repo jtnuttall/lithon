@@ -1,74 +1,74 @@
 version:
   hs_bindgen: 1.0.0.0
-  binding_specification: "1.0"
+  binding_specification: '1.0'
 hsmodule: SDL3.Sys.Bindgen.System
 ctypes:
-  - headers: SDL3/SDL_system.h
-    cname: union _XEvent
-    hsname: XEvent
-  - headers: SDL3/SDL_system.h
-    cname: XEvent
-    hsname: XEvent
-  - headers: SDL3/SDL_system.h
-    cname: SDL_X11EventHook
-    hsname: SDL_X11EventHook
-  - headers: SDL3/SDL_system.h
-    cname: enum SDL_Sandbox
-    hsname: SDL_Sandbox
-    enum: open
-  - headers: SDL3/SDL_system.h
-    cname: SDL_Sandbox
-    hsname: SDL_Sandbox
+- headers: SDL3/SDL_system.h
+  cname: union _XEvent
+  hsname: XEvent
+- headers: SDL3/SDL_system.h
+  cname: XEvent
+  hsname: XEvent
+- headers: SDL3/SDL_system.h
+  cname: SDL_X11EventHook
+  hsname: SDL_X11EventHook
+- headers: SDL3/SDL_system.h
+  cname: enum SDL_Sandbox
+  hsname: SDL_Sandbox
+  enum: open
+- headers: SDL3/SDL_system.h
+  cname: SDL_Sandbox
+  hsname: SDL_Sandbox
 hstypes:
-  - hsname: SDL_Sandbox
-    representation:
-      newtype:
-        constructor: SDL_Sandbox
-        fields:
-          - unwrap
-        ffitype:
-          hsmodule: HsBindgen.Runtime.Support
-          hsname: CUInt
-    instances:
-      - CEnum
-      - Eq
-      - Generic
-      - HasCField
-      - HasFFIType
-      - HasField
-      - HasFieldCompat
-      - HasFieldPtr
-      - Ord
-      - Prim
-      - Read
-      - ReadRaw
-      - SequentialCEnum
-      - Show
-      - StaticSize
-      - Storable
-      - WriteRaw
-  - hsname: SDL_X11EventHook
-    representation:
-      newtype:
-        constructor: SDL_X11EventHook
-        fields:
-          - unwrap
-        ffitype:
-          hsmodule: HsBindgen.Runtime.Support
-          hsname: FunPtrVoid
-    instances:
-      - Eq
-      - Generic
-      - HasCField
-      - HasFFIType
-      - HasField
-      - HasFieldCompat
-      - HasFieldPtr
-      - Ord
-      - ReadRaw
-      - Show
-      - StaticSize
-      - Storable
-      - WriteRaw
-  - hsname: XEvent
-    representation: emptydata
+- hsname: SDL_Sandbox
+  representation:
+    newtype:
+      constructor: SDL_Sandbox
+      fields:
+      - unwrap
+      ffitype:
+        hsmodule: HsBindgen.Runtime.Support
+        hsname: CUInt
+  instances:
+  - CEnum
+  - Eq
+  - Generic
+  - HasCField
+  - HasFFIType
+  - HasField
+  - HasFieldCompat
+  - HasFieldPtr
+  - Ord
+  - Prim
+  - Read
+  - ReadRaw
+  - SequentialCEnum
+  - Show
+  - StaticSize
+  - Storable
+  - WriteRaw
+- hsname: SDL_X11EventHook
+  representation:
+    newtype:
+      constructor: SDL_X11EventHook
+      fields:
+      - unwrap
+      ffitype:
+        hsmodule: HsBindgen.Runtime.Support
+        hsname: FunPtrVoid
+  instances:
+  - Eq
+  - Generic
+  - HasCField
+  - HasFFIType
+  - HasField
+  - HasFieldCompat
+  - HasFieldPtr
+  - Ord
+  - ReadRaw
+  - Show
+  - StaticSize
+  - Storable
+  - WriteRaw
+- hsname: XEvent
+  representation: emptydata

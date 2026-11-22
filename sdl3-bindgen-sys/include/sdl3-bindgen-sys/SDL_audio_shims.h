@@ -35,9 +35,8 @@
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE int lithon_SDL_AUDIO_FRAMESIZE(const SDL_AudioSpec *spec)
-{
-    return (int)SDL_AUDIO_FRAMESIZE(*spec);
+static SDL_INLINE int lithon_SDL_AUDIO_FRAMESIZE(const SDL_AudioSpec *spec) {
+  return (int)SDL_AUDIO_FRAMESIZE(*spec);
 }
 
 /**
@@ -58,9 +57,10 @@ static SDL_INLINE int lithon_SDL_AUDIO_FRAMESIZE(const SDL_AudioSpec *spec)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE SDL_AudioFormat lithon_SDL_DEFINE_AUDIO_FORMAT(bool is_signed, bool is_bigendian, bool is_float, Uint8 bits)
-{
-    return (SDL_AudioFormat)SDL_DEFINE_AUDIO_FORMAT(is_signed, is_bigendian, is_float, bits);
+static SDL_INLINE SDL_AudioFormat lithon_SDL_DEFINE_AUDIO_FORMAT(
+    bool is_signed, bool is_bigendian, bool is_float, Uint8 bits) {
+  return (SDL_AudioFormat)SDL_DEFINE_AUDIO_FORMAT(is_signed, is_bigendian,
+                                                  is_float, bits);
 }
 
 #endif /* SDL3_BINDGEN_SYS_SDL_AUDIO_SHIMS_H */
