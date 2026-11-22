@@ -2,7 +2,7 @@
   projectRootFile = "flake.nix";
 
   settings.excludes = [
-    "lithon-codegen/data/Vulkan-Docs/**"
+    "**/Vulkan-Docs/**"
     "lithon-hs-bindgen/vendor/**"
     "**/*-lock.json"
     "**/{test,test-data}/*.{json,yaml}"
