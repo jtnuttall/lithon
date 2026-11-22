@@ -58,7 +58,14 @@
         };
 
         src = ./.;
+
         ghcVersion = "ghc912";
+        llvmPackages = pkgs.llvmPackages_22;
+
+        lithonEnv = import ./nix/env.nix {
+          inherit pkgs;
+          inherit llvmPackages;
+        };
 
         treefmtEval = treefmt-nix.lib.evalModule pkgs {
           imports = [./nix/treefmt.nix];
@@ -66,29 +73,7 @@
         };
         treefmtWrapper = treefmtEval.config.build.wrapper;
 
-        project = with pkgs; let
-          llvmPkgs = llvmPackages_22;
-          hsBindgenHook = callPackage ./nix/hs-bindgen/hs-bindgen-hook.nix {
-            llvmPackages = llvmPkgs;
-          };
-          # libclang-bindings' configure honors LLVM_PATH  and expects
-          # $LLVM_PATH/{lib,include}.
-          libclangPrefix = symlinkJoin {
-            name = "libclang-prefix";
-            paths = [
-              (lib.getLib llvmPkgs.libclang)
-              (lib.getDev llvmPkgs.libclang)
-            ];
-          };
-          libHook = libs: ''
-            BINDGEN_EXTRA_CLANG_ARGS="${lib.concatMapStringsSep " " (p: "-isystem ${lib.getDev p}/include") libs} ''${BINDGEN_EXTRA_CLANG_ARGS:-}"
-            export BINDGEN_EXTRA_CLANG_ARGS
-            C_INCLUDE_PATH="${lib.concatMapStringsSep ":" (p: "${lib.getDev p}/include") libs}''${C_INCLUDE_PATH:+:''${C_INCLUDE_PATH}}"
-            export C_INCLUDE_PATH
-            LD_LIBRARY_PATH="${lib.makeLibraryPath libs}''${LD_LIBRARY_PATH:+:''${LD_LIBRARY_PATH}}"
-            export LD_LIBRARY_PATH
-          '';
-        in
+        project = with pkgs;
           pkgs.haskell-nix.cabalProject' {
             inherit src;
             compiler-nix-name = ghcVersion;
@@ -98,20 +83,20 @@
                 packages = {
                   lithon-codegen = {
                     components.library = {
-                      build-tools = [hsBindgenHook];
+                      build-tools = [lithonEnv.hsBindgenHook];
                     };
                     preBuild = ''
-                      ${libHook [sdl3 libmpv]}
+                      ${lithonEnv.libHook [sdl3 libmpv]}
                     '';
                   };
                   sdl3-bindgen-sys = {
                     preBuild = ''
-                      ${libHook [sdl3]}
+                      ${lithonEnv.libHook [sdl3]}
                     '';
                   };
                   mpv-bindgen-sys = {
                     preBuild = ''
-                      ${libHook [libmpv]}
+                      ${lithonEnv.libHook [libmpv]}
                     '';
                   };
                 };
@@ -129,46 +114,16 @@
                 hoogle = "latest";
               };
               nativeBuildInputs = [
-                pkg-config
                 bear
-                haskellPackages.cabal-fmt
-                zlib
-                hsBindgenHook
-                llvmPkgs.clang
-                llvmPkgs.llvm
                 doxygen
+                haskellPackages.cabal-fmt
+                lithonEnv.hsBindgenHook
+                lithonEnv.llvmPackages.clang
+                lithonEnv.llvmPackages.llvm
+                pkg-config
+                zlib
               ];
               buildInputs = [
-                # general gfx
-                mesa # lavapipe ICD for offscreen triangle
-
-                # vulkan
-                glslang
-                spirv-tools
-                vulkan-headers
-                vulkan-loader
-                vulkan-tools
-                vulkan-tools-lunarg
-                vulkan-validation-layers
-
-                # SDL
-                sdl3
-                SDL2 # windowed demo (triangle-sdl, cabal flag `sdl`)
-
-                # libmpv bindings (mpv-bindgen-sys, the mpv-headless example)
-                libmpv
-
-                # windowing dependencies
-                libx11
-                libxcursor
-                libxi
-                libxkbcommon
-                libxrandr
-                wayland
-
-                # clang / C/C++
-                bear
-
                 # Linting, formatting, quality, and scripting
                 lychee
                 treefmtWrapper
@@ -185,22 +140,13 @@
                 diffutils
                 dyff
                 xq
-                # pyparsing for Vulkan-Docs' genvk.py
-                (python314.withPackages (ps: [ps.pyparsing]))
+                (python314.withPackages (ps: [ps.pyparsing])) # for Vulkan-Docs' genvk.py
                 dasel
                 xmlstarlet
                 ripgrep
               ];
 
-              shellHook = ''
-                ${libHook [sdl3 libmpv]}
-                export LLVM_PATH="${libclangPrefix}"
-                export LD_LIBRARY_PATH="${lib.getLib llvmPkgs.libclang}/lib:${lib.makeLibraryPath buildInputs}''${LD_LIBRARY_PATH:+:''${LD_LIBRARY_PATH}}"
-                export VK_LAYER_PATH="${vulkan-validation-layers}/share/vulkan/explicit_layer.d"
-                # Advertised for check.sh: a lavapipe ICD that exists even
-                # off-NixOS (CI runners lack /run/opengl-driver discovery).
-                export LITHON_LAVAPIPE_ICD="${mesa}/share/vulkan/icd.d/lvp_icd.x86_64.json"
-              '';
+              shellHook = lithonEnv.shellHook buildInputs;
             };
           };
 
@@ -212,12 +158,17 @@
             inherit pkgs;
             inherit src;
             inherit project;
+            inherit lithonEnv;
           };
 
         flake = removeAttrs (project.flake {}) ["hydraJobs"];
       in
         flake
         // {
+          formatter = treefmtWrapper;
+
+          inherit (flake) devShells;
+
           packages = {
             default = flake.packages."lithon-codegen:exe:lithon-codegen";
             tests = flake.packages."lithon-codegen:test:lithon-codegen-test";
@@ -226,25 +177,6 @@
             "sdl3-bindgen-sys-docs" = project.hsPkgs.sdl3-bindgen-sys.components.library.doc;
             "mpv-bindgen-sys-docs" = project.hsPkgs.mpv-bindgen-sys.components.library.doc;
           };
-
-          formatter = treefmtWrapper;
-
-          devShells =
-            flake.devShells
-            // {
-              ci = project.shellFor {
-                withHoogle = pkgs.lib.mkForce false;
-                tools = pkgs.lib.mkForce {
-                  cabal = "latest";
-                  hpack = "latest";
-                  fourmolu = "latest";
-                };
-
-                buildInputs = with pkgs; [
-                  mesa # lavapipe ICD for offscreen triangle
-                ];
-              };
-            };
         }
         // checks
     );

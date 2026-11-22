@@ -2,6 +2,7 @@
   pkgs,
   project,
   src,
+  lithonEnv,
 }: let
   # Helper to grab executables from the project.
   getExe = pkg: exe: project.hsPkgs.${pkg}.components.exes.${exe};
@@ -10,8 +11,8 @@
   mkGfxEnv = overrides:
     {
       SDL_VIDEODRIVER = "offscreen";
-      VK_LAYER_PATH = "${pkgs.vulkan-validation-layers}/share/vulkan/explicit_layer.d";
-      VK_ADD_DRIVER_FILES = "${pkgs.mesa}/share/vulkan/icd.d/lvp_icd.x86_64.json";
+      VK_LAYER_PATH = lithonEnv.vkLayerPath;
+      VK_ADD_DRIVER_FILES = lithonEnv.lavapipeIcd;
     }
     // overrides;
 in {
