@@ -3,6 +3,7 @@
   project,
   src,
   lithonEnv,
+  hsTools,
 }: let
   # Helper to grab executables from the project.
   getExe = pkg: exe: project.hsPkgs.${pkg}.components.exes.${exe};
@@ -28,9 +29,6 @@
       touch $out
     '';
 
-  # `lithon-codegen <target> generate --check` against a writable copy of the
-  # repo: the generator reads lithon-codegen/data/<target> and the sibling
-  # package it emits into, and --check fails on any stale file.
   codegenFreshness = target: args:
     integrationCheck "check-codegen-${target}" {
       pkg = "lithon-codegen";
@@ -75,11 +73,9 @@ in {
   check-codegen-sdl3 = codegenFreshness "sdl3" "";
   check-codegen-mpv = codegenFreshness "mpv" "";
 
-  # Every package's committed .cabal matches its package.yaml (the three
-  # generated packages included).
   check-hpack =
     pkgs.runCommand "check-hpack" {
-      nativeBuildInputs = [pkgs.hpack pkgs.diffutils];
+      nativeBuildInputs = [hsTools.hpack pkgs.diffutils];
     } ''
       for cabal_file in ${src}/*/*.cabal; do
         dir="$(dirname "$cabal_file")"
@@ -98,10 +94,6 @@ in {
     '';
 
   # == rapidhash ==
-  # The committed known-answer vectors against a C reference compiled from
-  # the vendored upstream header (scripts/rapidhash-pin.sh). The doctest
-  # suite stays with `just doctest`: doctest-parallel can't resolve
-  # `-package ghc` under haskell.nix.
   check-rapidhash-pin =
     pkgs.runCommand "check-rapidhash-pin" {
       nativeBuildInputs = [pkgs.diffutils];

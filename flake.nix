@@ -2,8 +2,6 @@
   description = "Lithon - family of rendering packages for Haskell";
 
   inputs = {
-    # The vendored hs-bindgen stack and Vulkan-Docs are git submodules.
-    # (Lix gates this behind the `flake-self-attrs` experimental feature.)
     self.submodules = true;
 
     haskellNix.url = "github:ican-group/haskell.nix";
@@ -71,14 +69,17 @@
           inherit llvmPackages;
         };
 
-        treefmtEval = treefmt-nix.lib.evalModule pkgs {
-          imports = [./nix/treefmt.nix];
-          _module.args.fourmolu = pkgs.haskell-nix.tool ghcVersion "fourmolu" "latest";
+        hsToolsSpec = {
+          cabal = "latest";
+          fourmolu = "latest";
+          haskell-language-server = "latest";
+          hlint = "latest";
+          hpack = "latest";
+          hoogle = "latest";
         };
-        treefmtWrapper = treefmtEval.config.build.wrapper;
 
         project = with pkgs;
-          pkgs.haskell-nix.cabalProject' {
+          haskell-nix.cabalProject' {
             inherit src;
             compiler-nix-name = ghcVersion;
             supportHpack = true;
@@ -124,14 +125,7 @@
 
             shell = rec {
               withHoogle = true;
-              tools = {
-                cabal = "latest";
-                fourmolu = "latest";
-                haskell-language-server = "latest";
-                hlint = "latest";
-                hpack = "latest";
-                hoogle = "latest";
-              };
+              tools = hsToolsSpec;
               nativeBuildInputs =
                 lithonEnv.commonNativeBuildInputs
                 ++ [
@@ -165,6 +159,15 @@
             };
           };
 
+        hsTools = project.tools hsToolsSpec;
+
+        treefmtEval = treefmt-nix.lib.evalModule pkgs {
+          imports = [./nix/treefmt.nix];
+          _module.args.hsTools = hsTools;
+        };
+
+        treefmtWrapper = treefmtEval.config.build.wrapper;
+
         extraChecks =
           {
             formatting = treefmtEval.config.build.check self;
@@ -174,6 +177,7 @@
             inherit src;
             inherit project;
             inherit lithonEnv;
+            inherit hsTools;
           };
 
         flake = removeAttrs (project.flake {}) ["hydraJobs"];
