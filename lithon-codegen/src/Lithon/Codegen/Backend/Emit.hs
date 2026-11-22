@@ -429,7 +429,7 @@ format formatMode staging metas = do
       currentDir <- getCurrentDirectory
       let logMeta = ["currentDir" .= currentDir, "stagingDir" .= staging]
       logInfo $ "Running oxfmt" :# logMeta
-      void $ invokeCommand staging "oxfmt" ["."]
+      void $ invokeCommand staging "oxfmt" [".", "--no-error-on-unmatched-pattern"]
 
       logInfo $ "Running fourmolu" :# logMeta
       let staged =
