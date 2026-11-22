@@ -11,20 +11,21 @@
   integrationCheck = name: {
     pkg,
     exe,
-    extraEnv ? {},
+    nativeBuildInputs ? [],
   }: testScript: let
     exePath = getExe pkg exe;
-    env =
-      {
-        EXECUTABLE_OUTPUT_PATH = exePath;
-        EXECUTABLE = exePath + "/bin/" + exe;
-      }
-      // extraEnv;
+    env = {
+      EXECUTABLE_OUTPUT_PATH = exePath;
+      EXECUTABLE = exePath + "/bin/" + exe;
+      nativeBuildInputs = [lithonEnv.hsBindgenHook] ++ nativeBuildInputs;
+    };
   in
     pkgs.runCommand name env ''
+      populateHsBindgenEnv
       ${lithonEnv.checkHook}
       # The sandbox's HOME is unwritable; mesa wants a shader cache under it.
       export HOME="$(mktemp -d)"
+      export LC_ALL=C.UTF-8
 
       ${testScript}
 
@@ -35,9 +36,7 @@
     integrationCheck "check-codegen-${target}" {
       pkg = "lithon-codegen";
       exe = "lithon-codegen";
-      extraEnv = {
-        nativeBuildInputs = [pkgs.git];
-      };
+      nativeBuildInputs = [pkgs.git];
     } ''
       cp -r ${src} source
       chmod -R +w source
@@ -53,9 +52,7 @@
     integrationCheck "check-${exe}" {
       pkg = "lithon-examples";
       inherit exe;
-      extraEnv = {
-        nativeBuildInputs = [pkgs.gnugrep];
-      };
+      nativeBuildInputs = [pkgs.gnugrep];
     } ''
       # Not `out`: that would shadow the derivation's $out.
       log=$($EXECUTABLE ${args} 2>&1) || {
