@@ -1,10 +1,5 @@
 # If any of these checks fail, it indicates a strict ABI incompatibility against
 # upstream. Typically this is an added field on a variant somewhere.
-#
-# A failing build opens an issue titled
-#   <package> failed strict check against <pkg-config name> <version>
-# unless one with that title is already open, so each upstream release is
-# reported once; closing the issue re-arms it for that version.
 ---
 name: Check latest upstream(s)
 
@@ -32,10 +27,6 @@ jobs:
   check-latest-sdl3:
     if: github.repository == 'jtnuttall/lithon'
     runs-on: ubuntu-latest
-    env:
-      STRICT_CHECK_ABI: true
-      PACKAGE: sdl3-bindgen-sys
-      PKGCONFIG: sdl3
     steps:
       - uses: actions/checkout@v4
       - uses: extractions/setup-just@v2
@@ -50,35 +41,29 @@ jobs:
           cabal-version: ${{ env.CABAL_VERSION }}
           cabal-update: false
 
-      - name: Resolved upstream version
-        id: upstream
-        run: echo "version=$(pkg-config --modversion "$PKGCONFIG")" >> "$GITHUB_OUTPUT"
+      - uses: ./.github/actions/check-latest
+        with:
+          package: sdl3-bindgen-sys
+          pkgconfig: sdl3
 
-      - name: Build and haddock from sdist
-        id: build
-        shell: bash
-        run: just sdist-consumer "$PACKAGE" "$PKGCONFIG"
+  check-latest-mpv:
+    if: github.repository == 'jtnuttall/lithon'
+    # Homebrew should update mpv much more frequently than ubuntu
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v2
 
-      - name: Open an issue
-        if: failure() && steps.build.outcome == 'failure'
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TITLE: ${{ env.PACKAGE }} failed strict check against ${{ env.PKGCONFIG }} ${{ steps.upstream.outputs.version }}
-          VERSION: ${{ steps.upstream.outputs.version }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          open=$(gh issue list --state open --author app/github-actions --search "in:title \"$TITLE\"" \
-            --json number,title | jq -r --arg t "$TITLE" '.[] | select(.title == $t) | .number')
-          if [ -n "$open" ]; then
-            echo "already open as #$open: $TITLE"
-            exit 0
-          fi
-          gh issue create --title "$TITLE" --body "$(cat <<EOF
-          \`$PACKAGE\` no longer builds with \`+abi-assertions-exact\` against $PKGCONFIG $VERSION, the newest release when this ran.
+      - name: Install libmpv
+        run: brew install mpv pkgconf
 
-          Run: $RUN_URL
+      - uses: ./.github/actions/setup-haskell
+        with:
+          ghc-version: ${{ env.GHC_VERSION }}
+          cabal-version: ${{ env.CABAL_VERSION }}
+          cabal-update: false
 
-          The failing \`_Static_assert\` in \`cbits/abi_assertions.c\` names the declaration. An "exact mode" message is a struct SDL appended to, which the default build tolerates until the bindings are regenerated from the new header; any other assertion also fails consumers' default builds.
-          EOF
-          )"
+      - uses: ./.github/actions/check-latest
+        with:
+          package: mpv-bindgen-sys
+          pkgconfig: mpv

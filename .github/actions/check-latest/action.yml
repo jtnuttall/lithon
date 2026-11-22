@@ -1,0 +1,58 @@
+name: "Strict ABI check"
+description: "Builds a *-bindgen-sys package from its sdist with +abi-assertions-exact against whatever pkg-config resolves, and opens an issue when that fails. Expects the repo checked out, just, GHC/cabal, and the upstream library installed."
+
+inputs:
+  package:
+    description: "The bindgen package (sdl3-bindgen-sys, mpv-bindgen-sys, ...)"
+    required: true
+  pkgconfig:
+    description: "Its pkg-config module (sdl3, mpv, ...)"
+    required: true
+  token:
+    description: "Token with issues: write, for opening the issue"
+    default: ${{ github.token }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Print resolved upstream library version
+      id: upstream
+      shell: bash
+      env:
+        PKGCONFIG: ${{ inputs.pkgconfig }}
+      run: echo "version=$(pkg-config --modversion "$PKGCONFIG")" >> "$GITHUB_OUTPUT"
+
+    - name: Build with exact ABI assertions
+      id: build
+      shell: bash
+      env:
+        STRICT_CHECK_ABI: true
+        PACKAGE: ${{ inputs.package }}
+        PKGCONFIG: ${{ inputs.pkgconfig }}
+      run: just sdist-consumer "$PACKAGE" "$PKGCONFIG"
+
+    - name: Open an issue
+      if: failure() && steps.build.outcome == 'failure'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        PACKAGE: ${{ inputs.package }}
+        PKGCONFIG: ${{ inputs.pkgconfig }}
+        VERSION: ${{ steps.upstream.outputs.version }}
+        TITLE: ${{ inputs.package }} failed strict check against ${{ inputs.pkgconfig }} ${{ steps.upstream.outputs.version }}
+        RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      run: |
+        open=$(gh issue list --state open --author app/github-actions --search "in:title \"$TITLE\"" \
+          --json number,title | jq -r --arg t "$TITLE" '.[] | select(.title == $t) | .number')
+        if [ -n "$open" ]; then
+          echo "already open as #$open: $TITLE"
+          exit 0
+        fi
+        gh issue create --title "$TITLE" --body "$(cat <<EOF
+        \`$PACKAGE\` no longer builds with \`+abi-assertions-exact\` against $PKGCONFIG $VERSION (the version pkg-config reports), the newest release when this ran.
+
+        Run: $RUN_URL
+
+        The failing \`_Static_assert\` in \`cbits/abi_assertions.c\` names the declaration. An "exact mode" message is a struct upstream appended to, which the default build tolerates until the bindings are regenerated from the new header; any other assertion also fails consumers' default builds.
+        EOF
+        )"
