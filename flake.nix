@@ -122,7 +122,12 @@
                 hpack = "latest";
                 hoogle = "latest";
               };
-              nativeBuildInputs = lithonEnv.commonNativeBuildInputs ++ [just];
+              nativeBuildInputs =
+                lithonEnv.commonNativeBuildInputs
+                ++ [
+                  just
+                  nix-fast-build
+                ];
               buildInputs = [
                 # Linting, formatting, quality, and scripting
                 lychee
