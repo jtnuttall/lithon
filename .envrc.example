@@ -1,4 +1,5 @@
 # shellcheck shell=bash
 
-# Vendored patches are managed as submodules
-use flake ".?submodules=1"
+# Submodules come via `inputs.self.submodules` in flake.nix
+# (Lix: enable the `flake-self-attrs` experimental feature).
+use flake

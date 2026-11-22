@@ -2,6 +2,10 @@
   description = "Lithon - family of rendering packages for Haskell";
 
   inputs = {
+    # The vendored hs-bindgen stack and Vulkan-Docs are git submodules.
+    # (Lix gates this behind the `flake-self-attrs` experimental feature.)
+    self.submodules = true;
+
     haskellNix.url = "github:ican-group/haskell.nix";
     nixpkgs.follows = "haskellNix/nixpkgs-unstable";
 

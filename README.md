@@ -88,6 +88,8 @@ willing to publish earlier than planned if there's enough interest.
 
 - Clone with `git clone --recursive` — the vendored `hs-bindgen` stack
   lives in git submodules that the build requires.
+- The flake sets `inputs.self.submodules = true`, so no `?submodules=1`
+  is needed. On Lix, add `flake-self-attrs` to `experimental-features`.
 - The devshell (`nix develop`, or direnv) provides GHC, libclang for
   hs-bindgen, SDL3, libmpv, and lavapipe.
 - `scripts/check.sh` encapsulates all release checks for now.

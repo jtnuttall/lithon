@@ -1,8 +1,16 @@
+system := `nix eval --raw --impure --expr builtins.currentSystem`
+ifd := "--option allow-import-from-derivation true"
+
 default:
     @just --list
 
-check:
-    nix flake check '.?submodules=1' --allow-import-from-derivation
+# Run all flake checks; extra flags pass through (e.g. just check --skip-cached)
+check *args:
+    nix-fast-build --flake '.#checks.{{system}}' {{ifd}} {{args}}
+
+# Run a single check
+check-one name:
+    nix-fast-build --flake '.#checks.{{system}}.{{name}}' {{ifd}}
 
 doctest:
     ./scripts/rapidhash-doctest.sh
