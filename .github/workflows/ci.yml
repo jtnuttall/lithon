@@ -290,8 +290,15 @@ jobs:
             dist-newstyle-${{ hashFiles('flake.lock', 'cabal.project') }}-
       - uses: DeterminateSystems/nix-installer-action@main
         with:
+          # Determinate nix will upload whatever it built, which ends up uploading
+          # the closure of *every* derivation in the run, which causes 45min+ pipelines
+          # and throttling on the cache.
+          #
+          # See: https://github.com/DeterminateSystems/magic-nix-cache/issues/154
+          determinate: false
           extra-conf: |
-            accept-flake-config = true
+            extra-substituters = https://cache.iog.io https://cache.zw3rk.com
+            extra-trusted-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk=
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Hackage index
         run: nix develop '.?submodules=1#ci' --command cabal update
