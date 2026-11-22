@@ -12,6 +12,10 @@ inputs:
     description: "If set to false, skip cabal update step."
     required: false
     default: false
+  dist-key:
+    description: "Extra cache-key component for dist-newstyle, for builds whose outputs embed something outside the repo (a C library's install prefix, say)"
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -24,12 +28,18 @@ runs:
         cabal-version: ${{ inputs.cabal-version }}
         cabal-update: ${{ inputs.cabal-update }}
 
-    - name: Cache dependencies and build artifacts
+    - name: Cache the cabal store
       uses: actions/cache@v4
       with:
-        path: |
-          ${{ steps.setup-haskell.outputs.cabal-store }}
-          dist-newstyle
-        key: ${{ runner.os }}-ghc-${{ steps.setup-haskell.outputs.ghc-version }}-cabal-${{ hashFiles('**/*.cabal', '**/cabal.project.freeze') }}
+        path: ${{ steps.setup-haskell.outputs.cabal-store }}
+        key: ${{ runner.os }}-ghc-${{ steps.setup-haskell.outputs.ghc-version }}-store-${{ hashFiles('**/*.cabal', '**/cabal.project.freeze') }}
         restore-keys: |
-          ${{ runner.os }}-ghc-${{ steps.setup-haskell.outputs.ghc-version }}-cabal-
+          ${{ runner.os }}-ghc-${{ steps.setup-haskell.outputs.ghc-version }}-store-
+
+    - name: Cache dist-newstyle
+      uses: actions/cache@v4
+      with:
+        path: dist-newstyle
+        key: ${{ runner.os }}-ghc-${{ steps.setup-haskell.outputs.ghc-version }}-dist-${{ inputs.dist-key }}-${{ hashFiles('**/*.cabal', '**/cabal.project.freeze') }}
+        restore-keys: |
+          ${{ runner.os }}-ghc-${{ steps.setup-haskell.outputs.ghc-version }}-dist-${{ inputs.dist-key }}-

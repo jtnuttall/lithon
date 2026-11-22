@@ -1,0 +1,34 @@
+# If any of these checks fail, it indicates a strict ABI incompatibility against
+# upstream. Typically this is an added field on a variant somewhere.
+---
+name: Check latest upstream(s)
+
+on:
+  schedule:
+    # 'minute hour day_of_month month day_of_week'
+    # 0 = 0th minute, 14 = 2 PM UTC, 5 = Friday
+    - cron: "0 14 * * 5"
+
+jobs:
+  check-latest-sdl3:
+    if: github.repository == 'jtnuttall/lithon'
+    runs-on: ubuntu-latest
+    env:
+      STRICT_CHECK_ABI: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v2
+
+      - uses: ./.github/actions/setup-sdl3
+        with:
+          version: 3-latest
+
+      - uses: ./.github/actions/setup-haskell
+        with:
+          ghc-version: ${{ env.GHC_VERSION }}
+          cabal-version: ${{ env.CABAL_VERSION }}
+          cabal-update: false
+
+      - name: Build and haddock from sdist
+        shell: bash
+        run: just sdist-consumer sdl3-bindgen-sys sdl3

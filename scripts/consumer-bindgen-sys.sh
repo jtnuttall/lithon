@@ -61,9 +61,6 @@ if [ "$RUNNER_OS" = "Windows" ]; then
     # elsewhere and already carries Windows paths) must not get it.
     export PKG_CONFIG_SYSROOT_DIR=C:/msys64
   fi
-elif [ "$RUNNER_OS" = "Linux" ] && [ "$pkg" = "sdl3" ] && [ -d "$HOME/sdl3/lib/pkgconfig" ]; then
-  # The SDL setup action installs under $HOME/sdl3.
-  export PKG_CONFIG_PATH="$HOME/sdl3/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
 elif [ "$RUNNER_OS" = "macOS" ] && [ "$pkg" = "mpv" ]; then
   # Homebrew doesn't link keg-only formulae (libarchive, ...) into its prefix,
   # so their .pc files are invisible to pkg-config.
