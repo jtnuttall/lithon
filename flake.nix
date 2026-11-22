@@ -80,6 +80,8 @@
             supportHpack = true;
             modules = [
               {
+                projectPackages.preCheck = lithonEnv.checkHook;
+
                 packages = {
                   lithon-codegen = {
                     components.library = {
@@ -131,7 +133,7 @@
                 diffutils
                 dyff
                 xq
-                (python314.withPackages (ps: [ps.pyparsing])) # for Vulkan-Docs' genvk.py
+                lithonEnv.pythonWithPyparsing
                 dasel
                 xmlstarlet
                 ripgrep

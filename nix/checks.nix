@@ -15,18 +15,13 @@
     exePath = getExe pkg exe;
     env =
       {
-        nativeBuildInputs = lithonEnv.commonNativeBuildInputs ++ extraEnv;
-        buildInputs = lithonEnv.commonBuildInputs ++ extraEnv;
-        SDL_VIDEODRIVER = "offscreen";
         EXECUTABLE_OUTPUT_PATH = exePath;
         EXECUTABLE = exePath + "/bin/" + exe;
-        VK_LAYER_PATH = lithonEnv.vkLayerPath;
-        VK_ADD_DRIVER_FILES = lithonEnv.lavapipeIcd;
       }
       // extraEnv;
   in
     pkgs.runCommand name env ''
-      ${lithonEnv.shellHook (lithonEnv.commonBuildInputs ++ env.buildInputs)}
+      ${lithonEnv.checkHook}
 
       ${testScript}
 

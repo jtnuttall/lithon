@@ -69,11 +69,22 @@
     zlib
   ];
 
+  # Vulkan-Docs' genvk.py (the shell, and the ABI gate in lithon-codegen's tests)
+  pythonWithPyparsing = pkgs.python314.withPackages (ps: [ps.pyparsing]);
+
   shellHook = buildInputs: ''
     ${libHook (with pkgs; [sdl3 libmpv])}
     export LLVM_PATH="${libclangPrefix}"
     export LD_LIBRARY_PATH="${pkgs.lib.getLib llvmPackages.libclang}/lib:${pkgs.lib.makeLibraryPath (commonBuildInputs ++ buildInputs)}''${LD_LIBRARY_PATH:+:''${LD_LIBRARY_PATH}}"
     export VK_LAYER_PATH="${vkLayerPath}"
     export LITHON_LAVAPIPE_ICD="${lavapipeIcd}"
+  '';
+
+  checkHook = ''
+    ${shellHook []}
+    export PATH="${pkgs.lib.makeBinPath (commonNativeBuildInputs ++ [pythonWithPyparsing])}''${PATH:+:''${PATH}}"
+    export PKG_CONFIG_PATH="${pkgs.lib.makeSearchPathOutput "dev" "lib/pkgconfig" commonBuildInputs}:${pkgs.lib.makeSearchPathOutput "dev" "share/pkgconfig" commonBuildInputs}''${PKG_CONFIG_PATH:+:''${PKG_CONFIG_PATH}}"
+    export SDL_VIDEODRIVER=offscreen
+    export VK_ADD_DRIVER_FILES="${lavapipeIcd}''${VK_ADD_DRIVER_FILES:+:''${VK_ADD_DRIVER_FILES}}"
   '';
 }
