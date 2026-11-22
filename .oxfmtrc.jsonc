@@ -1,8 +1,8 @@
 {
   "ignorePatterns": [
-    "lithon-hs-bindgen/vendor/",
+    "lithon-hs-bindgen/vendor/**",
     "**/*-lock.json",
     "**/{test,test-data}/*.{json,yaml}",
-    "Vulkan-Docs/",
+    "**/Vulkan-Docs/**",
   ],
 }

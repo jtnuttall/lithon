@@ -1,95 +1,95 @@
 version:
   hs_bindgen: 1.0.0.0
-  binding_specification: '1.0'
+  binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Timer
 ctypes:
-- headers: SDL3/SDL_timer.h
-  cname: SDL_TimerID
-  hsname: SDL_TimerID
-- headers: SDL3/SDL_timer.h
-  cname: SDL_TimerCallback
-  hsname: SDL_TimerCallback
-- headers: SDL3/SDL_timer.h
-  cname: SDL_NSTimerCallback
-  hsname: SDL_NSTimerCallback
+  - headers: SDL3/SDL_timer.h
+    cname: SDL_TimerID
+    hsname: SDL_TimerID
+  - headers: SDL3/SDL_timer.h
+    cname: SDL_TimerCallback
+    hsname: SDL_TimerCallback
+  - headers: SDL3/SDL_timer.h
+    cname: SDL_NSTimerCallback
+    hsname: SDL_NSTimerCallback
 hstypes:
-- hsname: SDL_NSTimerCallback
-  representation:
-    newtype:
-      constructor: SDL_NSTimerCallback
-      fields:
-      - unwrap
-      ffitype:
-        hsmodule: HsBindgen.Runtime.Support
-        hsname: FunPtrVoid
-  instances:
-  - Eq
-  - Generic
-  - HasCField
-  - HasFFIType
-  - HasField
-  - HasFieldCompat
-  - HasFieldPtr
-  - Ord
-  - ReadRaw
-  - Show
-  - StaticSize
-  - Storable
-  - WriteRaw
-- hsname: SDL_TimerCallback
-  representation:
-    newtype:
-      constructor: SDL_TimerCallback
-      fields:
-      - unwrap
-      ffitype:
-        hsmodule: HsBindgen.Runtime.Support
-        hsname: FunPtrVoid
-  instances:
-  - Eq
-  - Generic
-  - HasCField
-  - HasFFIType
-  - HasField
-  - HasFieldCompat
-  - HasFieldPtr
-  - Ord
-  - ReadRaw
-  - Show
-  - StaticSize
-  - Storable
-  - WriteRaw
-- hsname: SDL_TimerID
-  representation:
-    newtype:
-      constructor: SDL_TimerID
-      fields:
-      - unwrap
-      ffitype:
-        hsmodule: HsBindgen.Runtime.LibC
-        hsname: Word32
-  instances:
-  - Bitfield
-  - Bits
-  - Bounded
-  - Enum
-  - Eq
-  - FiniteBits
-  - Generic
-  - HasCField
-  - HasFFIType
-  - HasField
-  - HasFieldCompat
-  - HasFieldPtr
-  - Integral
-  - Ix
-  - Num
-  - Ord
-  - Prim
-  - Read
-  - ReadRaw
-  - Real
-  - Show
-  - StaticSize
-  - Storable
-  - WriteRaw
+  - hsname: SDL_NSTimerCallback
+    representation:
+      newtype:
+        constructor: SDL_NSTimerCallback
+        fields:
+          - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TimerCallback
+    representation:
+      newtype:
+        constructor: SDL_TimerCallback
+        fields:
+          - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_TimerID
+    representation:
+      newtype:
+        constructor: SDL_TimerID
+        fields:
+          - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.LibC
+          hsname: Word32
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

@@ -1,14 +1,14 @@
 version:
   hs_bindgen: 1.0.0.0
-  binding_specification: '1.0'
+  binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Loadso
 ctypes:
-- headers: SDL3/SDL_loadso.h
-  cname: struct SDL_SharedObject
-  hsname: SDL_SharedObject
-- headers: SDL3/SDL_loadso.h
-  cname: SDL_SharedObject
-  hsname: SDL_SharedObject
+  - headers: SDL3/SDL_loadso.h
+    cname: struct SDL_SharedObject
+    hsname: SDL_SharedObject
+  - headers: SDL3/SDL_loadso.h
+    cname: SDL_SharedObject
+    hsname: SDL_SharedObject
 hstypes:
-- hsname: SDL_SharedObject
-  representation: emptydata
+  - hsname: SDL_SharedObject
+    representation: emptydata

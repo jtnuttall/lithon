@@ -1,32 +1,32 @@
 version:
   hs_bindgen: 1.0.0.0
-  binding_specification: '1.0'
+  binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Metal
 ctypes:
-- headers: SDL3/SDL_metal.h
-  cname: SDL_MetalView
-  hsname: SDL_MetalView
+  - headers: SDL3/SDL_metal.h
+    cname: SDL_MetalView
+    hsname: SDL_MetalView
 hstypes:
-- hsname: SDL_MetalView
-  representation:
-    newtype:
-      constructor: SDL_MetalView
-      fields:
-      - unwrap
-      ffitype:
-        hsmodule: HsBindgen.Runtime.Support
-        hsname: PtrVoid
-  instances:
-  - Eq
-  - Generic
-  - HasCField
-  - HasFFIType
-  - HasField
-  - HasFieldCompat
-  - HasFieldPtr
-  - Ord
-  - ReadRaw
-  - Show
-  - StaticSize
-  - Storable
-  - WriteRaw
+  - hsname: SDL_MetalView
+    representation:
+      newtype:
+        constructor: SDL_MetalView
+        fields:
+          - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: PtrVoid
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

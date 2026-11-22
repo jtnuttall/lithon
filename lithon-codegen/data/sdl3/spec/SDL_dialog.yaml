@@ -1,92 +1,92 @@
 version:
   hs_bindgen: 1.0.0.0
-  binding_specification: '1.0'
+  binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Dialog
 ctypes:
-- headers: SDL3/SDL_dialog.h
-  cname: struct SDL_DialogFileFilter
-  hsname: SDL_DialogFileFilter
-- headers: SDL3/SDL_dialog.h
-  cname: SDL_DialogFileFilter
-  hsname: SDL_DialogFileFilter
-- headers: SDL3/SDL_dialog.h
-  cname: SDL_DialogFileCallback
-  hsname: SDL_DialogFileCallback
-- headers: SDL3/SDL_dialog.h
-  cname: enum SDL_FileDialogType
-  hsname: SDL_FileDialogType
-  enum: open
-- headers: SDL3/SDL_dialog.h
-  cname: SDL_FileDialogType
-  hsname: SDL_FileDialogType
+  - headers: SDL3/SDL_dialog.h
+    cname: struct SDL_DialogFileFilter
+    hsname: SDL_DialogFileFilter
+  - headers: SDL3/SDL_dialog.h
+    cname: SDL_DialogFileFilter
+    hsname: SDL_DialogFileFilter
+  - headers: SDL3/SDL_dialog.h
+    cname: SDL_DialogFileCallback
+    hsname: SDL_DialogFileCallback
+  - headers: SDL3/SDL_dialog.h
+    cname: enum SDL_FileDialogType
+    hsname: SDL_FileDialogType
+    enum: open
+  - headers: SDL3/SDL_dialog.h
+    cname: SDL_FileDialogType
+    hsname: SDL_FileDialogType
 hstypes:
-- hsname: SDL_DialogFileCallback
-  representation:
-    newtype:
-      constructor: SDL_DialogFileCallback
-      fields:
-      - unwrap
-      ffitype:
-        hsmodule: HsBindgen.Runtime.Support
-        hsname: FunPtrVoid
-  instances:
-  - Eq
-  - Generic
-  - HasCField
-  - HasFFIType
-  - HasField
-  - HasFieldCompat
-  - HasFieldPtr
-  - Ord
-  - ReadRaw
-  - Show
-  - StaticSize
-  - Storable
-  - WriteRaw
-- hsname: SDL_DialogFileFilter
-  representation:
-    record:
-      constructor: SDL_DialogFileFilter
-      fields:
-      - name
-      - pattern'
-  instances:
-  - Eq
-  - Generic
-  - HasCField
-  - HasField
-  - HasFieldCompat
-  - HasFieldPtr
-  - IsStruct
-  - ReadRaw
-  - Show
-  - StaticSize
-  - Storable
-  - WriteRaw
-- hsname: SDL_FileDialogType
-  representation:
-    newtype:
-      constructor: SDL_FileDialogType
-      fields:
-      - unwrap
-      ffitype:
-        hsmodule: HsBindgen.Runtime.Support
-        hsname: CUInt
-  instances:
-  - CEnum
-  - Eq
-  - Generic
-  - HasCField
-  - HasFFIType
-  - HasField
-  - HasFieldCompat
-  - HasFieldPtr
-  - Ord
-  - Prim
-  - Read
-  - ReadRaw
-  - SequentialCEnum
-  - Show
-  - StaticSize
-  - Storable
-  - WriteRaw
+  - hsname: SDL_DialogFileCallback
+    representation:
+      newtype:
+        constructor: SDL_DialogFileCallback
+        fields:
+          - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_DialogFileFilter
+    representation:
+      record:
+        constructor: SDL_DialogFileFilter
+        fields:
+          - name
+          - pattern'
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - IsStruct
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_FileDialogType
+    representation:
+      newtype:
+        constructor: SDL_FileDialogType
+        fields:
+          - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

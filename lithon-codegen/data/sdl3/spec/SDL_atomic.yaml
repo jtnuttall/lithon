@@ -1,93 +1,93 @@
 version:
   hs_bindgen: 1.0.0.0
-  binding_specification: '1.0'
+  binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Atomic
 ctypes:
-- headers: SDL3/SDL_atomic.h
-  cname: SDL_SpinLock
-  hsname: SDL_SpinLock
-- headers: SDL3/SDL_atomic.h
-  cname: struct SDL_AtomicInt
-  hsname: SDL_AtomicInt
-- headers: SDL3/SDL_atomic.h
-  cname: SDL_AtomicInt
-  hsname: SDL_AtomicInt
-- headers: SDL3/SDL_atomic.h
-  cname: struct SDL_AtomicU32
-  hsname: SDL_AtomicU32
-- headers: SDL3/SDL_atomic.h
-  cname: SDL_AtomicU32
-  hsname: SDL_AtomicU32
+  - headers: SDL3/SDL_atomic.h
+    cname: SDL_SpinLock
+    hsname: SDL_SpinLock
+  - headers: SDL3/SDL_atomic.h
+    cname: struct SDL_AtomicInt
+    hsname: SDL_AtomicInt
+  - headers: SDL3/SDL_atomic.h
+    cname: SDL_AtomicInt
+    hsname: SDL_AtomicInt
+  - headers: SDL3/SDL_atomic.h
+    cname: struct SDL_AtomicU32
+    hsname: SDL_AtomicU32
+  - headers: SDL3/SDL_atomic.h
+    cname: SDL_AtomicU32
+    hsname: SDL_AtomicU32
 hstypes:
-- hsname: SDL_AtomicInt
-  representation:
-    record:
-      constructor: SDL_AtomicInt
-      fields:
-      - value
-  instances:
-  - Eq
-  - Generic
-  - HasCField
-  - HasField
-  - HasFieldCompat
-  - HasFieldPtr
-  - IsStruct
-  - ReadRaw
-  - Show
-  - StaticSize
-  - Storable
-  - WriteRaw
-- hsname: SDL_AtomicU32
-  representation:
-    record:
-      constructor: SDL_AtomicU32
-      fields:
-      - value
-  instances:
-  - Eq
-  - Generic
-  - HasCField
-  - HasField
-  - HasFieldCompat
-  - HasFieldPtr
-  - IsStruct
-  - ReadRaw
-  - Show
-  - StaticSize
-  - Storable
-  - WriteRaw
-- hsname: SDL_SpinLock
-  representation:
-    newtype:
-      constructor: SDL_SpinLock
-      fields:
-      - unwrap
-      ffitype:
-        hsmodule: HsBindgen.Runtime.Support
-        hsname: CInt
-  instances:
-  - Bitfield
-  - Bits
-  - Bounded
-  - Enum
-  - Eq
-  - FiniteBits
-  - Generic
-  - HasCField
-  - HasFFIType
-  - HasField
-  - HasFieldCompat
-  - HasFieldPtr
-  - Integral
-  - Ix
-  - Num
-  - Ord
-  - Prim
-  - Read
-  - ReadRaw
-  - Real
-  - Show
-  - StaticSize
-  - Storable
-  - WriteRaw
+  - hsname: SDL_AtomicInt
+    representation:
+      record:
+        constructor: SDL_AtomicInt
+        fields:
+          - value
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - IsStruct
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AtomicU32
+    representation:
+      record:
+        constructor: SDL_AtomicU32
+        fields:
+          - value
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - IsStruct
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_SpinLock
+    representation:
+      newtype:
+        constructor: SDL_SpinLock
+        fields:
+          - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CInt
+    instances:
+      - Bitfield
+      - Bits
+      - Bounded
+      - Enum
+      - Eq
+      - FiniteBits
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Integral
+      - Ix
+      - Num
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - Real
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw

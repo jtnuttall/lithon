@@ -1,97 +1,97 @@
 version:
   hs_bindgen: 1.0.0.0
-  binding_specification: '1.0'
+  binding_specification: "1.0"
 hsmodule: SDL3.Sys.Bindgen.Assert
 ctypes:
-- headers: SDL3/SDL_assert.h
-  cname: enum SDL_AssertState
-  hsname: SDL_AssertState
-  enum: open
-- headers: SDL3/SDL_assert.h
-  cname: SDL_AssertState
-  hsname: SDL_AssertState
-- headers: SDL3/SDL_assert.h
-  cname: struct SDL_AssertData
-  hsname: SDL_AssertData
-- headers: SDL3/SDL_assert.h
-  cname: SDL_AssertData
-  hsname: SDL_AssertData
-- headers: SDL3/SDL_assert.h
-  cname: SDL_AssertionHandler
-  hsname: SDL_AssertionHandler
+  - headers: SDL3/SDL_assert.h
+    cname: enum SDL_AssertState
+    hsname: SDL_AssertState
+    enum: open
+  - headers: SDL3/SDL_assert.h
+    cname: SDL_AssertState
+    hsname: SDL_AssertState
+  - headers: SDL3/SDL_assert.h
+    cname: struct SDL_AssertData
+    hsname: SDL_AssertData
+  - headers: SDL3/SDL_assert.h
+    cname: SDL_AssertData
+    hsname: SDL_AssertData
+  - headers: SDL3/SDL_assert.h
+    cname: SDL_AssertionHandler
+    hsname: SDL_AssertionHandler
 hstypes:
-- hsname: SDL_AssertData
-  representation:
-    record:
-      constructor: SDL_AssertData
-      fields:
-      - always_ignore
-      - trigger_count
-      - condition
-      - filename
-      - linenum
-      - function
-      - next
-  instances:
-  - Eq
-  - Generic
-  - HasCField
-  - HasField
-  - HasFieldCompat
-  - HasFieldPtr
-  - IsStruct
-  - ReadRaw
-  - Show
-  - StaticSize
-  - Storable
-  - WriteRaw
-- hsname: SDL_AssertState
-  representation:
-    newtype:
-      constructor: SDL_AssertState
-      fields:
-      - unwrap
-      ffitype:
-        hsmodule: HsBindgen.Runtime.Support
-        hsname: CUInt
-  instances:
-  - CEnum
-  - Eq
-  - Generic
-  - HasCField
-  - HasFFIType
-  - HasField
-  - HasFieldCompat
-  - HasFieldPtr
-  - Ord
-  - Prim
-  - Read
-  - ReadRaw
-  - SequentialCEnum
-  - Show
-  - StaticSize
-  - Storable
-  - WriteRaw
-- hsname: SDL_AssertionHandler
-  representation:
-    newtype:
-      constructor: SDL_AssertionHandler
-      fields:
-      - unwrap
-      ffitype:
-        hsmodule: HsBindgen.Runtime.Support
-        hsname: FunPtrVoid
-  instances:
-  - Eq
-  - Generic
-  - HasCField
-  - HasFFIType
-  - HasField
-  - HasFieldCompat
-  - HasFieldPtr
-  - Ord
-  - ReadRaw
-  - Show
-  - StaticSize
-  - Storable
-  - WriteRaw
+  - hsname: SDL_AssertData
+    representation:
+      record:
+        constructor: SDL_AssertData
+        fields:
+          - always_ignore
+          - trigger_count
+          - condition
+          - filename
+          - linenum
+          - function
+          - next
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - IsStruct
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AssertState
+    representation:
+      newtype:
+        constructor: SDL_AssertState
+        fields:
+          - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: CUInt
+    instances:
+      - CEnum
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - Prim
+      - Read
+      - ReadRaw
+      - SequentialCEnum
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
+  - hsname: SDL_AssertionHandler
+    representation:
+      newtype:
+        constructor: SDL_AssertionHandler
+        fields:
+          - unwrap
+        ffitype:
+          hsmodule: HsBindgen.Runtime.Support
+          hsname: FunPtrVoid
+    instances:
+      - Eq
+      - Generic
+      - HasCField
+      - HasFFIType
+      - HasField
+      - HasFieldCompat
+      - HasFieldPtr
+      - Ord
+      - ReadRaw
+      - Show
+      - StaticSize
+      - Storable
+      - WriteRaw
