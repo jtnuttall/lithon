@@ -95,15 +95,15 @@
                   # doctest-parallel can't resolve `-package ghc` under haskell.nix; run via `just doctest`.
                   rapidhash.components.tests.rapidhash-doctest.doCheck = false;
                   lithon-codegen = {
-                    # haskell.nix narrows each component's source to what the
-                    # cabal file names, which drops Vulkan-Docs and the sibling
-                    # packages (../sdl3-bindgen-sys etc.) the tests read. Any
-                    # detailLevel other than FullDetails skips that filter, so
-                    # the whole repo is the source (as under cabal).
+                    # haskell.nix filters out the statics we need to run these tests
                     package.detailLevel = pkgs.lib.mkForce "Unfiltered";
                     components.library = {
                       build-tools = [lithonEnv.hsBindgenHook];
                     };
+                    components.tests.lithon-codegen-test.preCheck = ''
+                      ${lithonEnv.checkHook}
+                      export lithon_codegen_datadir="$PWD/data"
+                    '';
                     preBuild = ''
                       ${lithonEnv.libHook [sdl3 libmpv]}
                     '';
