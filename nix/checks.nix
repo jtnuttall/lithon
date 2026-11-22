@@ -27,10 +27,12 @@
 
       touch $out
     '';
-in {
-  # == Codegen freshness ==
-  check-codegen-vulkan =
-    integrationCheck "check-codegen-vulkan" {
+
+  # `lithon-codegen <target> generate --check` against a writable copy of the
+  # repo: the generator reads lithon-codegen/data/<target> and the sibling
+  # package it emits into, and --check fails on any stale file.
+  codegenFreshness = target: args:
+    integrationCheck "check-codegen-${target}" {
       pkg = "lithon-codegen";
       exe = "lithon-codegen";
       extraEnv = {
@@ -41,10 +43,40 @@ in {
       chmod -R +w source
       cd source
 
-      $EXECUTABLE -- vulkan generate --profile lithon-codegen/data/vulkan/profiles/lithon-core.json --check
-      touch $out
+      $EXECUTABLE -- ${target} generate ${args} --check
     '';
 
+  # Run an example headlessly and fail if the validation layers complain.
+  # (checkHook exports SDL_VIDEODRIVER=offscreen and the lavapipe ICD.)
+  headlessExample = exe: args:
+    integrationCheck "check-${exe}" {
+      pkg = "lithon-examples";
+      inherit exe;
+      extraEnv = {
+        nativeBuildInputs = [pkgs.gnugrep];
+      };
+    } ''
+      out=$($EXECUTABLE ${args} 2>&1) || {
+        echo "$out"
+        echo "${exe} failed"
+        exit 1
+      }
+      echo "$out"
+      if echo "$out" | grep -qi "validation error"; then
+        echo "validation layer reported errors"
+        exit 1
+      fi
+    '';
+
+  haddock = pkg: project.hsPkgs.${pkg}.components.library.doc;
+in {
+  # == Codegen freshness ==
+  check-codegen-vulkan = codegenFreshness "vulkan" "--profile lithon-codegen/data/vulkan/profiles/lithon-core.json";
+  check-codegen-sdl3 = codegenFreshness "sdl3" "";
+  check-codegen-mpv = codegenFreshness "mpv" "";
+
+  # Every package's committed .cabal matches its package.yaml (the three
+  # generated packages included).
   check-hpack =
     pkgs.runCommand "check-hpack" {
       nativeBuildInputs = [pkgs.hpack pkgs.diffutils];
@@ -65,34 +97,34 @@ in {
       touch $out
     '';
 
-  # == SDL3 checks ==
-  check-triangle-offscreen =
-    integrationCheck "check-triangle-offscreen" {
-      pkg = "lithon-examples";
-      exe = "triangle-offscreen";
-      extraEnv = {
-        nativeBuildInputs = [pkgs.gnugrep];
-      };
+  # == rapidhash ==
+  # The committed known-answer vectors against a C reference compiled from
+  # the vendored upstream header (scripts/rapidhash-pin.sh). The doctest
+  # suite stays with `just doctest`: doctest-parallel can't resolve
+  # `-package ghc` under haskell.nix.
+  check-rapidhash-pin =
+    pkgs.runCommand "check-rapidhash-pin" {
+      nativeBuildInputs = [pkgs.diffutils];
     } ''
-      out=$($EXECUTABLE 2>&1) || {
-        echo "$out"
-        echo "triangle failed"
-        exit 1
-      }
-      echo "$out"
-      if echo "$out" | grep -qi "validation error"; then
-        echo "validation layer reported errors"
-        exit 1
-      fi
+      $CC -O2 -I${src}/rapidhash/cbits -o pin ${src}/rapidhash/test/pin/pin.c
+      ./pin >pin.txt
+      diff -u ${src}/rapidhash/test/pin/rapidhash-v3-pin.txt pin.txt
+      echo "OK: C reference output matches the committed vectors ($(wc -l <pin.txt))"
+
       touch $out
     '';
 
-  check-sdl3-raw =
-    integrationCheck "check-sdl3-raw" {
-      pkg = "lithon-examples";
-      exe = "sdl3-raw";
-    } ''
-      $EXECUTABLE --frames 60
-      touch $out
-    '';
+  # == haddock ==
+  check-haddock-lithon-vk = haddock "lithon-vk";
+  check-haddock-sdl3-bindgen-sys = haddock "sdl3-bindgen-sys";
+  check-haddock-mpv-bindgen-sys = haddock "mpv-bindgen-sys";
+  check-haddock-rapidhash = haddock "rapidhash";
+  check-haddock-rapidhash-aeson = haddock "rapidhash-aeson";
+
+  # == headless examples (lavapipe / SDL offscreen) ==
+  check-triangle-offscreen = headlessExample "triangle-offscreen" "";
+  check-triangle-sdl = headlessExample "triangle-sdl" "--frames 60";
+  check-sdl3-raw = headlessExample "sdl3-raw" "--frames 60";
+  check-shmup = headlessExample "shmup" "--frames 60";
+  check-mpv-headless = headlessExample "mpv-headless" "";
 }
