@@ -9,7 +9,7 @@ cd "$(dirname "$0")/.."
 
 # Guarantee a Vulkan ICD even off-NixOS (CI runners have no
 # /run/opengl-driver); additive, so local real GPUs stay visible.
-if [[ -n "${LITHON_LAVAPIPE_ICD:-}" ]]; then
+if [[ -n ${LITHON_LAVAPIPE_ICD:-} ]]; then
   export VK_ADD_DRIVER_FILES="${LITHON_LAVAPIPE_ICD}${VK_ADD_DRIVER_FILES:+:${VK_ADD_DRIVER_FILES}}"
 fi
 

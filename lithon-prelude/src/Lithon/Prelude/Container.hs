@@ -35,11 +35,11 @@ import Data.Map.Ordered (OMap)
 import Data.Map.Strict qualified as Map
 import Data.Set.NonEmpty (NESet)
 import Data.Set.Ordered (OSet)
+import Prelude hiding (filter)
 import Universum.Container
 import Universum.List hiding (filter) -- using Witherable
 import Witch (From (..), TryFrom (..), maybeTryFrom)
 import Witherable
-import Prelude hiding (filter)
 
 ----------------------------------------------------------------------------------------------------
 -- Convenient orphan instances

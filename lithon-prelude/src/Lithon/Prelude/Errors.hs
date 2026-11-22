@@ -48,11 +48,11 @@ import Data.List.NonEmpty (NonEmpty, nonEmpty)
 import Data.Text.Display (Display (..))
 import Data.Validation (ReviewFailure (..), ReviewSuccess (..), Validation (..))
 import Data.Validation qualified as Validation
+import Prelude
 import Universum.Container (Container)
 import Universum.String (ToString (toString))
 import UnliftIO.Exception qualified as UnliftIO
 import Witch (From (..))
-import Prelude
 
 -- | At least one error, accumulated left-to-right with O(1) '<>'.
 newtype Errors e = Errors (DNonEmpty e)

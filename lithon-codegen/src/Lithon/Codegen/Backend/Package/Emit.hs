@@ -58,10 +58,11 @@ findProjectRoot = go =<< makeAbsolute =<< getCurrentDirectory
     let parent = takeDirectory dir
     if found then
       pure (Just (ProjectRoot dir))
-    else if parent == dir then
-      pure Nothing
     else
-      go parent
+      if parent == dir then
+        pure Nothing
+      else
+        go parent
 
 -- | The shared output options of a package-emitting subcommand.
 data PackageOut = PackageOut

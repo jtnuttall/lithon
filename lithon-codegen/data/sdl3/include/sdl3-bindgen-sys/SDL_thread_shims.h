@@ -51,9 +51,9 @@
  * \sa SDL_CreateThreadWithProperties
  * \sa SDL_WaitThread
  */
-static SDL_INLINE SDL_Thread *lithon_SDL_CreateThread(SDL_ThreadFunction fn, const char *name, void *data)
-{
-    return SDL_CreateThread(fn, name, data);
+static SDL_INLINE SDL_Thread *
+lithon_SDL_CreateThread(SDL_ThreadFunction fn, const char *name, void *data) {
+  return SDL_CreateThread(fn, name, data);
 }
 
 /**
@@ -87,9 +87,9 @@ static SDL_INLINE SDL_Thread *lithon_SDL_CreateThread(SDL_ThreadFunction fn, con
  * \sa SDL_CreateThread
  * \sa SDL_WaitThread
  */
-static SDL_INLINE SDL_Thread *lithon_SDL_CreateThreadWithProperties(SDL_PropertiesID props)
-{
-    return SDL_CreateThreadWithProperties(props);
+static SDL_INLINE SDL_Thread *
+lithon_SDL_CreateThreadWithProperties(SDL_PropertiesID props) {
+  return SDL_CreateThreadWithProperties(props);
 }
 
 #endif /* SDL3_BINDGEN_SYS_SDL_THREAD_SHIMS_H */

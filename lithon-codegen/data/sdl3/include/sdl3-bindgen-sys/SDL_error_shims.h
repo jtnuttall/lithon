@@ -42,9 +42,8 @@
  * \sa SDL_ClearError
  * \sa SDL_GetError
  */
-static SDL_INLINE bool lithon_SDL_SetError(const char *message)
-{
-    return SDL_SetError("%s", message);
+static SDL_INLINE bool lithon_SDL_SetError(const char *message) {
+  return SDL_SetError("%s", message);
 }
 
 /**
@@ -61,9 +60,8 @@ static SDL_INLINE bool lithon_SDL_SetError(const char *message)
  *
  * \sa SDL_SetError
  */
-static SDL_INLINE bool lithon_SDL_Unsupported(void)
-{
-    return SDL_Unsupported();
+static SDL_INLINE bool lithon_SDL_Unsupported(void) {
+  return SDL_Unsupported();
 }
 
 /**
@@ -81,9 +79,8 @@ static SDL_INLINE bool lithon_SDL_Unsupported(void)
  *
  * \sa SDL_SetError
  */
-static SDL_INLINE bool lithon_SDL_InvalidParamError(const char *param)
-{
-    return SDL_InvalidParamError(param);
+static SDL_INLINE bool lithon_SDL_InvalidParamError(const char *param) {
+  return SDL_InvalidParamError(param);
 }
 
 #endif /* SDL3_BINDGEN_SYS_SDL_ERROR_SHIMS_H */

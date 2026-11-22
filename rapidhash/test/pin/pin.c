@@ -22,10 +22,10 @@ static uint8_t byte_at(size_t i) { return (uint8_t)(i * 167u + 13u); }
 
 /* Lengths bracketing rapidhash v3's internal branch boundaries. */
 static const size_t lengths[] = {
-    0,   1,   2,   3,   4,   5,   6,    7,    8,    9,     10,    11,
-    12,  13,  14,  15,  16,  17,  31,   32,   33,   47,    48,    49,
-    63,  64,  65,  79,  80,  81,  111,  112,  113,  127,   128,   129,
-    191, 192, 193, 223, 224, 225, 255,  256,  257,  447,   448,   449,
+    0,   1,   2,    3,    4,    5,     6,     7,     8,   9,   10,  11,
+    12,  13,  14,   15,   16,   17,    31,    32,    33,  47,  48,  49,
+    63,  64,  65,   79,   80,   81,    111,   112,   113, 127, 128, 129,
+    191, 192, 193,  223,  224,  225,   255,   256,   257, 447, 448, 449,
     511, 512, 1023, 1024, 4096, 65535, 65536, 300007};
 
 static const uint64_t seeds[] = {0ULL, 1ULL, 0xDEADBEEFULL,
@@ -40,11 +40,14 @@ static const uint64_t offset_seeds[] = {0ULL, 0xDEADBEEFULL};
 int main(void) {
   size_t max_len = 0;
   for (size_t i = 0; i < COUNT(lengths); i++)
-    if (lengths[i] > max_len) max_len = lengths[i];
+    if (lengths[i] > max_len)
+      max_len = lengths[i];
 
   uint8_t *buf = malloc(max_len);
-  if (!buf) return 1;
-  for (size_t i = 0; i < max_len; i++) buf[i] = byte_at(i);
+  if (!buf)
+    return 1;
+  for (size_t i = 0; i < max_len; i++)
+    buf[i] = byte_at(i);
 
   for (size_t li = 0; li < COUNT(lengths); li++)
     printf("default %zu %016" PRIx64 "\n", lengths[li],
@@ -77,9 +80,8 @@ int main(void) {
       for (size_t si = 0; si < COUNT(offset_seeds); si++)
         printf("microOffset %zu %zu %016" PRIx64 " %016" PRIx64 "\n",
                offsets[oi], offset_lengths[li], offset_seeds[si],
-               rapidhashMicro_offset_withSeed(buf, offsets[oi],
-                                              offset_lengths[li],
-                                              offset_seeds[si]));
+               rapidhashMicro_offset_withSeed(
+                   buf, offsets[oi], offset_lengths[li], offset_seeds[si]));
 
   free(buf);
   return 0;

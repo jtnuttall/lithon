@@ -16,9 +16,9 @@ package="$1"
 pkg="$2"
 
 case "$pkg" in
-  sdl3) library=SDL3 ;;
-  mpv) library=libmpv ;;
-  *) library="$pkg" ;;
+sdl3) library=SDL3 ;;
+mpv) library=libmpv ;;
+*) library="$pkg" ;;
 esac
 
 STRICT_CHECK_ABI="${STRICT_CHECK_ABI:-false}"
@@ -93,7 +93,10 @@ if [ "$STRICT_CHECK_ABI" = "true" ]; then
   cabal build --constraint="$package +abi-assertions-exact"
 else
   cabal build
-fi || { report_build_failure; exit 1; }
+fi || {
+  report_build_failure
+  exit 1
+}
 
 if [ "$RUNNER_OS" != "Windows" ]; then cabal haddock; fi
 if [ "$RUNNER_OS" = "Linux" ]; then cabal check; fi

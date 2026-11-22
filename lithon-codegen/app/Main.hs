@@ -1,7 +1,8 @@
 module Main (main) where
 
-import Lithon.Codegen.Cli qualified as Cli
 import Lithon.Prelude
+
+import Lithon.Codegen.Cli qualified as Cli
 
 main :: IO ()
 main = Cli.main

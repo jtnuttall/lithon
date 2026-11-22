@@ -28,7 +28,7 @@
           inherit (haskellNix) config;
           overlays = [
             haskellNix.overlay
-            (final: prev: {
+            (_final: prev: {
               haskell-nix =
                 prev.haskell-nix
                 // {
@@ -41,7 +41,7 @@
                 };
             })
             # libmpv follows haskellNix's nixpkgs; pin it like sdl3 if needed.
-            (final: prev: {
+            (_final: prev: {
               libmpv = prev.mpv-unwrapped.overrideAttrs (old: {
                 # mpv.pc's Version is the client API version, not mpv's, and
                 # haskell.nix's plan reads it from pc-version (else .version).
