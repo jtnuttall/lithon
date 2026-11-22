@@ -58,6 +58,17 @@
     wayland
   ];
 
+  commonNativeBuildInputs = with pkgs; [
+    bear
+    doxygen
+    haskellPackages.cabal-fmt
+    hsBindgenHook
+    llvmPackages.clang
+    llvmPackages.llvm
+    pkg-config
+    zlib
+  ];
+
   shellHook = buildInputs: ''
     ${libHook (with pkgs; [sdl3 libmpv])}
     export LLVM_PATH="${libclangPrefix}"

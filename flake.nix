@@ -113,16 +113,7 @@
                 hpack = "latest";
                 hoogle = "latest";
               };
-              nativeBuildInputs = [
-                bear
-                doxygen
-                haskellPackages.cabal-fmt
-                lithonEnv.hsBindgenHook
-                lithonEnv.llvmPackages.clang
-                lithonEnv.llvmPackages.llvm
-                pkg-config
-                zlib
-              ];
+              nativeBuildInputs = lithonEnv.commonNativeBuildInputs;
               buildInputs = [
                 # Linting, formatting, quality, and scripting
                 lychee

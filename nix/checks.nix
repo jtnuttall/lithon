@@ -7,26 +7,46 @@
   # Helper to grab executables from the project.
   getExe = pkg: exe: project.hsPkgs.${pkg}.components.exes.${exe};
 
-  # Environment for headless graphics checks
-  mkGfxEnv = overrides:
-    {
-      SDL_VIDEODRIVER = "offscreen";
-      VK_LAYER_PATH = lithonEnv.vkLayerPath;
-      VK_ADD_DRIVER_FILES = lithonEnv.lavapipeIcd;
-    }
-    // overrides;
+  integrationCheck = name: {
+    pkg,
+    exe,
+    extraEnv ? {},
+  }: testScript: let
+    exePath = getExe pkg exe;
+    env =
+      {
+        nativeBuildInputs = lithonEnv.commonNativeBuildInputs ++ extraEnv;
+        buildInputs = lithonEnv.commonBuildInputs ++ extraEnv;
+        SDL_VIDEODRIVER = "offscreen";
+        EXECUTABLE_OUTPUT_PATH = exePath;
+        EXECUTABLE = exePath + "/bin/" + exe;
+        VK_LAYER_PATH = lithonEnv.vkLayerPath;
+        VK_ADD_DRIVER_FILES = lithonEnv.lavapipeIcd;
+      }
+      // extraEnv;
+  in
+    pkgs.runCommand name env ''
+      ${lithonEnv.shellHook (lithonEnv.commonBuildInputs ++ env.buildInputs)}
+
+      ${testScript}
+
+      touch $out
+    '';
 in {
   # == Codegen freshness ==
   check-codegen-vulkan =
-    pkgs.runCommand "check-codegen-vulkan" {
-      nativeBuildInputs = [pkgs.git];
-      codegenExe = getExe "lithon-codegen" "lithon-codegen";
+    integrationCheck "check-codegen-vulkan" {
+      pkg = "lithon-codegen";
+      exe = "lithon-codegen";
+      extraEnv = {
+        nativeBuildInputs = [pkgs.git];
+      };
     } ''
       cp -r ${src} source
       chmod -R +w source
       cd source
 
-      $codegenExe/bin/lithon-codegen -- vulkan generate --profile lithon-codegen/data/vulkan/profiles/lithon-core.json --check
+      $EXECUTABLE -- vulkan generate --profile lithon-codegen/data/vulkan/profiles/lithon-core.json --check
       touch $out
     '';
 
@@ -39,7 +59,7 @@ in {
         cd "$dir"
 
         echo "Verifying that hpack's output matches $cabal_file..."
-        diff_out="$(hpack - | diff -u "$base_cabal" -)" || {
+        diff_out="$(hpack - | diff -u "$cabal_file" -)" || {
           echo "$diff_out"
           echo "$cabal_file: Expected hpack output differs from actual cabal file."
           echo "Did you forget to run 'hpack' in $dir?"
@@ -52,11 +72,14 @@ in {
 
   # == SDL3 checks ==
   check-triangle-offscreen =
-    pkgs.runCommand "check-triangle-offscreen" (mkGfxEnv {
-      nativeBuildInputs = [pkgs.gnugrep];
-      triangleExe = getExe "lithon-examples" "triangle-offscreen";
-    }) ''
-      out=$($triangleExe/bin/triangle-offscreen 2>&1) || {
+    integrationCheck "check-triangle-offscreen" {
+      pkg = "lithon-examples";
+      exe = "triangle-offscreen";
+      extraEnv = {
+        nativeBuildInputs = [pkgs.gnugrep];
+      };
+    } ''
+      out=$($EXECUTABLE 2>&1) || {
         echo "$out"
         echo "triangle failed"
         exit 1
@@ -69,11 +92,12 @@ in {
       touch $out
     '';
 
-  check-sdl3-raw = pkgs.runCommand "check-sdl3-raw" (mkGfxEnv
-    {
-      rawExe = getExe "lithon-examples" "sdl3-raw";
-    }) ''
-    $rawExe/bin/sdl3-raw --frames 60
-    touch $out
-  '';
+  check-sdl3-raw =
+    integrationCheck "check-sdl3-raw" {
+      pkg = "lithon-examples";
+      exe = "sdl3-raw";
+    } ''
+      $EXECUTABLE --frames 60
+      touch $out
+    '';
 }
