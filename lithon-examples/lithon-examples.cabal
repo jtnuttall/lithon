@@ -24,6 +24,9 @@ maintainer:     jeremy@jeremy-nuttall.com
 license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
+extra-source-files:
+    shaders/triangle.frag.spv
+    shaders/triangle.vert.spv
 
 source-repository head
   type: git
