@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  SDL_VERSION: "3.4.12"
+  SDL_VERSION: "3.4.18"
   GHC_VERSION: "9.12.4"
   CABAL_VERSION: "3.18"
 
@@ -99,16 +99,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # mpv 0.37 = client API 2.2: exercises the version gates.
       - name: Install libmpv (Linux)
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends libmpv-dev
 
-      # mpv 0.41 = client API 2.5.
-      # pkgconf provides the pkg-config cabal calls; the image ships it
-      # today, this guards image changes.
       - name: Install libmpv (macOS)
         if: runner.os == 'macOS'
         run: brew install mpv pkgconf
@@ -278,37 +274,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Fetch submodules
         run: git submodule update --init --recursive --filter=tree:0
-      - name: Restore dist-newstyle
-        id: dist-newstyle
-        uses: actions/cache/restore@v6
-        with:
-          path: |
-            dist-newstyle
-            rapidhash/dist-newstyle
-          key: dist-newstyle-${{ hashFiles('flake.lock', 'cabal.project') }}-${{ github.sha }}
-          restore-keys: |
-            dist-newstyle-${{ hashFiles('flake.lock', 'cabal.project') }}-
       - uses: DeterminateSystems/nix-installer-action@main
         with:
-          # Determinate nix will upload whatever it built, which ends up uploading
-          # the closure of *every* derivation in the run, which causes 45min+ pipelines
-          # and throttling on the cache.
-          #
-          # See: https://github.com/DeterminateSystems/magic-nix-cache/issues/154
-          determinate: false
           extra-conf: |
             extra-substituters = https://cache.iog.io https://cache.zw3rk.com
             extra-trusted-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk=
-      - uses: DeterminateSystems/magic-nix-cache-action@main
-      - name: Hackage index
-        run: nix develop '.?submodules=1#ci' --command cabal update
-      - name: check.sh
-        run: nix develop '.?submodules=1#ci' --command ./scripts/check.sh
-      - name: Save dist-newstyle
-        if: always() && steps.dist-newstyle.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v6
+      - uses: cachix/cachix-action@v17
         with:
-          path: |
-            dist-newstyle
-            rapidhash/dist-newstyle
-          key: ${{ steps.dist-newstyle.outputs.cache-primary-key }}
+          name: jtnuttall
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          pushFilter: "(-source$|\\.tar\\.gz$|\\.drv$)"
+      - name: nix flake check
+        run: nix flake check '.?submodules=1#ci' --allow-import-from-derivation

@@ -203,6 +203,14 @@
             };
           };
 
+        checks =
+          {
+            formatting = treefmtEval.config.build.check self;
+          }
+          // import ./nix/checks.nix {
+            inherit project;
+          };
+
         flake = removeAttrs (project.flake {}) ["hydraJobs"];
       in
         flake
@@ -235,13 +243,6 @@
               };
             };
         }
-        // {
-          checks =
-            if system == "x86_64-linux"
-            then {
-              formatting = treefmtEval.config.build.check self;
-            }
-            else {};
-        }
+        // checks
     );
 }
