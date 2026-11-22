@@ -387,7 +387,7 @@ data Formatter
   = Fourmolu
   | Oxfmt
   | NoFormatter
-  deriving stock (Generic, Show)
+  deriving stock (Eq, Generic, Show)
   deriving anyclass (A.ToJSON)
 
 data FileMeta = FileMeta
@@ -428,20 +428,17 @@ format formatMode staging metas = do
     DoFormat -> do
       currentDir <- getCurrentDirectory
       let logMeta = ["currentDir" .= currentDir, "stagingDir" .= staging]
+      let stagedFor f = [from meta.relPath | meta <- metas, meta.formatter == f]
+
       logInfo $ "Running oxfmt" :# logMeta
-      void $ invokeCommand staging "oxfmt" [".", "--no-error-on-unmatched-pattern"]
+      let oxfmtFiles = stagedFor Oxfmt
+      unless (null oxfmtFiles) do
+        void $ invokeCommand staging "oxfmt" $ oxfmtFiles <> ["--no-error-on-unmatched-pattern"]
 
       logInfo $ "Running fourmolu" :# logMeta
-      let staged =
-            mapMaybe
-              ( \meta -> case meta.formatter of
-                  Fourmolu -> Just (from meta.relPath)
-                  _ -> Nothing
-              )
-              metas
-
-      unless (null staged) do
-        void $ invokeCommand staging "fourmolu" $ ["--mode", "inplace"] <> staged
+      let fourmoluFiles = stagedFor Fourmolu
+      unless (null fourmoluFiles) do
+        void $ invokeCommand staging "fourmolu" $ ["--mode", "inplace"] <> fourmoluFiles
 
   forConcurrently metas \meta -> do
     logDebug $ "reading formatted file" :# ["meta" .= meta]
