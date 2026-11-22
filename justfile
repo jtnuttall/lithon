@@ -15,6 +15,11 @@ check-one name:
 doctest:
     ./scripts/rapidhash-doctest.sh
 
+# Check external links in hand-written sources (config: lychee.toml).
+# Set GITHUB_TOKEN to avoid GitHub's anonymous rate limit.
+links:
+    lychee '**/*.md' '**/*.cabal' '**/package.yaml' '**/*.hs' '**/*.nix' '.github/**/*.yml'
+
 build-codegen:
     cabal build lithon-codegen
 
