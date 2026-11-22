@@ -22,6 +22,51 @@ copyright:      (c) 2026 Jeremy Nuttall
 license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
+extra-source-files:
+    vendor/hs-bindgen/hs-bindgen-runtime/LICENSE
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/BitfieldPtr.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Block.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/CBool.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/CEnum.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/ConstantArray.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/FLAM.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/HasCBitfield.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/HasCField.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/HasFFIType.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/IncompleteArray.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/IsArray.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/LibC.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Macro.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Marshal.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Overloading.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Prelude.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/PtrConst.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Struct.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Support.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Support/Bitfield.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Support/ByteArray.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Support/CAPI.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Support/CompatHasField.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Support/FunPtr.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Support/FunPtr/Class.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Support/Ptr.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Support/SizedByteArray.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Support/TH/Instances.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Support/TH/Types.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Union.hs
+    vendor/hs-bindgen/hs-bindgen-runtime/src/HsBindgen/Runtime/Support/LibC/Auxiliary.hsc
+    vendor/c-expr/c-expr-runtime/LICENSE
+    vendor/c-expr/c-expr-runtime/core/C/Operator/Classes.hs
+    vendor/c-expr/c-expr-runtime/core/C/Operator/GenInstances.hs
+    vendor/c-expr/c-expr-runtime/core/C/Operator/Internal.hs
+    vendor/c-expr/c-expr-runtime/core/C/Operator/TH.hs
+    vendor/c-expr/c-expr-runtime/core/C/Operators.hs
+    vendor/c-expr/c-expr-runtime/core/C/Type.hs
+    vendor/c-expr/c-expr-runtime/core/C/Type/Internal/Universe.hs
+    vendor/c-expr/c-expr-runtime/lib/C/Expr/HostPlatform.hs
+    vendor/c-expr/c-expr-runtime/lib/C/Expr/Posix32.hs
+    vendor/c-expr/c-expr-runtime/lib/C/Expr/Posix64.hs
+    vendor/c-expr/c-expr-runtime/lib/C/Expr/Win64.hs
 extra-doc-files:
     README.md
     CHANGELOG.md

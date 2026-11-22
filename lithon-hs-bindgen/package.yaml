@@ -20,6 +20,16 @@ extra-doc-files:
   - README.md
   - CHANGELOG.md
 
+# Embedded at compile time by Lithon.HsBindgen.Runtime (Data.FileEmbed);
+# listed so sdists and haskell.nix's per-component source filter carry them.
+extra-source-files:
+  - vendor/hs-bindgen/hs-bindgen-runtime/LICENSE
+  - vendor/hs-bindgen/hs-bindgen-runtime/src/**/*.hs
+  - vendor/hs-bindgen/hs-bindgen-runtime/src/**/*.hsc
+  - vendor/c-expr/c-expr-runtime/LICENSE
+  - vendor/c-expr/c-expr-runtime/core/**/*.hs
+  - vendor/c-expr/c-expr-runtime/lib/**/*.hs
+
 language: GHC2024
 
 data-dir: vendor
