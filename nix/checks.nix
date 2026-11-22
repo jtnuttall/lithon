@@ -23,6 +23,8 @@
   in
     pkgs.runCommand name env ''
       ${lithonEnv.checkHook}
+      # The sandbox's HOME is unwritable; mesa wants a shader cache under it.
+      export HOME="$(mktemp -d)"
 
       ${testScript}
 
@@ -54,13 +56,14 @@
         nativeBuildInputs = [pkgs.gnugrep];
       };
     } ''
-      out=$($EXECUTABLE ${args} 2>&1) || {
-        echo "$out"
+      # Not `out`: that would shadow the derivation's $out.
+      log=$($EXECUTABLE ${args} 2>&1) || {
+        echo "$log"
         echo "${exe} failed"
         exit 1
       }
-      echo "$out"
-      if echo "$out" | grep -qi "validation error"; then
+      echo "$log"
+      if echo "$log" | grep -qi "validation error"; then
         echo "validation layer reported errors"
         exit 1
       fi
@@ -95,7 +98,8 @@ in {
 
   # == rapidhash ==
   check-rapidhash-pin =
-    pkgs.runCommand "check-rapidhash-pin" {
+    # runCommandCC: plain runCommand is stdenvNoCC, so $CC would be unset.
+    pkgs.runCommandCC "check-rapidhash-pin" {
       nativeBuildInputs = [pkgs.diffutils];
     } ''
       $CC -O2 -I${src}/rapidhash/cbits -o pin ${src}/rapidhash/test/pin/pin.c
