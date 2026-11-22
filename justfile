@@ -4,6 +4,9 @@ default:
 check:
     nix flake check '.?submodules=1' --allow-import-from-derivation
 
+doctest:
+    ./scripts/rapidhash-doctest.sh
+
 build-codegen:
     cabal build lithon-codegen
 
