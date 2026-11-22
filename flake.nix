@@ -67,6 +67,7 @@
         lithonEnv = import ./nix/env.nix {
           inherit pkgs;
           inherit llvmPackages;
+          inherit hsTools;
         };
 
         hsToolsSpec = {

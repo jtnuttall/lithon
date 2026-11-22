@@ -1,6 +1,7 @@
 {
   pkgs,
   llvmPackages,
+  hsTools,
 }: rec {
   inherit llvmPackages;
 
@@ -63,8 +64,10 @@
     doxygen
     haskellPackages.cabal-fmt
     hsBindgenHook
+    hsTools.fourmolu
     llvmPackages.clang
     llvmPackages.llvm
+    oxfmt
     pkg-config
     zlib
   ];
