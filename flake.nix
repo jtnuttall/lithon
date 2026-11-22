@@ -57,7 +57,12 @@
           ];
         };
 
-        treefmtEval = treefmt-nix.lib.evalModule pkgs ./nix/treefmt.nix;
+        ghcVersion = "ghc912";
+
+        treefmtEval = treefmt-nix.lib.evalModule pkgs {
+          imports = [./nix/treefmt.nix];
+          _module.args.fourmolu = pkgs.haskell-nix.tool ghcVersion "fourmolu" "latest";
+        };
         treefmtWrapper = treefmtEval.config.build.wrapper;
 
         project = with pkgs; let
@@ -85,7 +90,7 @@
         in
           pkgs.haskell-nix.cabalProject' {
             src = ./.;
-            compiler-nix-name = "ghc912";
+            compiler-nix-name = ghcVersion;
             supportHpack = true;
             modules = [
               {

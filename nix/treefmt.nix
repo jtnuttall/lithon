@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{fourmolu, ...}: {
   projectRootFile = "flake.nix";
 
   settings.excludes = [
@@ -18,7 +18,7 @@
     deadnix.enable = true;
     fourmolu = {
       enable = true;
-      package = pkgs.fourmolu;
+      package = fourmolu;
     };
     oxfmt.enable = true;
     shellcheck.enable = true;
