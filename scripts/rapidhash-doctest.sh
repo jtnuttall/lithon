@@ -11,7 +11,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")/../rapidhash"
 cabal build all
 
 if [ -n "${IN_NIX_SHELL:-}" ]; then
-  store_db=$(ls -d "$(cabal path --store-dir)/ghc-$(ghc --numeric-version)"*/package.db | head -n1)
+  store_db=$(find "$(cabal path --store-dir)/ghc-$(ghc --numeric-version)"*/package.db -type d | head -n1)
   bin=$(cabal list-bin rapidhash:rapidhash-doctest)
   GHC_PACKAGE_PATH="${store_db}:" "$bin" "$@"
 else

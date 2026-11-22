@@ -109,7 +109,8 @@ fromSegments raw = do
   segs <- maybeToRight EmptyModuleName $ nonEmpty raw
   when (any null segs) $ Left (EmptyModuleSegment raw)
   unless (all (isUpper . T.head) segs) $ invalid "a segment starts with a non-uppercase character"
-  unless (all (T.all isConidChar . T.drop 1) segs) $ invalid "segment contains a character not valid in a module name"
+  unless (all (T.all isConidChar . T.drop 1) segs)
+    $ invalid "segment contains a character not valid in a module name"
   pure $ Meta segs
  where
   isConidChar c = isAlphaNum c || c == '_' || c == '\''

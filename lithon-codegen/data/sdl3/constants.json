@@ -128,10 +128,7 @@
     "SDL_WindowFlags": {
       "combine": "bitmask",
       "prefix": "SDL_WINDOW_",
-      "exclude": [
-        "SDL_WINDOW_SURFACE_VSYNC_DISABLED",
-        "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE"
-      ]
+      "exclude": ["SDL_WINDOW_SURFACE_VSYNC_DISABLED", "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE"]
     },
     "Sint16": {
       "combine": "value",

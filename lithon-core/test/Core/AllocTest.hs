@@ -32,9 +32,9 @@ import Lithon.Core.Alloc
 hprop_alignedDisjointIntact :: Property
 hprop_alignedDisjointIntact = property do
   reqs <-
-    forAll $
-      Gen.list (Range.linear 1 120) $
-        (,) <$> Gen.int (Range.linear 1 300) <*> Gen.element [1, 2, 4, 8, 16]
+    forAll
+      $ Gen.list (Range.linear 1 120)
+      $ (,) <$> Gen.int (Range.linear 1 300) <*> Gen.element [1, 2, 4, 8, 16]
   regions <- evalIO $ bracket (newArena 64) freeArena \a -> do
     rs <- traverse (allocOne a) (zip [0 :: Int ..] reqs)
     traverse readBack rs

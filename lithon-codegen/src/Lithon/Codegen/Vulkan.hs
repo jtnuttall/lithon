@@ -71,8 +71,8 @@ import Lithon.Codegen.Vulkan.Env (
   runVulkanGen,
  )
 import Lithon.Codegen.Vulkan.Generate (GenOutput (..), GenerateError, generate)
-import Lithon.Codegen.Vulkan.Package (vulkanPackageSpec)
 import Lithon.Codegen.Vulkan.Names
+import Lithon.Codegen.Vulkan.Package (vulkanPackageSpec)
 import Lithon.Codegen.Vulkan.Registry (
   ParseFailure (..),
   ParseSuccess (..),

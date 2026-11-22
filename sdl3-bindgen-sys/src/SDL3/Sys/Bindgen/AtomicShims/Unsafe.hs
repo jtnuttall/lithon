@@ -100,7 +100,7 @@ hs_bindgen_848dcd1814dd10a0 =
 --
 --     [See also]: SDL_AtomicIncRef
 --
---     [C declaration]: @lithon_SDL_AtomicDecRef@, defined at @sdl3-bindgen-sys\/SDL_atomic_shims.h 58:24@
+--     [C declaration]: @lithon_SDL_AtomicDecRef@, defined at @sdl3-bindgen-sys\/SDL_atomic_shims.h 57:24@
 lithon_SDL_AtomicDecRef
   :: BG.Ptr SDL3.Sys.Bindgen.Atomic.SDL_AtomicInt
   -- ^

@@ -88,9 +88,12 @@ willing to publish earlier than planned if there's enough interest.
 
 - Clone with `git clone --recursive` — the vendored `hs-bindgen` stack
   lives in git submodules that the build requires.
+- The flake sets `inputs.self.submodules = true`, so no `?submodules=1`
+  is needed. On Lix, add `flake-self-attrs` to `experimental-features`.
 - The devshell (`nix develop`, or direnv) provides GHC, libclang for
   hs-bindgen, SDL3, libmpv, and lavapipe.
-- `scripts/check.sh` encapsulates all release checks for now.
+- `just check` runs the release checks (the flake's `checks`); `just --list`
+  shows the cabal-side loops (`just test`, `just codegen-check`, ...).
 - Codegen requires GHC 9.12+ (multiline string literals, etc.)
 
 ### Regenerating the bindings
@@ -115,7 +118,8 @@ cabal run lithon-codegen -- mpv generate
 
 See the per-package license files for further detail.
 
-[^1]: Very rough approximation of reconstructed Attic. Closer would be
+[^1]:
+    Very rough approximation of reconstructed Attic. Closer would be
     /i/ as in the French v/i/te with /t/ as in /t/op. Declension intentionally
     left ambiguous between accusative and genitive; the why is left as an
     exercise for the (very bored, classics/LXX-inclined) reader.

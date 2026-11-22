@@ -1,0 +1,34 @@
+no_progress = true
+format = "compact"
+max_concurrency = 16
+timeout = 20
+max_retries = 2
+
+accept = ["100..=103", "200..=299", "403"]
+
+scheme = ["https", "http"]
+exclude_all_private = true
+
+exclude_path = [
+  # third-party trees
+  "lithon-codegen/data/vulkan/Vulkan-Docs",
+  "lithon-hs-bindgen/vendor",
+  # generated output
+  "lithon-vk",
+  "sdl3-bindgen-sys",
+  "mpv-bindgen-sys",
+  "dist-newstyle",
+  # Holds an mpv `av://lavfi:...` URL.
+  "lithon-examples/app/mpv-headless/Main.hs",
+]
+
+exclude = [
+  # Nix binary caches don't serve anything at the root.
+  "^https://cache\\.(iog\\.io|zw3rk\\.com)/",
+  "^https://[^/]+\\.cachix\\.org/",
+  # URL prefixes prefixes that are incomplete until codegen runs.
+  "^https://wiki\\.libsdl\\.org/SDL3/Category$",
+  "^https://registry\\.khronos\\.org/vulkan/specs/latest/man/html/$",
+  # Not yet released.
+  "^https://hackage\\.haskell\\.org/package/rapidhash-aeson$",
+]

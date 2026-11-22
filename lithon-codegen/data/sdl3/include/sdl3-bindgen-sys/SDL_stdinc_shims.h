@@ -37,9 +37,8 @@
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE Uint32 lithon_SDL_FOURCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d)
-{
-    return SDL_FOURCC(a, b, c, d);
+static SDL_INLINE Uint32 lithon_SDL_FOURCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d) {
+  return SDL_FOURCC(a, b, c, d);
 }
 
 #endif /* SDL3_BINDGEN_SYS_SDL_STDINC_SHIMS_H */

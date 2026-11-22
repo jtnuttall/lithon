@@ -36,9 +36,8 @@
  *
  * \sa SDL_LogMessage
  */
-static SDL_INLINE void lithon_SDL_Log(const char *message)
-{
-    SDL_Log("%s", message);
+static SDL_INLINE void lithon_SDL_Log(const char *message) {
+  SDL_Log("%s", message);
 }
 
 /**
@@ -57,9 +56,8 @@ static SDL_INLINE void lithon_SDL_Log(const char *message)
  *
  * \sa SDL_LogMessage
  */
-static SDL_INLINE void lithon_SDL_LogTrace(int category, const char *message)
-{
-    SDL_LogTrace(category, "%s", message);
+static SDL_INLINE void lithon_SDL_LogTrace(int category, const char *message) {
+  SDL_LogTrace(category, "%s", message);
 }
 
 /**
@@ -78,9 +76,9 @@ static SDL_INLINE void lithon_SDL_LogTrace(int category, const char *message)
  *
  * \sa SDL_LogMessage
  */
-static SDL_INLINE void lithon_SDL_LogVerbose(int category, const char *message)
-{
-    SDL_LogVerbose(category, "%s", message);
+static SDL_INLINE void lithon_SDL_LogVerbose(int category,
+                                             const char *message) {
+  SDL_LogVerbose(category, "%s", message);
 }
 
 /**
@@ -99,9 +97,8 @@ static SDL_INLINE void lithon_SDL_LogVerbose(int category, const char *message)
  *
  * \sa SDL_LogMessage
  */
-static SDL_INLINE void lithon_SDL_LogDebug(int category, const char *message)
-{
-    SDL_LogDebug(category, "%s", message);
+static SDL_INLINE void lithon_SDL_LogDebug(int category, const char *message) {
+  SDL_LogDebug(category, "%s", message);
 }
 
 /**
@@ -120,9 +117,8 @@ static SDL_INLINE void lithon_SDL_LogDebug(int category, const char *message)
  *
  * \sa SDL_LogMessage
  */
-static SDL_INLINE void lithon_SDL_LogInfo(int category, const char *message)
-{
-    SDL_LogInfo(category, "%s", message);
+static SDL_INLINE void lithon_SDL_LogInfo(int category, const char *message) {
+  SDL_LogInfo(category, "%s", message);
 }
 
 /**
@@ -141,9 +137,8 @@ static SDL_INLINE void lithon_SDL_LogInfo(int category, const char *message)
  *
  * \sa SDL_LogMessage
  */
-static SDL_INLINE void lithon_SDL_LogWarn(int category, const char *message)
-{
-    SDL_LogWarn(category, "%s", message);
+static SDL_INLINE void lithon_SDL_LogWarn(int category, const char *message) {
+  SDL_LogWarn(category, "%s", message);
 }
 
 /**
@@ -162,9 +157,8 @@ static SDL_INLINE void lithon_SDL_LogWarn(int category, const char *message)
  *
  * \sa SDL_LogMessage
  */
-static SDL_INLINE void lithon_SDL_LogError(int category, const char *message)
-{
-    SDL_LogError(category, "%s", message);
+static SDL_INLINE void lithon_SDL_LogError(int category, const char *message) {
+  SDL_LogError(category, "%s", message);
 }
 
 /**
@@ -183,9 +177,9 @@ static SDL_INLINE void lithon_SDL_LogError(int category, const char *message)
  *
  * \sa SDL_LogMessage
  */
-static SDL_INLINE void lithon_SDL_LogCritical(int category, const char *message)
-{
-    SDL_LogCritical(category, "%s", message);
+static SDL_INLINE void lithon_SDL_LogCritical(int category,
+                                              const char *message) {
+  SDL_LogCritical(category, "%s", message);
 }
 
 /**
@@ -206,9 +200,10 @@ static SDL_INLINE void lithon_SDL_LogCritical(int category, const char *message)
  * \sa SDL_SetLogOutputFunction
  * \sa SDL_SetLogPriority
  */
-static SDL_INLINE void lithon_SDL_LogMessage(int category, SDL_LogPriority priority, const char *message)
-{
-    SDL_LogMessage(category, priority, "%s", message);
+static SDL_INLINE void lithon_SDL_LogMessage(int category,
+                                             SDL_LogPriority priority,
+                                             const char *message) {
+  SDL_LogMessage(category, priority, "%s", message);
 }
 
 #endif /* SDL3_BINDGEN_SYS_SDL_LOG_SHIMS_H */

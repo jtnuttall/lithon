@@ -1,0 +1,69 @@
+# If any of these checks fail, it indicates a strict ABI incompatibility against
+# upstream. Typically this is an added field on a variant somewhere.
+---
+name: Check latest upstream(s)
+
+on:
+  push:
+    branches: [main, dev, next]
+  schedule:
+    - cron: "0 14 * * 5"
+  workflow_dispatch:
+    inputs:
+      sdl:
+        description: "SDL version for setup-sdl (3.x.y or 3-latest)"
+        default: 3-latest
+
+# Mirror ci.yml.
+env:
+  GHC_VERSION: "9.12.4"
+  CABAL_VERSION: "3.18"
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-latest-sdl3:
+    if: github.repository == 'jtnuttall/lithon'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v2
+
+      - uses: ./.github/actions/setup-sdl3
+        with:
+          version: ${{ inputs.sdl || '3-latest' }}
+
+      - uses: ./.github/actions/setup-haskell
+        with:
+          ghc-version: ${{ env.GHC_VERSION }}
+          cabal-version: ${{ env.CABAL_VERSION }}
+          cabal-update: false
+
+      - uses: ./.github/actions/check-latest
+        with:
+          package: sdl3-bindgen-sys
+          pkgconfig: sdl3
+
+  check-latest-mpv:
+    if: github.repository == 'jtnuttall/lithon'
+    # Homebrew should update mpv much more frequently than ubuntu
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v2
+
+      - name: Install libmpv
+        run: brew install mpv pkgconf
+
+      - uses: ./.github/actions/setup-haskell
+        with:
+          ghc-version: ${{ env.GHC_VERSION }}
+          cabal-version: ${{ env.CABAL_VERSION }}
+          cabal-update: false
+
+      - uses: ./.github/actions/check-latest
+        with:
+          package: mpv-bindgen-sys
+          pkgconfig: mpv

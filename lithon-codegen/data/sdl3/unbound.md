@@ -350,18 +350,18 @@ Shorthands for SDL_iconv_string with fixed encoding names; call SDL_iconv_string
 
 Declarations the skips above need that no bound header declares, with how many skips each blocks.
 
-- `macro INT64_C` (stdint.h:241): not selected; blocks 5
+- `macro INT64_C` (stdint.h:247): not selected; blocks 5
 - `macro NULL` (__stddef_null.h:26): not selected; blocks 2
-- `macro PRIX32` (inttypes.h:136): not selected; blocks 1
-- `macro PRIX64` (inttypes.h:137): not selected; blocks 1
-- `macro PRId32` (inttypes.h:56): not selected; blocks 1
-- `macro PRId64` (inttypes.h:57): not selected; blocks 1
-- `macro PRIu32` (inttypes.h:104): not selected; blocks 1
-- `macro PRIu64` (inttypes.h:105): not selected; blocks 1
-- `macro PRIx32` (inttypes.h:120): not selected; blocks 1
-- `macro PRIx64` (inttypes.h:121): not selected; blocks 1
-- `macro SIZE_MAX` (stdint.h:216): not selected; blocks 1
-- `macro UINT64_C` (stdint.h:251): not selected; blocks 29
+- `macro PRIX32` (inttypes.h:141): not selected; blocks 1
+- `macro PRIX64` (inttypes.h:142): not selected; blocks 1
+- `macro PRId32` (inttypes.h:61): not selected; blocks 1
+- `macro PRId64` (inttypes.h:62): not selected; blocks 1
+- `macro PRIu32` (inttypes.h:109): not selected; blocks 1
+- `macro PRIu64` (inttypes.h:110): not selected; blocks 1
+- `macro PRIx32` (inttypes.h:125): not selected; blocks 1
+- `macro PRIx64` (inttypes.h:126): not selected; blocks 1
+- `macro SIZE_MAX` (stdint.h:222): not selected; blocks 1
+- `macro UINT64_C` (stdint.h:257): not selected; blocks 29
 - `macro __BYTE_ORDER` (endianness.h:9): not selected; blocks 2
 - `macro __LITTLE_ENDIAN` (endian.h:30): not selected; blocks 2
 

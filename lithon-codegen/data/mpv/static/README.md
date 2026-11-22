@@ -145,7 +145,7 @@ when running the program, so Windows finds the libmpv DLL.
 
 For most uses, you will `import Mpv.Sys qualified as Mpv`.
 
-The raw hs-bindgen output exists in  `Mpv.Sys.Bindgen.*`, if you need to drop
+The raw hs-bindgen output exists in `Mpv.Sys.Bindgen.*`, if you need to drop
 down to C types.
 
 ### Safe and unsafe FFI
@@ -167,7 +167,7 @@ callbacks on its own threads, and sometimes on your own. If any callback
 you give mpv is a Haskell function, you'll need the `Safe` variants for
 nearly everything.
 
-Notable exceptions:  `clientId`, `clientName`, `errorString`, `eventName`,
+Notable exceptions: `clientId`, `clientName`, `errorString`, `eventName`,
 `eventToNode`, `free`, `freeNodeContents`, `getTimeNs`, and `getTimeUs`,
 none of which can block or call back.
 

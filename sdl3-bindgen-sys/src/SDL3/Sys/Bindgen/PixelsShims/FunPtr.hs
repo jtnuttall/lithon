@@ -312,7 +312,7 @@ hs_bindgen_a8b5b5932ddbfc3b =
 --
 --     [See also]: SDL_BYTESPERPIXEL
 --
---     [C declaration]: @lithon_SDL_BITSPERPIXEL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 62:23@
+--     [C declaration]: @lithon_SDL_BITSPERPIXEL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 64:23@
 lithon_SDL_BITSPERPIXEL :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat -> IO BG.CInt)
 lithon_SDL_BITSPERPIXEL =
   BG.unsafePerformIO hs_bindgen_a8b5b5932ddbfc3b
@@ -344,7 +344,7 @@ hs_bindgen_fef9e1bbde9ec790 =
 --
 --     [See also]: SDL_BITSPERPIXEL
 --
---     [C declaration]: @lithon_SDL_BYTESPERPIXEL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 83:23@
+--     [C declaration]: @lithon_SDL_BYTESPERPIXEL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 84:23@
 lithon_SDL_BYTESPERPIXEL :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat -> IO BG.CInt)
 lithon_SDL_BYTESPERPIXEL =
   BG.unsafePerformIO hs_bindgen_fef9e1bbde9ec790
@@ -374,7 +374,7 @@ hs_bindgen_b117a24f410fe873 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_ISPIXELFORMAT_INDEXED@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 100:24@
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_INDEXED@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 101:1@
 lithon_SDL_ISPIXELFORMAT_INDEXED
   :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat -> IO BG.CBool)
 lithon_SDL_ISPIXELFORMAT_INDEXED =
@@ -436,7 +436,7 @@ hs_bindgen_5c10de6b0f11eb45 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_ISPIXELFORMAT_ARRAY@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 134:24@
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_ARRAY@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 133:24@
 lithon_SDL_ISPIXELFORMAT_ARRAY :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat -> IO BG.CBool)
 lithon_SDL_ISPIXELFORMAT_ARRAY =
   BG.unsafePerformIO hs_bindgen_5c10de6b0f11eb45
@@ -466,7 +466,7 @@ hs_bindgen_f7e465ad660e31bf =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_ISPIXELFORMAT_10BIT@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 151:24@
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_10BIT@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 149:24@
 lithon_SDL_ISPIXELFORMAT_10BIT :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat -> IO BG.CBool)
 lithon_SDL_ISPIXELFORMAT_10BIT =
   BG.unsafePerformIO hs_bindgen_f7e465ad660e31bf
@@ -496,7 +496,7 @@ hs_bindgen_032856c3c3b017c5 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_ISPIXELFORMAT_FLOAT@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 168:24@
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_FLOAT@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 165:24@
 lithon_SDL_ISPIXELFORMAT_FLOAT :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat -> IO BG.CBool)
 lithon_SDL_ISPIXELFORMAT_FLOAT =
   BG.unsafePerformIO hs_bindgen_032856c3c3b017c5
@@ -526,7 +526,7 @@ hs_bindgen_6c426e1aa20f7341 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_ISPIXELFORMAT_ALPHA@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 185:24@
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_ALPHA@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 181:24@
 lithon_SDL_ISPIXELFORMAT_ALPHA :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat -> IO BG.CBool)
 lithon_SDL_ISPIXELFORMAT_ALPHA =
   BG.unsafePerformIO hs_bindgen_6c426e1aa20f7341
@@ -556,7 +556,7 @@ hs_bindgen_d08bb623c3ebc165 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_ISPIXELFORMAT_FOURCC@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 202:24@
+--     [C declaration]: @lithon_SDL_ISPIXELFORMAT_FOURCC@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 198:24@
 lithon_SDL_ISPIXELFORMAT_FOURCC
   :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_PixelFormat -> IO BG.CBool)
 lithon_SDL_ISPIXELFORMAT_FOURCC =
@@ -607,7 +607,7 @@ hs_bindgen_e6f658b2c26218e1 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_DEFINE_COLORSPACE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 224:34@
+--     [C declaration]: @lithon_SDL_DEFINE_COLORSPACE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 219:34@
 lithon_SDL_DEFINE_COLORSPACE
   :: BG.FunPtr
        ( SDL3.Sys.Bindgen.Pixels.SDL_ColorType
@@ -646,7 +646,7 @@ hs_bindgen_eec66aaad367649c =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_COLORSPACETYPE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 241:33@
+--     [C declaration]: @lithon_SDL_COLORSPACETYPE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 240:1@
 lithon_SDL_COLORSPACETYPE
   :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_Colorspace -> IO SDL3.Sys.Bindgen.Pixels.SDL_ColorType)
 lithon_SDL_COLORSPACETYPE =
@@ -677,7 +677,7 @@ hs_bindgen_80876d9836c72ca7 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_COLORSPACERANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 258:34@
+--     [C declaration]: @lithon_SDL_COLORSPACERANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 257:1@
 lithon_SDL_COLORSPACERANGE
   :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_Colorspace -> IO SDL3.Sys.Bindgen.Pixels.SDL_ColorRange)
 lithon_SDL_COLORSPACERANGE =
@@ -709,7 +709,7 @@ hs_bindgen_72559431bdc72d6f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_COLORSPACECHROMA@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 275:38@
+--     [C declaration]: @lithon_SDL_COLORSPACECHROMA@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 274:1@
 lithon_SDL_COLORSPACECHROMA
   :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_Colorspace -> IO SDL3.Sys.Bindgen.Pixels.SDL_ChromaLocation)
 lithon_SDL_COLORSPACECHROMA =
@@ -741,7 +741,7 @@ hs_bindgen_38530fb5411bf69a =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_COLORSPACEPRIMARIES@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 292:38@
+--     [C declaration]: @lithon_SDL_COLORSPACEPRIMARIES@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 291:1@
 lithon_SDL_COLORSPACEPRIMARIES
   :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_Colorspace -> IO SDL3.Sys.Bindgen.Pixels.SDL_ColorPrimaries)
 lithon_SDL_COLORSPACEPRIMARIES =
@@ -775,7 +775,7 @@ hs_bindgen_9d66e990e02b39a2 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_COLORSPACETRANSFER@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 309:47@
+--     [C declaration]: @lithon_SDL_COLORSPACETRANSFER@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 308:1@
 lithon_SDL_COLORSPACETRANSFER
   :: BG.FunPtr
        (SDL3.Sys.Bindgen.Pixels.SDL_Colorspace -> IO SDL3.Sys.Bindgen.Pixels.SDL_TransferCharacteristics)
@@ -810,7 +810,7 @@ hs_bindgen_94623bcc9daaa8ee =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_COLORSPACEMATRIX@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 326:42@
+--     [C declaration]: @lithon_SDL_COLORSPACEMATRIX@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 325:1@
 lithon_SDL_COLORSPACEMATRIX
   :: BG.FunPtr
        (SDL3.Sys.Bindgen.Pixels.SDL_Colorspace -> IO SDL3.Sys.Bindgen.Pixels.SDL_MatrixCoefficients)
@@ -842,7 +842,7 @@ hs_bindgen_23ed6403a69ca0bf =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT601@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 343:24@
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT601@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 342:1@
 lithon_SDL_ISCOLORSPACE_MATRIX_BT601
   :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_Colorspace -> IO BG.CBool)
 lithon_SDL_ISCOLORSPACE_MATRIX_BT601 =
@@ -873,7 +873,7 @@ hs_bindgen_46d1d547630c76e0 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT709@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 360:24@
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT709@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 359:1@
 lithon_SDL_ISCOLORSPACE_MATRIX_BT709
   :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_Colorspace -> IO BG.CBool)
 lithon_SDL_ISCOLORSPACE_MATRIX_BT709 =
@@ -904,7 +904,7 @@ hs_bindgen_bdde99e14eee3d4d =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 377:24@
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 376:1@
 lithon_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL
   :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_Colorspace -> IO BG.CBool)
 lithon_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL =
@@ -935,7 +935,7 @@ hs_bindgen_7383ccedffa9acae =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_ISCOLORSPACE_LIMITED_RANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 394:24@
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_LIMITED_RANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 393:1@
 lithon_SDL_ISCOLORSPACE_LIMITED_RANGE
   :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_Colorspace -> IO BG.CBool)
 lithon_SDL_ISCOLORSPACE_LIMITED_RANGE =
@@ -966,7 +966,7 @@ hs_bindgen_2304b4d429bcb1a4 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_ISCOLORSPACE_FULL_RANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 411:24@
+--     [C declaration]: @lithon_SDL_ISCOLORSPACE_FULL_RANGE@, defined at @sdl3-bindgen-sys\/SDL_pixels_shims.h 410:1@
 lithon_SDL_ISCOLORSPACE_FULL_RANGE
   :: BG.FunPtr (SDL3.Sys.Bindgen.Pixels.SDL_Colorspace -> IO BG.CBool)
 lithon_SDL_ISCOLORSPACE_FULL_RANGE =

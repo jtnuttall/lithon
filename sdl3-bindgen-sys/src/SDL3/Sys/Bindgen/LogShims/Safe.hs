@@ -159,7 +159,7 @@ hs_bindgen_c27ac2cf8645cf4e =
 --
 --     [See also]: SDL_LogMessage
 --
---     [C declaration]: @lithon_SDL_LogTrace@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 60:24@
+--     [C declaration]: @lithon_SDL_LogTrace@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 59:24@
 lithon_SDL_LogTrace
   :: BG.CInt
   -- ^
@@ -199,7 +199,7 @@ hs_bindgen_fb7600f02da152c8 =
 --
 --     [See also]: SDL_LogMessage
 --
---     [C declaration]: @lithon_SDL_LogVerbose@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 81:24@
+--     [C declaration]: @lithon_SDL_LogVerbose@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 79:24@
 lithon_SDL_LogVerbose
   :: BG.CInt
   -- ^
@@ -239,7 +239,7 @@ hs_bindgen_f148577846776bf9 =
 --
 --     [See also]: SDL_LogMessage
 --
---     [C declaration]: @lithon_SDL_LogDebug@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 102:24@
+--     [C declaration]: @lithon_SDL_LogDebug@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 100:24@
 lithon_SDL_LogDebug
   :: BG.CInt
   -- ^
@@ -279,7 +279,7 @@ hs_bindgen_2768f1e0951fcadc =
 --
 --     [See also]: SDL_LogMessage
 --
---     [C declaration]: @lithon_SDL_LogInfo@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 123:24@
+--     [C declaration]: @lithon_SDL_LogInfo@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 120:24@
 lithon_SDL_LogInfo
   :: BG.CInt
   -- ^
@@ -319,7 +319,7 @@ hs_bindgen_66494b86233d6dcb =
 --
 --     [See also]: SDL_LogMessage
 --
---     [C declaration]: @lithon_SDL_LogWarn@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 144:24@
+--     [C declaration]: @lithon_SDL_LogWarn@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 140:24@
 lithon_SDL_LogWarn
   :: BG.CInt
   -- ^
@@ -359,7 +359,7 @@ hs_bindgen_572ce25309240a20 =
 --
 --     [See also]: SDL_LogMessage
 --
---     [C declaration]: @lithon_SDL_LogError@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 165:24@
+--     [C declaration]: @lithon_SDL_LogError@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 160:24@
 lithon_SDL_LogError
   :: BG.CInt
   -- ^
@@ -399,7 +399,7 @@ hs_bindgen_05cdf92f853bb365 =
 --
 --     [See also]: SDL_LogMessage
 --
---     [C declaration]: @lithon_SDL_LogCritical@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 186:24@
+--     [C declaration]: @lithon_SDL_LogCritical@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 180:24@
 lithon_SDL_LogCritical
   :: BG.CInt
   -- ^
@@ -442,7 +442,7 @@ hs_bindgen_a30cd534dfc5a717 =
 --
 --     [See also]: SDL_SetLogOutputFunction, SDL_SetLogPriority
 --
---     [C declaration]: @lithon_SDL_LogMessage@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 209:24@
+--     [C declaration]: @lithon_SDL_LogMessage@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 203:24@
 lithon_SDL_LogMessage
   :: BG.CInt
   -- ^

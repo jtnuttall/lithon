@@ -153,10 +153,7 @@
       "disposition": "upstream",
       "note": "Token pasting through glibc's INT64_C and UINT64_C, which hs-bindgen's macro parser cannot expand.",
       "issue": "https://github.com/well-typed/hs-bindgen/issues/1698",
-      "names": [
-        "macro SDL_SINT64_C",
-        "macro SDL_UINT64_C"
-      ]
+      "names": ["macro SDL_SINT64_C", "macro SDL_UINT64_C"]
     },
     {
       "disposition": "upstream",
@@ -173,12 +170,7 @@
     {
       "disposition": "wontfix",
       "note": "Variadic printf and scanf clones; Haskell formats and parses its own strings.",
-      "names": [
-        "SDL_sscanf",
-        "SDL_snprintf",
-        "SDL_swprintf",
-        "SDL_asprintf"
-      ]
+      "names": ["SDL_sscanf", "SDL_snprintf", "SDL_swprintf", "SDL_asprintf"]
     },
     {
       "disposition": "wontfix",
@@ -201,9 +193,7 @@
     {
       "disposition": "wontfix",
       "note": "Variadic; draw a string formatted in Haskell with SDL_RenderDebugText.",
-      "names": [
-        "SDL_RenderDebugTextFormat"
-      ]
+      "names": ["SDL_RenderDebugTextFormat"]
     },
     {
       "disposition": "wontfix",
@@ -235,20 +225,12 @@
     {
       "disposition": "wontfix",
       "note": "The calling C code's source position, which means nothing across the FFI.",
-      "names": [
-        "macro SDL_FILE",
-        "macro SDL_LINE",
-        "macro SDL_FUNCTION",
-        "macro SDL_ASSERT_FILE"
-      ]
+      "names": ["macro SDL_FILE", "macro SDL_LINE", "macro SDL_FUNCTION", "macro SDL_ASSERT_FILE"]
     },
     {
       "disposition": "wontfix",
       "note": "The C runtime's thread entry and exit hooks (NULL outside Windows); the SDL_CreateThread shims pass them to SDL_CreateThreadRuntime.",
-      "names": [
-        "macro SDL_BeginThreadFunction",
-        "macro SDL_EndThreadFunction"
-      ]
+      "names": ["macro SDL_BeginThreadFunction", "macro SDL_EndThreadFunction"]
     },
     {
       "disposition": "wontfix",
@@ -297,10 +279,7 @@
     {
       "disposition": "wontfix",
       "note": "The host's byte order, baked at generation time, would be wrong on a big-endian build; use GHC.ByteOrder.",
-      "names": [
-        "macro SDL_BYTEORDER",
-        "macro SDL_FLOATWORDORDER"
-      ]
+      "names": ["macro SDL_BYTEORDER", "macro SDL_FLOATWORDORDER"]
     },
     {
       "disposition": "wontfix",
@@ -335,9 +314,7 @@
     {
       "disposition": "wontfix",
       "note": "A statement macro that zeroes an interface struct and sets its version to its size; poke the struct from Haskell instead.",
-      "names": [
-        "macro SDL_INIT_INTERFACE"
-      ]
+      "names": ["macro SDL_INIT_INTERFACE"]
     },
     {
       "disposition": "wontfix",

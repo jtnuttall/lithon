@@ -1,8 +1,9 @@
 /*
- * sdl3-bindgen-sys C shims for <SDL3/SDL_iostream.h>: fixed-arity functions over
- * what Haskell's FFI cannot call (SDL's variadic functions and function-like
- * macros). hs-bindgen binds them into SDL3.Sys.Bindgen.IostreamShims; the curated
- * layer exports them from SDL3.Sys.Iostream, under "C shims".
+ * sdl3-bindgen-sys C shims for <SDL3/SDL_iostream.h>: fixed-arity functions
+ * over what Haskell's FFI cannot call (SDL's variadic functions and
+ * function-like macros). hs-bindgen binds them into
+ * SDL3.Sys.Bindgen.IostreamShims; the curated layer exports them from
+ * SDL3.Sys.Iostream, under "C shims".
  *
  * Authored in lithon-codegen/data/sdl3/include/sdl3-bindgen-sys/ and copied
  * verbatim into the package's include/sdl3-bindgen-sys/: edit the
@@ -39,9 +40,9 @@
  *
  * \sa SDL_WriteIO
  */
-static SDL_INLINE size_t lithon_SDL_IOprintf(SDL_IOStream *context, const char *str)
-{
-    return SDL_IOprintf(context, "%s", str);
+static SDL_INLINE size_t lithon_SDL_IOprintf(SDL_IOStream *context,
+                                             const char *str) {
+  return SDL_IOprintf(context, "%s", str);
 }
 
 #endif /* SDL3_BINDGEN_SYS_SDL_IOSTREAM_SHIMS_H */

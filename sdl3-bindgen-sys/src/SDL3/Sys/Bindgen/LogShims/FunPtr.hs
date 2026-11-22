@@ -171,7 +171,7 @@ hs_bindgen_b031cd617cf2187e =
 --
 --     [See also]: SDL_LogMessage
 --
---     [C declaration]: @lithon_SDL_LogTrace@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 60:24@
+--     [C declaration]: @lithon_SDL_LogTrace@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 59:24@
 lithon_SDL_LogTrace :: BG.FunPtr (BG.CInt -> PtrConst.PtrConst BG.CChar -> IO ())
 lithon_SDL_LogTrace =
   BG.unsafePerformIO hs_bindgen_b031cd617cf2187e
@@ -202,7 +202,7 @@ hs_bindgen_01baad23ee654b8f =
 --
 --     [See also]: SDL_LogMessage
 --
---     [C declaration]: @lithon_SDL_LogVerbose@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 81:24@
+--     [C declaration]: @lithon_SDL_LogVerbose@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 79:24@
 lithon_SDL_LogVerbose :: BG.FunPtr (BG.CInt -> PtrConst.PtrConst BG.CChar -> IO ())
 lithon_SDL_LogVerbose =
   BG.unsafePerformIO hs_bindgen_01baad23ee654b8f
@@ -233,7 +233,7 @@ hs_bindgen_08084e27beae5e62 =
 --
 --     [See also]: SDL_LogMessage
 --
---     [C declaration]: @lithon_SDL_LogDebug@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 102:24@
+--     [C declaration]: @lithon_SDL_LogDebug@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 100:24@
 lithon_SDL_LogDebug :: BG.FunPtr (BG.CInt -> PtrConst.PtrConst BG.CChar -> IO ())
 lithon_SDL_LogDebug =
   BG.unsafePerformIO hs_bindgen_08084e27beae5e62
@@ -264,7 +264,7 @@ hs_bindgen_f187e83788791148 =
 --
 --     [See also]: SDL_LogMessage
 --
---     [C declaration]: @lithon_SDL_LogInfo@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 123:24@
+--     [C declaration]: @lithon_SDL_LogInfo@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 120:24@
 lithon_SDL_LogInfo :: BG.FunPtr (BG.CInt -> PtrConst.PtrConst BG.CChar -> IO ())
 lithon_SDL_LogInfo =
   BG.unsafePerformIO hs_bindgen_f187e83788791148
@@ -295,7 +295,7 @@ hs_bindgen_9f1fe5bc35ab0a46 =
 --
 --     [See also]: SDL_LogMessage
 --
---     [C declaration]: @lithon_SDL_LogWarn@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 144:24@
+--     [C declaration]: @lithon_SDL_LogWarn@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 140:24@
 lithon_SDL_LogWarn :: BG.FunPtr (BG.CInt -> PtrConst.PtrConst BG.CChar -> IO ())
 lithon_SDL_LogWarn =
   BG.unsafePerformIO hs_bindgen_9f1fe5bc35ab0a46
@@ -326,7 +326,7 @@ hs_bindgen_30365de711cd7fc7 =
 --
 --     [See also]: SDL_LogMessage
 --
---     [C declaration]: @lithon_SDL_LogError@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 165:24@
+--     [C declaration]: @lithon_SDL_LogError@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 160:24@
 lithon_SDL_LogError :: BG.FunPtr (BG.CInt -> PtrConst.PtrConst BG.CChar -> IO ())
 lithon_SDL_LogError =
   BG.unsafePerformIO hs_bindgen_30365de711cd7fc7
@@ -357,7 +357,7 @@ hs_bindgen_eeabb1c88587b99c =
 --
 --     [See also]: SDL_LogMessage
 --
---     [C declaration]: @lithon_SDL_LogCritical@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 186:24@
+--     [C declaration]: @lithon_SDL_LogCritical@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 180:24@
 lithon_SDL_LogCritical :: BG.FunPtr (BG.CInt -> PtrConst.PtrConst BG.CChar -> IO ())
 lithon_SDL_LogCritical =
   BG.unsafePerformIO hs_bindgen_eeabb1c88587b99c
@@ -392,7 +392,7 @@ hs_bindgen_ef67c4a50a42a453 =
 --
 --     [See also]: SDL_SetLogOutputFunction, SDL_SetLogPriority
 --
---     [C declaration]: @lithon_SDL_LogMessage@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 209:24@
+--     [C declaration]: @lithon_SDL_LogMessage@, defined at @sdl3-bindgen-sys\/SDL_log_shims.h 203:24@
 lithon_SDL_LogMessage
   :: BG.FunPtr (BG.CInt -> SDL3.Sys.Bindgen.Log.SDL_LogPriority -> PtrConst.PtrConst BG.CChar -> IO ())
 lithon_SDL_LogMessage =

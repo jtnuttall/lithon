@@ -825,7 +825,7 @@ cleanupTLSSafe = Safe.sDL_CleanupTLS
 --                   The safe flavor is 'createThreadSafe'
 --                   : the entry function runs on the spawned thread, not during the call.
 --
---     [C declaration]: @lithon_SDL_CreateThread@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 54:31@
+--     [C declaration]: @lithon_SDL_CreateThread@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 55:1@
 createThread
   :: SDL3.Sys.Bindgen.Thread.SDL_ThreadFunction
   -- ^
@@ -868,7 +868,7 @@ createThread = Unsafe.lithon_SDL_CreateThread
 --                   The unsafe flavor is 'createThread'
 --                   : the entry function runs on the spawned thread, not during the call.
 --
---     [C declaration]: @lithon_SDL_CreateThread@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 54:31@
+--     [C declaration]: @lithon_SDL_CreateThread@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 55:1@
 createThreadSafe
   :: SDL3.Sys.Bindgen.Thread.SDL_ThreadFunction
   -- ^
@@ -913,7 +913,7 @@ createThreadSafe = Safe.lithon_SDL_CreateThread
 --                   The safe flavor is 'createThreadWithPropertiesSafe'
 --                   : the entry function runs on the spawned thread, not during the call.
 --
---     [C declaration]: @lithon_SDL_CreateThreadWithProperties@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 90:31@
+--     [C declaration]: @lithon_SDL_CreateThreadWithProperties@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 91:1@
 createThreadWithProperties
   :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -- ^
@@ -951,7 +951,7 @@ createThreadWithProperties =
 --                   The unsafe flavor is 'createThreadWithProperties'
 --                   : the entry function runs on the spawned thread, not during the call.
 --
---     [C declaration]: @lithon_SDL_CreateThreadWithProperties@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 90:31@
+--     [C declaration]: @lithon_SDL_CreateThreadWithProperties@, defined at @sdl3-bindgen-sys\/SDL_thread_shims.h 91:1@
 createThreadWithPropertiesSafe
   :: SDL3.Sys.Bindgen.Properties.SDL_PropertiesID
   -- ^

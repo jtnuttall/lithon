@@ -160,7 +160,7 @@ hs_bindgen_af9f92ac0160930e =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap32@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 57:26@
+--     [C declaration]: @lithon_SDL_Swap32@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 54:26@
 lithon_SDL_Swap32
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^
@@ -193,7 +193,7 @@ hs_bindgen_a76e576373ba9315 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap64@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 76:26@
+--     [C declaration]: @lithon_SDL_Swap64@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 70:26@
 lithon_SDL_Swap64
   :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^
@@ -226,7 +226,7 @@ hs_bindgen_ba2e727e2251e74a =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap16LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 94:26@
+--     [C declaration]: @lithon_SDL_Swap16LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 85:26@
 lithon_SDL_Swap16LE
   :: SDL3.Sys.Bindgen.Stdinc.Uint16
   -- ^
@@ -259,7 +259,7 @@ hs_bindgen_534b6cb79f9a53da =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap32LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 112:26@
+--     [C declaration]: @lithon_SDL_Swap32LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 102:26@
 lithon_SDL_Swap32LE
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^
@@ -292,7 +292,7 @@ hs_bindgen_1138811e72133911 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap64LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 130:26@
+--     [C declaration]: @lithon_SDL_Swap64LE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 119:26@
 lithon_SDL_Swap64LE
   :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^
@@ -325,7 +325,7 @@ hs_bindgen_14edd560fa30714a =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_SwapFloatLE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 148:25@
+--     [C declaration]: @lithon_SDL_SwapFloatLE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 136:25@
 lithon_SDL_SwapFloatLE
   :: BG.CFloat
   -- ^
@@ -358,7 +358,7 @@ hs_bindgen_cfef4dbd360a587e =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap16BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 166:26@
+--     [C declaration]: @lithon_SDL_Swap16BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 153:26@
 lithon_SDL_Swap16BE
   :: SDL3.Sys.Bindgen.Stdinc.Uint16
   -- ^
@@ -391,7 +391,7 @@ hs_bindgen_fef82eb9028f9b73 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap32BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 184:26@
+--     [C declaration]: @lithon_SDL_Swap32BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 170:26@
 lithon_SDL_Swap32BE
   :: SDL3.Sys.Bindgen.Stdinc.Uint32
   -- ^
@@ -424,7 +424,7 @@ hs_bindgen_617e37704da5f1a9 =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_Swap64BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 202:26@
+--     [C declaration]: @lithon_SDL_Swap64BE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 187:26@
 lithon_SDL_Swap64BE
   :: SDL3.Sys.Bindgen.Stdinc.Uint64
   -- ^
@@ -457,7 +457,7 @@ hs_bindgen_1ba0c9ba8563300f =
 --
 --     @since 3.2.0
 --
---     [C declaration]: @lithon_SDL_SwapFloatBE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 220:25@
+--     [C declaration]: @lithon_SDL_SwapFloatBE@, defined at @sdl3-bindgen-sys\/SDL_endian_shims.h 204:25@
 lithon_SDL_SwapFloatBE
   :: BG.CFloat
   -- ^

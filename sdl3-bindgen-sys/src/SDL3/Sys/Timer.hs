@@ -626,7 +626,7 @@ secondsToNs =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_MS_TO_NS@, defined at @sdl3-bindgen-sys\/SDL_timer_shims.h 55:26@
+--     [C declaration]: @lithon_SDL_MS_TO_NS@, defined at @sdl3-bindgen-sys\/SDL_timer_shims.h 54:26@
 msToNs
   :: BG.Word64
   -- ^
@@ -656,7 +656,7 @@ msToNs =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_US_TO_NS@, defined at @sdl3-bindgen-sys\/SDL_timer_shims.h 73:26@
+--     [C declaration]: @lithon_SDL_US_TO_NS@, defined at @sdl3-bindgen-sys\/SDL_timer_shims.h 71:26@
 usToNs
   :: BG.Word64
   -- ^

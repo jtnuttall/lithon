@@ -24,8 +24,8 @@
 /**
  * Convert seconds to nanoseconds.
  *
- * The SDL_SECONDS_TO_NS macro as a function. This only converts whole numbers, not
- * fractional seconds.
+ * The SDL_SECONDS_TO_NS macro as a function. This only converts whole numbers,
+ * not fractional seconds.
  *
  * \param s the number of seconds to convert.
  * \returns `s`, expressed in nanoseconds.
@@ -34,9 +34,8 @@
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE Uint64 lithon_SDL_SECONDS_TO_NS(Uint64 s)
-{
-    return SDL_SECONDS_TO_NS(s);
+static SDL_INLINE Uint64 lithon_SDL_SECONDS_TO_NS(Uint64 s) {
+  return SDL_SECONDS_TO_NS(s);
 }
 
 /**
@@ -52,9 +51,8 @@ static SDL_INLINE Uint64 lithon_SDL_SECONDS_TO_NS(Uint64 s)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE Uint64 lithon_SDL_MS_TO_NS(Uint64 ms)
-{
-    return SDL_MS_TO_NS(ms);
+static SDL_INLINE Uint64 lithon_SDL_MS_TO_NS(Uint64 ms) {
+  return SDL_MS_TO_NS(ms);
 }
 
 /**
@@ -70,9 +68,8 @@ static SDL_INLINE Uint64 lithon_SDL_MS_TO_NS(Uint64 ms)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE Uint64 lithon_SDL_US_TO_NS(Uint64 us)
-{
-    return SDL_US_TO_NS(us);
+static SDL_INLINE Uint64 lithon_SDL_US_TO_NS(Uint64 us) {
+  return SDL_US_TO_NS(us);
 }
 
 #endif /* SDL3_BINDGEN_SYS_SDL_TIMER_SHIMS_H */

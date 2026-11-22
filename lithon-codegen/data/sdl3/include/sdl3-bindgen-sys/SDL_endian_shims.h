@@ -35,10 +35,7 @@
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE Uint16 lithon_SDL_Swap16(Uint16 x)
-{
-    return SDL_Swap16(x);
-}
+static SDL_INLINE Uint16 lithon_SDL_Swap16(Uint16 x) { return SDL_Swap16(x); }
 
 /**
  * Byte-swap an unsigned 32-bit number.
@@ -54,10 +51,7 @@ static SDL_INLINE Uint16 lithon_SDL_Swap16(Uint16 x)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE Uint32 lithon_SDL_Swap32(Uint32 x)
-{
-    return SDL_Swap32(x);
-}
+static SDL_INLINE Uint32 lithon_SDL_Swap32(Uint32 x) { return SDL_Swap32(x); }
 
 /**
  * Byte-swap an unsigned 64-bit number.
@@ -73,10 +67,7 @@ static SDL_INLINE Uint32 lithon_SDL_Swap32(Uint32 x)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE Uint64 lithon_SDL_Swap64(Uint64 x)
-{
-    return SDL_Swap64(x);
-}
+static SDL_INLINE Uint64 lithon_SDL_Swap64(Uint64 x) { return SDL_Swap64(x); }
 
 /**
  * Swap a 16-bit value from littleendian to native byte order.
@@ -91,9 +82,8 @@ static SDL_INLINE Uint64 lithon_SDL_Swap64(Uint64 x)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE Uint16 lithon_SDL_Swap16LE(Uint16 x)
-{
-    return SDL_Swap16LE(x);
+static SDL_INLINE Uint16 lithon_SDL_Swap16LE(Uint16 x) {
+  return SDL_Swap16LE(x);
 }
 
 /**
@@ -109,9 +99,8 @@ static SDL_INLINE Uint16 lithon_SDL_Swap16LE(Uint16 x)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE Uint32 lithon_SDL_Swap32LE(Uint32 x)
-{
-    return SDL_Swap32LE(x);
+static SDL_INLINE Uint32 lithon_SDL_Swap32LE(Uint32 x) {
+  return SDL_Swap32LE(x);
 }
 
 /**
@@ -127,9 +116,8 @@ static SDL_INLINE Uint32 lithon_SDL_Swap32LE(Uint32 x)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE Uint64 lithon_SDL_Swap64LE(Uint64 x)
-{
-    return SDL_Swap64LE(x);
+static SDL_INLINE Uint64 lithon_SDL_Swap64LE(Uint64 x) {
+  return SDL_Swap64LE(x);
 }
 
 /**
@@ -145,9 +133,8 @@ static SDL_INLINE Uint64 lithon_SDL_Swap64LE(Uint64 x)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE float lithon_SDL_SwapFloatLE(float x)
-{
-    return SDL_SwapFloatLE(x);
+static SDL_INLINE float lithon_SDL_SwapFloatLE(float x) {
+  return SDL_SwapFloatLE(x);
 }
 
 /**
@@ -163,9 +150,8 @@ static SDL_INLINE float lithon_SDL_SwapFloatLE(float x)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE Uint16 lithon_SDL_Swap16BE(Uint16 x)
-{
-    return SDL_Swap16BE(x);
+static SDL_INLINE Uint16 lithon_SDL_Swap16BE(Uint16 x) {
+  return SDL_Swap16BE(x);
 }
 
 /**
@@ -181,9 +167,8 @@ static SDL_INLINE Uint16 lithon_SDL_Swap16BE(Uint16 x)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE Uint32 lithon_SDL_Swap32BE(Uint32 x)
-{
-    return SDL_Swap32BE(x);
+static SDL_INLINE Uint32 lithon_SDL_Swap32BE(Uint32 x) {
+  return SDL_Swap32BE(x);
 }
 
 /**
@@ -199,9 +184,8 @@ static SDL_INLINE Uint32 lithon_SDL_Swap32BE(Uint32 x)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE Uint64 lithon_SDL_Swap64BE(Uint64 x)
-{
-    return SDL_Swap64BE(x);
+static SDL_INLINE Uint64 lithon_SDL_Swap64BE(Uint64 x) {
+  return SDL_Swap64BE(x);
 }
 
 /**
@@ -217,9 +201,8 @@ static SDL_INLINE Uint64 lithon_SDL_Swap64BE(Uint64 x)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE float lithon_SDL_SwapFloatBE(float x)
-{
-    return SDL_SwapFloatBE(x);
+static SDL_INLINE float lithon_SDL_SwapFloatBE(float x) {
+  return SDL_SwapFloatBE(x);
 }
 
 #endif /* SDL3_BINDGEN_SYS_SDL_ENDIAN_SHIMS_H */

@@ -4856,7 +4856,7 @@ audioFrameSize =
 --     [Scalars]: The binding generation has mapped C scalars to native Haskell scalars for this function.
 --                Pointers and structs are untouched by this best-effort mapping. Higher-level bindings are expected to map structs and pointers as appropriate.
 --
---     [C declaration]: @lithon_SDL_DEFINE_AUDIO_FORMAT@, defined at @sdl3-bindgen-sys\/SDL_audio_shims.h 61:35@
+--     [C declaration]: @lithon_SDL_DEFINE_AUDIO_FORMAT@, defined at @sdl3-bindgen-sys\/SDL_audio_shims.h 60:35@
 defineAudioFormat
   :: Bool
   -- ^

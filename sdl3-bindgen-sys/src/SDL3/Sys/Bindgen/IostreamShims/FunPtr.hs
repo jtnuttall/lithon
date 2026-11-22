@@ -72,7 +72,7 @@ hs_bindgen_d032484c29c37b48 =
 --
 --     [See also]: SDL_WriteIO
 --
---     [C declaration]: @lithon_SDL_IOprintf@, defined at @sdl3-bindgen-sys\/SDL_iostream_shims.h 42:26@
+--     [C declaration]: @lithon_SDL_IOprintf@, defined at @sdl3-bindgen-sys\/SDL_iostream_shims.h 43:26@
 lithon_SDL_IOprintf
   :: BG.FunPtr
        ( BG.Ptr SDL3.Sys.Bindgen.Iostream.SDL_IOStream

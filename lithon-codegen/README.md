@@ -271,10 +271,7 @@ each one:
       "disposition": "upstream",
       "note": "hs-bindgen drops both halves of a function and macro name clash.",
       "issue": "https://github.com/well-typed/hs-bindgen/issues/2097",
-      "names": [
-        "SDL_size_add_check_overflow",
-        "macro SDL_size_add_check_overflow"
-      ]
+      "names": ["SDL_size_add_check_overflow", "macro SDL_size_add_check_overflow"]
     }
   ]
 }

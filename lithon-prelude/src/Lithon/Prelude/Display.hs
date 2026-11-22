@@ -48,8 +48,8 @@ import Generics.SOP (
   unSOP,
  )
 import Generics.SOP qualified as SOP
-import Witch (From (from))
 import Prelude (id, mempty, null, otherwise, (.), (<>))
+import Witch (From (from))
 
 instance {-# OVERLAPPABLE #-} (Display a) => From a Builder where
   from = displayBuilder

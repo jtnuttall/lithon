@@ -39,9 +39,11 @@
  *
  * \sa SDL_FOURCC
  */
-static SDL_INLINE SDL_PixelFormat lithon_SDL_DEFINE_PIXELFOURCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d)
-{
-    return (SDL_PixelFormat)SDL_DEFINE_PIXELFOURCC(a, b, c, d);
+static SDL_INLINE SDL_PixelFormat lithon_SDL_DEFINE_PIXELFOURCC(Uint8 a,
+                                                                Uint8 b,
+                                                                Uint8 c,
+                                                                Uint8 d) {
+  return (SDL_PixelFormat)SDL_DEFINE_PIXELFOURCC(a, b, c, d);
 }
 
 /**
@@ -59,9 +61,8 @@ static SDL_INLINE SDL_PixelFormat lithon_SDL_DEFINE_PIXELFOURCC(Uint8 a, Uint8 b
  *
  * \sa SDL_BYTESPERPIXEL
  */
-static SDL_INLINE int lithon_SDL_BITSPERPIXEL(SDL_PixelFormat format)
-{
-    return (int)SDL_BITSPERPIXEL(format);
+static SDL_INLINE int lithon_SDL_BITSPERPIXEL(SDL_PixelFormat format) {
+  return (int)SDL_BITSPERPIXEL(format);
 }
 
 /**
@@ -80,9 +81,8 @@ static SDL_INLINE int lithon_SDL_BITSPERPIXEL(SDL_PixelFormat format)
  *
  * \sa SDL_BITSPERPIXEL
  */
-static SDL_INLINE int lithon_SDL_BYTESPERPIXEL(SDL_PixelFormat format)
-{
-    return (int)SDL_BYTESPERPIXEL(format);
+static SDL_INLINE int lithon_SDL_BYTESPERPIXEL(SDL_PixelFormat format) {
+  return (int)SDL_BYTESPERPIXEL(format);
 }
 
 /**
@@ -97,9 +97,9 @@ static SDL_INLINE int lithon_SDL_BYTESPERPIXEL(SDL_PixelFormat format)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_INDEXED(SDL_PixelFormat format)
-{
-    return SDL_ISPIXELFORMAT_INDEXED(format);
+static SDL_INLINE bool
+lithon_SDL_ISPIXELFORMAT_INDEXED(SDL_PixelFormat format) {
+  return SDL_ISPIXELFORMAT_INDEXED(format);
 }
 
 /**
@@ -114,9 +114,8 @@ static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_INDEXED(SDL_PixelFormat format)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_PACKED(SDL_PixelFormat format)
-{
-    return SDL_ISPIXELFORMAT_PACKED(format);
+static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_PACKED(SDL_PixelFormat format) {
+  return SDL_ISPIXELFORMAT_PACKED(format);
 }
 
 /**
@@ -131,9 +130,8 @@ static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_PACKED(SDL_PixelFormat format)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_ARRAY(SDL_PixelFormat format)
-{
-    return SDL_ISPIXELFORMAT_ARRAY(format);
+static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_ARRAY(SDL_PixelFormat format) {
+  return SDL_ISPIXELFORMAT_ARRAY(format);
 }
 
 /**
@@ -148,9 +146,8 @@ static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_ARRAY(SDL_PixelFormat format)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_10BIT(SDL_PixelFormat format)
-{
-    return SDL_ISPIXELFORMAT_10BIT(format);
+static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_10BIT(SDL_PixelFormat format) {
+  return SDL_ISPIXELFORMAT_10BIT(format);
 }
 
 /**
@@ -165,9 +162,8 @@ static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_10BIT(SDL_PixelFormat format)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_FLOAT(SDL_PixelFormat format)
-{
-    return SDL_ISPIXELFORMAT_FLOAT(format);
+static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_FLOAT(SDL_PixelFormat format) {
+  return SDL_ISPIXELFORMAT_FLOAT(format);
 }
 
 /**
@@ -182,15 +178,15 @@ static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_FLOAT(SDL_PixelFormat format)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_ALPHA(SDL_PixelFormat format)
-{
-    return SDL_ISPIXELFORMAT_ALPHA(format);
+static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_ALPHA(SDL_PixelFormat format) {
+  return SDL_ISPIXELFORMAT_ALPHA(format);
 }
 
 /**
  * Determine if an SDL_PixelFormat is a "FourCC" format.
  *
- * The SDL_ISPIXELFORMAT_FOURCC macro as a function. This covers custom and other unusual formats.
+ * The SDL_ISPIXELFORMAT_FOURCC macro as a function. This covers custom and
+ * other unusual formats.
  *
  * \param format an SDL_PixelFormat to check.
  * \returns true if the format is a FourCC format, false otherwise.
@@ -199,9 +195,8 @@ static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_ALPHA(SDL_PixelFormat format)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_FOURCC(SDL_PixelFormat format)
-{
-    return SDL_ISPIXELFORMAT_FOURCC(format);
+static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_FOURCC(SDL_PixelFormat format) {
+  return SDL_ISPIXELFORMAT_FOURCC(format);
 }
 
 /**
@@ -221,9 +216,12 @@ static SDL_INLINE bool lithon_SDL_ISPIXELFORMAT_FOURCC(SDL_PixelFormat format)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE SDL_Colorspace lithon_SDL_DEFINE_COLORSPACE(SDL_ColorType type, SDL_ColorRange range, SDL_ColorPrimaries primaries, SDL_TransferCharacteristics transfer, SDL_MatrixCoefficients matrix, SDL_ChromaLocation chroma)
-{
-    return (SDL_Colorspace)SDL_DEFINE_COLORSPACE(type, range, primaries, transfer, matrix, chroma);
+static SDL_INLINE SDL_Colorspace lithon_SDL_DEFINE_COLORSPACE(
+    SDL_ColorType type, SDL_ColorRange range, SDL_ColorPrimaries primaries,
+    SDL_TransferCharacteristics transfer, SDL_MatrixCoefficients matrix,
+    SDL_ChromaLocation chroma) {
+  return (SDL_Colorspace)SDL_DEFINE_COLORSPACE(type, range, primaries, transfer,
+                                               matrix, chroma);
 }
 
 /**
@@ -238,9 +236,9 @@ static SDL_INLINE SDL_Colorspace lithon_SDL_DEFINE_COLORSPACE(SDL_ColorType type
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE SDL_ColorType lithon_SDL_COLORSPACETYPE(SDL_Colorspace cspace)
-{
-    return SDL_COLORSPACETYPE(cspace);
+static SDL_INLINE SDL_ColorType
+lithon_SDL_COLORSPACETYPE(SDL_Colorspace cspace) {
+  return SDL_COLORSPACETYPE(cspace);
 }
 
 /**
@@ -255,9 +253,9 @@ static SDL_INLINE SDL_ColorType lithon_SDL_COLORSPACETYPE(SDL_Colorspace cspace)
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE SDL_ColorRange lithon_SDL_COLORSPACERANGE(SDL_Colorspace cspace)
-{
-    return SDL_COLORSPACERANGE(cspace);
+static SDL_INLINE SDL_ColorRange
+lithon_SDL_COLORSPACERANGE(SDL_Colorspace cspace) {
+  return SDL_COLORSPACERANGE(cspace);
 }
 
 /**
@@ -272,9 +270,9 @@ static SDL_INLINE SDL_ColorRange lithon_SDL_COLORSPACERANGE(SDL_Colorspace cspac
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE SDL_ChromaLocation lithon_SDL_COLORSPACECHROMA(SDL_Colorspace cspace)
-{
-    return SDL_COLORSPACECHROMA(cspace);
+static SDL_INLINE SDL_ChromaLocation
+lithon_SDL_COLORSPACECHROMA(SDL_Colorspace cspace) {
+  return SDL_COLORSPACECHROMA(cspace);
 }
 
 /**
@@ -289,9 +287,9 @@ static SDL_INLINE SDL_ChromaLocation lithon_SDL_COLORSPACECHROMA(SDL_Colorspace 
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE SDL_ColorPrimaries lithon_SDL_COLORSPACEPRIMARIES(SDL_Colorspace cspace)
-{
-    return SDL_COLORSPACEPRIMARIES(cspace);
+static SDL_INLINE SDL_ColorPrimaries
+lithon_SDL_COLORSPACEPRIMARIES(SDL_Colorspace cspace) {
+  return SDL_COLORSPACEPRIMARIES(cspace);
 }
 
 /**
@@ -306,9 +304,9 @@ static SDL_INLINE SDL_ColorPrimaries lithon_SDL_COLORSPACEPRIMARIES(SDL_Colorspa
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE SDL_TransferCharacteristics lithon_SDL_COLORSPACETRANSFER(SDL_Colorspace cspace)
-{
-    return SDL_COLORSPACETRANSFER(cspace);
+static SDL_INLINE SDL_TransferCharacteristics
+lithon_SDL_COLORSPACETRANSFER(SDL_Colorspace cspace) {
+  return SDL_COLORSPACETRANSFER(cspace);
 }
 
 /**
@@ -323,9 +321,9 @@ static SDL_INLINE SDL_TransferCharacteristics lithon_SDL_COLORSPACETRANSFER(SDL_
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE SDL_MatrixCoefficients lithon_SDL_COLORSPACEMATRIX(SDL_Colorspace cspace)
-{
-    return SDL_COLORSPACEMATRIX(cspace);
+static SDL_INLINE SDL_MatrixCoefficients
+lithon_SDL_COLORSPACEMATRIX(SDL_Colorspace cspace) {
+  return SDL_COLORSPACEMATRIX(cspace);
 }
 
 /**
@@ -340,9 +338,9 @@ static SDL_INLINE SDL_MatrixCoefficients lithon_SDL_COLORSPACEMATRIX(SDL_Colorsp
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE bool lithon_SDL_ISCOLORSPACE_MATRIX_BT601(SDL_Colorspace cspace)
-{
-    return SDL_ISCOLORSPACE_MATRIX_BT601(cspace);
+static SDL_INLINE bool
+lithon_SDL_ISCOLORSPACE_MATRIX_BT601(SDL_Colorspace cspace) {
+  return SDL_ISCOLORSPACE_MATRIX_BT601(cspace);
 }
 
 /**
@@ -357,9 +355,9 @@ static SDL_INLINE bool lithon_SDL_ISCOLORSPACE_MATRIX_BT601(SDL_Colorspace cspac
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE bool lithon_SDL_ISCOLORSPACE_MATRIX_BT709(SDL_Colorspace cspace)
-{
-    return SDL_ISCOLORSPACE_MATRIX_BT709(cspace);
+static SDL_INLINE bool
+lithon_SDL_ISCOLORSPACE_MATRIX_BT709(SDL_Colorspace cspace) {
+  return SDL_ISCOLORSPACE_MATRIX_BT709(cspace);
 }
 
 /**
@@ -374,9 +372,9 @@ static SDL_INLINE bool lithon_SDL_ISCOLORSPACE_MATRIX_BT709(SDL_Colorspace cspac
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE bool lithon_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(SDL_Colorspace cspace)
-{
-    return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(cspace);
+static SDL_INLINE bool
+lithon_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(SDL_Colorspace cspace) {
+  return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(cspace);
 }
 
 /**
@@ -391,9 +389,9 @@ static SDL_INLINE bool lithon_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(SDL_Colorspace 
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE bool lithon_SDL_ISCOLORSPACE_LIMITED_RANGE(SDL_Colorspace cspace)
-{
-    return SDL_ISCOLORSPACE_LIMITED_RANGE(cspace);
+static SDL_INLINE bool
+lithon_SDL_ISCOLORSPACE_LIMITED_RANGE(SDL_Colorspace cspace) {
+  return SDL_ISCOLORSPACE_LIMITED_RANGE(cspace);
 }
 
 /**
@@ -408,9 +406,9 @@ static SDL_INLINE bool lithon_SDL_ISCOLORSPACE_LIMITED_RANGE(SDL_Colorspace cspa
  *
  * \since This function is available since SDL 3.2.0.
  */
-static SDL_INLINE bool lithon_SDL_ISCOLORSPACE_FULL_RANGE(SDL_Colorspace cspace)
-{
-    return SDL_ISCOLORSPACE_FULL_RANGE(cspace);
+static SDL_INLINE bool
+lithon_SDL_ISCOLORSPACE_FULL_RANGE(SDL_Colorspace cspace) {
+  return SDL_ISCOLORSPACE_FULL_RANGE(cspace);
 }
 
 #endif /* SDL3_BINDGEN_SYS_SDL_PIXELS_SHIMS_H */

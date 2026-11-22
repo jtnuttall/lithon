@@ -1,0 +1,39 @@
+name: "Setup SDL3"
+description: "Builds SDL3 with libsdl-org/setup-sdl, with the build cache keyed on the runner image"
+
+inputs:
+  version:
+    description: "SDL version for setup-sdl (3.x.y, 3-latest, ...)"
+    required: true
+
+outputs:
+  prefix:
+    description: "SDL's install prefix"
+    value: ${{ steps.sdl.outputs.prefix }}
+  key:
+    description: "setup-sdl's cache hash for this build (the prefix's directory name)"
+    value: ${{ steps.key.outputs.key }}
+
+runs:
+  using: "composite"
+  steps:
+    # setup-sdl keys its build cache on runner.os and runner.arch only, so a
+    # build from one image release is restored on the next: when ubuntu-latest
+    # moved on, SDL built there (glibc 2.43) came back on ubuntu-24.04.
+    - name: Runner image
+      id: image
+      shell: bash
+      run: echo "os=${ImageOS:-unknown}" >> "$GITHUB_OUTPUT"
+
+    - uses: libsdl-org/setup-sdl@afd98199e97f9c2aa739474be7e0886d149a5e47
+      id: sdl
+      with:
+        install-linux-dependencies: true
+        add-to-environment: true
+        version: ${{ inputs.version }}
+        discriminator: ${{ runner.os }}-${{ runner.arch }}-${{ steps.image.outputs.os }}
+
+    - name: SDL cache key
+      id: key
+      shell: bash
+      run: echo "key=$(basename "$(dirname "${{ steps.sdl.outputs.prefix }}")")" >> "$GITHUB_OUTPUT"

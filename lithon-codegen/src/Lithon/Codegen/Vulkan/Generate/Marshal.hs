@@ -38,8 +38,8 @@ import Data.Text qualified as T
 import Data.Vector qualified as V
 import Lithon.Prelude
 
-import Lithon.Codegen.Vulkan.Generate.Layout (FieldLayout (..), Layouts (..), StructLayout (..))
 import Lithon.Codegen.Backend.Hs (lowerFirst, startsUpper)
+import Lithon.Codegen.Vulkan.Generate.Layout (FieldLayout (..), Layouts (..), StructLayout (..))
 import Lithon.Codegen.Vulkan.Generate.Lower (
   CPrim (..),
   CType (..),
