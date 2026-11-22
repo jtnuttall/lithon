@@ -1,2 +1,4 @@
+# shellcheck shell=bash
+
 # Vendored patches are managed as submodules
 use flake ".?submodules=1"

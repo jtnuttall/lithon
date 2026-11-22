@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # See https://github.com/well-typed/hs-bindgen/blob/63bb6ead92633daee492c8b614768dda865f42ee/nix/hs-bindgen-hook.sh
 
 # Populate additional environment variables required by `hs-bindgen`.
