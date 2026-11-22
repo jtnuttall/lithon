@@ -64,6 +64,15 @@ if [ "$RUNNER_OS" = "Windows" ]; then
 elif [ "$RUNNER_OS" = "Linux" ] && [ "$pkg" = "sdl3" ] && [ -d "$HOME/sdl3/lib/pkgconfig" ]; then
   # The SDL setup action installs under $HOME/sdl3.
   export PKG_CONFIG_PATH="$HOME/sdl3/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+elif [ "$RUNNER_OS" = "macOS" ] && [ "$pkg" = "mpv" ]; then
+  # Homebrew doesn't link keg-only formulae (libarchive, ...) into its prefix,
+  # so their .pc files are invisible to pkg-config.
+  while read -r formula; do
+    dir="$(brew --prefix)/opt/$formula/lib/pkgconfig"
+    if [ -d "$dir" ]; then
+      export PKG_CONFIG_PATH="$dir${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+    fi
+  done < <(brew deps mpv | xargs brew info --json=v2 | jq -r '.formulae[] | select(.keg_only) | .name')
 fi
 
 pkg-config --modversion "$pkg"
