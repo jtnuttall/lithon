@@ -88,6 +88,12 @@
                       export LLVM_PATH="${lithonEnv.libclangPrefix}"
                     '';
                   };
+                  # doctest-parallel drives the GHC API at run time and needs
+                  # a ghc + package db holding `ghc` and rapidhash's closure
+                  # (see scripts/rapidhash-doctest.sh), which a check
+                  # derivation has no access to. CI's consumer-rapidhash job
+                  # runs the doctests from the sdist instead.
+                  rapidhash.components.tests.rapidhash-doctest.doCheck = false;
                   lithon-codegen = {
                     components.library = {
                       build-tools = [lithonEnv.hsBindgenHook];
