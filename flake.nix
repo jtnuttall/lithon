@@ -83,6 +83,11 @@
                 projectPackages.preCheck = lithonEnv.checkHook;
 
                 packages = {
+                  libclang-bindings = {
+                    preConfigure = ''
+                      export LLVM_PATH="${lithonEnv.libclangPrefix}"
+                    '';
+                  };
                   lithon-codegen = {
                     components.library = {
                       build-tools = [lithonEnv.hsBindgenHook];
