@@ -44,6 +44,7 @@ jobs:
             ghc: 9.14.1
     steps:
       - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v2
 
       - name: Setup MSYS2 (Windows)
         if: runner.os == 'Windows'
@@ -65,17 +66,10 @@ jobs:
           cabal-version: ${{ env.CABAL_VERSION }}
           cabal-update: false
 
+      # The strict-flag compile smoke runs on Linux at the primary GHC only.
       - name: Build and haddock from sdist
         shell: bash
-        run: .github/scripts/consumer-bindgen-sys.sh sdl3-bindgen-sys sdl3
-
-      - name: Strict-flag compile smoke
-        if: runner.os == 'Linux' && matrix.ghc == env.GHC_VERSION
-        shell: bash
-        run: |
-          export PKG_CONFIG_PATH="$HOME/sdl3/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
-          cd "$RUNNER_TEMP/sdist"/sdl3-bindgen-sys-*/
-          cabal build --flags="strict -optimize"
+        run: just sdist-consumer sdl3-bindgen-sys sdl3 ${{ runner.os == 'Linux' && matrix.ghc == env.GHC_VERSION }}
 
   consumer-mpv-bindgen-sys:
     if: github.repository == 'jtnuttall/lithon'
@@ -98,6 +92,7 @@ jobs:
             ghc: 9.12.4
     steps:
       - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v2
 
       - name: Install libmpv (Linux)
         if: runner.os == 'Linux'
@@ -123,16 +118,10 @@ jobs:
           cabal-version: ${{ env.CABAL_VERSION }}
           cabal-update: false
 
+      # The strict-flag compile smoke runs on Linux at the primary GHC only.
       - name: Build and haddock from sdist
         shell: bash
-        run: .github/scripts/consumer-bindgen-sys.sh mpv-bindgen-sys mpv
-
-      - name: Strict-flag compile smoke
-        if: runner.os == 'Linux' && matrix.ghc == env.GHC_VERSION
-        shell: bash
-        run: |
-          cd "$RUNNER_TEMP/sdist"/mpv-bindgen-sys-*/
-          cabal build --flags="strict -optimize"
+        run: just sdist-consumer mpv-bindgen-sys mpv ${{ runner.os == 'Linux' && matrix.ghc == env.GHC_VERSION }}
 
   # If these fail the library will need to be updated to accomodate the new SDL header.
   check-latest-sdl3:
@@ -142,6 +131,7 @@ jobs:
       STRICT_CHECK_ABI: true
     steps:
       - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v2
 
       - uses: libsdl-org/setup-sdl@afd98199e97f9c2aa739474be7e0886d149a5e47
         id: sdl
@@ -157,7 +147,7 @@ jobs:
 
       - name: Build and haddock from sdist
         shell: bash
-        run: .github/scripts/consumer-bindgen-sys.sh sdl3-bindgen-sys sdl3
+        run: just sdist-consumer sdl3-bindgen-sys sdl3
 
   consumer-rapidhash:
     if: github.repository == 'jtnuttall/lithon'
@@ -168,6 +158,7 @@ jobs:
         ghc: ["9.8.4", "9.10.3", "9.12.4"]
     steps:
       - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v2
 
       - uses: ./.github/actions/setup-haskell
         with:
@@ -175,38 +166,9 @@ jobs:
           cabal-version: ${{ env.CABAL_VERSION }}
           cabal-update: false
 
-      - name: C reference pin matches the committed vectors
-        run: ./scripts/rapidhash-pin.sh
-
-      - name: Sanity check sdist
-        run: |
-          mkdir -p "$RUNNER_TEMP/sdist"
-          (cd rapidhash && cabal sdist --ignore-project -o "$RUNNER_TEMP/sdist")
-          tar -tzf "$RUNNER_TEMP"/sdist/rapidhash-*.tar.gz | grep -E 'cbits/rapidhash(_ext)?\.h$'
-          tar -tzf "$RUNNER_TEMP"/sdist/rapidhash-*.tar.gz | grep -F 'test/pin/rapidhash-v3-pin.txt'
-
-      - name: Build, test, doctest, haddock from the sdist
-        run: |
-          cd "$RUNNER_TEMP/sdist"
-          tar -xzf rapidhash-*.tar.gz
-          cd rapidhash-*/
-          cabal update
-          cabal build --enable-tests --write-ghc-environment-files=always
-          cabal test rapidhash-test --enable-tests --write-ghc-environment-files=always --test-show-details=direct
-          cabal run rapidhash:rapidhash-doctest --enable-tests --write-ghc-environment-files=always
-          cabal haddock
-          cabal check
-
-      - name: Build, test, haddock rapidhash-aeson from its sdist against the rapidhash sdist
-        run: |
-          (cd rapidhash-aeson && cabal sdist --ignore-project -o "$RUNNER_TEMP/sdist")
-          cd "$RUNNER_TEMP/sdist"
-          tar -xzf rapidhash-aeson-*.tar.gz
-          printf 'packages: %s %s\n' rapidhash-[0-9]*/ rapidhash-aeson-*/ > cabal.project
-          cabal build rapidhash-aeson --enable-tests --write-ghc-environment-files=always
-          cabal test rapidhash-aeson --enable-tests --test-show-details=direct
-          cabal haddock rapidhash-aeson
-          (cd rapidhash-aeson-*/ && cabal check)
+      # The C reference pin runs hermetically in the nix `check` job.
+      - name: Build, test, doctest, haddock, check from the sdists
+        run: just rapidhash-sdist
 
   sdl3-shmup-smoke:
     if: github.repository == 'jtnuttall/lithon'
@@ -269,10 +231,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: lycheeverse/lychee-action@v2
-        with:
-          args: "'**/*.md' '**/*.cabal' '**/package.yaml' '**/*.hs' '**/*.nix' '.github/**/*.yml'"
-          fail: true
+      - uses: DeterminateSystems/nix-installer-action@main
+      - name: lychee
+        run: nix shell nixpkgs#just nixpkgs#lychee -c just links
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -295,5 +256,5 @@ jobs:
           name: jtnuttall
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
           pushFilter: "(-source$|\\.tar\\.gz$|\\.drv$)"
-      - name: nix flake check
-        run: nix flake check --allow-import-from-derivation
+      - name: just check
+        run: nix shell nixpkgs#just nixpkgs#nix-fast-build -c just check --no-nom

@@ -27,7 +27,7 @@
 
   # Vulkan / Lavapipe paths for checks/shells
   vkLayerPath = "${pkgs.vulkan-validation-layers}/share/vulkan/explicit_layer.d";
-  lavapipeIcd = "${pkgs.mesa}/share/vulkan/icd.d/lvp_icd.x86_64.json";
+  lavapipeIcd = "${pkgs.mesa}/share/vulkan/icd.d/lvp_icd.${pkgs.stdenv.hostPlatform.uname.processor}.json";
 
   commonBuildInputs = with pkgs; [
     # general gfx

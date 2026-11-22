@@ -3,17 +3,36 @@
 # against whatever the named pkg-config package resolves to, then haddock
 # and cabal check.
 #
-# Usage: consumer-bindgen-sys.sh <package> <pkg-config-name>
+# Usage: consumer-bindgen-sys.sh <package> <pkg-config-name> [strict-flags]
 #   e.g. consumer-bindgen-sys.sh sdl3-bindgen-sys sdl3
+#   `just sdist-consumer <package> <pkg-config-name> [true]`
+#
+# With a third argument of `true`, also compile the sdist with
+# `--flags="strict -optimize"` (Linux-only smoke in CI).
+#
+# Env: STRICT_CHECK_ABI=true builds with +abi-assertions-exact. RUNNER_OS
+# and RUNNER_TEMP are GitHub's; both default sensibly outside CI.
 
 set -uxeo pipefail
 
-if [ "$#" -ne 2 ]; then
-  echo "usage: $0 <package> <pkg-config-name>" >&2
+if [ "$#" -lt 2 ] || [ "$#" -gt 3 ]; then
+  echo "usage: $0 <package> <pkg-config-name> [strict-flags]" >&2
   exit 2
 fi
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
 package="$1"
 pkg="$2"
+strict_flags="${3:-false}"
+
+if [ -z "${RUNNER_OS:-}" ]; then
+  case "$(uname -s)" in
+  Linux) RUNNER_OS=Linux ;;
+  Darwin) RUNNER_OS=macOS ;;
+  MINGW* | MSYS* | CYGWIN*) RUNNER_OS=Windows ;;
+  *) RUNNER_OS="$(uname -s)" ;;
+  esac
+fi
+RUNNER_TEMP="${RUNNER_TEMP:-$(mktemp -d)}"
 
 case "$pkg" in
 sdl3) library=SDL3 ;;
@@ -42,7 +61,7 @@ if [ "$RUNNER_OS" = "Windows" ]; then
     # elsewhere and already carries Windows paths) must not get it.
     export PKG_CONFIG_SYSROOT_DIR=C:/msys64
   fi
-elif [ "$RUNNER_OS" = "Linux" ] && [ "$pkg" = "sdl3" ]; then
+elif [ "$RUNNER_OS" = "Linux" ] && [ "$pkg" = "sdl3" ] && [ -d "$HOME/sdl3/lib/pkgconfig" ]; then
   # The SDL setup action installs under $HOME/sdl3.
   export PKG_CONFIG_PATH="$HOME/sdl3/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
 fi
@@ -100,3 +119,7 @@ fi || {
 
 if [ "$RUNNER_OS" != "Windows" ]; then cabal haddock; fi
 if [ "$RUNNER_OS" = "Linux" ]; then cabal check; fi
+
+if [ "$strict_flags" = "true" ]; then
+  cabal build --flags="strict -optimize"
+fi

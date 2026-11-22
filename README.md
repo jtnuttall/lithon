@@ -92,7 +92,8 @@ willing to publish earlier than planned if there's enough interest.
   is needed. On Lix, add `flake-self-attrs` to `experimental-features`.
 - The devshell (`nix develop`, or direnv) provides GHC, libclang for
   hs-bindgen, SDL3, libmpv, and lavapipe.
-- `scripts/check.sh` encapsulates all release checks for now.
+- `just check` runs the release checks (the flake's `checks`); `just --list`
+  shows the cabal-side loops (`just test`, `just codegen-check`, ...).
 - Codegen requires GHC 9.12+ (multiline string literals, etc.)
 
 ### Regenerating the bindings
