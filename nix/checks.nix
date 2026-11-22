@@ -42,6 +42,7 @@
       cp -r ${src} source
       chmod -R +w source
       cd source
+      export lithon_codegen_datadir="$PWD/lithon-codegen/data"
 
       $EXECUTABLE -- ${target} generate ${args} --check
     '';
