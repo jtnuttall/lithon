@@ -165,7 +165,7 @@
             };
           };
 
-        checks =
+        extraChecks =
           {
             formatting = treefmtEval.config.build.check self;
           }
@@ -192,7 +192,8 @@
             "sdl3-bindgen-sys-docs" = project.hsPkgs.sdl3-bindgen-sys.components.library.doc;
             "mpv-bindgen-sys-docs" = project.hsPkgs.mpv-bindgen-sys.components.library.doc;
           };
+
+          checks = flake.checks // extraChecks;
         }
-        // checks
     );
 }
