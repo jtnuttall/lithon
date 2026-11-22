@@ -96,15 +96,22 @@
                   # doctest-parallel can't resolve `-package ghc` under haskell.nix; run via `just doctest`.
                   rapidhash.components.tests.rapidhash-doctest.doCheck = false;
                   lithon-codegen = {
-                    # haskell.nix filters out the statics we need to run these tests
-                    package.detailLevel = pkgs.lib.mkForce "Unfiltered";
-                    components.library = {
-                      build-tools = [lithonEnv.hsBindgenHook];
+                    # The tests manipulate the data-dir but don't set data-files, for a few reasons. This
+                    # means we need to carve out an intentional exemption.
+                    components.tests.lithon-codegen-test.extraSrcFiles = [
+                      "data/**"
+                      "../sdl3-bindgen-sys/**"
+                      "../mpv-bindgen-sys/**"
+                    ];
+                    components = {
+                      library = {
+                        build-tools = [lithonEnv.hsBindgenHook];
+                      };
+                      tests.lithon-codegen-test.preCheck = ''
+                        ${lithonEnv.checkHook}
+                        export lithon_codegen_datadir="$PWD/data"
+                      '';
                     };
-                    components.tests.lithon-codegen-test.preCheck = ''
-                      ${lithonEnv.checkHook}
-                      export lithon_codegen_datadir="$PWD/data"
-                    '';
                     preBuild = ''
                       ${lithonEnv.libHook [sdl3 libmpv]}
                     '';
