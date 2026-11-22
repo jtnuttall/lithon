@@ -27,6 +27,7 @@
       indent_size = 2;
       simplify = true;
     };
+    statix.enable = true;
   };
 
   settings.programs.fourmolu = {
