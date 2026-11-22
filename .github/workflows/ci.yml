@@ -54,10 +54,8 @@ jobs:
           msystem: UCRT64
           install: mingw-w64-ucrt-x86_64-pkgconf
 
-      - uses: libsdl-org/setup-sdl@afd98199e97f9c2aa739474be7e0886d149a5e47
-        id: sdl
+      - uses: ./.github/actions/setup-sdl3
         with:
-          install-linux-dependencies: true
           version: ${{ env.SDL_VERSION }}
 
       - uses: ./.github/actions/setup-haskell
@@ -133,10 +131,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: extractions/setup-just@v2
 
-      - uses: libsdl-org/setup-sdl@afd98199e97f9c2aa739474be7e0886d149a5e47
-        id: sdl
+      - uses: ./.github/actions/setup-sdl3
         with:
-          install-linux-dependencies: true
           version: 3-latest
 
       - uses: ./.github/actions/setup-haskell
@@ -188,10 +184,8 @@ jobs:
           sudo apt-get install -y --no-install-recommends \
             libvulkan-dev
 
-      - uses: libsdl-org/setup-sdl@afd98199e97f9c2aa739474be7e0886d149a5e47
-        id: sdl
+      - uses: ./.github/actions/setup-sdl3
         with:
-          install-linux-dependencies: true
           version: ${{ matrix.sdl }}
 
       - uses: ./.github/actions/setup-haskell
@@ -246,15 +240,22 @@ jobs:
       - uses: actions/checkout@v4
       - name: Fetch submodules
         run: git submodule update --init --recursive --filter=tree:0
+      # Every substituter goes in the daemon's config. `cachix use` (what
+      # cachix-action runs) would instead write a user-level `substituters =`
+      # line listing only cache.nixos.org and its own cache; that line replaces
+      # the daemon's list for the runner user, and the haskell.nix caches are
+      # gone (GHC built from source, 2026-11-22).
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: |
-            extra-substituters = https://cache.iog.io https://cache.zw3rk.com
-            extra-trusted-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk=
+            extra-substituters = https://cache.iog.io https://cache.zw3rk.com https://jtnuttall.cachix.org
+            extra-trusted-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk= jtnuttall.cachix.org-1:ta6S+JEGue1aHxz735RJVGUvJdI3l//kNOmUDag+OY8=
       - uses: cachix/cachix-action@v17
         with:
           name: jtnuttall
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
           pushFilter: "(-source$|\\.tar\\.gz$|\\.drv$)"
+          skipAddingSubstituter: true
+      # --skip-cached: a check whose output is already in a cache has passed.
       - name: just check
-        run: nix shell nixpkgs#just nixpkgs#nix-fast-build -c just check --no-nom
+        run: nix shell nixpkgs#just nixpkgs#nix-fast-build -c just check --no-nom --skip-cached
