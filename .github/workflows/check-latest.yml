@@ -1,13 +1,32 @@
 # If any of these checks fail, it indicates a strict ABI incompatibility against
 # upstream. Typically this is an added field on a variant somewhere.
+#
+# A failing build opens an issue titled
+#   <package> failed strict check against <pkg-config name> <version>
+# unless one with that title is already open, so each upstream release is
+# reported once; closing the issue re-arms it for that version.
 ---
 name: Check latest upstream(s)
 
 on:
+  push:
+    branches: [main, dev, next]
   schedule:
-    # 'minute hour day_of_month month day_of_week'
-    # 0 = 0th minute, 14 = 2 PM UTC, 5 = Friday
     - cron: "0 14 * * 5"
+  workflow_dispatch:
+    inputs:
+      sdl:
+        description: "SDL version for setup-sdl (3.x.y or 3-latest)"
+        default: 3-latest
+
+# Mirror ci.yml.
+env:
+  GHC_VERSION: "9.12.4"
+  CABAL_VERSION: "3.18"
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
   check-latest-sdl3:
@@ -15,13 +34,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       STRICT_CHECK_ABI: true
+      PACKAGE: sdl3-bindgen-sys
+      PKGCONFIG: sdl3
     steps:
       - uses: actions/checkout@v4
       - uses: extractions/setup-just@v2
 
       - uses: ./.github/actions/setup-sdl3
         with:
-          version: 3-latest
+          version: ${{ inputs.sdl || '3-latest' }}
 
       - uses: ./.github/actions/setup-haskell
         with:
@@ -29,6 +50,35 @@ jobs:
           cabal-version: ${{ env.CABAL_VERSION }}
           cabal-update: false
 
+      - name: Resolved upstream version
+        id: upstream
+        run: echo "version=$(pkg-config --modversion "$PKGCONFIG")" >> "$GITHUB_OUTPUT"
+
       - name: Build and haddock from sdist
+        id: build
         shell: bash
-        run: just sdist-consumer sdl3-bindgen-sys sdl3
+        run: just sdist-consumer "$PACKAGE" "$PKGCONFIG"
+
+      - name: Open an issue
+        if: failure() && steps.build.outcome == 'failure'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: ${{ env.PACKAGE }} failed strict check against ${{ env.PKGCONFIG }} ${{ steps.upstream.outputs.version }}
+          VERSION: ${{ steps.upstream.outputs.version }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          open=$(gh issue list --state open --author app/github-actions --search "in:title \"$TITLE\"" \
+            --json number,title | jq -r --arg t "$TITLE" '.[] | select(.title == $t) | .number')
+          if [ -n "$open" ]; then
+            echo "already open as #$open: $TITLE"
+            exit 0
+          fi
+          gh issue create --title "$TITLE" --body "$(cat <<EOF
+          \`$PACKAGE\` no longer builds with \`+abi-assertions-exact\` against $PKGCONFIG $VERSION, the newest release when this ran.
+
+          Run: $RUN_URL
+
+          The failing \`_Static_assert\` in \`cbits/abi_assertions.c\` names the declaration. An "exact mode" message is a struct SDL appended to, which the default build tolerates until the bindings are regenerated from the new header; any other assertion also fails consumers' default builds.
+          EOF
+          )"
