@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.0.0.0 - 2026-11-22
+
 ### Changed
 
 - **Breaking**: This module no longer provides Aeson instances. They have been

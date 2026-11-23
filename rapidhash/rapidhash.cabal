@@ -5,14 +5,9 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           rapidhash
-version:        0.3.0.0
-synopsis:       rapidhash v3 - very fast, high-quality, non-cryptographic hashing
-description:    Zero-copy FFI bindings to rapidhash v3, a very fast, high-quality,
-                non-cryptographic hash. The upstream single-header C implementation is
-                vendored and ships with this package, so there is no system dependency.
-                .
-                This is not a cryptographically secure hash. Use something else if you need
-                cryptographic security.
+version:        1.0.0.0
+synopsis:       rapidhash v3 - very fast, zero copy Hashable alternative
+description:    Rapidhash v3 is a very fast, high-quality, non-cryptographic hash.
 category:       Data
 homepage:       https://github.com/jtnuttall/lithon#readme
 bug-reports:    https://github.com/jtnuttall/lithon/issues
@@ -39,7 +34,6 @@ extra-doc-files:
 source-repository head
   type: git
   location: https://github.com/jtnuttall/lithon
-  subdir: rapidhash
 
 flag llvm-bench
   description: Builds the benchmarks with GHC's LLVM backend so its effect can be measured

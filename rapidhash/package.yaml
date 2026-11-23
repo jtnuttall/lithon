@@ -1,6 +1,6 @@
 name: rapidhash
-version: 0.3.0.0
-github: "jtnuttall/lithon/rapidhash"
+version: 1.0.0.0
+github: "jtnuttall/lithon"
 license: BSD-3-Clause
 author: "Jeremy Nuttall"
 maintainer: "jeremy@jeremy-nuttall.com"
@@ -11,14 +11,9 @@ tested-with:
   - GHC == 9.10.3
   - GHC == 9.12.4
 
-synopsis: rapidhash v3 - very fast, high-quality, non-cryptographic hashing
+synopsis: rapidhash v3 - very fast, zero copy Hashable alternative
 description: |
-  Zero-copy FFI bindings to rapidhash v3, a very fast, high-quality,
-  non-cryptographic hash. The upstream single-header C implementation is
-  vendored and ships with this package, so there is no system dependency.
-
-  This is not a cryptographically secure hash. Use something else if you need
-  cryptographic security.
+  Rapidhash v3 is a very fast, high-quality, non-cryptographic hash.
 
 license-file:
   - LICENSE
