@@ -59,10 +59,10 @@ follow the [PVP](https://pvp.haskell.org/). While they are below `0.1`,
 treat them as experimental and pin to the minor (e.g.,
 `>=0.0.0.1 && <0.0.1`):
 
-| Package                                   | Description                                                          | Currently supported systems                                           |
-| ----------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| [`sdl3-bindgen-sys`](sdl3-bindgen-sys/)   | raw + curated SDL3 bindings, generated from the headers              | 64-bit Linux, macOS, Windows (CI checks against all three); SDL ≥ 3.2 |
-| [`mpv-bindgen-sys`](mpv-bindgen-sys/)[^2] | raw + curated libmpv client API bindings, generated from the headers | 64-bit Linux, macOS, Windows; libmpv client API ≥ 2.0 (mpv ≥ 0.35)    |
+| Package                                 | Description                                                          | Currently supported systems                                           |
+| --------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [`sdl3-bindgen-sys`](sdl3-bindgen-sys/) | raw + curated SDL3 bindings, generated from the headers              | 64-bit Linux, macOS, Windows (CI checks against all three); SDL ≥ 3.2 |
+| [`mpv-bindgen-sys`](mpv-bindgen-sys/)   | raw + curated libmpv client API bindings, generated from the headers | 64-bit Linux, macOS, Windows; libmpv client API ≥ 2.0 (mpv ≥ 0.35)    |
 
 There are almost certainly bugs in this initial release; I have not validated
 the whole generated API surface by hand. If you run into anything, please open
@@ -123,5 +123,3 @@ See the per-package license files for further detail.
     /i/ as in the French v/i/te with /t/ as in /t/op. Declension intentionally
     left ambiguous between accusative and genitive; the why is left as an
     exercise for the (very bored, classics/LXX-inclined) reader.
-
-[^2]: Not on Hackage yet: its first release is pending.
