@@ -61,9 +61,9 @@ import Data.String (IsString)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Text.Array qualified as A
-import Data.Text.Builder.Linear qualified as TB
+import Data.Text.Builder.Linear (Builder (Builder), runBuilder, runBuilderBS)
 import Data.Text.Builder.Linear.Buffer qualified as TBuff
-import Data.Text.Builder.Linear.Core qualified as TB
+import Data.Text.Builder.Linear.Core (appendBounded)
 import Data.Text.Read qualified as T
 import Data.Word (Word64, Word8)
 import GHC.Exts (Addr#, Int (I#), (>#))
@@ -182,7 +182,7 @@ instance Binary RapidHash where
   {-# INLINE get #-}
 
 -- |
--- Efficiently render a 'RapidHash' as a 'TB.Builder'
+-- Efficiently render a 'RapidHash' as a t'Builder'
 --
 -- === __Examples__
 --
@@ -199,7 +199,7 @@ instance Binary RapidHash where
 --
 -- >>> RAPIDHASH_V3_PREFIX `T.isPrefixOf` showRapidHashText (RapidHash 0x0)
 -- True
-rapidHashTextBuilder :: RapidHash -> TB.Builder
+rapidHashTextBuilder :: RapidHash -> Builder
 rapidHashTextBuilder (RapidHash h) = hashTextBuilder RAPIDHASH_V3_PREFIX_ADDR h
 {-# INLINE rapidHashTextBuilder #-}
 
@@ -213,9 +213,9 @@ showRapidHashText (RapidHash h) = showHashText RAPIDHASH_V3_PREFIX_ADDR h
 
 -- |
 -- Efficiently render a 'RapidHash' as 'ByteString'. If your text blob is utf-8, it may be worth
--- composing using 'TB.Builder' and extracting with 'TB.runBuilderBS' yourself.
+-- composing using t'Builder' and extracting with 'runBuilderBS' yourself.
 --
--- The resulting 'ByteString' is utf-8 encoded, using 'TB.runBuilderBS'
+-- The resulting 'ByteString' is utf-8 encoded, using 'runBuilderBS'
 --
 -- See 'rapidHashTextBuilder'
 showRapidHashBS :: RapidHash -> ByteString
@@ -365,7 +365,7 @@ instance Binary RapidHashMicro where
   {-# INLINE get #-}
 
 -- |
--- Efficiently render a 'RapidHashMicro' as a 'TB.Builder'
+-- Efficiently render a 'RapidHashMicro' as a t'Builder'
 --
 -- === __Examples__
 --
@@ -382,7 +382,7 @@ instance Binary RapidHashMicro where
 --
 -- >>> RAPIDHASH_MICRO_V3_PREFIX `T.isPrefixOf` showRapidHashMicroText (RapidHashMicro 0x0)
 -- True
-rapidhashMicroTextBuilder :: RapidHashMicro -> TB.Builder
+rapidhashMicroTextBuilder :: RapidHashMicro -> Builder
 rapidhashMicroTextBuilder (RapidHashMicro h) = hashTextBuilder RAPIDHASH_MICRO_V3_PREFIX_ADDR h
 {-# INLINE rapidhashMicroTextBuilder #-}
 
@@ -396,9 +396,9 @@ showRapidHashMicroText (RapidHashMicro h) = showHashText RAPIDHASH_MICRO_V3_PREF
 
 -- |
 -- Efficiently render a 'RapidHashMicro' as 'ByteString'. If your text blob is utf-8, it may be worth
--- composing using 'TB.Builder' and extracting with 'TB.runBuilderBS' yourself.
+-- composing using t'Builder' and extracting with 'runBuilderBS' yourself.
 --
--- The resulting 'ByteString' is utf-8 encoded, using 'TB.runBuilderBS'
+-- The resulting 'ByteString' is utf-8 encoded, using 'runBuilderBS'
 --
 -- See 'rapidhashMicroTextBuilder'
 showRapidHashMicroBS :: RapidHashMicro -> ByteString
@@ -486,22 +486,22 @@ readsRapidHashMicro s = map (first RapidHashMicro) $ readsHash RAPIDHASH_MICRO_V
 -- Hash-agnostic
 ----------------------------------------------------------------------------------------------------
 
--- | Efficiently render a hash as a 'TB.Builder'
-hashTextBuilder :: Addr# -> Word64 -> TB.Builder
-hashTextBuilder prefix h = TB.Builder \b -> appendPaddedHashHexBuf (b TBuff.|># prefix) h
+-- | Efficiently render a hash as a t'Builder'
+hashTextBuilder :: Addr# -> Word64 -> Builder
+hashTextBuilder prefix h = Builder \b -> appendPaddedHashHexBuf (b TBuff.|># prefix) h
 {-# INLINEABLE hashTextBuilder #-}
 
 -- | Efficiently render a hash as 'Text'.
 showHashText :: Addr# -> Word64 -> Text
-showHashText prefix h = TB.runBuilder (hashTextBuilder prefix h)
+showHashText prefix h = runBuilder (hashTextBuilder prefix h)
 {-# INLINEABLE showHashText #-}
 
 -- |
 -- Efficiently render a hash as 'ByteString'.
 --
--- The resulting 'ByteString' is utf-8 encoded, using 'TB.runBuilderBS'
+-- The resulting 'ByteString' is utf-8 encoded, using 'runBuilderBS'
 showHashBS :: Addr# -> Word64 -> ByteString
-showHashBS prefix h = TB.runBuilderBS (hashTextBuilder prefix h)
+showHashBS prefix h = runBuilderBS (hashTextBuilder prefix h)
 {-# INLINEABLE showHashBS #-}
 
 -- |
@@ -518,7 +518,7 @@ appendPaddedHashHexBuf :: TBuff.Buffer %1 -> Word64 -> TBuff.Buffer
 appendPaddedHashHexBuf buffer h =
   -- appendBounded function preallocates a given length, and takes a callback that
   -- mutates the array and returns how many characters it wrote.
-  TB.appendBounded
+  appendBounded
     RAPIDHASH_V3_HEX_LENGTH
     ( \dst off -> do
         endOff <- unsafeAppendHexW64 dst (off + RAPIDHASH_V3_HEX_LENGTH - 1) h
