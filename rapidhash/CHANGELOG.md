@@ -2,11 +2,15 @@
 
 ## Unreleased
 
+## 1.0.0.0 - 2026-11-22
+
 ### Changed
 
 - **Breaking**: This module no longer provides Aeson instances. They have been
   moved to `rapidhash-aeson`, which provides them as orphans. This should
   improve composeability with downstream libraries.
+- Changed some Haddock references, which should fix a few broken links in the
+  docs on Hackage.
 
 ## 0.2.0.0 - 2026-09-12
 

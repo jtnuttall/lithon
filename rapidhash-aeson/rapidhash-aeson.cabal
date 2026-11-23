@@ -48,7 +48,7 @@ library
   build-depends:
       aeson >=2.2 && <2.4
     , base >=4.19 && <4.22
-    , rapidhash ==0.3.*
+    , rapidhash ==1.0.*
   default-language: GHC2021
 
 test-suite rapidhash-aeson-test
@@ -73,7 +73,7 @@ test-suite rapidhash-aeson-test
     , base >=4.19 && <4.22
     , containers
     , hedgehog ==1.7.*
-    , rapidhash ==0.3.*
+    , rapidhash ==1.0.*
     , rapidhash-aeson
     , tasty ==1.5.*
     , tasty-hedgehog ==1.4.*

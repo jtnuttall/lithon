@@ -38,7 +38,7 @@ ghc-options:
 dependencies:
   - base >=4.19 && <4.22
   - aeson >=2.2 && <2.4
-  - rapidhash ^>=0.3
+  - rapidhash ^>= 1.0
 
 library:
   source-dirs: src
