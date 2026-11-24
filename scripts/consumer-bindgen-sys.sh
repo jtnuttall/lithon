@@ -8,7 +8,8 @@
 #   `just sdist-consumer <package> <pkg-config-name> [true]`
 #
 # With a third argument of `true`, also compile the sdist with
-# `--flags="strict -optimize"` (Linux-only smoke in CI).
+# `--flags="strict -optimize"` (CI does this hermetically, as the flake's
+# `strict` project variant).
 #
 # Env: STRICT_CHECK_ABI=true builds with +abi-assertions-exact. RUNNER_OS
 # and RUNNER_TEMP are GitHub's; both default sensibly outside CI.

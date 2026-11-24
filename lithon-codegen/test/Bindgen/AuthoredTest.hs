@@ -199,7 +199,9 @@ unit_authoredHeaderChains = do
 unit_authoredIncludeResolution :: Assertion
 unit_authoredIncludeResolution = do
   -- No authored headers, no include/.
-  withDataDir [] \dir -> resolved toy2 dir >>= found Nothing
+  withDataDir [] \dir -> do
+    result <- resolved toy2 dir
+    found Nothing result
   -- No authored headers, but an include/.
   withDataDir [] \dir -> do
     createDirectory (dir </> "include")

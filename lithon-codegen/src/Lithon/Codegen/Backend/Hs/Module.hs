@@ -175,8 +175,8 @@ data HeaderCaseStrategy
   deriving anyclass (A.ToJSON)
 
 -- |
--- >>> applyCaseStrategy SplitUppercase "helloWorldHERE-is_AStrinG123G456"
--- ["hello","World","H","E","R","E-is_","A","Strin","G123","G456"]
+-- >>> applyCaseStrategy SplitUppercase "helloWorldHERE-is_AStringG123G456"
+-- ["hello","World","H","E","R","E-is_","A","String","G123","G456"]
 --
 -- >>> applyCaseStrategy SplitUppercase "AA"
 -- ["A","A"]

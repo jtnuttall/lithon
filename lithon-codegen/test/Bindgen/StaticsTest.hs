@@ -149,8 +149,9 @@ unit_staticsRejectNonLicenses = do
   refused "LICENSE_hs-bindgen-runtime" ReservedLicense "in every package itself"
   refused "LICENSE_c-expr-runtime" ReservedLicense "in every package itself"
  where
-  refused name why needle = withStatics [(name, "x\n")] \dir ->
-    statics dir >>= \case
+  refused name why needle = withStatics [(name, "x\n")] \dir -> do
+    result <- statics dir
+    case result of
       Left err@(StaticUnexpected path refusal) -> do
         (takeFileName path, refusal) @?= (name, why)
         assertBool
@@ -182,18 +183,21 @@ unit_staticsRejectUnwiredAuthoredHeaders = do
     [IncludeDirMissing]
     "include-dirs lacks include"
   unwired "name: x\n" [notShipped, IncludeDirMissing] "copied verbatim"
-  withStatics [("package.yaml", "name: [x\n")] \dir ->
-    staticsFor toy2Shims dir >>= \case
+  withStatics [("package.yaml", "name: [x\n")] \dir -> do
+    result <- staticsFor toy2Shims dir
+    case result of
       Left (StaticUnwired _ (PackageYamlUnreadable _ :| [])) -> pass
       other -> assertFailure ("expected the package.yaml unreadable, got " <> shown other)
  where
   notShipped = HeadersNotShipped ["include/toy2-shims/toy_thing_shims.h"]
-  wired yaml = withStatics [("package.yaml", yaml)] \dir ->
-    staticsFor toy2Shims dir >>= \case
+  wired yaml = withStatics [("package.yaml", yaml)] \dir -> do
+    result <- staticsFor toy2Shims dir
+    case result of
       Right loaded -> loaded.packageYaml @?= yaml
       Left err -> assertFailure (toString yaml <> ": expected it loaded, got " <> toString (display err))
-  unwired yaml problems needle = withStatics [("package.yaml", yaml)] \dir ->
-    staticsFor toy2Shims dir >>= \case
+  unwired yaml problems needle = withStatics [("package.yaml", yaml)] \dir -> do
+    result <- staticsFor toy2Shims dir
+    case result of
       Left err@(StaticUnwired path found) -> do
         (takeFileName path, toList found) @?= ("package.yaml", problems)
         assertBool

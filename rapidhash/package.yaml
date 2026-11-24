@@ -10,6 +10,7 @@ tested-with:
   - GHC == 9.8.4
   - GHC == 9.10.3
   - GHC == 9.12.4
+  - GHC == 9.14.1
 
 synopsis: rapidhash v3 - very fast, zero copy Hashable alternative
 description: |
@@ -53,7 +54,7 @@ ghc-options:
   - -Wall
 
 dependencies:
-  - base >=4.19 && <4.22
+  - base >=4.19 && <4.23
   - binary ^>=0.8
   - bytestring ^>=0.12
   - bytestring-lexing ^>=0.5

@@ -61,7 +61,8 @@
 
         src = ./.;
 
-        ghcVersion = "ghc912";
+        released = import ./nix/released.nix {inherit (pkgs) lib;};
+        ghcVersion = released.primary;
         llvmPackages = pkgs.llvmPackages_22;
 
         lithonEnv = import ./nix/env.nix {
@@ -79,12 +80,27 @@
           hoogle = "latest";
         };
 
+        # Shared with releasedProject below.
+        releasedPackagesModule = {
+          packages = {
+            sdl3-bindgen-sys.preBuild = ''
+              ${lithonEnv.libHook [pkgs.sdl3]}
+            '';
+            mpv-bindgen-sys.preBuild = ''
+              ${lithonEnv.libHook [pkgs.libmpv]}
+            '';
+            # doctest-parallel can't resolve `-package ghc` under haskell.nix; run via `just doctest`.
+            rapidhash.components.tests.rapidhash-doctest.doCheck = false;
+          };
+        };
+
         project = with pkgs;
           haskell-nix.cabalProject' {
             inherit src;
             compiler-nix-name = ghcVersion;
             supportHpack = true;
             modules = [
+              releasedPackagesModule
               {
                 projectPackages.preCheck = lithonEnv.checkHook;
 
@@ -94,8 +110,6 @@
                       export LLVM_PATH="${lithonEnv.libclangPrefix}"
                     '';
                   };
-                  # doctest-parallel can't resolve `-package ghc` under haskell.nix; run via `just doctest`.
-                  rapidhash.components.tests.rapidhash-doctest.doCheck = false;
                   lithon-codegen = {
                     # The tests manipulate the data-dir but don't set data-files, for a few reasons. This
                     # means we need to carve out an intentional exemption.
@@ -117,16 +131,6 @@
                       ${lithonEnv.libHook [sdl3 libmpv]}
                     '';
                   };
-                  sdl3-bindgen-sys = {
-                    preBuild = ''
-                      ${lithonEnv.libHook [sdl3]}
-                    '';
-                  };
-                  mpv-bindgen-sys = {
-                    preBuild = ''
-                      ${lithonEnv.libHook [libmpv]}
-                    '';
-                  };
                 };
               }
             ];
@@ -143,24 +147,25 @@
               buildInputs = [
                 # Linting, formatting, quality, and scripting
                 lychee
+                nushell
                 treefmtWrapper
 
                 # workflow dependencies
                 ast-grep
-                git
-                gawk
-                fd
-                tree-sitter
                 bat
                 coreutils
-                jq
+                dasel
                 diffutils
                 dyff
-                xq
+                fd
+                git
+                gawk
+                jq
                 lithonEnv.pythonWithPyparsing
-                dasel
-                xmlstarlet
                 ripgrep
+                tree-sitter
+                xmlstarlet
+                xq
               ];
 
               shellHook = lithonEnv.shellHook buildInputs;
@@ -168,6 +173,17 @@
           };
 
         hsTools = project.tools hsToolsSpec;
+
+        # The released packages on their own (cabal.project.released), per supported GHC and
+        # with the strict flag. The sdist/no-nix proof stays with the cabal CI jobs.
+        releasedProject = pkgs.haskell-nix.cabalProject' {
+          inherit src;
+          name = "lithon-released";
+          cabalProjectFileName = "cabal.project.released";
+          compiler-nix-name = ghcVersion;
+          modules = [releasedPackagesModule];
+        };
+        releasedFlake = releasedProject.flake {inherit (released) variants;};
 
         treefmtEval = treefmt-nix.lib.evalModule pkgs {
           imports = [./nix/treefmt.nix];
@@ -205,7 +221,7 @@
             "mpv-bindgen-sys-docs" = project.hsPkgs.mpv-bindgen-sys.components.library.doc;
           };
 
-          checks = flake.checks // extraChecks;
+          checks = flake.checks // extraChecks // released.variantChecks releasedFlake;
         }
     );
 }

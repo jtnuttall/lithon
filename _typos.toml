@@ -1,0 +1,43 @@
+[files]
+extend-exclude = [
+  "lithon-codegen/test/golden/",
+  "vendor/",
+  "**/generated/",
+  "rapidhash/test/pin/",
+  "lithon-codegen/data/*/spec/",
+]
+
+[default]
+extend-ignore-re = [
+  "hs_bindgen_[0-9a-f]{16}", # Ignore 16-char hex hashes in hs_bindgen identifiers
+  "rhm?v3:[0-9a-f]{16}",     # Rapidhash hashes
+  "-f[a-z0-9-]+",            # Ignore GHC -f flags (e.g., -flate-specialise, -flate-dmd-anal)
+  "toy_(tpyo|a_orgin)",      # DriverTest fixtures that are misspelt on purpose
+]
+
+[default.extend-words]
+lits = "lits"       # metaLits, dimLits, TypeLits
+strat = "strat"     # applyPathStrategy strat, timedWithStrat
+uscaled = "uscaled" # Vulkan USCALED / NFUscaled
+
+[type.haskell]
+extend-glob = ["**/*.hs"]
+
+[type.haskell.extend-identifiers]
+ANDed = "ANDed"
+CHandleND = "CHandleND"         # Vulkan non-dispatchable handle (codegen)
+SPEC_VERSIONs = "SPEC_VERSIONs"
+detaild = "detaild"             # d suffix for display implementations (codegen)
+pn = "pn"                       # po / pn pointer pair in Core/AllocTest.hs
+
+[type.haskell.extend-words]
+IZ = "IZ"   # SHs.IZ
+NAM = "NAM" # NonEmpty.AdjacencyMap qualified alias
+TIO = "TIO" # Data.Text.IO qualified alias
+ba = "ba"   # ByteArray variable name (rapidhash); applyCaseStrategy doc example (codegen)
+
+[type.fourmolu]
+extend-glob = ["fourmolu.yaml"]
+
+[type.fourmolu.extend-words]
+wheres = "wheres"

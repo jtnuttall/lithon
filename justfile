@@ -8,60 +8,62 @@ profile := "lithon-codegen/data/vulkan/profiles/lithon-core.json"
 default:
     @just --list
 
-# == nix ==
+# == formatting, linting, independent testing ==
 
-check *args:
-    nix-fast-build --flake '.#checks.{{system}}' {{ifd}} {{args}}
+fmt *args:
+    nix fmt {{ args }}
 
-check-one name:
-    nix-fast-build --flake '.#checks.{{system}}.{{name}}' {{ifd}}
+fmt-no-cache *args:
+    TREEFMT_NO_CACHE=true nix fmt {{ args }}
 
-# == cabal-side loops (the nix checks run these hermetically) ==
-
-test *targets="all":
-    cabal test {{targets}}
+fmt-clear-cache *args:
+    TREEFMT_CLEAR_CACHE=true nix fmt {{ args }}
 
 # doctest-parallel doesn't work trivially and reliably under haskell.nix
 doctest:
     ./scripts/rapidhash-doctest.sh
 
 haddock *targets="all":
-    cabal haddock {{targets}}
-
-examples:
-    ./scripts/examples-headless.sh
+    cabal haddock {{ targets }}
 
 links:
     lychee '**/*.md' '**/*.cabal' '**/package.yaml' '**/*.hs' '**/*.nix' '.github/**/*.yml'
 
+# == nix checks ==
+
+# Runs all checks, including formatting checks
+check *args:
+    nix-fast-build --flake '.#checks.{{ system }}' {{ ifd }} {{ args }}
+
+check-one name:
+    nix-fast-build --flake '.#checks.{{ system }}.{{ name }}' {{ ifd }}
+
+# == Explicit tests via cabal ==
+
+test *targets="all":
+    cabal test {{ targets }}
+
 # == hpack ==
 
 hpack:
-    for f in */package.yaml; do \
-      (cd "$(dirname "$f")" && hpack) \
-    done
+    nu scripts/hpack.nu
 
 hpack-check:
-    for f in */package.yaml; do \
-      dir=$(dirname "$f"); \
-      cabal_file=$(ls "$dir"/*.cabal); \
-      (cd "$dir" && hpack - | diff -u "$(basename "$cabal_file")" -) \
-        || { echo "$cabal_file is stale; run 'just hpack'"; exit 1; }; \
-    done
+    nu scripts/hpack.nu -c
 
 # == rapidhash ==
 
 rapidhash-pin *args:
-    ./scripts/rapidhash-pin.sh {{args}}
+    ./scripts/rapidhash-pin.sh {{ args }}
 
 rapidhash-sdist:
     ./scripts/rapidhash-sdist.sh
 
-# == *-bindgen-sys ==
+# == bindgen packages ==
 
-# Build a *-bindgen-sys package from its sdist as a consumer would; strict=true also compiles with -f strict
+# Build a bindgen package from its sdist as a consumer would
 sdist-consumer package pkgconfig strict="false":
-    ./scripts/consumer-bindgen-sys.sh {{package}} {{pkgconfig}} {{strict}}
+    ./scripts/consumer-bindgen-sys.sh {{ package }} {{ pkgconfig }} {{ strict }}
 
 # == codegen ==
 
@@ -73,7 +75,7 @@ build-codegen:
 codegen: codegen-vulkan codegen-mpv codegen-sdl3
 
 codegen-vulkan: build-codegen
-    cabal run lithon-codegen -- vulkan generate --profile {{profile}}
+    cabal run lithon-codegen -- vulkan generate --profile {{ profile }}
 
 codegen-mpv: build-codegen
     cabal run lithon-codegen -- mpv generate --yes
@@ -86,7 +88,7 @@ codegen-sdl3: build-codegen
 codegen-check: codegen-check-vulkan codegen-check-mpv codegen-check-sdl3
 
 codegen-check-vulkan: build-codegen
-    cabal run lithon-codegen -- vulkan generate --profile {{profile}} --check
+    cabal run lithon-codegen -- vulkan generate --profile {{ profile }} --check
 
 codegen-check-mpv: build-codegen
     cabal run lithon-codegen -- mpv generate --check

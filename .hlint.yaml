@@ -1,0 +1,7 @@
+- arguments:
+    - -XOverloadedRecordDot
+
+- ignore:
+    name: Avoid lambda
+    within:
+      - Data.Hash.RapidHash.**

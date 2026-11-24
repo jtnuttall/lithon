@@ -190,7 +190,7 @@ data BindgenError
     RegistryDecodeFailed Registry FilePath Text
   | AliasesFailed (Errors AliasError)
   | ConstantsFailed (Errors ConstantError)
-  | ConstantsProbeUnparseable Text
+  | ConstantsProbeUnparsable Text
   | ToolCallFailed Text (ProcessConfig () () ()) ProcessFailureCode ProcessStdout ProcessStderr
   | BindgenFailed DriverError
   | EmitFailed EmitError
@@ -227,7 +227,7 @@ instance Display BindgenError where
     RegistryDecodeFailed registry path err ->
       "Failed to decode the " <> displayBuilder registry <> " registry " <> from path <> ": " <> from err
     AliasesFailed errs -> "Aliases failed: " <> from errs
-    ConstantsProbeUnparseable err -> "Failed to parse constants probe output: " <> from err
+    ConstantsProbeUnparsable err -> "Failed to parse constants probe output: " <> from err
     ToolCallFailed tag cfg (ProcessFailureCode code) (ProcessStdout out) (ProcessStderr err) ->
       let coded = show code
           cmd = show cfg
@@ -658,7 +658,7 @@ probeConstants target probeInputs
           (from probeBin)
           []
 
-      liftEither . first ConstantsProbeUnparseable $ parseProbeOutput runOut
+      liftEither . first ConstantsProbeUnparsable $ parseProbeOutput runOut
 
 loadVersionsRegistry
   :: (BindgenGen :> es, Error BindgenError :> es, FileSystem :> es)

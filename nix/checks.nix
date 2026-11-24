@@ -46,8 +46,6 @@
       $EXECUTABLE -- ${target} generate ${args} --check
     '';
 
-  # Run an example headlessly and fail if the validation layers complain.
-  # (checkHook exports SDL_VIDEODRIVER=offscreen and the lavapipe ICD.)
   headlessExample = exe: args:
     integrationCheck "check-${exe}" {
       pkg = "lithon-examples";
@@ -74,23 +72,12 @@ in {
   check-codegen-sdl3 = codegenFreshness "sdl3" "";
   check-codegen-mpv = codegenFreshness "mpv" "";
 
-  check-hpack =
-    pkgs.runCommand "check-hpack" {
-      nativeBuildInputs = [hsTools.hpack pkgs.diffutils];
+  hpack-check =
+    pkgs.runCommand "hpack-check" {
+      nativeBuildInputs = [hsTools.hpack pkgs.diffutils pkgs.nushell pkgs.just];
     } ''
-      for cabal_file in ${src}/*/*.cabal; do
-        dir="$(dirname "$cabal_file")"
-        cd "$dir"
-
-        echo "Verifying that hpack's output matches $cabal_file..."
-        diff_out="$(hpack - | diff -u "$cabal_file" -)" || {
-          echo "$diff_out"
-          echo "$cabal_file: Expected hpack output differs from actual cabal file."
-          echo "Did you forget to run 'hpack' in $dir?"
-          exit 1
-        }
-      done
-
+      cd ${src}
+      just hpack-check
       touch $out
     '';
 

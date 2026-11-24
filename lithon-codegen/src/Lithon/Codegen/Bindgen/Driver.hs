@@ -104,7 +104,7 @@ instance Display DriverError where
       let errd = display err
        in from
             [trimmingQQ|
-              $cxt: hs-bindgen invokation failed:
+              $cxt: hs-bindgen invocation failed:
 
               $errd
             |]

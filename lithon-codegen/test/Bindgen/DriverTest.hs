@@ -96,7 +96,7 @@ unit_driverFoldsToyHeader = do
       assertBool "types module rendered under the minted name" ("Toy.Bindgen.Thing" `elem` map fst pairs)
       assertBool
         "typed imports captured at render"
-        (any (not . null . (.hsModule.importedModules)) r.modules)
+        (not (all (null . (.hsModule.importedModules)) r.modules))
     _other -> assertFailure ("expected exactly one header result, got " <> show (length results))
 
 unit_requireHitMissFails :: Assertion
@@ -138,7 +138,7 @@ unit_allowMissSkips = do
     [r] ->
       assertBool
         "family rendered untouched"
-        (all (not . T.isInfixOf "unused" . snd) (renderedPairs r.modules))
+        (not (any (T.isInfixOf "unused" . snd) (renderedPairs r.modules)))
     _other -> assertFailure "expected exactly one header result"
 
 -- | The second edit's needle exists only in the first edit's output — the
