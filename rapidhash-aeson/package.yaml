@@ -10,6 +10,7 @@ tested-with:
   - GHC == 9.8.4
   - GHC == 9.10.3
   - GHC == 9.12.4
+  - GHC == 9.14.1
 
 synopsis: aeson instances for rapidhash digests
 description: |
@@ -36,7 +37,7 @@ ghc-options:
   - -Wall
 
 dependencies:
-  - base >=4.19 && <4.22
+  - base >=4.19 && <4.23
   - aeson >=2.2 && <2.4
   - rapidhash ^>= 1.0
 

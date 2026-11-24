@@ -1,0 +1,12 @@
+-- The released packages on their own, as Hackage's solver sees them (not the
+-- workspace: lithon-codegen needs GHC2024, so cabal.project doesn't plan on
+-- older GHCs). The flake builds this once per supported GHC; it works with
+-- `cabal build --project-file=cabal.project.released` too.
+packages:
+  sdl3-bindgen-sys
+  mpv-bindgen-sys
+  rapidhash
+  rapidhash-aeson
+
+-- Keep in step with cabal.project.
+index-state: 2026-10-09T23:25:56Z

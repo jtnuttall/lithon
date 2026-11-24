@@ -8,18 +8,10 @@ profile := "lithon-codegen/data/vulkan/profiles/lithon-core.json"
 default:
     @just --list
 
-# == nix ==
+# == formatting, linting, independent testing ==
 
-check *args:
-    nix-fast-build --flake '.#checks.{{system}}' {{ifd}} {{args}}
-
-check-one name:
-    nix-fast-build --flake '.#checks.{{system}}.{{name}}' {{ifd}}
-
-# == cabal-side loops (the nix checks run these hermetically) ==
-
-test *targets="all":
-    cabal test {{targets}}
+fmt *args:
+    nix fmt {{args}}
 
 # doctest-parallel doesn't work trivially and reliably under haskell.nix
 doctest:
@@ -28,11 +20,25 @@ doctest:
 haddock *targets="all":
     cabal haddock {{targets}}
 
-examples:
-    ./scripts/examples-headless.sh
-
 links:
     lychee '**/*.md' '**/*.cabal' '**/package.yaml' '**/*.hs' '**/*.nix' '.github/**/*.yml'
+
+# == nix checks ==
+
+# Runs all checks, including formatting checks
+check *args:
+    nix-fast-build --flake '.#checks.{{system}}' {{ifd}} {{args}}
+
+check-one name:
+    nix-fast-build --flake '.#checks.{{system}}.{{name}}' {{ifd}}
+
+# == Explicit tests via cabal ==
+
+test *targets="all":
+    cabal test {{targets}}
+
+examples:
+    ./scripts/examples-headless.sh
 
 # == hpack ==
 
@@ -57,9 +63,9 @@ rapidhash-pin *args:
 rapidhash-sdist:
     ./scripts/rapidhash-sdist.sh
 
-# == *-bindgen-sys ==
+# == bindgen packages ==
 
-# Build a *-bindgen-sys package from its sdist as a consumer would; strict=true also compiles with -f strict
+# Build a bindgen package from its sdist as a consumer would
 sdist-consumer package pkgconfig strict="false":
     ./scripts/consumer-bindgen-sys.sh {{package}} {{pkgconfig}} {{strict}}
 

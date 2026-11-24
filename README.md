@@ -29,16 +29,10 @@ of the same generator as the SDL3 bindings.
 ## Where to start?
 
 Take a look at any of the [published packages](#packages), each of which has a
-getting-started guide. The `lithon-examples` directory also contains a
-variety of examples, which double as smoke and compile tests, which
-you can use as templates if you want — including `sdl3-raw` (a minimal
-SDL3 triangle through the generated bindings) and `shmup` (a playable
-port of the apecs Shmup example running on _and_ rendering through `SDL3`).
+getting-started guide.
 
-These are low-level; higher-level bindings are planned if you want a
-batteries-included path. If you want to build your own higher-level bindings
-atop these packages, feel free; just mind the versioning/stability information
-here.
+`lithon-examples` directory contains a variety of examples, which you may use
+as templates if you'd like.
 
 ## Packages
 
@@ -86,24 +80,54 @@ willing to publish earlier than planned if there's enough interest.
 
 ## Development
 
-- Clone with `git clone --recursive` — the vendored `hs-bindgen` stack
-  lives in git submodules that the build requires.
-- The flake sets `inputs.self.submodules = true`, so no `?submodules=1`
-  is needed. On Lix, add `flake-self-attrs` to `experimental-features`.
-- The devshell (`nix develop`, or direnv) provides GHC, libclang for
-  hs-bindgen, SDL3, libmpv, and lavapipe.
-- `just check` runs the release checks (the flake's `checks`); `just --list`
-  shows the cabal-side loops (`just test`, `just codegen-check`, ...).
-- Codegen requires GHC 9.12+ (multiline string literals, etc.)
+Development without Nix is not supported at this time. You'll need to install the system
+dependencies yourself if you wish to develop without Nix.
 
-### Regenerating the bindings
+I currently use [`nix direnv`](https://github.com/nix-community/nix-direnv/). You can use
+whichever dev env management tool you prefer, or direct nix commands.
+
+### Caching
+
+If you haven't already, [set up the haskell.nix cache(s)](https://github.com/ican-group/haskell.nix/blob/master/README.md).
+**If you don't do this, you'll rebuild GHC and a bunch of other stuff and it will take a
+long time.**
+
+As of writing, you'll want the equivalent of this in your user, system, or flake config.
+
+```nix
+nix.settings = {
+  substituters = [
+    "https://cache.iog.io"
+    "https://cache.zw3rk.com"
+  ];
+  trusted-public-keys = [
+    "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+    "loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk="
+  ];
+};
+```
+
+### Setup
+
+Here's how I set up for dev:
 
 ```sh
-cabal run lithon-codegen -- vulkan generate \
-  --profile lithon-codegen/data/vulkan/profiles/lithon-core.json
-cabal run lithon-codegen -- sdl3 generate
-cabal run lithon-codegen -- mpv generate
+# 1. clone repository
+git clone --recursive git@github.com:jtnuttall/lithon.git
+cd lithon
+# 2. set up direnv (https://github.com/nix-community/nix-direnv/)
+cp .envrc.example .envrc
+# 3. set up the environment. This will take a few minutes.
+direnv allow
+# 4. try building everything (optional)
+cabal build all
 ```
+
+If everything above went well, you should now be set up to develop.
+
+### Common dev tasks
+
+Consult the `justfile` for common tasks and useful documentation on their application.
 
 ## Licensing
 

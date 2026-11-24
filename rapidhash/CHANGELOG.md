@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Allow `base` 4.22 (GHC 9.14); GHC 9.14.1 is now tested.
+
 ## 1.0.0.0 - 2026-11-22
 
 ### Changed

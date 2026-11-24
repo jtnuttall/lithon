@@ -1,6 +1,8 @@
 # CI here has two important jobs:
 # 1. Verify compilation of lithon's libraries across GHC versions, Cabal
-#    flags, and supported platforms.
+#    flags, and supported platforms. The GHC and flag coverage lives in the
+#    flake (the `check` job); the cabal jobs build each released
+#    package from its sdist, as a consumer would, on every platform.
 # 2. SDL3 and libmpv: Check ABI validity on supported platforms. Building
 #    `sdl3-bindgen-sys` or `mpv-bindgen-sys` entails compiling
 #    `abi_assertions.c`, which contains static assertions pinning the
@@ -29,19 +31,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: ubuntu-latest
-            ghc: 9.8.4
-          - os: ubuntu-latest
-            ghc: 9.10.3
-          - os: ubuntu-latest
-            ghc: 9.12.4
-          - os: macos-latest
-            ghc: 9.12.4
-          - os: windows-latest
-            ghc: 9.12.4
-          - os: ubuntu-latest
-            ghc: 9.14.1
+        os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
       - uses: actions/checkout@v4
       - uses: extractions/setup-just@v2
@@ -60,14 +50,13 @@ jobs:
 
       - uses: ./.github/actions/setup-haskell
         with:
-          ghc-version: ${{ matrix.ghc }}
+          ghc-version: ${{ env.GHC_VERSION }}
           cabal-version: ${{ env.CABAL_VERSION }}
           cabal-update: false
 
-      # The strict-flag compile smoke runs on Linux at the primary GHC only.
       - name: Build and haddock from sdist
         shell: bash
-        run: just sdist-consumer sdl3-bindgen-sys sdl3 ${{ runner.os == 'Linux' && matrix.ghc == env.GHC_VERSION }}
+        run: just sdist-consumer sdl3-bindgen-sys sdl3
 
   consumer-mpv-bindgen-sys:
     if: github.repository == 'jtnuttall/lithon'
@@ -75,19 +64,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: ubuntu-24.04
-            ghc: 9.8.4
-          - os: ubuntu-24.04
-            ghc: 9.10.3
-          - os: ubuntu-24.04
-            ghc: 9.12.4
-          - os: ubuntu-24.04
-            ghc: 9.14.1
-          - os: macos-latest
-            ghc: 9.12.4
-          - os: windows-latest
-            ghc: 9.12.4
+        os: [ubuntu-24.04, macos-latest, windows-latest]
     steps:
       - uses: actions/checkout@v4
       - uses: extractions/setup-just@v2
@@ -112,33 +89,29 @@ jobs:
 
       - uses: ./.github/actions/setup-haskell
         with:
-          ghc-version: ${{ matrix.ghc }}
+          ghc-version: ${{ env.GHC_VERSION }}
           cabal-version: ${{ env.CABAL_VERSION }}
           cabal-update: false
 
-      # The strict-flag compile smoke runs on Linux at the primary GHC only.
       - name: Build and haddock from sdist
         shell: bash
-        run: just sdist-consumer mpv-bindgen-sys mpv ${{ runner.os == 'Linux' && matrix.ghc == env.GHC_VERSION }}
+        run: just sdist-consumer mpv-bindgen-sys mpv
 
   consumer-rapidhash:
     if: github.repository == 'jtnuttall/lithon'
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        ghc: ["9.8.4", "9.10.3", "9.12.4"]
     steps:
       - uses: actions/checkout@v4
       - uses: extractions/setup-just@v2
 
       - uses: ./.github/actions/setup-haskell
         with:
-          ghc-version: ${{ matrix.ghc }}
+          ghc-version: ${{ env.GHC_VERSION }}
           cabal-version: ${{ env.CABAL_VERSION }}
           cabal-update: false
 
-      # The C reference pin runs hermetically in the nix `check` job.
+      # The C reference pin and the other GHCs run hermetically in the nix
+      # `check` jobs; doctest can't (doctest-parallel under haskell.nix).
       - name: Build, test, doctest, haddock, check from the sdists
         run: just rapidhash-sdist
 
@@ -204,7 +177,7 @@ jobs:
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - name: lychee
-        run: nix shell nixpkgs#just nixpkgs#lychee -c just links
+        run: nix shell --inputs-from . nixpkgs#just nixpkgs#lychee -c just links
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -212,6 +185,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    # A GHC that has left the IOG / zw3rk caches would get built from source
+    # here; fail instead, and drop it from the supported set.
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - name: Fetch submodules
@@ -229,4 +205,4 @@ jobs:
           pushFilter: "(-source$|\\.tar\\.gz$|\\.drv$)"
       # --skip-cached: a check whose output is already in a cache has passed.
       - name: just check
-        run: nix shell nixpkgs#just nixpkgs#nix-fast-build -c just check --no-nom --skip-cached
+        run: nix shell --inputs-from . nixpkgs#just nixpkgs#nix-fast-build -c just check --no-nom --skip-cached
