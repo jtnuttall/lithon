@@ -33,7 +33,7 @@ import Lithon.Codegen.Vulkan.Xml.Types (Pos (..), XElement (..), XNode (..), noP
 -- are best-effort ('noPos' when the parser reported none).
 data XmlLoadError
   = -- | Malformed XML (or I/O failure), rendered from the underlying exception.
-    XmlUnparseable Text
+    XmlUnparsable Text
   | XmlDoctypeForbidden Pos
   | XmlInstructionForbidden Pos
   | -- | A namespaced or prefixed name; the registry uses plain local names only.
@@ -52,7 +52,7 @@ data XmlLoadError
 instance Display XmlLoadError where
   displayBuilder =
     \case
-      XmlUnparseable msg -> "unparseable XML: " <> from msg
+      XmlUnparsable msg -> "unparsable XML: " <> from msg
       XmlDoctypeForbidden p -> at p "doctype declarations are not allowed"
       XmlInstructionForbidden p -> at p "processing instructions are not allowed"
       XmlNamespacedName n p -> at p ("namespaced name is not allowed: " <> from n)
@@ -71,20 +71,20 @@ loadXmlBytes :: ByteString -> Either XmlLoadError XElement
 loadXmlBytes bytes =
   runPureEff . runLoad $ yield bytes .| XP.parseBytesPos XP.def .| treeSink
 
--- | Load from a file, streaming. I/O failures surface as 'XmlUnparseable'.
+-- | Load from a file, streaming. I/O failures surface as 'XmlUnparsable'.
 loadXmlFile :: (Resource :> es, IOE :> es) => FilePath -> Eff es (Either XmlLoadError XElement)
 loadXmlFile path =
   runLoad $ sourceFile path .| XP.parseBytesPos XP.def .| treeSink
 
 -- | Run a loading conduit, folding exceptions thrown by the streaming parser
--- (malformed XML, I/O) into 'XmlUnparseable'.
+-- (malformed XML, I/O) into 'XmlUnparsable'.
 runLoad
   :: ConduitT () Void (Eff es) (Either XmlLoadError XElement)
   -> Eff es (Either XmlLoadError XElement)
 runLoad pipeline =
   either absorb id <$> try @SomeException (runConduit pipeline)
  where
-  absorb = Left . XmlUnparseable . T.pack . displayException
+  absorb = Left . XmlUnparsable . T.pack . displayException
 
 -- | An element under construction: children accumulate in reverse.
 data Frame = Frame

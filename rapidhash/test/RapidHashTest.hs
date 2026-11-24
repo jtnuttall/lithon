@@ -174,7 +174,7 @@ unit_matchesUpstreamCReference = do
     ["microOffset", offS, lenS, seedS, hashS] ->
       assertEqual line (RapidHashMicro (hex hashS)) $
         rapidhashMicroWithSeed (RapidSeed (hex seedS)) (sliceOf (read offS) (read lenS))
-    _ -> assertFailure ("unparseable golden line: " <> line)
+    _ -> assertFailure ("unparsable golden line: " <> line)
  where
   hex :: String -> Word64
   hex s = case readHex s of

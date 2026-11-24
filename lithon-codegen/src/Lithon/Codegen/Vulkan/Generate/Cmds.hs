@@ -616,7 +616,7 @@ planCommands cxt =
           Just (imps, src) -> do
             -- Overrides splice verbatim source, so the mechanical policy
             -- render cannot reach them: refuse configurations that would
-            -- need it instead of silently mis-rendering.
+            -- need it instead of silently misrendering.
             when (Map.member (forgetNamespace name) payloadUnwrittenOn)
               $ failing
                 CResultPolicy

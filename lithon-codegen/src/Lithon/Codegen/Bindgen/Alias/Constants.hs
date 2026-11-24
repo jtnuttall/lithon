@@ -278,7 +278,7 @@ parseProbeOutput out = do
     ["sizeof", name, v] -> (SizeofLine,name,) <$> integer v
     ["signed", name, v] -> (SignedLine,name,) <$> (integer v >>= flag v)
     ["value", name, v] -> (ValueLine,name,) <$> integer v
-    _malformed -> Left ("constants probe: unparseable line: " <> line)
+    _malformed -> Left ("constants probe: unparsable line: " <> line)
   integer v =
     maybeToRight
       ("constants probe: non-numeric payload: " <> v)

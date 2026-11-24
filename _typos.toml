@@ -1,0 +1,48 @@
+[files]
+extend-exclude = [
+  "lithon-codegen/test/golden/",
+  "vendor/",
+  "**/generated/",
+  "rapidhash/test/pin/",
+  "lithon-codegen/data/*/spec/",
+]
+
+[default]
+extend-ignore-re = [
+  "hs_bindgen_[0-9a-f]{16}", # Ignore 16-char hex hashes in hs_bindgen identifiers
+  "rhm?v3:[0-9a-f]{16}",     # Rapidhash hashes
+  "-f[a-z0-9-]+",            # Ignore GHC -f flags (e.g., -flate-specialise, -flate-dmd-anal)
+  "toy_(tpyo|a_orgin)",      # DriverTest fixtures that are misspelt on purpose
+]
+
+[default.extend-words]
+lits = "lits"       # metaLits, dimLits, TypeLits
+strat = "strat"     # applyPathStrategy strat, timedWithStrat
+uscaled = "uscaled" # Vulkan USCALED / NFUscaled
+
+# A type's globs match file names only, never paths: `rapidhash/**/*.hs` matches
+# nothing. Words for one directory need a `_typos.toml` there, which replaces
+# this file for that subtree rather than extending it.
+[type.haskell]
+extend-glob = ["**/*.hs"]
+
+# Whole identifiers, matched before typos splits them into words (`ANDed` splits
+# to AN + Ded, so an extend-words entry can't catch it).
+[type.haskell.extend-identifiers]
+ANDed = "ANDed"
+SPEC_VERSIONs = "SPEC_VERSIONs"
+CHandleND = "CHandleND"         # Vulkan non-dispatchable handle (codegen)
+detaild = "detaild"             # d suffix for display implementations (codegen)
+pn = "pn"                       # po / pn pointer pair in Core/AllocTest.hs
+
+[type.haskell.extend-words]
+ba = "ba"   # ByteArray variable name (rapidhash); applyCaseStrategy doc example (codegen)
+TIO = "TIO" # Data.Text.IO qualified alias
+NAM = "NAM" # NonEmpty.AdjacencyMap qualified alias
+IZ = "IZ"   # SHs.IZ
+
+[type.fourmolu]
+extend-glob = ["fourmolu.yaml"]
+
+[type.fourmolu.extend-words]
+wheres = "wheres"
