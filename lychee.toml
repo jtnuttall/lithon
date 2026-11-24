@@ -1,15 +1,16 @@
-no_progress = true
 format = "compact"
 max_concurrency = 16
+no_progress = true
 timeout = 20
-# GitHub answers 503 now and then; wait it out rather than accept it.
+
+# Tolerate transient outages
 max_retries = 4
 retry_wait_time = 5
 
 accept = ["100..=103", "200..=299", "403"]
 
-scheme = ["https", "http"]
 exclude_all_private = true
+scheme = ["https", "http"]
 
 exclude_path = [
   # third-party trees
