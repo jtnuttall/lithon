@@ -16,10 +16,15 @@
     alejandra.enable = true;
     clang-format.enable = true;
     deadnix.enable = true;
+    hlint = {
+      enable = true;
+      package = hsTools.hlint;
+    };
     fourmolu = {
       enable = true;
       package = hsTools.fourmolu;
     };
+    just.enable = true;
     oxfmt.enable = true;
     shellcheck.enable = true;
     shfmt = {
@@ -28,6 +33,11 @@
       simplify = true;
     };
     statix.enable = true;
+    typos = {
+      enable = true;
+      # Suggestions are not always correct
+      autoFix = false;
+    };
   };
 
   settings.programs.fourmolu = {
