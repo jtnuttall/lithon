@@ -20,26 +20,21 @@ lits = "lits"       # metaLits, dimLits, TypeLits
 strat = "strat"     # applyPathStrategy strat, timedWithStrat
 uscaled = "uscaled" # Vulkan USCALED / NFUscaled
 
-# A type's globs match file names only, never paths: `rapidhash/**/*.hs` matches
-# nothing. Words for one directory need a `_typos.toml` there, which replaces
-# this file for that subtree rather than extending it.
 [type.haskell]
 extend-glob = ["**/*.hs"]
 
-# Whole identifiers, matched before typos splits them into words (`ANDed` splits
-# to AN + Ded, so an extend-words entry can't catch it).
 [type.haskell.extend-identifiers]
 ANDed = "ANDed"
-SPEC_VERSIONs = "SPEC_VERSIONs"
 CHandleND = "CHandleND"         # Vulkan non-dispatchable handle (codegen)
+SPEC_VERSIONs = "SPEC_VERSIONs"
 detaild = "detaild"             # d suffix for display implementations (codegen)
 pn = "pn"                       # po / pn pointer pair in Core/AllocTest.hs
 
 [type.haskell.extend-words]
-ba = "ba"   # ByteArray variable name (rapidhash); applyCaseStrategy doc example (codegen)
-TIO = "TIO" # Data.Text.IO qualified alias
-NAM = "NAM" # NonEmpty.AdjacencyMap qualified alias
 IZ = "IZ"   # SHs.IZ
+NAM = "NAM" # NonEmpty.AdjacencyMap qualified alias
+TIO = "TIO" # Data.Text.IO qualified alias
+ba = "ba"   # ByteArray variable name (rapidhash); applyCaseStrategy doc example (codegen)
 
 [type.fourmolu]
 extend-glob = ["fourmolu.yaml"]
