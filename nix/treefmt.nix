@@ -33,6 +33,7 @@
       simplify = true;
     };
     statix.enable = true;
+    taplo.enable = true;
     typos = {
       enable = true;
       # Suggestions are not always correct
