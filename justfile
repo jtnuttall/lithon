@@ -11,14 +11,14 @@ default:
 # == formatting, linting, independent testing ==
 
 fmt *args:
-    nix fmt {{args}}
+    nix fmt {{ args }}
 
 # doctest-parallel doesn't work trivially and reliably under haskell.nix
 doctest:
     ./scripts/rapidhash-doctest.sh
 
 haddock *targets="all":
-    cabal haddock {{targets}}
+    cabal haddock {{ targets }}
 
 links:
     lychee '**/*.md' '**/*.cabal' '**/package.yaml' '**/*.hs' '**/*.nix' '.github/**/*.yml'
@@ -27,15 +27,15 @@ links:
 
 # Runs all checks, including formatting checks
 check *args:
-    nix-fast-build --flake '.#checks.{{system}}' {{ifd}} {{args}}
+    nix-fast-build --flake '.#checks.{{ system }}' {{ ifd }} {{ args }}
 
 check-one name:
-    nix-fast-build --flake '.#checks.{{system}}.{{name}}' {{ifd}}
+    nix-fast-build --flake '.#checks.{{ system }}.{{ name }}' {{ ifd }}
 
 # == Explicit tests via cabal ==
 
 test *targets="all":
-    cabal test {{targets}}
+    cabal test {{ targets }}
 
 examples:
     ./scripts/examples-headless.sh
@@ -58,7 +58,7 @@ hpack-check:
 # == rapidhash ==
 
 rapidhash-pin *args:
-    ./scripts/rapidhash-pin.sh {{args}}
+    ./scripts/rapidhash-pin.sh {{ args }}
 
 rapidhash-sdist:
     ./scripts/rapidhash-sdist.sh
@@ -67,7 +67,7 @@ rapidhash-sdist:
 
 # Build a bindgen package from its sdist as a consumer would
 sdist-consumer package pkgconfig strict="false":
-    ./scripts/consumer-bindgen-sys.sh {{package}} {{pkgconfig}} {{strict}}
+    ./scripts/consumer-bindgen-sys.sh {{ package }} {{ pkgconfig }} {{ strict }}
 
 # == codegen ==
 
@@ -79,7 +79,7 @@ build-codegen:
 codegen: codegen-vulkan codegen-mpv codegen-sdl3
 
 codegen-vulkan: build-codegen
-    cabal run lithon-codegen -- vulkan generate --profile {{profile}}
+    cabal run lithon-codegen -- vulkan generate --profile {{ profile }}
 
 codegen-mpv: build-codegen
     cabal run lithon-codegen -- mpv generate --yes
@@ -92,7 +92,7 @@ codegen-sdl3: build-codegen
 codegen-check: codegen-check-vulkan codegen-check-mpv codegen-check-sdl3
 
 codegen-check-vulkan: build-codegen
-    cabal run lithon-codegen -- vulkan generate --profile {{profile}} --check
+    cabal run lithon-codegen -- vulkan generate --profile {{ profile }} --check
 
 codegen-check-mpv: build-codegen
     cabal run lithon-codegen -- mpv generate --check
