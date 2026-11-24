@@ -2,7 +2,9 @@ no_progress = true
 format = "compact"
 max_concurrency = 16
 timeout = 20
-max_retries = 2
+# GitHub answers 503 now and then; wait it out rather than accept it.
+max_retries = 4
+retry_wait_time = 5
 
 accept = ["100..=103", "200..=299", "403"]
 
