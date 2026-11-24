@@ -64,7 +64,7 @@ newtype DocsMap = DocsMap
   deriving stock (Eq, Generic, Show)
   deriving anyclass (NFData)
 
-data DocsError = DocsError {what :: !Text}
+newtype DocsError = DocsError {what :: Text}
   deriving stock (Eq, Generic, Show)
   deriving anyclass (NFData, ToJSON)
 

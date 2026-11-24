@@ -280,8 +280,7 @@ draw renderer = do
   liftIO do
     void (SDL3.setRenderDrawColor renderer 255 255 255 255)
     let (sx, sy) = w2s scorePos
-    okText <- withCString ("Score: " <> show s) \text ->
-      SDL3.renderDebugText renderer sx sy (ConstPtr text)
+    okText <- withCString ("Score: " <> show s) (SDL3.renderDebugText renderer sx sy . ConstPtr)
     unless okText (die "SDL_RenderDebugText")
 
 triangleAt :: V2 -> [(Float, Float)]

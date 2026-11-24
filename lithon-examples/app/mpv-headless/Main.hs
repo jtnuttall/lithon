@@ -59,15 +59,14 @@ play mpv = do
   check "mpv_request_log_messages"
     =<< withCString "error" (Mpv.requestLogMessages mpv . ConstPtr)
   player <- property mpv "mpv-version"
-  check "loadfile" =<< withCString ("loadfile " <> clip) \cmd ->
-    Mpv.commandString mpv (ConstPtr cmd)
+  check "loadfile" =<< withCString ("loadfile " <> clip) (Mpv.commandString mpv . ConstPtr)
   start <- Mpv.getTimeNs mpv
   (width, events) <- awaitEndFile mpv (start + 15 * 1000 * 1000 * 1000)
   pure (player <> ", width " <> width <> ", end-file EOF after " <> show events <> " events")
  where
   setOption name value =
-    check ("option " <> name <> "=" <> value) =<< withCString name \n -> withCString value \v ->
-      Mpv.setOptionString mpv (ConstPtr n) (ConstPtr v)
+    check ("option " <> name <> "=" <> value) =<< withCString name \n ->
+      withCString value (Mpv.setOptionString mpv (ConstPtr n) . ConstPtr)
 
 -- | Drain events until the clip ends, at most half a second per wait,
 -- under an overall deadline on libmpv's own monotonic clock.

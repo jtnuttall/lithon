@@ -45,7 +45,9 @@ shown = either show (\found -> "found " <> show (Map.keys found))
 
 unit_noOverridesDirectoryIsNoOverrides :: IO ()
 unit_noOverridesDirectoryIsNoOverrides = do
-  withData [] \dir -> either (assertFailure . show) (@?= Map.empty) =<< discovered dir
+  withData [] \dir -> do
+    result <- discovered dir
+    either (assertFailure . show) (@?= Map.empty) result
   -- An empty directory is the same.
   withData [] \dir -> do
     createDirectory (dir </> "overrides")
@@ -70,8 +72,9 @@ unit_legacyOverridesFileRefused = do
   refused []
   refused [("overrides/SDL_main.yaml", "x")]
  where
-  refused extras = withData (("overrides.yaml", "ctypes: []") : extras) \dir ->
-    discovered dir >>= \case
+  refused extras = withData (("overrides.yaml", "ctypes: []") : extras) \dir -> do
+    result <- discovered dir
+    case result of
       Left err@(OverridesLegacy path) -> do
         takeFileName path @?= "overrides.yaml"
         assertBool
@@ -101,7 +104,8 @@ unit_strangersInOverridesRefused = do
           ("holds <header stem>.yaml files" `T.isInfixOf` display err)
       other -> assertFailure ("expected the subdirectory refused, got " <> shown other)
  where
-  refusedFile name = withData [(name, "x")] \dir ->
-    discovered dir >>= \case
+  refusedFile name = withData [(name, "x")] \dir -> do
+    result <- discovered dir
+    case result of
       Left (OverrideUnexpected path) -> takeFileName path @?= takeFileName name
       other -> assertFailure (name <> ": expected it refused, got " <> shown other)
