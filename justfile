@@ -13,6 +13,12 @@ default:
 fmt *args:
     nix fmt {{ args }}
 
+fmt-no-cache *args:
+    TREEFMT_NO_CACHE=true nix fmt {{ args }}
+
+fmt-clear-cache *args:
+    TREEFMT_CLEAR_CACHE=true nix fmt {{ args }}
+
 # doctest-parallel doesn't work trivially and reliably under haskell.nix
 doctest:
     ./scripts/rapidhash-doctest.sh
@@ -37,23 +43,13 @@ check-one name:
 test *targets="all":
     cabal test {{ targets }}
 
-examples:
-    ./scripts/examples-headless.sh
-
 # == hpack ==
 
 hpack:
-    for f in */package.yaml; do \
-      (cd "$(dirname "$f")" && hpack) \
-    done
+    nu scripts/hpack.nu
 
 hpack-check:
-    for f in */package.yaml; do \
-      dir=$(dirname "$f"); \
-      cabal_file=$(ls "$dir"/*.cabal); \
-      (cd "$dir" && hpack - | diff -u "$(basename "$cabal_file")" -) \
-        || { echo "$cabal_file is stale; run 'just hpack'"; exit 1; }; \
-    done
+    nu scripts/hpack.nu -c
 
 # == rapidhash ==
 

@@ -147,24 +147,25 @@
               buildInputs = [
                 # Linting, formatting, quality, and scripting
                 lychee
+                nushell
                 treefmtWrapper
 
                 # workflow dependencies
                 ast-grep
-                git
-                gawk
-                fd
-                tree-sitter
                 bat
                 coreutils
-                jq
+                dasel
                 diffutils
                 dyff
-                xq
+                fd
+                git
+                gawk
+                jq
                 lithonEnv.pythonWithPyparsing
-                dasel
-                xmlstarlet
                 ripgrep
+                tree-sitter
+                xmlstarlet
+                xq
               ];
 
               shellHook = lithonEnv.shellHook buildInputs;

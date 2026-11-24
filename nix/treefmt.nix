@@ -1,4 +1,8 @@
-{hsTools, ...}: {
+{
+  pkgs,
+  hsTools,
+  ...
+}: {
   projectRootFile = "flake.nix";
 
   settings.excludes = [
@@ -6,7 +10,8 @@
     "lithon-hs-bindgen/vendor/**"
     "**/*-lock.json"
     "**/{test,test-data}/*.{json,yaml}"
-    # generated output; codegen is responsible for formatting.
+
+    # generated packages
     "lithon-vk/**"
     "mpv-bindgen-sys/**"
     "sdl3-bindgen-sys/**"
@@ -41,7 +46,14 @@
     };
   };
 
-  settings.programs.fourmolu = {
-    ghcOpts = [];
+  settings = {
+    programs.fourmolu = {
+      ghcOpts = [];
+    };
+
+    formatter.nufmt = {
+      command = "${pkgs.nufmt}/bin/nufmt";
+      includes = ["*.nu"];
+    };
   };
 }
